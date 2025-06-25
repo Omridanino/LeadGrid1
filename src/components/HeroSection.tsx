@@ -8,7 +8,7 @@ interface HeroSectionProps {
 
 const HeroSection = ({ onStartQuestionnaire }: HeroSectionProps) => {
   return (
-    <section className="py-20 px-4 min-h-screen flex items-center">
+    <section className="py-20 px-4">
       <div className="container mx-auto text-center">
         <h2 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
           <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-[length:200%_auto] animate-[gradient_3s_ease-in-out_infinite] bg-clip-text text-transparent">
