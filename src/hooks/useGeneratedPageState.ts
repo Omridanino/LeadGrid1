@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { ColorScheme } from "@/components/ColorEditor";
@@ -12,7 +11,8 @@ const defaultFormData = {
   keyFeatures: "שירות מקצועי, מהירות, אמינות",
   brandColors: "כחול וכסף",
   contactInfo: "טלפון: 050-1234567\nאימייל: info@business.co.il",
-  heroStyle: "gradient"
+  heroStyle: "gradient",
+  selectedElements: [] as string[]
 };
 
 const defaultColors: ColorScheme = {

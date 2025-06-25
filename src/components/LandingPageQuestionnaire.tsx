@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -8,8 +7,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, ArrowRight, Eye, Download, Image as ImageIcon, Palette } from "lucide-react";
+import { Sparkles, ArrowRight, Eye, Download, Image as ImageIcon, Palette, CheckSquare } from "lucide-react";
 
 interface LandingPageQuestionnaireProps {
   isOpen: boolean;
@@ -28,8 +28,27 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
     keyFeatures: "",
     brandColors: "",
     contactInfo: "",
-    heroStyle: "gradient" // New field
+    heroStyle: "gradient",
+    selectedElements: [] as string[]
   });
+
+  const elementOptions = [
+    { id: "serviceCards", label: "כרטיסי שירותים עם אייקונים", description: "הצגת השירותים שלכם בכרטיסיות מעוצבות" },
+    { id: "timeline", label: "ציר זמן של התהליך", description: "הסבר על התהליך בצורה ויזואלית" },
+    { id: "floatingFeatures", label: "תכונות צפות באוויר", description: "הדגשת יתרונות במיקומים דינמיים" },
+    { id: "layeredCards", label: "כרטיסי המלצות מרובדים", description: "המלצות לקוחות בעיצוב תלת-ממדי" },
+    { id: "pricing", label: "טבלת מחירים", description: "הצגת חבילות ומחירים בצורה ברורה" },
+    { id: "3dElements", label: "אלמנטים תלת-ממדיים", description: "עיצובים מתקדמים עם אפקטי עומק" },
+    { id: "statistics", label: "סטטיסטיקות מרשימות", description: "נתונים על הצלחות והישגים" },
+    { id: "beforeAfter", label: "לפני ואחרי", description: "השוואות ותוצאות מוכחות" },
+    { id: "teamSection", label: "הצוות שלנו", description: "הכירו את האנשים מאחורי העסק" },
+    { id: "portfolio", label: "גלריית עבודות", description: "הצגת פרויקטים ועבודות קודמות" },
+    { id: "ctaButtons", label: "כפתורי פעולה מתקדמים", description: "כפתורים בולטים לפעולות חשובות" },
+    { id: "socialProof", label: "הוכחות חברתיות", description: "לוגואים של לקוחות וחברות" },
+    { id: "videoSection", label: "סקשן וידאו", description: "אזור לסרטון הצגה או הסבר" },
+    { id: "mapLocation", label: "מפה ומיקום", description: "הצגת המיקום הפיזי של העסק" },
+    { id: "newsletter", label: "הרשמה לnewsletter", description: "איסוף אימיילים ועדכונים" }
+  ];
 
   const handleSubmit = () => {
     if (!formData.businessName || !formData.businessType) {
@@ -75,15 +94,26 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
     onClose();
   };
 
-  const updateFormData = (field: string, value: string) => {
+  const updateFormData = (field: string, value: string | string[]) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }));
   };
 
+  const handleElementToggle = (elementId: string) => {
+    const currentElements = formData.selectedElements;
+    const isSelected = currentElements.includes(elementId);
+    
+    if (isSelected) {
+      updateFormData('selectedElements', currentElements.filter(id => id !== elementId));
+    } else {
+      updateFormData('selectedElements', [...currentElements, elementId]);
+    }
+  };
+
   const nextStep = () => {
-    if (currentStep < 4) {
+    if (currentStep < 5) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -227,6 +257,50 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
     </div>
   );
 
+  const renderStep5 = () => (
+    <div className="space-y-6">
+      <div>
+        <Label className="text-white font-semibold text-lg">איזה אלמנטים תרצו לראות בדף שלכם?</Label>
+        <p className="text-gray-400 text-sm mt-1">בחרו את האלמנטים שהכי מתאימים לעסק שלכם (ניתן לבחור כמה שרוצים)</p>
+      </div>
+      
+      <div className="grid grid-cols-1 gap-4 max-h-96 overflow-y-auto">
+        {elementOptions.map((element) => (
+          <div 
+            key={element.id}
+            className={`flex items-start space-x-3 space-x-reverse p-4 rounded-lg border cursor-pointer transition-all ${
+              formData.selectedElements.includes(element.id)
+                ? 'border-purple-500 bg-purple-900/20'
+                : 'border-gray-600 bg-gray-800/50 hover:border-gray-500'
+            }`}
+            onClick={() => handleElementToggle(element.id)}
+          >
+            <Checkbox
+              checked={formData.selectedElements.includes(element.id)}
+              onChange={() => {}}
+              className="mt-1"
+            />
+            <div className="flex-1">
+              <h4 className="text-white font-medium">{element.label}</h4>
+              <p className="text-gray-400 text-sm mt-1">{element.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <div className="text-center p-4 bg-gray-800 rounded-lg">
+        <p className="text-gray-300">
+          נבחרו {formData.selectedElements.length} אלמנטים
+        </p>
+        {formData.selectedElements.length === 0 && (
+          <p className="text-yellow-400 text-sm mt-1">
+            אם לא תבחרו כלום, נוסיף אלמנטים אקראיים מתאימים לעסק שלכם
+          </p>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -241,7 +315,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
           {/* Progress indicator */}
           <div className="flex justify-between items-center">
             <div className="flex space-x-2 space-x-reverse">
-              {[1, 2, 3, 4].map((step) => (
+              {[1, 2, 3, 4, 5].map((step) => (
                 <div
                   key={step}
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
@@ -256,7 +330,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
                 </div>
               ))}
             </div>
-            <span className="text-sm text-gray-400">שלב {currentStep} מתוך 4</span>
+            <span className="text-sm text-gray-400">שלב {currentStep} מתוך 5</span>
           </div>
 
           {/* Step content */}
@@ -267,6 +341,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
                 {currentStep === 2 && "מטרות ותכונות"}
                 {currentStep === 3 && "עיצוב ויצירת קשר"}
                 {currentStep === 4 && "סגנון תצוגה"}
+                {currentStep === 5 && "אלמנטים לדף"}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -274,6 +349,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
               {currentStep === 2 && renderStep2()}
               {currentStep === 3 && renderStep3()}
               {currentStep === 4 && renderStep4()}
+              {currentStep === 5 && renderStep5()}
             </CardContent>
           </Card>
 
@@ -297,7 +373,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
                 צפה ועדכן דף
               </Button>
 
-              {currentStep < 4 ? (
+              {currentStep < 5 ? (
                 <Button
                   onClick={nextStep}
                   className="bg-purple-600 hover:bg-purple-700"

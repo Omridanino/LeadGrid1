@@ -241,6 +241,150 @@ export const useContentGeneration = (formData: any) => {
     return elements;
   };
 
+  const getBeforeAfterSection = () => {
+    return {
+      title: "התוצאות מדברות בעד עצמן",
+      subtitle: "ראו איך שינינו חיים ועסקים",
+      cases: [
+        {
+          title: "הגדלת מכירות",
+          before: "₪50K חודשי",
+          after: "₪120K חודשי",
+          improvement: "+140%"
+        },
+        {
+          title: "שביעות רצון לקוחות",
+          before: "3.2/5 כוכבים",
+          after: "4.9/5 כוכבים",
+          improvement: "+53%"
+        }
+      ]
+    };
+  };
+
+  const getTeamSection = () => {
+    return {
+      title: "הצוות המקצועי שלנו",
+      subtitle: "הכירו את האנשים שיובילו אתכם להצלחה",
+      members: [
+        {
+          name: "דן כהן",
+          role: "מנהל פרויקטים",
+          experience: "8 שנות ניסיון",
+          emoji: "👨‍💼"
+        },
+        {
+          name: "רחל לוי",
+          role: "מומחית שיווק",
+          experience: "6 שנות ניסיון",
+          emoji: "👩‍💻"
+        },
+        {
+          name: "יוסי מזרחי",
+          role: "יועץ אסטרטגי",
+          experience: "12 שנות ניסיון",
+          emoji: "👨‍🏭"
+        }
+      ]
+    };
+  };
+
+  const getPortfolioSection = () => {
+    return {
+      title: "העבודות שלנו",
+      subtitle: "דוגמאות לפרויקטים מוצלחים שביצענו",
+      projects: [
+        {
+          title: "פרויקט A",
+          category: "עיצוב אתרים",
+          description: "אתר קונסטרקציה מלא עם ממשק ניהול",
+          result: "300% עלייה בלידים"
+        },
+        {
+          title: "פרויקט B", 
+          category: "קמפיין שיווקי",
+          description: "קמפיין דיגיטלי לחברת טכנולוגיה",
+          result: "250% ROI"
+        },
+        {
+          title: "פרויקט C",
+          category: "אפליקציה",
+          description: "אפליקצית משלוחים חדשנית",
+          result: "10K הורדות בחודש הראשון"
+        }
+      ]
+    };
+  };
+
+  const getAdvancedCTAButtons = () => {
+    return [
+      {
+        text: "התחל עכשיו - חינם!",
+        style: "primary",
+        icon: "🚀"
+      },
+      {
+        text: "קבל ייעוץ ללא תשלום",
+        style: "secondary", 
+        icon: "💬"
+      },
+      {
+        text: "הזמן פגישת היכרות",
+        style: "outline",
+        icon: "📅"
+      }
+    ];
+  };
+
+  const getSocialProofSection = () => {
+    return {
+      title: "הם כבר בוטחים בנו",
+      subtitle: "חברות מובילות שבחרו לעבוד איתנו",
+      logos: [
+        "🏢 טכנולוגיות ABC",
+        "🏪 רשת חנויות XYZ", 
+        "🏥 מרכז רפואי המרכז",
+        "🎓 האוניברסיטה הפתוחה",
+        "🏭 תעשיות ישראל",
+        "💼 קבוצת השקעות פיניקס"
+      ]
+    };
+  };
+
+  const getVideoSection = () => {
+    return {
+      title: "צפו בסיפור ההצלחה שלנו",
+      subtitle: "3 דקות שיסבירו לכם למה אנחנו הבחירה הנכונה",
+      videoPlaceholder: "🎥 וידאו הצגה - 3:24 דקות",
+      description: "הסרטון כולל המלצות לקוחות, הצגת התהליך והתוצאות המרשימות"
+    };
+  };
+
+  const getMapLocationSection = () => {
+    return {
+      title: "בואו לבקר אותנו",
+      subtitle: "המשרדים שלנו נמצאים במרכז הארץ",
+      address: "רחוב הטכנולוגיה 15, תל אביב",
+      hours: "ימים א'-ה' 9:00-17:00",
+      phone: "03-1234567",
+      mapPlaceholder: "🗺️ מפה אינטראקטיבית"
+    };
+  };
+
+  const getNewsletterSection = () => {
+    return {
+      title: "הישארו מעודכנים",
+      subtitle: "קבלו טיפים, חדשות ועדכונים חשובים ישירות למייל",
+      benefits: [
+        "טיפים שבועיים לשיפור העסק",
+        "מדריכים בלעדיים",
+        "הזמנות לאירועים מיוחדים",
+        "הנחות על שירותים"
+      ],
+      placeholder: "הכניסו את כתובת המייל שלכם"
+    };
+  };
+
   const getImprovedTestimonials = () => {
     const allTestimonials = [
       {
@@ -355,43 +499,39 @@ export const useContentGeneration = (formData: any) => {
     return shuffled.slice(0, 4);
   };
 
-  const getCreativeElements = () => {
-    const allElements = [
-      {
-        type: 'serviceCards',
-        content: getCreativeServiceCards()
-      },
-      {
-        type: 'timeline',
-        content: getTimelineSteps()
-      },
-      {
-        type: 'floatingFeatures',
-        content: getFloatingFeatures()
-      },
-      {
-        type: 'layeredCards',
-        content: getLayeredCards()
-      },
-      {
-        type: 'pricing',
-        content: getPricingPlans()
-      },
-      {
-        type: '3dElements',
-        content: get3DElements()
-      }
-    ];
+  const getSelectedElements = () => {
+    const selectedElements = formData.selectedElements || [];
     
-    // Always include service cards, plus 2-3 random additional elements
-    const selectedElements = [allElements[0]]; // Always include service cards
-    const remainingElements = allElements.slice(1);
-    const shuffled = remainingElements.sort(() => 0.5 - Math.random());
-    const numAdditional = Math.floor(Math.random() * 3) + 2; // 2-4 additional elements
-    
-    selectedElements.push(...shuffled.slice(0, numAdditional));
-    
-    return selectedElements;
+    // אם לא נבחרו אלמנטים, נחזיר את כל האלמנטים הקיימים
+    if (selectedElements.length === 0) {
+      return [
+        { type: 'serviceCards', content: getCreativeServiceCards() },
+        { type: 'timeline', content: getTimelineSteps() },
+        { type: 'floatingFeatures', content: getFloatingFeatures() },
+        { type: 'layeredCards', content: getLayeredCards() }
+      ];
+    }
+
+    // חיבור בין ה-ID לפונקציות
+    const elementMap = {
+      serviceCards: { type: 'serviceCards', content: getCreativeServiceCards() },
+      timeline: { type: 'timeline', content: getTimelineSteps() },
+      floatingFeatures: { type: 'floatingFeatures', content: getFloatingFeatures() },
+      layeredCards: { type: 'layeredCards', content: getLayeredCards() },
+      pricing: { type: 'pricing', content: getPricingPlans() },
+      '3dElements': { type: '3dElements', content: get3DElements() },
+      statistics: { type: 'statistics', content: generateDynamicStats(formData.businessType) },
+      beforeAfter: { type: 'beforeAfter', content: getBeforeAfterSection() },
+      teamSection: { type: 'teamSection', content: getTeamSection() },
+      portfolio: { type: 'portfolio', content: getPortfolioSection() },
+      ctaButtons: { type: 'ctaButtons', content: getAdvancedCTAButtons() },
+      socialProof: { type: 'socialProof', content: getSocialProofSection() },
+      videoSection: { type: 'videoSection', content: getVideoSection() },
+      mapLocation: { type: 'mapLocation', content: getMapLocationSection() },
+      newsletter: { type: 'newsletter', content: getNewsletterSection() }
+    };
+
+    return selectedElements.map(elementId => elementMap[elementId]).filter(Boolean);
   };
 
   const generateCreativeContent = () => {
@@ -414,7 +554,7 @@ export const useContentGeneration = (formData: any) => {
         title: "החלום שלכם מתחיל כאן ועכשיו",
         content: `כל מסע מתחיל בצעד אחד נכון. ${formData.businessName} כאן כדי ללוות אותכם בדרך המרגשת להצלחה. עם ${formData.keyFeatures} ומחויבות מלאה ל${formData.mainGoal}, אנחנו נעשה הכל כדי שתגיעו למקום הכי טוב ומוצלח.`
       },
-      creativeElements: getCreativeElements()
+      creativeElements: getSelectedElements()
     };
   };
 
