@@ -1,29 +1,74 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Code, ExternalLink, Palette, FileText, Edit } from "lucide-react";
+import { Code, ExternalLink, Palette, FileText, Edit, Settings } from "lucide-react";
 import ColorEditor, { ColorScheme } from "@/components/ColorEditor";
 import WordPressIntegration from "@/components/WordPressIntegration";
+import AdvancedEditor from "@/components/AdvancedEditor";
 
 interface OptionsPanelProps {
   showDesignEditor: boolean;
   showWordPressGuide: boolean;
+  showAdvancedEditor?: boolean;
   onColorChange: (colors: ColorScheme) => void;
   onDesignEdit: () => void;
   onWordPressIntegration: () => void;
+  onAdvancedEdit?: () => void;
   generateHtmlFile: () => string;
+  content?: any;
+  onContentChange?: (newContent: any) => void;
+  formData?: any;
+  onFormDataChange?: (newFormData: any) => void;
 }
 
 const OptionsPanel = ({ 
   showDesignEditor, 
   showWordPressGuide, 
+  showAdvancedEditor = false,
   onColorChange, 
   onDesignEdit, 
   onWordPressIntegration,
-  generateHtmlFile 
+  onAdvancedEdit,
+  generateHtmlFile,
+  content,
+  onContentChange,
+  formData,
+  onFormDataChange
 }: OptionsPanelProps) => {
   return (
     <div className="space-y-6">
+      {/* Advanced Content Editor */}
+      {showAdvancedEditor && content && onContentChange && formData && onFormDataChange && (
+        <AdvancedEditor 
+          content={content}
+          onContentChange={onContentChange}
+          formData={formData}
+          onFormDataChange={onFormDataChange}
+        />
+      )}
+
+      {/* Advanced Editor Toggle */}
+      <Card className="bg-gradient-to-br from-green-800 to-gray-900 border-green-700">
+        <CardHeader>
+          <CardTitle className="flex items-center text-lg">
+            <Settings className="w-5 h-5 ml-2 text-green-500" />
+            עריכת תוכן מתקדמת
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-gray-300 text-sm">
+            ערוך טקסטים, הוסף תמונות ושנה תוכן באופן מתקדם
+          </p>
+          <Button 
+            onClick={onAdvancedEdit}
+            className="w-full bg-green-600 hover:bg-green-700 rounded-xl"
+          >
+            <Edit className="w-4 h-4 ml-2" />
+            {showAdvancedEditor ? 'סגור עורך תוכן' : 'פתח עורך תוכן'}
+          </Button>
+        </CardContent>
+      </Card>
+
       {/* Color Editor */}
       {showDesignEditor && (
         <ColorEditor onColorChange={onColorChange} />

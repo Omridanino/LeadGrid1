@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -14,6 +13,7 @@ const GeneratedLandingPage = () => {
   const { toast } = useToast();
   const [showWordPressGuide, setShowWordPressGuide] = useState(false);
   const [showDesignEditor, setShowDesignEditor] = useState(false);
+  const [showAdvancedEditor, setShowAdvancedEditor] = useState(false);
   const [currentColors, setCurrentColors] = useState<ColorScheme>({
     primary: "#3b82f6",
     secondary: "#8b5cf6", 
@@ -22,7 +22,7 @@ const GeneratedLandingPage = () => {
     text: "#ffffff"
   });
   
-  const formData = location.state?.formData || {
+  const [formData, setFormData] = useState(location.state?.formData || {
     businessName: "העסק שלי",
     businessType: "שירותים עסקיים",
     targetAudience: "לקוחות פוטנציאליים",
@@ -30,7 +30,7 @@ const GeneratedLandingPage = () => {
     keyFeatures: "שירות מקצועי, מהירות, אמינות",
     brandColors: "כחול וכסף",
     contactInfo: "טלפון: 050-1234567\nאימייל: info@business.co.il"
-  };
+  });
 
   const { generatedContent, setGeneratedContent, generateCreativeContent } = useContentGeneration(formData);
 
@@ -55,6 +55,14 @@ const GeneratedLandingPage = () => {
       style.style.setProperty('--bg-color', newColors.background);
       style.style.setProperty('--text-color', newColors.text);
     }
+  };
+
+  const handleAdvancedEdit = () => {
+    setShowAdvancedEditor(!showAdvancedEditor);
+    toast({
+      title: "📝 עורך התוכן",
+      description: showAdvancedEditor ? "עורך התוכן נסגר" : "עורך התוכן נפתח - עכשיו תוכל לערוך טקסטים ולהוסיף תמונות!",
+    });
   };
 
   const handleWordPressIntegration = () => {
@@ -108,6 +116,10 @@ const GeneratedLandingPage = () => {
   };
 
   const generateHtmlFile = () => {
+    const heroImageStyle = content.heroImage 
+      ? `background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('${content.heroImage}') center/cover;`
+      : `background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, var(--accent-color) 100%);`;
+
     return `<!DOCTYPE html>
 <html dir="rtl" lang="he">
 <head>
@@ -124,7 +136,7 @@ const GeneratedLandingPage = () => {
             --text-color: ${currentColors.text};
         }
         .custom-gradient { 
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, var(--accent-color) 100%); 
+            ${heroImageStyle}
         }
         .card-hover { 
             transition: all 0.3s ease; 
@@ -201,10 +213,16 @@ const GeneratedLandingPage = () => {
           <OptionsPanel 
             showDesignEditor={showDesignEditor}
             showWordPressGuide={showWordPressGuide}
+            showAdvancedEditor={showAdvancedEditor}
             onColorChange={handleColorChange}
             onDesignEdit={handleDesignEdit}
             onWordPressIntegration={handleWordPressIntegration}
+            onAdvancedEdit={handleAdvancedEdit}
             generateHtmlFile={generateHtmlFile}
+            content={content}
+            onContentChange={setGeneratedContent}
+            formData={formData}
+            onFormDataChange={setFormData}
           />
         </div>
       </main>

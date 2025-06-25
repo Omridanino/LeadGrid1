@@ -15,11 +15,13 @@ const LandingPagePreview = ({ content, currentColors, formData }: LandingPagePre
   return (
     <Card className="bg-gray-900 border-gray-700 overflow-hidden">
       <CardContent className="p-0">
-        {/* Enhanced Preview Header */}
+        {/* Enhanced Preview Header with Hero Image Support */}
         <div 
           className="landing-preview p-12 text-center relative overflow-hidden"
           style={{
-            background: `linear-gradient(135deg, ${currentColors.primary} 0%, ${currentColors.secondary} 50%, ${currentColors.accent} 100%)`
+            background: content.heroImage 
+              ? `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${content.heroImage}) center/cover`
+              : `linear-gradient(135deg, ${currentColors.primary} 0%, ${currentColors.secondary} 50%, ${currentColors.accent} 100%)`
           }}
         >
           <div className="relative z-10">
@@ -72,7 +74,7 @@ const LandingPagePreview = ({ content, currentColors, formData }: LandingPagePre
                 <Star className="w-8 h-8 text-yellow-500 ml-3" />
                 היתרונות שלנו
               </h3>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 {content.features.map((feature: string, index: number) => (
                   <div key={index} className="flex items-center p-4 bg-gradient-to-r from-gray-700/50 to-gray-800/50 rounded-xl hover:from-gray-600/50 hover:to-gray-700/50 transition-all duration-300 border border-gray-600/30">
                     <div 
