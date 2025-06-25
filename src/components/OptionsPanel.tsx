@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Code, ExternalLink, Palette, FileText, Edit, Settings, Save, CheckCircle, Lock, Upload, Image as ImageIcon } from "lucide-react";
@@ -195,6 +194,8 @@ const OptionsPanel = ({
           onContentChange={onContentChange}
           formData={formData}
           onFormDataChange={onFormDataChange}
+          heroImage={heroImage || ''}
+          onHeroImageChange={onHeroImageChange || (() => {})}
         />
       )}
 
