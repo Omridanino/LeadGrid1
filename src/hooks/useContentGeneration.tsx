@@ -97,55 +97,180 @@ export const useContentGeneration = (formData: any) => {
     };
   };
 
+  const getCreativeServiceCards = () => {
+    const services = [
+      { icon: "🎯", title: "יעוץ אסטרטגי", desc: "פתרונות מותאמים אישית" },
+      { icon: "⚡", title: "ביצוע מהיר", desc: "תוצאות בזמן שיא" },
+      { icon: "🔧", title: "תמיכה מלאה", desc: "ליווי לאורך כל הדרך" },
+      { icon: "📊", title: "מדידה ובקרה", desc: "מעקב אחר הישגים" },
+      { icon: "🎨", title: "עיצוב מקצועי", desc: "אסתטיקה ופונקציונליות" },
+      { icon: "🚀", title: "חדשנות טכנולוגית", desc: "פתרונות מתקדמים" }
+    ];
+    
+    return services.sort(() => 0.5 - Math.random()).slice(0, 4);
+  };
+
+  const getTimelineSteps = () => {
+    const steps = [
+      { step: "01", title: "פגישת היכרות", desc: "נכיר את הצרכים והמטרות שלכם", color: "#3b82f6" },
+      { step: "02", title: "תכנון אסטרטגי", desc: "נבנה תכנית מותאמת אישית", color: "#8b5cf6" },
+      { step: "03", title: "יישום מקצועי", desc: "נוציא לפועל עם מקצועיות מלאה", color: "#06b6d4" },
+      { step: "04", title: "תוצאות מדודות", desc: "נמדוד ונשפר את הביצועים", color: "#10b981" }
+    ];
+    
+    return steps;
+  };
+
+  const getFloatingFeatures = () => {
+    const features = [
+      { 
+        title: "מהירות שיא", 
+        desc: "תוצאות תוך 24-48 שעות",
+        gradient: "from-blue-500 to-cyan-400",
+        position: "top-20 right-10",
+        size: "w-48 h-32"
+      },
+      { 
+        title: "איכות מעולה", 
+        desc: "סטנדרטים הגבוהים ביותר",
+        gradient: "from-purple-500 to-pink-400", 
+        position: "top-40 left-20",
+        size: "w-52 h-36"
+      },
+      { 
+        title: "מחיר הוגן", 
+        desc: "ערך אמיתי לכל שקל",
+        gradient: "from-green-500 to-emerald-400",
+        position: "bottom-32 right-16", 
+        size: "w-44 h-28"
+      }
+    ];
+    
+    return features;
+  };
+
+  const getLayeredCards = () => {
+    const cards = [
+      {
+        title: "המלצת הלקוח",
+        name: "דוד כהן",
+        role: "מנכ\"ל חברת טכנולוגיה",
+        content: "השירות המקצועי ביותר שקיבלתי!",
+        color: "from-blue-500 to-blue-600",
+        rotation: "-rotate-6",
+        zIndex: "z-30"
+      },
+      {
+        title: "פרויקט מוצלח",
+        name: "שרה לוי", 
+        role: "בעלת חנות אופנה",
+        content: "תוצאות מעבר לכל הציפיות",
+        color: "from-purple-500 to-purple-600",
+        rotation: "rotate-3",
+        zIndex: "z-20"
+      },
+      {
+        title: "שביעות רצון",
+        name: "מיכאל אברהם",
+        role: "יועץ עסקי",
+        content: "מומלץ בחום לכולם!",
+        color: "from-cyan-500 to-cyan-600", 
+        rotation: "-rotate-2",
+        zIndex: "z-10"
+      }
+    ];
+    
+    return cards;
+  };
+
+  const getPricingPlans = () => {
+    const plans = [
+      {
+        name: "תכנית בסיסית",
+        price: "₪499",
+        period: "לחודש",
+        features: ["ייעוץ טלפוני", "דוח חודשי", "תמיכה בשעות עבודה"],
+        highlighted: false,
+        buttonText: "התחל עכשיו"
+      },
+      {
+        name: "תכנית מתקדמת", 
+        price: "₪999",
+        period: "לחודש",
+        features: ["ייעוץ אישי", "דוח שבועי", "תמיכה 24/7", "אסטרטגיה מותאמת"],
+        highlighted: true,
+        buttonText: "הכי פופולרי"
+      },
+      {
+        name: "תכנית פרימיום",
+        price: "₪1,999", 
+        period: "לחודש",
+        features: ["ייעוץ VIP", "דוח יומי", "תמיכה VIP", "ליווי אישי", "גישה לכל הכלים"],
+        highlighted: false,
+        buttonText: "לעסקים גדולים"
+      }
+    ];
+    
+    return plans;
+  };
+
+  const get3DElements = () => {
+    const elements = [
+      {
+        type: "floating-cube",
+        position: "top-10 right-10",
+        color: "bg-gradient-to-br from-blue-400 to-blue-600",
+        animation: "animate-bounce",
+        size: "w-16 h-16"
+      },
+      {
+        type: "floating-sphere", 
+        position: "bottom-20 left-10",
+        color: "bg-gradient-to-br from-purple-400 to-purple-600",
+        animation: "animate-pulse",
+        size: "w-20 h-20"
+      },
+      {
+        type: "floating-pyramid",
+        position: "top-1/2 left-1/4",
+        color: "bg-gradient-to-br from-cyan-400 to-cyan-600", 
+        animation: "animate-ping",
+        size: "w-12 h-12"
+      }
+    ];
+    
+    return elements;
+  };
+
   const getImprovedTestimonials = () => {
     const allTestimonials = [
       {
         name: "יוסי כהן",
         role: "מנהל עסק",
         content: `השירות של ${formData.businessName} פשוט יוצא מהכלל! קיבלתי בדיוק מה שחיפשתי ואפילו יותר`,
-        rating: 5
+        rating: 5,
+        image: "👨‍💼"
       },
       {
         name: "שרה לוי",
-        role: "לקוחה קבועה",
+        role: "לקוחה קבועה", 
         content: "מקצועיות ברמה הגבוהה ביותר. ממליצה בחום לכל מי שמחפש איכות!",
-        rating: 5
+        rating: 5,
+        image: "👩‍💻"
       },
       {
         name: "דוד מזרחי",
         role: "איש עסקים",
         content: `בזכות ${formData.businessName} הצלחתי להגיע למטרות שלי ואף לחרוג מהן`,
-        rating: 5
+        rating: 5,
+        image: "👨‍🏭"
       },
       {
         name: "מירי רוזן",
         role: "מנהלת שיווק",
         content: "התוצאות היו מעבר לכל הציפיות! שירות יוצא מן הכלל עם תשומת לב לפרטים",
-        rating: 5
-      },
-      {
-        name: "אבי ישראלי",
-        role: "יועץ עסקי",
-        content: "מקצועיות, יעילות ותוצאות מרשימות. בדיוק מה שחיפשתי ועוד קצת",
-        rating: 5
-      },
-      {
-        name: "נועה גרין",
-        role: "בעלת עסק",
-        content: "השקעה שמשתלמת לטווח הארוך. ממליצה בחום לכל מי שרוצה תוצאות!",
-        rating: 5
-      },
-      {
-        name: "רן שמיר",
-        role: "מנכ\"ל סטארט-אפ",
-        content: "הגישה החדשנית והמקצועית עזרה לי להגיע לתוצאות שלא חלמתי עליהן",
-        rating: 5
-      },
-      {
-        name: "ליאת כרמי",
-        role: "יזמת דיגיטל",
-        content: "השירות המושלם עם יחס אישי וחם. כל פרט נלקח בחשבון עד הסוף",
-        rating: 5
+        rating: 5,
+        image: "👩‍🎨"
       }
     ];
 
@@ -232,69 +357,54 @@ export const useContentGeneration = (formData: any) => {
   };
 
   const getRandomElements = () => {
-    const allElements = [
-      {
-        type: 'testimonial',
-        content: {
-          name: "רחל אברהם",
-          role: "יזמת מובילה",
-          content: "השירות הכי מקצועי שקיבלתי אי פעם! התוצאות עלו על כל הציפיות שלי",
-          rating: 5
-        }
-      },
-      {
-        type: 'testimonial',
-        content: {
-          name: "מיכאל גולן",
-          role: "מנהל פרויקטים בכיר",
-          content: "עבודה מדויקת, מהירה ואמינה. ממליץ בחום לכל מי שמחפש איכות!",
-          rating: 5
-        }
-      },
-      {
-        type: 'text',
-        content: {
-          text: "אנחנו גאים להיות חלק מהמסע שלכם להצלחה. כל פרויקט שאנחנו לוקחים הוא הזדמנות ליצור משהו מיוחד, ייחודי ובלתי נשכח."
-        }
-      },
-      {
-        type: 'text',
-        content: {
-          text: "החזון שלנו הוא להפוך כל חלום למציאות מוחשית ומרגשת. עם ניסיון רב שנים ומחויבות מלאה, אנחנו כאן כדי להוביל אתכם להצלחה מבטיחה."
-        }
-      },
-      {
-        type: 'faq',
-        content: {
-          question: "מה הופך אתכם למיוחדים ויוצאי דופן בתחום?",
-          answer: "השילוב הייחודי שלנו בין מקצועיות גבוהה, שירות אישי וחם ומחויבות מלאה לתוצאות מעולות."
-        }
-      },
-      {
-        type: 'faq',
-        content: {
-          question: "איך אתם מבטיחים איכות גבוהה ועקבית?",
-          answer: "אנחנו עוברים תהליך בדיקה קפדני בכל שלב ומקפידים על הסטנדרטים הגבוהים ביותר בתחום."
-        }
-      },
-      {
-        type: 'title',
-        content: {
-          text: "למה לבחור דווקא בנו?",
-          size: 'h2'
-        }
-      },
-      {
-        type: 'title',
-        content: {
-          text: "הסיפור המרגש מאחורי ההצלחה",
-          size: 'h2'
-        }
+    const elementTypes = ['serviceCards', 'timeline', 'floatingFeatures', 'layeredCards', 'pricing', '3dElements'];
+    const randomType = elementTypes[Math.floor(Math.random() * elementTypes.length)];
+    
+    const elements = [];
+    
+    // Always include some basic elements
+    elements.push({
+      type: 'serviceCards',
+      content: getCreativeServiceCards()
+    });
+    
+    // Randomly add one creative section
+    if (Math.random() > 0.5) {
+      switch (randomType) {
+        case 'timeline':
+          elements.push({
+            type: 'timeline',
+            content: getTimelineSteps()
+          });
+          break;
+        case 'floatingFeatures':
+          elements.push({
+            type: 'floatingFeatures', 
+            content: getFloatingFeatures()
+          });
+          break;
+        case 'layeredCards':
+          elements.push({
+            type: 'layeredCards',
+            content: getLayeredCards()
+          });
+          break;
+        case 'pricing':
+          elements.push({
+            type: 'pricing',
+            content: getPricingPlans()
+          });
+          break;
+        case '3dElements':
+          elements.push({
+            type: '3dElements',
+            content: get3DElements()
+          });
+          break;
       }
-    ];
+    }
 
-    const shuffled = allElements.sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, Math.floor(Math.random() * 4) + 2);
+    return elements;
   };
 
   const generateCreativeContent = () => {
