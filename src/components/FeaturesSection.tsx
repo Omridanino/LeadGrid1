@@ -24,14 +24,14 @@ const FeaturesSection = () => {
       description: "ערוך צבעים, גופנים ועיצוב ישירות בדפדפן - ללא צורך בידע טכני"
     },
     {
-      icon: "🌐",
-      title: "רכישת דומיין וחיבור",
-      description: "קנה דומיין מתאים ותחבר את הדף שלך תוך דקות"
-    },
-    {
       icon: "🔗",
       title: "אינטגרציה עם וורדפרס",
-      description: "קבל קוד מוכן להטמעה באתר וורדפרס קיים עם הוראות פשוטות"
+      description: "חבר את הדף שלך לאתר וורדפרס קיים עם הוראות צעד אחר צעד"
+    },
+    {
+      icon: "🚀",
+      title: "אופטימיזציה למנועי חיפוש",
+      description: "דפים מותאמים ל-SEO עם מטא תגים וקוד נקי שיעלה אותך בגוגל"
     }
   ];
 

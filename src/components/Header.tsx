@@ -27,7 +27,7 @@ const Header = ({ onStartQuestionnaire }: HeaderProps) => {
           </nav>
           <Button 
             onClick={onStartQuestionnaire}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2 rounded-xl"
           >
             התחל עכשיו
           </Button>

@@ -8,7 +8,6 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import FAQSection from "@/components/FAQSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
-import ChatWidget from "@/components/ChatWidget";
 import LandingPageQuestionnaire from "@/components/LandingPageQuestionnaire";
 
 const Index = () => {
@@ -24,7 +23,6 @@ const Index = () => {
       <FAQSection />
       <ContactSection />
       <Footer />
-      <ChatWidget />
       
       {/* Questionnaire Modal */}
       <LandingPageQuestionnaire 

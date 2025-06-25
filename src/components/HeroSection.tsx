@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Zap, Play } from "lucide-react";
+import { Zap, FileText } from "lucide-react";
 
 interface HeroSectionProps {
   onStartQuestionnaire: () => void;
@@ -25,17 +25,17 @@ const HeroSection = ({ onStartQuestionnaire }: HeroSectionProps) => {
           <Button 
             size="lg" 
             onClick={onStartQuestionnaire}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
           >
             <Zap className="w-5 h-5 ml-2" />
             צור דף נחיתה בדקות
           </Button>
           <Button 
             size="lg" 
-            className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
           >
-            <Play className="w-5 h-5 ml-2" />
-            צפה בדמו חי
+            <FileText className="w-5 h-5 ml-2" />
+            קרא על התהליך
           </Button>
         </div>
         
