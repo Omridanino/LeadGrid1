@@ -107,6 +107,7 @@ export const generateHtmlFile = (
   getHeroImageUrl: () => string
 ) => {
   console.log('🛠️ Generating precise HTML that matches every element in the preview...');
+  console.log('🎨 Using exact colors from preview:', currentColors);
   
   const currentHeroImage = getHeroImageUrl();
   const useImageBackground = formData.heroStyle === 'image' || content.heroImage;
@@ -688,13 +689,16 @@ export const generateHtmlFile = (
         console.log('🎨 Colors applied:', {
             primary: '${currentColors.primary}',
             secondary: '${currentColors.secondary}',
-            accent: '${currentColors.accent}'
+            accent: '${currentColors.accent}',
+            background: '${currentColors.background}',
+            text: '${currentColors.text}'
         });
     </script>
 </body>
 </html>`;
 
-  console.log('✅ Dynamic HTML generation completed with business-specific content!');
+  console.log('✅ HTML generation completed with EXACT color matching from preview!');
+  console.log('🎨 Applied colors:', currentColors);
   console.log('📊 Generated stats:', dynamicStats);
   return htmlContent;
 };
