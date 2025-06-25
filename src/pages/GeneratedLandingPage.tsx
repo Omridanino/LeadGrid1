@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -433,12 +432,32 @@ const GeneratedLandingPage = () => {
             </Card>
 
             {/* WordPress Integration */}
-            <WordPressIntegration 
-              isOpen={showWordPressGuide}
-              onClose={() => setShowWordPressGuide(false)}
-              onOpen={handleWordPressIntegration}
-              landingPageHtml={generateHtmlFile()}
-            />
+            {showWordPressGuide && (
+              <WordPressIntegration htmlCode={generateHtmlFile()} />
+            )}
+
+            {!showWordPressGuide && (
+              <Card className="bg-gradient-to-br from-blue-800 to-gray-900 border-blue-700">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-lg">
+                    <Code className="w-5 h-5 ml-2 text-blue-500" />
+                    חיבור לוורדפרס
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-gray-300 text-sm">
+                    חבר את הדף שלך לאתר וורדפרס קיים
+                  </p>
+                  <Button 
+                    onClick={handleWordPressIntegration}
+                    className="w-full bg-blue-600 hover:bg-blue-700 rounded-xl"
+                  >
+                    <ExternalLink className="w-4 h-4 ml-2" />
+                    התחבר לוורדפרס
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Additional Actions */}
             <Card className="bg-gradient-to-br from-purple-900/30 to-gray-900 border-purple-700">
