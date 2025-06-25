@@ -17,7 +17,9 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                   ${element.content.map(card => `
                     <div class="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 transform hover:scale-105">
-                      <div class="text-4xl mb-4">${card.icon}</div>
+                      <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-4">
+                        <i class="ri-${card.icon} text-white text-xl"></i>
+                      </div>
                       <h3 class="text-xl font-bold text-white mb-3">${card.title}</h3>
                       <p class="text-gray-300">${card.desc}</p>
                     </div>
@@ -43,7 +45,9 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
                           <p class="text-gray-300">${step.desc}</p>
                         </div>
                       </div>
-                      <div class="w-8 h-8 rounded-full border-4 border-white z-10 relative" style="background-color: ${step.color}"></div>
+                      <div class="w-8 h-8 rounded-full border-4 border-white z-10 relative flex items-center justify-center" style="background-color: ${step.color}">
+                        <i class="ri-${step.icon || 'check-line'} text-white text-sm"></i>
+                      </div>
                       <div class="flex-1"></div>
                     </div>
                   `).join('')}
@@ -61,13 +65,16 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
                   ${element.content.map(plan => `
                     <div class="bg-gray-800 rounded-xl p-8 relative ${plan.highlighted ? 'ring-4 ring-purple-500 transform scale-105' : ''}">
                       ${plan.highlighted ? '<div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-purple-500 text-white px-4 py-2 rounded-full text-sm">הכי פופולרי</div>' : ''}
+                      <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-4">
+                        <i class="ri-${plan.icon || 'price-tag-3-line'} text-white text-xl"></i>
+                      </div>
                       <h3 class="text-2xl font-bold text-white mb-4">${plan.name}</h3>
                       <div class="text-4xl font-bold text-purple-400 mb-2">${plan.price}</div>
                       <div class="text-gray-400 mb-6">${plan.period}</div>
                       <ul class="space-y-3 mb-8">
                         ${plan.features.map(feature => `
                           <li class="flex items-center text-gray-300">
-                            <span class="text-green-500 ml-2">✓</span>
+                            <i class="ri-check-line text-green-500 ml-2"></i>
                             ${feature}
                           </li>
                         `).join('')}
@@ -91,7 +98,9 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                   ${element.content.members?.map(member => `
                     <div class="bg-gray-700 rounded-xl p-6 text-center">
-                      <div class="text-6xl mb-4">${member.emoji}</div>
+                      <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="ri-${member.icon || 'user-line'} text-white text-2xl"></i>
+                      </div>
                       <h3 class="text-xl font-bold text-white mb-2">${member.name}</h3>
                       <p class="text-purple-400 mb-2">${member.role}</p>
                       <p class="text-gray-300">${member.experience}</p>
@@ -111,6 +120,9 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                   ${element.content.projects?.map(project => `
                     <div class="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-colors">
+                      <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-4">
+                        <i class="ri-${project.icon || 'briefcase-line'} text-white text-xl"></i>
+                      </div>
                       <div class="bg-gradient-to-r from-purple-500 to-blue-500 text-white text-sm px-3 py-1 rounded-full inline-block mb-4">
                         ${project.category}
                       </div>
@@ -132,6 +144,9 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                   ${element.content.map(feature => `
                     <div class="bg-gradient-to-r ${feature.gradient} rounded-xl p-6 text-white transform hover:scale-105 transition-transform">
+                      <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4">
+                        <i class="ri-${feature.icon || 'star-line'} text-white text-xl"></i>
+                      </div>
                       <h3 class="text-xl font-bold mb-3">${feature.title}</h3>
                       <p>${feature.desc}</p>
                     </div>
@@ -154,6 +169,7 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${content.headline}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
         body { font-family: 'Heebo', sans-serif; }
@@ -214,7 +230,7 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
                 ${content.features.map(feature => `
                     <div class="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-colors">
                         <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-4">
-                            <span class="text-white text-xl">✓</span>
+                            <i class="ri-check-line text-white text-xl"></i>
                         </div>
                         <p class="text-gray-300">${feature}</p>
                     </div>
@@ -261,8 +277,8 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
                 ${content.testimonials.map(testimonial => `
                     <div class="bg-gray-800 rounded-xl p-6">
                         <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white text-2xl">
-                                ${testimonial.image}
+                            <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white">
+                                <i class="ri-${testimonial.icon || 'user-line'} text-xl"></i>
                             </div>
                             <div class="mr-4">
                                 <div class="font-semibold text-white">${testimonial.name}</div>
@@ -271,7 +287,7 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
                         </div>
                         <p class="text-gray-300 mb-4">"${testimonial.content}"</p>
                         <div class="flex text-yellow-400">
-                            ${'★'.repeat(testimonial.rating)}
+                            ${'<i class="ri-star-fill"></i>'.repeat(testimonial.rating)}
                         </div>
                     </div>
                 `).join('')}

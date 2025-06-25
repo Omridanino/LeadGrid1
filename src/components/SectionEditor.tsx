@@ -6,6 +6,7 @@ import FeaturesEditor from "./FeaturesEditor";
 import TestimonialsEditor from "./TestimonialsEditor";
 import FAQEditor from "./FAQEditor";
 import EditPopup from "./EditPopup";
+import IconSelector from "./IconSelector";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -131,7 +132,8 @@ const SectionEditor = ({ content, onContentChange, formData, onFormDataChange }:
       period: "לחודש",
       features: ["תכונה 1", "תכונה 2"],
       highlighted: false,
-      buttonText: "בחר תכנית"
+      buttonText: "בחר תכנית",
+      icon: "price-tag-3-line"
     }]);
   };
 
@@ -144,7 +146,7 @@ const SectionEditor = ({ content, onContentChange, formData, onFormDataChange }:
       name: "חבר צוות חדש",
       role: "תפקיד",
       experience: "שנות ניסיון",
-      emoji: "👨‍💼"
+      icon: "user-line"
     }];
     setLocalTeam({ ...localTeam, members: newMembers });
   };
@@ -159,7 +161,8 @@ const SectionEditor = ({ content, onContentChange, formData, onFormDataChange }:
       title: "פרויקט חדש",
       category: "קטגוריה",
       description: "תיאור הפרויקט",
-      result: "תוצאה"
+      result: "תוצאה",
+      icon: "briefcase-line"
     }];
     setLocalPortfolio({ ...localPortfolio, projects: newProjects });
   };
@@ -171,7 +174,7 @@ const SectionEditor = ({ content, onContentChange, formData, onFormDataChange }:
 
   const addServiceCard = () => {
     setLocalServiceCards([...localServiceCards, {
-      icon: "⭐",
+      icon: "star-line",
       title: "שירות חדש",
       desc: "תיאור השירות"
     }]);
@@ -186,7 +189,8 @@ const SectionEditor = ({ content, onContentChange, formData, onFormDataChange }:
       step: String(localTimeline.length + 1).padStart(2, '0'),
       title: "שלב חדש",
       desc: "תיאור השלב",
-      color: "#3b82f6"
+      color: "#3b82f6",
+      icon: "check-line"
     }]);
   };
 
@@ -247,14 +251,14 @@ const SectionEditor = ({ content, onContentChange, formData, onFormDataChange }:
                       <div className="grid grid-cols-1 gap-3">
                         <div>
                           <Label className="text-white">אייקון</Label>
-                          <Input
-                            value={card.icon}
-                            onChange={(e) => {
+                          <IconSelector
+                            selectedIcon={card.icon}
+                            onIconSelect={(icon) => {
                               const newCards = [...localServiceCards];
-                              newCards[index].icon = e.target.value;
+                              newCards[index].icon = icon;
                               setLocalServiceCards(newCards);
                             }}
-                            className="bg-gray-800 border-gray-600 text-white"
+                            triggerClassName="w-full bg-gray-800 border-gray-600 text-white"
                           />
                         </div>
                         <div>
@@ -316,6 +320,18 @@ const SectionEditor = ({ content, onContentChange, formData, onFormDataChange }:
                         </Button>
                       </div>
                       <div className="grid grid-cols-1 gap-3">
+                        <div>
+                          <Label className="text-white">אייקון</Label>
+                          <IconSelector
+                            selectedIcon={step.icon || 'check-line'}
+                            onIconSelect={(icon) => {
+                              const newTimeline = [...localTimeline];
+                              newTimeline[index].icon = icon;
+                              setLocalTimeline(newTimeline);
+                            }}
+                            triggerClassName="w-full bg-gray-800 border-gray-600 text-white"
+                          />
+                        </div>
                         <div>
                           <Label className="text-white">כותרת</Label>
                           <Input
@@ -387,7 +403,81 @@ const SectionEditor = ({ content, onContentChange, formData, onFormDataChange }:
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
-                      {/* Pricing plan editing fields would go here */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <Label className="text-white">אייקון</Label>
+                          <IconSelector
+                            selectedIcon={plan.icon || 'price-tag-3-line'}
+                            onIconSelect={(icon) => {
+                              const newPricing = [...localPricing];
+                              newPricing[index].icon = icon;
+                              setLocalPricing(newPricing);
+                            }}
+                            triggerClassName="w-full bg-gray-800 border-gray-600 text-white"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-white">שם התכנית</Label>
+                          <Input
+                            value={plan.name}
+                            onChange={(e) => {
+                              const newPricing = [...localPricing];
+                              newPricing[index].name = e.target.value;
+                              setLocalPricing(newPricing);
+                            }}
+                            className="bg-gray-800 border-gray-600 text-white"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-white">מחיר</Label>
+                          <Input
+                            value={plan.price}
+                            onChange={(e) => {
+                              const newPricing = [...localPricing];
+                              newPricing[index].price = e.target.value;
+                              setLocalPricing(newPricing);
+                            }}
+                            className="bg-gray-800 border-gray-600 text-white"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-white">תקופת תשלום</Label>
+                          <Input
+                            value={plan.period}
+                            onChange={(e) => {
+                              const newPricing = [...localPricing];
+                              newPricing[index].period = e.target.value;
+                              setLocalPricing(newPricing);
+                            }}
+                            className="bg-gray-800 border-gray-600 text-white"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <Label className="text-white">תכונות (כל שורה = תכונה)</Label>
+                        <Textarea
+                          value={plan.features.join('\n')}
+                          onChange={(e) => {
+                            const newPricing = [...localPricing];
+                            newPricing[index].features = e.target.value.split('\n').filter(f => f.trim());
+                            setLocalPricing(newPricing);
+                          }}
+                          className="bg-gray-800 border-gray-600 text-white"
+                          rows={4}
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-white">טקסט הכפתור</Label>
+                        <Input
+                          value={plan.buttonText}
+                          onChange={(e) => {
+                            const newPricing = [...localPricing];
+                            newPricing[index].buttonText = e.target.value;
+                            setLocalPricing(newPricing);
+                          }}
+                          className="bg-gray-800 border-gray-600 text-white"
+                        />
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -437,7 +527,56 @@ const SectionEditor = ({ content, onContentChange, formData, onFormDataChange }:
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
-                      {/* Team member editing fields would go here */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <Label className="text-white">אייקון</Label>
+                          <IconSelector
+                            selectedIcon={member.icon || 'user-line'}
+                            onIconSelect={(icon) => {
+                              const newMembers = [...localTeam.members];
+                              newMembers[index].icon = icon;
+                              setLocalTeam({ ...localTeam, members: newMembers });
+                            }}
+                            triggerClassName="w-full bg-gray-800 border-gray-600 text-white"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-white">שם</Label>
+                          <Input
+                            value={member.name}
+                            onChange={(e) => {
+                              const newMembers = [...localTeam.members];
+                              newMembers[index].name = e.target.value;
+                              setLocalTeam({ ...localTeam, members: newMembers });
+                            }}
+                            className="bg-gray-800 border-gray-600 text-white"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-white">תפקיד</Label>
+                          <Input
+                            value={member.role}
+                            onChange={(e) => {
+                              const newMembers = [...localTeam.members];
+                              newMembers[index].role = e.target.value;
+                              setLocalTeam({ ...localTeam, members: newMembers });
+                            }}
+                            className="bg-gray-800 border-gray-600 text-white"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-white">ניסיון</Label>
+                          <Input
+                            value={member.experience}
+                            onChange={(e) => {
+                              const newMembers = [...localTeam.members];
+                              newMembers[index].experience = e.target.value;
+                              setLocalTeam({ ...localTeam, members: newMembers });
+                            }}
+                            className="bg-gray-800 border-gray-600 text-white"
+                          />
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -461,6 +600,14 @@ const SectionEditor = ({ content, onContentChange, formData, onFormDataChange }:
                       className="bg-gray-800 border-gray-600 text-white"
                     />
                   </div>
+                  <div>
+                    <Label className="text-white">תת כותרת</Label>
+                    <Input
+                      value={localPortfolio.subtitle || ''}
+                      onChange={(e) => setLocalPortfolio({ ...localPortfolio, subtitle: e.target.value })}
+                      className="bg-gray-800 border-gray-600 text-white"
+                    />
+                  </div>
                   <div className="flex justify-between items-center">
                     <Button onClick={addPortfolioProject} className="bg-green-600 hover:bg-green-700">
                       <Plus className="w-4 h-4 ml-2" />
@@ -479,7 +626,69 @@ const SectionEditor = ({ content, onContentChange, formData, onFormDataChange }:
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
-                      {/* Portfolio project editing fields would go here */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <Label className="text-white">אייקון</Label>
+                          <IconSelector
+                            selectedIcon={project.icon || 'briefcase-line'}
+                            onIconSelect={(icon) => {
+                              const newProjects = [...localPortfolio.projects];
+                              newProjects[index].icon = icon;
+                              setLocalPortfolio({ ...localPortfolio, projects: newProjects });
+                            }}
+                            triggerClassName="w-full bg-gray-800 border-gray-600 text-white"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-white">שם הפרויקט</Label>
+                          <Input
+                            value={project.title}
+                            onChange={(e) => {
+                              const newProjects = [...localPortfolio.projects];
+                              newProjects[index].title = e.target.value;
+                              setLocalPortfolio({ ...localPortfolio, projects: newProjects });
+                            }}
+                            className="bg-gray-800 border-gray-600 text-white"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-white">קטגוריה</Label>
+                          <Input
+                            value={project.category}
+                            onChange={(e) => {
+                              const newProjects = [...localPortfolio.projects];
+                              newProjects[index].category = e.target.value;
+                              setLocalPortfolio({ ...localPortfolio, projects: newProjects });
+                            }}
+                            className="bg-gray-800 border-gray-600 text-white"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-white">תוצאה</Label>
+                          <Input
+                            value={project.result}
+                            onChange={(e) => {
+                              const newProjects = [...localPortfolio.projects];
+                              newProjects[index].result = e.target.value;
+                              setLocalPortfolio({ ...localPortfolio, projects: newProjects });
+                            }}
+                            className="bg-gray-800 border-gray-600 text-white"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <Label className="text-white">תיאור הפרויקט</Label>
+                        <Textarea
+                          value={project.description}
+                          onChange={(e) => {
+                            const newProjects = [...localPortfolio.projects];
+                            newProjects[index].description = e.target.value;
+                            setLocalPortfolio({ ...localPortfolio, projects: newProjects });
+                          }}
+                          className="bg-gray-800 border-gray-600 text-white"
+                          rows={3}
+                        />
+                      </div>
                     </div>
                   ))}
                 </div>
