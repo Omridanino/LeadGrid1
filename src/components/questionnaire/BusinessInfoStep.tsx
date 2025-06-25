@@ -50,24 +50,24 @@ export const BusinessInfoStep = ({ formData, updateFormData, open, setOpen }: Bu
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-[400px] p-0 bg-gray-800 border-gray-600 z-[100]">
-            <Command className="bg-gray-800 border-0">
+          <PopoverContent className="w-full p-0 bg-gray-800 border-gray-600" style={{ zIndex: 9999 }}>
+            <Command className="bg-gray-800">
               <CommandInput 
                 placeholder="חפש מקצוע..." 
-                className="h-9 text-white bg-gray-800 border-gray-600 placeholder:text-gray-400" 
+                className="h-9 bg-gray-800 border-none text-white placeholder:text-gray-400" 
               />
-              <CommandList className="max-h-[200px] overflow-y-auto">
+              <CommandList className="max-h-60 overflow-y-auto bg-gray-800">
                 <CommandEmpty className="text-gray-400 p-4 text-center">לא נמצא מקצוע מתאים.</CommandEmpty>
-                <CommandGroup>
+                <CommandGroup className="bg-gray-800">
                   {professions.map((profession) => (
                     <CommandItem
                       key={profession.value}
-                      value={profession.value}
-                      onSelect={(currentValue) => {
-                        updateFormData('businessType', currentValue === formData.businessType ? "" : currentValue);
+                      value={profession.label}
+                      onSelect={() => {
+                        updateFormData('businessType', profession.value);
                         setOpen(false);
                       }}
-                      className="text-white hover:bg-gray-700 cursor-pointer px-2 py-1.5"
+                      className="text-white hover:bg-gray-700 cursor-pointer bg-gray-800 data-[selected=true]:bg-gray-700"
                     >
                       <Check
                         className={cn(
