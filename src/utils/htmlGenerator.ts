@@ -1,4 +1,3 @@
-
 export const generateHtmlFile = (content: any, colors: any, formData: any, getHeroImageUrl: () => string) => {
   const heroImageUrl = getHeroImageUrl();
   
@@ -211,9 +210,9 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                 ${Object.entries(content.stats).map(([key, value]) => `
-                    <div class="text-center">
-                        <div class="text-3xl md:text-4xl font-bold text-purple-400 mb-2">${value}</div>
-                        <div class="text-gray-300 text-sm uppercase tracking-wide">${key}</div>
+                    <div class="text-center bg-gradient-to-br from-orange-400 to-yellow-500 p-6 rounded-2xl hover:scale-105 transition-transform">
+                        <div class="text-3xl md:text-4xl font-bold text-white mb-2">${value}</div>
+                        <div class="text-white font-semibold text-lg">${key}</div>
                     </div>
                 `).join('')}
             </div>

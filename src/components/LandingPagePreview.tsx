@@ -316,11 +316,14 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
             </Button>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 max-w-4xl mx-auto">
               {Object.entries(content.stats).map(([key, value], index) => (
-                <div key={index} className="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/20 hover:scale-105 transition-transform">
-                  <div className="text-2xl font-bold text-white mb-1">{value as string}</div>
-                  <div className="text-sm text-white/80">{key}</div>
+                <div 
+                  key={index} 
+                  className="bg-gradient-to-br from-orange-400 to-yellow-500 p-6 rounded-2xl hover:scale-105 transition-transform shadow-lg"
+                >
+                  <div className="text-3xl md:text-4xl font-bold text-white mb-2">{value as string}</div>
+                  <div className="text-white font-semibold text-lg">{key}</div>
                 </div>
               ))}
             </div>
