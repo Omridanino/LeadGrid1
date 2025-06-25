@@ -100,7 +100,10 @@ const AdvancedEditor = ({ content, onContentChange, formData, onFormDataChange }
               className="bg-gray-700 border-gray-600 text-white file:bg-purple-600 file:text-white file:border-0 file:rounded file:px-4 file:py-2"
             />
             <Button
-              onClick={() => document.querySelector('input[type="file"]')?.click()}
+              onClick={() => {
+                const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+                fileInput?.click();
+              }}
               className="bg-purple-600 hover:bg-purple-700"
             >
               <Upload className="w-4 h-4 ml-2" />
