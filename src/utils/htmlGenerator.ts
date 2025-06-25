@@ -1,3 +1,4 @@
+
 export const generateHtmlFile = (content: any, colors: any, formData: any, getHeroImageUrl: () => string) => {
   const heroImageUrl = getHeroImageUrl();
   
@@ -16,7 +17,7 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                   ${element.content.map(card => `
                     <div class="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 transform hover:scale-105">
-                      <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-4">
+                      <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary})">
                         <i class="ri-${card.icon} text-white text-xl"></i>
                       </div>
                       <h3 class="text-xl font-bold text-white mb-3">${card.title}</h3>
@@ -34,7 +35,7 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
               <div class="container mx-auto px-4">
                 <h2 class="text-4xl font-bold text-center text-white mb-16">התהליך שלנו</h2>
                 <div class="relative">
-                  <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-blue-500 to-purple-500"></div>
+                  <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full" style="background: linear-gradient(to bottom, ${colors.primary}, ${colors.secondary})"></div>
                   ${element.content.map((step, index) => `
                     <div class="flex items-center mb-12 ${index % 2 === 0 ? 'flex-row-reverse' : ''}">
                       <div class="flex-1 ${index % 2 === 0 ? 'text-right pr-8' : 'text-left pl-8'}">
@@ -59,26 +60,26 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
           return `
             <section class="py-20 bg-gray-900">
               <div class="container mx-auto px-4">
-                <h2 class="text-4xl font-bold text-center text-white mb-16">המחירים שלנו</h2>
+                <h2 class="text-4xl font-bold text-center text-white mb-16">התכניות שלנו</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                   ${element.content.map(plan => `
                     <div class="bg-gray-800 rounded-xl p-8 relative ${plan.highlighted ? 'ring-4 ring-purple-500 transform scale-105' : ''}">
-                      ${plan.highlighted ? '<div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-purple-500 text-white px-4 py-2 rounded-full text-sm">הכי פופולרי</div>' : ''}
-                      <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-4">
+                      ${plan.highlighted ? `<div class="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-full text-white text-sm font-bold" style="background-color: ${colors.accent}">הכי פופולרי</div>` : ''}
+                      <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary})">
                         <i class="ri-${plan.icon || 'price-tag-3-line'} text-white text-xl"></i>
                       </div>
                       <h3 class="text-2xl font-bold text-white mb-4">${plan.name}</h3>
-                      <div class="text-4xl font-bold text-purple-400 mb-2">${plan.price}</div>
+                      <div class="text-4xl font-bold mb-2" style="color: ${colors.primary}">${plan.price}</div>
                       <div class="text-gray-400 mb-6">${plan.period}</div>
                       <ul class="space-y-3 mb-8">
                         ${plan.features.map(feature => `
                           <li class="flex items-center text-gray-300">
-                            <i class="ri-check-line text-green-500 ml-2"></i>
+                            <i class="ri-check-line ml-2" style="color: ${colors.accent}"></i>
                             ${feature}
                           </li>
                         `).join('')}
                       </ul>
-                      <button class="w-full py-3 px-6 rounded-xl font-semibold ${plan.highlighted ? 'bg-purple-600 hover:bg-purple-700 text-white' : 'bg-gray-700 hover:bg-gray-600 text-white'} transition-colors">
+                      <button class="w-full py-3 px-6 rounded-xl font-semibold transition-colors" style="background-color: ${plan.highlighted ? colors.accent : colors.primary}; color: white;">
                         ${plan.buttonText}
                       </button>
                     </div>
@@ -190,7 +191,7 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
                  ? `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('${heroImageUrl}') center/cover` 
                  : colors.background};">
         <div class="container mx-auto px-4 text-center relative z-10">
-            <div class="inline-block bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6">
+            <div class="inline-block backdrop-blur-sm rounded-full px-6 py-2 mb-6" style="background-color: rgba(255,255,255,0.1);">
                 <span class="text-sm font-medium">${content.badge}</span>
             </div>
             <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight" style="color: ${colors.headlineColor};">
@@ -199,7 +200,7 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
             <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed" style="color: ${colors.subheadlineColor};">
                 ${content.subheadline}
             </p>
-            <button class="bg-white text-gray-900 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-100 transition-colors">
+            <button class="px-8 py-4 rounded-xl text-lg font-semibold hover:scale-105 transition-all" style="background-color: ${colors.accent}; color: white;">
                 ${content.cta}
             </button>
         </div>
@@ -210,7 +211,7 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                 ${Object.entries(content.stats).map(([key, value]) => `
-                    <div class="text-center bg-gradient-to-br from-orange-400 to-yellow-500 p-6 rounded-2xl hover:scale-105 transition-transform">
+                    <div class="text-center p-6 rounded-2xl hover:scale-105 transition-transform" style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});">
                         <div class="text-3xl md:text-4xl font-bold text-white mb-2">${value}</div>
                         <div class="text-white font-semibold text-lg">${key}</div>
                     </div>
@@ -228,7 +229,7 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 ${content.features.map(feature => `
                     <div class="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-colors">
-                        <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-4">
+                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});">
                             <i class="ri-check-line text-white text-xl"></i>
                         </div>
                         <p class="text-gray-300">${feature}</p>
@@ -256,7 +257,7 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
 
     <!-- Emotional Section -->
     ${content.emotional ? `
-    <section class="py-20 bg-gradient-to-r from-purple-900 to-blue-900">
+    <section class="py-20" style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});">
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-4xl font-bold mb-8 text-white">
                 ${content.emotional.title}
@@ -276,8 +277,8 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
                 ${content.testimonials.map(testimonial => `
                     <div class="bg-gray-800 rounded-xl p-6">
                         <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white">
-                                <i class="ri-${testimonial.icon || 'user-line'} text-xl"></i>
+                            <div class="w-12 h-12 rounded-full flex items-center justify-center text-white text-2xl" style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});">
+                                ${testimonial.image}
                             </div>
                             <div class="mr-4">
                                 <div class="font-semibold text-white">${testimonial.name}</div>
@@ -318,7 +319,7 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
             <div class="text-xl mb-8" style="color: ${colors.contactTextColor};">
                 ${formData.contactInfo.split('\n').map(line => `<div>${line}</div>`).join('')}
             </div>
-            <button class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all">
+            <button class="px-8 py-4 rounded-xl text-lg font-semibold hover:scale-105 transition-all" style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary}); color: white;">
                 צור קשר עכשיו
             </button>
         </div>

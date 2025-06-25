@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,12 +26,10 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
   const colors = content.colors || currentColors;
 
   const getHeroImageUrl = () => {
-    // If user uploaded custom image, use it
     if (heroImage && heroImage.startsWith('data:')) {
       return heroImage;
     }
     
-    // Otherwise use automatic image based on business type
     const businessType = formData.businessType?.toLowerCase() || '';
     
     if (businessType.includes('קפה') || businessType.includes('בית קפה')) {
@@ -68,7 +67,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
           >
             <div 
               className="w-16 h-16 rounded-xl mb-4 flex items-center justify-center text-2xl"
-              style={{ backgroundColor: colors.primary }}
+              style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}
             >
               {service.icon}
             </div>
@@ -88,8 +87,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
       </h2>
       <div className="max-w-4xl mx-auto">
         <div className="relative">
-          {/* Timeline line */}
-          <div className="absolute right-8 top-0 bottom-0 w-0.5" style={{ backgroundColor: colors.secondary }}></div>
+          <div className="absolute right-8 top-0 bottom-0 w-0.5" style={{ background: `linear-gradient(to bottom, ${colors.primary}, ${colors.secondary})` }}></div>
           
           {timelineSteps.map((step: any, index: number) => (
             <div key={index} className="relative flex items-center mb-12">
@@ -106,58 +104,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
             </div>
           ))}
         </div>
-      </div>
-    </div>
-  );
-
-  const renderFloatingFeatures = (features: any[]) => (
-    <div className="p-8 relative overflow-hidden min-h-96" style={{ backgroundColor: currentColors.background }}>
-      <h2 className="text-3xl font-bold mb-8 text-center relative z-10" style={{ color: currentColors.text }}>
-        <Zap className="w-8 h-8 ml-3 inline" style={{ color: colors.accent }} />
-        היתרונות שלנו
-      </h2>
-      <div className="relative">
-        {features.map((feature: any, index: number) => (
-          <div 
-            key={index}
-            className={`absolute ${feature.position} ${feature.size} p-6 rounded-2xl backdrop-blur-sm border border-white/20 hover:scale-110 transition-all duration-500`}
-            style={{ 
-              background: `linear-gradient(135deg, ${feature.gradient.split(' ')[1]}, ${feature.gradient.split(' ')[3]})`
-            }}
-          >
-            <h3 className="font-bold text-white mb-2">{feature.title}</h3>
-            <p className="text-white/90 text-sm">{feature.desc}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
-  const renderLayeredCards = (cards: any[]) => (
-    <div className="p-8" style={{ backgroundColor: currentColors.background }}>
-      <h2 className="text-3xl font-bold mb-12 text-center" style={{ color: currentColors.text }}>
-        <Quote className="w-8 h-8 ml-3 inline" style={{ color: colors.primary }} />
-        מה אומרים עלינו
-      </h2>
-      <div className="max-w-4xl mx-auto relative h-80">
-        {cards.map((card: any, index: number) => (
-          <div 
-            key={index}
-            className={`absolute w-80 p-8 rounded-2xl shadow-2xl ${card.rotation} ${card.zIndex} hover:scale-105 transition-all duration-300`}
-            style={{ 
-              background: `linear-gradient(135deg, ${card.color.split(' ')[1]}, ${card.color.split(' ')[3]})`,
-              left: `${index * 60}px`,
-              top: `${index * 20}px`
-            }}
-          >
-            <h3 className="font-bold text-white mb-2">{card.title}</h3>
-            <p className="text-white/90 mb-4">"{card.content}"</p>
-            <div>
-              <div className="font-semibold text-white">{card.name}</div>
-              <div className="text-white/70 text-sm">{card.role}</div>
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   );
@@ -215,27 +161,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
     </div>
   );
 
-  const render3DElements = (elements: any[]) => (
-    <div className="p-8 relative overflow-hidden min-h-96" style={{ backgroundColor: currentColors.background }}>
-      <h2 className="text-3xl font-bold mb-8 text-center relative z-10" style={{ color: currentColors.text }}>
-        אלמנטים דינמיים
-      </h2>
-      {elements.map((element: any, index: number) => (
-        <div 
-          key={index}
-          className={`absolute ${element.position} ${element.size} ${element.color} ${element.animation} rounded-2xl shadow-2xl`}
-          style={{ animationDuration: `${2 + index}s` }}
-        ></div>
-      ))}
-      <div className="relative z-10 text-center">
-        <p className="text-lg" style={{ color: currentColors.text }}>
-          חוויה ויזואלית מרשימה שמוסיפה עומק לדף
-        </p>
-      </div>
-    </div>
-  );
-
   const renderCreativeElements = () => {
+    // Only render elements that are actually selected and exist in content
     if (!content.creativeElements || content.creativeElements.length === 0) {
       return null;
     }
@@ -246,14 +173,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
           return <div key={index}>{renderServiceCards(element.content)}</div>;
         case 'timeline':
           return <div key={index}>{renderTimeline(element.content)}</div>;
-        case 'floatingFeatures':
-          return <div key={index}>{renderFloatingFeatures(element.content)}</div>;
-        case 'layeredCards':
-          return <div key={index}>{renderLayeredCards(element.content)}</div>;
         case 'pricing':
           return <div key={index}>{renderPricing(element.content)}</div>;
-        case '3dElements':
-          return <div key={index}>{render3DElements(element.content)}</div>;
         default:
           return null;
       }
@@ -315,12 +236,13 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
               {content.cta}
             </Button>
 
-            {/* Stats */}
+            {/* Stats with correct colors */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 max-w-4xl mx-auto">
               {Object.entries(content.stats).map(([key, value], index) => (
                 <div 
                   key={index} 
-                  className="bg-gradient-to-br from-orange-400 to-yellow-500 p-6 rounded-2xl hover:scale-105 transition-transform shadow-lg"
+                  className="p-6 rounded-2xl hover:scale-105 transition-transform shadow-lg"
+                  style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}
                 >
                   <div className="text-3xl md:text-4xl font-bold text-white mb-2">{value as string}</div>
                   <div className="text-white font-semibold text-lg">{key}</div>
@@ -366,7 +288,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
           </div>
         </div>
 
-        {/* Creative Elements */}
+        {/* Creative Elements - only render if they exist */}
         {renderCreativeElements()}
 
         {/* About Section */}
@@ -395,29 +317,19 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
         </div>
 
         {/* Emotional Section */}
-        <div className="p-8" style={{ backgroundColor: currentColors.background }}>
-          <h2 
-            className="text-3xl font-bold mb-8 text-center flex items-center justify-center"
-            style={{ color: currentColors.text }}
-          >
-            <Heart className="w-8 h-8 ml-3" style={{ color: colors.accent }} />
-            {content.emotional.title}
-          </h2>
-          <div 
-            className="p-8 rounded-xl border max-w-4xl mx-auto"
-            style={{ 
-              backgroundColor: 'rgba(255,255,255,0.05)',
-              borderColor: `${colors.accent}40`
-            }}
-          >
-            <p 
-              className="text-lg leading-relaxed text-center"
-              style={{ color: currentColors.text }}
-            >
-              {content.emotional.content}
-            </p>
+        {content.emotional && (
+          <div className="p-8" style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}>
+            <h2 className="text-3xl font-bold mb-8 text-center flex items-center justify-center text-white">
+              <Heart className="w-8 h-8 ml-3" />
+              {content.emotional.title}
+            </h2>
+            <div className="p-8 rounded-xl max-w-4xl mx-auto">
+              <p className="text-lg leading-relaxed text-center text-gray-200">
+                {content.emotional.content}
+              </p>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Testimonials Section */}
         <div className="p-8" style={{ backgroundColor: currentColors.background }}>
@@ -439,11 +351,15 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
                 }}
               >
                 <div className="flex items-center mb-4">
-                  <div className="text-3xl mr-3">{testimonial.image}</div>
-                  <div className="flex">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                    ))}
+                  <div 
+                    className="w-12 h-12 rounded-full flex items-center justify-center text-white text-2xl"
+                    style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}
+                  >
+                    {testimonial.image}
+                  </div>
+                  <div className="mr-4">
+                    <div className="font-semibold" style={{ color: colors.primary }}>{testimonial.name}</div>
+                    <div className="text-gray-400 text-sm">{testimonial.role}</div>
                   </div>
                 </div>
                 <p 
@@ -452,9 +368,10 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
                 >
                   "{testimonial.content}"
                 </p>
-                <div className="text-sm">
-                  <div className="font-semibold" style={{ color: colors.primary }}>{testimonial.name}</div>
-                  <div className="text-gray-400">{testimonial.role}</div>
+                <div className="flex">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                  ))}
                 </div>
               </div>
             ))}
@@ -527,7 +444,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
             <Button 
               className="text-xl px-8 py-4 rounded-xl hover:scale-105 transition-transform font-bold"
               style={{ 
-                backgroundColor: colors.primary, 
+                background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`, 
                 color: 'white',
                 border: 'none'
               }}

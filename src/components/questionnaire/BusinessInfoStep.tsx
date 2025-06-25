@@ -10,6 +10,7 @@ interface BusinessInfoStepProps {
     businessName: string;
     businessType: string;
     targetAudience: string;
+    businessAdvantages: string;
   };
   updateFormData: (field: string, value: string) => void;
   open: boolean;
@@ -49,6 +50,22 @@ export const BusinessInfoStep = ({ formData, updateFormData }: BusinessInfoStepP
           </SelectContent>
         </Select>
         <p className="text-sm text-gray-400 mt-1">בחר את המקצוע שלך מהרשימה</p>
+      </div>
+
+      <div>
+        <Label htmlFor="businessAdvantages" className="text-white font-semibold">3 היתרונות המרכזיים של העסק שלך *</Label>
+        <Textarea
+          id="businessAdvantages"
+          value={formData.businessAdvantages}
+          onChange={(e) => updateFormData('businessAdvantages', e.target.value)}
+          className="bg-gray-700 border-gray-600 text-white"
+          placeholder="למשל: 
+1. שירות מהיר ואמין תוך 24 שעות
+2. צוות מנוסה עם 10+ שנות ניסיון
+3. מחירים תחרותיים עם אחריות מלאה"
+          rows={4}
+        />
+        <p className="text-sm text-gray-400 mt-1">רשום 3 יתרונות ספציפיים שמבדילים אותך מהמתחרים</p>
       </div>
 
       <div>
