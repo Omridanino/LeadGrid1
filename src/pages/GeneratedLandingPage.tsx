@@ -121,10 +121,8 @@ const GeneratedLandingPage = () => {
   };
 
   const generateHtmlFile = () => {
-    const heroImageStyle = content.heroImage 
-      ? `background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('${content.heroImage}') center/cover;`
-      : `background: linear-gradient(135deg, ${currentColors.primary} 0%, ${currentColors.secondary} 50%, ${currentColors.accent} 100%);`;
-
+    const colors = content.colors || currentColors;
+    
     return `<!DOCTYPE html>
 <html dir="rtl" lang="he">
 <head>
@@ -141,7 +139,7 @@ const GeneratedLandingPage = () => {
             color: ${currentColors.text};
         }
         .hero-section { 
-            ${heroImageStyle}
+            background: linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 50%, ${colors.accent} 100%);
             min-height: 500px;
             display: flex;
             flex-direction: column;
@@ -150,15 +148,23 @@ const GeneratedLandingPage = () => {
             text-align: center;
             position: relative;
         }
-        .card-hover { 
-            transition: all 0.3s ease; 
-            backdrop-filter: blur(10px);
+        .section {
+            padding: 2rem;
+            background: ${currentColors.background};
         }
-        .card-hover:hover { 
-            transform: translateY(-5px) scale(1.02); 
+        .card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid ${colors.primary}66;
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        .card:hover {
+            transform: translateY(-5px) scale(1.02);
         }
         .cta-button {
-            background: ${currentColors.accent || currentColors.primary};
+            background: ${colors.accent};
             color: white;
             padding: 15px 30px;
             border: none;
@@ -169,38 +175,10 @@ const GeneratedLandingPage = () => {
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
-            margin: 0 10px 10px 0;
         }
         .cta-button:hover {
-            transform: translateY(-2px);
+            transform: translateY(-2px) scale(1.05);
             box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-            color: white;
-        }
-        .feature-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid ${currentColors.primary}66;
-            padding: 1.5rem;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        .feature-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        .feature-icon {
-            width: 32px;
-            height: 32px;
-            background: ${currentColors.primary};
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 1rem;
-            flex-shrink: 0;
         }
         .badge {
             background: rgba(255,255,255,0.2);
@@ -214,136 +192,161 @@ const GeneratedLandingPage = () => {
         }
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            max-width: 600px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            max-width: 800px;
             margin: 2rem auto 0;
         }
         .stat-card {
             background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
             padding: 1rem;
             border-radius: 12px;
             border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.3s ease;
-        }
-        .stat-card:hover {
-            background: rgba(255,255,255,0.2);
-        }
-        .content-section {
-            padding: 4rem 2rem;
-        }
-        .section-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-        .contact-section {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid ${currentColors.primary}66;
-            padding: 2rem;
-            border-radius: 16px;
             text-align: center;
         }
-        .contact-info {
-            background: rgba(0,0,0,0.2);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .section-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: ${currentColors.text};
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
         }
         @media (max-width: 768px) {
             .hero-section { padding: 2rem 1rem; }
-            .content-section { padding: 2rem 1rem; }
-            .section-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .section { padding: 1.5rem; }
+            .features-grid { grid-template-columns: 1fr; }
+            .testimonials-grid { grid-template-columns: 1fr; }
             .stats-grid { grid-template-columns: 1fr; }
             h1 { font-size: 2rem !important; }
-            h2 { font-size: 1.5rem !important; }
+            .section-title { font-size: 1.5rem !important; }
         }
     </style>
 </head>
 <body>
+    <!-- Hero Section -->
     <section class="hero-section">
-        <div class="badge">🚀 ${content.badge || 'הפתרון המתקדם ביותר בשוק'}</div>
-        <h1 style="color: ${currentColors.headlineColor}; font-size: 3.5rem; font-weight: bold; margin-bottom: 1.5rem; line-height: 1.2;">${content.headline}</h1>
-        <p style="color: ${currentColors.subheadlineColor}; font-size: 1.25rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6;">${content.subheadline}</p>
+        <div class="badge">${content.badge}</div>
+        <h1 style="color: ${currentColors.headlineColor || 'white'}; font-size: 3.5rem; font-weight: bold; margin-bottom: 1.5rem; line-height: 1.2;">${content.headline}</h1>
+        <p style="color: ${currentColors.subheadlineColor || 'rgba(255,255,255,0.9)'}; font-size: 1.25rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6;">${content.subheadline}</p>
         <div style="margin-bottom: 2rem;">
             <a href="#contact" class="cta-button">${content.cta}</a>
         </div>
         
         <div class="stats-grid">
+            ${Object.entries(content.stats).map(([key, value]) => `
             <div class="stat-card">
-                <div style="font-size: 1.5rem; font-weight: bold; color: white; margin-bottom: 0.5rem;">${content.stats?.customers || '10,000+'}</div>
-                <div style="color: ${currentColors.subheadlineColor}; font-size: 0.875rem;">לקוחות מרוצים</div>
+                <div style="font-size: 1.5rem; font-weight: bold; color: white; margin-bottom: 0.5rem;">${value}</div>
             </div>
-            <div class="stat-card">
-                <div style="font-size: 1.5rem; font-weight: bold; color: white; margin-bottom: 0.5rem;">${content.stats?.uptime || '99.9%'}</div>
-                <div style="color: ${currentColors.subheadlineColor}; font-size: 0.875rem;">זמינות השירות</div>
-            </div>
-            <div class="stat-card">
-                <div style="font-size: 1.5rem; font-weight: bold; color: white; margin-bottom: 0.5rem;">${content.stats?.support || '24/7'}</div>
-                <div style="color: ${currentColors.subheadlineColor}; font-size: 0.875rem;">תמיכה טכנית</div>
-            </div>
+            `).join('')}
         </div>
     </section>
     
-    <section class="content-section">
-        <div class="section-grid">
-            <div>
-                <h2 style="color: ${currentColors.featuresColor}; font-size: 2rem; font-weight: bold; margin-bottom: 1.5rem; display: flex; align-items: center;">
-                    <span style="width: 32px; height: 32px; background: ${currentColors.accent}; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-left: 0.75rem;">⭐</span>
-                    ${content.featuresTitle || 'היתרונות שלנו'}
-                </h2>
-                <div>
-                    ${content.features.map((feature: string, index: number) => `
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <span style="color: white; font-size: 0.875rem; font-weight: bold;">✓</span>
-                        </div>
-                        <span style="color: ${currentColors.featuresTextColor}; line-height: 1.5;">${feature}</span>
-                    </div>
-                    `).join('')}
+    <!-- Features Section -->
+    <section class="section">
+        <h2 class="section-title">
+            <span style="color: ${colors.accent};">⭐</span>
+            ${content.featuresTitle}
+        </h2>
+        <div class="features-grid">
+            ${content.features.map((feature: string) => `
+            <div class="card" style="display: flex; align-items: flex-start;">
+                <div style="width: 32px; height: 32px; background: ${colors.primary}; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-left: 1rem; margin-top: 0.25rem; flex-shrink: 0;">
+                    <span style="color: white; font-size: 0.875rem; font-weight: bold;">✓</span>
                 </div>
+                <span style="color: ${currentColors.featuresTextColor || currentColors.text}; line-height: 1.5;">${feature}</span>
             </div>
-            
-            <div>
-                <h2 style="color: ${currentColors.aboutColor}; font-size: 2rem; font-weight: bold; margin-bottom: 1.5rem; display: flex; align-items: center;">
-                    <span style="width: 32px; height: 32px; background: ${currentColors.secondary}; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-left: 0.75rem;">👥</span>
-                    ${content.aboutTitle || 'אודותינו'}
-                </h2>
-                <div style="background: rgba(255,255,255,0.05); border: 1px solid ${currentColors.secondary}66; padding: 1.5rem; border-radius: 12px;">
-                    <p style="color: ${currentColors.aboutTextColor}; line-height: 1.6; margin-bottom: 1.5rem;">${content.aboutText}</p>
-                    <div style="display: flex; justify-content: center; gap: 2rem; text-align: center;">
-                        <div>
-                            <div style="color: ${currentColors.text}; font-size: 1.5rem; font-weight: bold;">150+</div>
-                            <div style="color: ${currentColors.aboutTextColor}; font-size: 0.875rem; opacity: 0.8;">פרויקטים</div>
-                        </div>
-                        <div>
-                            <div style="color: ${currentColors.text}; font-size: 1.5rem; font-weight: bold;">98%</div>
-                            <div style="color: ${currentColors.aboutTextColor}; font-size: 0.875rem; opacity: 0.8;">שביעות רצון</div>
-                        </div>
-                        <div>
-                            <div style="color: ${currentColors.text}; font-size: 1.5rem; font-weight: bold;">5★</div>
-                            <div style="color: ${currentColors.aboutTextColor}; font-size: 0.875rem; opacity: 0.8;">דירוג ממוצע</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            `).join('')}
         </div>
-        
-        <div class="contact-section" id="contact">
-            <h2 style="color: ${currentColors.contactColor}; font-size: 1.75rem; font-weight: bold; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center;">
-                <span style="width: 24px; height: 24px; background: ${currentColors.accent}; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-left: 0.75rem;">📈</span>
-                ${content.contactTitle || 'צור קשר ותתחיל עוד היום'}
-            </h2>
-            <div class="contact-info">
-                <div style="color: ${currentColors.contactTextColor}; line-height: 1.6; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
-                    <span style="color: ${currentColors.accent};">📞</span>
-                    <span>${formData.contactInfo}</span>
+    </section>
+
+    <!-- About Section -->
+    <section class="section">
+        <h2 class="section-title">
+            <span style="color: ${colors.secondary};">👥</span>
+            ${content.aboutTitle}
+        </h2>
+        <div class="card" style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <p style="color: ${currentColors.aboutTextColor || currentColors.text}; line-height: 1.6; font-size: 1.1rem;">${content.aboutText}</p>
+        </div>
+    </section>
+
+    <!-- Emotional Section -->
+    <section class="section">
+        <h2 class="section-title">
+            <span style="color: ${colors.accent};">❤️</span>
+            ${content.emotional.title}
+        </h2>
+        <div class="card" style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <p style="color: ${currentColors.text}; line-height: 1.6; font-size: 1.1rem;">${content.emotional.content}</p>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section">
+        <h2 class="section-title">
+            <span style="color: ${colors.primary};">💬</span>
+            מה אומרים עלינו
+        </h2>
+        <div class="testimonials-grid">
+            ${content.testimonials.map((testimonial: any) => `
+            <div class="card">
+                <div style="display: flex; margin-bottom: 1rem;">
+                    ${'★'.repeat(testimonial.rating).split('').map(() => '<span style="color: #fbbf24; font-size: 1.25rem;">★</span>').join('')}
+                </div>
+                <p style="color: ${currentColors.text}; margin-bottom: 1rem; line-height: 1.5;">"${testimonial.content}"</p>
+                <div>
+                    <div style="font-weight: bold; color: ${colors.primary};">${testimonial.name}</div>
+                    <div style="color: #9ca3af; font-size: 0.875rem;">${testimonial.role}</div>
                 </div>
             </div>
-            <a href="tel:${formData.contactInfo.match(/\d{2,3}-?\d{7,8}/)?.[0] || ''}" class="cta-button" style="font-size: 1.25rem; padding: 12px 32px;">
-                צור קשר עכשיו
+            `).join('')}
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section">
+        <h2 class="section-title">
+            <span style="color: ${colors.secondary};">❓</span>
+            שאלות נפוצות
+        </h2>
+        <div style="max-width: 800px; margin: 0 auto;">
+            ${content.faq.map((item: any) => `
+            <div class="card" style="margin-bottom: 1rem;">
+                <h3 style="color: ${colors.secondary}; font-weight: bold; margin-bottom: 0.75rem; font-size: 1.1rem;">${item.question}</h3>
+                <p style="color: ${currentColors.text}; line-height: 1.5;">${item.answer}</p>
+            </div>
+            `).join('')}
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section class="section" id="contact">
+        <div class="card" style="max-width: 600px; margin: 0 auto; text-align: center;">
+            <h2 style="color: ${currentColors.contactColor || currentColors.text}; font-size: 1.75rem; font-weight: bold; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center;">
+                <span style="color: ${colors.accent}; margin-left: 0.75rem;">💬</span>
+                ${content.contactTitle}
+            </h2>
+            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                <div style="color: ${currentColors.contactTextColor || currentColors.text}; line-height: 1.6; white-space: pre-line;">${formData.contactInfo}</div>
+            </div>
+            <a href="tel:${formData.contactInfo.match(/\d{2,3}-?\d{7,8}/)?.[0] || ''}" class="cta-button" style="font-size: 1.1rem;">
+                ${content.cta}
             </a>
         </div>
     </section>
@@ -358,23 +361,6 @@ const GeneratedLandingPage = () => {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
-        });
-        
-        // Animation on scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-        
-        document.querySelectorAll('.feature-card, .stat-card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = 'all 0.6s ease';
-            observer.observe(card);
         });
     </script>
 </body>

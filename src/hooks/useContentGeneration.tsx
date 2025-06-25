@@ -5,160 +5,175 @@ export const useContentGeneration = (formData: any) => {
   const [generatedContent, setGeneratedContent] = useState<any>(null);
 
   const generateCreativeContent = () => {
-    // Extract key themes from user input
-    const businessType = formData.businessType?.toLowerCase() || '';
-    const targetAudience = formData.targetAudience?.toLowerCase() || '';
-    const mainGoal = formData.mainGoal?.toLowerCase() || '';
-    const keyFeatures = formData.keyFeatures?.toLowerCase() || '';
-    const brandColors = formData.brandColors?.toLowerCase() || '';
-
-    // Generate contextual content based on business type and goals
-    const getIndustrySpecificContent = () => {
-      const industryMap: { [key: string]: any } = {
-        restaurant: {
-          badge: "🍽️ החוויה הקולינרית הטובה ביותר",
-          headline: `${formData.businessName} - טעמים שלא תשכחו`,
-          subheadline: "חוויה קולינרית מיוחדת עם מנות ייחודיות ושירות חם ואישי. כל ביקור הוא חגיגה של טעמים.",
-          cta: "הזמינו מקום",
-          featuresTitle: "למה דווקא אצלנו?",
-          features: [
-            "מנות טריות ומיוחדות מכל יום",
-            "שירות מקצועי ואישי",
-            "אווירה חמה ונעימה",
-            "מחירים הוגנים",
-            "מיקום נוח וזמין"
-          ],
-          aboutTitle: "הסיפור שלנו",
-          aboutText: "החלום שלנו היה ליצור מקום שבו כל ארוחה היא חוויה. עם רכיבים טריים ומתכונים מסורתיים, אנחנו מביאים לכם טעמים אותנטיים בכל ביקור.",
-          contactTitle: "בואו לטעום אצלנו",
-          stats: { customers: "5,000+", uptime: "7 ימים", support: "שף אישי" }
-        },
-        cafe: {
-          badge: "☕ הקפה הטוב ביותר בעיר",
-          headline: `${formData.businessName} - הקפה שמתחיל את היום`,
-          subheadline: "קפה איכותי, אווירה נעימה ופינוקים מתוקים. המקום המושלם להתחיל את היום או להפסקה מרגיעה.",
-          cta: "בואו לקפה",
-          featuresTitle: "מה מיוחד אצלנו?",
-          features: [
-            "פולי קפה איכותיים מהטובים בעולם",
-            "באריסטה מנוסה וידענית",
-            "עוגות ומאפים טריים יומיומיים",
-            "אווירה נעימה לעבודה ולפגישות",
-            "WiFi מהיר וחינם"
-          ],
-          aboutTitle: "על הקפה שלנו",
-          aboutText: "אנחנו מאמינים שקפה טוב יכול לשנות את כל היום. עם תשוקה לאיכות ותשומת לב לפרטים, אנחנו מכינים כל כוס בהתאמה אישית.",
-          contactTitle: "בואו לקפה איתנו",
-          stats: { customers: "כוסות ביום 500+", uptime: "פתוח 7 ימים", support: "באריסטה מקצועי" }
-        },
-        tech: {
-          badge: "🚀 הטכנולוגיה של העתיד כבר כאן",
-          headline: `${formData.businessName} - פתרונות טכנולוגיים מתקדמים`,
-          subheadline: "אנחנו מפתחים פתרונות טכנולוגיים חדשניים שמניעים עסקים קדימה. החדשנות שלנו היא ההצלחה שלכם.",
-          cta: "התחילו עכשיו",
-          featuresTitle: "הטכנולוגיות שלנו",
-          features: [
-            "בינה מלאכותית מתקדמת",
-            "פתרונות ענן מאובטחים",
-            "ממשק משתמש אינטואיטיבי",
-            "תמיכה טכנית 24/7",
-            "אינטגרציה קלה עם מערכות קיימות"
-          ],
-          aboutTitle: "החזון שלנו",
-          aboutText: "אנחנו רואים עתיד שבו טכנולוגיה מפשטת את החיים ומניעה חדשנות. הצוות שלנו עובד ללא הרף כדי להפוך את החזון הזה למציאות.",
-          contactTitle: "בואו נבנה את העתיד יחד",
-          stats: { customers: "לקוחות 100+", uptime: "99.9%", support: "24/7" }
-        },
-        consulting: {
-          badge: "🎯 הייעוץ שמביא תוצאות",
-          headline: `${formData.businessName} - הייעוץ שמוביל להצלחה`,
-          subheadline: "אנחנו מספקים ייעוץ מקצועי ומותאם אישית שמוביל לתוצאות מדידות. הניסיון שלנו הוא הכוח שלכם.",
-          cta: "קבעו ייעוץ",
-          featuresTitle: "למה בוחרים בנו?",
-          features: [
-            "ניסיון של למעלה מ-10 שנים",
-            "גישה מותאמת אישית לכל לקוח",
-            "תוצאות מדידות ומוכחות",
-            "צוות מומחים בתחומים שונים",
-            "ליווי צמוד לאורך כל הדרך"
-          ],
-          aboutTitle: "הגישה שלנו",
-          aboutText: "אנחנו מאמינים שכל עסק הוא ייחודי. הגישה שלנו מתבססת על הבנה עמוקה של הצרכים הספציפיים שלכם ופיתוח אסטרטגיות מותאמות.",
-          contactTitle: "בואו נצא למסע ההצלחה יחד",
-          stats: { customers: "פרויקטים 200+", uptime: "שנות ניסיון 10+", support: "ייעוץ אישי" }
-        },
-        retail: {
-          badge: "🛍️ הקניות הטובות ביותר",
-          headline: `${formData.businessName} - הכל מה שאתם צריכים`,
-          subheadline: "מבחר ענק של מוצרים איכותיים במחירים מעולים. החנות שלכם לכל מה שאתם צריכים.",
-          cta: "קנו עכשיו",
-          featuresTitle: "מה מיוחד בחנות שלנו?",
-          features: [
-            "מבחר ענק של מוצרים איכותיים",
-            "מחירים תחרותיים",
-            "שירות לקוחות מעולה",
-            "משלוחים מהירים",
-            "אחריות מלאה על כל המוצרים"
-          ],
-          aboutTitle: "על החנות שלנו",
-          aboutText: "אנחנו מאמינים שקניות צריכות להיות חוויה נעימה. עם מבחר ענק ושירות אישי, אנחנו כאן כדי לעזור לכם למצוא בדיוק מה שאתם מחפשים.",
-          contactTitle: "בואו לקנות אצלנו",
-          stats: { customers: "קונים מרוצים 15,000+", uptime: "פתוח 6 ימים", support: "ייעוץ אישי" }
-        },
-        services: {
-          badge: "🔧 השירות הטוב ביותר",
-          headline: `${formData.businessName} - השירות שאתם מחפשים`,
-          subheadline: "אנחנו מספקים שירותים מקצועיים ואמינים שחוסכים לכם זמן וכסף. הפתרון המושלם לכל הצרכים שלכם.",
-          cta: "קבלו הצעת מחיר",
-          featuresTitle: "למה דווקא אנחנו?",
-          features: [
-            "מקצועיות ברמה הגבוהה ביותר",
-            "זמינות 24/7",
-            "מחירים הוגנים ושקופים",
-            "אחריות מלאה על כל העבודות",
-            "שירות מהיר ויעיל"
-          ],
-          aboutTitle: "על השירות שלנו",
-          aboutText: "עם שנות ניסיון רבות בתחום, אנחנו מבינים בדיוק מה הלקוחות שלנו צריכים. המקצועיות והאמינות שלנו הן הערובה שלכם לשירות מעולה.",
-          contactTitle: "בואו נתחיל לעבוד יחד",
-          stats: { customers: "לקוחות מרוצים 8,000+", uptime: "זמינות 24/7", support: "תמיכה מלאה" }
-        }
+    // Parse colors from user input
+    const parseColors = (colorString: string) => {
+      const colors = colorString.toLowerCase();
+      const colorMap: { [key: string]: { primary: string; secondary: string; accent: string } } = {
+        'כחול': { primary: '#3b82f6', secondary: '#1e40af', accent: '#06b6d4' },
+        'ירוק': { primary: '#10b981', secondary: '#059669', accent: '#34d399' },
+        'אדום': { primary: '#ef4444', secondary: '#dc2626', accent: '#f87171' },
+        'סגול': { primary: '#8b5cf6', secondary: '#7c3aed', accent: '#a855f7' },
+        'ורוד': { primary: '#ec4899', secondary: '#db2777', accent: '#f472b6' },
+        'כתום': { primary: '#f59e0b', secondary: '#d97706', accent: '#fbbf24' },
+        'צהוב': { primary: '#eab308', secondary: '#ca8a04', accent: '#fde047' },
+        'brown': { primary: '#a16207', secondary: '#92400e', accent: '#d97706' },
+        'חום': { primary: '#a16207', secondary: '#92400e', accent: '#d97706' }
       };
 
-      return industryMap[businessType] || industryMap.services;
-    };
-
-    // Get industry-specific content
-    const industryContent = getIndustrySpecificContent();
-
-    // Customize based on user's specific inputs
-    if (formData.keyFeatures && formData.keyFeatures.trim()) {
-      const userFeatures = formData.keyFeatures.split(',').map((f: string) => f.trim()).filter((f: string) => f.length > 0);
-      if (userFeatures.length > 0) {
-        industryContent.features = userFeatures.slice(0, 6); // Limit to 6 features
+      // Check for specific color combinations
+      if (colors.includes('צהוב') && colors.includes('ורוד')) {
+        return { primary: '#eab308', secondary: '#ec4899', accent: '#fde047' };
       }
-    }
+      if (colors.includes('כחול') && colors.includes('כסף')) {
+        return { primary: '#3b82f6', secondary: '#6b7280', accent: '#06b6d4' };
+      }
+      if (colors.includes('אדום') && colors.includes('לבן')) {
+        return { primary: '#ef4444', secondary: '#f8fafc', accent: '#f87171' };
+      }
 
-    // Customize headline and subheadline if user provided specific info
-    if (formData.targetAudience && formData.targetAudience.trim()) {
-      industryContent.subheadline = `פתרון מותאם במיוחד עבור ${formData.targetAudience}. ${industryContent.subheadline}`;
-    }
+      // Find first matching color
+      for (const [colorName, colorScheme] of Object.entries(colorMap)) {
+        if (colors.includes(colorName)) {
+          return colorScheme;
+        }
+      }
 
-    // Adjust CTA based on main goal
-    const goalToCTA: { [key: string]: string } = {
-      sales: "קנו עכשיו",
-      leads: "קבלו הצעת מחיר",
-      awareness: "למדו עוד",
-      signup: "הרשמו היום",
-      contact: "צרו קשר",
-      booking: "קבעו תור"
+      return { primary: '#3b82f6', secondary: '#8b5cf6', accent: '#06b6d4' };
     };
 
-    if (mainGoal && goalToCTA[mainGoal]) {
-      industryContent.cta = goalToCTA[mainGoal];
-    }
+    const selectedColors = parseColors(formData.brandColors || '');
 
-    return industryContent;
+    // Generate enhanced features based on user input and business type
+    const generateEnhancedFeatures = () => {
+      const businessType = formData.businessType?.toLowerCase() || '';
+      const userFeatures = formData.keyFeatures?.toLowerCase() || '';
+      
+      let enhancedFeatures = [];
+      
+      if (userFeatures.includes('איכות') || userFeatures.includes('איכותי')) {
+        enhancedFeatures.push('מוצרים ושירותים ברמה הגבוהה ביותר עם בקרת איכות מתמדת');
+      }
+      if (userFeatures.includes('מחיר') || userFeatures.includes('זול') || userFeatures.includes('הוגן')) {
+        enhancedFeatures.push('מחירים תחרותיים ללא פשרות על האיכות');
+      }
+      if (userFeatures.includes('שירות') || userFeatures.includes('לקוחות')) {
+        enhancedFeatures.push('שירות לקוחות אישי ומקצועי 24/7');
+      }
+      if (userFeatures.includes('ניסיון') || userFeatures.includes('שנים')) {
+        enhancedFeatures.push('צוות מנוסה ומומחה עם שנות ניסיון רבות בתחום');
+      }
+      if (userFeatures.includes('מהיר') || userFeatures.includes('זמן')) {
+        enhancedFeatures.push('ביצוע מהיר ויעיל עם עמידה בזמנים');
+      }
+      if (userFeatures.includes('מיקום') || userFeatures.includes('נוח')) {
+        enhancedFeatures.push('מיקום נוח ונגיש עם חניה בחינם');
+      }
+
+      // Add business-specific features if not enough user input
+      if (enhancedFeatures.length < 4) {
+        if (businessType.includes('מסעדה') || businessType.includes('אוכל')) {
+          enhancedFeatures.push('מנות טריות המוכנות יומיומית', 'תפריט מגוון המתאים לכל הטעמים', 'אווירה חמה ומזמינה לכל המשפחה');
+        } else if (businessType.includes('קפה') || businessType.includes('בית קפה')) {
+          enhancedFeatures.push('פולי קפה מהטובים בעולם', 'באריסטה מקצועי ומנוסה', 'מקום מושלם לעבודה ופגישות');
+        } else if (businessType.includes('טכנולוגי') || businessType.includes('תוכנה')) {
+          enhancedFeatures.push('טכנולוגיות מתקדמות ועדכניות', 'פתרונות מותאמים אישית', 'תמיכה טכנית מקצועית');
+        } else if (businessType.includes('יועץ') || businessType.includes('ייעוץ')) {
+          enhancedFeatures.push('גישה אישית לכל לקוח', 'תוצאות מדידות ומוכחות', 'ליווי צמוד לאורך כל התהליך');
+        } else {
+          enhancedFeatures.push('פתרון מותאם אישית לצרכים שלכם', 'עבודה מקצועית ואמינה', 'התחייבות למצוינות בכל פרט');
+        }
+      }
+
+      return enhancedFeatures.slice(0, 6);
+    };
+
+    // Generate testimonials
+    const generateTestimonials = () => {
+      const businessName = formData.businessName || 'העסק';
+      return [
+        {
+          name: 'שרה כהן',
+          role: 'לקוחה מרוצה',
+          content: `השירות ב${businessName} פשוט מדהים! בדיוק מה שחיפשתי. ממליצה בחום!`,
+          rating: 5
+        },
+        {
+          name: 'דוד לוי',
+          role: 'לקוח קבוע',
+          content: `עובד עם ${businessName} כבר שנתיים וכל פעם מתרשם מחדש מהמקצועיות והאיכות.`,
+          rating: 5
+        },
+        {
+          name: 'רחל אברהם',
+          role: 'לקוחה מרוצה',
+          content: `הצוות מקצועי, השירות מעולה והמחירים הוגנים. בהחלט חוזרת!`,
+          rating: 5
+        }
+      ];
+    };
+
+    // Generate FAQ
+    const generateFAQ = () => {
+      const businessType = formData.businessType?.toLowerCase() || '';
+      let faq = [];
+
+      if (businessType.includes('מסעדה') || businessType.includes('אוכל')) {
+        faq = [
+          { question: 'האם יש אפשרות להזמנת מקום?', answer: 'כן, ניתן להזמין מקום מראש בטלפון או דרך האתר שלנו.' },
+          { question: 'האם המטבח כשר?', answer: 'כן, המטבח שלנו כשר בהשגחת הרבנות המקומית.' },
+          { question: 'האם יש תפריט לילדים?', answer: 'בהחלט! יש לנו תפריט מיוחד לילדים עם מנות שהם אוהבים.' }
+        ];
+      } else if (businessType.includes('שירות') || businessType.includes('עסק')) {
+        faq = [
+          { question: 'כמה זמן לוקח לקבל הצעת מחיר?', answer: 'אנחנו מתחייבים לחזור אליכם תוך 24 שעות עם הצעת מחיר מפורטת.' },
+          { question: 'האם יש אחריות על השירות?', answer: 'כן, אנחנו נותנים אחריות מלאה על כל השירותים שלנו.' },
+          { question: 'האם אתם עובדים בסופי שבוע?', answer: 'כן, אנחנו זמינים גם בסופי שבוע לפי תיאום מראש.' }
+        ];
+      } else {
+        faq = [
+          { question: 'איך אפשר ליצור קשר?', answer: 'ניתן ליצור קשר טלפונית, במייל או דרך הטופס באתר.' },
+          { question: 'מה שעות הפעילות?', answer: 'אנחנו פעילים ימים א\'-ו\' בין השעות 8:00-18:00.' },
+          { question: 'איפה אתם נמצאים?', answer: 'אנחנו נמצאים במרכז העיר עם גישה נוחה ואפשרויות חניה.' }
+        ];
+      }
+
+      return faq;
+    };
+
+    // Generate emotional content
+    const generateEmotionalContent = () => {
+      const businessName = formData.businessName || 'העסק שלנו';
+      return {
+        title: `למה בוחרים ב${businessName}?`,
+        content: `כי אנחנו מאמינים שכל לקוח הוא חלק מהמשפחה שלנו. במשך השנים למדנו שהסוד להצלחה טמון ביחס האישי, בתשומת הלב לפרטים ובמחויבות לשביעות רצון מלאה. כאן אתם לא רק לקוחות - אתם שותפים בחלום שלנו.`
+      };
+    };
+
+    const content = {
+      colors: selectedColors,
+      badge: `🏆 ${formData.businessName} - הבחירה הטובה ביותר`,
+      headline: `${formData.businessName} - ${formData.targetAudience ? `הפתרון המושלם עבור ${formData.targetAudience}` : 'הפתרון שחיפשתם'}`,
+      subheadline: `עם ${formData.businessName} תקבלו שירות מקצועי ואמין שמבוסס על ${formData.keyFeatures ? 'מה שחשוב לכם ביותר' : 'איכות ומצוינות'}. הצטרפו לאלפי לקוחות מרוצים שכבר בחרו בנו.`,
+      cta: formData.mainGoal === 'contact' ? 'צרו קשר עכשיו' : 
+           formData.mainGoal === 'booking' ? 'קבעו תור היום' :
+           formData.mainGoal === 'sales' ? 'רכשו עכשיו' : 'התחילו היום',
+      features: generateEnhancedFeatures(),
+      featuresTitle: `למה דווקא ${formData.businessName}?`,
+      aboutTitle: `הסיפור של ${formData.businessName}`,
+      aboutText: `${formData.businessName} נוסד מתוך אהבה אמיתית ל${formData.businessType || 'תחום'}. אנחנו מאמינים שכל פרויקט הוא הזדמנות ליצור משהו מיוחד ולהעניק חוויה שלא תישכח. הניסיון שלנו, בשילוב עם התשוקה למצוינות, הופכים אותנו לבחירה הטבעית עבור ${formData.targetAudience || 'לקוחות הבוחרים באיכות'}.`,
+      contactTitle: `מוכנים להתחיל? בואו נדבר!`,
+      testimonials: generateTestimonials(),
+      faq: generateFAQ(),
+      emotional: generateEmotionalContent(),
+      stats: { 
+        customers: '2,500+ לקוחות', 
+        experience: '10+ שנות ניסיון', 
+        satisfaction: '98% שביעות רצון',
+        projects: '500+ פרויקטים'
+      }
+    };
+
+    return content;
   };
 
   return {

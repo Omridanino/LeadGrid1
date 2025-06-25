@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, ArrowRight, Eye, Download, Palette } from "lucide-react";
+import { Sparkles, ArrowRight, Eye, Download } from "lucide-react";
 
 interface LandingPageQuestionnaireProps {
   isOpen: boolean;
@@ -44,7 +45,6 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
       description: "כעת תועבר לדף החדש שלך",
     });
 
-    // Navigate to the generated page with form data
     navigate('/generated-landing-page', { 
       state: { formData } 
     });
@@ -67,7 +67,6 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
       description: "כעת תוכל לראות ולערוך את הדף שלך",
     });
 
-    // Navigate to generated page for preview and editing
     navigate('/generated-landing-page', { 
       state: { formData } 
     });
@@ -108,25 +107,15 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
       </div>
       
       <div>
-        <Label htmlFor="businessType" className="text-white font-semibold">סוג העסק *</Label>
-        <Select onValueChange={(value) => updateFormData('businessType', value)}>
-          <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
-            <SelectValue placeholder="בחר סוג עסק" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="restaurant">מסעדה</SelectItem>
-            <SelectItem value="cafe">בית קפה</SelectItem>
-            <SelectItem value="tech">טכנולוגיה</SelectItem>
-            <SelectItem value="consulting">ייעוץ</SelectItem>
-            <SelectItem value="retail">קמעונאות</SelectItem>
-            <SelectItem value="services">שירותים</SelectItem>
-            <SelectItem value="healthcare">בריאות</SelectItem>
-            <SelectItem value="education">חינוך</SelectItem>
-            <SelectItem value="fitness">כושר</SelectItem>
-            <SelectItem value="beauty">יופי</SelectItem>
-            <SelectItem value="other">אחר</SelectItem>
-          </SelectContent>
-        </Select>
+        <Label htmlFor="businessType" className="text-white font-semibold">סוג העסק / התחום *</Label>
+        <Textarea
+          id="businessType"
+          value={formData.businessType}
+          onChange={(e) => updateFormData('businessType', e.target.value)}
+          className="bg-gray-700 border-gray-600 text-white"
+          placeholder="תאר את העסק שלך בכמה מילים (לדוגמה: מסעדה איטלקית, חנות בגדים, סטודיו לעיצוב גרפי, משרד עורכי דין...)"
+          rows={3}
+        />
       </div>
 
       <div>
@@ -163,13 +152,13 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
       </div>
 
       <div>
-        <Label htmlFor="keyFeatures" className="text-white font-semibold">תכונות/יתרונות מרכזיים</Label>
+        <Label htmlFor="keyFeatures" className="text-white font-semibold">מה מיוחד בעסק שלך?</Label>
         <Textarea
           id="keyFeatures"
           value={formData.keyFeatures}
           onChange={(e) => updateFormData('keyFeatures', e.target.value)}
           className="bg-gray-700 border-gray-600 text-white"
-          placeholder="למה לקוחות צריכים לבחור בך? (איכות, מחיר, שירות, ניסיון...)"
+          placeholder="כתב כמה נקודות על מה שעושה את העסק שלך מיוחד (איכות, מחיר, שירות, ניסיון, מיקום וכו')"
           rows={4}
         />
       </div>
@@ -179,14 +168,15 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
   const renderStep3 = () => (
     <div className="space-y-6">
       <div>
-        <Label htmlFor="brandColors" className="text-white font-semibold">צבעי המותג המועדפים</Label>
+        <Label htmlFor="brandColors" className="text-white font-semibold">צבעי המותג המועדפים *</Label>
         <Input
           id="brandColors"
           value={formData.brandColors}
           onChange={(e) => updateFormData('brandColors', e.target.value)}
           className="bg-gray-700 border-gray-600 text-white"
-          placeholder="לדוגמה: כחול וכסף, אדום ולבן..."
+          placeholder="לדוגמה: כחול וכסף, אדום ולבן, ירוק וזהב, ורוד וסגול..."
         />
+        <p className="text-sm text-gray-400 mt-1">הצבעים האלה ישפיעו על העיצוב הכללי של הדף</p>
       </div>
 
       <div>
@@ -196,7 +186,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
           value={formData.contactInfo}
           onChange={(e) => updateFormData('contactInfo', e.target.value)}
           className="bg-gray-700 border-gray-600 text-white"
-          placeholder="טלפון, אימייל, כתובת..."
+          placeholder="טלפון: 050-1234567&#10;אימייל: info@business.co.il&#10;כתובת: רחוב הדוגמה 123, תל אביב"
           rows={3}
         />
       </div>
@@ -263,7 +253,6 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
             </Button>
 
             <div className="flex gap-3">
-              {/* Preview button - available from step 1 */}
               <Button
                 onClick={handlePreviewPage}
                 className="bg-blue-600 hover:bg-blue-700"
