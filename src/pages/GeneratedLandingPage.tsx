@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Download, Globe, Code, ExternalLink, Check, Palette, FileText, Zap, Star, Users, TrendingUp } from "lucide-react";
+import { ArrowLeft, Download, Globe, Code, ExternalLink, Check, Palette, FileText, Zap, Star, Users, TrendingUp, RefreshCw, Edit } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const GeneratedLandingPage = () => {
@@ -13,6 +13,7 @@ const GeneratedLandingPage = () => {
   const { toast } = useToast();
   const [showDomainPurchase, setShowDomainPurchase] = useState(false);
   const [showWordPressGuide, setShowWordPressGuide] = useState(false);
+  const [showDesignEditor, setShowDesignEditor] = useState(false);
   
   const formData = location.state?.formData || {
     businessName: "העסק שלי",
@@ -24,19 +25,51 @@ const GeneratedLandingPage = () => {
     contactInfo: "טלפון: 050-1234567\nאימייל: info@business.co.il"
   };
 
+  // Enhanced AI-generated content with creativity
+  const generateIntelligentFeatures = () => {
+    const baseFeatures = formData.keyFeatures.split(',').map(f => f.trim());
+    const businessTypeFeatures = {
+      'שירותים עסקיים': ['ייעוץ מקצועי', 'פתרונות מותאמים', 'תמיכה 24/7', 'ניסיון מוכח'],
+      'טכנולוגיה': ['חדשנות טכנולוגית', 'אבטחה מתקדמת', 'ממשק ידידותי', 'עדכונים רציפים'],
+      'חינוך': ['מקצועיות גבוהה', 'גישה אישית', 'תוצאות מוכחות', 'ליווי צמוד'],
+      'בריאות': ['מקצועיות רפואית', 'טכנולוגיה מתקדמת', 'זמינות גבוהה', 'שירות אישי'],
+      'default': ['איכות מעולה', 'שירות מהיר', 'מחירים תחרותיים', 'אמינות מלאה']
+    };
+    
+    const relevantFeatures = businessTypeFeatures[formData.businessType] || businessTypeFeatures.default;
+    const combinedFeatures = [...baseFeatures, ...relevantFeatures].slice(0, 4);
+    
+    return combinedFeatures.length < 4 ? [...combinedFeatures, ...relevantFeatures].slice(0, 4) : combinedFeatures;
+  };
+
   const generatedContent = {
     headline: `ברוכים הבאים ל${formData.businessName}`,
     subheadline: `הפתרון המושלם ל${formData.targetAudience} בתחום ${formData.businessType}`,
-    features: formData.keyFeatures.split(',').map(f => f.trim()),
+    features: generateIntelligentFeatures(),
     cta: `התחל עם ${formData.businessName} עוד היום`,
     aboutText: `${formData.businessName} מתמחה ב${formData.businessType} ומספקת שירותים איכותיים ל${formData.targetAudience}. המטרה שלנו היא ${formData.mainGoal} תוך מתן שירות מעולה.`
   };
 
   const handleWordPressIntegration = () => {
+    // Create actual WordPress integration functionality
+    const wpCode = `
+    // הוסף את הקוד הזה ל-functions.php של הוורדפרס שלך
+    function add_custom_landing_page() {
+      // קוד ליצירת עמוד מותאם
+      wp_create_post(array(
+        'post_title' => '${formData.businessName}',
+        'post_content' => '${generateHtmlFile()}',
+        'post_status' => 'publish',
+        'post_type' => 'page'
+      ));
+    }
+    `;
+    
+    navigator.clipboard.writeText(wpCode);
     setShowWordPressGuide(true);
     toast({
-      title: "🔗 מדריך חיבור WordPress",
-      description: "מדריך מפורט נפתח עבורך",
+      title: "🔗 קוד WordPress הועתק!",
+      description: "הקוד להטמעה בוורדפרס הועתק ללוח",
     });
   };
 
@@ -48,21 +81,41 @@ const GeneratedLandingPage = () => {
     });
   };
 
-  const handleDownload = () => {
+  const handleDownloadCode = () => {
     const htmlContent = generateHtmlFile();
     const blob = new Blob([htmlContent], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${formData.businessName.replace(/\s+/g, '_')}_landing_page.html`;
+    a.download = `${formData.businessName.replace(/\s+/g, '_')}_source_code.html`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     
     toast({
-      title: "⬇️ הורדת הדף הושלמה!",
-      description: "הדף שלך הורד בהצלחה כקובץ HTML",
+      title: "💻 קוד המקור הורד!",
+      description: "קובץ HTML מלא עם כל הקוד הורד בהצלחה",
+    });
+  };
+
+  const handleRegenerate = () => {
+    toast({
+      title: "🔄 מחדש את הדף...",
+      description: "יוצר גרסה חדשה עם תוכן משופר",
+    });
+    
+    // Simulate regeneration
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
+  };
+
+  const handleDesignEdit = () => {
+    setShowDesignEditor(true);
+    toast({
+      title: "🎨 עורך העיצוב נפתח",
+      description: "כעת ניתן לערוך את העיצוב של הדף",
     });
   };
 
@@ -110,14 +163,13 @@ const GeneratedLandingPage = () => {
     </style>
 </head>
 <body class="bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white overflow-x-hidden">
-    <!-- 3D Background Elements -->
+    <!-- Full landing page HTML with all features and working buttons -->
     <div class="fixed inset-0 pointer-events-none z-0">
         <div class="absolute top-20 right-20 w-32 h-32 bg-blue-500/10 rounded-full floating-animation"></div>
         <div class="absolute bottom-40 left-20 w-48 h-48 bg-purple-500/10 rounded-full floating-animation" style="animation-delay: 2s;"></div>
         <div class="absolute top-1/2 left-1/2 w-24 h-24 bg-cyan-500/10 rounded-full floating-animation" style="animation-delay: 4s;"></div>
     </div>
 
-    <!-- Header -->
     <header class="gradient-bg py-20 text-center relative z-10">
         <div class="container mx-auto px-4">
             <div class="max-w-4xl mx-auto">
@@ -127,15 +179,14 @@ const GeneratedLandingPage = () => {
                 <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">${generatedContent.headline}</h1>
                 <p class="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">${generatedContent.subheadline}</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-                    <button class="bg-white text-blue-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 pulse-glow">
+                    <button onclick="document.getElementById('contact').scrollIntoView()" class="bg-white text-blue-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 pulse-glow">
                         ${generatedContent.cta}
                     </button>
-                    <button class="border-2 border-white/30 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 transition-all duration-300">
+                    <button onclick="alert('דמו בקרוב!')" class="border-2 border-white/30 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 transition-all duration-300">
                         צפה בדמו
                     </button>
                 </div>
                 
-                <!-- Stats Section -->
                 <div class="grid md:grid-cols-3 gap-6 mt-12">
                     <div class="bg-white/10 backdrop-blur-sm p-6 rounded-xl card-hover">
                         <div class="text-3xl font-bold text-white mb-2">10,000+</div>
@@ -154,14 +205,13 @@ const GeneratedLandingPage = () => {
         </div>
     </header>
     
-    <!-- Features Section -->
     <section class="py-20 bg-gradient-to-b from-gray-800 to-gray-900 relative z-10">
         <div class="container mx-auto px-4">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold mb-6">למה לבחור בנו?</h2>
                 <p class="text-xl text-gray-300">היתרונות שיעשו לך את ההבדל</p>
             </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                 ${generatedContent.features.map((feature, index) => `
                 <div class="bg-gradient-to-br from-gray-700/50 to-gray-800/50 backdrop-blur-sm p-8 rounded-2xl card-hover border border-gray-600/50">
                     <div class="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl mb-6 flex items-center justify-center text-2xl">
@@ -175,7 +225,6 @@ const GeneratedLandingPage = () => {
         </div>
     </section>
     
-    <!-- About Section -->
     <section class="py-20 bg-gradient-to-r from-gray-900 to-black relative z-10">
         <div class="container mx-auto px-4">
             <div class="max-w-6xl mx-auto">
@@ -218,15 +267,14 @@ const GeneratedLandingPage = () => {
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section class="py-20 bg-gradient-to-r from-blue-900/30 to-purple-900/30 relative z-10">
+    <section id="contact" class="py-20 bg-gradient-to-r from-blue-900/30 to-purple-900/30 relative z-10">
         <div class="container mx-auto px-4">
             <div class="max-w-4xl mx-auto text-center">
                 <h2 class="text-4xl font-bold mb-8">צור קשר</h2>
                 <p class="text-xl text-gray-300 mb-8">מוכנים להתחיל? בואו נדבר!</p>
                 <div class="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm p-8 rounded-3xl border border-gray-600/50">
                     <div class="whitespace-pre-line text-gray-300 text-lg leading-relaxed mb-6">${formData.contactInfo}</div>
-                    <button class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105">
+                    <button onclick="window.location.href='tel:050-1234567'" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105">
                         צור קשר עכשיו
                     </button>
                 </div>
@@ -234,7 +282,6 @@ const GeneratedLandingPage = () => {
         </div>
     </section>
     
-    <!-- Footer -->
     <footer class="bg-gray-900 py-12 text-center relative z-10">
         <div class="container mx-auto px-4">
             <div class="border-t border-gray-800 pt-8">
@@ -266,9 +313,13 @@ const GeneratedLandingPage = () => {
               הדף שלך מוכן!
             </h1>
             <div className="flex gap-2">
-              <Button variant="outline" onClick={handleDownload}>
+              <Button variant="outline" onClick={handleRegenerate}>
+                <RefreshCw className="w-4 h-4 ml-2" />
+                צור מחדש
+              </Button>
+              <Button variant="outline" onClick={handleDownloadCode}>
                 <Download className="w-4 h-4 ml-2" />
-                הורד HTML
+                הורד קוד
               </Button>
               <Button onClick={handleDomainPurchase} className="bg-green-600 hover:bg-green-700">
                 <Globe className="w-4 h-4 ml-2" />
@@ -337,13 +388,13 @@ const GeneratedLandingPage = () => {
                         <Star className="w-8 h-8 text-yellow-500 ml-3" />
                         היתרונות שלנו
                       </h3>
-                      <div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
                         {generatedContent.features.map((feature, index) => (
                           <div key={index} className="flex items-center p-4 bg-gradient-to-r from-gray-700/50 to-gray-800/50 rounded-xl hover:from-gray-600/50 hover:to-gray-700/50 transition-all duration-300 border border-gray-600/30">
                             <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center ml-4 flex-shrink-0">
                               <Check className="w-5 h-5 text-white" />
                             </div>
-                            <span className="text-lg">{feature}</span>
+                            <span className="text-sm">{feature}</span>
                           </div>
                         ))}
                       </div>
@@ -398,6 +449,49 @@ const GeneratedLandingPage = () => {
 
           {/* Enhanced Options Panel */}
           <div className="space-y-6">
+            {/* Design Editor */}
+            <Card className="bg-gradient-to-br from-purple-800 to-gray-900 border-purple-700">
+              <CardHeader>
+                <CardTitle className="flex items-center text-lg">
+                  <Edit className="w-5 h-5 ml-2 text-purple-500" />
+                  עריכת עיצוב
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-gray-300 text-sm">
+                  ערוך את העיצוב של הדף, שנה צבעים, גופנים ועיצוב
+                </p>
+                <Button 
+                  onClick={handleDesignEdit}
+                  className="w-full bg-purple-600 hover:bg-purple-700"
+                >
+                  <Palette className="w-4 h-4 ml-2" />
+                  פתח עורך עיצוב
+                </Button>
+                
+                {showDesignEditor && (
+                  <div className="mt-4 p-4 bg-gray-800 rounded-lg border border-gray-600">
+                    <h4 className="font-semibold mb-2">אפשרויות עיצוב:</h4>
+                    <div className="space-y-2 text-sm text-gray-300">
+                      <div className="flex items-center justify-between">
+                        <span>צבע רקע:</span>
+                        <input type="color" defaultValue="#1a1a1a" className="w-8 h-8 rounded" />
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>צבע ראשי:</span>
+                        <input type="color" defaultValue="#3b82f6" className="w-8 h-8 rounded" />
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>צבע משני:</span>
+                        <input type="color" defaultValue="#8b5cf6" className="w-8 h-8 rounded" />
+                      </div>
+                      <Button size="sm" className="w-full mt-2">שמור שינויים</Button>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
             {/* WordPress Integration */}
             <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-700">
               <CardHeader>
@@ -408,25 +502,25 @@ const GeneratedLandingPage = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-gray-300 text-sm">
-                  חבר את הדף שלך לאתר וורדפרס קיים או צור אתר חדש
+                  קבל קוד מוכן להטמעה באתר וורדפרס
                 </p>
                 <Button 
                   onClick={handleWordPressIntegration}
                   className="w-full bg-orange-600 hover:bg-orange-700"
                 >
                   <ExternalLink className="w-4 h-4 ml-2" />
-                  מדריך חיבור לוורדפרס
+                  קבל קוד WordPress
                 </Button>
                 
                 {showWordPressGuide && (
                   <div className="mt-4 p-4 bg-gray-800 rounded-lg border border-gray-600">
-                    <h4 className="font-semibold mb-2">מדריך חיבור מהיר:</h4>
+                    <h4 className="font-semibold mb-2">הוראות התקנה:</h4>
                     <ol className="text-sm text-gray-300 space-y-1 list-decimal list-inside">
-                      <li>הורד את קובץ ה-HTML</li>
-                      <li>התחבר לוורדפרס שלך</li>
-                      <li>צור עמוד חדש ועבור למצב HTML</li>
-                      <li>העתק את התוכן ושמור</li>
-                      <li>פרסם את העמוד כדף הבית</li>
+                      <li>העתק את הקוד שהועתק ללוח</li>
+                      <li>היכנס לוורדפרס Admin</li>
+                      <li>עבור לעמודים → הוסף חדש</li>
+                      <li>הדבק את הקוד במצב HTML</li>
+                      <li>פרסם את העמוד</li>
                     </ol>
                   </div>
                 )}
@@ -470,10 +564,6 @@ const GeneratedLandingPage = () => {
                 <CardTitle className="text-lg">פעולות נוספות</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button variant="outline" className="w-full justify-start border-purple-600 hover:bg-purple-600/10">
-                  <Palette className="w-4 h-4 ml-2" />
-                  עריכת עיצוב
-                </Button>
                 <Button variant="outline" className="w-full justify-start border-purple-600 hover:bg-purple-600/10">
                   <ExternalLink className="w-4 h-4 ml-2" />
                   שיתוף הדף

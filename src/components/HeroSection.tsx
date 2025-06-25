@@ -11,14 +11,14 @@ const HeroSection = ({ onStartQuestionnaire }: HeroSectionProps) => {
     <section className="py-20 px-4">
       <div className="container mx-auto text-center">
         <h2 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-          <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 to-blue-400 bg-[length:200%_auto] animate-[gradient_3s_ease-in-out_infinite] bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-[length:200%_auto] animate-[gradient_3s_ease-in-out_infinite] bg-clip-text text-transparent">
             ברוכים הבאים
             <br />
             ל־LeadGrid
           </span>
         </h2>
         <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed">
-          המערכת הכוללת ליצירת דפי נחיתה מקצועיים עם כל מה שצריך - 
+          מערכת כוללת עם כל מה שצריך ליצירת דפי נחיתה מקצועיים - 
           עיצוב מותאם, תוכן חכם, אופטימיזציה למנועי חיפוש ואנליטיקס מתקדם
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
@@ -65,7 +65,7 @@ const HeroSection = ({ onStartQuestionnaire }: HeroSectionProps) => {
         </div>
       </div>
       
-      <style jsx>{`
+      <style>{`
         @keyframes gradient {
           0% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
