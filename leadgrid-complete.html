@@ -1,0 +1,650 @@
+
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadGrid - המהפכה הדיגיטלית</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #60a5fa, #a78bfa, #06b6d4);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 3s ease-in-out infinite;
+        }
+        
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+        
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-10px);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        
+        .modal-content {
+            background-color: #1f2937;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .close {
+            color: #aaa;
+            float: left;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: #fff;
+        }
+        
+        .testimonial-slider {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .testimonial-slide {
+            min-width: 100%;
+            padding: 0 10px;
+        }
+        
+        @media (min-width: 768px) {
+            .testimonial-slide {
+                min-width: 33.333%;
+            }
+        }
+    </style>
+</head>
+<body class="bg-black text-white">
+    <!-- Header -->
+    <header class="bg-gray-900/80 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-40">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-reverse space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bolt text-white text-sm"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold gradient-text">LeadGrid</h1>
+                </div>
+                <nav class="hidden md:flex space-x-reverse space-x-8">
+                    <a href="#features" class="text-gray-300 hover:text-blue-400 transition-colors">יתרונות</a>
+                    <a href="#testimonials" class="text-gray-300 hover:text-blue-400 transition-colors">המלצות</a>
+                    <a href="#faq" class="text-gray-300 hover:text-blue-400 transition-colors">שאלות נפוצות</a>
+                    <a href="#contact" class="text-gray-300 hover:text-blue-400 transition-colors">צור קשר</a>
+                </nav>
+                <button onclick="openQuestionnaire()" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2 rounded-xl hover-scale">
+                    התחל עכשיו
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-20 px-4">
+        <div class="container mx-auto text-center">
+            <h2 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                <span class="gradient-text">
+                    המהפכה הדיגיטלית
+                    <br />
+                    מתחילה כאן
+                </span>
+            </h2>
+            <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed">
+                גלה איך יוצרים דפי נחיתה שמכניסים כסף לכיס תוך דקות ספורות - 
+                עם עיצוב מהפנט, תוכן שמושך כמו מגנט ואנליטיקס שחושף כל סוד
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+                <button onclick="openQuestionnaire()" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover-scale">
+                    <i class="fas fa-bolt ml-2"></i>
+                    בוא נתחיל את הקסם
+                </button>
+                <button class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover-scale">
+                    <i class="fas fa-file-text ml-2"></i>
+                    איך זה עובד?
+                </button>
+            </div>
+            
+            <!-- Features Grid -->
+            <div class="max-w-6xl mx-auto">
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-gradient-to-br from-blue-900/30 to-purple-900/30 p-6 rounded-2xl border border-blue-600/20 hover:border-blue-500/40 transition-all duration-300 card-hover">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl mb-4 flex items-center justify-center mx-auto">
+                            <span class="text-white text-xl">🎨</span>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2 text-white">עיצוב שקורע עיניים</h3>
+                        <p class="text-gray-300 text-sm">תבניות עיצוב שגורמות ללקוחות להישאר ולקנות - לא רק להסתכל</p>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-purple-900/30 to-pink-900/30 p-6 rounded-2xl border border-purple-600/20 hover:border-purple-500/40 transition-all duration-300 card-hover">
+                        <div class="w-12 h-12 bg-gradient-to-r from-purple-600 to-purple-500 rounded-xl mb-4 flex items-center justify-center mx-auto">
+                            <span class="text-white text-xl">⚡</span>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2 text-white">מהירות אור</h3>
+                        <p class="text-gray-300 text-sm">דפים שנטענים כל כך מהר שגוגל יתאהב בהם (וגם הלקוחות שלך)</p>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-cyan-900/30 to-blue-900/30 p-6 rounded-2xl border border-cyan-600/20 hover:border-cyan-500/40 transition-all duration-300 card-hover">
+                        <div class="w-12 h-12 bg-gradient-to-r from-cyan-600 to-cyan-500 rounded-xl mb-4 flex items-center justify-center mx-auto">
+                            <span class="text-white text-xl">🚀</span>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2 text-white">המרות שמשגעות</h3>
+                        <p class="text-gray-300 text-sm">נתונים בזמן אמת שמראים בדיוק איך הדף שלך הופך לכסף</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gradient-to-b from-black to-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 gradient-text">למה LeadGrid?</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">הפלטפורמה החכמה ביותר ליצירת דפי נחיתה שמכניסים כסף</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card-hover bg-gray-800/50 p-8 rounded-2xl border border-gray-700">
+                    <div class="text-4xl mb-4">🎯</div>
+                    <h3 class="text-xl font-semibold mb-4 text-blue-400">יצירה חכמה</h3>
+                    <p class="text-gray-300">בינה מלאכותית מתקדמת שיוצרת דפי נחיתה מותאמים אישית לעסק שלך</p>
+                </div>
+                
+                <div class="card-hover bg-gray-800/50 p-8 rounded-2xl border border-gray-700">
+                    <div class="text-4xl mb-4">📱</div>
+                    <h3 class="text-xl font-semibold mb-4 text-purple-400">רספונסיבי לחלוטין</h3>
+                    <p class="text-gray-300">נראה מושלם על כל מכשיר - מובייל, טאבלט ומחשב</p>
+                </div>
+                
+                <div class="card-hover bg-gray-800/50 p-8 rounded-2xl border border-gray-700">
+                    <div class="text-4xl mb-4">⚡</div>
+                    <h3 class="text-xl font-semibold mb-4 text-cyan-400">טעינה מהירה</h3>
+                    <p class="text-gray-300">אתרים שנטענים תוך שניות לשיפור SEO והמרות</p>
+                </div>
+                
+                <div class="card-hover bg-gray-800/50 p-8 rounded-2xl border border-gray-700">
+                    <div class="text-4xl mb-4">🔧</div>
+                    <h3 class="text-xl font-semibold mb-4 text-green-400">קל לעריכה</h3>
+                    <p class="text-gray-300">ממשק אינטואיטיבי שמאפשר עריכה ועדכון קל</p>
+                </div>
+                
+                <div class="card-hover bg-gray-800/50 p-8 rounded-2xl border border-gray-700">
+                    <div class="text-4xl mb-4">📊</div>
+                    <h3 class="text-xl font-semibold mb-4 text-yellow-400">אנליטיקס מתקדם</h3>
+                    <p class="text-gray-300">מעקב אחר ביצועים והמרות בזמן אמת</p>
+                </div>
+                
+                <div class="card-hover bg-gray-800/50 p-8 rounded-2xl border border-gray-700">
+                    <div class="text-4xl mb-4">🎨</div>
+                    <h3 class="text-xl font-semibold mb-4 text-pink-400">עיצוב מותאם</h3>
+                    <p class="text-gray-300">בחירה מתוך עשרות תבניות מקצועיות</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-24 bg-gradient-to-b from-gray-900 via-black to-gray-900 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-purple-600/5"></div>
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl md:text-6xl font-bold mb-6">
+                    <span class="gradient-text">סיפורי הצלחה</span>
+                    <br />
+                    <span class="text-white">שמדברים בעד עצמם</span>
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                    אלפי עסקים כבר משתמשים ב-LeadGrid ומגדילים את הרווחים שלהם פי כמה
+                </p>
+            </div>
+
+            <div class="relative">
+                <div class="testimonial-container overflow-hidden">
+                    <div class="testimonial-slider" id="testimonialSlider">
+                        <!-- Testimonial 1 -->
+                        <div class="testimonial-slide">
+                            <div class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 border border-gray-700/50 hover:border-blue-500/50 p-8 rounded-2xl card-hover">
+                                <div class="flex items-start justify-between mb-6">
+                                    <div class="flex items-center gap-4">
+                                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b647?w=100&h=100&fit=crop&crop=face" alt="דנה כהן" class="w-16 h-16 rounded-full object-cover border-2 border-blue-400/30">
+                                        <div>
+                                            <h4 class="font-bold text-white text-lg">דנה כהן</h4>
+                                            <p class="text-blue-400 font-medium text-sm">מנהלת שיווק</p>
+                                            <p class="text-gray-400 text-xs">חברת טכנולוגיה מתקדמת</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-1">
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                    </div>
+                                </div>
+                                <p class="text-gray-300 leading-relaxed text-sm mb-6 italic">
+                                    "LeadGrid פשוט הפך את העסק שלי! תוך שבוע יצרתי דף נחיתה שהגדיל את ההמרות ב-340%. הכלים החכמים והעיצוב המקצועי עזרו לי להגיע ללקוחות שלא חלמתי עליהם."
+                                </p>
+                                <div class="bg-gradient-to-r from-blue-900/30 to-purple-900/30 p-4 rounded-xl border border-blue-600/20">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <div class="text-2xl font-bold text-white mb-1">₪47,000</div>
+                                            <div class="text-blue-300 text-xs">הכנסה חודשית</div>
+                                        </div>
+                                        <i class="fas fa-chart-line text-green-400 text-2xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Testimonial 2 -->
+                        <div class="testimonial-slide">
+                            <div class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 border border-gray-700/50 hover:border-blue-500/50 p-8 rounded-2xl card-hover">
+                                <div class="flex items-start justify-between mb-6">
+                                    <div class="flex items-center gap-4">
+                                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" alt="אמיר לוי" class="w-16 h-16 rounded-full object-cover border-2 border-blue-400/30">
+                                        <div>
+                                            <h4 class="font-bold text-white text-lg">אמיר לוי</h4>
+                                            <p class="text-blue-400 font-medium text-sm">בעל סטודיו עיצוב</p>
+                                            <p class="text-gray-400 text-xs">עיצוב ואמנות בע״מ</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-1">
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                    </div>
+                                </div>
+                                <p class="text-gray-300 leading-relaxed text-sm mb-6 italic">
+                                    "בתור מעצב מקצועי, אני מאוד בררן. LeadGrid הצליח להפתיע אותי עם תבניות מדהימות וגמישות שלא ראיתי בשום מקום. הלקוחות שלי פשוט מתפעלים מהדפים שאני יוצר עבורהם."
+                                </p>
+                                <div class="bg-gradient-to-r from-blue-900/30 to-purple-900/30 p-4 rounded-xl border border-blue-600/20">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <div class="text-2xl font-bold text-white mb-1">85%</div>
+                                            <div class="text-blue-300 text-xs">עלייה בלקוחות</div>
+                                        </div>
+                                        <i class="fas fa-chart-line text-green-400 text-2xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Testimonial 3 -->
+                        <div class="testimonial-slide">
+                            <div class="bg-gradient-to-br from-gray-800/80 to-gray-900/80 border border-gray-700/50 hover:border-blue-500/50 p-8 rounded-2xl card-hover">
+                                <div class="flex items-start justify-between mb-6">
+                                    <div class="flex items-center gap-4">
+                                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" alt="רחל אברהם" class="w-16 h-16 rounded-full object-cover border-2 border-blue-400/30">
+                                        <div>
+                                            <h4 class="font-bold text-white text-lg">רחל אברהם</h4>
+                                            <p class="text-blue-400 font-medium text-sm">יועצת עסקית</p>
+                                            <p class="text-gray-400 text-xs">ייעוץ אסטרטגי</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-1">
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                        <i class="fas fa-star text-yellow-400"></i>
+                                    </div>
+                                </div>
+                                <p class="text-gray-300 leading-relaxed text-sm mb-6 italic">
+                                    "לפני LeadGrid בזבזתי אלפי שקלים על מפתחים ועדיין לא קיבלתי מה שרציתי. עכשיו אני יוצרת דפי נחיתה מקצועיים בעצמי תוך דקות ומחסכת זמן וכסף בטירוף."
+                                </p>
+                                <div class="bg-gradient-to-r from-blue-900/30 to-purple-900/30 p-4 rounded-xl border border-blue-600/20">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <div class="text-2xl font-bold text-white mb-1">₪25,000</div>
+                                            <div class="text-blue-300 text-xs">חיסכון שנתי</div>
+                                        </div>
+                                        <i class="fas fa-chart-line text-green-400 text-2xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <div class="flex justify-center items-center gap-8 mt-12">
+                    <button onclick="prevTestimonial()" class="w-12 h-12 rounded-full border-2 border-blue-500/30 hover:border-blue-400 hover:bg-blue-500/10 transition-all duration-300 text-blue-400">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="flex gap-4" id="testimonialDots">
+                        <button onclick="goToTestimonial(0)" class="w-12 h-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full dot active"></button>
+                        <button onclick="goToTestimonial(1)" class="w-4 h-4 bg-gray-600 hover:bg-gray-500 rounded-full dot"></button>
+                        <button onclick="goToTestimonial(2)" class="w-4 h-4 bg-gray-600 hover:bg-gray-500 rounded-full dot"></button>
+                    </div>
+                    <button onclick="nextTestimonial()" class="w-12 h-12 rounded-full border-2 border-blue-500/30 hover:border-blue-400 hover:bg-blue-500/10 transition-all duration-300 text-blue-400">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+
+                <div class="text-center mt-16">
+                    <p class="text-gray-400 mb-6">רוצה להצטרף אליהם?</p>
+                    <button onclick="openQuestionnaire()" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover-scale">
+                        התחל עכשיו בחינם
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 gradient-text">שאלות נפוצות</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">התשובות לכל מה שרציתם לדעת על LeadGrid</p>
+            </div>
+            <div class="max-w-4xl mx-auto space-y-4">
+                <div class="faq-item bg-gray-800/50 rounded-xl border border-gray-700">
+                    <button class="faq-question w-full text-right p-6 flex justify-between items-center" onclick="toggleFAQ(this)">
+                        <span class="text-lg font-semibold">כמה זמן לוקח ליצור דף נחיתה?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer hidden p-6 pt-0 text-gray-300">
+                        <p>תוך פחות מ-5 דקות! הבינה המלאכותית שלנו יוצרת דף נחיתה מקצועי ומותאם אישית לעסק שלך. פשוט תענה על כמה שאלות קצרות ואנחנו נעשה את השאר.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item bg-gray-800/50 rounded-xl border border-gray-700">
+                    <button class="faq-question w-full text-right p-6 flex justify-between items-center" onclick="toggleFAQ(this)">
+                        <span class="text-lg font-semibold">האם אני צריך ידע טכני?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer hidden p-6 pt-0 text-gray-300">
+                        <p>בכלל לא! LeadGrid בנוי במיוחד עבור אנשים ללא רקע טכני. הממשק פשוט ואינטואיטיבי, וכל התהליך מותאם למי שרוצה תוצאות מקצועיות בלי הטכניקה.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item bg-gray-800/50 rounded-xl border border-gray-700">
+                    <button class="faq-question w-full text-right p-6 flex justify-between items-center" onclick="toggleFAQ(this)">
+                        <span class="text-lg font-semibold">כמה זה עולה?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer hidden p-6 pt-0 text-gray-300">
+                        <p>אנחנו מציעים כמה תוכניות מחיר גמישות החל מ-₪99 לחודש. יש גם גרסת ניסיון חינמית ל-14 יום בלי התחייבות. ההשקעה מחזירה את עצמה כבר מהחודש הראשון!</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item bg-gray-800/50 rounded-xl border border-gray-700">
+                    <button class="faq-question w-full text-right p-6 flex justify-between items-center" onclick="toggleFAQ(this)">
+                        <span class="text-lg font-semibold">האם הדפים מותאמים למובייל?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer hidden p-6 pt-0 text-gray-300">
+                        <p>כמובן! כל הדפים שיוצרים ב-LeadGrid מותאמים באופן אוטומטי לכל המכשירים - מובייל, טאבלט ומחשב. הם נראים מושלמים ופועלים בצורה מעולה על כל פלטפורמה.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item bg-gray-800/50 rounded-xl border border-gray-700">
+                    <button class="faq-question w-full text-right p-6 flex justify-between items-center" onclick="toggleFAQ(this)">
+                        <span class="text-lg font-semibold">האם אוכל לערוך את הדף אחרי היצירה?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer hidden p-6 pt-0 text-gray-300">
+                        <p>בהחלט! אתה יכול לערוך את הדף בכל זמן - לשנות צבעים, טקסטים, תמונות, ולהוסיף או להסיר אלמנטים. השינויים מתעדכנים בזמן אמת ואתה רואה את התוצאה מיד.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-black">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-8 gradient-text">בואו נתחיל</h2>
+            <p class="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">
+                מוכנים לקחת את העסק שלכם לרמה הבאה? התחילו היום ותראו תוצאות כבר מחר
+            </p>
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <button onclick="openQuestionnaire()" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-xl px-12 py-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover-scale">
+                    <i class="fas fa-rocket ml-2"></i>
+                    יצירת דף נחיתה חינם
+                </button>
+                <button class="border-2 border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white text-xl px-12 py-6 rounded-2xl transition-all duration-300 hover-scale">
+                    <i class="fas fa-phone ml-2"></i>
+                    דבר איתנו
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 px-4 border-t border-gray-800">
+        <div class="container mx-auto">
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-reverse space-x-2 mb-6">
+                    <div class="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bolt text-white text-sm"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold">LeadGrid</h4>
+                </div>
+                <p class="text-gray-400 mb-6">העתיד של דפי הנחיתה - מותאם, חכם ויעיל</p>
+                <p class="text-gray-500 text-sm">© 2024 LeadGrid. כל הזכויות שמורות.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Questionnaire Modal -->
+    <div id="questionnaireModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeQuestionnaire()">&times;</span>
+            <div class="questionnaire-container">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold gradient-text mb-4">בואו ניצור את דף הנחיתה שלכם</h2>
+                    <p class="text-gray-300">ענו על כמה שאלות קצרות ואנחנו ניצור עבורכם דף נחיתה מקצועי</p>
+                </div>
+                
+                <form id="questionnaireForm" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-blue-400">שם העסק *</label>
+                        <input type="text" name="businessName" required class="w-full p-4 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-blue-500 focus:outline-none">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-blue-400">סוג העסק *</label>
+                        <select name="businessType" required class="w-full p-4 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-blue-500 focus:outline-none">
+                            <option value="">בחר סוג עסק</option>
+                            <option value="שירותים עסקיים">שירותים עסקיים</option>
+                            <option value="טכנולוגיה">טכנולוגיה</option>
+                            <option value="חינוך">חינוך</option>
+                            <option value="בריאות">בריאות</option>
+                            <option value="מסחר אלקטרוני">מסחר אלקטרוני</option>
+                            <option value="נדל״ן">נדל״ן</option>
+                            <option value="יעוץ עסקי">יעוץ עסקי</option>
+                            <option value="אחר">אחר</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-blue-400">קהל היעד שלכם *</label>
+                        <input type="text" name="targetAudience" required placeholder="למשל: בעלי עסקים קטנים, משפחות צעירות, סטודנטים..." class="w-full p-4 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-blue-500 focus:outline-none">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-blue-400">המטרה העיקרית של הדף *</label>
+                        <select name="mainGoal" required class="w-full p-4 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-blue-500 focus:outline-none">
+                            <option value="">בחר מטרה</option>
+                            <option value="הגדלת מכירות">הגדלת מכירות</option>
+                            <option value="יצירת לידים">יצירת לידים</option>
+                            <option value="הרשמה לשירות">הרשמה לשירות</option>
+                            <option value="הורדת חומר">הורדת חומר</option>
+                            <option value="יצירת קשר">יצירת קשר</option>
+                            <option value="הרשמה לאירוע">הרשמה לאירוע</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-blue-400">התכונות/יתרונות העיקריים שלכם</label>
+                        <textarea name="keyFeatures" rows="3" placeholder="למשל: שירות 24/7, מחירים תחרותיים, ניסיון 10 שנים..." class="w-full p-4 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-blue-500 focus:outline-none"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-blue-400">צבעי המותג שלכם</label>
+                        <input type="text" name="brandColors" placeholder="למשל: כחול וכסף, אדום ולבן..." class="w-full p-4 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-blue-500 focus:outline-none">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-blue-400">פרטי יצירת קשר</label>
+                        <textarea name="contactInfo" rows="2" placeholder="טלפון, אימייל, כתובת..." class="w-full p-4 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-blue-500 focus:outline-none"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-lg px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover-scale">
+                        <i class="fas fa-magic ml-2"></i>
+                        יצירת דף הנחיתה שלי
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Testimonial Slider
+        let currentTestimonial = 0;
+        const totalTestimonials = 3;
+
+        function updateTestimonialSlider() {
+            const slider = document.getElementById('testimonialSlider');
+            const dots = document.querySelectorAll('.dot');
+            
+            slider.style.transform = `translateX(${currentTestimonial * -33.333}%)`;
+            
+            dots.forEach((dot, index) => {
+                if (index === currentTestimonial) {
+                    dot.className = 'w-12 h-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full dot active';
+                } else {
+                    dot.className = 'w-4 h-4 bg-gray-600 hover:bg-gray-500 rounded-full dot';
+                }
+            });
+        }
+
+        function nextTestimonial() {
+            currentTestimonial = (currentTestimonial + 1) % totalTestimonials;
+            updateTestimonialSlider();
+        }
+
+        function prevTestimonial() {
+            currentTestimonial = currentTestimonial === 0 ? totalTestimonials - 1 : currentTestimonial - 1;
+            updateTestimonialSlider();
+        }
+
+        function goToTestimonial(index) {
+            currentTestimonial = index;
+            updateTestimonialSlider();
+        }
+
+        // Auto-slide testimonials
+        setInterval(nextTestimonial, 5000);
+
+        // FAQ Toggle
+        function toggleFAQ(button) {
+            const answer = button.nextElementSibling;
+            const icon = button.querySelector('i');
+            
+            if (answer.classList.contains('hidden')) {
+                answer.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                answer.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Questionnaire Modal
+        function openQuestionnaire() {
+            document.getElementById('questionnaireModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeQuestionnaire() {
+            document.getElementById('questionnaireModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Form Submission
+        document.getElementById('questionnaireForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Show success message
+            alert('תודה! אנחנו יוצרים את דף הנחיתה שלכם. תקבלו קישור באימייל תוך כמה דקות.');
+            
+            closeQuestionnaire();
+            
+            // Here you would normally send the data to your server
+            console.log('Form data:', data);
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('questionnaireModal');
+            if (e.target === modal) {
+                closeQuestionnaire();
+            }
+        });
+    </script>
+</body>
+</html>
