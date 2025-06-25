@@ -1,4 +1,3 @@
-
 export const generateHtmlFile = (content: any, colors: any, formData: any, getHeroImageUrl: () => string) => {
   const heroImageUrl = getHeroImageUrl();
   
@@ -14,12 +13,11 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
           return `
             <section class="py-20 bg-gray-900">
               <div class="container mx-auto px-4">
-                <h2 class="text-4xl font-bold text-center text-white mb-16">השירותים שלנו</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                   ${element.content.map(card => `
                     <div class="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 transform hover:scale-105">
-                      <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background-color: ${colors.primary}">
-                        <span class="text-white text-xl">${card.icon}</span>
+                      <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-4">
+                        <i class="ri-${card.icon} text-white text-xl"></i>
                       </div>
                       <h3 class="text-xl font-bold text-white mb-3">${card.title}</h3>
                       <p class="text-gray-300">${card.desc}</p>
@@ -35,8 +33,8 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
             <section class="py-20 bg-gray-800">
               <div class="container mx-auto px-4">
                 <h2 class="text-4xl font-bold text-center text-white mb-16">התהליך שלנו</h2>
-                <div class="relative max-w-4xl mx-auto">
-                  <div class="absolute right-8 top-0 bottom-0 w-1 bg-gradient-to-b" style="background: linear-gradient(to bottom, ${colors.secondary}, ${colors.primary})"></div>
+                <div class="relative">
+                  <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-blue-500 to-purple-500"></div>
                   ${element.content.map((step, index) => `
                     <div class="flex items-center mb-12 ${index % 2 === 0 ? 'flex-row-reverse' : ''}">
                       <div class="flex-1 ${index % 2 === 0 ? 'text-right pr-8' : 'text-left pl-8'}">
@@ -47,7 +45,7 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
                         </div>
                       </div>
                       <div class="w-8 h-8 rounded-full border-4 border-white z-10 relative flex items-center justify-center" style="background-color: ${step.color}">
-                        <span class="text-white text-sm font-bold">${step.step}</span>
+                        <i class="ri-${step.icon || 'check-line'} text-white text-sm"></i>
                       </div>
                       <div class="flex-1"></div>
                     </div>
@@ -61,26 +59,26 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
           return `
             <section class="py-20 bg-gray-900">
               <div class="container mx-auto px-4">
-                <h2 class="text-4xl font-bold text-center text-white mb-16">התכניות שלנו</h2>
+                <h2 class="text-4xl font-bold text-center text-white mb-16">המחירים שלנו</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                   ${element.content.map(plan => `
-                    <div class="bg-gray-800 rounded-xl p-8 relative ${plan.highlighted ? 'ring-4 transform scale-105' : ''}" style="ring-color: ${plan.highlighted ? colors.accent : 'transparent'}">
-                      ${plan.highlighted ? `<div class="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-full text-white text-sm font-bold" style="background-color: ${colors.accent}">הכי פופולרי</div>` : ''}
-                      <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background-color: ${colors.primary}">
-                        <span class="text-white text-xl">${plan.icon || '💼'}</span>
+                    <div class="bg-gray-800 rounded-xl p-8 relative ${plan.highlighted ? 'ring-4 ring-purple-500 transform scale-105' : ''}">
+                      ${plan.highlighted ? '<div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-purple-500 text-white px-4 py-2 rounded-full text-sm">הכי פופולרי</div>' : ''}
+                      <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-4">
+                        <i class="ri-${plan.icon || 'price-tag-3-line'} text-white text-xl"></i>
                       </div>
                       <h3 class="text-2xl font-bold text-white mb-4">${plan.name}</h3>
-                      <div class="text-4xl font-bold mb-2" style="color: ${colors.primary}">${plan.price}</div>
+                      <div class="text-4xl font-bold text-purple-400 mb-2">${plan.price}</div>
                       <div class="text-gray-400 mb-6">${plan.period}</div>
                       <ul class="space-y-3 mb-8">
                         ${plan.features.map(feature => `
                           <li class="flex items-center text-gray-300">
-                            <span class="ml-2" style="color: ${colors.accent}">✓</span>
+                            <i class="ri-check-line text-green-500 ml-2"></i>
                             ${feature}
                           </li>
                         `).join('')}
                       </ul>
-                      <button class="w-full py-3 px-6 rounded-xl font-semibold text-white transition-colors" style="background-color: ${plan.highlighted ? colors.accent : colors.primary}">
+                      <button class="w-full py-3 px-6 rounded-xl font-semibold ${plan.highlighted ? 'bg-purple-600 hover:bg-purple-700 text-white' : 'bg-gray-700 hover:bg-gray-600 text-white'} transition-colors">
                         ${plan.buttonText}
                       </button>
                     </div>
@@ -90,51 +88,68 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
             </section>
           `;
 
-        case 'floatingFeatures':
+        case 'teamSection':
           return `
-            <section class="py-20 bg-gray-800 relative overflow-hidden">
-              <div class="container mx-auto px-4 relative z-10">
-                <h2 class="text-4xl font-bold text-center text-white mb-16">היתרונות שלנו</h2>
+            <section class="py-20 bg-gray-800">
+              <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-center text-white mb-4">${element.content.title}</h2>
+                <p class="text-xl text-gray-300 text-center mb-16">${element.content.subtitle}</p>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  ${element.content.map(feature => `
-                    <div class="rounded-xl p-6 text-white transform hover:scale-105 transition-transform" style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary})">
-                      <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4">
-                        <span class="text-white text-xl">⚡</span>
+                  ${element.content.members?.map(member => `
+                    <div class="bg-gray-700 rounded-xl p-6 text-center">
+                      <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="ri-${member.icon || 'user-line'} text-white text-2xl"></i>
                       </div>
-                      <h3 class="text-xl font-bold mb-3">${feature.title}</h3>
-                      <p>${feature.desc}</p>
+                      <h3 class="text-xl font-bold text-white mb-2">${member.name}</h3>
+                      <p class="text-purple-400 mb-2">${member.role}</p>
+                      <p class="text-gray-300">${member.experience}</p>
                     </div>
-                  `).join('')}
+                  `).join('') || ''}
                 </div>
               </div>
             </section>
           `;
 
-        case '3dElements':
+        case 'portfolio':
           return `
-            <section class="py-20 bg-gray-900 relative overflow-hidden">
+            <section class="py-20 bg-gray-900">
+              <div class="container mx-auto px-4">
+                <h2 class="text-4xl font-bold text-center text-white mb-4">${element.content.title}</h2>
+                <p class="text-xl text-gray-300 text-center mb-16">${element.content.subtitle}</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  ${element.content.projects?.map(project => `
+                    <div class="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-colors">
+                      <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-4">
+                        <i class="ri-${project.icon || 'briefcase-line'} text-white text-xl"></i>
+                      </div>
+                      <div class="bg-gradient-to-r from-purple-500 to-blue-500 text-white text-sm px-3 py-1 rounded-full inline-block mb-4">
+                        ${project.category}
+                      </div>
+                      <h3 class="text-xl font-bold text-white mb-3">${project.title}</h3>
+                      <p class="text-gray-300 mb-4">${project.description}</p>
+                      <div class="text-green-400 font-semibold">${project.result}</div>
+                    </div>
+                  `).join('') || ''}
+                </div>
+              </div>
+            </section>
+          `;
+
+        case 'floatingFeatures':
+          return `
+            <section class="py-20 bg-gray-800 relative overflow-hidden">
               <div class="container mx-auto px-4 relative z-10">
-                <h2 class="text-4xl font-bold text-center text-white mb-16">יתרונות העסק שלנו</h2>
-                <div class="relative min-h-96">
-                  <div class="absolute top-20 right-10 p-4 rounded-xl shadow-lg transform hover:scale-110 transition-all duration-300 animate-pulse" style="background-color: ${colors.primary}; animation-delay: 0s; animation-duration: 3s;">
-                    <div class="text-2xl mb-2">📊</div>
-                    <div class="text-white font-bold text-sm">ניתוח נתונים</div>
-                  </div>
-                  <div class="absolute top-40 left-20 p-4 rounded-xl shadow-lg transform hover:scale-110 transition-all duration-300 animate-pulse" style="background-color: ${colors.secondary}; animation-delay: 0.5s; animation-duration: 3s;">
-                    <div class="text-2xl mb-2">🎯</div>
-                    <div class="text-white font-bold text-sm">יעדים ברורים</div>
-                  </div>
-                  <div class="absolute bottom-32 right-16 p-4 rounded-xl shadow-lg transform hover:scale-110 transition-all duration-300 animate-pulse" style="background-color: ${colors.accent}; animation-delay: 1s; animation-duration: 3s;">
-                    <div class="text-2xl mb-2">💡</div>
-                    <div class="text-white font-bold text-sm">רעיונות חדשניים</div>
-                  </div>
-                  <div class="absolute bottom-20 left-10 p-4 rounded-xl shadow-lg transform hover:scale-110 transition-all duration-300 animate-pulse" style="background-color: ${colors.primary}; animation-delay: 1.5s; animation-duration: 3s;">
-                    <div class="text-2xl mb-2">🚀</div>
-                    <div class="text-white font-bold text-sm">צמיחה מהירה</div>
-                  </div>
-                  <div class="text-center">
-                    <p class="text-lg text-white">העסק שלנו מתמחה ב${formData.businessType} ומספק שירות ברמה הגבוהה ביותר</p>
-                  </div>
+                <h2 class="text-4xl font-bold text-center text-white mb-16">יתרונות מיוחדים</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  ${element.content.map(feature => `
+                    <div class="bg-gradient-to-r ${feature.gradient} rounded-xl p-6 text-white transform hover:scale-105 transition-transform">
+                      <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4">
+                        <i class="ri-${feature.icon || 'star-line'} text-white text-xl"></i>
+                      </div>
+                      <h3 class="text-xl font-bold mb-3">${feature.title}</h3>
+                      <p>${feature.desc}</p>
+                    </div>
+                  `).join('')}
                 </div>
               </div>
             </section>
@@ -163,13 +178,6 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
             --accent: ${colors.accent};
             --background: ${colors.background};
             --text: ${colors.text};
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        .animate-pulse {
-            animation: pulse 3s infinite;
         }
     </style>
 </head>
@@ -202,7 +210,7 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
                 ${Object.entries(content.stats).map(([key, value]) => `
-                    <div class="text-center p-6 rounded-2xl hover:scale-105 transition-transform" style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary})">
+                    <div class="text-center bg-gradient-to-br from-orange-400 to-yellow-500 p-6 rounded-2xl hover:scale-105 transition-transform">
                         <div class="text-3xl md:text-4xl font-bold text-white mb-2">${value}</div>
                         <div class="text-white font-semibold text-lg">${key}</div>
                     </div>
@@ -220,8 +228,8 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 ${content.features.map(feature => `
                     <div class="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-colors">
-                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background-color: ${colors.primary}">
-                            <span class="text-white text-xl">✓</span>
+                        <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-4">
+                            <i class="ri-check-line text-white text-xl"></i>
                         </div>
                         <p class="text-gray-300">${feature}</p>
                     </div>
@@ -268,8 +276,8 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
                 ${content.testimonials.map(testimonial => `
                     <div class="bg-gray-800 rounded-xl p-6">
                         <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center text-white text-2xl" style="background-color: ${colors.primary}">
-                                ${testimonial.image}
+                            <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white">
+                                <i class="ri-${testimonial.icon || 'user-line'} text-xl"></i>
                             </div>
                             <div class="mr-4">
                                 <div class="font-semibold text-white">${testimonial.name}</div>
@@ -278,7 +286,7 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
                         </div>
                         <p class="text-gray-300 mb-4">"${testimonial.content}"</p>
                         <div class="flex text-yellow-400">
-                            ${'★'.repeat(testimonial.rating)}
+                            ${'<i class="ri-star-fill"></i>'.repeat(testimonial.rating)}
                         </div>
                     </div>
                 `).join('')}
@@ -310,7 +318,7 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
             <div class="text-xl mb-8" style="color: ${colors.contactTextColor};">
                 ${formData.contactInfo.split('\n').map(line => `<div>${line}</div>`).join('')}
             </div>
-            <button class="px-8 py-4 rounded-xl text-lg font-semibold text-white transition-all" style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary})">
+            <button class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all">
                 צור קשר עכשיו
             </button>
         </div>

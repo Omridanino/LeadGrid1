@@ -111,24 +111,16 @@ export const useGeneratedPageActions = ({
   const handleRegenerate = () => {
     toast({
       title: "🔄 יוצר דף חדש...",
-      description: "יוצר גרסה חדשה עם תוכן משופר לכל הדף",
+      description: "יוצר גרסה חדשה עם תוכן משופר",
     });
     
-    // Generate completely new content for the entire page
     const newContent = generateCreativeContent();
     setGeneratedContent(newContent);
     setIsSaved(false);
     
-    // Force a re-render of the entire page by updating the timestamp
-    const updatedContent = {
-      ...newContent,
-      timestamp: Date.now()
-    };
-    setGeneratedContent(updatedContent);
-    
     toast({
       title: "✨ דף חדש נוצר!",
-      description: "הדף הוחלף בהצלחה עם תוכן חדש ויצירתי לכל הסקשנים",
+      description: "הדף עודכן בהצלחה עם תוכן חדש ויצירתי המבוסס על השאלון",
     });
   };
 
