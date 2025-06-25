@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -19,6 +18,7 @@ const GeneratedLandingPage = () => {
   const [showDesignEditor, setShowDesignEditor] = useState(false);
   const [showAdvancedEditor, setShowAdvancedEditor] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [heroImage, setHeroImage] = useState<string>('');
   const [currentColors, setCurrentColors] = useState<ColorScheme>({
     primary: "#3b82f6",
     secondary: "#8b5cf6", 
@@ -60,7 +60,7 @@ const GeneratedLandingPage = () => {
   // Track changes for save status
   useEffect(() => {
     setIsSaved(false);
-  }, [generatedContent, currentColors, formData]);
+  }, [generatedContent, currentColors, formData, heroImage]);
 
   const handleColorChange = (newColors: ColorScheme) => {
     setCurrentColors(newColors);
@@ -157,6 +157,12 @@ const GeneratedLandingPage = () => {
   };
 
   const getHeroImageUrl = () => {
+    // If user uploaded custom image, use it
+    if (heroImage && heroImage.startsWith('data:')) {
+      return heroImage;
+    }
+    
+    // Otherwise use automatic image based on business type
     const businessType = formData.businessType?.toLowerCase() || '';
     
     if (businessType.includes('קפה') || businessType.includes('בית קפה')) {
@@ -176,9 +182,10 @@ const GeneratedLandingPage = () => {
     return 'https://images.unsplash.com/photo-1497486751825-1233686d5d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
   };
 
+  // Generate HTML with the EXACT current page state
   const generateHtmlFile = () => {
     const colors = content.colors || currentColors;
-    const heroImage = formData.heroStyle === 'image' ? getHeroImageUrl() : null;
+    const finalHeroImage = formData.heroStyle === 'image' ? getHeroImageUrl() : null;
     
     return `<!DOCTYPE html>
 <html dir="rtl" lang="he">
@@ -196,8 +203,8 @@ const GeneratedLandingPage = () => {
             color: ${currentColors.text};
         }
         .hero-section { 
-            ${heroImage 
-              ? `background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${heroImage}'); background-size: cover; background-position: center;`
+            ${finalHeroImage 
+              ? `background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${finalHeroImage}'); background-size: cover; background-position: center;`
               : `background: linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 50%, ${colors.accent} 100%);`
             }
             min-height: 500px;
@@ -545,6 +552,7 @@ const GeneratedLandingPage = () => {
               content={content}
               currentColors={currentColors}
               formData={formData}
+              heroImage={heroImage}
             />
           </div>
 
@@ -566,6 +574,8 @@ const GeneratedLandingPage = () => {
                 onContentChange={setGeneratedContent}
                 formData={formData}
                 onFormDataChange={setFormData}
+                heroImage={heroImage}
+                onHeroImageChange={setHeroImage}
               />
             </div>
           )}

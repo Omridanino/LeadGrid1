@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,9 +9,10 @@ interface LandingPagePreviewProps {
   content: any;
   currentColors: ColorScheme;
   formData: any;
+  heroImage?: string;
 }
 
-const LandingPagePreview = ({ content, currentColors, formData }: LandingPagePreviewProps) => {
+const LandingPagePreview = ({ content, currentColors, formData, heroImage }: LandingPagePreviewProps) => {
   const { toast } = useToast();
 
   const handleCtaClick = () => {
@@ -25,6 +25,12 @@ const LandingPagePreview = ({ content, currentColors, formData }: LandingPagePre
   const colors = content.colors || currentColors;
 
   const getHeroImageUrl = () => {
+    // If user uploaded custom image, use it
+    if (heroImage && heroImage.startsWith('data:')) {
+      return heroImage;
+    }
+    
+    // Otherwise use automatic image based on business type
     const businessType = formData.businessType?.toLowerCase() || '';
     
     if (businessType.includes('קפה') || businessType.includes('בית קפה')) {
@@ -44,7 +50,7 @@ const LandingPagePreview = ({ content, currentColors, formData }: LandingPagePre
     return 'https://images.unsplash.com/photo-1497486751825-1233686d5d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
   };
 
-  const heroImage = formData.heroStyle === 'image' ? getHeroImageUrl() : null;
+  const finalHeroImage = formData.heroStyle === 'image' ? getHeroImageUrl() : null;
 
   return (
     <Card className="bg-gray-900 border-gray-700 overflow-hidden">
@@ -53,8 +59,8 @@ const LandingPagePreview = ({ content, currentColors, formData }: LandingPagePre
         <div 
           className="p-12 text-center relative overflow-hidden min-h-[500px] flex flex-col justify-center"
           style={{
-            background: heroImage 
-              ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${heroImage}')` 
+            background: finalHeroImage 
+              ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${finalHeroImage}')` 
               : `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 50%, ${colors.accent} 100%)`,
             backgroundSize: 'cover',
             backgroundPosition: 'center'
