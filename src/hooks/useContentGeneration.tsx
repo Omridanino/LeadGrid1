@@ -1,5 +1,5 @@
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 const getBusinessTypeContent = (businessType: string, businessAdvantages: string) => {
   const advantages = businessAdvantages ? businessAdvantages.split('\n').filter(adv => adv.trim()) : [];
@@ -109,6 +109,8 @@ const getBusinessTypeContent = (businessType: string, businessAdvantages: string
 };
 
 export const useContentGeneration = (formData: any) => {
+  const [generatedContent, setGeneratedContent] = useState(null);
+
   const generateCreativeContent = useMemo(() => {
     return () => {
       const businessContent = getBusinessTypeContent(formData.businessType || '', formData.businessAdvantages || '');
@@ -197,8 +199,8 @@ export const useContentGeneration = (formData: any) => {
   }, [formData]);
 
   return {
-    generateCreativeContent: generateCreativeContent(),
-    setGeneratedContent: () => {},
-    generatedContent: null
+    generateCreativeContent,
+    setGeneratedContent,
+    generatedContent
   };
 };
