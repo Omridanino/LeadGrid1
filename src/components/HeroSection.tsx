@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Zap } from "lucide-react";
+import { Zap, Play } from "lucide-react";
 
 interface HeroSectionProps {
   onStartQuestionnaire: () => void;
@@ -25,12 +25,16 @@ const HeroSection = ({ onStartQuestionnaire }: HeroSectionProps) => {
           <Button 
             size="lg" 
             onClick={onStartQuestionnaire}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg px-8 py-4"
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
           >
             <Zap className="w-5 h-5 ml-2" />
             צור דף נחיתה בדקות
           </Button>
-          <Button size="lg" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-800 text-lg px-8 py-4">
+          <Button 
+            size="lg" 
+            className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          >
+            <Play className="w-5 h-5 ml-2" />
             צפה בדמו חי
           </Button>
         </div>
@@ -38,24 +42,24 @@ const HeroSection = ({ onStartQuestionnaire }: HeroSectionProps) => {
         {/* Advanced Features Section */}
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-gradient-to-br from-blue-900/30 to-purple-900/30 p-6 rounded-xl border border-blue-600/20">
-              <div className="w-12 h-12 bg-blue-600 rounded-lg mb-4 flex items-center justify-center mx-auto">
+            <div className="bg-gradient-to-br from-blue-900/30 to-purple-900/30 p-6 rounded-2xl border border-blue-600/20 hover:border-blue-500/40 transition-all duration-300 group">
+              <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl mb-4 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300">
                 <span className="text-white text-xl">🎨</span>
               </div>
               <h3 className="text-lg font-semibold mb-2 text-white">עיצוב מותאם</h3>
               <p className="text-gray-300 text-sm">עיצובים מקצועיים שמותאמים לתחום שלך עם ברנדינג מושלם</p>
             </div>
             
-            <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 p-6 rounded-xl border border-purple-600/20">
-              <div className="w-12 h-12 bg-purple-600 rounded-lg mb-4 flex items-center justify-center mx-auto">
+            <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 p-6 rounded-2xl border border-purple-600/20 hover:border-purple-500/40 transition-all duration-300 group">
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-purple-500 rounded-xl mb-4 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300">
                 <span className="text-white text-xl">⚡</span>
               </div>
               <h3 className="text-lg font-semibold mb-2 text-white">מהירות שיא</h3>
               <p className="text-gray-300 text-sm">דפים שנטענים במהירות הבזק ומותאמים למובייל ולמחשב</p>
             </div>
             
-            <div className="bg-gradient-to-br from-cyan-900/30 to-blue-900/30 p-6 rounded-xl border border-cyan-600/20">
-              <div className="w-12 h-12 bg-cyan-600 rounded-lg mb-4 flex items-center justify-center mx-auto">
+            <div className="bg-gradient-to-br from-cyan-900/30 to-blue-900/30 p-6 rounded-2xl border border-cyan-600/20 hover:border-cyan-500/40 transition-all duration-300 group">
+              <div className="w-12 h-12 bg-gradient-to-r from-cyan-600 to-cyan-500 rounded-xl mb-4 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-300">
                 <span className="text-white text-xl">📈</span>
               </div>
               <h3 className="text-lg font-semibold mb-2 text-white">אנליטיקס מתקדם</h3>
