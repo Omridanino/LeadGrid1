@@ -96,14 +96,148 @@ export const useContentGeneration = (formData: any) => {
     };
   };
 
+  const getRandomElements = () => {
+    const allElements = [
+      {
+        type: 'testimonial',
+        content: {
+          name: "רחל אברהם",
+          role: "יזמת",
+          content: "השירות הכי מקצועי שקיבלתי! התוצאות עלו על כל הציפיות שלי",
+          rating: 5
+        }
+      },
+      {
+        type: 'testimonial',
+        content: {
+          name: "מיכאל גולן",
+          role: "מנהל פרויקטים",
+          content: "עבודה מדויקת ומהירה. ממליץ בחום לכל מי שמחפש איכות!",
+          rating: 5
+        }
+      },
+      {
+        type: 'text',
+        content: {
+          text: "אנחנו גאים להיות חלק מהמסע שלכם להצלחה. כל פרויקט שאנחנו לוקחים הוא הזדמנות ליצור משהו מיוחד ובלתי נשכח."
+        }
+      },
+      {
+        type: 'text',
+        content: {
+          text: "החזון שלנו הוא להפוך כל חלום למציאות מוחשית. עם ניסיון רב שנים ומחויבות מלאה, אנחנו כאן כדי להוביל אתכם להצלחה."
+        }
+      },
+      {
+        type: 'faq',
+        content: {
+          question: "מה הופך אתכם למיוחדים בתחום?",
+          answer: "השילוב הייניקלי שלנו בין מקצועיות גבוהה, שירות אישי ומחויבות לתוצאות מעולות."
+        }
+      },
+      {
+        type: 'faq',
+        content: {
+          question: "איך אתם מבטיחים איכות גבוהה?",
+          answer: "אנחנו עוברים תהליך בדיקה קפדני בכל שלב ומקפידים על הסטנדרטים הגבוהים ביותר בתחום."
+        }
+      },
+      {
+        type: 'title',
+        content: {
+          text: "למה לבחור בנו?",
+          size: 'h2'
+        }
+      },
+      {
+        type: 'title',
+        content: {
+          text: "הסיפור שמאחורי ההצלחה",
+          size: 'h2'
+        }
+      }
+    ];
+
+    // Return 2-4 random elements
+    const shuffled = allElements.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, Math.floor(Math.random() * 3) + 2);
+  };
+
+  const getRandomTestimonials = () => {
+    const allTestimonials = [
+      {
+        name: "יוסי כהן",
+        role: "לקוח מרוצה",
+        content: `השירות של ${formData.businessName} פשוט מעולה! קיבלתי בדיוק מה שחיפשתי`,
+        rating: 5
+      },
+      {
+        name: "שרה לוי",
+        role: "לקוחה קבועה",
+        content: "מקצועיות ברמה הגבוהה ביותר. ממליצה בחום!",
+        rating: 5
+      },
+      {
+        name: "דוד מזרחי",
+        role: "איש עסקים",
+        content: `בזכות ${formData.businessName} הצלחתי להגיע למטרות שלי`,
+        rating: 5
+      },
+      {
+        name: "מירי רוזן",
+        role: "מנהלת שיווק",
+        content: "התוצאות היו מעבר לכל הציפיות! שירות יוצא מן הכלל",
+        rating: 5
+      },
+      {
+        name: "אבי ישראלי",
+        role: "יועץ עסקי",
+        content: "מקצועיות, יעילות ותוצאות מרשימות. בדיוק מה שחיפשתי",
+        rating: 5
+      },
+      {
+        name: "נועה גרין",
+        role: "בעלת עסק",
+        content: "השקעה שמשתלמת לטווח הארוך. ממליצה לכולם!",
+        rating: 5
+      }
+    ];
+
+    // Return 3 random testimonials
+    const shuffled = allTestimonials.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, 3);
+  };
+
+  const getRandomHeadlines = () => {
+    const headlines = [
+      `${formData.businessName} - ${formData.businessType} ברמה אחרת`,
+      `${formData.businessName} - החוויה המושלמת ב${formData.businessType}`,
+      `${formData.businessName} - מובילים את הדרך ב${formData.businessType}`,
+      `${formData.businessName} - ${formData.businessType} שמעביר ציפיות`,
+      `${formData.businessName} - הבחירה הנכונה ל${formData.businessType}`
+    ];
+    return headlines[Math.floor(Math.random() * headlines.length)];
+  };
+
+  const getRandomSubheadlines = () => {
+    const subheadlines = [
+      `גלה את ${formData.mainGoal} עם ${formData.keyFeatures}. אנחנו כאן כדי להפוך את החלום שלך למציאות.`,
+      `החוויה שלך היא העדיפות שלנו. עם ${formData.keyFeatures} אנחנו מבטיחים ${formData.mainGoal} ברמה הגבוהה ביותר.`,
+      `מחפש ${formData.businessType} מקצועי? ${formData.keyFeatures} זה מה שהופך אותנו למובילים בתחום.`,
+      `בואו נגשים יחד את ${formData.mainGoal}. עם ${formData.keyFeatures} אנחנו נוביל אתכם להצלחה.`,
+      `${formData.keyFeatures} ברמה חדשה לחלוטין. הצטרפו אלינו למסע לקראת ${formData.mainGoal}.`
+    ];
+    return subheadlines[Math.floor(Math.random() * subheadlines.length)];
+  };
+
   const generateCreativeContent = () => {
     const stats = generateDynamicStats(formData.businessType);
     
     return {
       stats: stats,
       badge: `✨ ${formData.businessType} מובילים בתחום`,
-      headline: `${formData.businessName} - ${formData.businessType} ברמה אחרת`,
-      subheadline: `גלה את ${formData.mainGoal} עם ${formData.keyFeatures}. אנחנו כאן כדי להפוך את החלום שלך למציאות.`,
+      headline: getRandomHeadlines(),
+      subheadline: getRandomSubheadlines(),
       cta: `בוא נתחיל עכשיו!`,
       featuresTitle: "למה בוחרים בנו?",
       aboutTitle: "הסיפור שלנו",
@@ -119,26 +253,7 @@ export const useContentGeneration = (formData: any) => {
         "אחריות מלאה על השירות",
         "ייעוץ חינם"
       ],
-      testimonials: [
-        {
-          name: "יוסי כהן",
-          role: "לקוח מרוצה",
-          content: `השירות של ${formData.businessName} פשוט מעולה! קיבלתי בדיוק מה שחיפשתי`,
-          rating: 5
-        },
-        {
-          name: "שרה לוי",
-          role: "לקוחה קבועה",
-          content: "מקצועיות ברמה הגבוהה ביותר. ממליצה בחום!",
-          rating: 5
-        },
-        {
-          name: "דוד מזרחי",
-          role: "איש עסקים",
-          content: `בזכות ${formData.businessName} הצלחתי להגיע למטרות שלי`,
-          rating: 5
-        }
-      ],
+      testimonials: getRandomTestimonials(),
       faq: [
         {
           question: `מה הופך את ${formData.businessName} למיוחדים?`,
@@ -161,7 +276,7 @@ export const useContentGeneration = (formData: any) => {
         title: "החלום שלך מתחיל כאן",
         content: `כל מסע מתחיל בצעד אחד. ${formData.businessName} כאן כדי ללוות אותך בדרך להצלחה. עם ${formData.keyFeatures} ומחויבות ל${formData.mainGoal}, אנחנו נעשה הכל כדי שתגיע למקום הכי טוב.`
       },
-      customElements: []
+      customElements: getRandomElements()
     };
   };
 

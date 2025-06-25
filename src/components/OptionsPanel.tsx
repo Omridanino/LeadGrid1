@@ -195,6 +195,8 @@ const OptionsPanel = ({
           onContentChange={onContentChange}
           formData={formData}
           onFormDataChange={onFormDataChange}
+          heroImage={heroImage}
+          onHeroImageChange={onHeroImageChange}
         />
       )}
 
