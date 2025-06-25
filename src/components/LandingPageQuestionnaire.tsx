@@ -1,5 +1,5 @@
-
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +16,7 @@ interface QuestionnaireProps {
 const LandingPageQuestionnaire = ({ isOpen, onClose }: QuestionnaireProps) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isGenerating, setIsGenerating] = useState(false);
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     businessName: "",
@@ -86,11 +87,17 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: QuestionnaireProps) => {
     await new Promise(resolve => setTimeout(resolve, 3000));
     
     setIsGenerating(false);
+    onClose();
+    
+    // Navigate to the generated landing page with form data
+    navigate('/generated-landing-page', { 
+      state: { formData }
+    });
+    
     toast({
       title: "🎉 דף הנחיתה נוצר בהצלחה!",
       description: `דף נחיתה מותאם עבור ${formData.businessName} מוכן לשימוש`,
     });
-    onClose();
   };
 
   const currentQuestion = questions[currentStep - 1];
