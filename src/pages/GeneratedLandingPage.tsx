@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Download, Globe, Code, ExternalLink, Check, Palette, FileText, Zap } from "lucide-react";
+import { ArrowLeft, Download, Globe, Code, ExternalLink, Check, Palette, FileText, Zap, Star, Users, TrendingUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const GeneratedLandingPage = () => {
@@ -75,258 +74,117 @@ const GeneratedLandingPage = () => {
     <title>${formData.businessName}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%); }
-        .card-hover { transition: transform 0.3s ease; }
-        .card-hover:hover { transform: translateY(-5px); }
+        .gradient-bg { 
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 50%, #06b6d4 100%); 
+            background-size: 300% 300%;
+            animation: gradientShift 6s ease infinite;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .card-hover { 
+            transition: all 0.3s ease; 
+            backdrop-filter: blur(10px);
+        }
+        .card-hover:hover { 
+            transform: translateY(-10px) scale(1.02); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .pulse-glow {
+            animation: pulseGlow 2s ease-in-out infinite alternate;
+        }
+        @keyframes pulseGlow {
+            from { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+            to { box-shadow: 0 0 40px rgba(147, 51, 234, 0.8); }
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-white">
+<body class="bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white overflow-x-hidden">
+    <!-- 3D Background Elements -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div class="absolute top-20 right-20 w-32 h-32 bg-blue-500/10 rounded-full floating-animation"></div>
+        <div class="absolute bottom-40 left-20 w-48 h-48 bg-purple-500/10 rounded-full floating-animation" style="animation-delay: 2s;"></div>
+        <div class="absolute top-1/2 left-1/2 w-24 h-24 bg-cyan-500/10 rounded-full floating-animation" style="animation-delay: 4s;"></div>
+    </div>
+
     <!-- Header -->
-    <header class="gradient-bg py-16 text-center">
+    <header class="gradient-bg py-20 text-center relative z-10">
         <div class="container mx-auto px-4">
-            <h1 class="text-4xl md:text-6xl font-bold mb-4">${generatedContent.headline}</h1>
-            <p class="text-xl md:text-2xl text-blue-100 mb-8">${generatedContent.subheadline}</p>
-            <button class="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors">
-                ${generatedContent.cta}
-            </button>
+            <div class="max-w-4xl mx-auto">
+                <div class="inline-block bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full mb-6">
+                    <span class="text-blue-200 font-semibold">🚀 הפתרון המתקדם ביותר בשוק</span>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">${generatedContent.headline}</h1>
+                <p class="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">${generatedContent.subheadline}</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+                    <button class="bg-white text-blue-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 pulse-glow">
+                        ${generatedContent.cta}
+                    </button>
+                    <button class="border-2 border-white/30 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-white/10 transition-all duration-300">
+                        צפה בדמו
+                    </button>
+                </div>
+                
+                <!-- Stats Section -->
+                <div class="grid md:grid-cols-3 gap-6 mt-12">
+                    <div class="bg-white/10 backdrop-blur-sm p-6 rounded-xl card-hover">
+                        <div class="text-3xl font-bold text-white mb-2">10,000+</div>
+                        <div class="text-blue-200">לקוחות מרוצים</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm p-6 rounded-xl card-hover">
+                        <div class="text-3xl font-bold text-white mb-2">99.9%</div>
+                        <div class="text-blue-200">זמינות השירות</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm p-6 rounded-xl card-hover">
+                        <div class="text-3xl font-bold text-white mb-2">24/7</div>
+                        <div class="text-blue-200">תמיכה טכנית</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
     
-    <!-- Features -->
-    <section class="py-16 bg-gray-800">
+    <!-- Features Section -->
+    <section class="py-20 bg-gradient-to-b from-gray-800 to-gray-900 relative z-10">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">היתרונות שלנו</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                ${generatedContent.features.map(feature => `
-                <div class="bg-gray-700 p-6 rounded-lg card-hover">
-                    <div class="w-12 h-12 bg-blue-600 rounded-lg mb-4 flex items-center justify-center">
-                        <span class="text-white text-xl">✓</span>
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-6">למה לבחור בנו?</h2>
+                <p class="text-xl text-gray-300">היתרונות שיעשו לך את ההבדל</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                ${generatedContent.features.map((feature, index) => `
+                <div class="bg-gradient-to-br from-gray-700/50 to-gray-800/50 backdrop-blur-sm p-8 rounded-2xl card-hover border border-gray-600/50">
+                    <div class="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl mb-6 flex items-center justify-center text-2xl">
+                        ${['✅', '⚡', '🎯', '💎', '🚀', '🔥'][index] || '✨'}
                     </div>
-                    <h3 class="text-xl font-semibold mb-2">${feature}</h3>
+                    <h3 class="text-xl font-semibold mb-4 text-white">${feature}</h3>
+                    <p class="text-gray-300">פתרון מתקדם ומקצועי שיעזור לך להשיג את המטרות שלך בצורה הטובה ביותר.</p>
                 </div>
                 `).join('')}
             </div>
         </div>
     </section>
     
-    <!-- About -->
-    <section class="py-16 bg-gray-900">
+    <!-- About Section -->
+    <section class="py-20 bg-gradient-to-r from-gray-900 to-black relative z-10">
         <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-3xl font-bold mb-8">אודותינו</h2>
-                <p class="text-lg text-gray-300 mb-8">${generatedContent.aboutText}</p>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Contact -->
-    <section class="py-16 bg-gray-800">
-        <div class="container mx-auto px-4">
-            <div class="max-w-2xl mx-auto text-center">
-                <h2 class="text-3xl font-bold mb-8">צור קשר</h2>
-                <div class="bg-gray-700 p-8 rounded-lg">
-                    <pre class="text-gray-300 whitespace-pre-line">${formData.contactInfo}</pre>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Footer -->
-    <footer class="bg-gray-900 py-8 text-center">
-        <p class="text-gray-400">© ${new Date().getFullYear()} ${formData.businessName}. כל הזכויות שמורות.</p>
-    </footer>
-</body>
-</html>`;
-  };
-
-  return (
-    <div className="min-h-screen bg-black text-white" dir="rtl">
-      {/* Navigation Bar */}
-      <header className="bg-gray-900/80 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <Button 
-              variant="ghost" 
-              onClick={() => navigate('/')}
-              className="text-gray-300 hover:text-white"
-            >
-              <ArrowLeft className="w-4 h-4 ml-2" />
-              חזרה לדף הבית
-            </Button>
-            <h1 className="text-xl font-bold flex items-center">
-              <Zap className="w-5 h-5 ml-2 text-blue-400" />
-              הדף שלך מוכן!
-            </h1>
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={handleDownload}>
-                <Download className="w-4 h-4 ml-2" />
-                הורד HTML
-              </Button>
-              <Button onClick={handleDomainPurchase} className="bg-green-600 hover:bg-green-700">
-                <Globe className="w-4 h-4 ml-2" />
-                רכוש דומיין
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Generated Landing Page Preview */}
-      <main className="container mx-auto px-4 py-8">
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Landing Page Preview */}
-          <div className="lg:col-span-2">
-            <Card className="bg-gray-900 border-gray-700 overflow-hidden">
-              <CardContent className="p-0">
-                {/* Preview Header */}
-                <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-8 text-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-black/20"></div>
-                  <div className="relative z-10">
-                    <Badge className="mb-4 bg-white/20 text-white border-white/30">תצוגה מקדימה - דף נחיתה מותאם</Badge>
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">{generatedContent.headline}</h2>
-                    <p className="text-blue-100 text-lg mb-6">{generatedContent.subheadline}</p>
-                    <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-8 py-3">
-                      {generatedContent.cta}
-                    </Button>
-                  </div>
-                  {/* 3D Elements */}
-                  <div className="absolute top-4 right-4 w-20 h-20 bg-white/10 rounded-full animate-pulse"></div>
-                  <div className="absolute bottom-4 left-4 w-16 h-16 bg-purple-400/20 rounded-lg rotate-45 animate-bounce"></div>
-                </div>
-                
-                {/* Preview Content */}
-                <div className="p-8 bg-gradient-to-b from-gray-800 to-gray-900">
-                  <div className="grid md:grid-cols-2 gap-8 mb-8">
-                    <div className="space-y-4">
-                      <h3 className="text-2xl font-semibold mb-4 flex items-center">
-                        <Check className="w-6 h-6 text-green-500 ml-2" />
-                        היתרונות שלנו
-                      </h3>
-                      <div className="space-y-3">
-                        {generatedContent.features.map((feature, index) => (
-                          <div key={index} className="flex items-center p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition-colors">
-                            <Check className="w-5 h-5 text-green-500 ml-3 flex-shrink-0" />
-                            <span>{feature}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="space-y-4">
-                      <h3 className="text-2xl font-semibold mb-4 flex items-center">
-                        <FileText className="w-6 h-6 text-blue-500 ml-2" />
-                        אודותינו
-                      </h3>
-                      <p className="text-gray-300 leading-relaxed">{generatedContent.aboutText}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-gradient-to-r from-gray-700 to-gray-800 p-6 rounded-lg border border-gray-600">
-                    <h3 className="text-xl font-semibold mb-4 flex items-center">
-                      <Palette className="w-5 h-5 text-purple-500 ml-2" />
-                      צור קשר
-                    </h3>
-                    <div className="whitespace-pre-line text-gray-300 bg-gray-800/50 p-4 rounded">
-                      {formData.contactInfo}
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Options Panel */}
-          <div className="space-y-6">
-            {/* WordPress Integration */}
-            <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-700">
-              <CardHeader>
-                <CardTitle className="flex items-center text-lg">
-                  <Code className="w-5 h-5 ml-2 text-orange-500" />
-                  חיבור לוורדפרס
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-gray-300 text-sm">
-                  חבר את הדף שלך לאתר וורדפרס קיים או צור אתר חדש
-                </p>
-                <Button 
-                  onClick={handleWordPressIntegration}
-                  className="w-full bg-orange-600 hover:bg-orange-700"
-                >
-                  <ExternalLink className="w-4 h-4 ml-2" />
-                  מדריך חיבור לוורדפרס
-                </Button>
-                
-                {showWordPressGuide && (
-                  <div className="mt-4 p-4 bg-gray-800 rounded-lg border border-gray-600">
-                    <h4 className="font-semibold mb-2">מדריך חיבור מהיר:</h4>
-                    <ol className="text-sm text-gray-300 space-y-1 list-decimal list-inside">
-                      <li>הורד את קובץ ה-HTML</li>
-                      <li>התחבר לוורדפרס שלך</li>
-                      <li>צור עמוד חדש ועבור למצב HTML</li>
-                      <li>העתק את התוכן ושמור</li>
-                      <li>פרסם את העמוד כדף הבית</li>
-                    </ol>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Domain Purchase */}
-            {showDomainPurchase && (
-              <Card className="bg-gradient-to-br from-green-900/30 to-gray-900 border-green-700">
-                <CardHeader>
-                  <CardTitle className="flex items-center text-lg">
-                    <Globe className="w-5 h-5 ml-2 text-green-500" />
-                    רכישת דומיין
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center p-3 bg-gray-800 rounded border border-green-600/30">
-                      <span className="font-mono text-sm">{formData.businessName.toLowerCase().replace(/\s+/g, '')}.co.il</span>
-                      <Badge className="bg-green-600 text-white">זמין</Badge>
-                    </div>
-                    <div className="flex justify-between items-center p-3 bg-gray-800 rounded border border-green-600/30">
-                      <span className="font-mono text-sm">{formData.businessName.toLowerCase().replace(/\s+/g, '')}.com</span>
-                      <Badge className="bg-green-600 text-white">זמין</Badge>
-                    </div>
-                  </div>
-                  <Button className="w-full bg-green-600 hover:bg-green-700 text-lg py-3">
-                    <Globe className="w-4 h-4 ml-2" />
-                    רכוש דומיין - ₪99/שנה
-                  </Button>
-                  <p className="text-xs text-gray-400 text-center">
-                    כולל הפניית DNS אוטומטית ותמיכה טכנית 24/7
-                  </p>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Additional Actions */}
-            <Card className="bg-gradient-to-br from-purple-900/30 to-gray-900 border-purple-700">
-              <CardHeader>
-                <CardTitle className="text-lg">פעולות נוספות</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button variant="outline" className="w-full justify-start border-purple-600 hover:bg-purple-600/10">
-                  <Palette className="w-4 h-4 ml-2" />
-                  עריכת עיצוב
-                </Button>
-                <Button variant="outline" className="w-full justify-start border-purple-600 hover:bg-purple-600/10">
-                  <ExternalLink className="w-4 h-4 ml-2" />
-                  שיתוף הדף
-                </Button>
-                <Button variant="outline" className="w-full justify-start border-purple-600 hover:bg-purple-600/10">
-                  <FileText className="w-4 h-4 ml-2" />
-                  ייצוא ל-PDF
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </main>
-    </div>
-  );
-};
-
-export default GeneratedLandingPage;
+            <div class="max-w-6xl mx-auto">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="text-4xl font-bold mb-8">אודותינו</h2>
+                        <p class="text-lg text-gray-300 mb-8 leading-relaxed">${generatedContent.aboutText}</p>
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-reverse space-x-3">
+                                <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                                    <span class="text-white text-xs">✓</span>
+                                </div>
+                                <span class="text-gray-300">
