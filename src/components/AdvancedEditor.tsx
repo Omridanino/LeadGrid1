@@ -5,9 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Upload, Edit, Type, Image as ImageIcon, Layout } from "lucide-react";
+import { Upload, Edit, Type, Image as ImageIcon, Layout, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import PageElementsEditor from "@/components/PageElementsEditor";
+import SectionEditor from "@/components/SectionEditor";
 
 interface AdvancedEditorProps {
   content: any;
@@ -27,7 +28,7 @@ const AdvancedEditor = ({
   onHeroImageChange 
 }: AdvancedEditorProps) => {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState<'basic' | 'elements'>('basic');
+  const [activeTab, setActiveTab] = useState<'basic' | 'sections' | 'elements'>('basic');
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -38,7 +39,7 @@ const AdvancedEditor = ({
         onHeroImageChange(imageUrl);
         toast({
           title: "🖼️ תמונה הועלתה!",
-          description: "התמונה נוספה לדף בהצלחה ומעודכנת בתצוגה"
+          description: "התמונה נוספה לדף בהצלחה ומעודכנת בתצוגה המקדימה"
         });
       };
       reader.readAsDataURL(file);
@@ -59,31 +60,6 @@ const AdvancedEditor = ({
     });
   };
 
-  const addFeature = () => {
-    const newFeature = "תכונה חדשה";
-    onContentChange({
-      ...content,
-      features: [...content.features, newFeature]
-    });
-  };
-
-  const updateFeature = (index: number, value: string) => {
-    const newFeatures = [...content.features];
-    newFeatures[index] = value;
-    onContentChange({
-      ...content,
-      features: newFeatures
-    });
-  };
-
-  const removeFeature = (index: number) => {
-    const newFeatures = content.features.filter((_: string, i: number) => i !== index);
-    onContentChange({
-      ...content,
-      features: newFeatures
-    });
-  };
-
   const handleElementsChange = (elements: any[]) => {
     onContentChange({
       ...content,
@@ -99,16 +75,27 @@ const AdvancedEditor = ({
           onClick={() => setActiveTab('basic')}
           className={`flex-1 ${activeTab === 'basic' ? 'bg-gray-600' : 'bg-transparent'}`}
           variant="ghost"
+          size="sm"
         >
-          <Edit className="w-4 h-4 ml-2" />
+          <Edit className="w-4 h-4 ml-1" />
           עריכה בסיסית
+        </Button>
+        <Button
+          onClick={() => setActiveTab('sections')}
+          className={`flex-1 ${activeTab === 'sections' ? 'bg-gray-600' : 'bg-transparent'}`}
+          variant="ghost"
+          size="sm"
+        >
+          <Settings className="w-4 h-4 ml-1" />
+          עריכת סקשנים
         </Button>
         <Button
           onClick={() => setActiveTab('elements')}
           className={`flex-1 ${activeTab === 'elements' ? 'bg-gray-600' : 'bg-transparent'}`}
           variant="ghost"
+          size="sm"
         >
-          <Layout className="w-4 h-4 ml-2" />
+          <Layout className="w-4 h-4 ml-1" />
           אלמנטים מתקדמים
         </Button>
       </div>
@@ -126,7 +113,7 @@ const AdvancedEditor = ({
             <div>
               <Label className="text-white font-semibold mb-2 block">
                 <ImageIcon className="w-4 h-4 inline ml-1" />
-                תמונת רקע לכותרת
+                תמונת רקע לכותרת הראשית
               </Label>
               <div className="flex items-center gap-4">
                 <Input
@@ -157,7 +144,7 @@ const AdvancedEditor = ({
               )}
             </div>
 
-            {/* Text Editing */}
+            {/* Basic Text Editing */}
             <div className="space-y-4">
               <div>
                 <Label className="text-white font-semibold">
@@ -182,77 +169,47 @@ const AdvancedEditor = ({
               </div>
 
               <div>
-                <Label className="text-white font-semibold">טקסט קריאה לפעולה</Label>
+                <Label className="text-white font-semibold">טקסט כפתור קריאה לפעולה</Label>
                 <Input
                   value={content.cta}
                   onChange={(e) => updateContent('cta', e.target.value)}
                   className="bg-gray-700 border-gray-600 text-white"
                 />
               </div>
+            </div>
+
+            {/* Contact Info and Business Info */}
+            <div className="space-y-4">
+              <div>
+                <Label className="text-white font-semibold">פרטי יצירת קשר</Label>
+                <Textarea
+                  value={formData.contactInfo}
+                  onChange={(e) => updateFormData('contactInfo', e.target.value)}
+                  className="bg-gray-700 border-gray-600 text-white"
+                  rows={3}
+                />
+              </div>
 
               <div>
-                <Label className="text-white font-semibold">טקסט אודות</Label>
-                <Textarea
-                  value={content.aboutText}
-                  onChange={(e) => updateContent('aboutText', e.target.value)}
+                <Label className="text-white font-semibold">שם העסק</Label>
+                <Input
+                  value={formData.businessName}
+                  onChange={(e) => updateFormData('businessName', e.target.value)}
                   className="bg-gray-700 border-gray-600 text-white"
-                  rows={4}
                 />
               </div>
             </div>
-
-            {/* Features Editing */}
-            <div>
-              <Label className="text-white font-semibold mb-3 block">תכונות המוצר/שירות</Label>
-              <div className="space-y-2">
-                {content.features.map((feature: string, index: number) => (
-                  <div key={index} className="flex gap-2">
-                    <Input
-                      value={feature}
-                      onChange={(e) => updateFeature(index, e.target.value)}
-                      className="bg-gray-700 border-gray-600 text-white flex-1"
-                    />
-                    <Button
-                      onClick={() => removeFeature(index)}
-                      variant="destructive"
-                      size="sm"
-                    >
-                      ✕
-                    </Button>
-                  </div>
-                ))}
-                <Button
-                  onClick={addFeature}
-                  variant="outline"
-                  className="w-full border-gray-600 text-gray-300 hover:bg-gray-700"
-                >
-                  + הוסף תכונה
-                </Button>
-              </div>
-            </div>
-
-            {/* Contact Info Editing */}
-            <div>
-              <Label className="text-white font-semibold">פרטי יצירת קשר</Label>
-              <Textarea
-                value={formData.contactInfo}
-                onChange={(e) => updateFormData('contactInfo', e.target.value)}
-                className="bg-gray-700 border-gray-600 text-white"
-                rows={3}
-              />
-            </div>
-
-            {/* Business Name */}
-            <div>
-              <Label className="text-white font-semibold">שם העסק</Label>
-              <Input
-                value={formData.businessName}
-                onChange={(e) => updateFormData('businessName', e.target.value)}
-                className="bg-gray-700 border-gray-600 text-white"
-              />
-            </div>
           </CardContent>
         </Card>
+      )}
+
+      {activeTab === 'sections' && (
+        <SectionEditor
+          content={content}
+          onContentChange={onContentChange}
+          formData={formData}
+          onFormDataChange={onFormDataChange}
+        />
       )}
 
       {activeTab === 'elements' && (
