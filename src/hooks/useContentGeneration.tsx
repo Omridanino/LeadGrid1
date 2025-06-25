@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 
 export const useContentGeneration = (formData: any) => {
@@ -356,55 +355,43 @@ export const useContentGeneration = (formData: any) => {
     return shuffled.slice(0, 4);
   };
 
-  const getRandomElements = () => {
-    const elementTypes = ['serviceCards', 'timeline', 'floatingFeatures', 'layeredCards', 'pricing', '3dElements'];
-    const randomType = elementTypes[Math.floor(Math.random() * elementTypes.length)];
-    
-    const elements = [];
-    
-    // Always include some basic elements
-    elements.push({
-      type: 'serviceCards',
-      content: getCreativeServiceCards()
-    });
-    
-    // Randomly add one creative section
-    if (Math.random() > 0.5) {
-      switch (randomType) {
-        case 'timeline':
-          elements.push({
-            type: 'timeline',
-            content: getTimelineSteps()
-          });
-          break;
-        case 'floatingFeatures':
-          elements.push({
-            type: 'floatingFeatures', 
-            content: getFloatingFeatures()
-          });
-          break;
-        case 'layeredCards':
-          elements.push({
-            type: 'layeredCards',
-            content: getLayeredCards()
-          });
-          break;
-        case 'pricing':
-          elements.push({
-            type: 'pricing',
-            content: getPricingPlans()
-          });
-          break;
-        case '3dElements':
-          elements.push({
-            type: '3dElements',
-            content: get3DElements()
-          });
-          break;
+  const getCreativeElements = () => {
+    const allElements = [
+      {
+        type: 'serviceCards',
+        content: getCreativeServiceCards()
+      },
+      {
+        type: 'timeline',
+        content: getTimelineSteps()
+      },
+      {
+        type: 'floatingFeatures',
+        content: getFloatingFeatures()
+      },
+      {
+        type: 'layeredCards',
+        content: getLayeredCards()
+      },
+      {
+        type: 'pricing',
+        content: getPricingPlans()
+      },
+      {
+        type: '3dElements',
+        content: get3DElements()
       }
-    }
-
-    return elements;
+    ];
+    
+    // Always include service cards, plus 2-3 random additional elements
+    const selectedElements = [allElements[0]]; // Always include service cards
+    const remainingElements = allElements.slice(1);
+    const shuffled = remainingElements.sort(() => 0.5 - Math.random());
+    const numAdditional = Math.floor(Math.random() * 3) + 2; // 2-4 additional elements
+    
+    selectedElements.push(...shuffled.slice(0, numAdditional));
+    
+    return selectedElements;
   };
 
   const generateCreativeContent = () => {
@@ -427,7 +414,7 @@ export const useContentGeneration = (formData: any) => {
         title: "החלום שלכם מתחיל כאן ועכשיו",
         content: `כל מסע מתחיל בצעד אחד נכון. ${formData.businessName} כאן כדי ללוות אותכם בדרך המרגשת להצלחה. עם ${formData.keyFeatures} ומחויבות מלאה ל${formData.mainGoal}, אנחנו נעשה הכל כדי שתגיעו למקום הכי טוב ומוצלח.`
       },
-      customElements: getRandomElements()
+      creativeElements: getCreativeElements()
     };
   };
 
