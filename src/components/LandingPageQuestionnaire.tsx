@@ -6,20 +6,62 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, ArrowRight, Eye, Download, Image as ImageIcon, Palette, CheckSquare } from "lucide-react";
+import { Sparkles, ArrowRight, Eye, Download, Image as ImageIcon, Palette, CheckSquare, Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface LandingPageQuestionnaireProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+const professions = [
+  { value: "רופא", label: "רופא", keywords: ["רפואה", "בריאות", "מרפאה", "קליניקה"] },
+  { value: "עורך דין", label: "עורך דין", keywords: ["משפטים", "משרד עורכי דין", "עו\"ד", "משפטי"] },
+  { value: "רואה חשבון", label: "רואה חשבון", keywords: ["חשבונאות", "רו\"ח", "מיסים", "כספים"] },
+  { value: "מהנדס", label: "מהנדס", keywords: ["הנדסה", "טכנולוגיה", "בנייה", "תכנון"] },
+  { value: "אדריכל", label: "אדריכל", keywords: ["אדריכלות", "תכנון", "בנייה", "עיצוב"] },
+  { value: "רופא שיניים", label: "רופא שיניים", keywords: ["רפואת שיניים", "שיניים", "מרפאה", "דנטלי"] },
+  { value: "מורה פרטי", label: "מורה פרטי", keywords: ["חינוך", "לימודים", "הוראה", "פרטי"] },
+  { value: "אחות", label: "אחות", keywords: ["רפואה", "בריאות", "טיפול", "סיעוד"] },
+  { value: "מתווך נדלן", label: "מתווך נדלן", keywords: ["נדלן", "מכירה", "השכרה", "דירות"] },
+  { value: "מאמן כושר", label: "מאמן כושר", keywords: ["כושר", "ספורט", "אימון", "חדר כושר"] },
+  { value: "צלם", label: "צלם", keywords: ["צילום", "חתונות", "אירועים", "סטודיו"] },
+  { value: "מעצב גרפי", label: "מעצב גרפי", keywords: ["עיצוב", "גרפיקה", "דיגיטל", "יצירה"] },
+  { value: "מנהל שיווק", label: "מנהל שיווק", keywords: ["שיווק", "פרסום", "דיגיטל", "מכירות"] },
+  { value: "שף", label: "שף", keywords: ["בישול", "מסעדה", "קייטרינג", "אוכל"] },
+  { value: "חשמלאי", label: "חשמלאי", keywords: ["חשמל", "שירותים", "תיקונים", "התקנות"] },
+  { value: "אינסטלטור", label: "אינסטלטור", keywords: ["אינסטלציה", "מים", "תיקונים", "שירותים"] },
+  { value: "נגר", label: "נגר", keywords: ["נגרות", "עץ", "רהיטים", "מלאכה"] },
+  { value: "מעצב פנים", label: "מעצב פנים", keywords: ["עיצוב", "פנים", "דקורציה", "בית"] },
+  { value: "מפתח אתרים", label: "מפתח אתרים", keywords: ["פיתוח", "אתרים", "תכנות", "דיגיטל"] },
+  { value: "מנהל רשתות חברתיות", label: "מנהל רשתות חברתיות", keywords: ["רשתות חברתיות", "שיווק", "דיגיטל", "תוכן"] },
+  { value: "מעצב אופנה", label: "מעצב אופנה", keywords: ["אופנה", "עיצוב", "בגדים", "סטייל"] },
+  { value: "מתכנן אירועים", label: "מתכנן אירועים", keywords: ["אירועים", "חתונות", "תכנון", "ארגון"] },
+  { value: "יועץ פיננסי", label: "יועץ פיננסי", keywords: ["פיננסים", "ייעוץ", "השקעות", "כסף"] },
+  { value: "יועץ עסקי", label: "יועץ עסקי", keywords: ["ייעוץ", "עסקים", "אסטרטגיה", "ניהול"] },
+  { value: "מדריך כושר", label: "מדריך כושר", keywords: ["כושר", "ספורט", "אימון", "בריאות"] },
+  { value: "מעסה", label: "מעסה", keywords: ["עיסוי", "טיפול", "רפואה משלימה", "רילקס"] },
+  { value: "מורה פרטי", label: "מורה פרטי", keywords: ["חינוך", "לימודים", "הוראה", "פרטי"] },
+  { value: "מתרגם", label: "מתרגם", keywords: ["תרגום", "שפות", "טקסט", "שירותי שפה"] },
+  { value: "סופר", label: "סופר", keywords: ["כתיבה", "ספרים", "תוכן", "יצירה"] },
+  { value: "סוכן נסיעות", label: "סוכן נסיעות", keywords: ["נסיעות", "תיירות", "טיולים", "חופשה"] },
+  { value: "מקצועות יופי", label: "מקצועות יופי", keywords: ["יופי", "קוסמטיקה", "מספרה", "טיפוח"] },
+  { value: "מטפח נוף", label: "מטפח נוף", keywords: ["גינון", "נוף", "צמחים", "גן"] },
+  { value: "שירותי ניקיון", label: "שירותי ניקיון", keywords: ["ניקיון", "ניקוי", "תחזוקה", "בית"] },
+  { value: "מכונאי", label: "מכונאי", keywords: ["מכוניות", "תיקונים", "רכב", "מוסך"] },
+  { value: "מתכנן חתונות", label: "מתכנן חתונות", keywords: ["חתונות", "אירועים", "תכנון", "טקס"] }
+];
+
 const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
+  const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     businessName: "",
     businessType: "",
@@ -138,15 +180,50 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
       </div>
       
       <div>
-        <Label htmlFor="businessType" className="text-white font-semibold">סוג העסק / התחום *</Label>
-        <Textarea
-          id="businessType"
-          value={formData.businessType}
-          onChange={(e) => updateFormData('businessType', e.target.value)}
-          className="bg-gray-700 border-gray-600 text-white"
-          placeholder="תאר את העסק שלך בכמה מילים (לדוגמה: מסעדה איטלקית, חנות בגדים, סטודיו לעיצוב גרפי, משרד עורכי דין...)"
-          rows={3}
-        />
+        <Label htmlFor="businessType" className="text-white font-semibold">סוג העסק / המקצוע *</Label>
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={open}
+              className="w-full justify-between bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
+            >
+              {formData.businessType
+                ? professions.find((profession) => profession.value === formData.businessType)?.label
+                : "בחר מקצוע..."}
+              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-full p-0 bg-gray-800 border-gray-600">
+            <Command className="bg-gray-800">
+              <CommandInput placeholder="חפש מקצוע..." className="text-white" />
+              <CommandEmpty className="text-gray-400">לא נמצא מקצוע מתאים.</CommandEmpty>
+              <CommandGroup className="max-h-64 overflow-y-auto">
+                {professions.map((profession) => (
+                  <CommandItem
+                    key={profession.value}
+                    value={profession.value}
+                    onSelect={(currentValue) => {
+                      updateFormData('businessType', currentValue === formData.businessType ? "" : currentValue);
+                      setOpen(false);
+                    }}
+                    className="text-white hover:bg-gray-700"
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        formData.businessType === profession.value ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                    {profession.label}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </Command>
+          </PopoverContent>
+        </Popover>
+        <p className="text-sm text-gray-400 mt-1">בחר את המקצוע שלך מהרשימה או חפש</p>
       </div>
 
       <div>
