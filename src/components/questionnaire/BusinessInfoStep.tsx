@@ -78,14 +78,17 @@ export const BusinessInfoStep = ({
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-full p-0 bg-gray-800 border-gray-600" style={{ zIndex: 9999 }}>
+          <PopoverContent
+            className="w-full p-0 bg-gray-800 border-gray-600 max-h-[300px] overflow-y-auto"
+            style={{ zIndex: 9999 }}
+          >
             <Command className="bg-gray-800">
               <CommandInput
                 placeholder="חפש מקצוע..."
                 className="h-9 bg-gray-800 border-none text-white placeholder:text-gray-400"
                 onValueChange={setSearchValue}
               />
-              <CommandList className="max-h-60 overflow-y-auto bg-gray-800">
+              <CommandList className="max-h-[250px] overflow-y-auto bg-gray-800">
                 <CommandEmpty className="text-gray-400 p-4 text-center">
                   לא נמצא מקצוע מתאים.
                 </CommandEmpty>
@@ -106,7 +109,7 @@ export const BusinessInfoStep = ({
                       {profession.label}
                     </CommandItem>
                   ))}
-                  {/* הצגת מקצוע חופשי אם לא נמצא ברשימה */}
+                  {/* הזנת מקצוע חופשי */}
                   {searchValue &&
                     !professions.some((p) =>
                       p.label.toLowerCase() === searchValue.toLowerCase()
@@ -125,7 +128,7 @@ export const BusinessInfoStep = ({
           </PopoverContent>
         </Popover>
         <p className="text-sm text-gray-400 mt-1">
-          בחר את המקצוע שלך מהרשימה או חפש / הזן ידנית
+          בחר את המקצוע שלך מהרשימה או כתוב אחד משלך
         </p>
       </div>
 
@@ -145,4 +148,3 @@ export const BusinessInfoStep = ({
     </div>
   );
 };
-
