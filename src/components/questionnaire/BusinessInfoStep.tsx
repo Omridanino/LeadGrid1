@@ -2,11 +2,7 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { professions } from "@/constants/professions";
 
 interface BusinessInfoStepProps {
@@ -20,7 +16,7 @@ interface BusinessInfoStepProps {
   setOpen: (open: boolean) => void;
 }
 
-export const BusinessInfoStep = ({ formData, updateFormData, open, setOpen }: BusinessInfoStepProps) => {
+export const BusinessInfoStep = ({ formData, updateFormData }: BusinessInfoStepProps) => {
   return (
     <div className="space-y-6">
       <div>
@@ -36,54 +32,23 @@ export const BusinessInfoStep = ({ formData, updateFormData, open, setOpen }: Bu
       
       <div>
         <Label htmlFor="businessType" className="text-white font-semibold">סוג העסק / המקצוע *</Label>
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={open}
-              className="w-full justify-between bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
-            >
-              {formData.businessType
-                ? professions.find((profession) => profession.value === formData.businessType)?.label
-                : "בחר מקצוע..."}
-              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-full p-0 bg-gray-800 border-gray-600" style={{ zIndex: 9999 }}>
-            <Command className="bg-gray-800">
-              <CommandInput 
-                placeholder="חפש מקצוע..." 
-                className="h-9 bg-gray-800 border-none text-white placeholder:text-gray-400" 
-              />
-              <CommandList className="max-h-60 overflow-y-auto bg-gray-800">
-                <CommandEmpty className="text-gray-400 p-4 text-center">לא נמצא מקצוע מתאים.</CommandEmpty>
-                <CommandGroup className="bg-gray-800">
-                  {professions.map((profession) => (
-                    <CommandItem
-                      key={profession.value}
-                      value={profession.label}
-                      onSelect={() => {
-                        updateFormData('businessType', profession.value);
-                        setOpen(false);
-                      }}
-                      className="text-white hover:bg-gray-700 cursor-pointer bg-gray-800 data-[selected=true]:bg-gray-700"
-                    >
-                      <Check
-                        className={cn(
-                          "mr-2 h-4 w-4",
-                          formData.businessType === profession.value ? "opacity-100" : "opacity-0"
-                        )}
-                      />
-                      {profession.label}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-        <p className="text-sm text-gray-400 mt-1">בחר את המקצוע שלך מהרשימה או חפש</p>
+        <Select onValueChange={(value) => updateFormData('businessType', value)} value={formData.businessType}>
+          <SelectTrigger className="bg-gray-700 border-gray-600 text-white hover:bg-gray-600">
+            <SelectValue placeholder="בחר מקצוע..." />
+          </SelectTrigger>
+          <SelectContent className="bg-gray-800 border-gray-600 max-h-60 overflow-y-auto">
+            {professions.map((profession) => (
+              <SelectItem
+                key={profession.value}
+                value={profession.value}
+                className="text-white hover:bg-gray-700 cursor-pointer focus:bg-gray-700"
+              >
+                {profession.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <p className="text-sm text-gray-400 mt-1">בחר את המקצוע שלך מהרשימה</p>
       </div>
 
       <div>
