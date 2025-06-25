@@ -1,72 +1,54 @@
 
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 
 const TestimonialsSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  
+
   const testimonials = [
     {
-      name: "איתי כהן",
-      role: "מנכ״ל, TechStart",
-      content: "LeadGrid שינה לי את המשחק לגמרי. תוך 15 דקות היה לי דף נחיתה מקצועי שהגדיל לי את ההמרות ב-300%! הלקוחות מתקשרים יותר ואני מוכר יותר.",
-      rating: 5
+      name: "דנה כהן",
+      role: "מנהלת שיווק, חברת טכנולוגיה",
+      content: "LeadGrid שינה לנו את המשחק! תוך שבוע יצרנו דף נחיתה שהגדיל את ההמרות ב-340%. הכלים החכמים והעיצוב המקצועי עזרו לנו להגיע ללקוחות חדשים שלא חלמנו עליהם.",
+      rating: 5,
+      image: "https://images.unsplash.com/photo-1494790108755-2616b612b647?w=100&h=100&fit=crop&crop=face"
     },
     {
-      name: "רונית לוי",
-      role: "מנהלת שיווק, GrowFast",
-      content: "סוף סוף פלטפורמה שמבינה עברית ו-RTL! העיצובים מדהימים והתוצאות מדברות בעד עצמן. המערכת חסכה לי אלפי שקלים על מעצבים.",
-      rating: 5
+      name: "אמיר לוי", 
+      role: "בעל עסק, סטודיו עיצוב",
+      content: "בתור מעצב, אני מאוד בררן בנושא עיצוב. LeadGrid הצליח להפתיע אותי עם תבניות מרהיבות וגמישות מדהימה. הלקוחות שלי מתפעלים מהדפים שאני יוצר עבורם.",
+      rating: 5,
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
     },
     {
-      name: "דני ברק",
-      role: "יזם דיגיטלי",
-      content: "המערכת הכי חכמה שראיתי. הצ'אטבוט עוזר בכל שלב והתמיכה ברמה הכי גבוהה. יצרתי 5 דפי נחיתה שונים לפרויקטים שלי והכל עובד מושלם.",
-      rating: 5
+      name: "רחל אברהם",
+      role: "יועצת עסקית, פרילנסר",
+      content: "לפני LeadGrid בזבזתי אלפי שקלים על מפתחים ועדיין לא קיבלתי מה שרציתי. עכשיו אני יוצרת דפי נחיתה מקצועיים בעצמי תוך דקות ומחסכת המון זמן וכסף.",
+      rating: 5,
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face"
     },
     {
-      name: "מיכל אברהם", 
-      role: "בעלת סלון יופי",
-      content: "הדף שיצרתי עם LeadGrid הביא לי פי 4 יותר הזמנות. הלקוחות אומרים שהאתר נראה מקצועי ואמין. הכי שווה את ההשקעה!",
-      rating: 5
+      name: "יוסי כהן",
+      role: "מנכ״ל, חברת ייעוץ",
+      content: "התוצאות מדברות בעד עצמן - 500% עלייה בלידים תוך חודש. הדפים נטענים מהר, נראים מדהימים ומובילים להמרות גבוהות. זה בדיוק מה שחיפשתי.",
+      rating: 5,
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
     },
     {
-      name: "עמית שמעון",
-      role: "יועץ עסקי",
-      content: "תוך שעה היו לי 3 דפי נחיתה מקצועיים ללקוחות שלי. החיסכון בזמן ובכסף הוא אדיר. הלקוחות שלי מרוצים מהתוצאות.",
-      rating: 5
+      name: "מיכל רוזן",
+      role: "מנהלת פרויקטים, חברת פינטק",
+      content: "הממשק של LeadGrid כל כך אינטואיטיבי שגם הצוות הלא-טכני שלנו יכול ליצור דפים מרהיבים. זה שינה את איך שאנחנו עובדים עם דפי נחיתה בחברה.",
+      rating: 5,
+      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face"
     },
     {
-      name: "אלון דוד",
-      role: "עורך דין",
-      content: "הלקוחות מתקשרים יותר מאז שהחלפתי את האתר הישן בדף נחיתה חדש. הטופס יצירת קשר עובד מעולה ואני מקבל פניות איכותיות יותר.",
-      rating: 5
-    },
-    {
-      name: "נועה פרידמן",
-      role: "מנכ״לית סטארטאפ",
-      content: "בתור סטארטאפ, כל שקל חשוב. LeadGrid חסך לנו עשרות אלפי שקלים על מעצבים ומפתחים. התוצאה מקצועית וממירה מעולה.",
-      rating: 5
-    },
-    {
-      name: "טל גרינברג",
-      role: "מייסד קורס אונלין",
-      content: "הפלטפורמה הכי אינטואיטיבית שיש. אפילו אמא שלי הצליחה ליצור דף נחיתה יפה לעסק שלה. הכל פשוט וברור.",
-      rating: 5
-    },
-    {
-      name: "יוסי מלכא",
-      role: "רופא שיניים",
-      content: "קיבלתי 20 פניות חדשות בשבוע הראשון אחרי שהשקתי את הדף החדש. המערכת יצרה לי דף שמדבר בדיוק לקהל שלי.",
-      rating: 5
-    },
-    {
-      name: "רחל כהן",
-      role: "פסיכולוגה קלינית",
-      content: "הדף שיצרתי מקצועי ומרגיע בדיוק כמו שרציתי. מקבלת הרבה יותר פניות מלקוחות פוטנציאליים והם מגיעים יותר מוכנים לטיפול.",
-      rating: 5
+      name: "עידן שמואלי",
+      role: "מפתח, סטארטאפ",
+      content: "כמפתח, אני מעריך את איכות הקוד שLeadGrid מייצר. זה נקי, מהיר, ומותאם לSEO. זה חוסך לי שעות עבודה ונותן תוצאות מדהימות.",
+      rating: 5,
+      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face"
     }
   ];
 
@@ -74,46 +56,52 @@ const TestimonialsSection = () => {
   const totalPages = Math.ceil(testimonials.length / itemsPerPage);
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % totalPages);
+    setCurrentIndex((prevIndex) => 
+      prevIndex + itemsPerPage >= testimonials.length ? 0 : prevIndex + itemsPerPage
+    );
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + totalPages) % totalPages);
+    setCurrentIndex((prevIndex) => 
+      prevIndex === 0 ? Math.max(0, testimonials.length - itemsPerPage) : Math.max(0, prevIndex - itemsPerPage)
+    );
   };
 
-  const getCurrentTestimonials = () => {
-    const start = currentIndex * itemsPerPage;
-    return testimonials.slice(start, start + itemsPerPage);
-  };
+  const currentTestimonials = testimonials.slice(currentIndex, currentIndex + itemsPerPage);
 
   return (
-    <section id="testimonials" className="py-20 px-4 bg-gradient-to-r from-gray-900 to-gray-800">
-      <div className="container mx-auto">
+    <section id="testimonials" className="py-20 bg-gradient-to-b from-gray-900 to-black">
+      <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h3 className="text-4xl font-bold mb-6 text-white">מה אומרים עלינו</h3>
-          <p className="text-xl text-gray-300">יותר מ-10,000 לקוחות מרוצים ברחבי העולם</p>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            מה הלקוחות שלנו אומרים
+          </h2>
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            אלפי עסקים כבר משתמשים ב-LeadGrid ומגדילים את המכירות שלהם
+          </p>
         </div>
-        
+
         <div className="relative">
-          {/* כפתורי ניווט */}
-          <div className="flex justify-center gap-4 mb-8">
+          {/* Navigation Arrows */}
+          <div className="flex justify-center items-center space-x-reverse space-x-4 mb-8">
             <Button
               onClick={prevSlide}
               variant="outline"
-              size="lg"
-              className="rounded-full border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white"
+              size="icon"
+              className="rounded-full border-gray-600 hover:border-blue-500 hover:bg-blue-500/10"
+              disabled={currentIndex === 0}
             >
               <ChevronRight className="w-5 h-5" />
             </Button>
             
-            <div className="flex items-center space-x-2 px-4">
+            {/* Pagination Dots */}
+            <div className="flex space-x-reverse space-x-3">
               {Array.from({ length: totalPages }).map((_, index) => (
-                <button
+                <div
                   key={index}
-                  onClick={() => setCurrentIndex(index)}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    index === currentIndex 
-                      ? 'bg-blue-500 scale-125' 
+                    Math.floor(currentIndex / itemsPerPage) === index
+                      ? 'bg-blue-500 scale-125'
                       : 'bg-gray-600 hover:bg-gray-500'
                   }`}
                 />
@@ -123,38 +111,40 @@ const TestimonialsSection = () => {
             <Button
               onClick={nextSlide}
               variant="outline"
-              size="lg"
-              className="rounded-full border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white"
+              size="icon"
+              className="rounded-full border-gray-600 hover:border-blue-500 hover:bg-blue-500/10"
+              disabled={currentIndex + itemsPerPage >= testimonials.length}
             >
               <ChevronLeft className="w-5 h-5" />
             </Button>
           </div>
 
-          {/* קלפי ביקורות */}
-          <div className="grid md:grid-cols-3 gap-6 min-h-[300px]">
-            {getCurrentTestimonials().map((testimonial, index) => (
-              <Card 
-                key={`${currentIndex}-${index}`}
-                className="bg-gray-800/80 backdrop-blur-sm border-gray-700 hover:shadow-xl transition-all duration-500 hover:scale-105 animate-fade-in"
-              >
-                <CardContent className="p-6 h-full flex flex-col">
+          {/* Testimonials Grid */}
+          <div className="grid md:grid-cols-3 gap-6 transition-all duration-500">
+            {currentTestimonials.map((testimonial, index) => (
+              <Card key={currentIndex + index} className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border-gray-700 hover:border-blue-500/50 transition-all duration-300 group">
+                <CardContent className="p-6">
+                  <div className="flex items-center mb-4">
+                    <img
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      className="w-12 h-12 rounded-full ml-4 group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <div>
+                      <h4 className="font-semibold text-white">{testimonial.name}</h4>
+                      <p className="text-sm text-gray-400">{testimonial.role}</p>
+                    </div>
+                  </div>
+                  
                   <div className="flex mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <span key={i} className="text-yellow-400 text-lg">⭐</span>
+                      <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                     ))}
                   </div>
-                  <p className="text-gray-300 mb-6 text-sm leading-relaxed flex-1">
+                  
+                  <p className="text-gray-300 leading-relaxed group-hover:text-white transition-colors duration-300">
                     "{testimonial.content}"
                   </p>
-                  <div className="flex items-center space-x-reverse space-x-3 mt-auto">
-                    <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                      {testimonial.name.charAt(0)}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-white">{testimonial.name}</p>
-                      <p className="text-gray-400 text-sm">{testimonial.role}</p>
-                    </div>
-                  </div>
                 </CardContent>
               </Card>
             ))}
