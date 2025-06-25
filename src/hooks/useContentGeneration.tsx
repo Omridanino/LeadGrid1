@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 export const useContentGeneration = (formData: any) => {
@@ -126,32 +127,120 @@ export const useContentGeneration = (formData: any) => {
       return allFeatures.slice(0, 6);
     };
 
-    // Generate testimonials
+    // Generate business-specific testimonials
     const generateTestimonials = () => {
       const businessName = formData.businessName || 'העסק';
-      return [
-        {
-          name: 'שרה כהן',
-          role: 'לקוחה מרוצה',
-          content: `השירות ב${businessName} פשוט מדהים! בדיוק מה שחיפשתי. ממליצה בחום!`,
-          rating: 5
-        },
-        {
-          name: 'דוד לוי',
-          role: 'לקוח קבוע',
-          content: `עובד עם ${businessName} כבר שנתיים וכל פעם מתרשם מחדש מהמקצועיות והאיכות.`,
-          rating: 5
-        },
-        {
-          name: 'רחל אברהם',
-          role: 'לקוחה מרוצה',
-          content: `הצוות מקצועי, השירות מעולה והמחירים הוגנים. בהחלט חוזרת!`,
-          rating: 5
-        }
-      ];
+      const businessType = formData.businessType?.toLowerCase() || '';
+      
+      if (businessType.includes('מסעדה') || businessType.includes('אוכל')) {
+        return [
+          {
+            name: 'מירי גולדברג',
+            role: 'לקוחה קבועה',
+            content: `חוויה קולינרית מדהימה! האוכל ב${businessName} טעים מאוד והשירות מעולה. חוזרים שוב ושוב!`,
+            rating: 5
+          },
+          {
+            name: 'יוסי כהן',
+            role: 'אבא למשפחה',
+            content: `המקום המושלם לארוחת משפחה. הילדים שמחים, האוכל נהדר, והמחירים הוגנים.`,
+            rating: 5
+          },
+          {
+            name: 'רונית לוי',
+            role: 'חובבת אוכל',
+            content: `כל מנה ב${businessName} היא יצירת אמנות! הטעמים מפתיעים והצגה יפהפייה.`,
+            rating: 5
+          }
+        ];
+      } else if (businessType.includes('קפה') || businessType.includes('בית קפה')) {
+        return [
+          {
+            name: 'תומר רוזן',
+            role: 'עורך דין',
+            content: `הקפה ב${businessName} הוא הטוב ביותר בעיר! המקום מושלם לפגישות עבודה.`,
+            rating: 5
+          },
+          {
+            name: 'נועה אברמוביץ',
+            role: 'סטודנטית',
+            content: `אוהבת לבוא לכאן ללמוד. האווירה שקטה, הקפה מעולה והעוגות טריות!`,
+            rating: 5
+          },
+          {
+            name: 'דני שפירא',
+            role: 'פרילאנסר',
+            content: `המשרד השני שלי! WiFi מעולה, קפה טעים ושירות נחמד. מה עוד צריך?`,
+            rating: 5
+          }
+        ];
+      } else if (businessType.includes('טכנולוגי') || businessType.includes('תוכנה')) {
+        return [
+          {
+            name: 'איתן גרינברג',
+            role: 'מנכ"ל סטארטאפ',
+            content: `${businessName} פיתחו לנו מערכת מדהימה! המקצועיות והיחס האישי פשוט מעולים.`,
+            rating: 5
+          },
+          {
+            name: 'מיכל כץ',
+            role: 'מנהלת IT',
+            content: `הפתרון הטכנולוגי שקיבלנו מ${businessName} חסך לנו המון זמן וכסף. ממליצה בחום!`,
+            rating: 5
+          },
+          {
+            name: 'רון אשכנזי',
+            role: 'יזם טכנולוגי',
+            content: `צוות מקצועי שמבין בדיוק מה שצריך. התמיכה שלהם זמינה תמיד!`,
+            rating: 5
+          }
+        ];
+      } else if (businessType.includes('יועץ') || businessType.includes('ייעוץ')) {
+        return [
+          {
+            name: 'רחל פרידמן',
+            role: 'בעלת עסק',
+            content: `הייעוץ של ${businessName} שינה לנו את העסק! התוצאות מדברות בעד עצמן.`,
+            rating: 5
+          },
+          {
+            name: 'אבי משה',
+            role: 'מנהל כללי',
+            content: `גישה מקצועית, ליווי צמוד והבנה עמוקה של הצרכים שלנו. פשוט מעולה!`,
+            rating: 5
+          },
+          {
+            name: 'שרה בן דוד',
+            role: 'יזמת',
+            content: `בזכות הייעוץ המקצועי הצלחנו להגדיל את המכירות ב-150%! תודה ${businessName}!`,
+            rating: 5
+          }
+        ];
+      } else {
+        return [
+          {
+            name: 'שרה כהן',
+            role: 'לקוחה מרוצה',
+            content: `השירות ב${businessName} פשוט מדהים! בדיוק מה שחיפשתי. ממליצה בחום!`,
+            rating: 5
+          },
+          {
+            name: 'דוד לוי',
+            role: 'לקוח קבוע',
+            content: `עובד עם ${businessName} כבר שנתיים וכל פעם מתרשם מחדש מהמקצועיות והאיכות.`,
+            rating: 5
+          },
+          {
+            name: 'רחל אברהם',
+            role: 'לקוחה מרוצה',
+            content: `הצוות מקצועי, השירות מעולה והמחירים הוגנים. בהחלט חוזרת!`,
+            rating: 5
+          }
+        ];
+      }
     };
 
-    // Generate FAQ
+    // Generate FAQ based on business type
     const generateFAQ = () => {
       const businessType = formData.businessType?.toLowerCase() || '';
       let faq = [];
@@ -162,11 +251,23 @@ export const useContentGeneration = (formData: any) => {
           { question: 'האם המטבח כשר?', answer: 'כן, המטבח שלנו כשר בהשגחת הרבנות המקומית.' },
           { question: 'האם יש תפריט לילדים?', answer: 'בהחלט! יש לנו תפריט מיוחד לילדים עם מנות שהם אוהבים.' }
         ];
-      } else if (businessType.includes('שירות') || businessType.includes('עסק')) {
+      } else if (businessType.includes('קפה') || businessType.includes('בית קפה')) {
         faq = [
-          { question: 'כמה זמן לוקח לקבל הצעת מחיר?', answer: 'אנחנו מתחייבים לחזור אליכם תוך 24 שעות עם הצעת מחיר מפורטת.' },
-          { question: 'האם יש אחריות על השירות?', answer: 'כן, אנחנו נותנים אחריות מלאה על כל השירותים שלנו.' },
-          { question: 'האם אתם עובדים בסופי שבוע?', answer: 'כן, אנחנו זמינים גם בסופי שבוע לפי תיאום מראש.' }
+          { question: 'האם יש WiFi במקום?', answer: 'כן, יש WiFi מהיר וחינמי לכל הלקוחות.' },
+          { question: 'האם אפשר להזמין מראש?', answer: 'כן, ניתן להזמין קפה מראש ולאסוף במהירות.' },
+          { question: 'האם יש אופציות טבעוניות?', answer: 'בהחלט! יש לנו חלב שקדים, שיבולת שועל וסויה.' }
+        ];
+      } else if (businessType.includes('טכנולוגי') || businessType.includes('תוכנה')) {
+        faq = [
+          { question: 'כמה זמן לוקח פיתוח מערכת?', answer: 'זמן הפיתוח תלוי במורכבות הפרויקט, בדרך כלל בין 2-6 חודשים.' },
+          { question: 'האם יש תמיכה לאחר המסירה?', answer: 'כן, אנחנו מספקים תמיכה טכנית מלאה לאחר המסירה.' },
+          { question: 'האם המערכת תהיה מאובטחת?', answer: 'כן, אנחנו עומדים בתקני האבטחה הגבוהים ביותר בתעשייה.' }
+        ];
+      } else if (businessType.includes('יועץ') || businessType.includes('ייעוץ')) {
+        faq = [
+          { question: 'כמה זמן לוקח לראות תוצאות?', answer: 'תוצאות ראשוניות נראות בדרך כלל תוך 4-6 שבועות מתחילת התהליך.' },
+          { question: 'איך נמדדת ההצלחה?', answer: 'אנחנו קובעים יחד מדדי הצלחה ברורים ועוקבים אחריהם באופן קבוע.' },
+          { question: 'האם יש התחייבות לתוצאות?', answer: 'כן, אנחנו מתחייבים להשגת המטרות שנקבעו יחד בתחילת התהליך.' }
         ];
       } else {
         faq = [

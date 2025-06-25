@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Code, ExternalLink, Palette, FileText, Edit, Settings } from "lucide-react";
+import { Code, ExternalLink, Palette, FileText, Edit, Settings, Save, CheckCircle, Lock } from "lucide-react";
 import ColorEditor, { ColorScheme } from "@/components/ColorEditor";
 import WordPressIntegration from "@/components/WordPressIntegration";
 import AdvancedEditor from "@/components/AdvancedEditor";
@@ -10,10 +10,12 @@ interface OptionsPanelProps {
   showDesignEditor: boolean;
   showWordPressGuide: boolean;
   showAdvancedEditor?: boolean;
+  isSaved?: boolean;
   onColorChange: (colors: ColorScheme) => void;
   onDesignEdit: () => void;
   onWordPressIntegration: () => void;
   onAdvancedEdit?: () => void;
+  onSave?: () => void;
   generateHtmlFile: () => string;
   content?: any;
   onContentChange?: (newContent: any) => void;
@@ -25,10 +27,12 @@ const OptionsPanel = ({
   showDesignEditor, 
   showWordPressGuide, 
   showAdvancedEditor = false,
+  isSaved = false,
   onColorChange, 
   onDesignEdit, 
   onWordPressIntegration,
   onAdvancedEdit,
+  onSave,
   generateHtmlFile,
   content,
   onContentChange,
@@ -37,6 +41,30 @@ const OptionsPanel = ({
 }: OptionsPanelProps) => {
   return (
     <div className="space-y-6">
+      {/* Save Design Card */}
+      <Card className={`bg-gradient-to-br ${isSaved ? 'from-green-800 to-gray-900 border-green-700' : 'from-purple-800 to-gray-900 border-purple-700'}`}>
+        <CardHeader>
+          <CardTitle className="flex items-center text-lg">
+            {isSaved ? <CheckCircle className="w-5 h-5 ml-2 text-green-500" /> : <Save className="w-5 h-5 ml-2 text-purple-500" />}
+            {isSaved ? 'העיצוב נשמר!' : 'שמירת עיצוב'}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-gray-300 text-sm">
+            {isSaved ? 'העיצוב שלך נשמר בהצלחה! כעת תוכל להוריד את הקוד או לחבר לוורדפרס.' : 'שמור את העיצוב הנוכחי לפני הורדת קוד או חיבור לוורדפרס'}
+          </p>
+          {!isSaved && onSave && (
+            <Button 
+              onClick={onSave}
+              className="w-full bg-purple-600 hover:bg-purple-700 rounded-xl"
+            >
+              <Save className="w-4 h-4 ml-2" />
+              שמור עיצוב
+            </Button>
+          )}
+        </CardContent>
+      </Card>
+
       {/* Advanced Content Editor */}
       {showAdvancedEditor && content && onContentChange && formData && onFormDataChange && (
         <AdvancedEditor 
@@ -115,10 +143,23 @@ const OptionsPanel = ({
             </p>
             <Button 
               onClick={onWordPressIntegration}
-              className="w-full bg-blue-600 hover:bg-blue-700 rounded-xl"
+              disabled={!isSaved}
+              className={`w-full rounded-xl ${isSaved 
+                ? 'bg-blue-600 hover:bg-blue-700' 
+                : 'bg-gray-600 cursor-not-allowed'
+              }`}
             >
-              <ExternalLink className="w-4 h-4 ml-2" />
-              התחבר לוורדפרס
+              {isSaved ? (
+                <>
+                  <ExternalLink className="w-4 h-4 ml-2" />
+                  התחבר לוורדפרס
+                </>
+              ) : (
+                <>
+                  <Lock className="w-4 h-4 ml-2" />
+                  שמור עיצוב לפני חיבור
+                </>
+              )}
             </Button>
           </CardContent>
         </Card>

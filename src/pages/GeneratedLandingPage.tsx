@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { ColorScheme } from "@/components/ColorEditor";
@@ -7,7 +8,7 @@ import GeneratedPageHeader from "@/components/GeneratedPageHeader";
 import LandingPagePreview from "@/components/LandingPagePreview";
 import OptionsPanel from "@/components/OptionsPanel";
 import { Button } from "@/components/ui/button";
-import { PanelRightClose, PanelRightOpen } from "lucide-react";
+import { PanelRightClose, PanelRightOpen, Save, CheckCircle } from "lucide-react";
 
 const GeneratedLandingPage = () => {
   const location = useLocation();
@@ -17,6 +18,7 @@ const GeneratedLandingPage = () => {
   const [showWordPressGuide, setShowWordPressGuide] = useState(false);
   const [showDesignEditor, setShowDesignEditor] = useState(false);
   const [showAdvancedEditor, setShowAdvancedEditor] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const [currentColors, setCurrentColors] = useState<ColorScheme>({
     primary: "#3b82f6",
     secondary: "#8b5cf6", 
@@ -40,30 +42,46 @@ const GeneratedLandingPage = () => {
     mainGoal: "הגדלת מכירות",
     keyFeatures: "שירות מקצועי, מהירות, אמינות",
     brandColors: "כחול וכסף",
-    contactInfo: "טלפון: 050-1234567\nאימייל: info@business.co.il"
+    contactInfo: "טלפון: 050-1234567\nאימייל: info@business.co.il",
+    heroStyle: "gradient"
   });
 
   const { generatedContent, setGeneratedContent, generateCreativeContent } = useContentGeneration(formData);
 
   // Initialize content
-  useState(() => {
+  useEffect(() => {
     if (!generatedContent) {
       setGeneratedContent(generateCreativeContent());
     }
-  });
+  }, []);
 
   const content = generatedContent || generateCreativeContent();
 
+  // Track changes for save status
+  useEffect(() => {
+    setIsSaved(false);
+  }, [generatedContent, currentColors, formData]);
+
   const handleColorChange = (newColors: ColorScheme) => {
     setCurrentColors(newColors);
+    setIsSaved(false);
     toast({
       title: "🎨 צבעים עודכנו!",
       description: "הצבעים החדשים הוחלו על הדף",
     });
   };
 
+  const handleSaveDesign = () => {
+    setIsSaved(true);
+    toast({
+      title: "💾 העיצוב נשמר בהצלחה!",
+      description: "כעת תוכל להוריד את הקוד או לחבר לוורדפרס",
+    });
+  };
+
   const handleAdvancedEdit = () => {
     setShowAdvancedEditor(!showAdvancedEditor);
+    setIsSaved(false);
     toast({
       title: "📝 עורך התוכן",
       description: showAdvancedEditor ? "עורך התוכן נסגר" : "עורך התוכן נפתח - עכשיו תוכל לערוך טקסטים ולהוסיף תמונות!",
@@ -71,6 +89,14 @@ const GeneratedLandingPage = () => {
   };
 
   const handleWordPressIntegration = () => {
+    if (!isSaved) {
+      toast({
+        title: "⚠️ יש לשמור קודם",
+        description: "אנא שמור את העיצוב לפני החיבור לוורדפרס",
+        variant: "destructive"
+      });
+      return;
+    }
     setShowWordPressGuide(true);
     toast({
       title: "🔗 אינטגרציה עם WordPress",
@@ -79,6 +105,15 @@ const GeneratedLandingPage = () => {
   };
 
   const handleDownloadCode = () => {
+    if (!isSaved) {
+      toast({
+        title: "⚠️ יש לשמור קודם",
+        description: "אנא שמור את העיצוב לפני הורדת הקוד",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     const htmlContent = generateHtmlFile();
     const blob = new Blob([htmlContent], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
@@ -102,9 +137,9 @@ const GeneratedLandingPage = () => {
       description: "יוצר גרסה חדשה עם תוכן משופר",
     });
     
-    // Apply questionnaire preferences to generation
     const newContent = generateCreativeContent();
     setGeneratedContent(newContent);
+    setIsSaved(false);
     
     toast({
       title: "✨ דף חדש נוצר!",
@@ -114,14 +149,36 @@ const GeneratedLandingPage = () => {
 
   const handleDesignEdit = () => {
     setShowDesignEditor(!showDesignEditor);
+    setIsSaved(false);
     toast({
       title: "🎨 עורך העיצוב",
       description: showDesignEditor ? "עורך העיצוב נסגר" : "עורך העיצוב נפתח",
     });
   };
 
+  const getHeroImageUrl = () => {
+    const businessType = formData.businessType?.toLowerCase() || '';
+    
+    if (businessType.includes('קפה') || businessType.includes('בית קפה')) {
+      return 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
+    } else if (businessType.includes('מסעדה') || businessType.includes('אוכל')) {
+      return 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
+    } else if (businessType.includes('טכנולוגי') || businessType.includes('תוכנה')) {
+      return 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
+    } else if (businessType.includes('יועץ') || businessType.includes('ייעוץ')) {
+      return 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
+    } else if (businessType.includes('רפואה') || businessType.includes('בריאות')) {
+      return 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
+    } else if (businessType.includes('חנות') || businessType.includes('אופנה')) {
+      return 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
+    }
+    
+    return 'https://images.unsplash.com/photo-1497486751825-1233686d5d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
+  };
+
   const generateHtmlFile = () => {
     const colors = content.colors || currentColors;
+    const heroImage = formData.heroStyle === 'image' ? getHeroImageUrl() : null;
     
     return `<!DOCTYPE html>
 <html dir="rtl" lang="he">
@@ -139,7 +196,10 @@ const GeneratedLandingPage = () => {
             color: ${currentColors.text};
         }
         .hero-section { 
-            background: linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 50%, ${colors.accent} 100%);
+            ${heroImage 
+              ? `background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${heroImage}'); background-size: cover; background-position: center;`
+              : `background: linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 50%, ${colors.accent} 100%);`
+            }
             min-height: 500px;
             display: flex;
             flex-direction: column;
@@ -457,6 +517,17 @@ const GeneratedLandingPage = () => {
         onDownloadCode={handleDownloadCode}
       />
 
+      {/* Save Button */}
+      <div className="fixed top-20 right-4 z-50">
+        <Button
+          onClick={handleSaveDesign}
+          className={`${isSaved ? 'bg-green-600 hover:bg-green-700' : 'bg-purple-600 hover:bg-purple-700'} rounded-full p-3`}
+          size="sm"
+        >
+          {isSaved ? <CheckCircle className="w-5 h-5" /> : <Save className="w-5 h-5" />}
+        </Button>
+      </div>
+
       <main className="container mx-auto px-4 py-8">
         <div className="flex gap-4 relative">
           {/* Toggle Button */}
@@ -484,10 +555,12 @@ const GeneratedLandingPage = () => {
                 showDesignEditor={showDesignEditor}
                 showWordPressGuide={showWordPressGuide}
                 showAdvancedEditor={showAdvancedEditor}
+                isSaved={isSaved}
                 onColorChange={handleColorChange}
                 onDesignEdit={handleDesignEdit}
                 onWordPressIntegration={handleWordPressIntegration}
                 onAdvancedEdit={handleAdvancedEdit}
+                onSave={handleSaveDesign}
                 generateHtmlFile={generateHtmlFile}
                 content={content}
                 onContentChange={setGeneratedContent}

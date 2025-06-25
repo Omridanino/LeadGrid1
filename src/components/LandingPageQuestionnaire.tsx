@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Sparkles, ArrowRight, Eye, Download } from "lucide-react";
+import { Sparkles, ArrowRight, Eye, Download, Image as ImageIcon, Palette } from "lucide-react";
 
 interface LandingPageQuestionnaireProps {
   isOpen: boolean;
@@ -27,7 +27,8 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
     mainGoal: "",
     keyFeatures: "",
     brandColors: "",
-    contactInfo: ""
+    contactInfo: "",
+    heroStyle: "gradient" // New field
   });
 
   const handleSubmit = () => {
@@ -82,7 +83,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
   };
 
   const nextStep = () => {
-    if (currentStep < 3) {
+    if (currentStep < 4) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -193,6 +194,39 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
     </div>
   );
 
+  const renderStep4 = () => (
+    <div className="space-y-6">
+      <div>
+        <Label htmlFor="heroStyle" className="text-white font-semibold">איך תרצו שיוצג הדף בחלק העליון?</Label>
+        <Select onValueChange={(value) => updateFormData('heroStyle', value)} value={formData.heroStyle}>
+          <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+            <SelectValue placeholder="בחר סגנון הצגה" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="gradient">
+              <div className="flex items-center gap-2">
+                <Palette className="w-4 h-4" />
+                רקע יפה עם משפטים (ללא תמונה)
+              </div>
+            </SelectItem>
+            <SelectItem value="image">
+              <div className="flex items-center gap-2">
+                <ImageIcon className="w-4 h-4" />
+                תמונה עם משפטים על גביה
+              </div>
+            </SelectItem>
+          </SelectContent>
+        </Select>
+        <p className="text-sm text-gray-400 mt-2">
+          {formData.heroStyle === 'gradient' 
+            ? "הדף יוצג עם רקע בצבעי הדרגה יפים ללא תמונות"
+            : "הדף יוצג עם תמונה רלוונטית לעסק שלכם ברקע"
+          }
+        </p>
+      </div>
+    </div>
+  );
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -207,7 +241,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
           {/* Progress indicator */}
           <div className="flex justify-between items-center">
             <div className="flex space-x-2 space-x-reverse">
-              {[1, 2, 3].map((step) => (
+              {[1, 2, 3, 4].map((step) => (
                 <div
                   key={step}
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
@@ -222,7 +256,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
                 </div>
               ))}
             </div>
-            <span className="text-sm text-gray-400">שלב {currentStep} מתוך 3</span>
+            <span className="text-sm text-gray-400">שלב {currentStep} מתוך 4</span>
           </div>
 
           {/* Step content */}
@@ -232,12 +266,14 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
                 {currentStep === 1 && "פרטים בסיסיים על העסק"}
                 {currentStep === 2 && "מטרות ותכונות"}
                 {currentStep === 3 && "עיצוב ויצירת קשר"}
+                {currentStep === 4 && "סגנון תצוגה"}
               </CardTitle>
             </CardHeader>
             <CardContent>
               {currentStep === 1 && renderStep1()}
               {currentStep === 2 && renderStep2()}
               {currentStep === 3 && renderStep3()}
+              {currentStep === 4 && renderStep4()}
             </CardContent>
           </Card>
 
@@ -261,7 +297,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
                 צפה ועדכן דף
               </Button>
 
-              {currentStep < 3 ? (
+              {currentStep < 4 ? (
                 <Button
                   onClick={nextStep}
                   className="bg-purple-600 hover:bg-purple-700"
