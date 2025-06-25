@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -46,7 +46,6 @@ const professions = [
   { value: "יועץ עסקי", label: "יועץ עסקי", keywords: ["ייעוץ", "עסקים", "אסטרטגיה", "ניהול"] },
   { value: "מדריך כושר", label: "מדריך כושר", keywords: ["כושר", "ספורט", "אימון", "בריאות"] },
   { value: "מעסה", label: "מעסה", keywords: ["עיסוי", "טיפול", "רפואה משלימה", "רילקס"] },
-  { value: "מורה פרטי", label: "מורה פרטי", keywords: ["חינוך", "לימודים", "הוראה", "פרטי"] },
   { value: "מתרגם", label: "מתרגם", keywords: ["תרגום", "שפות", "טקסט", "שירותי שפה"] },
   { value: "סופר", label: "סופר", keywords: ["כתיבה", "ספרים", "תוכן", "יצירה"] },
   { value: "סוכן נסיעות", label: "סוכן נסיעות", keywords: ["נסיעות", "תיירות", "טיולים", "חופשה"] },
@@ -195,31 +194,33 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-full p-0 bg-gray-800 border-gray-600">
+          <PopoverContent className="w-full p-0 bg-gray-800 border-gray-600 z-50">
             <Command className="bg-gray-800">
-              <CommandInput placeholder="חפש מקצוע..." className="text-white" />
-              <CommandEmpty className="text-gray-400">לא נמצא מקצוע מתאים.</CommandEmpty>
-              <CommandGroup className="max-h-64 overflow-y-auto">
-                {professions.map((profession) => (
-                  <CommandItem
-                    key={profession.value}
-                    value={profession.value}
-                    onSelect={(currentValue) => {
-                      updateFormData('businessType', currentValue === formData.businessType ? "" : currentValue);
-                      setOpen(false);
-                    }}
-                    className="text-white hover:bg-gray-700"
-                  >
-                    <Check
-                      className={cn(
-                        "mr-2 h-4 w-4",
-                        formData.businessType === profession.value ? "opacity-100" : "opacity-0"
-                      )}
-                    />
-                    {profession.label}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
+              <CommandInput placeholder="חפש מקצוע..." className="text-white bg-gray-800 border-gray-600" />
+              <CommandList>
+                <CommandEmpty className="text-gray-400 p-4">לא נמצא מקצוע מתאים.</CommandEmpty>
+                <CommandGroup className="max-h-64 overflow-y-auto">
+                  {professions.map((profession) => (
+                    <CommandItem
+                      key={profession.value}
+                      value={profession.value}
+                      onSelect={(currentValue) => {
+                        updateFormData('businessType', currentValue === formData.businessType ? "" : currentValue);
+                        setOpen(false);
+                      }}
+                      className="text-white hover:bg-gray-700 cursor-pointer"
+                    >
+                      <Check
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          formData.businessType === profession.value ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                      {profession.label}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
             </Command>
           </PopoverContent>
         </Popover>
