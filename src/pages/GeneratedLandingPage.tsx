@@ -182,6 +182,24 @@ const GeneratedLandingPage = () => {
             transform: scale(1.05);
             box-shadow: 0 12px 35px rgba(0,0,0,0.4);
         }
+        .primary-button {
+            background: ${colors.primary};
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        .primary-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+        }
         .badge {
             background: rgba(255,255,255,0.2);
             color: white;
@@ -409,7 +427,7 @@ const GeneratedLandingPage = () => {
             <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
                 <div style="color: ${currentColors.contactTextColor || currentColors.text}; line-height: 1.6; white-space: pre-line;">${formData.contactInfo}</div>
             </div>
-            <a href="tel:${formData.contactInfo.match(/\d{2,3}-?\d{7,8}/)?.[0] || ''}" class="cta-button">
+            <a href="tel:${formData.contactInfo.match(/\d{2,3}-?\d{7,8}/)?.[0] || ''}" class="primary-button">
                 ${content.cta}
             </a>
         </div>
