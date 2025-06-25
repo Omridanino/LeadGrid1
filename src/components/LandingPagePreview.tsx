@@ -88,7 +88,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
       </h2>
       <div className="max-w-4xl mx-auto">
         <div className="relative">
-          {/* Timeline line */}
           <div className="absolute right-8 top-0 bottom-0 w-0.5" style={{ backgroundColor: colors.secondary }}></div>
           
           {timelineSteps.map((step: any, index: number) => (
@@ -116,46 +115,20 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
         <Zap className="w-8 h-8 ml-3 inline" style={{ color: colors.accent }} />
         היתרונות שלנו
       </h2>
-      <div className="relative">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
         {features.map((feature: any, index: number) => (
           <div 
             key={index}
-            className={`absolute ${feature.position} ${feature.size} p-6 rounded-2xl backdrop-blur-sm border border-white/20 hover:scale-110 transition-all duration-500`}
+            className="p-6 rounded-2xl backdrop-blur-sm border border-white/20 hover:scale-110 transition-all duration-500"
             style={{ 
-              background: `linear-gradient(135deg, ${feature.gradient.split(' ')[1]}, ${feature.gradient.split(' ')[3]})`
+              background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`
             }}
           >
+            <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4">
+              <Zap className="w-6 h-6 text-white" />
+            </div>
             <h3 className="font-bold text-white mb-2">{feature.title}</h3>
             <p className="text-white/90 text-sm">{feature.desc}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
-  const renderLayeredCards = (cards: any[]) => (
-    <div className="p-8" style={{ backgroundColor: currentColors.background }}>
-      <h2 className="text-3xl font-bold mb-12 text-center" style={{ color: currentColors.text }}>
-        <Quote className="w-8 h-8 ml-3 inline" style={{ color: colors.primary }} />
-        מה אומרים עלינו
-      </h2>
-      <div className="max-w-4xl mx-auto relative h-80">
-        {cards.map((card: any, index: number) => (
-          <div 
-            key={index}
-            className={`absolute w-80 p-8 rounded-2xl shadow-2xl ${card.rotation} ${card.zIndex} hover:scale-105 transition-all duration-300`}
-            style={{ 
-              background: `linear-gradient(135deg, ${card.color.split(' ')[1]}, ${card.color.split(' ')[3]})`,
-              left: `${index * 60}px`,
-              top: `${index * 20}px`
-            }}
-          >
-            <h3 className="font-bold text-white mb-2">{card.title}</h3>
-            <p className="text-white/90 mb-4">"{card.content}"</p>
-            <div>
-              <div className="font-semibold text-white">{card.name}</div>
-              <div className="text-white/70 text-sm">{card.role}</div>
-            </div>
           </div>
         ))}
       </div>
@@ -215,25 +188,70 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
     </div>
   );
 
-  const render3DElements = (elements: any[]) => (
-    <div className="p-8 relative overflow-hidden min-h-96" style={{ backgroundColor: currentColors.background }}>
-      <h2 className="text-3xl font-bold mb-8 text-center relative z-10" style={{ color: currentColors.text }}>
-        אלמנטים דינמיים
-      </h2>
-      {elements.map((element: any, index: number) => (
-        <div 
-          key={index}
-          className={`absolute ${element.position} ${element.size} ${element.color} ${element.animation} rounded-2xl shadow-2xl`}
-          style={{ animationDuration: `${2 + index}s` }}
-        ></div>
-      ))}
-      <div className="relative z-10 text-center">
-        <p className="text-lg" style={{ color: currentColors.text }}>
-          חוויה ויזואלית מרשימה שמוסיפה עומק לדף
-        </p>
+  const render3DElements = (elements: any[]) => {
+    const businessType = formData.businessType?.toLowerCase() || '';
+    
+    // Create relevant business elements
+    const businessElements = [
+      { 
+        type: 'floating-icon', 
+        icon: '📊', 
+        text: 'ניתוח נתונים',
+        position: 'top-20 right-10',
+        color: colors.primary
+      },
+      { 
+        type: 'floating-icon', 
+        icon: '🎯', 
+        text: 'יעדים ברורים',
+        position: 'top-40 left-20',
+        color: colors.secondary
+      },
+      { 
+        type: 'floating-icon', 
+        icon: '💡', 
+        text: 'רעיונות חדשניים',
+        position: 'bottom-32 right-16',
+        color: colors.accent
+      },
+      { 
+        type: 'floating-icon', 
+        icon: '🚀', 
+        text: 'צמיחה מהירה',
+        position: 'bottom-20 left-10',
+        color: colors.primary
+      }
+    ];
+
+    return (
+      <div className="p-8 relative overflow-hidden min-h-96" style={{ backgroundColor: currentColors.background }}>
+        <h2 className="text-3xl font-bold mb-8 text-center relative z-10" style={{ color: currentColors.text }}>
+          יתרונות העסק שלנו
+        </h2>
+        
+        {businessElements.map((element, index) => (
+          <div 
+            key={index}
+            className={`absolute ${element.position} p-4 rounded-xl shadow-lg transform hover:scale-110 transition-all duration-300 animate-pulse`}
+            style={{ 
+              backgroundColor: element.color,
+              animationDelay: `${index * 0.5}s`,
+              animationDuration: '3s'
+            }}
+          >
+            <div className="text-2xl mb-2">{element.icon}</div>
+            <div className="text-white font-bold text-sm">{element.text}</div>
+          </div>
+        ))}
+        
+        <div className="relative z-10 text-center">
+          <p className="text-lg" style={{ color: currentColors.text }}>
+            העסק שלנו מתמחה ב{formData.businessType} ומספק שירות ברמה הגבוהה ביותר
+          </p>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderCreativeElements = () => {
     if (!content.creativeElements || content.creativeElements.length === 0) {
@@ -248,8 +266,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
           return <div key={index}>{renderTimeline(element.content)}</div>;
         case 'floatingFeatures':
           return <div key={index}>{renderFloatingFeatures(element.content)}</div>;
-        case 'layeredCards':
-          return <div key={index}>{renderLayeredCards(element.content)}</div>;
         case 'pricing':
           return <div key={index}>{renderPricing(element.content)}</div>;
         case '3dElements':
@@ -320,7 +336,10 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
               {Object.entries(content.stats).map(([key, value], index) => (
                 <div 
                   key={index} 
-                  className="bg-gradient-to-br from-orange-400 to-yellow-500 p-6 rounded-2xl hover:scale-105 transition-transform shadow-lg"
+                  className="p-6 rounded-2xl hover:scale-105 transition-transform shadow-lg"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`,
+                  }}
                 >
                   <div className="text-3xl md:text-4xl font-bold text-white mb-2">{value as string}</div>
                   <div className="text-white font-semibold text-lg">{key}</div>
