@@ -50,6 +50,150 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
     return 'https://images.unsplash.com/photo-1497486751825-1233686d5d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
   };
 
+  const renderCustomElements = () => {
+    if (!content.customElements || content.customElements.length === 0) {
+      return null;
+    }
+
+    return content.customElements.map((element: any, index: number) => {
+      switch (element.type) {
+        case 'title':
+          const TitleTag = element.content.size || 'h2';
+          return (
+            <div key={index} className="p-8" style={{ backgroundColor: currentColors.background }}>
+              <TitleTag 
+                className="text-center font-bold mb-8"
+                style={{ color: currentColors.text }}
+              >
+                {element.content.text}
+              </TitleTag>
+            </div>
+          );
+        
+        case 'text':
+          return (
+            <div key={index} className="p-8" style={{ backgroundColor: currentColors.background }}>
+              <div className="max-w-4xl mx-auto text-center">
+                <p 
+                  className="text-lg leading-relaxed"
+                  style={{ color: currentColors.text }}
+                >
+                  {element.content.text}
+                </p>
+              </div>
+            </div>
+          );
+        
+        case 'image':
+          return (
+            <div key={index} className="p-8" style={{ backgroundColor: currentColors.background }}>
+              <div className="text-center max-w-4xl mx-auto">
+                <img 
+                  src={element.content.url} 
+                  alt={element.content.alt}
+                  className="max-w-full h-auto rounded-xl mb-4 mx-auto"
+                />
+                {element.content.caption && (
+                  <p 
+                    className="italic text-sm"
+                    style={{ color: currentColors.text }}
+                  >
+                    {element.content.caption}
+                  </p>
+                )}
+              </div>
+            </div>
+          );
+        
+        case 'testimonial':
+          return (
+            <div key={index} className="p-8" style={{ backgroundColor: currentColors.background }}>
+              <div 
+                className="max-w-2xl mx-auto p-6 rounded-xl border"
+                style={{ 
+                  backgroundColor: 'rgba(255,255,255,0.05)',
+                  borderColor: `${colors.primary}40`
+                }}
+              >
+                <div className="flex mb-4">
+                  {[...Array(element.content.rating)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p 
+                  className="mb-4 text-lg leading-relaxed"
+                  style={{ color: currentColors.text }}
+                >
+                  "{element.content.content}"
+                </p>
+                <div>
+                  <div className="font-semibold" style={{ color: colors.primary }}>
+                    {element.content.name}
+                  </div>
+                  <div className="text-gray-400 text-sm">{element.content.role}</div>
+                </div>
+              </div>
+            </div>
+          );
+        
+        case 'faq':
+          return (
+            <div key={index} className="p-8" style={{ backgroundColor: currentColors.background }}>
+              <div 
+                className="max-w-4xl mx-auto p-6 rounded-xl border"
+                style={{ 
+                  backgroundColor: 'rgba(255,255,255,0.05)',
+                  borderColor: `${colors.secondary}40`
+                }}
+              >
+                <h3 
+                  className="font-semibold mb-3 text-lg"
+                  style={{ color: colors.secondary }}
+                >
+                  {element.content.question}
+                </h3>
+                <p 
+                  className="leading-relaxed"
+                  style={{ color: currentColors.text }}
+                >
+                  {element.content.answer}
+                </p>
+              </div>
+            </div>
+          );
+        
+        case 'blog':
+          return (
+            <div key={index} className="p-8" style={{ backgroundColor: currentColors.background }}>
+              <div className="max-w-4xl mx-auto">
+                <h2 
+                  className="text-3xl font-bold mb-4"
+                  style={{ color: currentColors.text }}
+                >
+                  {element.content.title}
+                </h2>
+                <p 
+                  className="text-lg italic mb-6"
+                  style={{ color: colors.secondary }}
+                >
+                  {element.content.excerpt}
+                </p>
+                <div 
+                  className="leading-relaxed whitespace-pre-line"
+                  style={{ color: currentColors.text }}
+                >
+                  {element.content.content}
+                </div>
+              </div>
+            </div>
+          );
+        
+        default:
+          return null;
+      }
+    });
+  };
+
   const finalHeroImage = formData.heroStyle === 'image' ? getHeroImageUrl() : null;
 
   return (
@@ -199,6 +343,9 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
               </p>
             </div>
           </div>
+
+          {/* Custom Elements */}
+          {renderCustomElements()}
 
           <div className="mb-12">
             <h2 

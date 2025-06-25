@@ -182,12 +182,94 @@ const GeneratedLandingPage = () => {
     return 'https://images.unsplash.com/photo-1497486751825-1233686d5d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
   };
 
-  // Generate HTML with the EXACT current page state
+  /**
+   * Generate complete HTML file that EXACTLY matches the current page preview
+   * This function creates a standalone HTML file with all the content, styling, and functionality
+   * that the user sees in the live preview
+   */
   const generateHtmlFile = () => {
+    console.log('🔧 Starting HTML generation...');
+    console.log('📊 Current content:', content);
+    console.log('🎨 Current colors:', currentColors);
+    console.log('📋 Form data:', formData);
+    console.log('🖼️ Hero image:', heroImage);
+
     const colors = content.colors || currentColors;
     const finalHeroImage = formData.heroStyle === 'image' ? getHeroImageUrl() : null;
     
-    return `<!DOCTYPE html>
+    // Generate custom elements HTML if they exist
+    const generateCustomElementsHtml = () => {
+      if (!content.customElements || content.customElements.length === 0) {
+        return '';
+      }
+
+      return content.customElements.map((element: any) => {
+        switch (element.type) {
+          case 'title':
+            const titleTag = element.content.size || 'h2';
+            return `
+            <div class="section">
+              <${titleTag} style="color: ${currentColors.text}; text-align: center; margin-bottom: 2rem; font-weight: bold;">${element.content.text}</${titleTag}>
+            </div>`;
+          
+          case 'text':
+            return `
+            <div class="section">
+              <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                <p style="color: ${currentColors.text}; line-height: 1.6; font-size: 1.1rem;">${element.content.text}</p>
+              </div>
+            </div>`;
+          
+          case 'image':
+            return `
+            <div class="section">
+              <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+                <img src="${element.content.url}" alt="${element.content.alt}" style="max-width: 100%; height: auto; border-radius: 12px; margin-bottom: 1rem;">
+                ${element.content.caption ? `<p style="color: ${currentColors.text}; font-style: italic; margin-top: 0.5rem;">${element.content.caption}</p>` : ''}
+              </div>
+            </div>`;
+          
+          case 'testimonial':
+            return `
+            <div class="section">
+              <div class="testimonial-card" style="max-width: 600px; margin: 0 auto;">
+                <div style="display: flex; margin-bottom: 1rem;">
+                  ${'★'.repeat(element.content.rating).split('').map(() => '<span style="color: #fbbf24; font-size: 1.25rem;">★</span>').join('')}
+                </div>
+                <p style="color: ${currentColors.text}; margin-bottom: 1rem; line-height: 1.5; font-size: 1.1rem;">"${element.content.content}"</p>
+                <div>
+                  <div style="font-weight: bold; color: ${colors.primary};">${element.content.name}</div>
+                  <div style="color: #9ca3af; font-size: 0.875rem;">${element.content.role}</div>
+                </div>
+              </div>
+            </div>`;
+          
+          case 'faq':
+            return `
+            <div class="section">
+              <div class="faq-item" style="max-width: 800px; margin: 0 auto;">
+                <h3 style="color: ${colors.secondary}; font-weight: bold; margin-bottom: 0.75rem; font-size: 1.1rem;">${element.content.question}</h3>
+                <p style="color: ${currentColors.text}; line-height: 1.5;">${element.content.answer}</p>
+              </div>
+            </div>`;
+          
+          case 'blog':
+            return `
+            <div class="section">
+              <div style="max-width: 800px; margin: 0 auto;">
+                <h2 style="color: ${currentColors.text}; font-weight: bold; margin-bottom: 1rem; font-size: 1.8rem;">${element.content.title}</h2>
+                <p style="color: ${colors.secondary}; margin-bottom: 1.5rem; font-size: 1.1rem; font-style: italic;">${element.content.excerpt}</p>
+                <div style="color: ${currentColors.text}; line-height: 1.6; white-space: pre-line;">${element.content.content}</div>
+              </div>
+            </div>`;
+          
+          default:
+            return '';
+        }
+      }).join('\n');
+    };
+
+    const htmlContent = `<!DOCTYPE html>
 <html dir="rtl" lang="he">
 <head>
     <meta charset="UTF-8">
@@ -446,6 +528,9 @@ const GeneratedLandingPage = () => {
         </div>
     </section>
 
+    <!-- Custom Elements Section -->
+    ${generateCustomElementsHtml()}
+
     <!-- Testimonials Section -->
     <section class="section">
         <h2 class="section-title">
@@ -501,7 +586,7 @@ const GeneratedLandingPage = () => {
     </section>
     
     <script>
-        // Smooth scrolling
+        // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -511,9 +596,29 @@ const GeneratedLandingPage = () => {
                 }
             });
         });
+
+        // Add interactivity to elements
+        document.querySelectorAll('.card, .feature-card, .testimonial-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        console.log('✅ Landing page loaded successfully!');
+        console.log('📊 Page data:', {
+            businessName: '${formData.businessName}',
+            features: ${JSON.stringify(content.features)},
+            customElements: ${JSON.stringify(content.customElements || [])}
+        });
     </script>
 </body>
 </html>`;
+
+    console.log('✅ HTML generation completed!');
+    return htmlContent;
   };
 
   return (

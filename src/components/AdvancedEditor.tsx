@@ -1,12 +1,12 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Upload, Edit, Type, Image as ImageIcon } from "lucide-react";
+import { Upload, Edit, Type, Image as ImageIcon, Layout } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import PageElementsEditor from "@/components/PageElementsEditor";
 
 interface AdvancedEditorProps {
   content: any;
@@ -17,7 +17,7 @@ interface AdvancedEditorProps {
 
 const AdvancedEditor = ({ content, onContentChange, formData, onFormDataChange }: AdvancedEditorProps) => {
   const { toast } = useToast();
-  const [isEditing, setIsEditing] = useState(false);
+  const [activeTab, setActiveTab] = useState<'basic' | 'elements'>('basic');
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -77,137 +77,175 @@ const AdvancedEditor = ({ content, onContentChange, formData, onFormDataChange }
     });
   };
 
+  const handleElementsChange = (elements: any[]) => {
+    onContentChange({
+      ...content,
+      customElements: elements
+    });
+  };
+
   return (
-    <Card className="bg-gray-800 border-gray-700">
-      <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
-          <Edit className="w-5 h-5 text-green-500" />
-          עריכה מתקדמת
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        {/* Image Upload */}
-        <div>
-          <Label className="text-white font-semibold mb-2 block">
-            <ImageIcon className="w-4 h-4 inline ml-1" />
-            תמונת רקע לכותרת
-          </Label>
-          <div className="flex items-center gap-4">
-            <Input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="bg-gray-700 border-gray-600 text-white file:bg-purple-600 file:text-white file:border-0 file:rounded file:px-4 file:py-2"
-            />
-            <Button
-              onClick={() => {
-                const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-                fileInput?.click();
-              }}
-              className="bg-purple-600 hover:bg-purple-700"
-            >
-              <Upload className="w-4 h-4 ml-2" />
-              העלה תמונה
-            </Button>
-          </div>
-        </div>
+    <div className="space-y-4">
+      {/* Tab Navigation */}
+      <div className="flex bg-gray-700 rounded-lg p-1">
+        <Button
+          onClick={() => setActiveTab('basic')}
+          className={`flex-1 ${activeTab === 'basic' ? 'bg-gray-600' : 'bg-transparent'}`}
+          variant="ghost"
+        >
+          <Edit className="w-4 h-4 ml-2" />
+          עריכה בסיסית
+        </Button>
+        <Button
+          onClick={() => setActiveTab('elements')}
+          className={`flex-1 ${activeTab === 'elements' ? 'bg-gray-600' : 'bg-transparent'}`}
+          variant="ghost"
+        >
+          <Layout className="w-4 h-4 ml-2" />
+          אלמנטים מתקדמים
+        </Button>
+      </div>
 
-        {/* Text Editing */}
-        <div className="space-y-4">
-          <div>
-            <Label className="text-white font-semibold">
-              <Type className="w-4 h-4 inline ml-1" />
-              כותרת ראשית
-            </Label>
-            <Input
-              value={content.headline}
-              onChange={(e) => updateContent('headline', e.target.value)}
-              className="bg-gray-700 border-gray-600 text-white"
-            />
-          </div>
-
-          <div>
-            <Label className="text-white font-semibold">כותרת משנה</Label>
-            <Textarea
-              value={content.subheadline}
-              onChange={(e) => updateContent('subheadline', e.target.value)}
-              className="bg-gray-700 border-gray-600 text-white"
-              rows={2}
-            />
-          </div>
-
-          <div>
-            <Label className="text-white font-semibold">טקסט קריאה לפעולה</Label>
-            <Input
-              value={content.cta}
-              onChange={(e) => updateContent('cta', e.target.value)}
-              className="bg-gray-700 border-gray-600 text-white"
-            />
-          </div>
-
-          <div>
-            <Label className="text-white font-semibold">טקסט אודות</Label>
-            <Textarea
-              value={content.aboutText}
-              onChange={(e) => updateContent('aboutText', e.target.value)}
-              className="bg-gray-700 border-gray-600 text-white"
-              rows={4}
-            />
-          </div>
-        </div>
-
-        {/* Features Editing */}
-        <div>
-          <Label className="text-white font-semibold mb-3 block">תכונות המוצר/שירות</Label>
-          <div className="space-y-2">
-            {content.features.map((feature: string, index: number) => (
-              <div key={index} className="flex gap-2">
+      {activeTab === 'basic' && (
+        <Card className="bg-gray-800 border-gray-700">
+          <CardHeader>
+            <CardTitle className="text-white flex items-center gap-2">
+              <Edit className="w-5 h-5 text-green-500" />
+              עריכה בסיסית
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Image Upload */}
+            <div>
+              <Label className="text-white font-semibold mb-2 block">
+                <ImageIcon className="w-4 h-4 inline ml-1" />
+                תמונת רקע לכותרת
+              </Label>
+              <div className="flex items-center gap-4">
                 <Input
-                  value={feature}
-                  onChange={(e) => updateFeature(index, e.target.value)}
-                  className="bg-gray-700 border-gray-600 text-white flex-1"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="bg-gray-700 border-gray-600 text-white file:bg-purple-600 file:text-white file:border-0 file:rounded file:px-4 file:py-2"
                 />
                 <Button
-                  onClick={() => removeFeature(index)}
-                  variant="destructive"
-                  size="sm"
+                  onClick={() => {
+                    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+                    fileInput?.click();
+                  }}
+                  className="bg-purple-600 hover:bg-purple-700"
                 >
-                  ✕
+                  <Upload className="w-4 h-4 ml-2" />
+                  העלה תמונה
                 </Button>
               </div>
-            ))}
-            <Button
-              onClick={addFeature}
-              variant="outline"
-              className="w-full border-gray-600 text-gray-300 hover:bg-gray-700"
-            >
-              + הוסף תכונה
-            </Button>
-          </div>
-        </div>
+            </div>
 
-        {/* Contact Info Editing */}
-        <div>
-          <Label className="text-white font-semibold">פרטי יצירת קשר</Label>
-          <Textarea
-            value={formData.contactInfo}
-            onChange={(e) => updateFormData('contactInfo', e.target.value)}
-            className="bg-gray-700 border-gray-600 text-white"
-            rows={3}
-          />
-        </div>
+            {/* Text Editing */}
+            <div className="space-y-4">
+              <div>
+                <Label className="text-white font-semibold">
+                  <Type className="w-4 h-4 inline ml-1" />
+                  כותרת ראשית
+                </Label>
+                <Input
+                  value={content.headline}
+                  onChange={(e) => updateContent('headline', e.target.value)}
+                  className="bg-gray-700 border-gray-600 text-white"
+                />
+              </div>
 
-        {/* Business Name */}
-        <div>
-          <Label className="text-white font-semibold">שם העסק</Label>
-          <Input
-            value={formData.businessName}
-            onChange={(e) => updateFormData('businessName', e.target.value)}
-            className="bg-gray-700 border-gray-600 text-white"
-          />
-        </div>
-      </CardContent>
-    </Card>
+              <div>
+                <Label className="text-white font-semibold">כותרת משנה</Label>
+                <Textarea
+                  value={content.subheadline}
+                  onChange={(e) => updateContent('subheadline', e.target.value)}
+                  className="bg-gray-700 border-gray-600 text-white"
+                  rows={2}
+                />
+              </div>
+
+              <div>
+                <Label className="text-white font-semibold">טקסט קריאה לפעולה</Label>
+                <Input
+                  value={content.cta}
+                  onChange={(e) => updateContent('cta', e.target.value)}
+                  className="bg-gray-700 border-gray-600 text-white"
+                />
+              </div>
+
+              <div>
+                <Label className="text-white font-semibold">טקסט אודות</Label>
+                <Textarea
+                  value={content.aboutText}
+                  onChange={(e) => updateContent('aboutText', e.target.value)}
+                  className="bg-gray-700 border-gray-600 text-white"
+                  rows={4}
+                />
+              </div>
+            </div>
+
+            {/* Features Editing */}
+            <div>
+              <Label className="text-white font-semibold mb-3 block">תכונות המוצר/שירות</Label>
+              <div className="space-y-2">
+                {content.features.map((feature: string, index: number) => (
+                  <div key={index} className="flex gap-2">
+                    <Input
+                      value={feature}
+                      onChange={(e) => updateFeature(index, e.target.value)}
+                      className="bg-gray-700 border-gray-600 text-white flex-1"
+                    />
+                    <Button
+                      onClick={() => removeFeature(index)}
+                      variant="destructive"
+                      size="sm"
+                    >
+                      ✕
+                    </Button>
+                  </div>
+                ))}
+                <Button
+                  onClick={addFeature}
+                  variant="outline"
+                  className="w-full border-gray-600 text-gray-300 hover:bg-gray-700"
+                >
+                  + הוסף תכונה
+                </Button>
+              </div>
+            </div>
+
+            {/* Contact Info Editing */}
+            <div>
+              <Label className="text-white font-semibold">פרטי יצירת קשר</Label>
+              <Textarea
+                value={formData.contactInfo}
+                onChange={(e) => updateFormData('contactInfo', e.target.value)}
+                className="bg-gray-700 border-gray-600 text-white"
+                rows={3}
+              />
+            </div>
+
+            {/* Business Name */}
+            <div>
+              <Label className="text-white font-semibold">שם העסק</Label>
+              <Input
+                value={formData.businessName}
+                onChange={(e) => updateFormData('businessName', e.target.value)}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {activeTab === 'elements' && (
+        <PageElementsEditor
+          elements={content.customElements || []}
+          onElementsChange={handleElementsChange}
+        />
+      )}
+    </div>
   );
 };
 
