@@ -147,6 +147,7 @@ const GeneratedLandingPage = () => {
             padding: 3rem;
             text-align: center;
             position: relative;
+            overflow: hidden;
         }
         .section {
             padding: 2rem;
@@ -154,31 +155,32 @@ const GeneratedLandingPage = () => {
         }
         .card {
             background: rgba(255,255,255,0.05);
-            border: 1px solid ${colors.primary}66;
+            border: 1px solid ${colors.primary}40;
             padding: 1.5rem;
             border-radius: 12px;
             transition: all 0.3s ease;
             margin-bottom: 1rem;
         }
         .card:hover {
-            transform: translateY(-5px) scale(1.02);
+            transform: scale(1.05);
         }
         .cta-button {
             background: ${colors.accent};
             color: white;
-            padding: 15px 30px;
+            padding: 15px 40px;
             border: none;
             border-radius: 12px;
-            font-size: 1.1rem;
+            font-size: 1.25rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         }
         .cta-button:hover {
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
         }
         .badge {
             background: rgba(255,255,255,0.2);
@@ -194,11 +196,12 @@ const GeneratedLandingPage = () => {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
-            max-width: 800px;
+            max-width: 1000px;
             margin: 2rem auto 0;
         }
         .stat-card {
             background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
             padding: 1rem;
             border-radius: 12px;
             border: 1px solid rgba(255,255,255,0.2);
@@ -206,15 +209,46 @@ const GeneratedLandingPage = () => {
         }
         .features-grid {
             display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid ${colors.primary}40;
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+        }
+        .feature-card:hover {
+            transform: scale(1.05);
+            border-color: ${colors.primary}80;
+        }
+        .feature-icon {
+            width: 32px;
+            height: 32px;
+            background: ${colors.primary};
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 1rem;
+            margin-top: 0.25rem;
+            flex-shrink: 0;
+        }
+        .testimonials-grid {
+            display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
             margin-bottom: 3rem;
         }
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
+        .testimonial-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid ${colors.primary}40;
+            padding: 1.5rem;
+            border-radius: 12px;
         }
         .section-title {
             font-size: 2rem;
@@ -227,12 +261,38 @@ const GeneratedLandingPage = () => {
             justify-content: center;
             gap: 0.75rem;
         }
+        .faq-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            gap: 1rem;
+        }
+        .faq-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid ${colors.secondary}40;
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+        .about-section, .emotional-section {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .contact-section {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid ${colors.primary}40;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
         @media (max-width: 768px) {
             .hero-section { padding: 2rem 1rem; }
             .section { padding: 1.5rem; }
             .features-grid { grid-template-columns: 1fr; }
             .testimonials-grid { grid-template-columns: 1fr; }
-            .stats-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
             h1 { font-size: 2rem !important; }
             .section-title { font-size: 1.5rem !important; }
         }
@@ -265,8 +325,8 @@ const GeneratedLandingPage = () => {
         </h2>
         <div class="features-grid">
             ${content.features.map((feature: string) => `
-            <div class="card" style="display: flex; align-items: flex-start;">
-                <div style="width: 32px; height: 32px; background: ${colors.primary}; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-left: 1rem; margin-top: 0.25rem; flex-shrink: 0;">
+            <div class="feature-card">
+                <div class="feature-icon">
                     <span style="color: white; font-size: 0.875rem; font-weight: bold;">✓</span>
                 </div>
                 <span style="color: ${currentColors.featuresTextColor || currentColors.text}; line-height: 1.5;">${feature}</span>
@@ -281,8 +341,10 @@ const GeneratedLandingPage = () => {
             <span style="color: ${colors.secondary};">👥</span>
             ${content.aboutTitle}
         </h2>
-        <div class="card" style="max-width: 800px; margin: 0 auto; text-align: center;">
-            <p style="color: ${currentColors.aboutTextColor || currentColors.text}; line-height: 1.6; font-size: 1.1rem;">${content.aboutText}</p>
+        <div class="about-section">
+            <div class="card">
+                <p style="color: ${currentColors.aboutTextColor || currentColors.text}; line-height: 1.6; font-size: 1.1rem;">${content.aboutText}</p>
+            </div>
         </div>
     </section>
 
@@ -292,8 +354,10 @@ const GeneratedLandingPage = () => {
             <span style="color: ${colors.accent};">❤️</span>
             ${content.emotional.title}
         </h2>
-        <div class="card" style="max-width: 800px; margin: 0 auto; text-align: center;">
-            <p style="color: ${currentColors.text}; line-height: 1.6; font-size: 1.1rem;">${content.emotional.content}</p>
+        <div class="emotional-section">
+            <div class="card">
+                <p style="color: ${currentColors.text}; line-height: 1.6; font-size: 1.1rem;">${content.emotional.content}</p>
+            </div>
         </div>
     </section>
 
@@ -305,7 +369,7 @@ const GeneratedLandingPage = () => {
         </h2>
         <div class="testimonials-grid">
             ${content.testimonials.map((testimonial: any) => `
-            <div class="card">
+            <div class="testimonial-card">
                 <div style="display: flex; margin-bottom: 1rem;">
                     ${'★'.repeat(testimonial.rating).split('').map(() => '<span style="color: #fbbf24; font-size: 1.25rem;">★</span>').join('')}
                 </div>
@@ -325,9 +389,9 @@ const GeneratedLandingPage = () => {
             <span style="color: ${colors.secondary};">❓</span>
             שאלות נפוצות
         </h2>
-        <div style="max-width: 800px; margin: 0 auto;">
+        <div class="faq-container">
             ${content.faq.map((item: any) => `
-            <div class="card" style="margin-bottom: 1rem;">
+            <div class="faq-item">
                 <h3 style="color: ${colors.secondary}; font-weight: bold; margin-bottom: 0.75rem; font-size: 1.1rem;">${item.question}</h3>
                 <p style="color: ${currentColors.text}; line-height: 1.5;">${item.answer}</p>
             </div>
@@ -337,7 +401,7 @@ const GeneratedLandingPage = () => {
     
     <!-- Contact Section -->
     <section class="section" id="contact">
-        <div class="card" style="max-width: 600px; margin: 0 auto; text-align: center;">
+        <div class="contact-section">
             <h2 style="color: ${currentColors.contactColor || currentColors.text}; font-size: 1.75rem; font-weight: bold; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center;">
                 <span style="color: ${colors.accent}; margin-left: 0.75rem;">💬</span>
                 ${content.contactTitle}
@@ -345,7 +409,7 @@ const GeneratedLandingPage = () => {
             <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
                 <div style="color: ${currentColors.contactTextColor || currentColors.text}; line-height: 1.6; white-space: pre-line;">${formData.contactInfo}</div>
             </div>
-            <a href="tel:${formData.contactInfo.match(/\d{2,3}-?\d{7,8}/)?.[0] || ''}" class="cta-button" style="font-size: 1.1rem;">
+            <a href="tel:${formData.contactInfo.match(/\d{2,3}-?\d{7,8}/)?.[0] || ''}" class="cta-button">
                 ${content.cta}
             </a>
         </div>

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 
 export const useContentGeneration = (formData: any) => {
@@ -43,13 +42,14 @@ export const useContentGeneration = (formData: any) => {
 
     const selectedColors = parseColors(formData.brandColors || '');
 
-    // Generate enhanced features based on user input and business type
+    // Generate enhanced features based on user input and business type - ALWAYS 6 features
     const generateEnhancedFeatures = () => {
       const businessType = formData.businessType?.toLowerCase() || '';
       const userFeatures = formData.keyFeatures?.toLowerCase() || '';
       
       let enhancedFeatures = [];
       
+      // Start with user's key features but enhance them
       if (userFeatures.includes('איכות') || userFeatures.includes('איכותי')) {
         enhancedFeatures.push('מוצרים ושירותים ברמה הגבוהה ביותר עם בקרת איכות מתמדת');
       }
@@ -69,22 +69,61 @@ export const useContentGeneration = (formData: any) => {
         enhancedFeatures.push('מיקום נוח ונגיש עם חניה בחינם');
       }
 
-      // Add business-specific features if not enough user input
-      if (enhancedFeatures.length < 4) {
-        if (businessType.includes('מסעדה') || businessType.includes('אוכל')) {
-          enhancedFeatures.push('מנות טריות המוכנות יומיומית', 'תפריט מגוון המתאים לכל הטעמים', 'אווירה חמה ומזמינה לכל המשפחה');
-        } else if (businessType.includes('קפה') || businessType.includes('בית קפה')) {
-          enhancedFeatures.push('פולי קפה מהטובים בעולם', 'באריסטה מקצועי ומנוסה', 'מקום מושלם לעבודה ופגישות');
-        } else if (businessType.includes('טכנולוגי') || businessType.includes('תוכנה')) {
-          enhancedFeatures.push('טכנולוגיות מתקדמות ועדכניות', 'פתרונות מותאמים אישית', 'תמיכה טכנית מקצועית');
-        } else if (businessType.includes('יועץ') || businessType.includes('ייעוץ')) {
-          enhancedFeatures.push('גישה אישית לכל לקוח', 'תוצאות מדידות ומוכחות', 'ליווי צמוד לאורך כל התהליך');
-        } else {
-          enhancedFeatures.push('פתרון מותאם אישית לצרכים שלכם', 'עבודה מקצועית ואמינה', 'התחייבות למצוינות בכל פרט');
-        }
+      // Add business-specific features to reach exactly 6
+      const businessSpecificFeatures = [];
+      
+      if (businessType.includes('מסעדה') || businessType.includes('אוכל')) {
+        businessSpecificFeatures.push(
+          'מנות טריות המוכנות יומיומית מחומרי גלם מהטובים ביותר',
+          'תפריט מגוון המתאים לכל הטעמים כולל אופציות טבעוניות',
+          'אווירה חמה ומזמינה לכל המשפחה עם עיצוב מיוחד',
+          'שף מנוסה עם רקע בינלאומי ויצירתיות במטבח',
+          'משלוחים מהירים עם שמירה על איכות המזון',
+          'מחירים הוגנים עם מנות נדיבות וערך מוסף'
+        );
+      } else if (businessType.includes('קפה') || businessType.includes('בית קפה')) {
+        businessSpecificFeatures.push(
+          'פולי קפה מהטובים בעולם עם קלייה טרייה יומיומית',
+          'באריסטה מקצועי ומנוסה שיכין לכם את הקפה המושלם',
+          'מקום מושלם לעבודה ופגישות עם WiFi מהיר וחינם',
+          'מגוון עוגות וקינוחים הנאפים במקום מדי יום',
+          'אווירה נעימה ושקטה למפגשים או עבודה',
+          'משקאות מיוחדים וייחודיים שלא תמצאו במקום אחר'
+        );
+      } else if (businessType.includes('טכנולוגי') || businessType.includes('תוכנה')) {
+        businessSpecificFeatures.push(
+          'טכנולוגיות מתקדמות ועדכניות המובילות בשוק',
+          'פתרונות מותאמים אישית בדיוק לצרכים שלכם',
+          'תמיכה טכנית מקצועית זמינה 24/7',
+          'צוות מפתחים מומחים עם ניסיון רב בפרויקטים מורכבים',
+          'עמידה בתקני אבטחה הגבוהים ביותר',
+          'אינטגרציה חלקה עם המערכות הקיימות שלכם'
+        );
+      } else if (businessType.includes('יועץ') || businessType.includes('ייעוץ')) {
+        businessSpecificFeatures.push(
+          'גישה אישית לכל לקוח עם הבנה עמוקה של הצרכים',
+          'תוצאות מדידות ומוכחות עם מעקב ובקרה',
+          'ליווי צמוד לאורך כל התהליך עד להשגת המטרות',
+          'ניסיון עשיר בתחום עם רקורד מוכח של הצלחות',
+          'כלים ושיטות עבודה מתקדמות ויעילות',
+          'זמינות גבוהה ותגובה מהירה לכל פנייה'
+        );
+      } else {
+        businessSpecificFeatures.push(
+          'פתרון מותאם אישית לצרכים הייחודיים שלכם',
+          'עבודה מקצועית ואמינה עם תשומת לב לפרטים',
+          'התחייבות למצוינות בכל שלב של התהליך',
+          'צוות מנוסה ומקצועי עם גישה חמה ואישית',
+          'שירות מהיר ויעיל עם עמידה בלוחות זמנים',
+          'מחירים שקופים והוגנים ללא הפתעות'
+        );
       }
 
-      return enhancedFeatures.slice(0, 6);
+      // Combine and ensure exactly 6 features
+      const allFeatures = [...enhancedFeatures, ...businessSpecificFeatures];
+      
+      // Always return exactly 6 features
+      return allFeatures.slice(0, 6);
     };
 
     // Generate testimonials
