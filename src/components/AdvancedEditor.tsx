@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,9 +14,18 @@ interface AdvancedEditorProps {
   onContentChange: (newContent: any) => void;
   formData: any;
   onFormDataChange: (newFormData: any) => void;
+  heroImage: string;
+  onHeroImageChange: (image: string) => void;
 }
 
-const AdvancedEditor = ({ content, onContentChange, formData, onFormDataChange }: AdvancedEditorProps) => {
+const AdvancedEditor = ({ 
+  content, 
+  onContentChange, 
+  formData, 
+  onFormDataChange,
+  heroImage,
+  onHeroImageChange 
+}: AdvancedEditorProps) => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<'basic' | 'elements'>('basic');
 
@@ -25,13 +35,10 @@ const AdvancedEditor = ({ content, onContentChange, formData, onFormDataChange }
       const reader = new FileReader();
       reader.onload = (e) => {
         const imageUrl = e.target?.result as string;
-        onContentChange({
-          ...content,
-          heroImage: imageUrl
-        });
+        onHeroImageChange(imageUrl);
         toast({
           title: "🖼️ תמונה הועלתה!",
-          description: "התמונה נוספה לדף בהצלחה"
+          description: "התמונה נוספה לדף בהצלחה ומעודכנת בתצוגה"
         });
       };
       reader.readAsDataURL(file);
@@ -139,6 +146,15 @@ const AdvancedEditor = ({ content, onContentChange, formData, onFormDataChange }
                   העלה תמונה
                 </Button>
               </div>
+              {heroImage && (
+                <div className="mt-2">
+                  <img 
+                    src={heroImage} 
+                    alt="תצוגה מקדימה" 
+                    className="w-32 h-20 object-cover rounded border"
+                  />
+                </div>
+              )}
             </div>
 
             {/* Text Editing */}
@@ -243,6 +259,8 @@ const AdvancedEditor = ({ content, onContentChange, formData, onFormDataChange }
         <PageElementsEditor
           elements={content.customElements || []}
           onElementsChange={handleElementsChange}
+          content={content}
+          onContentChange={onContentChange}
         />
       )}
     </div>

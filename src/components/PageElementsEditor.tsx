@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Edit, Trash2, Type, MessageSquare, Image, FileText, HelpCircle, Star } from "lucide-react";
+import { Plus, Edit, Trash2, Type, MessageSquare, Image, FileText, HelpCircle, Star, Upload } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface PageElement {
@@ -18,9 +18,11 @@ interface PageElement {
 interface PageElementsEditorProps {
   elements: PageElement[];
   onElementsChange: (elements: PageElement[]) => void;
+  content: any;
+  onContentChange: (content: any) => void;
 }
 
-const PageElementsEditor = ({ elements, onElementsChange }: PageElementsEditorProps) => {
+const PageElementsEditor = ({ elements, onElementsChange, content, onContentChange }: PageElementsEditorProps) => {
   const { toast } = useToast();
   const [editingElement, setEditingElement] = useState<string | null>(null);
 
@@ -32,11 +34,31 @@ const PageElementsEditor = ({ elements, onElementsChange }: PageElementsEditorPr
       content: getDefaultContent(type)
     };
     
-    onElementsChange([...elements, newElement]);
-    toast({
-      title: "✨ אלמנט נוסף!",
-      description: `אלמנט ${getElementTypeName(type)} נוסף לדף`,
-    });
+    // אם זה ביקורת, נוסיף לסקשן הביקורות
+    if (type === 'testimonial') {
+      const newTestimonial = {
+        name: newElement.content.name,
+        role: newElement.content.role,
+        content: newElement.content.content,
+        rating: newElement.content.rating
+      };
+      
+      onContentChange({
+        ...content,
+        testimonials: [...(content.testimonials || []), newTestimonial]
+      });
+      
+      toast({
+        title: "✨ ביקורת נוספה!",
+        description: "הביקורת החדשה נוספה לסקשן הביקורות",
+      });
+    } else {
+      onElementsChange([...elements, newElement]);
+      toast({
+        title: "✨ אלמנט נוסף!",
+        description: `אלמנט ${getElementTypeName(type)} נוסף לדף`,
+      });
+    }
   };
 
   const getDefaultContent = (type: PageElement['type']) => {
@@ -84,6 +106,25 @@ const PageElementsEditor = ({ elements, onElementsChange }: PageElementsEditorPr
       title: "🗑️ אלמנט נמחק",
       description: "האלמנט הוסר מהדף",
     });
+  };
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>, elementId: string) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const imageUrl = e.target?.result as string;
+        const element = elements.find(el => el.id === elementId);
+        if (element) {
+          updateElement(elementId, { ...element.content, url: imageUrl });
+          toast({
+            title: "🖼️ תמונה הועלתה!",
+            description: "התמונה נוספה לאלמנט בהצלחה"
+          });
+        }
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const renderElementEditor = (element: PageElement) => {
@@ -147,6 +188,28 @@ const PageElementsEditor = ({ elements, onElementsChange }: PageElementsEditorPr
 
         {element.type === 'image' && (
           <>
+            <div className="space-y-2">
+              <Label className="text-white">העלאת תמונה מהמחשב:</Label>
+              <div className="flex gap-2">
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageUpload(e, element.id)}
+                  className="bg-gray-600 text-white file:bg-purple-600 file:text-white file:border-0 file:rounded file:px-4 file:py-2"
+                />
+                <Button
+                  onClick={() => {
+                    const fileInput = document.querySelector(`input[type="file"]`) as HTMLInputElement;
+                    fileInput?.click();
+                  }}
+                  className="bg-purple-600 hover:bg-purple-700"
+                  size="sm"
+                >
+                  <Upload className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+            <Label className="text-white">או כתובת URL:</Label>
             <Input
               value={element.content.url}
               onChange={(e) => updateElement(element.id, { ...element.content, url: e.target.value })}
@@ -165,6 +228,15 @@ const PageElementsEditor = ({ elements, onElementsChange }: PageElementsEditorPr
               placeholder="כיתוב התמונה (אופציונלי)"
               className="bg-gray-600 text-white"
             />
+            {element.content.url && (
+              <div className="mt-2">
+                <img 
+                  src={element.content.url} 
+                  alt="תצוגה מקדימה" 
+                  className="w-32 h-20 object-cover rounded border"
+                />
+              </div>
+            )}
           </>
         )}
 
