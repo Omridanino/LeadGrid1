@@ -34,8 +34,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   };
 
   return (
-    <div className="w-full h-full" style={{ height: '100vh', overflowY: 'auto', overflowX: 'hidden' }}>
-      <div className={`min-h-full ${getStyleClass()}`} style={{ scrollBehavior: 'smooth' }}>
+    <div className="w-full" style={{ overflowY: 'auto', overflowX: 'hidden' }}>
+      <div className={`w-full ${getStyleClass()}`} style={{ scrollBehavior: 'smooth', minHeight: 'auto' }}>
         <PreviewStyles />
 
         {/* Hero Section */}

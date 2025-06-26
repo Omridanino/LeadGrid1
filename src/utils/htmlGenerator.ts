@@ -1,4 +1,3 @@
-
 import { ColorScheme } from "@/components/ColorEditor";
 
 export const generateHtmlFile = (
@@ -69,11 +68,17 @@ export const generateHtmlFile = (
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       line-height: 1.6;
       direction: rtl;
       overflow-x: hidden;
+      min-height: 100vh;
     }
 
     /* Typography Classes */
@@ -112,38 +117,40 @@ export const generateHtmlFile = (
       letter-spacing: -0.005em;
     }
 
-    /* Style Classes */
+    /* Style Classes - הסרת הגבלות גובה */
     .style-3d {
       background: var(--gradient-3d);
       position: relative;
-      overflow: hidden;
-      min-height: 100vh;
+      overflow-x: hidden;
+      width: 100%;
     }
 
     .style-geometric {
       background: linear-gradient(45deg, #1a1a2e 0%, #16213e 25%, #0f0f23 50%, #e94560 75%, #0f0f23 100%);
       background-size: 400% 400%;
       animation: geometricFlow 15s ease infinite;
-      min-height: 100vh;
+      width: 100%;
+      overflow-x: hidden;
     }
 
     .style-glass {
       background: var(--gradient-glass);
       position: relative;
-      overflow: hidden;
-      min-height: 100vh;
+      overflow-x: hidden;
+      width: 100%;
     }
 
     .style-metal {
       background: var(--gradient-metal);
       position: relative;
-      overflow: hidden;
-      min-height: 100vh;
+      overflow-x: hidden;
+      width: 100%;
     }
 
     .style-image {
       position: relative;
-      min-height: 100vh;
+      width: 100%;
+      overflow-x: hidden;
       ${getHeroBackground()}
     }
 
