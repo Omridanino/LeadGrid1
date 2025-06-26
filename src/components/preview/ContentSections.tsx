@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/components/ColorEditor";
@@ -92,7 +93,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
     
     return (
       <button className={baseClass}>
-        <img src="https://cdn.iconscout.com/3d-pack/left-arrow/thumb-400-2.png" alt="arrow" style={{width: '20px', height: '20px'}} />
+        <i className="ri-arrow-left-line text-lg"></i>
         {text}
       </button>
     );
@@ -115,7 +116,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
           <div className="container mx-auto max-w-6xl relative z-10">
             <div className="text-center mb-16">
               <div className="floating-badge mb-8">
-                <img src="https://cdn.iconscout.com/3d-pack/star/thumb-400-2.png" alt="star" style={{width: '24px', height: '24px'}} />
+                <i className="ri-star-fill text-yellow-400 text-xl"></i>
                 <span className="typography-liquid text-white font-semibold">הצעת הערך הייחודית</span>
               </div>
               <h2 className="typography-liquid text-5xl md:text-7xl font-black mb-8 text-white liquid-glow">
@@ -155,7 +156,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               ]).map((reason: any, index: number) => (
                 <div key={index} className="liquid-morph-card group">
                   <div className="liquid-icon-orb">
-                    <img src="https://cdn.iconscout.com/3d-pack/diamond/thumb-400-2.png" alt="feature" style={{width: '32px', height: '32px'}} />
+                    <i className="ri-diamond-line text-blue-300 text-2xl"></i>
                   </div>
                   <h3 className="typography-liquid text-2xl font-bold mb-4 text-white liquid-text-glow">
                     {reason.title}
@@ -190,7 +191,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               ]).map((service: any, index: number) => (
                 <div key={index} className="liquid-service-card">
                   <div className="liquid-check-orb">
-                    <img src="https://cdn.iconscout.com/3d-pack/check-mark/thumb-400-2.png" alt="check" style={{width: '24px', height: '24px'}} />
+                    <i className="ri-check-line text-green-400 text-xl"></i>
                   </div>
                   <h3 className="typography-liquid text-xl font-bold text-white mb-3 liquid-text-glow">
                     {service.title}
@@ -215,10 +216,10 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
             
             <div className="liquid-timeline">
               {[
-                { step: 1, title: "זרימה ראשונית", desc: "הבנה עמוקה של הצרכים והמטרות", icon: "https://cdn.iconscout.com/3d-pack/target/thumb-400-2.png" },
-                { step: 2, title: "עיצוב נוזלי", desc: "תכנון גמיש שמתאים עצמו לדרישות", icon: "https://cdn.iconscout.com/3d-pack/idea/thumb-400-2.png" },
-                { step: 3, title: "יישום זורם", desc: "ביצוע חלק ומדוייק של הפתרון", icon: "https://cdn.iconscout.com/3d-pack/settings/thumb-400-2.png" },
-                { step: 4, title: "התפתחות מתמשכת", desc: "שיפור וליווי רציף לאורך זמן", icon: "https://cdn.iconscout.com/3d-pack/rocket/thumb-400-2.png" }
+                { step: 1, title: "זרימה ראשונית", desc: "הבנה עמוקה של הצרכים והמטרות", icon: "ri-target-line" },
+                { step: 2, title: "עיצוב נוזלי", desc: "תכנון גמיש שמתאים עצמו לדרישות", icon: "ri-lightbulb-line" },
+                { step: 3, title: "יישום זורם", desc: "ביצוע חלק ומדוייק של הפתרון", icon: "ri-settings-line" },
+                { step: 4, title: "התפתחות מתמשכת", desc: "שיפור וליווי רציף לאורך זמן", icon: "ri-rocket-line" }
               ].map((process, index) => (
                 <div key={index} className="liquid-timeline-item">
                   <div className="liquid-step-orb">
@@ -226,7 +227,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                   </div>
                   <div className="liquid-process-card">
                     <div className="liquid-process-icon">
-                      <img src={process.icon} alt={process.title} style={{width: '40px', height: '40px'}} />
+                      <i className={`${process.icon} text-blue-300 text-3xl`}></i>
                     </div>
                     <h3 className="typography-liquid text-xl font-bold text-white mb-3 liquid-text-glow">
                       {process.title}
@@ -266,7 +267,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               ]).map((testimonial: any, index: number) => (
                 <div key={index} className="liquid-testimonial-bubble">
                   <div className="liquid-quote-orb">
-                    <img src="https://cdn.iconscout.com/3d-pack/chat/thumb-400-2.png" alt="quote" style={{width: '24px', height: '24px'}} />
+                    <i className="ri-chat-quote-line text-blue-300 text-xl"></i>
                   </div>
                   
                   <p className="typography-liquid leading-relaxed text-white mb-6 liquid-text-glow italic">
@@ -275,7 +276,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                   
                   <div className="liquid-author">
                     <div className="liquid-avatar">
-                      <img src="https://cdn.iconscout.com/3d-pack/user/thumb-400-2.png" alt="user" style={{width: '20px', height: '20px'}} />
+                      <i className="ri-user-line text-blue-300 text-lg"></i>
                     </div>
                     <div>
                       <p className="typography-liquid font-bold text-white">
@@ -312,11 +313,11 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
 
               <div className="liquid-contact-flow mb-12">
                 <div className="liquid-contact-orb">
-                  <img src="https://cdn.iconscout.com/3d-pack/phone/thumb-400-2.png" alt="phone" style={{width: '24px', height: '24px'}} />
+                  <i className="ri-phone-line text-blue-300 text-xl"></i>
                   <span className="typography-liquid text-white font-medium">050-1234567</span>
                 </div>
                 <div className="liquid-contact-orb">
-                  <img src="https://cdn.iconscout.com/3d-pack/email/thumb-400-2.png" alt="email" style={{width: '24px', height: '24px'}} />
+                  <i className="ri-mail-line text-blue-300 text-xl"></i>
                   <span className="typography-liquid text-white font-medium">info@business.co.il</span>
                 </div>
               </div>
@@ -349,7 +350,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
             <div className="cinematic-grid">
               <div className="cinematic-content">
                 <div className="cinematic-badge">
-                  <img src="https://cdn.iconscout.com/3d-pack/movie/thumb-400-2.png" alt="cinema" style={{width: '24px', height: '24px'}} />
+                  <i className="ri-movie-line text-yellow-400 text-xl"></i>
                   <span className="typography-cinematic text-white font-semibold">הצגת הערך</span>
                 </div>
                 <h2 className="typography-cinematic text-5xl md:text-7xl font-black mb-8 text-white cinematic-glow">
@@ -365,7 +366,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                 <div className="depth-showcase">
                   <div className="showcase-frame"></div>
                   <div className="showcase-content">
-                    <img src="https://cdn.iconscout.com/3d-pack/cube/thumb-400-2.png" alt="showcase" style={{width: '120px', height: '120px'}} />
+                    <i className="ri-cube-line text-blue-400 text-6xl"></i>
                   </div>
                 </div>
               </div>
@@ -397,7 +398,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                 <div key={index} className="depth-card">
                   <div className="depth-card-inner">
                     <div className="depth-icon-frame">
-                      <img src="https://cdn.iconscout.com/3d-pack/award/thumb-400-2.png" alt="award" style={{width: '40px', height: '40px'}} />
+                      <i className="ri-award-line text-yellow-400 text-3xl"></i>
                     </div>
                     <h3 className="typography-cinematic text-2xl font-bold mb-4 text-white cinematic-glow">
                       {reason.title}
@@ -432,7 +433,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                 <div key={index} className="layered-service-item">
                   <div className="service-depth-frame">
                     <div className="service-icon-3d">
-                      <img src="https://cdn.iconscout.com/3d-pack/check-circle/thumb-400-2.png" alt="service" style={{width: '32px', height: '32px'}} />
+                      <i className="ri-check-circle-line text-green-400 text-2xl"></i>
                     </div>
                     <div className="service-content">
                       <h3 className="typography-cinematic text-xl font-bold text-white mb-3 cinematic-glow">
@@ -460,10 +461,10 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
             
             <div className="cinematic-timeline">
               {[
-                { step: 1, title: "חזון ויזואלי", desc: "הגדרת הרעיון והחזון האסתטי", icon: "https://cdn.iconscout.com/3d-pack/eye/thumb-400-2.png" },
-                { step: 2, title: "תכנון הפקה", desc: "עיצוב מפורט של כל שלבי הביצוע", icon: "https://cdn.iconscout.com/3d-pack/blueprint/thumb-400-2.png" },
-                { step: 3, title: "יצירה והפקה", desc: "ביצוע מקצועי ברמה קולנועית", icon: "https://cdn.iconscout.com/3d-pack/camera/thumb-400-2.png" },
-                { step: 4, title: "עיבוד וליטוש", desc: "שיפור וליטוש לתוצאה מושלמת", icon: "https://cdn.iconscout.com/3d-pack/diamond/thumb-400-2.png" }
+                { step: 1, title: "חזון ויזואלי", desc: "הגדרת הרעיון והחזון האסתטי", icon: "ri-eye-line" },
+                { step: 2, title: "תכנון הפקה", desc: "עיצוב מפורט של כל שלבי הביצוע", icon: "ri-file-paper-line" },
+                { step: 3, title: "יצירה והפקה", desc: "ביצוע מקצועי ברמה קולנועית", icon: "ri-camera-line" },
+                { step: 4, title: "עיבוד וליטוש", desc: "שיפור וליטוש לתוצאה מושלמת", icon: "ri-diamond-line" }
               ].map((process, index) => (
                 <div key={index} className="cinematic-process-frame">
                   <div className="process-number-3d">
@@ -471,7 +472,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                   </div>
                   <div className="process-card-3d">
                     <div className="process-icon-showcase">
-                      <img src={process.icon} alt={process.title} style={{width: '48px', height: '48px'}} />
+                      <i className={`${process.icon} text-blue-400 text-4xl`}></i>
                     </div>
                     <h3 className="typography-cinematic text-2xl font-bold text-white mb-4 cinematic-glow">
                       {process.title}
@@ -507,7 +508,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                   <div className="spotlight-beam"></div>
                   <div className="testimonial-frame-3d">
                     <div className="quote-icon-3d">
-                      <img src="https://cdn.iconscout.com/3d-pack/quote/thumb-400-2.png" alt="quote" style={{width: '32px', height: '32px'}} />
+                      <i className="ri-double-quotes-l text-yellow-400 text-2xl"></i>
                     </div>
                     
                     <p className="typography-cinematic text-lg leading-relaxed text-white mb-6 cinematic-glow italic">
@@ -516,7 +517,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                     
                     <div className="author-showcase">
                       <div className="author-avatar-3d">
-                        <img src="https://cdn.iconscout.com/3d-pack/user-circle/thumb-400-2.png" alt="user" style={{width: '48px', height: '48px'}} />
+                        <i className="ri-user-3-line text-blue-400 text-3xl"></i>
                       </div>
                       <div>
                         <p className="typography-cinematic text-xl font-bold text-white cinematic-glow">
@@ -554,11 +555,11 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
 
               <div className="epic-contacts">
                 <div className="contact-frame-3d">
-                  <img src="https://cdn.iconscout.com/3d-pack/phone-call/thumb-400-2.png" alt="phone" style={{width: '32px', height: '32px'}} />
+                  <i className="ri-phone-line text-blue-400 text-2xl"></i>
                   <span className="typography-cinematic text-white font-bold text-lg">050-1234567</span>
                 </div>
                 <div className="contact-frame-3d">
-                  <img src="https://cdn.iconscout.com/3d-pack/email-open/thumb-400-2.png" alt="email" style={{width: '32px', height: '32px'}} />
+                  <i className="ri-mail-line text-blue-400 text-2xl"></i>
                   <span className="typography-cinematic text-white font-bold text-lg">info@business.co.il</span>
                 </div>
               </div>
@@ -614,7 +615,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
             ]).map((reason: any, index: number) => (
               <div key={index} className={`${getCardClass()} p-6 text-center animate-scale-in animate-delay-${index + 1}`}>
                 <div className={`${getIconClass()} mx-auto mb-4 w-12 h-12 flex items-center justify-center`}>
-                  <img src="https://cdn.iconscout.com/3d-pack/trophy/thumb-400-2.png" alt="trophy" style={{width: '32px', height: '32px'}} />
+                  <i className="ri-trophy-line text-yellow-400 text-2xl"></i>
                 </div>
                 <h3 className={`${getTypographyClass()} text-lg font-bold mb-3 text-white`}>
                   {reason.title}
@@ -650,7 +651,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               <div key={index} className={`${getCardClass()} p-6 animate-slide-up animate-delay-${index + 1}`}>
                 <div className="flex items-start gap-4 mb-4">
                   <div className={`${getIconClass()} w-8 h-8 flex items-center justify-center`}>
-                    <img src="https://cdn.iconscout.com/3d-pack/check-mark/thumb-400-2.png" alt="check" style={{width: '24px', height: '24px'}} />
+                    <i className="ri-check-line text-green-400 text-xl"></i>
                   </div>
                   <div>
                     <h3 className={`${getTypographyClass()} text-lg font-bold text-white mb-2`}>
@@ -672,7 +673,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12 animate-slide-up">
             <h2 className={`${getTypographyClass()} text-4xl md:text-5xl font-black mb-6 text-white`}>
-              <img src="https://cdn.iconscout.com/3d-pack/laptop/thumb-400-2.png" alt="process" style={{width: '40px', height: '40px', display: 'inline-block', marginLeft: '12px'}} />
+              <i className="ri-laptop-line text-blue-400 text-3xl ml-3"></i>
               תהליך העבודה שלנו
             </h2>
             <p className="typography-body text-lg text-gray-300 max-w-3xl mx-auto">
@@ -682,15 +683,15 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { step: 1, title: "ניתוח צרכים", desc: "בדיקה מעמיקה של הדרישות והמטרות שלכם", icon: "https://cdn.iconscout.com/3d-pack/target/thumb-400-2.png" },
-              { step: 2, title: "תכנון אסטרטגי", desc: "עיצוב תוכנית עבודה מותאמת אישית", icon: "https://cdn.iconscout.com/3d-pack/idea/thumb-400-2.png" },
-              { step: 3, title: "ביצוע מקצועי", desc: "יישום הפתרון ברמה הגבוהה ביותר", icon: "https://cdn.iconscout.com/3d-pack/settings/thumb-400-2.png" },
-              { step: 4, title: "מעקב ותמיכה", desc: "ליווי מתמשך ושיפורים נוספים", icon: "https://cdn.iconscout.com/3d-pack/rocket/thumb-400-2.png" }
+              { step: 1, title: "ניתוח צרכים", desc: "בדיקה מעמיקה של הדרישות והמטרות שלכם", icon: "ri-target-line" },
+              { step: 2, title: "תכנון אסטרטגי", desc: "עיצוב תוכנית עבודה מותאמת אישית", icon: "ri-lightbulb-line" },
+              { step: 3, title: "ביצוע מקצועי", desc: "יישום הפתרון ברמה הגבוהה ביותר", icon: "ri-settings-line" },
+              { step: 4, title: "מעקב ותמיכה", desc: "ליווי מתמשך ושיפורים נוספים", icon: "ri-rocket-line" }
             ].map((process, index) => (
               <div key={index} className={`${getCardClass()} text-center p-6 animate-scale-in animate-delay-${index + 1}`}>
                 <div className="relative mb-6">
                   <div className={`${getIconClass()} mx-auto w-12 h-12 flex items-center justify-center`}>
-                    <img src={process.icon} alt={process.title} style={{width: '24px', height: '24px'}} />
+                    <i className={`${process.icon} text-blue-400 text-xl`}></i>
                   </div>
                   <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center text-black font-bold text-xs">
                     {process.step}
@@ -729,11 +730,11 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               <div key={index} className={`${getCardClass()} p-6 animate-scale-in animate-delay-${index + 1}`}>
                 <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <img key={i} src="https://cdn.iconscout.com/3d-pack/star/thumb-400-2.png" alt="star" style={{width: '16px', height: '16px'}} />
+                    <i key={i} className="ri-star-fill text-yellow-400 text-sm"></i>
                   ))}
                 </div>
                 
-                <img src="https://cdn.iconscout.com/3d-pack/chat/thumb-400-2.png" alt="quote" style={{width: '24px', height: '24px', marginBottom: '12px'}} />
+                <i className="ri-chat-quote-line text-blue-400 text-xl mb-3 block"></i>
                 
                 <p className="typography-body leading-relaxed text-white mb-4 italic text-sm">
                   "{testimonial.content}"
@@ -741,7 +742,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                 
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
-                    <img src="https://cdn.iconscout.com/3d-pack/user/thumb-400-2.png" alt="user" style={{width: '20px', height: '20px'}} />
+                    <i className="ri-user-line text-white text-lg"></i>
                   </div>
                   <div>
                     <p className={`${getTypographyClass()} font-bold text-white text-sm`}>
@@ -811,13 +812,13 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
             <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto mb-8 animate-slide-up animate-delay-2">
               <div className={`${getCardClass()} p-4`}>
                 <div className="flex items-center gap-3 justify-center">
-                  <img src="https://cdn.iconscout.com/3d-pack/phone/thumb-400-2.png" alt="phone" style={{width: '20px', height: '20px'}} />
+                  <i className="ri-phone-line text-blue-400 text-lg"></i>
                   <span className="typography-body text-white font-medium">050-1234567</span>
                 </div>
               </div>
               <div className={`${getCardClass()} p-4`}>
                 <div className="flex items-center gap-3 justify-center">
-                  <img src="https://cdn.iconscout.com/3d-pack/email/thumb-400-2.png" alt="email" style={{width: '20px', height: '20px'}} />
+                  <i className="ri-mail-line text-blue-400 text-lg"></i>
                   <span className="typography-body text-white font-medium">info@business.co.il</span>
                 </div>
               </div>
@@ -831,13 +832,13 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
             {/* Enhanced Trust Badges */}
             <div className="grid md:grid-cols-3 gap-4 max-w-3xl mx-auto animate-slide-up animate-delay-4">
               {[
-                { icon: 'https://cdn.iconscout.com/3d-pack/security/thumb-400-2.png', title: 'מוגן ומאובטח', desc: 'ביטחון מלא' },
-                { icon: 'https://cdn.iconscout.com/3d-pack/clock/thumb-400-2.png', title: 'מענה מהיר', desc: 'תוך 24 שעות' },
-                { icon: 'https://cdn.iconscout.com/3d-pack/heart/thumb-400-2.png', title: 'ללא התחייבות', desc: 'ייעוץ חינם' }
+                { icon: 'ri-shield-check-line', title: 'מוגן ומאובטח', desc: 'ביטחון מלא' },
+                { icon: 'ri-time-line', title: 'מענה מהיר', desc: 'תוך 24 שעות' },
+                { icon: 'ri-heart-line', title: 'ללא התחייבות', desc: 'ייעוץ חינם' }
               ].map((badge, index) => (
                 <div key={index} className={`${getCardClass()} p-4 text-center`}>
                   <div className={`${getIconClass()} mx-auto mb-2 w-8 h-8 flex items-center justify-center`}>
-                    <img src={badge.icon} alt={badge.title} style={{width: '20px', height: '20px'}} />
+                    <i className={`${badge.icon} text-blue-400 text-lg`}></i>
                   </div>
                   <h3 className={`${getTypographyClass()} font-semibold text-white mb-1 text-sm`}>
                     {badge.title}
