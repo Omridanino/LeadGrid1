@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ColorScheme, ColorEditor } from "./ColorEditor";
+import { ColorScheme } from "./ColorEditor";
+import ColorEditor from "./ColorEditor";
 import WordPressIntegration from "./WordPressIntegration";
 import { Save, Palette, FileCode, Download, Type, Hash, Plus } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -308,11 +308,7 @@ const OptionsPanel = ({
           </TabsContent>
 
           <TabsContent value="design" className="space-y-4">
-            <ColorEditor 
-              onColorChange={onColorChange}
-              onDesignEdit={onDesignEdit}
-              showDesignEditor={showDesignEditor}
-            />
+            <ColorEditor onColorChange={onColorChange} />
           </TabsContent>
 
           <TabsContent value="export" className="space-y-4">
@@ -344,8 +340,7 @@ const OptionsPanel = ({
 
                 {showWordPressGuide && (
                   <WordPressIntegration 
-                    htmlContent={generateHtmlFile()}
-                    businessName={formData.businessName}
+                    htmlCode={generateHtmlFile()}
                   />
                 )}
               </CardContent>
