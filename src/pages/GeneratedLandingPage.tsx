@@ -29,7 +29,6 @@ const GeneratedLandingPage = () => {
     <div className="min-h-screen bg-black text-white" dir="rtl">
       <GeneratedPageHeader 
         onNavigateBack={actions.onNavigateBack}
-        onRegenerate={actions.handleRegenerate}
         onDownloadCode={actions.handleDownloadCode}
       />
 
