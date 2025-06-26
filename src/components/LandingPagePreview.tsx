@@ -34,7 +34,12 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   };
 
   return (
-    <div className="w-full h-full overflow-auto" style={{ maxHeight: '100vh' }}>
+    <div className="w-full h-full" style={{ 
+      maxHeight: '100vh', 
+      overflowY: 'auto', 
+      overflowX: 'hidden',
+      scrollBehavior: 'smooth'
+    }}>
       <div className={`w-full min-h-screen ${getStyleClass()}`} style={{ position: 'relative' }}>
         <PreviewStyles />
 

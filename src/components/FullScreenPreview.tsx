@@ -48,10 +48,12 @@ const FullScreenPreview = ({ content, currentColors, formData, heroImage, isOpen
         <X className="w-5 h-5" />
       </Button>
 
-      {/* Full Screen Preview - Scrollable */}
+      {/* Full Screen Preview - Fully Scrollable */}
       <div 
-        className={`w-full h-full overflow-y-auto overflow-x-hidden ${getStyleClass()}`} 
+        className={`w-full h-full ${getStyleClass()}`} 
         style={{ 
+          overflowY: 'auto',
+          overflowX: 'hidden',
           scrollBehavior: 'smooth',
           position: 'relative'
         }}
