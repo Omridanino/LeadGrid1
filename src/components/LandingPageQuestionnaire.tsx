@@ -8,8 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Sparkles, ArrowRight, Eye, Download } from "lucide-react";
 import { BusinessInfoStep } from "./questionnaire/BusinessInfoStep";
 import { GoalsAndFeaturesStep } from "./questionnaire/GoalsAndFeaturesStep";
-import { BrandingStep } from "./questionnaire/BrandingStep";
-import { HeroStyleStep } from "./questionnaire/HeroStyleStep";
+import { DesignStyleStep } from "./questionnaire/DesignStyleStep";
 import { ElementsSelectionStep } from "./questionnaire/ElementsSelectionStep";
 import { FormData, initialFormData, getStepTitle, validateRequiredFields } from "@/utils/questionnaireUtils";
 
@@ -77,7 +76,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
   };
 
   const nextStep = () => {
-    if (currentStep < 5) {
+    if (currentStep < 4) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -95,10 +94,8 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
       case 2:
         return <GoalsAndFeaturesStep formData={formData} updateFormData={updateFormData} />;
       case 3:
-        return <BrandingStep formData={formData} updateFormData={updateFormData} />;
+        return <DesignStyleStep formData={formData} updateFormData={updateFormData} />;
       case 4:
-        return <HeroStyleStep formData={formData} updateFormData={updateFormData} />;
-      case 5:
         return <ElementsSelectionStep formData={formData} updateFormData={updateFormData} />;
       default:
         return null;
@@ -119,7 +116,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
           {/* Progress indicator */}
           <div className="flex justify-between items-center">
             <div className="flex space-x-2 space-x-reverse">
-              {[1, 2, 3, 4, 5].map((step) => (
+              {[1, 2, 3, 4].map((step) => (
                 <div
                   key={step}
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
@@ -134,7 +131,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
                 </div>
               ))}
             </div>
-            <span className="text-sm text-gray-400">שלב {currentStep} מתוך 5</span>
+            <span className="text-sm text-gray-400">שלב {currentStep} מתוך 4</span>
           </div>
 
           {/* Step content */}
@@ -169,7 +166,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
                 צפה ועדכן דף
               </Button>
 
-              {currentStep < 5 ? (
+              {currentStep < 4 ? (
                 <Button
                   onClick={nextStep}
                   className="bg-purple-600 hover:bg-purple-700"

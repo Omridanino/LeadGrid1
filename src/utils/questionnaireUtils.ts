@@ -6,9 +6,9 @@ export interface FormData {
   businessAdvantages: string;
   mainGoal: string;
   keyFeatures: string;
-  brandColors: string;
   contactInfo: string;
   heroStyle: string;
+  designStyle: string;
   selectedElements: string[];
 }
 
@@ -19,9 +19,9 @@ export const initialFormData: FormData = {
   businessAdvantages: "",
   mainGoal: "",
   keyFeatures: "",
-  brandColors: "",
   contactInfo: "",
   heroStyle: "gradient",
+  designStyle: "3d",
   selectedElements: []
 };
 
@@ -32,10 +32,8 @@ export const getStepTitle = (step: number): string => {
     case 2:
       return "יעדים ותכונות";
     case 3:
-      return "מיתוג וצבעים";
-    case 4:
       return "סגנון עיצוב";
-    case 5:
+    case 4:
       return "בחירת אלמנטים";
     default:
       return "";
