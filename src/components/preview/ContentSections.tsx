@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LiquidButton, MetalButton } from "@/components/ui/liquid-glass-button";
@@ -34,7 +33,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
     } else if (formData.heroStyle === 'metal') {
       return (
         <MetalButton 
-          variant={isSecondary ? "secondary" : "primary"}
+          variant={isSecondary ? "default" : "primary"}
           className={baseClass}
           style={{ fontWeight: '600' }}
         >
