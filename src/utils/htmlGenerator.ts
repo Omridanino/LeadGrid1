@@ -38,7 +38,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
 
                 <div class="liquid-subtitle-container mb-12 animate-slide-up animate-delay-2">
                   <p class="text-xl md:text-2xl text-white leading-relaxed liquid-text-glow">
-                    ${content?.subheadline || `חוויה נוזלית ייחודית ל${formData.targetAudience}`}
+                    ${content?.subheadline || `חוויה נוזלית ייחודית ל${formData.targetAudience || 'לקוחות'}`}
                   </p>
                 </div>
 
@@ -143,7 +143,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
               </h1>
 
               <div class="text-xl md:text-2xl mb-12 max-w-4xl mx-auto text-gray-300 animate-slide-up animate-delay-2">
-                ${content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
+                ${content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience || 'לקוחות'}`}
               </div>
 
               <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 animate-slide-up animate-delay-3">
@@ -205,7 +205,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
 
               <div class="metal-content-card max-w-5xl mx-auto mb-12 animate-slide-up animate-delay-2">
                 <p class="text-xl md:text-2xl leading-relaxed">
-                  ${content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
+                  ${content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience || 'לקוחות'}`}
                 </p>
               </div>
 
@@ -272,7 +272,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
 
                 <div class="image-content-card mb-8 animate-slide-up animate-delay-2">
                   <p class="text-xl text-white leading-relaxed">
-                    ${content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
+                    ${content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience || 'לקוחות'}`}
                   </p>
                 </div>
 
@@ -366,7 +366,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
 
             <div class="hero-content-card max-w-5xl mx-auto mb-12 animate-slide-up animate-delay-2">
               <p class="text-xl md:text-2xl text-white leading-relaxed">
-                ${content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
+                ${content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience || 'לקוחות'}`}
               </p>
             </div>
 
@@ -438,11 +438,11 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
         <div class="container mx-auto px-4 py-20">
           <div class="max-w-6xl mx-auto text-center">
             <h2 class="section-title mb-8 animate-slide-up">
-              ${content?.sections?.emotionalSection?.title || "השירות שמשנה את המשחק"}
+              ${content?.sections?.emotionalSection?.title || content?.aboutTitle || "השירות שמשנה את המשחק"}
             </h2>
             <div class="content-card max-w-4xl mx-auto animate-slide-up animate-delay-1">
               <p class="section-text">
-                ${content?.sections?.emotionalSection?.content || `בעולם שמתפתח במהירות, ${businessName} כאן כדי לספק לכם את השירות המקצועי והאמין ביותר בתחום ${businessType}.`}
+                ${content?.sections?.emotionalSection?.content || content?.aboutContent || `בעולם שמתפתח במהירות, ${businessName} כאן כדי לספק לכם את השירות המקצועי והאמין ביותר בתחום ${businessType}.`}
               </p>
             </div>
           </div>
@@ -451,7 +451,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
     `;
 
     // Features Section - ALWAYS include
-    const features = content?.sections?.features || [
+    const features = content?.sections?.features || content?.features || [
       { title: "שירות מקצועי", description: "אנו מציעים שירות ברמה הגבוהה ביותר", icon: "🔥" },
       { title: "זמינות תמידית", description: "אנחנו כאן בשבילכם 24/7", icon: "⭐" },
       { title: "מחירים הוגנים", description: "מחירים תחרותיים ללא פשרות על איכות", icon: "💎" }
@@ -462,7 +462,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
         <div class="container mx-auto px-4 py-20">
           <div class="max-w-6xl mx-auto">
             <div class="text-center mb-16">
-              <h2 class="section-title animate-slide-up">השירותים שלנו</h2>
+              <h2 class="section-title animate-slide-up">${content?.featuresTitle || 'השירותים שלנו'}</h2>
             </div>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               ${features.map((feature: any, index: number) => `
@@ -479,7 +479,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
     `;
 
     // Why Choose Us Section - ALWAYS include
-    const whyChooseUs = content?.sections?.whyChooseUs || [
+    const whyChooseUs = content?.sections?.whyChooseUs || content?.whyChooseUs || [
       { title: "ניסיון עשיר", description: "שנים של ניסיון בתחום", icon: "✅" },
       { title: "צוות מקצועי", description: "אנשי מקצוע מיומנים ומנוסים", icon: "✅" }
     ];
@@ -489,7 +489,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
         <div class="container mx-auto px-4 py-20">
           <div class="max-w-6xl mx-auto">
             <div class="text-center mb-16">
-              <h2 class="section-title animate-slide-up">למה לבחור בנו?</h2>
+              <h2 class="section-title animate-slide-up">${content?.whyChooseTitle || 'למה לבחור בנו?'}</h2>
             </div>
             <div class="grid md:grid-cols-2 gap-8">
               ${whyChooseUs.map((reason: any, index: number) => `
@@ -508,7 +508,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
     `;
 
     // Testimonials Section - ALWAYS include
-    const testimonials = content?.sections?.testimonials || [
+    const testimonials = content?.sections?.testimonials || content?.testimonials || [
       { name: "יוסי כהן", role: "לקוח מרוצה", content: "שירות מעולה ומקצועי! ממליץ בחום על השירותים." },
       { name: "רחל לוי", role: "לקוחה קבועה", content: "התמחות גבוהה וזמינות מלאה. בדיוק מה שחיפשתי." },
       { name: "דוד אברהם", role: "בעל עסק", content: "עזרו לי להגשים את החלום שלי. תודה רבה!" }
@@ -519,7 +519,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
         <div class="container mx-auto px-4 py-20">
           <div class="max-w-6xl mx-auto">
             <div class="text-center mb-16">
-              <h2 class="section-title animate-slide-up">מה אומרים עלינו</h2>
+              <h2 class="section-title animate-slide-up">${content?.testimonialsTitle || 'מה אומרים עלינו'}</h2>
             </div>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               ${testimonials.map((testimonial: any, index: number) => `
@@ -550,7 +550,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
     `;
 
     // FAQ Section - ALWAYS include
-    const faq = content?.sections?.faq || [
+    const faq = content?.sections?.faq || content?.faq || [
       { question: "איך אפשר ליצור קשר?", answer: "ניתן ליצור קשר דרך הטלפון או האימייל המופיעים באתר." },
       { question: "מה שעות הפעילות?", answer: "אנחנו זמינים 24/7 לשירותכם." },
       { question: "האם יש אחריות על השירות?", answer: "כן, אנו נותנים אחריות מלאה על כל השירותים שלנו." }
@@ -561,13 +561,13 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
         <div class="container mx-auto px-4 py-20">
           <div class="max-w-4xl mx-auto">
             <div class="text-center mb-16">
-              <h2 class="section-title animate-slide-up">שאלות נפוצות</h2>
+              <h2 class="section-title animate-slide-up">${content?.faqTitle || 'שאלות נפוצות'}</h2>
             </div>
             <div class="space-y-4">
-              ${faq.map((faq: any, index: number) => `
+              ${faq.map((faqItem: any, index: number) => `
                 <div class="faq-card animate-slide-up" style="animation-delay: ${index * 0.1}s">
-                  <h3 class="faq-question">${faq.question}</h3>
-                  <p class="faq-answer">${faq.answer}</p>
+                  <h3 class="faq-question">${faqItem.question}</h3>
+                  <p class="faq-answer">${faqItem.answer}</p>
                 </div>
               `).join('')}
             </div>
@@ -588,7 +588,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
               
               <div class="content-card mb-8 animate-slide-up animate-delay-1">
                 <p class="section-text">
-                  בואו ניצור יחד משהו מרהיב שיקדם את העסק שלכם
+                  ${content?.contactSubtitle || 'בואו ניצור יחד משהו מרהיב שיקדם את העסק שלכם'}
                 </p>
               </div>
 
@@ -604,8 +604,8 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
               </div>
 
               <div class="flex flex-col sm:flex-row gap-6 justify-center items-center animate-slide-up animate-delay-3">
-                <button class="btn-primary">צור קשר עכשיו</button>
-                <button class="btn-secondary">קבל הצעת מחיר</button>
+                <button class="btn-primary">${content?.primaryCta || 'צור קשר עכשיו'}</button>
+                <button class="btn-secondary">${content?.secondaryCta || 'קבל הצעת מחיר'}</button>
               </div>
             </div>
           </div>
@@ -626,7 +626,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
               ${businessName}
             </h3>
             <p class="text-gray-400 mb-8">
-              © 2024 כל הזכויות שמורות. בניית אתרים מקצועית ואמינה.
+              © 2024 כל הזכויות שמורות. ${businessType} מקצועית ואמינה.
             </p>
             <div class="flex justify-center gap-8 text-gray-400">
               <span>טלפון: ${formData?.contactInfo?.split('\n')[0]?.replace('טלפון: ', '') || '050-1234567'}</span>
