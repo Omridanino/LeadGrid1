@@ -47,11 +47,11 @@ export const useGeneratedPageActions = ({
   };
 
   const handleSaveDesign = () => {
-    // Auto-generate clean HTML that matches the preview exactly
+    // יצירת HTML שזהה בדיוק לתצוגה
     const heroUrl = getHeroImageUrl(content, heroImage, formData);
     const updatedHtmlContent = generateHtmlFile(content, currentColors, formData, heroUrl);
     
-    // Store the generated HTML for download
+    // שמירת ה-HTML המעודכן להורדה
     localStorage.setItem('latestHtmlContent', updatedHtmlContent);
     localStorage.setItem('latestFormData', JSON.stringify(formData));
     localStorage.setItem('latestColors', JSON.stringify(currentColors));
@@ -60,7 +60,7 @@ export const useGeneratedPageActions = ({
     setIsSaved(true);
     toast({
       title: "💾 העיצוב נשמר בהצלחה!",
-      description: "קוד HTML מעודכן נוצר אוטומטית - כעת תוכל להוריד או לחבר לוורדפרס",
+      description: "קוד HTML מעודכן נוצר אוטומatically - כעת תוכל להוריד או לחבר לוורדפרס",
     });
   };
 
@@ -99,7 +99,7 @@ export const useGeneratedPageActions = ({
       return;
     }
     
-    // Use the auto-generated HTML that matches the preview exactly
+    // שימוש ב-HTML שנוצר אוטומatically ושזהה לתצוגה
     const savedHtmlContent = localStorage.getItem('latestHtmlContent');
     let htmlContent;
     

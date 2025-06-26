@@ -34,27 +34,47 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   };
 
   return (
-    <div className={`w-full h-full overflow-y-auto overflow-x-hidden ${getStyleClass()}`} style={{ maxHeight: 'calc(100vh - 120px)' }}>
-      <PreviewStyles />
+    <div className="w-full h-full" style={{ maxHeight: '100vh', overflowY: 'auto', overflowX: 'hidden' }}>
+      <div className={`min-h-full ${getStyleClass()}`} style={{ scrollBehavior: 'smooth' }}>
+        <PreviewStyles />
 
-      {/* Hero Section */}
-      <HeroSection 
-        content={content}
-        currentColors={currentColors}
-        formData={formData}
-        heroImage={heroImage}
-      />
+        {/* Hero Section */}
+        <HeroSection 
+          content={content}
+          currentColors={currentColors}
+          formData={formData}
+          heroImage={heroImage}
+        />
 
-      {/* Navigation */}
-      <NavigationSection formData={formData} />
+        {/* Navigation */}
+        <NavigationSection formData={formData} />
 
-      {/* Content Sections */}
-      <ContentSections 
-        content={content}
-        currentColors={currentColors}
-        formData={formData}
-        selectedElements={selectedElements}
-      />
+        {/* Content Sections - כל הסקשנים יוצגו */}
+        <ContentSections 
+          content={content}
+          currentColors={currentColors}
+          formData={formData}
+          selectedElements={selectedElements}
+        />
+
+        {/* Footer Section */}
+        <footer className="bg-black/50 backdrop-blur-sm py-16 text-center">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <h3 className="text-2xl font-bold text-white mb-4">
+                {formData.businessName || 'העסק שלי'}
+              </h3>
+              <p className="text-gray-400 mb-8">
+                © 2024 כל הזכויות שמורות. בניית אתרים מקצועית ואמינה.
+              </p>
+              <div className="flex justify-center gap-8 text-gray-400">
+                <span>טלפון: 050-1234567</span>
+                <span>אימייל: info@business.co.il</span>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 };
