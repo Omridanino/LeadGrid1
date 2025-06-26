@@ -1,4 +1,3 @@
-
 import { ColorScheme } from "./ColorEditor";
 import { FormData } from "@/utils/questionnaireUtils";
 
@@ -20,104 +19,127 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     return formData.selectedElements.includes(sectionId);
   };
 
+  const getStylesByDesignStyle = () => {
+    switch (formData.designStyle) {
+      case 'storytelling':
+        return getStorytellingStyles();
+      case 'minimal':
+        return getMinimalStyles();
+      default: // '3d'
+        return get3DStyles();
+    }
+  };
+
   const get3DStyles = () => ({
     background: `linear-gradient(135deg, ${currentColors.primary} 0%, ${currentColors.secondary} 50%, ${currentColors.accent} 100%)`,
     color: currentColors.text,
     fontFamily: "'Inter', sans-serif"
   });
 
+  const getStorytellingStyles = () => ({
+    background: 'linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #4a6741 100%)',
+    color: '#ecf0f1',
+    fontFamily: "'Playfair Display', Georgia, serif"
+  });
+
+  const getMinimalStyles = () => ({
+    background: 'linear-gradient(135deg, #1a202c 0%, #2d3748 50%, #4a5568 100%)',
+    color: '#f7fafc',
+    fontFamily: "'Inter', -apple-system, sans-serif"
+  });
+
   const renderHeroSection = () => (
-    <div className="relative min-h-screen flex items-center justify-center text-center px-8 py-20" 
+    <div className="relative min-h-[80vh] flex items-center justify-center text-center px-8 py-16" 
          style={{
            background: finalHeroImage 
-             ? `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('${finalHeroImage}')` 
-             : `linear-gradient(135deg, ${currentColors.primary} 0%, ${currentColors.secondary} 50%, ${currentColors.accent} 100%)`,
+             ? `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('${finalHeroImage}')` 
+             : getStylesByDesignStyle().background,
            backgroundSize: 'cover',
-           backgroundPosition: 'center',
-           backgroundAttachment: 'fixed'
+           backgroundPosition: 'center'
          }}>
-      
-      {/* רקע אנימציה תלת מימדי */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-20 left-20 w-32 h-32 rounded-full bg-white animate-pulse blur-xl"></div>
-        <div className="absolute bottom-32 right-32 w-24 h-24 rounded-full bg-white animate-bounce blur-lg"></div>
-        <div className="absolute top-1/2 left-1/4 w-16 h-16 rounded-full bg-white animate-ping blur-md"></div>
-      </div>
-
-      <div className="max-w-6xl mx-auto z-10 relative">
-        {/* באדג' מעולה */}
-        <div className="inline-block mb-8">
-          <span className="px-8 py-4 bg-white/20 text-white border-2 border-white/30 rounded-full text-lg font-semibold backdrop-blur-lg shadow-2xl transform hover:scale-105 transition-all duration-300 animate-pulse">
-            ✨ {content.badge}
-          </span>
-        </div>
-
-        {/* כותרת ראשית מרשימה */}
-        <h1 className="text-6xl md:text-8xl font-black mb-8 leading-tight text-white drop-shadow-2xl transform hover:scale-105 transition-all duration-500">
+      <div className="max-w-5xl mx-auto z-10">
+        <span className={`inline-block px-6 py-3 mb-8 rounded-full text-lg font-medium ${
+          formData.designStyle === 'storytelling' 
+            ? 'bg-white/20 text-white border-2 border-white/30'
+            : formData.designStyle === 'minimal'
+            ? 'bg-gray-900/50 text-white border border-gray-400'
+            : 'bg-white/20 text-white'
+        }`}>
+          {content.badge}
+        </span>
+        <h1 className={`font-bold mb-8 leading-tight ${
+          formData.designStyle === 'storytelling' 
+            ? 'text-6xl md:text-7xl text-white'
+            : formData.designStyle === 'minimal'
+            ? 'text-5xl md:text-6xl text-white font-light'
+            : 'text-5xl md:text-6xl text-white'
+        }`}>
           {content.headline}
         </h1>
-
-        {/* תת כותרת */}
-        <p className="text-2xl md:text-3xl mb-12 leading-relaxed text-white/95 font-light max-w-4xl mx-auto drop-shadow-lg">
+        <p className={`mb-12 leading-relaxed ${
+          formData.designStyle === 'storytelling' 
+            ? 'text-2xl md:text-3xl text-white/90 font-light'
+            : formData.designStyle === 'minimal'
+            ? 'text-xl md:text-2xl text-white/80 font-light'
+            : 'text-xl md:text-2xl text-white/90'
+        }`}>
           {content.subheadline}
         </p>
-
-        {/* כפתור קריאה לפעולה מרשים */}
-        <div className="mb-16">
-          <a href="#contact" className="inline-block px-16 py-6 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white rounded-2xl font-bold text-2xl transition-all duration-300 shadow-2xl hover:shadow-purple-500/50 hover:scale-110 transform hover:-translate-y-2 animate-pulse">
-            🚀 {content.cta}
-          </a>
-        </div>
+        <a href="#contact" className={`inline-block px-12 py-5 font-bold text-xl transition-all duration-300 ${
+          formData.designStyle === 'storytelling' 
+            ? 'bg-gradient-to-r from-red-500 to-red-600 text-white rounded-full shadow-2xl hover:shadow-red-500/50 hover:scale-105'
+            : formData.designStyle === 'minimal'
+            ? 'bg-white text-gray-900 border-2 border-white hover:bg-transparent hover:text-white'
+            : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl shadow-2xl hover:scale-105'
+        }`}>
+          {content.cta}
+        </a>
         
-        {/* סטטיסטיקות מרשימות */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16">
           {Object.entries(content.stats).map(([key, value]) => (
-            <div key={key} className="text-center p-8 rounded-3xl bg-white/10 backdrop-blur-2xl border border-white/20 shadow-2xl transform hover:scale-110 transition-all duration-300 hover:bg-white/20">
-              <div className="text-5xl md:text-6xl font-black mb-4 text-white drop-shadow-lg animate-bounce">
-                {String(value)}
+            <div key={key} className={`text-center p-6 rounded-2xl ${
+              formData.designStyle === 'storytelling' 
+                ? 'bg-white/10 backdrop-blur-lg border border-white/20'
+                : formData.designStyle === 'minimal'
+                ? 'bg-gray-900/30 border border-gray-600'
+                : 'bg-white/10 backdrop-blur-lg'
+            }`}>
+              <div className={`font-bold mb-2 ${
+                formData.designStyle === 'storytelling' 
+                  ? 'text-4xl text-white'
+                  : formData.designStyle === 'minimal'
+                  ? 'text-3xl text-white'
+                  : 'text-3xl text-white'
+              }`}>
+                {value}
               </div>
-              <div className="text-xl font-bold text-white/90 uppercase tracking-wide">
+              <div className={`font-medium ${
+                formData.designStyle === 'storytelling' 
+                  ? 'text-lg text-white/80'
+                  : formData.designStyle === 'minimal'
+                  ? 'text-sm text-white/70 uppercase tracking-wide'
+                  : 'text-lg text-white/80'
+              }`}>
                 {key}
               </div>
             </div>
           ))}
         </div>
       </div>
-
-      {/* אפקט פרלקס */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/20 to-transparent"></div>
     </div>
   );
 
   const renderWhyChooseSection = () => (
-    <div className="py-24 px-8 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)' }}>
-      {/* רקע אנימציה */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-10 right-10 w-64 h-64 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-10 left-10 w-48 h-48 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 blur-2xl animate-bounce"></div>
-      </div>
-
-      <div className="container mx-auto text-center relative z-10">
-        <h2 className="text-5xl md:text-6xl font-black mb-16 text-white drop-shadow-2xl">
-          🌟 {content.whyChooseUs.title}
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {content.whyChooseUs.items.map((item: any, index: number) => (
-            <div key={index} className="group transform hover:scale-110 transition-all duration-500">
-              <div className="p-10 bg-gradient-to-br from-white/10 to-white/5 rounded-3xl shadow-2xl backdrop-blur-xl border border-white/20 hover:border-white/40 hover:shadow-purple-500/30 transition-all duration-300">
-                <div className="text-6xl mb-6 group-hover:animate-bounce">
-                  {item.icon === 'star-line' ? '⭐' : 
-                   item.icon === 'award-line' ? '🏆' : 
-                   item.icon === 'headphone-line' ? '🎧' : 
-                   item.icon === 'price-tag-line' ? '💎' : '✨'}
-                </div>
-                <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-purple-300 transition-colors">
-                  {item.title || 'יתרון מוביל'}
-                </h3>
-                <p className="text-lg text-white/80 leading-relaxed">
-                  {item.text}
-                </p>
-              </div>
+    <div className="py-16 px-8 bg-gray-100 text-gray-800">
+      <div className="container mx-auto text-center">
+        <h2 className="text-4xl font-bold mb-8">למה לבחור בנו?</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {content.whyChooseUs.items.map((item: any) => (
+            <div key={item.text} className="p-6 bg-white rounded-lg shadow-md">
+              <div className="text-2xl text-purple-600 mb-4">{item.icon}</div>
+              <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+              <p className="text-gray-600">{item.text}</p>
             </div>
           ))}
         </div>
@@ -126,82 +148,52 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   );
 
   const renderAboutSection = () => (
-    <div className="py-24 px-8 bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
+    <div className="py-16 px-8">
       <div className="container mx-auto text-center">
-        <h2 className="text-5xl md:text-6xl font-black mb-12 text-white drop-shadow-2xl">
-          👑 {content.aboutTitle}
-        </h2>
-        <div className="max-w-4xl mx-auto">
-          <p className="text-2xl leading-relaxed text-white/90 bg-white/10 backdrop-blur-xl rounded-3xl p-12 shadow-2xl border border-white/20">
-            {content.aboutText}
-          </p>
-        </div>
+        <h2 className="text-4xl font-bold mb-8">אודותינו</h2>
+        <p className="text-gray-700 leading-relaxed">
+          {content.aboutText}
+        </p>
       </div>
     </div>
   );
 
   const renderServicesSection = () => (
-    <div className="py-24 px-8 bg-gradient-to-r from-indigo-900 via-purple-900 to-pink-900">
+    <div className="py-16 px-8 bg-gray-100">
       <div className="container mx-auto text-center">
-        <h2 className="text-5xl md:text-6xl font-black mb-16 text-white drop-shadow-2xl">
-          🎯 השירותים המיוחדים שלנו
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {[
-            { title: 'פתרונות מקצועיים', desc: 'שירותים מקצועיים המותאמים במיוחד לצרכים שלכם', price: '₪199', icon: '🛠️' },
-            { title: 'ייעוץ אישי', desc: 'ליווי צמוד ויעוץ מקצועי לאורך כל הדרך', price: '₪299', icon: '👥' },
-            { title: 'פתרון מהיר', desc: 'תוצאות מהירות ויעילות ללא פשרות באיכות', price: '₪399', icon: '🚀' }
-          ].map((service, index) => (
-            <div key={index} className="group transform hover:scale-105 transition-all duration-500">
-              <div className="p-12 bg-gradient-to-br from-white/15 to-white/5 rounded-3xl shadow-2xl backdrop-blur-xl border border-white/20 hover:border-white/40 hover:shadow-cyan-500/30 transition-all duration-300 h-full">
-                <div className="text-6xl mb-6 group-hover:animate-spin transition-all duration-500">
-                  {service.icon}
-                </div>
-                <h3 className="text-2xl font-bold mb-6 text-white group-hover:text-cyan-300 transition-colors">
-                  {service.title}
-                </h3>
-                <p className="text-lg text-white/80 leading-relaxed mb-8">
-                  {service.desc}
-                </p>
-                <div className="text-3xl font-black text-cyan-400 group-hover:text-cyan-300 transition-colors">
-                  החל מ{service.price}
-                </div>
-              </div>
-            </div>
-          ))}
+        <h2 className="text-4xl font-bold mb-8">השירותים שלנו</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Example service items - replace with actual data */}
+          <div className="p-6 bg-white rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-2">שירות 1</h3>
+            <p className="text-gray-600">תיאור שירות 1.</p>
+          </div>
+          <div className="p-6 bg-white rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-2">שירות 2</h3>
+            <p className="text-gray-600">תיאור שירות 2.</p>
+          </div>
+          <div className="p-6 bg-white rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-2">שירות 3</h3>
+            <p className="text-gray-600">תיאור שירות 3.</p>
+          </div>
         </div>
       </div>
     </div>
   );
 
   const renderTestimonialsSection = () => (
-    <div className="py-24 px-8 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="py-16 px-8">
       <div className="container mx-auto text-center">
-        <h2 className="text-5xl md:text-6xl font-black mb-16 text-white drop-shadow-2xl">
-          💭 מה הלקוחות שלנו אומרים
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {content.testimonials.map((testimonial: any, index: number) => (
-            <div key={index} className="group transform hover:scale-105 hover:-translate-y-4 transition-all duration-500">
-              <div className="p-10 bg-gradient-to-br from-white/15 to-white/5 rounded-3xl shadow-2xl backdrop-blur-xl border border-white/20 hover:border-white/40 hover:shadow-yellow-500/30 transition-all duration-300 h-full">
-                <div className="flex items-center mb-8">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center text-2xl shadow-lg group-hover:animate-bounce">
-                    {testimonial.image}
-                  </div>
-                  <div className="mr-4 text-right">
-                    <h4 className="font-bold text-xl text-white group-hover:text-yellow-300 transition-colors">
-                      {testimonial.name}
-                    </h4>
-                    <p className="text-white/70 text-lg">
-                      {testimonial.role}
-                    </p>
-                  </div>
-                </div>
-                <p className="text-lg text-white/90 leading-relaxed mb-6 italic">
-                  "{testimonial.content}"
-                </p>
-                <div className="flex justify-center text-3xl">
-                  {'⭐'.repeat(testimonial.rating)}
+        <h2 className="text-4xl font-bold mb-8">מה הלקוחות אומרים</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {content.testimonials.map((testimonial: any) => (
+            <div key={testimonial.name} className="p-6 bg-white rounded-lg shadow-md">
+              <p className="text-gray-600 italic mb-4">"{testimonial.content}"</p>
+              <div className="flex items-center">
+                <div className="text-purple-600 text-2xl mr-4">{testimonial.image}</div>
+                <div>
+                  <h4 className="font-semibold">{testimonial.name}</h4>
+                  <p className="text-gray-500">{testimonial.role}</p>
                 </div>
               </div>
             </div>
@@ -211,23 +203,91 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     </div>
   );
 
+  const renderStorySection = () => (
+    <div className="py-16 px-8 bg-purple-100">
+      <div className="container mx-auto text-center">
+        <h2 className="text-4xl font-bold mb-8">הסיפור שלנו</h2>
+        <p className="text-gray-700 leading-relaxed">
+          {content.storyText}
+        </p>
+      </div>
+    </div>
+  );
+
+  const renderValuesSection = () => (
+    <div className="py-16 px-8">
+      <div className="container mx-auto text-center">
+        <h2 className="text-4xl font-bold mb-8">הערכים שלנו</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Example value items - replace with actual data */}
+          <div className="p-6 bg-white rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-2">ערך 1</h3>
+            <p className="text-gray-600">תיאור ערך 1.</p>
+          </div>
+          <div className="p-6 bg-white rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-2">ערך 2</h3>
+            <p className="text-gray-600">תיאור ערך 2.</p>
+          </div>
+          <div className="p-6 bg-white rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-2">ערך 3</h3>
+            <p className="text-gray-600">תיאור ערך 3.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderProblemSolutionSection = () => (
+    <div className="py-16 px-8 bg-gray-100">
+      <div className="container mx-auto text-center">
+        <h2 className="text-4xl font-bold mb-8">בעיה ופתרון</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Example problem/solution items - replace with actual data */}
+          <div className="p-6 bg-white rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-2">בעיה</h3>
+            <p className="text-gray-600">תיאור בעיה.</p>
+          </div>
+          <div className="p-6 bg-white rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-2">פתרון</h3>
+            <p className="text-gray-600">תיאור פתרון.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderPricingSection = () => (
+    <div className="py-16 px-8">
+      <div className="container mx-auto text-center">
+        <h2 className="text-4xl font-bold mb-8">תמחור</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Example pricing tiers - replace with actual data */}
+          <div className="p-6 bg-white rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-2">בסיסי</h3>
+            <p className="text-gray-600">תכונות בסיסיות.</p>
+          </div>
+          <div className="p-6 bg-white rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-2">סטנדרטי</h3>
+            <p className="text-gray-600">תכונות סטנדרטיות.</p>
+          </div>
+          <div className="p-6 bg-white rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-2">פרימיום</h3>
+            <p className="text-gray-600">תכונות פרימיום.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   const renderFAQSection = () => (
-    <div className="py-24 px-8 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900">
+    <div className="py-16 px-8 bg-gray-100">
       <div className="container mx-auto">
-        <h2 className="text-5xl md:text-6xl font-black mb-16 text-center text-white drop-shadow-2xl">
-          ❓ שאלות נפוצות
-        </h2>
-        <div className="max-w-4xl mx-auto space-y-8">
-          {content.faq.map((item: any, index: number) => (
-            <div key={index} className="group transform hover:scale-102 transition-all duration-300">
-              <div className="bg-gradient-to-r from-white/10 to-white/5 rounded-3xl shadow-2xl backdrop-blur-xl border border-white/20 hover:border-white/40 hover:shadow-blue-500/20 transition-all duration-300 p-10">
-                <h3 className="text-2xl font-bold mb-6 text-white group-hover:text-blue-300 transition-colors">
-                  {item.question}
-                </h3>
-                <p className="text-lg text-white/80 leading-relaxed">
-                  {item.answer}
-                </p>
-              </div>
+        <h2 className="text-4xl font-bold mb-8 text-center">שאלות נפוצות</h2>
+        <div className="space-y-4">
+          {content.faq.map((item: any) => (
+            <div key={item.question} className="bg-white rounded-lg shadow-md p-6">
+              <h3 className="text-xl font-semibold mb-2">{item.question}</h3>
+              <p className="text-gray-600">{item.answer}</p>
             </div>
           ))}
         </div>
@@ -236,33 +296,31 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   );
 
   const renderContactSection = () => (
-    <div className="py-24 px-8 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900" id="contact">
+    <div className="py-16 px-8">
       <div className="container mx-auto text-center">
-        <h2 className="text-5xl md:text-6xl font-black mb-12 text-white drop-shadow-2xl">
-          💬 {content.contactTitle}
-        </h2>
-        <div className="max-w-3xl mx-auto">
-          <div className="bg-gradient-to-r from-white/15 to-white/10 backdrop-blur-xl rounded-3xl p-12 shadow-2xl border border-white/20 mb-12">
-            <div className="text-2xl text-white/90 leading-relaxed whitespace-pre-line font-medium">
-              {formData.contactInfo}
-            </div>
-          </div>
-          <a href="#contact" className="inline-block px-16 py-6 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 text-white rounded-2xl font-bold text-2xl transition-all duration-300 shadow-2xl hover:shadow-green-500/50 hover:scale-110 transform hover:-translate-y-2">
-            🎉 {content.cta}
-          </a>
+        <h2 className="text-4xl font-bold mb-8">צור קשר</h2>
+        <p className="text-gray-700 leading-relaxed">
+          צרו קשר לקבלת מידע נוסף או הצעת מחיר.
+        </p>
+        <div className="mt-8">
+          {formData.contactInfo}
         </div>
       </div>
     </div>
   );
 
   return (
-    <div className="min-h-screen" style={get3DStyles()}>
+    <div className="min-h-screen" style={getStylesByDesignStyle()}>
       {renderHeroSection()}
       
       {shouldShowSection('why-choose') && renderWhyChooseSection()}
       {shouldShowSection('about') && renderAboutSection()}
       {shouldShowSection('services') && renderServicesSection()}
       {shouldShowSection('testimonials') && renderTestimonialsSection()}
+      {shouldShowSection('story') && formData.designStyle === 'storytelling' && renderStorySection()}
+      {shouldShowSection('values') && formData.designStyle === 'storytelling' && renderValuesSection()}
+      {shouldShowSection('problem-solution') && formData.designStyle === 'minimal' && renderProblemSolutionSection()}
+      {shouldShowSection('pricing') && formData.designStyle === 'minimal' && renderPricingSection()}
       {shouldShowSection('faq') && renderFAQSection()}
       {shouldShowSection('contact') && renderContactSection()}
     </div>

@@ -21,7 +21,7 @@ export const initialFormData: FormData = {
   keyFeatures: "",
   contactInfo: "",
   heroStyle: "gradient",
-  designStyle: "3d", // תמיד תלת מימדי
+  designStyle: "3d",
   selectedElements: []
 };
 
@@ -32,7 +32,7 @@ export const getStepTitle = (step: number): string => {
     case 2:
       return "יעדים ותכונות";
     case 3:
-      return "סגנון הצגה";
+      return "סגנון עיצוב";
     case 4:
       return "בחירת אלמנטים";
     default:
