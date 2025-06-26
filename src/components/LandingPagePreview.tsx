@@ -98,14 +98,17 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     </Button>
   );
 
-  // Enhanced styles with real shiny silver icons and animated backgrounds
+  // Enhanced styles with 3D effects and animated backgrounds
   const optimizedStyles = useMemo(() => `
     .hero-section {
       background: ${isAnimatedBackground 
         ? randomBackground
-        : 'linear-gradient(135deg, rgba(10, 10, 26, 0.95) 0%, rgba(26, 26, 58, 0.85) 50%, rgba(10, 10, 26, 0.95) 100%)'
+        : finalHeroImage
+          ? `linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.6)), url('${finalHeroImage}')`
+          : 'linear-gradient(135deg, rgba(10, 10, 26, 0.95) 0%, rgba(26, 26, 58, 0.85) 50%, rgba(10, 10, 26, 0.95) 100%)'
       };
       ${isAnimatedBackground ? 'background-size: 400% 400%; animation: gradientShift 8s ease infinite;' : ''}
+      ${finalHeroImage ? 'background-size: cover; background-position: center;' : ''}
       position: relative;
     }
 
@@ -143,14 +146,14 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
 
-    .shiny-silver-icon {
-      color: #c0c0c0;
-      background: linear-gradient(145deg, #e6e6e6, #b8b8b8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 0 8px rgba(192, 192, 192, 0.6)) drop-shadow(0 2px 4px rgba(255, 255, 255, 0.3));
-      text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
+    .icon-3d {
+      transform-style: preserve-3d;
+      transition: all 0.3s ease;
+      filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+    }
+
+    .icon-3d:hover {
+      transform: rotateX(15deg) rotateY(15deg) translateZ(10px);
     }
 
     .floating-3d {
@@ -169,33 +172,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       transform-style: preserve-3d;
     }
 
-    .parallax-bg {
-      background-attachment: fixed;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-
-    /* 3D Grid Effect */
-    .grid-3d {
-      background-image: 
-        linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
-      background-size: 50px 50px;
-      position: relative;
-    }
-
-    .grid-3d::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
     /* Mobile optimizations */
     @media (max-width: 768px) {
       .hero-section { min-height: 70vh !important; padding: 2rem 1rem !important; }
@@ -206,10 +182,10 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       .contact-grid { grid-template-columns: 1fr !important; }
       .tech-card:hover { transform: translateY(-2px); }
     }
-  `, [currentColors, isAnimatedBackground, randomBackground]);
+  `, [currentColors, isAnimatedBackground, randomBackground, finalHeroImage]);
 
   return (
-    <div className="w-full text-white overflow-hidden rounded-lg relative grid-3d" 
+    <div className="w-full text-white overflow-hidden rounded-lg relative" 
          style={{
            background: 'linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%)',
            position: 'relative'
@@ -219,19 +195,14 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       <style>{optimizedStyles}</style>
 
       {/* Section 1: Hero Section */}
-      <section id="hero" className="section-container group relative min-h-[600px] flex items-center justify-center text-center p-8 hero-section parallax-bg floating-3d"
-               style={finalHeroImage ? {
-                 background: `linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.6)), url('${finalHeroImage}')`,
-                 backgroundSize: 'cover',
-                 backgroundPosition: 'center'
-               } : {}}>
+      <section id="hero" className="section-container group relative min-h-[600px] flex items-center justify-center text-center p-8 hero-section floating-3d">
         
         {editMode && <EditButton section="hero" />}
         
         <div className="relative z-10 max-w-4xl mx-auto w-full">
           <div className="mb-6">
             <span className="inline-block px-6 py-3 text-white rounded-full font-semibold text-sm tech-card">
-              <span className="shiny-silver-icon">⭐</span> {content.badge}
+              <span className="icon-3d">⭐</span> {content.badge}
             </span>
           </div>
           
@@ -259,7 +230,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           <div className="stats-grid grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto px-4">
             {Object.entries(content.stats).map(([key, value], index) => (
               <div key={key} className="tech-card p-6 text-center floating-3d">
-                <div className="text-3xl lg:text-4xl font-bold text-white mb-3 shiny-silver-icon">{String(value)}</div>
+                <div className="text-3xl lg:text-4xl font-bold text-white mb-3 icon-3d">{String(value)}</div>
                 <div className="text-sm lg:text-base text-white opacity-80 font-medium">{key}</div>
               </div>
             ))}
@@ -274,7 +245,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           
           <div className="max-w-4xl mx-auto text-center">
             <div className="tech-card p-12">
-              <div className="text-6xl mb-8 shiny-silver-icon floating-3d">
+              <div className="text-6xl mb-8 icon-3d floating-3d">
                 {content.sections.emotionalSection.icon}
               </div>
               <h2 className="text-4xl font-bold mb-8" style={{ color: currentColors.text }}>
@@ -301,7 +272,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             <div className="features-grid grid grid-cols-1 md:grid-cols-2 gap-8">
               {content.sections.whyUs.items.map((item: any, idx: number) => (
                 <div key={idx} className="tech-card p-8">
-                  <div className="text-5xl mb-6 shiny-silver-icon floating-3d">
+                  <div className="text-5xl mb-6 icon-3d floating-3d">
                     {item.icon}
                   </div>
                   <h3 className="text-xl font-bold mb-4" style={{ color: currentColors.text }}>
@@ -331,7 +302,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               {content.sections.whatWeGive.items.map((item: any, idx: number) => (
                 <div key={idx} className="text-center">
                   <div className="tech-card p-10">
-                    <div className="text-6xl mb-8 shiny-silver-icon floating-3d">
+                    <div className="text-6xl mb-8 icon-3d floating-3d">
                       {item.icon}
                     </div>
                     <h3 className="text-2xl font-bold mb-6" style={{ color: currentColors.text }}>
@@ -355,7 +326,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-3 mb-4">
-                <Image className="w-6 h-6 text-blue-400 shiny-silver-icon" />
+                <Image className="w-6 h-6 text-blue-400 icon-3d" />
                 <h2 className="text-4xl font-bold" style={{ color: currentColors.text }}>
                   גלריית העבודות שלנו
                 </h2>
@@ -369,7 +340,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               {[1,2,3,4,5,6,7,8].map((item, idx) => (
                 <div key={idx} className="tech-card aspect-square p-4 floating-3d">
                   <div className="w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg flex items-center justify-center">
-                    <Image className="w-8 h-8 text-white/60 shiny-silver-icon" />
+                    <Image className="w-8 h-8 text-white/60 icon-3d" />
                   </div>
                 </div>
               ))}
@@ -385,7 +356,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-3 mb-4">
-                <Target className="w-6 h-6 text-green-400 shiny-silver-icon" />
+                <Target className="w-6 h-6 text-green-400 icon-3d" />
                 <h2 className="text-4xl font-bold" style={{ color: currentColors.text }}>
                   תהליך העבודה שלנו
                 </h2>
@@ -397,9 +368,9 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
-                { step: "01", title: "תכנון ואפיון", desc: "בדיקת הצרכים והגדרת המטרות", icon: <Lightbulb className="w-6 h-6 shiny-silver-icon" /> },
-                { step: "02", title: "פיתוח וביצוע", desc: "יצירה מקצועית לפי הסטנדרטים הגבוהים", icon: <CheckCircle className="w-6 h-6 shiny-silver-icon" /> },
-                { step: "03", title: "מסירה ותמיכה", desc: "מסירה מושלמת עם תמיכה שוטפת", icon: <Shield className="w-6 h-6 shiny-silver-icon" /> }
+                { step: "01", title: "תכנון ואפיון", desc: "בדיקת הצרכים והגדרת המטרות", icon: <Lightbulb className="w-6 h-6 icon-3d" /> },
+                { step: "02", title: "פיתוח וביצוע", desc: "יצירה מקצועית לפי הסטנדרטים הגבוהים", icon: <CheckCircle className="w-6 h-6 icon-3d" /> },
+                { step: "03", title: "מסירה ותמיכה", desc: "מסירה מושלמת עם תמיכה שוטפת", icon: <Shield className="w-6 h-6 icon-3d" /> }
               ].map((process, idx) => (
                 <div key={idx} className="tech-card p-8 text-center floating-3d">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center mx-auto mb-4">
@@ -427,7 +398,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
                 <div className="inline-flex items-center gap-3 mb-6">
-                  <Users className="w-6 h-6 text-purple-400 shiny-silver-icon" />
+                  <Users className="w-6 h-6 text-purple-400 icon-3d" />
                   <h2 className="text-4xl font-bold" style={{ color: currentColors.text }}>
                     קצת עלינו
                   </h2>
@@ -443,11 +414,11 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                   </p>
                   <div className="flex items-center gap-4 pt-2">
                     <div className="flex items-center gap-2">
-                      <Award className="w-5 h-5 text-yellow-400 shiny-silver-icon" />
+                      <Award className="w-5 h-5 text-yellow-400 icon-3d" />
                       <span className="font-semibold text-sm">מומחים מוסמכים</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Star className="w-5 h-5 text-yellow-400 shiny-silver-icon" />
+                      <Star className="w-5 h-5 text-yellow-400 icon-3d" />
                       <span className="font-semibold text-sm">שירות 5 כוכבים</span>
                     </div>
                   </div>
@@ -456,7 +427,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               
               <div className="tech-card p-8 text-center floating-3d">
                 <div className="w-24 h-24 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center mx-auto mb-6">
-                  <Users className="w-12 h-12 text-white shiny-silver-icon" />
+                  <Users className="w-12 h-12 text-white icon-3d" />
                 </div>
                 <h3 className="text-2xl font-bold mb-4" style={{ color: currentColors.text }}>
                   הצוות המקצועי
@@ -476,7 +447,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-16" style={{ color: currentColors.text }}>
-            <span className="shiny-silver-icon floating-3d">💭</span> מה אומרים עלינו
+            <span className="icon-3d floating-3d">💭</span> מה אומרים עלינו
           </h2>
           
           <div className="features-grid grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -506,7 +477,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               <div key={idx} className="tech-card p-6 rounded-2xl floating-3d">
                 <div className="flex items-center mb-6">
                   <div className="w-16 h-16 rounded-xl ml-3 flex items-center justify-center tech-card">
-                    <span className="text-xl shiny-silver-icon">{testimonial.image}</span>
+                    <span className="text-xl icon-3d">{testimonial.image}</span>
                   </div>
                   <div>
                     <h4 className="font-bold text-lg" style={{ color: currentColors.primary }}>
@@ -522,7 +493,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                 </p>
                 <div className="flex">
                   {'★'.repeat(testimonial.rating).split('').map((star, i) => (
-                    <span key={i} className="text-yellow-400 text-lg shiny-silver-icon">{star}</span>
+                    <span key={i} className="text-yellow-400 text-lg icon-3d">{star}</span>
                   ))}
                 </div>
               </div>
@@ -539,7 +510,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           <div className="tech-card p-12">
             <div className="text-center mb-12 relative z-10">
               <div className="w-24 h-24 rounded-2xl mx-auto mb-8 tech-card flex items-center justify-center floating-3d">
-                <span className="text-4xl shiny-silver-icon">💬</span>
+                <span className="text-4xl icon-3d">💬</span>
               </div>
               
               <h2 className="text-4xl font-bold mb-6" style={{ color: currentColors.text }}>
@@ -601,7 +572,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                 type="submit"
                 className="w-full py-6 text-xl font-bold tech-button"
               >
-                <Send className="w-6 h-6 ml-3 shiny-silver-icon" />
+                <Send className="w-6 h-6 ml-3 icon-3d" />
                 שלח הודעה
               </Button>
             </form>
@@ -609,12 +580,12 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             {/* Contact Info Cards */}
             <div className="contact-grid grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 relative z-10">
               {[
-                { icon: <Phone className="w-8 h-8 shiny-silver-icon" />, title: "טלפון", info: "050-1234567" },
-                { icon: <Mail className="w-8 h-8 shiny-silver-icon" />, title: "אימייל", info: "info@business.co.il" },
-                { icon: <MapPin className="w-8 h-8 shiny-silver-icon" />, title: "כתובת", info: "תל אביב, ישראל" }
+                { icon: <Phone className="w-8 h-8 icon-3d" />, title: "טלפון", info: "050-1234567" },
+                { icon: <Mail className="w-8 h-8 icon-3d" />, title: "אימייל", info: "info@business.co.il" },
+                { icon: <MapPin className="w-8 h-8 icon-3d" />, title: "כתובת", info: "תל אביב, ישראל" }
               ].map((contact, idx) => (
                 <div key={idx} className="tech-card p-6 text-center floating-3d">
-                  <div className="w-16 h-16 rounded-xl mx-auto mb-4 tech-card flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-xl mx-auto mb-4 tech-card">
                     {contact.icon}
                   </div>
                   <h4 className="font-bold text-white mb-3 text-lg">{contact.title}</h4>
