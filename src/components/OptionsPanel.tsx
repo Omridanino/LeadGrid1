@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ColorEditor, ColorScheme } from "./ColorEditor";
+import ColorEditor, { ColorScheme } from "./ColorEditor";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -12,7 +12,7 @@ import {
   Code, 
   Download, 
   Save, 
-  Wordpress,
+  Globe,
   Edit,
   Image,
   Users,
@@ -347,7 +347,7 @@ const OptionsPanel = ({
                 onClick={onWordPressIntegration}
                 className="w-full bg-green-600 hover:bg-green-700"
               >
-                <Wordpress className="w-4 h-4 mr-2" />
+                <Globe className="w-4 h-4 mr-2" />
                 ייצוא ל-WordPress
               </Button>
               
