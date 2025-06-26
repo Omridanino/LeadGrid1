@@ -1,18 +1,15 @@
 
 export const elementOptions = [
-  { id: "serviceCards", label: "כרטיסי שירותים עם אייקונים", description: "הצגת השירותים שלכם בכרטיסיות מעוצבות" },
-  { id: "timeline", label: "ציר זמן של התהליך", description: "הסבר על התהליך בצורה ויזואלית" },
-  { id: "floatingFeatures", label: "תכונות צפות באוויר", description: "הדגשת יתרונות במיקומים דינמיים" },
-  { id: "layeredCards", label: "כרטיסי המלצות מרובדים", description: "המלצות לקוחות בעיצוב תלת-ממדי" },
-  { id: "pricing", label: "טבלת מחירים", description: "הצגת חבילות ומחירים בצורה ברורה" },
-  { id: "3dElements", label: "אלמנטים תלת-ממדיים", description: "עיצובים מתקדמים עם אפקטי עומק" },
-  { id: "statistics", label: "סטטיסטיקות מרשימות", description: "נתונים על הצלחות והישגים" },
-  { id: "beforeAfter", label: "לפני ואחרי", description: "השוואות ותוצאות מוכחות" },
-  { id: "teamSection", label: "הצוות שלנו", description: "הכירו את האנשים מאחורי העסק" },
-  { id: "portfolio", label: "גלריית עבודות", description: "הצגת פרויקטים ועבודות קודמות" },
-  { id: "ctaButtons", label: "כפתורי פעולה מתקדמים", description: "כפתורים בולטים לפעולות חשובות" },
-  { id: "socialProof", label: "הוכחות חברתיות", description: "לוגואים של לקוחות וחברות" },
-  { id: "videoSection", label: "סקשן וידאו", description: "אזור לסרטון הצגה או הסבר" },
-  { id: "mapLocation", label: "מפה ומיקום", description: "הצגת המיקום הפיזי של העסק" },
-  { id: "newsletter", label: "הרשמה לnewsletter", description: "איסוף אימיילים ועדכונים" }
+  // 6 מומלצים - מסומנים כבר
+  { id: "hero", label: "סקשן הירו מתקדם", description: "כותרת ראשית עם אנימציות תלת-מימדיות", recommended: true },
+  { id: "emotional", label: "פסקת רגש של התחום", description: "יצירת חיבור רגשי עם הלקוחות", recommended: true },
+  { id: "whyUs", label: "למה לבחור בנו", description: "הצגת היתרונות הייחודיים שלכם", recommended: true },
+  { id: "whatWeGive", label: "מה אנחנו נותנים", description: "התמחויות והשירותים המרכזיים", recommended: true },
+  { id: "testimonials", label: "ביקורות לקוחות", description: "המלצות אמיתיות ומוכחות", recommended: true },
+  { id: "contact", label: "צור קשר מתקדם", description: "טופס יצירת קשר עם עיצוב תלת-מימדי", recommended: true },
+  
+  // 3 אלמנטים חדשים
+  { id: "gallery", label: "גלריית תמונות דינמית", description: "הצגת עבודות וגלריה עם אפקטים תלת-מימדיים", recommended: false },
+  { id: "process", label: "תהליך השירות", description: "הסבר שלב אחר שלב על התהליך שלכם", recommended: false },
+  { id: "about", label: "קצת עלינו", description: "סיפור העסק והחזון שלכם", recommended: false }
 ];
