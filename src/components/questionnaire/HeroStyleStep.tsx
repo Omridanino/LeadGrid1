@@ -42,7 +42,7 @@ export const HeroStyleStep = ({ formData, updateFormData }: HeroStyleStepProps) 
         </Select>
         <p className="text-sm text-gray-400 mt-2">
           {formData.heroStyle === 'gradient' && "הדף יוצג עם רקע בצבעי הדרגה יפים ללא תמונות"}
-          {formData.heroStyle === 'animated' && "הדף יוצג עם רקע מונפש וצבעוני שמשתנה"}
+          {formData.heroStyle === 'animated' && "הדף יוצג עם רקע מונפש וצבעוני שמשתנה כל הזמן"}
           {formData.heroStyle === 'image' && "הדף יוצג עם תמונה רלוונטית לעסק שלכם ברקע"}
         </p>
       </div>

@@ -374,6 +374,56 @@ const OptionsPanel = ({
                           placeholder="כותרת סקשן המלצות"
                         />
                       </div>
+                      
+                      {/* Individual testimonials editing */}
+                      <div className="space-y-3">
+                        <Label className="text-gray-300">ביקורות</Label>
+                        {(editingContent.sections?.testimonials || [
+                          { name: "דני כהן", role: "מנהל עסק", content: "שירות מעולה ומקצועי! ממליץ בחום", rating: 5, image: "👨‍💼" },
+                          { name: "שרה לוי", role: "יזמת", content: "התוצאות הטובות ביותר שקיבלתי", rating: 5, image: "👩‍💼" },
+                          { name: "מיכל רוזן", role: "בעלת חנות", content: "חוויה נהדרת וטיפול אישי", rating: 5, image: "👩‍🔧" }
+                        ]).map((testimonial: any, idx: number) => (
+                          <div key={idx} className="space-y-2 p-3 bg-gray-600 rounded">
+                            <Label className="text-gray-300">ביקורת {idx + 1}</Label>
+                            <div className="grid grid-cols-2 gap-2">
+                              <Input
+                                value={testimonial.name || ''}
+                                onChange={(e) => {
+                                  const newTestimonials = [...(editingContent.sections?.testimonials || [])];
+                                  if (!newTestimonials[idx]) newTestimonials[idx] = {};
+                                  newTestimonials[idx].name = e.target.value;
+                                  updateContent('sections.testimonials', newTestimonials);
+                                }}
+                                className="bg-gray-500 border-gray-400 text-white"
+                                placeholder="שם"
+                              />
+                              <Input
+                                value={testimonial.role || ''}
+                                onChange={(e) => {
+                                  const newTestimonials = [...(editingContent.sections?.testimonials || [])];
+                                  if (!newTestimonials[idx]) newTestimonials[idx] = {};
+                                  newTestimonials[idx].role = e.target.value;
+                                  updateContent('sections.testimonials', newTestimonials);
+                                }}
+                                className="bg-gray-500 border-gray-400 text-white"
+                                placeholder="תפקיד"
+                              />
+                            </div>
+                            <Textarea
+                              value={testimonial.content || ''}
+                              onChange={(e) => {
+                                const newTestimonials = [...(editingContent.sections?.testimonials || [])];
+                                if (!newTestimonials[idx]) newTestimonials[idx] = {};
+                                newTestimonials[idx].content = e.target.value;
+                                updateContent('sections.testimonials', newTestimonials);
+                              }}
+                              className="bg-gray-500 border-gray-400 text-white"
+                              placeholder="תוכן הביקורת"
+                              rows={2}
+                            />
+                          </div>
+                        ))}
+                      </div>
                     </div>
 
                     {/* Contact Section */}

@@ -1,4 +1,3 @@
-
 import { ColorScheme } from "./ColorEditor";
 import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
@@ -36,6 +35,27 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
 
   const finalHeroImage = formData.heroStyle === 'image' && heroImage ? heroImage : null;
   const isAnimatedBackground = formData.heroStyle === 'animated';
+
+  // 15 different animated backgrounds
+  const animatedBackgrounds = [
+    'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
+    'linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c)',
+    'linear-gradient(-45deg, #4facfe, #00f2fe, #43e97b, #38f9d7)',
+    'linear-gradient(-45deg, #fa709a, #fee140, #f093fb, #f5576c)',
+    'linear-gradient(-45deg, #a8edea, #fed6e3, #d299c2, #fef9d7)',
+    'linear-gradient(-45deg, #ff9a9e, #fecfef, #fecfef, #ff9a9e)',
+    'linear-gradient(-45deg, #a1c4fd, #c2e9fb, #667eea, #764ba2)',
+    'linear-gradient(-45deg, #ffecd2, #fcb69f, #ff8a80, #ff5722)',
+    'linear-gradient(-45deg, #e0c3fc, #9bb5ff, #667eea, #764ba2)',
+    'linear-gradient(-45deg, #f093fb, #f5576c, #4facfe, #00f2fe)',
+    'linear-gradient(-45deg, #43e97b, #38f9d7, #667eea, #764ba2)',
+    'linear-gradient(-45deg, #fa709a, #fee140, #a8edea, #fed6e3)',
+    'linear-gradient(-45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24)',
+    'linear-gradient(-45deg, #6c5ce7, #fd79a8, #fdcb6e, #e17055)',
+    'linear-gradient(-45deg, #74b9ff, #0984e3, #00b894, #00cec9)'
+  ];
+
+  const randomBackground = animatedBackgrounds[Math.floor(Math.random() * animatedBackgrounds.length)];
 
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,14 +98,14 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     </Button>
   );
 
-  // Lightweight optimized styles with shiny silver icons
+  // Enhanced styles with real shiny silver icons and animated backgrounds
   const optimizedStyles = useMemo(() => `
     .hero-section {
       background: ${isAnimatedBackground 
-        ? 'linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #1a1a2e)'
+        ? randomBackground
         : 'linear-gradient(135deg, rgba(10, 10, 26, 0.95) 0%, rgba(26, 26, 58, 0.85) 50%, rgba(10, 10, 26, 0.95) 100%)'
       };
-      ${isAnimatedBackground ? 'background-size: 400% 400%; animation: gradientShift 15s ease infinite;' : ''}
+      ${isAnimatedBackground ? 'background-size: 400% 400%; animation: gradientShift 8s ease infinite;' : ''}
       position: relative;
     }
 
@@ -101,11 +121,13 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 16px;
       transition: all 0.3s ease;
+      transform-style: preserve-3d;
     }
 
     .tech-card:hover {
-      transform: translateY(-2px);
+      transform: translateY(-4px) rotateX(5deg);
       border-color: rgba(59, 130, 246, 0.3);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     }
 
     .tech-button {
@@ -113,29 +135,65 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       border: none;
       transition: all 0.3s ease;
       border-radius: 12px;
+      transform-style: preserve-3d;
     }
 
     .tech-button:hover {
-      transform: translateY(-1px);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
 
-    .shiny-icon {
+    .shiny-silver-icon {
       color: #c0c0c0;
-      text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
-      filter: drop-shadow(0 0 8px rgba(192, 192, 192, 0.3));
+      background: linear-gradient(145deg, #e6e6e6, #b8b8b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 8px rgba(192, 192, 192, 0.6)) drop-shadow(0 2px 4px rgba(255, 255, 255, 0.3));
+      text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
+    }
+
+    .floating-3d {
+      animation: float3D 6s ease-in-out infinite;
+      transform-style: preserve-3d;
+    }
+
+    @keyframes float3D {
+      0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
+      33% { transform: translateY(-10px) rotateX(5deg) rotateY(2deg); }
+      66% { transform: translateY(-5px) rotateX(-3deg) rotateY(-2deg); }
     }
 
     .section-container {
       position: relative;
+      transform-style: preserve-3d;
     }
 
-    .section-container:hover .edit-controls {
-      opacity: 1;
+    .parallax-bg {
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
     }
 
-    .edit-controls {
-      opacity: 0;
-      transition: opacity 0.3s ease;
+    /* 3D Grid Effect */
+    .grid-3d {
+      background-image: 
+        linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      position: relative;
+    }
+
+    .grid-3d::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+      pointer-events: none;
     }
 
     /* Mobile optimizations */
@@ -146,16 +204,12 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       .stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0.75rem !important; }
       .features-grid { grid-template-columns: 1fr !important; }
       .contact-grid { grid-template-columns: 1fr !important; }
+      .tech-card:hover { transform: translateY(-2px); }
     }
-
-    @media (max-width: 480px) {
-      .hero-title { font-size: 1.75rem !important; }
-      .section-title { font-size: 1.75rem !important; }
-    }
-  `, [currentColors, isAnimatedBackground]);
+  `, [currentColors, isAnimatedBackground, randomBackground]);
 
   return (
-    <div className="w-full text-white overflow-hidden rounded-lg relative" 
+    <div className="w-full text-white overflow-hidden rounded-lg relative grid-3d" 
          style={{
            background: 'linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%)',
            position: 'relative'
@@ -165,7 +219,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       <style>{optimizedStyles}</style>
 
       {/* Section 1: Hero Section */}
-      <section id="hero" className="section-container group relative min-h-[600px] flex items-center justify-center text-center p-8 hero-section"
+      <section id="hero" className="section-container group relative min-h-[600px] flex items-center justify-center text-center p-8 hero-section parallax-bg floating-3d"
                style={finalHeroImage ? {
                  background: `linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.6)), url('${finalHeroImage}')`,
                  backgroundSize: 'cover',
@@ -177,7 +231,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         <div className="relative z-10 max-w-4xl mx-auto w-full">
           <div className="mb-6">
             <span className="inline-block px-6 py-3 text-white rounded-full font-semibold text-sm tech-card">
-              <span className="shiny-icon">⭐</span> {content.badge}
+              <span className="shiny-silver-icon">⭐</span> {content.badge}
             </span>
           </div>
           
@@ -204,8 +258,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           {/* Stats Grid */}
           <div className="stats-grid grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto px-4">
             {Object.entries(content.stats).map(([key, value], index) => (
-              <div key={key} className="tech-card p-6 text-center">
-                <div className="text-3xl lg:text-4xl font-bold text-white mb-3 shiny-icon">{String(value)}</div>
+              <div key={key} className="tech-card p-6 text-center floating-3d">
+                <div className="text-3xl lg:text-4xl font-bold text-white mb-3 shiny-silver-icon">{String(value)}</div>
                 <div className="text-sm lg:text-base text-white opacity-80 font-medium">{key}</div>
               </div>
             ))}
@@ -220,7 +274,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           
           <div className="max-w-4xl mx-auto text-center">
             <div className="tech-card p-12">
-              <div className="text-6xl mb-8 shiny-icon">
+              <div className="text-6xl mb-8 shiny-silver-icon floating-3d">
                 {content.sections.emotionalSection.icon}
               </div>
               <h2 className="text-4xl font-bold mb-8" style={{ color: currentColors.text }}>
@@ -247,7 +301,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             <div className="features-grid grid grid-cols-1 md:grid-cols-2 gap-8">
               {content.sections.whyUs.items.map((item: any, idx: number) => (
                 <div key={idx} className="tech-card p-8">
-                  <div className="text-5xl mb-6 shiny-icon">
+                  <div className="text-5xl mb-6 shiny-silver-icon floating-3d">
                     {item.icon}
                   </div>
                   <h3 className="text-xl font-bold mb-4" style={{ color: currentColors.text }}>
@@ -277,7 +331,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               {content.sections.whatWeGive.items.map((item: any, idx: number) => (
                 <div key={idx} className="text-center">
                   <div className="tech-card p-10">
-                    <div className="text-6xl mb-8 shiny-icon">
+                    <div className="text-6xl mb-8 shiny-silver-icon floating-3d">
                       {item.icon}
                     </div>
                     <h3 className="text-2xl font-bold mb-6" style={{ color: currentColors.text }}>
@@ -294,13 +348,14 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         </section>
       )}
 
-      {/* Gallery Section */}
+      {/* Gallery Section - Show if selected */}
       {elements.includes('gallery') && (
         <section id="gallery" className="section-container group py-20 px-8">
+          {editMode && <EditButton section="gallery" />}
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-3 mb-4">
-                <Image className="w-6 h-6 text-blue-400 shiny-icon" />
+                <Image className="w-6 h-6 text-blue-400 shiny-silver-icon" />
                 <h2 className="text-4xl font-bold" style={{ color: currentColors.text }}>
                   גלריית העבודות שלנו
                 </h2>
@@ -312,9 +367,9 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[1,2,3,4,5,6,7,8].map((item, idx) => (
-                <div key={idx} className="tech-card aspect-square p-4">
+                <div key={idx} className="tech-card aspect-square p-4 floating-3d">
                   <div className="w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg flex items-center justify-center">
-                    <Image className="w-8 h-8 text-white/60 shiny-icon" />
+                    <Image className="w-8 h-8 text-white/60 shiny-silver-icon" />
                   </div>
                 </div>
               ))}
@@ -323,13 +378,14 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         </section>
       )}
 
-      {/* Process Section */}
+      {/* Process Section - Show if selected */}
       {elements.includes('process') && (
         <section id="process" className="section-container group py-20 px-8">
+          {editMode && <EditButton section="process" />}
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-3 mb-4">
-                <Target className="w-6 h-6 text-green-400 shiny-icon" />
+                <Target className="w-6 h-6 text-green-400 shiny-silver-icon" />
                 <h2 className="text-4xl font-bold" style={{ color: currentColors.text }}>
                   תהליך העבודה שלנו
                 </h2>
@@ -341,11 +397,11 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
-                { step: "01", title: "תכנון ואפיון", desc: "בדיקת הצרכים והגדרת המטרות", icon: <Lightbulb className="w-6 h-6 shiny-icon" /> },
-                { step: "02", title: "פיתוח וביצוע", desc: "יצירה מקצועית לפי הסטנדרטים הגבוהים", icon: <CheckCircle className="w-6 h-6 shiny-icon" /> },
-                { step: "03", title: "מסירה ותמיכה", desc: "מסירה מושלמת עם תמיכה שוטפת", icon: <Shield className="w-6 h-6 shiny-icon" /> }
+                { step: "01", title: "תכנון ואפיון", desc: "בדיקת הצרכים והגדרת המטרות", icon: <Lightbulb className="w-6 h-6 shiny-silver-icon" /> },
+                { step: "02", title: "פיתוח וביצוע", desc: "יצירה מקצועית לפי הסטנדרטים הגבוהים", icon: <CheckCircle className="w-6 h-6 shiny-silver-icon" /> },
+                { step: "03", title: "מסירה ותמיכה", desc: "מסירה מושלמת עם תמיכה שוטפת", icon: <Shield className="w-6 h-6 shiny-silver-icon" /> }
               ].map((process, idx) => (
-                <div key={idx} className="tech-card p-8 text-center">
+                <div key={idx} className="tech-card p-8 text-center floating-3d">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center mx-auto mb-4">
                     <span className="text-white font-bold">{process.step}</span>
                   </div>
@@ -363,14 +419,15 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         </section>
       )}
 
-      {/* About Section */}
+      {/* About Section - Show if selected */}
       {elements.includes('about') && (
         <section id="about" className="section-container group py-20 px-8">
+          {editMode && <EditButton section="about" />}
           <div className="max-w-5xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
                 <div className="inline-flex items-center gap-3 mb-6">
-                  <Users className="w-6 h-6 text-purple-400 shiny-icon" />
+                  <Users className="w-6 h-6 text-purple-400 shiny-silver-icon" />
                   <h2 className="text-4xl font-bold" style={{ color: currentColors.text }}>
                     קצת עלינו
                   </h2>
@@ -386,20 +443,20 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                   </p>
                   <div className="flex items-center gap-4 pt-2">
                     <div className="flex items-center gap-2">
-                      <Award className="w-5 h-5 text-yellow-400 shiny-icon" />
+                      <Award className="w-5 h-5 text-yellow-400 shiny-silver-icon" />
                       <span className="font-semibold text-sm">מומחים מוסמכים</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Star className="w-5 h-5 text-yellow-400 shiny-icon" />
+                      <Star className="w-5 h-5 text-yellow-400 shiny-silver-icon" />
                       <span className="font-semibold text-sm">שירות 5 כוכבים</span>
                     </div>
                   </div>
                 </div>
               </div>
               
-              <div className="tech-card p-8 text-center">
+              <div className="tech-card p-8 text-center floating-3d">
                 <div className="w-24 h-24 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center mx-auto mb-6">
-                  <Users className="w-12 h-12 text-white shiny-icon" />
+                  <Users className="w-12 h-12 text-white shiny-silver-icon" />
                 </div>
                 <h3 className="text-2xl font-bold mb-4" style={{ color: currentColors.text }}>
                   הצוות המקצועי
@@ -419,7 +476,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-16" style={{ color: currentColors.text }}>
-            <span className="shiny-icon">💭</span> מה אומרים עלינו
+            <span className="shiny-silver-icon floating-3d">💭</span> מה אומרים עלינו
           </h2>
           
           <div className="features-grid grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -446,10 +503,10 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                 image: "👩‍🔧"
               }
             ]).map((testimonial: any, idx: number) => (
-              <div key={idx} className="tech-card p-6 rounded-2xl">
+              <div key={idx} className="tech-card p-6 rounded-2xl floating-3d">
                 <div className="flex items-center mb-6">
                   <div className="w-16 h-16 rounded-xl ml-3 flex items-center justify-center tech-card">
-                    <span className="text-xl shiny-icon">{testimonial.image}</span>
+                    <span className="text-xl shiny-silver-icon">{testimonial.image}</span>
                   </div>
                   <div>
                     <h4 className="font-bold text-lg" style={{ color: currentColors.primary }}>
@@ -465,7 +522,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                 </p>
                 <div className="flex">
                   {'★'.repeat(testimonial.rating).split('').map((star, i) => (
-                    <span key={i} className="text-yellow-400 text-lg shiny-icon">{star}</span>
+                    <span key={i} className="text-yellow-400 text-lg shiny-silver-icon">{star}</span>
                   ))}
                 </div>
               </div>
@@ -481,8 +538,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         <div className="max-w-5xl mx-auto">
           <div className="tech-card p-12">
             <div className="text-center mb-12 relative z-10">
-              <div className="w-24 h-24 rounded-2xl mx-auto mb-8 tech-card flex items-center justify-center">
-                <span className="text-4xl shiny-icon">💬</span>
+              <div className="w-24 h-24 rounded-2xl mx-auto mb-8 tech-card flex items-center justify-center floating-3d">
+                <span className="text-4xl shiny-silver-icon">💬</span>
               </div>
               
               <h2 className="text-4xl font-bold mb-6" style={{ color: currentColors.text }}>
@@ -544,7 +601,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                 type="submit"
                 className="w-full py-6 text-xl font-bold tech-button"
               >
-                <Send className="w-6 h-6 ml-3 shiny-icon" />
+                <Send className="w-6 h-6 ml-3 shiny-silver-icon" />
                 שלח הודעה
               </Button>
             </form>
@@ -552,11 +609,11 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             {/* Contact Info Cards */}
             <div className="contact-grid grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 relative z-10">
               {[
-                { icon: <Phone className="w-8 h-8 shiny-icon" />, title: "טלפון", info: "050-1234567" },
-                { icon: <Mail className="w-8 h-8 shiny-icon" />, title: "אימייל", info: "info@business.co.il" },
-                { icon: <MapPin className="w-8 h-8 shiny-icon" />, title: "כתובת", info: "תל אביב, ישראל" }
+                { icon: <Phone className="w-8 h-8 shiny-silver-icon" />, title: "טלפון", info: "050-1234567" },
+                { icon: <Mail className="w-8 h-8 shiny-silver-icon" />, title: "אימייל", info: "info@business.co.il" },
+                { icon: <MapPin className="w-8 h-8 shiny-silver-icon" />, title: "כתובת", info: "תל אביב, ישראל" }
               ].map((contact, idx) => (
-                <div key={idx} className="tech-card p-6 text-center">
+                <div key={idx} className="tech-card p-6 text-center floating-3d">
                   <div className="w-16 h-16 rounded-xl mx-auto mb-4 tech-card flex items-center justify-center">
                     {contact.icon}
                   </div>
