@@ -48,8 +48,8 @@ const FullScreenPreview = ({ content, currentColors, formData, heroImage, isOpen
         <X className="w-5 h-5" />
       </Button>
 
-      {/* Full Screen Preview */}
-      <div className={`w-full h-full overflow-y-auto overflow-x-hidden ${getStyleClass()}`}>
+      {/* Full Screen Preview - Scrollable */}
+      <div className={`w-full h-full overflow-y-auto overflow-x-hidden ${getStyleClass()}`} style={{ scrollBehavior: 'smooth' }}>
         <PreviewStyles />
 
         {/* Hero Section */}
@@ -63,13 +63,31 @@ const FullScreenPreview = ({ content, currentColors, formData, heroImage, isOpen
         {/* Navigation */}
         <NavigationSection formData={formData} />
 
-        {/* Content Sections */}
+        {/* Content Sections - All sections will be rendered */}
         <ContentSections 
           content={content}
           currentColors={currentColors}
           formData={formData}
           selectedElements={selectedElements}
         />
+
+        {/* Footer Section */}
+        <footer className="bg-black/50 backdrop-blur-sm py-16 text-center">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <h3 className="text-2xl font-bold text-white mb-4">
+                {formData.businessName || 'העסק שלי'}
+              </h3>
+              <p className="text-gray-400 mb-8">
+                © 2024 כל הזכויות שמורות. בניית אתרים מקצועית ואמינה.
+              </p>
+              <div className="flex justify-center gap-8 text-gray-400">
+                <span>טלפון: 050-1234567</span>
+                <span>אימייל: info@business.co.il</span>
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
     </div>
   );
