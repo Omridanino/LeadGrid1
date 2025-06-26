@@ -2,7 +2,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Check, Star, Users, TrendingUp, Phone, Quote, MessageCircle, HelpCircle, Heart, Zap, Target, Calendar, Award } from "lucide-react";
+import { Check, Star, Users, Quote, MessageCircle, HelpCircle, Award } from "lucide-react";
 import { ColorScheme } from "@/components/ColorEditor";
 import { useToast } from "@/hooks/use-toast";
 import { getHeroImageUrl } from "@/utils/heroImageUtils";
@@ -38,7 +38,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       {/* 3D Background Elements */}
       <div className="absolute inset-0 opacity-5">
         <div 
-          className="absolute top-20 left-20 w-64 h-64 rounded-full"
+          className="absolute top-16 left-16 w-48 h-48 rounded-full"
           style={{ 
             background: `conic-gradient(from 45deg, ${currentColors.primary}, ${currentColors.secondary}, ${currentColors.accent}, ${currentColors.primary})`,
             animation: 'spin 30s linear infinite',
@@ -47,7 +47,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           }}
         />
         <div 
-          className="absolute bottom-20 right-20 w-48 h-48 rounded-full"
+          className="absolute bottom-16 right-16 w-36 h-36 rounded-full"
           style={{ 
             background: `linear-gradient(135deg, ${currentColors.secondary}60, ${currentColors.accent}60)`,
             animation: 'pulse 4s ease-in-out infinite',
@@ -56,7 +56,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           }}
         />
         <div 
-          className="absolute top-1/2 left-1/2 w-80 h-80 rounded-full"
+          className="absolute top-1/2 left-1/2 w-60 h-60 rounded-full"
           style={{ 
             background: `conic-gradient(from 0deg, transparent, ${currentColors.primary}20, transparent)`,
             animation: 'spin 20s linear infinite',
@@ -70,10 +70,10 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     </div>
   );
 
-  // Enhanced glassmorphism card component
+  // Enhanced glassmorphism card component - smaller sizes
   const renderGlassmorphismCard = (children: React.ReactNode, hoverScale: boolean = true) => (
     <div 
-      className={`group relative p-6 rounded-3xl transition-all duration-700 cursor-pointer border ${hoverScale ? 'hover:scale-105' : ''}`}
+      className={`group relative p-5 rounded-3xl transition-all duration-700 cursor-pointer border ${hoverScale ? 'hover:scale-105' : ''}`}
       style={{ 
         background: `linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05))`,
         border: `2px solid ${currentColors.primary}40`,
@@ -98,10 +98,10 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   return (
     <Card className="bg-gray-900 border-gray-700 overflow-hidden">
       <CardContent className="p-0">
-        {/* Enhanced Hero Section */}
+        {/* Enhanced Hero Section - smaller sizes */}
         {renderGlassmorphismSection(
           <div 
-            className="p-12 text-center min-h-[600px] flex flex-col justify-center relative"
+            className="p-8 text-center min-h-[500px] flex flex-col justify-center relative"
             style={{
               background: finalHeroImage 
                 ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${finalHeroImage}')` 
@@ -113,7 +113,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             <div className="absolute inset-0 bg-gradient-to-br from-transparent via-black/20 to-transparent"></div>
             <div className="relative z-10">
               <Badge 
-                className="mb-6 text-lg px-6 py-3 border-2 animate-pulse"
+                className="mb-4 text-base px-5 py-2 border-2 animate-pulse"
                 style={{ 
                   backgroundColor: 'rgba(255,255,255,0.2)', 
                   color: 'white',
@@ -126,7 +126,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               </Badge>
               
               <h1 
-                className="text-5xl md:text-7xl font-bold mb-8 animate-fade-in"
+                className="text-4xl md:text-5xl font-bold mb-6 animate-fade-in"
                 style={{ 
                   color: currentColors.headlineColor || 'white',
                   textShadow: '0 10px 30px rgba(0,0,0,0.8)',
@@ -137,7 +137,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               </h1>
               
               <p 
-                className="text-xl md:text-2xl mb-10 max-w-3xl mx-auto leading-relaxed"
+                className="text-lg md:text-xl mb-6 max-w-3xl mx-auto leading-relaxed"
                 style={{ 
                   color: currentColors.subheadlineColor || 'rgba(255,255,255,0.9)',
                   textShadow: '0 5px 15px rgba(0,0,0,0.6)',
@@ -149,7 +149,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               
               <Button 
                 size="lg" 
-                className="text-2xl px-12 py-6 shadow-2xl rounded-2xl hover:scale-110 transition-all duration-700 font-bold mb-12 relative overflow-hidden"
+                className="text-lg px-8 py-4 shadow-2xl rounded-2xl hover:scale-110 transition-all duration-700 font-bold mb-8 relative overflow-hidden"
                 style={{ 
                   background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary}, ${currentColors.secondary})`,
                   color: 'white',
@@ -162,11 +162,11 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                 <span className="relative z-10">{content.cta}</span>
               </Button>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12 max-w-5xl mx-auto">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 max-w-4xl mx-auto">
                 {Object.entries(content.stats).map(([key, value], index) => (
                   <div 
                     key={index} 
-                    className="p-8 rounded-3xl hover:scale-110 transition-all duration-700 shadow-2xl"
+                    className="p-5 rounded-3xl hover:scale-110 transition-all duration-700 shadow-2xl"
                     style={{ 
                       background: `linear-gradient(145deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1))`,
                       backdropFilter: 'blur(15px)',
@@ -174,8 +174,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                       transform: 'perspective(600px) rotateX(10deg) rotateY(5deg)'
                     }}
                   >
-                    <div className="text-4xl md:text-5xl font-bold text-white mb-3" style={{ textShadow: '0 5px 15px rgba(0,0,0,0.5)' }}>{value as string}</div>
-                    <div className="text-white font-semibold text-lg" style={{ textShadow: '0 3px 8px rgba(0,0,0,0.3)' }}>{key}</div>
+                    <div className="text-2xl md:text-3xl font-bold text-white mb-2" style={{ textShadow: '0 5px 15px rgba(0,0,0,0.5)' }}>{value as string}</div>
+                    <div className="text-white font-semibold" style={{ textShadow: '0 3px 8px rgba(0,0,0,0.3)' }}>{key}</div>
                   </div>
                 ))}
               </div>
@@ -183,37 +183,37 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           </div>
         )}
         
-        {/* Enhanced Features Section */}
+        {/* Enhanced Features Section - smaller sizes */}
         {renderGlassmorphismSection(
-          <div className="p-12">
+          <div className="p-8">
             <h2 
-              className="text-4xl md:text-5xl font-bold mb-12 text-center flex items-center justify-center"
+              className="text-3xl md:text-4xl font-bold mb-8 text-center flex items-center justify-center"
               style={{ 
                 color: currentColors.featuresColor || currentColors.text,
                 textShadow: '0 8px 16px rgba(0,0,0,0.4)',
                 transform: 'perspective(800px) rotateX(8deg)'
               }}
             >
-              <Star className="w-10 h-10 ml-4 animate-bounce" style={{ color: currentColors.accent }} />
+              <Star className="w-8 h-8 ml-3 animate-bounce" style={{ color: currentColors.accent }} />
               {content.featuresTitle}
             </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16 max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 max-w-6xl mx-auto">
               {content.features.map((feature: string, index: number) => (
                 <div key={index}>
                   {renderGlassmorphismCard(
                     <div className="flex items-start">
                       <div 
-                        className="w-12 h-12 rounded-2xl flex items-center justify-center ml-4 flex-shrink-0 mt-1 group-hover:scale-125 group-hover:rotate-12 transition-all duration-700"
+                        className="w-10 h-10 rounded-2xl flex items-center justify-center ml-3 flex-shrink-0 mt-1 group-hover:scale-125 group-hover:rotate-12 transition-all duration-700"
                         style={{ 
                           background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})`,
                           boxShadow: `0 15px 30px ${currentColors.primary}60`,
                           transform: 'perspective(300px) rotateX(15deg)'
                         }}
                       >
-                        <Check className="w-6 h-6 text-white" />
+                        <Check className="w-5 h-5 text-white" />
                       </div>
                       <span 
-                        className="text-lg leading-relaxed font-semibold"
+                        className="text-base leading-relaxed font-semibold"
                         style={{ 
                           color: currentColors.featuresTextColor || currentColors.text,
                           textShadow: '0 2px 4px rgba(0,0,0,0.3)'
@@ -229,32 +229,32 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           </div>
         )}
 
-        {/* Enhanced Why Choose Us Section - Always Display */}
+        {/* Enhanced Why Choose Us Section - Always Display - smaller sizes */}
         {content.whyChooseUs && renderGlassmorphismSection(
-          <div className="p-16">
+          <div className="p-8">
             <h2 
-              className="text-5xl md:text-6xl font-bold mb-8 text-center"
+              className="text-3xl md:text-4xl font-bold mb-6 text-center"
               style={{ 
                 color: currentColors.text,
                 textShadow: '0 10px 20px rgba(0,0,0,0.5)',
                 transform: 'perspective(1000px) rotateX(10deg)'
               }}
             >
-              <Award className="w-14 h-14 ml-4 inline animate-bounce" style={{ color: currentColors.accent }} />
+              <Award className="w-10 h-10 ml-3 inline animate-bounce" style={{ color: currentColors.accent }} />
               {content.whyChooseUs.title}
             </h2>
-            <p className="text-center text-2xl mb-20 opacity-90" style={{ color: currentColors.text }}>
+            <p className="text-center text-lg mb-12 opacity-90" style={{ color: currentColors.text }}>
               הסיבות המובילות לבחור בנו מבין כל האפשרויות
             </p>
             
-            <div className="grid grid-cols-2 gap-12 max-w-6xl mx-auto">
+            <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
               {content.whyChooseUs.items.map((item: any, index: number) => (
                 <div key={index}>
                   {renderGlassmorphismCard(
-                    <div className="p-6">
-                      <div className="relative mb-10">
+                    <div className="p-5">
+                      <div className="relative mb-6">
                         <div 
-                          className="w-32 h-32 rounded-3xl flex items-center justify-center mx-auto group-hover:scale-125 group-hover:rotate-12 transition-all duration-700 relative"
+                          className="w-24 h-24 rounded-3xl flex items-center justify-center mx-auto group-hover:scale-125 group-hover:rotate-12 transition-all duration-700 relative"
                           style={{ 
                             background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary} 50%, ${currentColors.accent})`,
                             boxShadow: `0 30px 60px ${currentColors.primary}60, inset 0 4px 0 rgba(255,255,255,0.4)`,
@@ -262,7 +262,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                           }}
                         >
                           <i 
-                            className={`ri-${item.icon} text-6xl text-white group-hover:scale-125 transition-all duration-700`}
+                            className={`ri-${item.icon} text-4xl text-white group-hover:scale-125 transition-all duration-700`}
                             style={{ 
                               textShadow: '0 8px 16px rgba(0,0,0,0.6)',
                               transform: 'perspective(200px) rotateX(-15deg)'
@@ -270,16 +270,16 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                           />
                         </div>
 
-                        {/* Floating particles */}
-                        <div className="absolute -top-4 -right-4 w-8 h-8 rounded-full animate-pulse" 
+                        {/* Floating particles - smaller */}
+                        <div className="absolute -top-3 -right-3 w-6 h-6 rounded-full animate-pulse" 
                              style={{ backgroundColor: currentColors.accent, boxShadow: `0 0 25px ${currentColors.accent}` }} />
-                        <div className="absolute -bottom-3 -left-3 w-6 h-6 rounded-full animate-pulse" 
+                        <div className="absolute -bottom-2 -left-2 w-4 h-4 rounded-full animate-pulse" 
                              style={{ backgroundColor: currentColors.secondary, animationDelay: '0.5s', boxShadow: `0 0 20px ${currentColors.secondary}` }} />
                       </div>
                       
                       <div className="text-center relative">
                         <p 
-                          className="text-2xl leading-relaxed font-bold group-hover:text-opacity-100 transition-all duration-700"
+                          className="text-lg leading-relaxed font-bold group-hover:text-opacity-100 transition-all duration-700"
                           style={{ 
                             color: currentColors.text,
                             textShadow: '0 4px 8px rgba(0,0,0,0.4)',
@@ -295,13 +295,13 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               ))}
             </div>
 
-            <div className="text-center mt-24">
-              <p className="text-3xl mb-12 opacity-90" style={{ color: currentColors.text }}>
+            <div className="text-center mt-16">
+              <p className="text-xl mb-8 opacity-90" style={{ color: currentColors.text }}>
                 מוכנים להתחיל את המסע איתנו?
               </p>
               <Button 
                 size="lg"
-                className="px-24 py-10 text-3xl font-bold rounded-3xl hover:scale-110 transition-all duration-700 shadow-2xl relative overflow-hidden"
+                className="px-16 py-6 text-xl font-bold rounded-3xl hover:scale-110 transition-all duration-700 shadow-2xl relative overflow-hidden"
                 style={{ 
                   background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary}, ${currentColors.secondary})`,
                   color: 'white',
@@ -316,25 +316,25 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           </div>
         )}
 
-        {/* Enhanced About Section */}
+        {/* Enhanced About Section - smaller sizes */}
         {renderGlassmorphismSection(
-          <div className="p-12">
+          <div className="p-8">
             <h2 
-              className="text-4xl md:text-5xl font-bold mb-12 text-center flex items-center justify-center"
+              className="text-3xl md:text-4xl font-bold mb-8 text-center flex items-center justify-center"
               style={{ 
                 color: currentColors.aboutColor || currentColors.text,
                 textShadow: '0 8px 16px rgba(0,0,0,0.4)',
                 transform: 'perspective(800px) rotateX(8deg)'
               }}
             >
-              <Users className="w-10 h-10 ml-4 animate-bounce" style={{ color: currentColors.secondary }} />
+              <Users className="w-8 h-8 ml-3 animate-bounce" style={{ color: currentColors.secondary }} />
               {content.aboutTitle}
             </h2>
-            <div className="max-w-5xl mx-auto">
+            <div className="max-w-4xl mx-auto">
               {renderGlassmorphismCard(
-                <div className="p-10">
+                <div className="p-8">
                   <p 
-                    className="text-xl md:text-2xl leading-relaxed text-center"
+                    className="text-lg md:text-xl leading-relaxed text-center"
                     style={{ 
                       color: currentColors.aboutTextColor || currentColors.text,
                       textShadow: '0 3px 6px rgba(0,0,0,0.3)'
@@ -349,28 +349,28 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           </div>
         )}
 
-        {/* Enhanced Testimonials Section */}
+        {/* Enhanced Testimonials Section - smaller sizes */}
         {renderGlassmorphismSection(
-          <div className="p-12">
+          <div className="p-8">
             <h2 
-              className="text-4xl md:text-5xl font-bold mb-12 text-center flex items-center justify-center"
+              className="text-3xl md:text-4xl font-bold mb-8 text-center flex items-center justify-center"
               style={{ 
                 color: currentColors.text,
                 textShadow: '0 8px 16px rgba(0,0,0,0.4)',
                 transform: 'perspective(800px) rotateX(8deg)'
               }}
             >
-              <Quote className="w-10 h-10 ml-4 animate-bounce" style={{ color: currentColors.primary }} />
+              <Quote className="w-8 h-8 ml-3 animate-bounce" style={{ color: currentColors.primary }} />
               מה אומרים עלינו
             </h2>
-            <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
               {content.testimonials.map((testimonial: any, index: number) => (
                 <div key={index}>
                   {renderGlassmorphismCard(
-                    <div className="p-8">
-                      <div className="flex items-center mb-6">
+                    <div className="p-6">
+                      <div className="flex items-center mb-4">
                         <div 
-                          className="w-16 h-16 rounded-2xl flex items-center justify-center text-white text-3xl"
+                          className="w-12 h-12 rounded-2xl flex items-center justify-center text-white text-xl"
                           style={{ 
                             background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})`,
                             transform: 'perspective(300px) rotateX(15deg)'
@@ -378,13 +378,13 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                         >
                           {testimonial.image}
                         </div>
-                        <div className="mr-4">
-                          <div className="font-bold text-xl" style={{ color: currentColors.primary }}>{testimonial.name}</div>
-                          <div className="text-gray-400">{testimonial.role}</div>
+                        <div className="mr-3">
+                          <div className="font-bold text-lg" style={{ color: currentColors.primary }}>{testimonial.name}</div>
+                          <div className="text-gray-400 text-sm">{testimonial.role}</div>
                         </div>
                       </div>
                       <p 
-                        className="mb-6 text-lg leading-relaxed"
+                        className="mb-4 text-base leading-relaxed"
                         style={{ 
                           color: currentColors.text,
                           textShadow: '0 2px 4px rgba(0,0,0,0.2)'
@@ -394,7 +394,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                       </p>
                       <div className="flex">
                         {[...Array(testimonial.rating)].map((_, i) => (
-                          <Star key={i} className="w-6 h-6 fill-yellow-400 text-yellow-400" />
+                          <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                         ))}
                       </div>
                     </div>
@@ -405,27 +405,27 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           </div>
         )}
 
-        {/* Enhanced FAQ Section */}
+        {/* Enhanced FAQ Section - smaller sizes */}
         {renderGlassmorphismSection(
-          <div className="p-12">
+          <div className="p-8">
             <h2 
-              className="text-4xl md:text-5xl font-bold mb-12 text-center flex items-center justify-center"
+              className="text-3xl md:text-4xl font-bold mb-8 text-center flex items-center justify-center"
               style={{ 
                 color: currentColors.text,
                 textShadow: '0 8px 16px rgba(0,0,0,0.4)',
                 transform: 'perspective(800px) rotateX(8deg)'
               }}
             >
-              <HelpCircle className="w-10 h-10 ml-4 animate-bounce" style={{ color: currentColors.secondary }} />
+              <HelpCircle className="w-8 h-8 ml-3 animate-bounce" style={{ color: currentColors.secondary }} />
               שאלות נפוצות
             </h2>
-            <div className="max-w-5xl mx-auto space-y-6">
+            <div className="max-w-4xl mx-auto space-y-4">
               {content.faq.map((item: any, index: number) => (
                 <div key={index}>
                   {renderGlassmorphismCard(
-                    <div className="p-8">
+                    <div className="p-6">
                       <h3 
-                        className="font-bold mb-4 text-2xl"
+                        className="font-bold mb-3 text-lg"
                         style={{ 
                           color: currentColors.secondary,
                           textShadow: '0 3px 6px rgba(0,0,0,0.3)'
@@ -434,7 +434,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                         {item.question}
                       </h3>
                       <p 
-                        className="leading-relaxed text-lg"
+                        className="leading-relaxed text-base"
                         style={{ 
                           color: currentColors.text,
                           textShadow: '0 2px 4px rgba(0,0,0,0.2)'
@@ -450,31 +450,31 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           </div>
         )}
         
-        {/* Enhanced Contact Section */}
+        {/* Enhanced Contact Section - smaller sizes */}
         {renderGlassmorphismSection(
-          <div className="p-12">
-            <div className="max-w-5xl mx-auto text-center">
+          <div className="p-8">
+            <div className="max-w-4xl mx-auto text-center">
               {renderGlassmorphismCard(
-                <div className="p-12">
+                <div className="p-8">
                   <h2 
-                    className="text-3xl md:text-4xl font-bold mb-8 flex items-center justify-center"
+                    className="text-2xl md:text-3xl font-bold mb-6 flex items-center justify-center"
                     style={{ 
                       color: currentColors.contactColor || currentColors.text,
                       textShadow: '0 6px 12px rgba(0,0,0,0.4)'
                     }}
                   >
-                    <MessageCircle className="w-8 h-8 ml-4 animate-bounce" style={{ color: currentColors.accent }} />
+                    <MessageCircle className="w-6 h-6 ml-3 animate-bounce" style={{ color: currentColors.accent }} />
                     {content.contactTitle}
                   </h2>
                   <div 
-                    className="p-8 rounded-2xl mb-8"
+                    className="p-6 rounded-2xl mb-6"
                     style={{ 
                       background: 'rgba(0,0,0,0.3)',
                       backdropFilter: 'blur(10px)'
                     }}
                   >
                     <div 
-                      className="whitespace-pre-line leading-relaxed text-xl"
+                      className="whitespace-pre-line leading-relaxed text-lg"
                       style={{ 
                         color: currentColors.contactTextColor || currentColors.text,
                         textShadow: '0 2px 4px rgba(0,0,0,0.3)'
@@ -484,7 +484,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                     </div>
                   </div>
                   <Button 
-                    className="text-2xl px-12 py-6 rounded-2xl hover:scale-110 transition-all duration-700 font-bold shadow-2xl"
+                    className="text-lg px-10 py-4 rounded-2xl hover:scale-110 transition-all duration-700 font-bold shadow-2xl"
                     style={{ 
                       background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})`, 
                       color: 'white',
