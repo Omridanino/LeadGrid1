@@ -1,3 +1,4 @@
+
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { ColorScheme } from "@/components/ColorEditor";
@@ -47,7 +48,7 @@ export const useGeneratedPageActions = ({
   };
 
   const handleSaveDesign = () => {
-    // יצירת HTML שזהה בדיוק לתצוגה
+    // יצירת HTML שזהה בדיוק לתצוגה באמצעות אותה פונקציה
     const heroUrl = getHeroImageUrl(content, heroImage, formData);
     const updatedHtmlContent = generateHtmlFile(content, currentColors, formData, heroUrl);
     
@@ -60,7 +61,7 @@ export const useGeneratedPageActions = ({
     setIsSaved(true);
     toast({
       title: "💾 העיצוב נשמר בהצלחה!",
-      description: "קוד HTML מעודכן נוצר אוטומatically - כעת תוכל להוריד או לחבר לוורדפרס",
+      description: "קוד HTML מעודכן נוצר - זהה 100% לתצוגה המקדימה",
     });
   };
 
@@ -99,13 +100,14 @@ export const useGeneratedPageActions = ({
       return;
     }
     
-    // שימוש ב-HTML שנוצר אוטומatically ושזהה לתצוגה
+    // שימוש ב-HTML המעודכן שנוצר בעת השמירה - זהה לחלוטין לתצוגה
     const savedHtmlContent = localStorage.getItem('latestHtmlContent');
     let htmlContent;
     
     if (savedHtmlContent) {
       htmlContent = savedHtmlContent;
     } else {
+      // גיבוי - יצירת HTML מחדש אם לא קיים בזיכרון
       const heroUrl = getHeroImageUrl(content, heroImage, formData);
       htmlContent = generateHtmlFile(content, currentColors, formData, heroUrl);
     }
@@ -122,7 +124,7 @@ export const useGeneratedPageActions = ({
     
     toast({
       title: "💻 קוד המקור הורד!",
-      description: "קובץ HTML מלא עם העיצוב המעודכן הורד בהצלחה - זהה לחלוטין לתצוגה המקדימה",
+      description: "קובץ HTML מלא הורד בהצלחה - זהה לחלוטין לתצוגה המקדימה",
     });
   };
 
@@ -152,7 +154,7 @@ export const useGeneratedPageActions = ({
   };
 
   const generateHtmlFileWrapper = () => {
-    // שימוש בקוד המעודכן אם קיים
+    // תמיד השתמש ב-HTML המעודכן ביותר
     const savedHtmlContent = localStorage.getItem('latestHtmlContent');
     if (savedHtmlContent && isSaved) {
       return savedHtmlContent;
