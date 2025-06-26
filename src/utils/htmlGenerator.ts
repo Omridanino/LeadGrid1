@@ -1,8 +1,10 @@
+
 import { ColorScheme } from "@/components/ColorEditor";
 
 export const generateHtmlFile = (content: any, colors: ColorScheme, formData: any, heroImageUrl: string): string => {
   const businessName = formData?.businessName || 'העסק שלי';
   const businessType = formData?.businessType || 'שירותים עסקיים';
+  const selectedElements = formData?.selectedElements || [];
   
   // Helper function to render buttons based on hero style
   const renderButton = (text: string, heroStyle: string) => {
@@ -54,7 +56,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
     }
   };
 
-  // Generate hero section based on style
+  // Generate hero section based on style - EXACT MATCH with HeroSection component
   const generateHeroSection = () => {
     const heroStyle = formData.heroStyle;
     
@@ -167,10 +169,124 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
       `;
     }
 
-    // Image style hero remains unchanged
+    if (heroStyle === 'geometric') {
+      return `
+        <section class="geometric-hero section-hero">
+          <div class="geometric-shape"></div>
+          <div class="geometric-shape"></div>
+          <div class="geometric-shape"></div>
+          
+          <div class="container-hero relative z-10">
+            <div class="text-center">
+              <div class="flex items-center justify-center gap-4 mb-8 animate-slide-up">
+                <div class="glass-card px-4 py-2">
+                  <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/></svg>
+                    <span class="text-sm font-medium text-white">דירוג 5 כוכבים</span>
+                  </div>
+                </div>
+                <div class="glass-card px-4 py-2">
+                  <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    <span class="text-sm font-medium text-white">מומחה מוסמך</span>
+                  </div>
+                </div>
+              </div>
+
+              <h1 class="typography-modern text-6xl md:text-8xl text-white mb-8 animate-slide-up animate-delay-1">
+                ${content?.headline || businessName}
+              </h1>
+
+              <div class="typography-body text-xl md:text-2xl mb-12 max-w-4xl mx-auto text-gray-300 animate-slide-up animate-delay-2">
+                ${content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
+              </div>
+
+              <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+                ${renderButton(content?.cta || 'בואו נתחיל לעבוד יחד', heroStyle)}
+                ${renderButton('למד עוד', heroStyle)}
+              </div>
+
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto animate-scale-in animate-delay-4">
+                <div class="geometric-card text-center">
+                  <div class="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">500+</div>
+                  <div class="typography-body text-gray-300 text-sm">לקוחות מרוצים</div>
+                </div>
+                <div class="geometric-card text-center">
+                  <div class="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">98%</div>
+                  <div class="typography-body text-gray-300 text-sm">שביעות רצון</div>
+                </div>
+                <div class="geometric-card text-center">
+                  <div class="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">10+</div>
+                  <div class="typography-body text-gray-300 text-sm">שנות ניסיון</div>
+                </div>
+                <div class="geometric-card text-center">
+                  <div class="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">24/7</div>
+                  <div class="typography-body text-gray-300 text-sm">זמינות</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    if (heroStyle === 'metal') {
+      return `
+        <section class="section-hero bg-gradient-to-br from-gray-900 via-gray-800 to-black relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-yellow-900/20 via-transparent to-yellow-800/20"></div>
+          
+          <div class="container-hero relative z-10">
+            <div class="text-center">
+              <div class="inline-flex items-center gap-2 metal-card px-6 py-3 rounded-full mb-8 animate-slide-up">
+                <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span class="typography-luxury text-gray-800 font-semibold">פרימיום</span>
+              </div>
+
+              <h1 class="typography-luxury text-7xl md:text-9xl metal-text mb-8 animate-slide-up animate-delay-1">
+                ${content?.headline || businessName}
+              </h1>
+
+              <div class="metal-card p-8 max-w-5xl mx-auto mb-12 animate-slide-up animate-delay-2">
+                <p class="typography-luxury text-xl md:text-2xl text-gray-800 leading-relaxed">
+                  ${content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
+                </p>
+              </div>
+
+              <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+                ${renderButton(content?.cta || 'בואו נתחיל לעבוד יחד', heroStyle)}
+                ${renderButton('למד עוד', heroStyle)}
+              </div>
+
+              <div class="grid md:grid-cols-4 gap-6 max-w-4xl mx-auto animate-scale-in animate-delay-4">
+                <div class="metal-card p-6 text-center">
+                  <div class="typography-luxury text-3xl font-bold text-gray-800 mb-2">500+</div>
+                  <div class="typography-body text-gray-700 text-sm">לקוחות VIP</div>
+                </div>
+                <div class="metal-card p-6 text-center">
+                  <div class="typography-luxury text-3xl font-bold text-gray-800 mb-2">98%</div>
+                  <div class="typography-body text-gray-700 text-sm">שביעות רצון</div>
+                </div>
+                <div class="metal-card p-6 text-center">
+                  <div class="typography-luxury text-3xl font-bold text-gray-800 mb-2">10+</div>
+                  <div class="typography-body text-gray-700 text-sm">שנות מצוינות</div>
+                </div>
+                <div class="metal-card p-6 text-center">
+                  <div class="typography-luxury text-3xl font-bold text-gray-800 mb-2">24/7</div>
+                  <div class="typography-body text-gray-700 text-sm">שירות פרמיום</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
     if (heroStyle === 'image') {
       return `
-        <section class="section-hero relative overflow-hidden" style="background-image: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.7) 100%), url(${heroImageUrl}); background-size: cover; background-position: center; background-attachment: fixed;">
+        <section 
+          class="section-hero relative overflow-hidden"
+          style="background-image: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.7) 100%), url(${heroImageUrl}); background-size: cover; background-position: center; background-attachment: fixed;"
+        >
           <div class="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-transparent to-purple-900/30"></div>
           
           <div class="container-hero relative z-10">
@@ -235,7 +351,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
       `;
     }
 
-    // Default hero styles (geometric, metal, 3d)
+    // Default 3D Background Style
     return `
       <section class="hero-3d section-hero">
         <div class="floating-element"></div>
@@ -259,7 +375,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
               </div>
             </div>
 
-            <h1 class="${getTypographyClass(heroStyle)} text-7xl md:text-9xl mb-8 animate-slide-up animate-delay-1">
+            <h1 class="typography-hero text-7xl md:text-9xl mb-8 animate-slide-up animate-delay-1">
               ${content?.headline || businessName}
             </h1>
 
@@ -298,241 +414,206 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
     `;
   };
 
-  // Generate content sections based on style
-  const generateContentSections = () => {
-    const heroStyle = formData.heroStyle;
-    
-    if (heroStyle === 'glass') {
-      return `
-        <!-- Liquid Glass Value Proposition -->
-        <section class="py-20 px-4 bg-liquid-glass relative overflow-hidden">
-          <div class="liquid-orb liquid-orb-1"></div>
-          <div class="liquid-orb liquid-orb-2"></div>
-          <div class="liquid-orb liquid-orb-3"></div>
-          
-          <div class="container mx-auto max-w-6xl relative z-10">
-            <div class="text-center mb-16">
-              <div class="floating-badge mb-8">
-                <i class="ri-star-fill text-yellow-400 text-xl"></i>
-                <span class="typography-liquid text-white font-semibold">הצעת הערך הייחודית</span>
-              </div>
-              <h2 class="typography-liquid text-5xl md:text-7xl font-black mb-8 text-white liquid-glow">
-                ${content?.sections?.emotionalSection?.title || "חוויה נוזלית מדהימה"}
-              </h2>
-              <div class="liquid-glass-panel p-10 max-w-4xl mx-auto">
-                <p class="typography-liquid text-xl md:text-2xl leading-relaxed text-white liquid-text-glow">
-                  ${content?.sections?.emotionalSection?.content || `בעולם הטכנולוגיה המתקדמת, ${businessName} מציע לכם חוויה נוזלית ייחודה שמשלבת חדשנות עם אלגנטיות.`}
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+  // Generate ALL content sections to match ContentSections component exactly
+  const generateAllContentSections = () => {
+    const heroStyle = formData.heroStyle || 'default';
+    let sectionsHtml = '';
 
-        <!-- Liquid Glass Why Choose Us -->
-        <section class="py-20 px-4 bg-liquid-glass-alt relative overflow-hidden">
-          <div class="liquid-wave"></div>
-          
-          <div class="container mx-auto max-w-6xl relative z-10">
-            <div class="text-center mb-16">
-              <h2 class="typography-liquid text-5xl md:text-7xl font-black mb-8 text-white liquid-glow">למה לבחור בנו?</h2>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-8">
-              <div class="liquid-morph-card group">
-                <div class="liquid-icon-orb">
-                  <i class="ri-diamond-line text-blue-300 text-2xl"></i>
-                </div>
-                <h3 class="typography-liquid text-2xl font-bold mb-4 text-white liquid-text-glow">טכנולוגיה נוזלית מתקדמת</h3>
-                <p class="typography-liquid text-blue-200 leading-relaxed">פתרונות חדשניים המשלבים זרימה טבעית עם יעילות מקסימלית</p>
-              </div>
-              <div class="liquid-morph-card group">
-                <div class="liquid-icon-orb">
-                  <i class="ri-diamond-line text-blue-300 text-2xl"></i>
-                </div>
-                <h3 class="typography-liquid text-2xl font-bold mb-4 text-white liquid-text-glow">חוויית משתמש זורמת</h3>
-                <p class="typography-liquid text-blue-200 leading-relaxed">אינטראקציה חלקה ואינטואיטיבית שמתאימה לכל צורך</p>
-              </div>
-              <div class="liquid-morph-card group">
-                <div class="liquid-icon-orb">
-                  <i class="ri-diamond-line text-blue-300 text-2xl"></i>
-                </div>
-                <h3 class="typography-liquid text-2xl font-bold mb-4 text-white liquid-text-glow">גמישות מוחלטת</h3>
-                <p class="typography-liquid text-blue-200 leading-relaxed">התאמה דינמית לכל דרישה ושינוי בזמן אמת</p>
-              </div>
-              <div class="liquid-morph-card group">
-                <div class="liquid-icon-orb">
-                  <i class="ri-diamond-line text-blue-300 text-2xl"></i>
-                </div>
-                <h3 class="typography-liquid text-2xl font-bold mb-4 text-white liquid-text-glow">איכות שקופה ונקייה</h3>
-                <p class="typography-liquid text-blue-200 leading-relaxed">שירות ברור וישיר ללא הפתעות או עמימות</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Liquid Glass CTA -->
-        <section class="py-20 px-4 bg-liquid-glass-final relative overflow-hidden">
-          <div class="liquid-immersion-bg"></div>
-          
-          <div class="container mx-auto max-w-6xl text-center relative z-10">
-            <div class="liquid-cta-orb">
-              <h2 class="typography-liquid text-5xl md:text-7xl font-black mb-12 text-white liquid-glow">
-                ${content?.contactTitle || 'צאו למסע נוזלי'}
-              </h2>
-              
-              <div class="liquid-immersion-panel p-10 mb-12">
-                <p class="typography-liquid text-2xl text-white leading-relaxed liquid-text-glow">
-                  בואו ניצור יחד חוויה נוזלית שתשנה את האופן שבו אתם חושבים על השירות
-                </p>
-              </div>
-
-              <div class="liquid-contact-flow mb-12">
-                <div class="liquid-contact-orb">
-                  <i class="ri-phone-line text-blue-300 text-xl"></i>
-                  <span class="typography-liquid text-white font-medium">050-1234567</span>
-                </div>
-                <div class="liquid-contact-orb">
-                  <i class="ri-mail-line text-blue-300 text-xl"></i>
-                  <span class="typography-liquid text-white font-medium">info@business.co.il</span>
-                </div>
-              </div>
-
-              <div class="liquid-action-flow">
-                ${renderButton('התחילו את הזרימה', heroStyle)}
-                ${renderButton('גלו את החוויה', heroStyle)}
-              </div>
-            </div>
-          </div>
-        </section>
-      `;
-    }
-
-    if (heroStyle === 'image') {
-      return `
-        <!-- Image Style Value Proposition -->
-        <section class="py-20 px-4 bg-image-depth relative overflow-hidden">
-          <div class="cinematic-overlay"></div>
-          <div class="depth-layers">
-            <div class="depth-layer depth-layer-1"></div>
-            <div class="depth-layer depth-layer-2"></div>
-            <div class="depth-layer depth-layer-3"></div>
-          </div>
-          
-          <div class="container mx-auto max-w-6xl relative z-10">
-            <div class="cinematic-grid">
-              <div class="cinematic-content">
-                <div class="cinematic-badge">
-                  <i class="ri-movie-line text-yellow-400 text-xl"></i>
-                  <span class="typography-cinematic text-white font-semibold">הצגת הערך</span>
-                </div>
-                <h2 class="typography-cinematic text-5xl md:text-7xl font-black mb-8 text-white cinematic-glow">
-                  ${content?.sections?.emotionalSection?.title || "חוויה קולנועית מרהיבה"}
-                </h2>
-                <div class="cinematic-panel">
-                  <p class="typography-cinematic text-xl leading-relaxed text-white">
-                    ${content?.sections?.emotionalSection?.content || `${businessName} מביא לכם חוויה קולנועית עמוקה שמשלבת אסתטיקה מרהיבה עם תוכן איכותי.`}
-                  </p>
-                </div>
-              </div>
-              <div class="cinematic-visual">
-                <div class="depth-showcase">
-                  <div class="showcase-frame"></div>
-                  <div class="showcase-content">
-                    <i class="ri-cube-line text-blue-400 text-6xl"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Image Style CTA -->
-        <section class="py-20 px-4 bg-image-depth-finale relative overflow-hidden">
-          <div class="epic-backdrop"></div>
-          
-          <div class="container mx-auto max-w-6xl text-center relative z-10">
-            <div class="epic-stage">
-              <h2 class="typography-cinematic text-6xl md:text-8xl font-black mb-12 text-white cinematic-glow epic-title">
-                ${content?.contactTitle || 'הגיע הזמן לפעולה'}
-              </h2>
-              
-              <div class="epic-panel">
-                <p class="typography-cinematic text-2xl text-white leading-relaxed cinematic-glow">
-                  בואו ניצור יחד פרויקט קולנועי שישאיר את כולם ללא מילים
-                </p>
-              </div>
-
-              <div class="epic-contacts">
-                <div class="contact-frame-3d">
-                  <i class="ri-phone-line text-blue-400 text-2xl"></i>
-                  <span class="typography-cinematic text-white font-bold text-lg">050-1234567</span>
-                </div>
-                <div class="contact-frame-3d">
-                  <i class="ri-mail-line text-blue-400 text-2xl"></i>
-                  <span class="typography-cinematic text-white font-bold text-lg">info@business.co.il</span>
-                </div>
-              </div>
-
-              <div class="epic-actions">
-                ${renderButton('התחילו את הפרויקט', heroStyle)}
-                ${renderButton('גלו את האפשרויות', heroStyle)}
-              </div>
-            </div>
-          </div>
-        </section>
-      `;
-    }
-
-    // Default content sections for other styles
-    return `
-      <!-- Value Proposition Section -->
-      <section class="py-16 px-4 ${getBackgroundClass(heroStyle)}">
-        <div class="container mx-auto max-w-6xl">
-          <div class="text-center">
-            <h2 class="${getTypographyClass(heroStyle)} text-4xl md:text-5xl font-black mb-8 text-white animate-slide-up">
-              ${content?.sections?.emotionalSection?.title || "השירות שמשנה את המשחק"}
-            </h2>
-            <div class="${getCardClass(heroStyle)} p-8 animate-slide-up animate-delay-1">
-              <p class="typography-body text-lg md:text-xl leading-relaxed text-white">
-                ${content?.sections?.emotionalSection?.content || `בעולם שמתפתח במהירות, ${businessName} כאן כדי לספק לכם את השירות המקצועי והאמין ביותר בתחום ${businessType}.`}
-              </p>
+    // Navigation Section
+    sectionsHtml += `
+      <nav class="sticky top-0 z-50 bg-black/20 backdrop-blur-md border-b border-white/10">
+        <div class="container mx-auto px-4">
+          <div class="flex items-center justify-between h-16">
+            <div class="text-xl font-bold text-white">${businessName}</div>
+            <div class="hidden md:flex space-x-8">
+              <a href="#hero" class="text-white hover:text-blue-400 transition-colors">בית</a>
+              <a href="#about" class="text-white hover:text-blue-400 transition-colors">אודות</a>
+              <a href="#services" class="text-white hover:text-blue-400 transition-colors">שירותים</a>
+              <a href="#contact" class="text-white hover:text-blue-400 transition-colors">צור קשר</a>
             </div>
           </div>
         </div>
-      </section>
+      </nav>
+    `;
 
-      <!-- Enhanced CTA Section -->
-      <section class="py-16 px-4 ${getBackgroundClass(heroStyle)} relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
-        
-        <div class="container mx-auto max-w-6xl text-center relative z-10">
+    // About/Value Proposition Section
+    if (content?.sections?.emotionalSection) {
+      sectionsHtml += `
+        <section id="about" class="py-20 px-4 ${getBackgroundClass(heroStyle)} relative overflow-hidden">
+          <div class="container mx-auto max-w-6xl">
+            <div class="text-center">
+              <h2 class="${getTypographyClass(heroStyle)} text-4xl md:text-6xl font-black mb-8 text-white animate-slide-up">
+                ${content.sections.emotionalSection.title || "השירות שמשנה את המשחק"}
+              </h2>
+              <div class="${getCardClass(heroStyle)} p-8 max-w-4xl mx-auto animate-slide-up animate-delay-1">
+                <p class="typography-body text-lg md:text-xl leading-relaxed text-white">
+                  ${content.sections.emotionalSection.content || `בעולם שמתפתח במהירות, ${businessName} כאן כדי לספק לכם את השירות המקצועי והאמין ביותר בתחום ${businessType}.`}
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    // Features Section
+    if (content?.sections?.features && content.sections.features.length > 0) {
+      sectionsHtml += `
+        <section id="services" class="py-20 px-4 ${getBackgroundClass(heroStyle)} relative overflow-hidden">
+          <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16">
+              <h2 class="${getTypographyClass(heroStyle)} text-4xl md:text-6xl font-black mb-8 text-white animate-slide-up">
+                השירותים שלנו
+              </h2>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              ${content.sections.features.map((feature: any, index: number) => `
+                <div class="${getCardClass(heroStyle)} p-8 text-center animate-slide-up" style="animation-delay: ${index * 0.2}s">
+                  <div class="text-4xl mb-4">${feature.icon || '🔥'}</div>
+                  <h3 class="${getTypographyClass(heroStyle)} text-xl font-bold mb-4 text-white">
+                    ${feature.title}
+                  </h3>
+                  <p class="typography-body text-gray-300 leading-relaxed">
+                    ${feature.description}
+                  </p>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    // Why Choose Us Section
+    if (content?.sections?.whyChooseUs && content.sections.whyChooseUs.length > 0) {
+      sectionsHtml += `
+        <section class="py-20 px-4 ${getBackgroundClass(heroStyle)} relative overflow-hidden">
+          <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16">
+              <h2 class="${getTypographyClass(heroStyle)} text-4xl md:text-6xl font-black mb-8 text-white animate-slide-up">
+                למה לבחור בנו?
+              </h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+              ${content.sections.whyChooseUs.map((reason: any, index: number) => `
+                <div class="${getCardClass(heroStyle)} p-8 animate-slide-up" style="animation-delay: ${index * 0.2}s">
+                  <div class="flex items-center gap-4 mb-4">
+                    <div class="text-3xl">${reason.icon || '✅'}</div>
+                    <h3 class="${getTypographyClass(heroStyle)} text-xl font-bold text-white">
+                      ${reason.title}
+                    </h3>
+                  </div>
+                  <p class="typography-body text-gray-300 leading-relaxed">
+                    ${reason.description}
+                  </p>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    // Testimonials Section
+    if (content?.sections?.testimonials && content.sections.testimonials.length > 0) {
+      sectionsHtml += `
+        <section class="py-20 px-4 ${getBackgroundClass(heroStyle)} relative overflow-hidden">
+          <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16">
+              <h2 class="${getTypographyClass(heroStyle)} text-4xl md:text-6xl font-black mb-8 text-white animate-slide-up">
+                מה אומרים עלינו
+              </h2>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              ${content.sections.testimonials.map((testimonial: any, index: number) => `
+                <div class="${getCardClass(heroStyle)} p-8 animate-slide-up" style="animation-delay: ${index * 0.2}s">
+                  <div class="flex items-center gap-1 mb-4">
+                    ${Array(5).fill(0).map(() => `
+                      <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+                      </svg>
+                    `).join('')}
+                  </div>
+                  <p class="typography-body text-white mb-4 leading-relaxed">
+                    "${testimonial.content}"
+                  </p>
+                  <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                      <span class="text-white font-bold">${testimonial.name.charAt(0)}</span>
+                    </div>
+                    <div>
+                      <div class="font-semibold text-white">${testimonial.name}</div>
+                      <div class="text-sm text-gray-400">${testimonial.role}</div>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    // FAQ Section
+    if (content?.sections?.faq && content.sections.faq.length > 0) {
+      sectionsHtml += `
+        <section class="py-20 px-4 ${getBackgroundClass(heroStyle)} relative overflow-hidden">
+          <div class="container mx-auto max-w-4xl">
+            <div class="text-center mb-16">
+              <h2 class="${getTypographyClass(heroStyle)} text-4xl md:text-6xl font-black mb-8 text-white animate-slide-up">
+                שאלות נפוצות
+              </h2>
+            </div>
+            <div class="space-y-4">
+              ${content.sections.faq.map((faq: any, index: number) => `
+                <div class="${getCardClass(heroStyle)} animate-slide-up" style="animation-delay: ${index * 0.1}s">
+                  <div class="p-6">
+                    <h3 class="${getTypographyClass(heroStyle)} text-lg font-bold mb-3 text-white">
+                      ${faq.question}
+                    </h3>
+                    <p class="typography-body text-gray-300 leading-relaxed">
+                      ${faq.answer}
+                    </p>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    // Contact/CTA Section
+    sectionsHtml += `
+      <section id="contact" class="py-20 px-4 ${getBackgroundClass(heroStyle)} relative overflow-hidden">
+        <div class="container mx-auto max-w-6xl text-center">
           <div class="max-w-4xl mx-auto">
-            <h2 class="${getTypographyClass(heroStyle)} text-4xl md:text-5xl font-black mb-8 text-white animate-slide-up">
+            <h2 class="${getTypographyClass(heroStyle)} text-4xl md:text-6xl font-black mb-8 text-white animate-slide-up">
               ${content?.contactTitle || 'מוכנים להתחיל?'}
             </h2>
             
-            <div class="${getCardClass(heroStyle)} p-6 mb-8 animate-slide-up animate-delay-1">
+            <div class="${getCardClass(heroStyle)} p-8 mb-8 animate-slide-up animate-delay-1">
               <p class="typography-body text-lg md:text-xl text-white leading-relaxed">
                 בואו ניצור יחד משהו מרהיב שיקדם את העסק שלכם
               </p>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto mb-8 animate-slide-up animate-delay-2">
-              <div class="${getCardClass(heroStyle)} p-4">
+            <div class="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-8 animate-slide-up animate-delay-2">
+              <div class="${getCardClass(heroStyle)} p-6">
                 <div class="flex items-center gap-3 justify-center">
-                  <i class="ri-phone-line text-blue-400 text-lg"></i>
+                  <i class="ri-phone-line text-blue-400 text-xl"></i>
                   <span class="typography-body text-white font-medium">050-1234567</span>
                 </div>
               </div>
-              <div class="${getCardClass(heroStyle)} p-4">
+              <div class="${getCardClass(heroStyle)} p-6">
                 <div class="flex items-center gap-3 justify-center">
-                  <i class="ri-mail-line text-blue-400 text-lg"></i>
+                  <i class="ri-mail-line text-blue-400 text-xl"></i>
                   <span class="typography-body text-white font-medium">info@business.co.il</span>
                 </div>
               </div>
             </div>
 
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8 animate-slide-up animate-delay-3">
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center animate-slide-up animate-delay-3">
               ${renderButton('צור קשר עכשיו', heroStyle)}
               ${renderButton('קבל הצעת מחיר', heroStyle)}
             </div>
@@ -540,6 +621,8 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
         </div>
       </section>
     `;
+
+    return sectionsHtml;
   };
 
   return `<!DOCTYPE html>
@@ -551,17 +634,37 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
     <style>
-        /* All existing styles plus liquid glass and image depth styles */
         ${getAllStyles()}
     </style>
 </head>
 <body class="bg-black text-white font-sans">
-    ${generateHeroSection()}
-    ${generateContentSections()}
+    <div class="w-full min-h-screen ${formData.heroStyle === 'geometric' ? 'style-geometric' : formData.heroStyle === 'glass' ? 'style-glass' : formData.heroStyle === 'metal' ? 'style-metal' : formData.heroStyle === 'image' ? 'style-image' : 'style-3d'}">
+        ${generateHeroSection()}
+        ${generateAllContentSections()}
+        
+        <!-- Footer Section -->
+        <footer style="background: rgba(0,0,0,0.5); backdrop-filter: blur(16px); padding: 4rem 0; text-align: center;">
+          <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+              <h3 class="text-2xl font-bold text-white mb-4">
+                ${businessName}
+              </h3>
+              <p class="text-gray-400 mb-8">
+                © 2024 כל הזכויות שמורות. בניית אתרים מקצועית ואמינה.
+              </p>
+              <div class="flex justify-center gap-8 text-gray-400">
+                <span>טלפון: 050-1234567</span>
+                <span>אימייל: info@business.co.il</span>
+              </div>
+            </div>
+          </div>
+        </footer>
+    </div>
 </body>
 </html>`;
 };
 
+// All the existing styles from PreviewStyles component
 const getAllStyles = () => {
   return `
     /* Base Styles */
@@ -680,12 +783,82 @@ const getAllStyles = () => {
       border-radius: 1rem;
     }
 
+    .geometric-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      clip-path: polygon(0% 0%, 95% 0%, 100% 100%, 5% 100%);
+    }
+
+    .metal-card {
+      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 4px 15px rgba(255,215,0,0.2);
+      border: 1px solid #b8860b;
+      border-radius: 1rem;
+    }
+
+    .metal-text {
+      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
     /* Background Styles */
     .bg-3d, .bg-geometric, .bg-metal, .bg-liquid-glass, .bg-image-depth {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
-    /* Liquid Glass Specific Styles */
+    .hero-3d {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .geometric-hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .geometric-shape {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      animation: geometricFloat 10s ease-in-out infinite;
+    }
+
+    .geometric-shape:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+    .geometric-shape:nth-child(2) { top: 50%; right: 10%; animation-delay: 3s; }
+    .geometric-shape:nth-child(3) { bottom: 10%; left: 30%; animation-delay: 6s; }
+
+    @keyframes geometricFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    .floating-element {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .floating-element:nth-child(1) { top: 20%; left: 20%; animation-delay: 0s; }
+    .floating-element:nth-child(2) { top: 60%; right: 30%; animation-delay: 2s; }
+    .floating-element:nth-child(3) { bottom: 30%; left: 40%; animation-delay: 4s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    /* Liquid Glass Styles */
     .liquid-glass-hero {
       background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.15) 0%, rgba(0, 0, 0, 0.9) 70%);
       position: relative;
@@ -901,96 +1074,16 @@ const getAllStyles = () => {
     .liquid-bubble-bottom-left { bottom: 0; left: 0; animation-delay: 4s; }
     .liquid-bubble-bottom-right { bottom: 0; right: 0; animation-delay: 6s; }
 
-    /* Image Depth Styles */
-    .bg-image-depth, .bg-image-depth-alt, .bg-image-depth-finale {
-      background: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(30,30,30,0.8) 50%, rgba(0,0,0,0.9) 100%);
-      position: relative;
-    }
-
-    .cinematic-overlay {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 70%);
-    }
-
-    .depth-layers {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-    }
-
-    .depth-layer {
-      position: absolute;
-      background: linear-gradient(45deg, transparent, rgba(100,100,100,0.1), transparent);
-      animation: depthMove 20s linear infinite;
-    }
-
-    .depth-layer-1 { width: 100%; height: 100%; animation-delay: 0s; }
-    .depth-layer-2 { width: 120%; height: 120%; animation-delay: 7s; }
-    .depth-layer-3 { width: 80%; height: 80%; animation-delay: 14s; }
-
-    @keyframes depthMove {
-      0% { transform: translateX(-100%) translateY(-100%) rotate(0deg); }
-      100% { transform: translateX(100%) translateY(100%) rotate(180deg); }
-    }
-
-    .cinematic-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-      min-height: 80vh;
-    }
-
-    .cinematic-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(255, 255, 255, 0.1);
+    .icon-glass {
+      width: 3rem;
+      height: 3rem;
+      background: rgba(59, 130, 246, 0.1);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 50px;
-      padding: 0.5rem 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .cinematic-glow {
-      text-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.1);
-    }
-
-    .cinematic-panel {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 1rem;
-      padding: 2rem;
-      margin: 2rem 0;
-    }
-
-    .depth-showcase {
-      position: relative;
-      width: 300px;
-      height: 300px;
-      margin: 0 auto;
-    }
-
-    .showcase-frame {
-      position: absolute;
-      inset: 0;
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      border-radius: 1rem;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      transform: perspective(1000px) rotateY(15deg) rotateX(10deg);
-    }
-
-    .showcase-content {
-      position: absolute;
-      inset: 0;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      transform: perspective(1000px) rotateY(15deg) rotateX(10deg) translateZ(50px);
     }
 
     /* Animation Classes */
@@ -1027,8 +1120,7 @@ const getAllStyles = () => {
 
     /* Responsive Design */
     @media (max-width: 1024px) {
-      .liquid-hero-grid,
-      .cinematic-grid {
+      .liquid-hero-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
         text-align: center;
@@ -1045,8 +1137,7 @@ const getAllStyles = () => {
         padding: 4rem 0;
       }
       
-      .typography-liquid,
-      .typography-cinematic {
+      .typography-liquid {
         font-size: 3rem !important;
       }
       
