@@ -150,35 +150,135 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
   );
 
   const renderWhyChooseUs = (whyChoose: any) => (
-    <div className="p-8" style={{ backgroundColor: currentColors.background }}>
-      <h2 className="text-3xl font-bold mb-8 text-center" style={{ color: currentColors.text }}>
-        <Award className="w-8 h-8 ml-3 inline" style={{ color: currentColors.accent }} />
-        {whyChoose.title}
-      </h2>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
-        {whyChoose.items.map((item: any, index: number) => (
-          <div 
-            key={index}
-            className="flex items-start p-6 rounded-xl hover:scale-105 transition-all duration-300 border"
-            style={{ 
-              backgroundColor: 'rgba(255,255,255,0.05)',
-              borderColor: `${currentColors.primary}40`
-            }}
-          >
+    <div className="p-12 relative overflow-hidden" style={{ backgroundColor: currentColors.background }}>
+      {/* Background Animation Elements */}
+      <div className="absolute inset-0 opacity-10">
+        <div 
+          className="absolute top-20 left-20 w-32 h-32 rounded-full animate-pulse"
+          style={{ background: `radial-gradient(circle, ${currentColors.primary}, transparent)` }}
+        ></div>
+        <div 
+          className="absolute bottom-20 right-20 w-24 h-24 rounded-full animate-pulse delay-300"
+          style={{ background: `radial-gradient(circle, ${currentColors.secondary}, transparent)` }}
+        ></div>
+        <div 
+          className="absolute top-1/2 left-1/2 w-40 h-40 rounded-full animate-pulse delay-700"
+          style={{ background: `radial-gradient(circle, ${currentColors.accent}, transparent)` }}
+        ></div>
+      </div>
+
+      <div className="relative z-10">
+        <h2 className="text-4xl font-bold mb-4 text-center" style={{ color: currentColors.text }}>
+          <Award className="w-10 h-10 ml-3 inline" style={{ color: currentColors.accent }} />
+          {whyChoose.title}
+        </h2>
+        <p className="text-center text-lg mb-12 opacity-80" style={{ color: currentColors.text }}>
+          הסיבות המובילות לבחור בנו מבין כל האפשרויות
+        </p>
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {whyChoose.items.map((item: any, index: number) => (
             <div 
-              className="w-12 h-12 rounded-xl flex items-center justify-center ml-4 flex-shrink-0 mt-1"
-              style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}
+              key={index}
+              className="group relative p-8 rounded-3xl transition-all duration-500 hover:scale-105 cursor-pointer"
+              style={{ 
+                background: `linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02))`,
+                border: `1px solid ${currentColors.primary}30`,
+                backdropFilter: 'blur(10px)',
+                boxShadow: `0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1)`
+              }}
             >
-              <i className={`ri-${item.icon} text-xl text-white`}></i>
+              {/* 3D Icon Container */}
+              <div className="relative mb-6">
+                <div 
+                  className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-all duration-300 relative"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})`,
+                    boxShadow: `0 10px 25px ${currentColors.primary}40, inset 0 1px 0 rgba(255,255,255,0.2)`
+                  }}
+                >
+                  {/* 3D Effect Shadow */}
+                  <div 
+                    className="absolute inset-0 rounded-2xl transform translate-y-1 -z-10"
+                    style={{ 
+                      background: `linear-gradient(135deg, ${currentColors.primary}80, ${currentColors.secondary}80)`,
+                      filter: 'blur(4px)'
+                    }}
+                  ></div>
+                  
+                  {/* Icon */}
+                  <i 
+                    className={`ri-${item.icon} text-3xl text-white group-hover:scale-110 transition-transform duration-300`}
+                    style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
+                  ></i>
+                  
+                  {/* Shine Effect */}
+                  <div 
+                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{ 
+                      background: `linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%)`
+                    }}
+                  ></div>
+                </div>
+
+                {/* Floating Particles */}
+                <div className="absolute -top-2 -right-2 w-3 h-3 rounded-full opacity-60 animate-pulse" 
+                     style={{ backgroundColor: currentColors.accent }}></div>
+                <div className="absolute -bottom-1 -left-1 w-2 h-2 rounded-full opacity-40 animate-pulse delay-500" 
+                     style={{ backgroundColor: currentColors.secondary }}></div>
+              </div>
+              
+              {/* Content */}
+              <div className="text-center relative">
+                <p 
+                  className="text-lg leading-relaxed font-medium group-hover:text-opacity-90 transition-all duration-300"
+                  style={{ 
+                    color: currentColors.text,
+                    textShadow: '0 1px 2px rgba(0,0,0,0.1)'
+                  }}
+                >
+                  {item.text}
+                </p>
+                
+                {/* Hover Glow Effect */}
+                <div 
+                  className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 -z-10"
+                  style={{ 
+                    background: `radial-gradient(circle at center, ${currentColors.primary}, transparent 70%)`
+                  }}
+                ></div>
+              </div>
+
+              {/* Border Glow */}
+              <div 
+                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-20"
+                style={{ 
+                  background: `linear-gradient(145deg, ${currentColors.primary}20, ${currentColors.secondary}20)`,
+                  filter: 'blur(1px)'
+                }}
+              ></div>
             </div>
-            <span 
-              className="text-sm leading-relaxed"
-              style={{ color: currentColors.text }}
-            >
-              {item.text}
-            </span>
-          </div>
-        ))}
+          ))}
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="text-center mt-12">
+          <p className="text-lg mb-6 opacity-80" style={{ color: currentColors.text }}>
+            מוכנים להתחיל את המסע איתנו?
+          </p>
+          <Button 
+            size="lg"
+            className="px-12 py-4 text-lg font-bold rounded-2xl hover:scale-105 transition-all duration-300 shadow-2xl"
+            style={{ 
+              background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary})`,
+              color: 'white',
+              boxShadow: `0 10px 30px ${currentColors.accent}40`
+            }}
+            onClick={handleCtaClick}
+          >
+            בואו נתחיל עכשיו ✨
+          </Button>
+        </div>
       </div>
     </div>
   );

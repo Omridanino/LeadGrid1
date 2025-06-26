@@ -1,3 +1,4 @@
+
 import { getHeroImageUrl } from "./heroImageUtils";
 
 const renderServiceCards = (serviceCards: any, colors: any) => {
@@ -110,34 +111,103 @@ const renderEmotional = (emotional: any, colors: any) => {
   `;
 };
 
-export const generateHtmlFile = (content: any, colors: any, formData: any, heroImage?: string) => {
-  const finalHeroImage = formData.heroStyle === 'image' ? getHeroImageUrl(content, heroImage || '', formData) : null;
-  
-  const renderWhyChooseUs = (whyChoose: any, colors: any) => {
-    return `
-      <div class="p-8" style="background-color: ${colors.background};">
-        <h2 class="text-3xl font-bold mb-8 text-center flex items-center justify-center" style="color: ${colors.text};">
-          <i class="ri-award-line text-2xl ml-3" style="color: ${colors.accent};"></i>
+const renderWhyChooseUs = (whyChoose: any, colors: any) => {
+  return `
+    <div class="p-12 relative overflow-hidden" style="background-color: ${colors.background};">
+      <!-- Background Animation Elements -->
+      <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-20 left-20 w-32 h-32 rounded-full animate-pulse"
+             style="background: radial-gradient(circle, ${colors.primary}, transparent);"></div>
+        <div class="absolute bottom-20 right-20 w-24 h-24 rounded-full animate-pulse"
+             style="background: radial-gradient(circle, ${colors.secondary}, transparent); animation-delay: 0.3s;"></div>
+        <div class="absolute top-1/2 left-1/2 w-40 h-40 rounded-full animate-pulse"
+             style="background: radial-gradient(circle, ${colors.accent}, transparent); animation-delay: 0.7s;"></div>
+      </div>
+
+      <div class="relative z-10">
+        <h2 class="text-4xl font-bold mb-4 text-center" style="color: ${colors.text};">
+          <i class="ri-award-line text-3xl ml-3" style="color: ${colors.accent};"></i>
           ${whyChoose.title}
         </h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <p class="text-center text-lg mb-12 opacity-80" style="color: ${colors.text};">
+          הסיבות המובילות לבחור בנו מבין כל האפשרויות
+        </p>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           ${whyChoose.items.map((item: any) => `
-            <div class="flex items-start p-6 rounded-xl hover:scale-105 transition-all duration-300 border" 
-                 style="background-color: rgba(255,255,255,0.05); border-color: ${colors.primary}40;">
-              <div class="w-12 h-12 rounded-xl flex items-center justify-center ml-4 flex-shrink-0 mt-1"
-                   style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});">
-                <i class="ri-${item.icon} text-xl text-white"></i>
+            <div class="group relative p-8 rounded-3xl transition-all duration-500 hover:scale-105 cursor-pointer"
+                 style="background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
+                        border: 1px solid ${colors.primary}30;
+                        backdrop-filter: blur(10px);
+                        box-shadow: 0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1);">
+              
+              <!-- 3D Icon Container -->
+              <div class="relative mb-6">
+                <div class="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-all duration-300 relative"
+                     style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});
+                            box-shadow: 0 10px 25px ${colors.primary}40, inset 0 1px 0 rgba(255,255,255,0.2);">
+                  
+                  <!-- 3D Effect Shadow -->
+                  <div class="absolute inset-0 rounded-2xl transform translate-y-1 -z-10"
+                       style="background: linear-gradient(135deg, ${colors.primary}80, ${colors.secondary}80);
+                              filter: blur(4px);"></div>
+                  
+                  <!-- Icon -->
+                  <i class="ri-${item.icon} text-3xl text-white group-hover:scale-110 transition-transform duration-300"
+                     style="text-shadow: 0 2px 4px rgba(0,0,0,0.3);"></i>
+                  
+                  <!-- Shine Effect -->
+                  <div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                       style="background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);"></div>
+                </div>
+
+                <!-- Floating Particles -->
+                <div class="absolute -top-2 -right-2 w-3 h-3 rounded-full opacity-60 animate-pulse" 
+                     style="background-color: ${colors.accent};"></div>
+                <div class="absolute -bottom-1 -left-1 w-2 h-2 rounded-full opacity-40 animate-pulse" 
+                     style="background-color: ${colors.secondary}; animation-delay: 0.5s;"></div>
               </div>
-              <span class="text-sm leading-relaxed" style="color: ${colors.text};">
-                ${item.text}
-              </span>
+              
+              <!-- Content -->
+              <div class="text-center relative">
+                <p class="text-lg leading-relaxed font-medium group-hover:text-opacity-90 transition-all duration-300"
+                   style="color: ${colors.text}; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+                  ${item.text}
+                </p>
+                
+                <!-- Hover Glow Effect -->
+                <div class="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 -z-10"
+                     style="background: radial-gradient(circle at center, ${colors.primary}, transparent 70%);"></div>
+              </div>
+
+              <!-- Border Glow -->
+              <div class="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-20"
+                   style="background: linear-gradient(145deg, ${colors.primary}20, ${colors.secondary}20);
+                          filter: blur(1px);"></div>
             </div>
           `).join('')}
         </div>
-      </div>
-    `;
-  };
 
+        <!-- Bottom CTA -->
+        <div class="text-center mt-12">
+          <p class="text-lg mb-6 opacity-80" style="color: ${colors.text};">
+            מוכנים להתחיל את המסע איתנו?
+          </p>
+          <button class="px-12 py-4 text-lg font-bold rounded-2xl hover:scale-105 transition-all duration-300 shadow-2xl"
+                  style="background: linear-gradient(135deg, ${colors.accent}, ${colors.primary});
+                         color: white;
+                         box-shadow: 0 10px 30px ${colors.accent}40;">
+            בואו נתחיל עכשיו ✨
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+};
+
+export const generateHtmlFile = (content: any, colors: any, formData: any, heroImage?: string) => {
+  const finalHeroImage = formData.heroStyle === 'image' ? getHeroImageUrl(content, heroImage || '', formData) : null;
+  
   const renderCreativeElements = (content: any, colors: any) => {
     if (!content.creativeElements || content.creativeElements.length === 0) {
       return '';
@@ -183,6 +253,13 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, heroI
               ? `background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${finalHeroImage}'); background-size: cover; background-position: center;`
               : `background: linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 50%, ${colors.accent} 100%);`
             }
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+        .animate-pulse {
+          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
     </style>
 </head>

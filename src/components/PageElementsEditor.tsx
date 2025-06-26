@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -80,9 +79,9 @@ const PageElementsEditor = ({ elements, onElementsChange, content, onContentChan
         return { 
           title: 'למה לבחור בנו?',
           items: [
-            { text: 'שירות מקצועי ואמין', icon: 'star' },
-            { text: 'ניסיון רב שנים', icon: 'award' },
-            { text: 'תמיכה 24/7', icon: 'headphones' }
+            { text: 'שירות מקצועי ואמין', icon: 'star-line' },
+            { text: 'ניסיון רב שנים', icon: 'award-line' },
+            { text: 'תמיכה 24/7', icon: 'headphone-line' }
           ]
         };
       default:
@@ -141,7 +140,7 @@ const PageElementsEditor = ({ elements, onElementsChange, content, onContentChan
   const addWhyChooseItem = (elementId: string) => {
     const element = elements.find(el => el.id === elementId);
     if (element) {
-      const newItems = [...element.content.items, { text: 'סיבה חדשה', icon: 'star' }];
+      const newItems = [...element.content.items, { text: 'סיבה חדשה', icon: 'star-line' }];
       updateElement(elementId, { ...element.content, items: newItems });
     }
   };
@@ -288,7 +287,7 @@ const PageElementsEditor = ({ elements, onElementsChange, content, onContentChan
             <div className="space-y-3">
               <Label className="text-white">פריטים:</Label>
               {element.content.items.map((item: any, index: number) => (
-                <div key={index} className="p-3 bg-gray-600 rounded space-y-2">
+                <div key={index} className="p-4 bg-gray-600 rounded space-y-3 border border-gray-500">
                   <div className="flex gap-2">
                     <Input
                       value={item.text}
@@ -305,19 +304,22 @@ const PageElementsEditor = ({ elements, onElementsChange, content, onContentChan
                     </Button>
                   </div>
                   
-                  <div className="flex items-center gap-2">
-                    <Label className="text-white text-sm">אייקון:</Label>
-                    <IconSelector
-                      selectedIcon={item.icon}
-                      onIconSelect={(icon) => updateWhyChooseItem(element.id, index, 'icon', icon)}
-                      triggerClassName="bg-gray-500 border-gray-400 text-white hover:bg-gray-400"
-                    />
-                    {item.icon && (
-                      <div className="flex items-center gap-1">
-                        <i className={`ri-${item.icon} text-lg text-white`}></i>
-                        <span className="text-xs text-gray-300">{item.icon}</span>
-                      </div>
-                    )}
+                  <div className="space-y-2">
+                    <Label className="text-white text-sm">בחירת אייקון:</Label>
+                    <div className="flex items-center gap-3">
+                      <IconSelector
+                        selectedIcon={item.icon}
+                        onIconSelect={(icon) => updateWhyChooseItem(element.id, index, 'icon', icon)}
+                        triggerClassName="bg-gray-500 border-gray-400 text-white hover:bg-gray-400 min-w-[120px]"
+                      />
+                      {item.icon && (
+                        <div className="flex items-center gap-2 p-2 bg-gray-500 rounded">
+                          <i className={`ri-${item.icon} text-xl text-white`}></i>
+                          <span className="text-sm text-gray-300">{item.icon}</span>
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-xs text-gray-400">בחר אייקון מהרשימה או הקלד שם אייקון מ-RemixIcon</p>
                   </div>
                 </div>
               ))}
