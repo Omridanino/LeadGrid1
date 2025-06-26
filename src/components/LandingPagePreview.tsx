@@ -34,7 +34,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   };
 
   return (
-    <div className="w-full h-full" style={{ maxHeight: '100vh', overflowY: 'auto', overflowX: 'hidden' }}>
+    <div className="w-full h-full" style={{ height: '100vh', overflowY: 'auto', overflowX: 'hidden' }}>
       <div className={`min-h-full ${getStyleClass()}`} style={{ scrollBehavior: 'smooth' }}>
         <PreviewStyles />
 
@@ -49,7 +49,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         {/* Navigation */}
         <NavigationSection formData={formData} />
 
-        {/* Content Sections - כל הסקשנים יוצגו */}
+        {/* All Content Sections - Always render all sections */}
         <ContentSections 
           content={content}
           currentColors={currentColors}

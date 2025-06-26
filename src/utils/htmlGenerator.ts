@@ -1,3 +1,4 @@
+
 import { ColorScheme } from "@/components/ColorEditor";
 
 export const generateHtmlFile = (
@@ -42,51 +43,6 @@ export const generateHtmlFile = (
     }
   };
 
-  const getCardClass = () => {
-    switch (formData?.heroStyle) {
-      case 'geometric':
-        return 'card-geometric';
-      case 'glass':
-        return 'card-glass';
-      case 'metal':
-        return 'card-metal';
-      case 'image':
-        return 'card-image';
-      default:
-        return 'card-3d';
-    }
-  };
-
-  const getButtonClass = () => {
-    switch (formData?.heroStyle) {
-      case 'geometric':
-        return 'btn-geometric';
-      case 'glass':
-        return 'btn-glass';
-      case 'metal':
-        return 'btn-metal';
-      case 'image':
-        return 'btn-image';
-      default:
-        return 'btn-3d';
-    }
-  };
-
-  const getTypographyClass = () => {
-    switch (formData?.heroStyle) {
-      case 'geometric':
-        return 'typography-modern';
-      case 'glass':
-        return 'typography-modern';
-      case 'metal':
-        return 'typography-luxury';
-      case 'image':
-        return 'typography-modern';
-      default:
-        return 'typography-tech';
-    }
-  };
-
   const getHeroBackground = () => {
     if (formData?.heroStyle === 'image') {
       const imageUrl = heroImageUrl || getBusinessImage(formData.businessType);
@@ -95,9 +51,8 @@ export const generateHtmlFile = (
     return '';
   };
 
-  // צריך להכליל את כל ה-CSS מ-PreviewStyles.tsx בדיוק
+  // Complete CSS styles for all variants
   const getCSSStyles = () => `
-    /* Professional Typography System */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
 
     :root {
@@ -118,6 +73,7 @@ export const generateHtmlFile = (
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       line-height: 1.6;
       direction: rtl;
+      overflow-x: hidden;
     }
 
     /* Typography Classes */
@@ -161,32 +117,37 @@ export const generateHtmlFile = (
       background: var(--gradient-3d);
       position: relative;
       overflow: hidden;
+      min-height: 100vh;
     }
 
     .style-geometric {
       background: linear-gradient(45deg, #1a1a2e 0%, #16213e 25%, #0f0f23 50%, #e94560 75%, #0f0f23 100%);
       background-size: 400% 400%;
       animation: geometricFlow 15s ease infinite;
+      min-height: 100vh;
     }
 
     .style-glass {
       background: var(--gradient-glass);
       position: relative;
       overflow: hidden;
+      min-height: 100vh;
     }
 
     .style-metal {
       background: var(--gradient-metal);
       position: relative;
       overflow: hidden;
+      min-height: 100vh;
     }
 
     .style-image {
       position: relative;
+      min-height: 100vh;
       ${getHeroBackground()}
     }
 
-    /* Card Classes - זהה למה שב-PreviewStyles */
+    /* Card Classes */
     .card-3d {
       background: rgba(15, 23, 42, 0.8);
       backdrop-filter: blur(20px);
@@ -200,6 +161,7 @@ export const generateHtmlFile = (
       border: 2px solid;
       border-image: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24) 1;
       clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+      backdrop-filter: blur(16px);
     }
 
     .card-glass {
@@ -272,29 +234,6 @@ export const generateHtmlFile = (
       background: rgba(59, 130, 246, 0.9);
       backdrop-filter: blur(8px);
       border: 1px solid rgba(59, 130, 246, 0.5);
-    }
-
-    /* Background Classes */
-    .bg-3d {
-      background: var(--gradient-3d);
-    }
-
-    .bg-geometric {
-      background: linear-gradient(45deg, #1a1a2e 0%, #16213e 25%, #0f0f23 50%, #e94560 75%, #0f0f23 100%);
-      background-size: 400% 400%;
-      animation: geometricFlow 15s ease infinite;
-    }
-
-    .bg-glass {
-      background: var(--gradient-glass);
-    }
-
-    .bg-metal {
-      background: var(--gradient-metal);
-    }
-
-    .bg-image {
-      background: var(--gradient-image);
     }
 
     /* Layout Classes */
@@ -373,34 +312,34 @@ export const generateHtmlFile = (
     }
   `;
 
-  // Generate sections content exactly as in ContentSections
-  const generateEmotionalSection = () => {
+  // Generate all sections for ALL styles
+  const generateAllSections = () => {
+    const styleClass = formData?.heroStyle || '3d';
+    const typographyClass = formData?.heroStyle === 'metal' ? 'luxury' : 'modern';
+
     return `
-    <section class="py-16 px-4 bg-${formData?.heroStyle || '3d'}">
+    <!-- Value Proposition Section -->
+    <section class="section-standard">
       <div class="container mx-auto max-w-6xl">
         <div class="text-center">
-          <h2 class="typography-${formData?.heroStyle === 'metal' ? 'luxury' : 'modern'} text-4xl text-5xl font-black mb-8 text-white">
+          <h2 class="typography-${typographyClass} text-4xl text-5xl font-black mb-8 text-white">
             ${content?.sections?.emotionalSection?.title || "השירות שמשנה את המשחק"}
           </h2>
-          <div class="card-${formData?.heroStyle || '3d'} p-8">
+          <div class="card-${styleClass} p-8">
             <p class="typography-body text-lg text-xl leading-relaxed text-white">
               ${content?.sections?.emotionalSection?.content || `בעולם שמתפתח במהירות, ${businessName} כאן כדי לספק לכם את השירות המקצועי והאמין ביותר בתחום ${formData?.businessType || 'שירותים עסקיים'}.`}
             </p>
           </div>
         </div>
       </div>
-    </section>`;
-  };
+    </section>
 
-  const generateWhyUsSection = () => {
-    if (!content?.sections?.whyUs || !content.sections.whyUs.reasons) return '';
-    
-    return `
-    <section class="py-16 px-4 bg-${formData?.heroStyle || '3d'}">
+    <!-- Why Choose Us Section -->
+    <section class="section-standard">
       <div class="container mx-auto max-w-6xl">
         <div class="text-center mb-12">
-          <h2 class="typography-${formData?.heroStyle === 'metal' ? 'luxury' : 'modern'} text-4xl text-5xl font-black mb-6 text-white">
-            ${content.sections.whyUs.title || "למה כדאי לבחור דווקא בנו?"}
+          <h2 class="typography-${typographyClass} text-4xl text-5xl font-black mb-6 text-white">
+            למה כדאי לבחור דווקא בנו?
           </h2>
           <p class="typography-body text-lg max-w-3xl mx-auto" style="color: #d1d5db;">
             הסיבות שעושות אותנו לבחירה הטובה ביותר עבורכם
@@ -408,27 +347,28 @@ export const generateHtmlFile = (
         </div>
         
         <div class="grid grid-cols-4 gap-6">
-          ${content.sections.whyUs.reasons.map((reason: any) => `
-            <div class="card-${formData?.heroStyle || '3d'} p-6 text-center">
+          ${[
+            { title: "שירות מקצועי ברמה הגבוהה", description: "צוות מנוסה עם מומחיות מוכחת ושנות ניסיון רבות" },
+            { title: "זמינות ומהירות בשירות", description: "מענה מהיר ויעיל לכל פנייה תוך זמן קצר" },
+            { title: "יחס אישי ומסור", description: "טיפול אישי בכל לקוח ופרויקט - אתם חשובים לנו" },
+            { title: "מחירים הוגנים ושקופים", description: "תמחור ברור ללא הפתעות או עלויות נסתרות" }
+          ].map(reason => `
+            <div class="card-${styleClass} p-6 text-center">
               <div style="width: 3rem; height: 3rem; margin: 0 auto 1rem; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center;">🏆</div>
-              <h3 class="typography-${formData?.heroStyle === 'metal' ? 'luxury' : 'modern'} text-lg font-bold mb-3 text-white">${reason.title}</h3>
+              <h3 class="typography-${typographyClass} text-lg font-bold mb-3 text-white">${reason.title}</h3>
               <p class="typography-body leading-relaxed text-sm" style="color: #d1d5db;">${reason.description}</p>
             </div>
           `).join('')}
         </div>
       </div>
-    </section>`;
-  };
+    </section>
 
-  const generateWhatWeGiveSection = () => {
-    if (!content?.sections?.whatWeGive || !content.sections.whatWeGive.services) return '';
-    
-    return `
-    <section class="py-16 px-4 bg-${formData?.heroStyle || '3d'}">
+    <!-- Services Section -->
+    <section class="section-standard">
       <div class="container mx-auto max-w-6xl">
         <div class="text-center mb-12">
-          <h2 class="typography-${formData?.heroStyle === 'metal' ? 'luxury' : 'modern'} text-4xl text-5xl font-black mb-6 text-white">
-            ${content.sections.whatWeGive.title || "מה אתם מקבלים מאיתנו"}
+          <h2 class="typography-${typographyClass} text-4xl text-5xl font-black mb-6 text-white">
+            מה אתם מקבלים מאיתנו
           </h2>
           <p class="typography-body text-lg max-w-3xl mx-auto" style="color: #d1d5db;">
             השירותים המקצועיים שלנו מותאמים בדיוק לצרכים שלכם
@@ -436,12 +376,17 @@ export const generateHtmlFile = (
         </div>
         
         <div class="grid grid-cols-2 gap-6">
-          ${content.sections.whatWeGive.services.map((service: any) => `
-            <div class="card-${formData?.heroStyle || '3d'} p-6">
+          ${[
+            { title: "שירות מותאם אישית", description: "פתרונות מותאמים בדיוק לצרכים הייחודיים שלכם" },
+            { title: "איכות ללא פשרות", description: "רמת שירות גבוהה ועקבית בכל שלב מהתהליך" },
+            { title: "ליווי מלא", description: "תמיכה צמודה לאורך כל התהליך מההתחלה ועד הסוף" },
+            { title: "תוצאות מוכחות", description: "הישגים קונקרטיים ומדידים שאתם יכולים לראות" }
+          ].map(service => `
+            <div class="card-${styleClass} p-6">
               <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem;">
                 <div style="width: 2rem; height: 2rem; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center;">✓</div>
                 <div>
-                  <h3 class="typography-${formData?.heroStyle === 'metal' ? 'luxury' : 'modern'} text-lg font-bold text-white mb-2">${service.title}</h3>
+                  <h3 class="typography-${typographyClass} text-lg font-bold text-white mb-2">${service.title}</h3>
                   <p class="typography-body leading-relaxed text-sm" style="color: #d1d5db;">${service.description}</p>
                 </div>
               </div>
@@ -449,15 +394,13 @@ export const generateHtmlFile = (
           `).join('')}
         </div>
       </div>
-    </section>`;
-  };
+    </section>
 
-  const generateProcessSection = () => {
-    return `
-    <section class="py-16 px-4 bg-${formData?.heroStyle || '3d'}">
+    <!-- Process Section -->
+    <section class="section-standard">
       <div class="container mx-auto max-w-6xl">
         <div class="text-center mb-12">
-          <h2 class="typography-${formData?.heroStyle === 'metal' ? 'luxury' : 'modern'} text-4xl text-5xl font-black mb-6 text-white">
+          <h2 class="typography-${typographyClass} text-4xl text-5xl font-black mb-6 text-white">
             תהליך העבודה שלנו
           </h2>
           <p class="typography-body text-lg text-gray-300 max-w-3xl mx-auto">
@@ -466,47 +409,38 @@ export const generateHtmlFile = (
         </div>
         
         <div class="grid grid-cols-4 gap-6">
-          <div class="card-${formData?.heroStyle || '3d'} text-center p-6">
-            <div style="width: 3rem; height: 3rem; margin: 0 auto 1rem; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: black;">1</div>
-            <h3 class="typography-${formData?.heroStyle === 'metal' ? 'luxury' : 'modern'} text-lg font-bold mb-3 text-white">ניתוח צרכים</h3>
-            <p class="typography-body leading-relaxed text-sm" style="color: #d1d5db;">בדיקה מעמיקה של הדרישות והמטרות שלכם</p>
-          </div>
-          <div class="card-${formData?.heroStyle || '3d'} text-center p-6">
-            <div style="width: 3rem; height: 3rem; margin: 0 auto 1rem; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: black;">2</div>
-            <h3 class="typography-${formData?.heroStyle === 'metal' ? 'luxury' : 'modern'} text-lg font-bold mb-3 text-white">תכנון אסטרטגי</h3>
-            <p class="typography-body leading-relaxed text-sm" style="color: #d1d5db;">עיצוב תוכנית עבודה מותאמת אישית</p>
-          </div>
-          <div class="card-${formData?.heroStyle || '3d'} text-center p-6">
-            <div style="width: 3rem; height: 3rem; margin: 0 auto 1rem; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: black;">3</div>
-            <h3 class="typography-${formData?.heroStyle === 'metal' ? 'luxury' : 'modern'} text-lg font-bold mb-3 text-white">ביצוע מקצועי</h3>
-            <p class="typography-body leading-relaxed text-sm" style="color: #d1d5db;">יישום הפתרון ברמה הגבוהה ביותר</p>
-          </div>
-          <div class="card-${formData?.heroStyle || '3d'} text-center p-6">
-            <div style="width: 3rem; height: 3rem; margin: 0 auto 1rem; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: black;">4</div>
-            <h3 class="typography-${formData?.heroStyle === 'metal' ? 'luxury' : 'modern'} text-lg font-bold mb-3 text-white">מעקב ותמיכה</h3>
-            <p class="typography-body leading-relaxed text-sm" style="color: #d1d5db;">ליווי מתמשך ושיפורים נוספים</p>
-          </div>
+          ${[
+            { step: 1, title: "ניתוח צרכים", desc: "בדיקה מעמיקה של הדרישות והמטרות שלכם" },
+            { step: 2, title: "תכנון אסטרטגי", desc: "עיצוב תוכנית עבודה מותאמת אישית" },
+            { step: 3, title: "ביצוע מקצועי", desc: "יישום הפתרון ברמה הגבוהה ביותר" },
+            { step: 4, title: "מעקב ותמיכה", desc: "ליווי מתמשך ושיפורים נוספים" }
+          ].map(process => `
+            <div class="card-${styleClass} text-center p-6">
+              <div style="width: 3rem; height: 3rem; margin: 0 auto 1rem; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: black;">${process.step}</div>
+              <h3 class="typography-${typographyClass} text-lg font-bold mb-3 text-white">${process.title}</h3>
+              <p class="typography-body leading-relaxed text-sm" style="color: #d1d5db;">${process.desc}</p>
+            </div>
+          `).join('')}
         </div>
       </div>
-    </section>`;
-  };
+    </section>
 
-  const generateTestimonialsSection = () => {
-    const testimonials = content?.sections?.testimonials || [];
-    if (!testimonials.length) return '';
-    
-    return `
-    <section class="py-16 px-4 bg-${formData?.heroStyle || '3d'}">
+    <!-- Testimonials Section -->
+    <section class="section-standard">
       <div class="container mx-auto max-w-6xl">
         <div class="text-center mb-12">
-          <h2 class="typography-${formData?.heroStyle === 'metal' ? 'luxury' : 'modern'} text-4xl text-5xl font-black mb-6 text-white">מה הלקוחות שלנו אומרים</h2>
+          <h2 class="typography-${typographyClass} text-4xl text-5xl font-black mb-6 text-white">מה הלקוחות שלנו אומרים</h2>
           <p class="typography-body text-lg max-w-3xl mx-auto" style="color: #d1d5db;">
             עדויות אמיתיות מלקוחות מרוצים
           </p>
         </div>
         <div class="grid grid-cols-3 gap-6">
-          ${testimonials.map((testimonial: any) => `
-            <div class="card-${formData?.heroStyle || '3d'} p-6">
+          ${[
+            { name: "דני כהן", role: "מנהל עסק", content: `השירות של ${businessName} פשוט מעולה! הצוות המקצועי והיחס האישי עשו את כל ההבדל.` },
+            { name: "שרה לוי", role: "יזמת", content: `עבדנו עם ${businessName} על מספר פרויקטים והתוצאות תמיד מעולות. מקצועיות ברמה אחרת!` },
+            { name: "מיכל רוזן", role: "בעלת חנות", content: "הליווי והתמיכה שקיבלתי היו פשוט מדהימים. השירות החרג מכל הציפיות!" }
+          ].map(testimonial => `
+            <div class="card-${styleClass} p-6">
               <div style="margin-bottom: 1rem; color: #facc15; font-size: 1.25rem;">★★★★★</div>
               <p class="typography-body text-lg leading-relaxed text-white mb-4" style="font-style: italic;">
                 "${testimonial.content}"
@@ -514,30 +448,21 @@ export const generateHtmlFile = (
               <div style="display: flex; align-items: center; gap: 1rem;">
                 <div style="width: 3rem; height: 3rem; border-radius: 50%; background: linear-gradient(45deg, #3b82f6, #8b5cf6); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">👤</div>
                 <div>
-                  <p class="typography-${formData?.heroStyle === 'metal' ? 'luxury' : 'modern'} font-bold text-white">${testimonial.name}</p>
-                  ${testimonial.role ? `<p class="typography-body text-sm" style="color: #9ca3af;">${testimonial.role}</p>` : ''}
+                  <p class="typography-${typographyClass} font-bold text-white">${testimonial.name}</p>
+                  <p class="typography-body text-sm" style="color: #9ca3af;">${testimonial.role}</p>
                 </div>
               </div>
             </div>
           `).join('')}
         </div>
       </div>
-    </section>`;
-  };
+    </section>
 
-  const generateFAQSection = () => {
-    const faqs = [
-      { question: "כמה זמן לוקח התהליך?", answer: "התהליך נע בין שבוע לחודש, תלוי במורכבות הפרויקט והדרישות הספציפיות שלכם." },
-      { question: "איך הגישה שלכם שונה?", answer: "אנחנו מתמחים בפתרונות מותאמים אישית ובליווי צמוד לאורך כל התהליך." },
-      { question: "מה כלול במחיר?", answer: "המחיר כולל את כל השירותים הבסיסיים, ליווי מלא ותמיכה לאחר הפרויקט." },
-      { question: "איך מתחילים?", answer: "פשוט צרו קשר איתנו לייעוץ ראשוני חינמי ובחינת האפשרויות המתאימות לכם." }
-    ];
-
-    return `
-    <section class="py-16 px-4 bg-${formData?.heroStyle || '3d'}">
+    <!-- FAQ Section -->
+    <section class="section-standard">
       <div class="container mx-auto max-w-6xl">
         <div class="text-center mb-12">
-          <h2 class="typography-${formData?.heroStyle === 'metal' ? 'luxury' : 'modern'} text-4xl text-5xl font-black mb-6 text-white">
+          <h2 class="typography-${typographyClass} text-4xl text-5xl font-black mb-6 text-white">
             שאלות נפוצות
           </h2>
           <p class="typography-body text-lg max-w-3xl mx-auto" style="color: #d1d5db;">
@@ -546,40 +471,43 @@ export const generateHtmlFile = (
         </div>
         
         <div class="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
-          ${faqs.map(faq => `
-            <div class="card-${formData?.heroStyle || '3d'} p-6">
-              <h3 class="typography-${formData?.heroStyle === 'metal' ? 'luxury' : 'modern'} text-lg font-bold mb-3 text-white">${faq.question}</h3>
+          ${[
+            { question: "כמה זמן לוקח התהליך?", answer: "התהליך נע בין שבוע לחודש, תלוי במורכבות הפרויקט והדרישות הספציפיות שלכם." },
+            { question: "איך הגישה שלכם שונה?", answer: "אנחנו מתמחים בפתרונות מותאמים אישית ובליווי צמוד לאורך כל התהליך." },
+            { question: "מה כלול במחיר?", answer: "המחיר כולל את כל השירותים הבסיסיים, ליווי מלא ותמיכה לאחר הפרויקט." },
+            { question: "איך מתחילים?", answer: "פשוט צרו קשר איתנו לייעוץ ראשוני חינמי ובחינת האפשרויות המתאימות לכם." }
+          ].map(faq => `
+            <div class="card-${styleClass} p-6">
+              <h3 class="typography-${typographyClass} text-lg font-bold mb-3 text-white">${faq.question}</h3>
               <p class="typography-body leading-relaxed text-sm" style="color: #d1d5db;">${faq.answer}</p>
             </div>
           `).join('')}
         </div>
       </div>
-    </section>`;
-  };
+    </section>
 
-  const generateContactSection = () => {
-    return `
-    <section class="py-16 px-4 bg-${formData?.heroStyle || '3d'}" id="contact">
+    <!-- Contact CTA Section -->
+    <section class="section-standard" id="contact">
       <div class="container mx-auto max-w-6xl text-center">
         <div class="max-w-4xl mx-auto">
-          <h2 class="typography-${formData?.heroStyle === 'metal' ? 'luxury' : 'modern'} text-4xl text-5xl font-black mb-8 text-white">
-            ${content?.contactTitle || 'מוכנים להתחיל?'}
+          <h2 class="typography-${typographyClass} text-4xl text-5xl font-black mb-8 text-white">
+            מוכנים להתחיל?
           </h2>
           
-          <div class="card-${formData?.heroStyle || '3d'} p-6 mb-8">
+          <div class="card-${styleClass} p-6 mb-8">
             <p class="typography-body text-lg text-xl text-white leading-relaxed">
               בואו ניצור יחד משהו מדהים שיקדם את העסק שלכם
             </p>
           </div>
 
           <div class="grid grid-cols-2 gap-4 max-w-2xl mx-auto mb-8">
-            <div class="card-${formData?.heroStyle || '3d'} p-4">
+            <div class="card-${styleClass} p-4">
               <div style="display: flex; align-items: center; gap: 0.75rem; justify-content: center;">
                 <span style="color: #60a5fa;">📞</span>
                 <span class="typography-body text-white font-medium">050-1234567</span>
               </div>
             </div>
-            <div class="card-${formData?.heroStyle || '3d'} p-4">
+            <div class="card-${styleClass} p-4">
               <div style="display: flex; align-items: center; gap: 0.75rem; justify-content: center;">
                 <span style="color: #60a5fa;">✉️</span>
                 <span class="typography-body text-white font-medium">info@business.co.il</span>
@@ -588,18 +516,16 @@ export const generateHtmlFile = (
           </div>
 
           <div style="display: flex; flex-direction: column; gap: 1rem; justify-content: center; align-items: center; margin-bottom: 2rem;">
-            <a href="tel:0501234567" class="btn-base btn-${formData?.heroStyle || '3d'}">צור קשר עכשיו</a>
-            <a href="#" class="btn-base btn-${formData?.heroStyle || '3d'}">קבל הצעת מחיר</a>
+            <a href="tel:0501234567" class="btn-base btn-${styleClass}">צור קשר עכשיו</a>
+            <a href="#" class="btn-base btn-${styleClass}">קבל הצעת מחיר</a>
           </div>
         </div>
       </div>
-    </section>`;
-  };
+    </section>
 
-  const generateFooterSection = () => {
-    return `
-    <footer class="py-16 px-4 bg-black/50 text-center">
-      <div class="container mx-auto max-w-4xl">
+    <!-- Footer Section -->
+    <footer class="section-standard" style="background: rgba(0,0,0,0.5); backdrop-filter: blur(16px);">
+      <div class="container mx-auto max-w-4xl text-center">
         <h3 class="text-2xl font-bold text-white mb-4">${businessName}</h3>
         <p class="text-gray-400 mb-8">© 2024 כל הזכויות שמורות. בניית אתרים מקצועית ואמינה.</p>
         <div style="display: flex; justify-content: center; gap: 2rem; color: #9ca3af;">
@@ -633,21 +559,7 @@ export const generateHtmlFile = (
         </div>
     </section>
 
-    ${generateEmotionalSection()}
-
-    ${generateWhyUsSection()}
-
-    ${generateWhatWeGiveSection()}
-
-    ${generateProcessSection()}
-
-    ${generateTestimonialsSection()}
-
-    ${generateFAQSection()}
-
-    ${generateContactSection()}
-
-    ${generateFooterSection()}
+    ${generateAllSections()}
 </body>
 </html>`;
 };
