@@ -2,7 +2,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LiquidButton, MetalButton } from "@/components/ui/liquid-glass-button";
-import { Phone, Mail, MapPin, Star, CheckCircle2, Users, Target, Image, Award, Zap, Cpu, Network, Rocket } from "lucide-react";
+import { Phone, Mail, MapPin, Star, CheckCircle2, Users, Target, Image, Award, Zap, Cpu, Network, Rocket, ArrowLeft, Quote, Shield, Clock, ThumbsUp, TrendingUp } from "lucide-react";
 import { ColorScheme } from "@/components/ColorEditor";
 
 interface ContentSectionsProps {
@@ -13,271 +13,181 @@ interface ContentSectionsProps {
 }
 
 export const ContentSections = ({ content, currentColors, formData, selectedElements }: ContentSectionsProps) => {
-  // Get appropriate card class based on hero style
-  const getCardClass = () => {
-    switch (formData.heroStyle) {
-      case 'glass':
-        return 'glass-card border-0';
-      case 'metal':
-        return 'metal-card border-0';
-      case 'geometric':
-        return 'geometric-card border-0';
-      default:
-        return 'bg-gray-800/60 border-gray-600 tech-glow hover:bg-gray-700/70 transition-all duration-300';
-    }
-  };
-
-  // Get appropriate section background
-  const getSectionStyle = () => {
-    switch (formData.heroStyle) {
-      case 'glass':
-        return 'glass-morphism';
-      case 'metal':
-        return 'metal-texture';
-      case 'geometric':
-        return 'geometric-hero';
-      default:
-        return 'matrix-bg';
-    }
-  };
-
-  // Get appropriate button component
-  const renderButton = (text: string, className?: string) => {
-    const baseClass = "text-lg px-8 py-4 rounded-2xl transition-all duration-300 transform hover:scale-105 enhanced-button";
+  const renderButton = (text: string, className?: string, isSecondary?: boolean) => {
+    const baseClass = `${isSecondary ? 'btn-secondary' : 'btn-primary'} inline-flex items-center gap-3 ${className || ''}`;
     
     if (formData.heroStyle === 'glass') {
       return (
         <LiquidButton 
           size="lg" 
-          className={`${baseClass} ${className || ''}`}
+          className={baseClass}
           style={{ 
-            backgroundColor: currentColors.primary,
+            backgroundColor: isSecondary ? 'transparent' : currentColors.primary,
             color: 'white',
             fontWeight: '600'
           }}
         >
+          <ArrowLeft className="w-5 h-5" />
           {text}
         </LiquidButton>
       );
     } else if (formData.heroStyle === 'metal') {
       return (
         <MetalButton 
-          variant="primary"
-          className={`${baseClass} ${className || ''}`}
+          variant={isSecondary ? "secondary" : "primary"}
+          className={baseClass}
           style={{ fontWeight: '600' }}
         >
+          <ArrowLeft className="w-5 h-5" />
           {text}
         </MetalButton>
       );
     }
 
     return (
-      <Button 
-        size="lg" 
-        className={`${baseClass} shadow-lg hover:shadow-xl tech-glow ${className || ''}`}
+      <button 
+        className={baseClass}
         style={{ 
-          backgroundColor: currentColors.primary,
-          color: 'white',
+          backgroundColor: isSecondary ? 'transparent' : currentColors.primary,
           fontWeight: '600'
         }}
       >
+        <ArrowLeft className="w-5 h-5" />
         {text}
-      </Button>
+      </button>
     );
   };
 
   return (
     <>
-      {/* Emotional Section */}
+      {/* Value Proposition Section */}
       {content?.sections?.emotionalSection && (
-        <section className={`py-24 px-6 ${getSectionStyle()}`}>
+        <section className="section-padding bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
           <div className="container mx-auto text-center max-w-6xl">
-            <h2 className={`text-5xl md:text-6xl font-bold mb-12 ${
-              formData.heroStyle === 'metal' ? 'metal-text' : 
-              formData.heroStyle === 'glass' ? 'glass-text' : 'tech-title'
-            }`} style={{ color: currentColors.featuresColor }}>
-              {content.sections.emotionalSection.title}
-            </h2>
-            <p className="text-xl md:text-2xl max-w-5xl mx-auto leading-relaxed" 
-               style={{ color: currentColors.featuresTextColor }}>
-              {content.sections.emotionalSection.content}
-            </p>
+            <div className="animate-fade-in-up">
+              <h2 className="typography-display text-5xl md:text-7xl font-black mb-8 text-white">
+                {content.sections.emotionalSection.title}
+              </h2>
+              <p className="typography-body text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed text-gray-200 glass-card-dark p-8 rounded-3xl">
+                {content.sections.emotionalSection.content}
+              </p>
+            </div>
           </div>
         </section>
       )}
 
-      {/* Why Us Section */}
+      {/* Why Choose Us Section */}
       {content?.sections?.whyUs && (
-        <section className={`py-24 px-6 ${getSectionStyle()}`}>
+        <section className="section-padding bg-gradient-to-br from-purple-900 via-slate-900 to-blue-900">
           <div className="container mx-auto max-w-7xl">
-            <h2 className={`text-5xl md:text-6xl font-bold mb-16 text-center ${
-              formData.heroStyle === 'metal' ? 'metal-text' : 
-              formData.heroStyle === 'glass' ? 'glass-text' : 'tech-title'
-            }`} style={{ color: currentColors.featuresColor }}>
-              {content.sections.whyUs.title}
-            </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="text-center mb-16 animate-fade-in-up">
+              <h2 className="typography-display text-5xl md:text-6xl font-black mb-6 text-white">
+                {content.sections.whyUs.title}
+              </h2>
+              <p className="typography-body text-xl text-gray-300 max-w-3xl mx-auto">
+                הסיבות שעושות אותנו לבחירה הטובה ביותר עבורכם
+              </p>
+            </div>
+            
+            <div className="grid-professional">
               {content.sections.whyUs.reasons?.map((reason: any, index: number) => (
-                <Card key={index} className={`${getCardClass()} hover:scale-105 transition-all duration-300`}>
-                  <CardContent className="p-8 text-center">
-                    <div className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center tech-glow floating-animation" 
-                         style={{ backgroundColor: currentColors.primary }}>
-                      <Award className="w-10 h-10 text-white" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-4" style={{ color: currentColors.featuresColor }}>
-                      {reason.title}
-                    </h3>
-                    <p className="leading-relaxed" style={{ color: currentColors.featuresTextColor }}>
-                      {reason.description}
-                    </p>
-                  </CardContent>
-                </Card>
+                <div key={index} className="glass-card p-8 text-center animate-scale-in hover:scale-105 transition-all duration-300"
+                     style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="icon-wrapper mx-auto mb-6" 
+                       style={{ background: currentColors.primary }}>
+                    <Award className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="typography-heading text-2xl font-bold mb-4 text-white">
+                    {reason.title}
+                  </h3>
+                  <p className="typography-body text-gray-300 leading-relaxed">
+                    {reason.description}
+                  </p>
+                </div>
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* What We Give Section */}
+      {/* Services Section */}
       {content?.sections?.whatWeGive && (
-        <section className={`py-24 px-6 ${getSectionStyle()}`}>
+        <section className="section-padding bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
           <div className="container mx-auto max-w-7xl">
-            <h2 className={`text-5xl md:text-6xl font-bold mb-16 text-center ${
-              formData.heroStyle === 'metal' ? 'metal-text' : 
-              formData.heroStyle === 'glass' ? 'glass-text' : 'tech-title'
-            }`} style={{ color: currentColors.featuresColor }}>
-              {content.sections.whatWeGive.title}
-            </h2>
+            <div className="text-center mb-16 animate-fade-in-up">
+              <h2 className="typography-display text-5xl md:text-6xl font-black mb-6 text-white">
+                {content.sections.whatWeGive.title}
+              </h2>
+              <p className="typography-body text-xl text-gray-300 max-w-3xl mx-auto">
+                השירותים המקצועיים שלנו מותאמים בדיוק לצרכים שלכם
+              </p>
+            </div>
+            
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {content.sections.whatWeGive.services?.map((service: any, index: number) => (
-                <Card key={index} className={`${getCardClass()} hover:scale-105 transition-all duration-300`}>
-                  <CardContent className="p-8">
-                    <div className="flex items-center gap-4 mb-6">
-                      <CheckCircle2 className="w-8 h-8 flex-shrink-0" style={{ color: currentColors.primary }} />
-                      <h3 className="text-xl font-semibold" style={{ color: currentColors.featuresColor }}>
+                <div key={index} className="glass-card p-8 animate-slide-in-right hover:scale-105 transition-all duration-300"
+                     style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="flex items-start gap-4 mb-6">
+                    <div className="icon-wrapper flex-shrink-0" style={{ background: currentColors.primary }}>
+                      <CheckCircle2 className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="typography-heading text-xl font-bold text-white mb-2">
                         {service.title}
                       </h3>
+                      <p className="typography-body text-gray-300 leading-relaxed">
+                        {service.description}
+                      </p>
                     </div>
-                    <p className="leading-relaxed" style={{ color: currentColors.featuresTextColor }}>
-                      {service.description}
-                    </p>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* Gallery Section */}
-      {selectedElements.includes('gallery') && (
-        <section className={`py-24 px-6 ${getSectionStyle()}`}>
-          <div className="container mx-auto max-w-7xl">
-            <h2 className={`text-5xl md:text-6xl font-bold mb-16 text-center ${
-              formData.heroStyle === 'metal' ? 'metal-text' : 
-              formData.heroStyle === 'glass' ? 'glass-text' : 'tech-title'
-            }`} style={{ color: currentColors.featuresColor }}>
-              <Image className="w-12 h-12 inline-block ml-4" />
-              {content?.sections?.gallery?.title || 'גלריית העבודות שלנו'}
-            </h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              {content?.sections?.gallery?.images?.filter((img: any) => img?.url).map((galleryImage: any, index: number) => (
-                <div key={index} className="relative group overflow-hidden rounded-xl aspect-square tech-glow hover:scale-105 transition-all duration-300">
-                  <img 
-                    src={galleryImage.url}
-                    alt={galleryImage.description || `עבודה ${index + 1}`}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <p className="text-white font-semibold text-lg">{galleryImage.description || `עבודה ${index + 1}`}</p>
-                  </div>
-                </div>
-              )) || (
-                <div className="col-span-3 text-center py-16">
-                  <Image className="w-20 h-20 mx-auto mb-6 text-gray-500" />
-                  <p className="text-gray-400 text-xl">עדיין לא הועלו תמונות לגלריה</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Enhanced Process Section */}
+      {/* Process Section */}
       {selectedElements.includes('process') && (
-        <section className={`py-24 px-6 ${getSectionStyle()}`}>
+        <section className="section-padding bg-gradient-to-br from-blue-900 via-slate-900 to-purple-900">
           <div className="container mx-auto max-w-7xl">
-            <h2 className={`text-5xl md:text-6xl font-bold mb-16 text-center ${
-              formData.heroStyle === 'metal' ? 'metal-text' : 
-              formData.heroStyle === 'glass' ? 'glass-text' : 'tech-title'
-            }`} style={{ color: currentColors.featuresColor }}>
-              <Cpu className="w-12 h-12 inline-block ml-4" />
-              תהליך העבודה הטכנולוגי שלנו
-            </h2>
+            <div className="text-center mb-16 animate-fade-in-up">
+              <h2 className="typography-display text-5xl md:text-6xl font-black mb-6 text-white">
+                <Cpu className="w-12 h-12 inline-block ml-4" />
+                תהליך העבודה שלנו
+              </h2>
+              <p className="typography-body text-xl text-gray-300 max-w-3xl mx-auto">
+                תהליך מובנה ומקצועי שמבטיח תוצאות מעולות
+              </p>
+            </div>
+            
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {[
-                { step: 1, title: "ניתוח חכם", desc: "ניתוח מתקדם של הצרכים באמצעות AI", icon: <Zap className="w-10 h-10" /> },
-                { step: 2, title: "תכנון דיגיטלי", desc: "עיצוב מתקדם באמצעות כלים טכנולוגיים", icon: <Cpu className="w-10 h-10" /> },
-                { step: 3, title: "פיתוח חכם", desc: "יישום מתקדם עם טכנולוגיות חדישות", icon: <Network className="w-10 h-10" /> },
-                { step: 4, title: "השקה חדשנית", desc: "הטמעה חכמה ומעקב בזמן אמת", icon: <Rocket className="w-10 h-10" /> }
+                { step: 1, title: "ניתוח צרכים", desc: "בדיקה מעמיקה של הדרישות והמטרות שלכם", icon: <Target className="w-8 h-8" /> },
+                { step: 2, title: "תכנון אסטרטגי", desc: "עיצוב תוכנית עבודה מותאמת אישית", icon: <Cpu className="w-8 h-8" /> },
+                { step: 3, title: "ביצוע מקצועי", desc: "יישום הפתרון ברמה הגבוהה ביותר", icon: <Network className="w-8 h-8" /> },
+                { step: 4, title: "מעקב ותמיכה", desc: "ליווי מתמשך ושיפורים נוספים", icon: <Rocket className="w-8 h-8" /> }
               ].map((process, index) => (
-                <Card key={index} className={`${getCardClass()} text-center hover:scale-105 transition-all duration-300`}>
-                  <CardContent className="p-8">
-                    <div 
-                      className="w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center tech-glow floating-animation"
-                      style={{ backgroundColor: currentColors.primary }}
-                    >
+                <div key={index} className="glass-card text-center p-8 animate-scale-in hover:scale-105 transition-all duration-300"
+                     style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="relative mb-8">
+                    <div className="icon-wrapper mx-auto" style={{ background: currentColors.primary }}>
                       <div className="text-white">
                         {process.icon}
                       </div>
                     </div>
-                    <div 
-                      className="text-4xl font-bold mb-4"
-                      style={{ color: currentColors.primary }}
-                    >
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-black font-bold text-sm">
                       {process.step}
                     </div>
-                    <h3 className="text-xl font-semibold mb-4" style={{ color: currentColors.featuresColor }}>
-                      {process.title}
-                    </h3>
-                    <p className="leading-relaxed" style={{ color: currentColors.featuresTextColor }}>
-                      {process.desc}
-                    </p>
-                  </CardContent>
-                </Card>
+                  </div>
+                  <h3 className="typography-heading text-xl font-bold mb-4 text-white">
+                    {process.title}
+                  </h3>
+                  <p className="typography-body text-gray-300 leading-relaxed">
+                    {process.desc}
+                  </p>
+                </div>
               ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* About Section */}
-      {selectedElements.includes('about') && (
-        <section className={`py-24 px-6 ${getSectionStyle()}`}>
-          <div className="container mx-auto max-w-7xl">
-            <div className="grid md:grid-cols-2 gap-16 items-center">
-              <div>
-                <h2 className={`text-5xl md:text-6xl font-bold mb-8 ${
-                  formData.heroStyle === 'metal' ? 'metal-text' : 
-                  formData.heroStyle === 'glass' ? 'glass-text' : 'tech-title'
-                }`} style={{ color: currentColors.aboutColor }}>
-                  <Users className="w-12 h-12 inline-block ml-4" />
-                  קצת עלינו
-                </h2>
-                <p className="text-xl mb-8 leading-relaxed" style={{ color: currentColors.aboutTextColor }}>
-                  אנחנו צוות מקצועי עם ניסיון של מעל 10 שנים בתחום. אנו מתמחים בפתרונות יצירתיים ומותאמים אישית לכל לקוח.
-                </p>
-                <p className="text-xl leading-relaxed" style={{ color: currentColors.aboutTextColor }}>
-                  המטרה שלנו היא לספק שירות ברמה הגבוהה ביותר ולהבטיח שביעות רצון מלאה של הלקוחות שלנו.
-                </p>
-              </div>
-              <div className="relative">
-                <img 
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop"
-                  alt="הצוות שלנו"
-                  className="rounded-2xl shadow-lg tech-glow hover:scale-105 transition-all duration-300"
-                />
-              </div>
             </div>
           </div>
         </section>
@@ -285,74 +195,100 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
 
       {/* Testimonials Section */}
       {content?.sections?.testimonials && content.sections.testimonials.some((t: any) => t.name && t.content) && (
-        <section className={`py-24 px-6 ${getSectionStyle()}`}>
+        <section className="section-padding bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
           <div className="container mx-auto max-w-7xl">
-            <h2 className={`text-5xl md:text-6xl font-bold mb-16 text-center ${
-              formData.heroStyle === 'metal' ? 'metal-text' : 
-              formData.heroStyle === 'glass' ? 'glass-text' : 'tech-title'
-            }`} style={{ color: currentColors.featuresColor }}>
-              מה הלקוחות שלנו אומרים
-            </h2>
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center mb-16 animate-fade-in-up">
+              <h2 className="typography-display text-5xl md:text-6xl font-black mb-6 text-white">
+                מה הלקוחות שלנו אומרים
+              </h2>
+              <p className="typography-body text-xl text-gray-300 max-w-3xl mx-auto">
+                עדויות אמיתיות מלקוחות מרוצים
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {content.sections.testimonials.filter((t: any) => t.name && t.content).map((testimonial: any, index: number) => (
-                <Card key={index} className={`${getCardClass()} hover:scale-105 transition-all duration-300`}>
-                  <CardContent className="p-8">
-                    <div className="flex mb-6">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-6 h-6 fill-yellow-400 text-yellow-400" />
-                      ))}
+                <div key={index} className="testimonial-card animate-scale-in"
+                     style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="flex mb-6">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                    ))}
+                  </div>
+                  
+                  <Quote className="w-8 h-8 text-blue-400 mb-4" />
+                  
+                  <p className="typography-body text-lg leading-relaxed text-gray-200 mb-6 italic">
+                    "{testimonial.content}"
+                  </p>
+                  
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+                      <Users className="w-6 h-6 text-white" />
                     </div>
-                    <p className="mb-6 italic text-lg leading-relaxed" style={{ color: currentColors.featuresTextColor }}>
-                      "{testimonial.content}"
-                    </p>
-                    <div className="flex items-center gap-4">
-                      <div className="w-14 h-14 rounded-full bg-gray-600 flex items-center justify-center">
-                        <Users className="w-7 h-7 text-gray-300" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-lg" style={{ color: currentColors.featuresColor }}>
-                          {testimonial.name}
+                    <div>
+                      <p className="typography-heading font-bold text-white">
+                        {testimonial.name}
+                      </p>
+                      {testimonial.role && (
+                        <p className="typography-body text-sm text-gray-400">
+                          {testimonial.role}
                         </p>
-                        {testimonial.role && (
-                          <p className="text-sm" style={{ color: currentColors.featuresTextColor }}>
-                            {testimonial.role}
-                          </p>
-                        )}
-                      </div>
+                      )}
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* Contact Section */}
-      <section className={`py-24 px-6 ${getSectionStyle()}`}>
-        <div className="container mx-auto text-center max-w-4xl">
-          <h2 className={`text-5xl md:text-6xl font-bold mb-12 ${
-            formData.heroStyle === 'metal' ? 'metal-text' : 
-            formData.heroStyle === 'glass' ? 'glass-text' : 'tech-title'
-          }`} style={{ color: currentColors.contactColor }}>
-            {content?.contactTitle || 'בואו נתחיל לעבוד יחד'}
+      {/* CTA Section */}
+      <section className="cta-section relative">
+        <div className="container mx-auto text-center max-w-4xl relative z-10">
+          <h2 className="typography-display text-5xl md:text-6xl font-black mb-8 text-white animate-fade-in-up">
+            {content?.contactTitle || 'מוכנים להתחיל?'}
           </h2>
-          <div className="max-w-md mx-auto space-y-6 mb-12">
-            <div className="flex items-center gap-4 justify-center text-xl">
-              <Phone className="w-6 h-6" style={{ color: currentColors.primary }} />
-              <span style={{ color: currentColors.contactTextColor }}>050-1234567</span>
+          
+          <p className="typography-body text-xl md:text-2xl mb-12 text-white/90 animate-fade-in-up"
+             style={{ animationDelay: '0.2s' }}>
+            בואו ניצור יחד משהו מדהים שיקדם את העסק שלכם
+          </p>
+
+          <div className="max-w-md mx-auto space-y-6 mb-12 animate-fade-in-up"
+               style={{ animationDelay: '0.4s' }}>
+            <div className="flex items-center gap-4 justify-center text-lg glass-card-dark p-4 rounded-2xl">
+              <Phone className="w-6 h-6 text-white" />
+              <span className="text-white font-medium">050-1234567</span>
             </div>
-            <div className="flex items-center gap-4 justify-center text-xl">
-              <Mail className="w-6 h-6" style={{ color: currentColors.primary }} />
-              <span style={{ color: currentColors.contactTextColor }}>info@business.co.il</span>
-            </div>
-            <div className="flex items-center gap-4 justify-center text-xl">
-              <MapPin className="w-6 h-6" style={{ color: currentColors.primary }} />
-              <span style={{ color: currentColors.contactTextColor }}>תל אביב, ישראל</span>
+            <div className="flex items-center gap-4 justify-center text-lg glass-card-dark p-4 rounded-2xl">
+              <Mail className="w-6 h-6 text-white" />
+              <span className="text-white font-medium">info@business.co.il</span>
             </div>
           </div>
-          <div className="mt-12">
-            {renderButton('צור קשר עכשיו')}
+
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up"
+               style={{ animationDelay: '0.6s' }}>
+            {renderButton('צור קשר עכשיו', 'text-lg px-12 py-6')}
+            {renderButton('קבל הצעת מחיר', 'text-lg px-8 py-4', true)}
+          </div>
+
+          {/* Trust Badges */}
+          <div className="flex items-center justify-center gap-8 mt-12 animate-fade-in-up"
+               style={{ animationDelay: '0.8s' }}>
+            <div className="flex items-center gap-2 text-white/80">
+              <Shield className="w-5 h-5" />
+              <span className="text-sm">מוגן ומאובטח</span>
+            </div>
+            <div className="flex items-center gap-2 text-white/80">
+              <Clock className="w-5 h-5" />
+              <span className="text-sm">מענה מהיר</span>
+            </div>
+            <div className="flex items-center gap-2 text-white/80">
+              <ThumbsUp className="w-5 h-5" />
+              <span className="text-sm">ללא התחייבות</span>
+            </div>
           </div>
         </div>
       </section>

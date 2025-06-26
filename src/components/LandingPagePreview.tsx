@@ -20,14 +20,15 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   // Get appropriate background class based on design style
   const getBackgroundClass = () => {
     switch (formData.heroStyle) {
-      case 'glass':
-        return 'bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900';
-      case 'metal':
-        return 'bg-gradient-to-br from-gray-900 via-black to-gray-800';
       case 'geometric':
         return 'bg-[#030303]';
-      default:
+      case 'glass':
+      case 'metal':
+        return 'bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900';
+      case 'image':
         return 'bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900';
+      default:
+        return 'bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900';
     }
   };
 

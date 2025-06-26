@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/components/ColorEditor";
 import { HeroGeometric } from "@/components/ui/shape-landing-hero";
 import { LiquidButton, MetalButton } from "@/components/ui/liquid-glass-button";
+import { ArrowLeft, Play, CheckCircle, Star, Zap } from "lucide-react";
 
 interface HeroSectionProps {
   content: any;
@@ -13,30 +14,6 @@ interface HeroSectionProps {
 }
 
 export const HeroSection = ({ content, currentColors, formData, heroImage }: HeroSectionProps) => {
-  const [currentGradient, setCurrentGradient] = useState(0);
-
-  // Enhanced gradient backgrounds
-  const gradientBackgrounds = [
-    'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-    'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-    'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-    'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-    'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
-    'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
-    'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
-  ];
-
-  // Cycle through gradients
-  useEffect(() => {
-    if (formData.heroStyle === 'gradient') {
-      const interval = setInterval(() => {
-        setCurrentGradient((prev) => (prev + 1) % gradientBackgrounds.length);
-      }, 4000);
-      return () => clearInterval(interval);
-    }
-  }, [formData.heroStyle, gradientBackgrounds.length]);
-
   const getBusinessImage = (businessType: string) => {
     const businessImages = {
       'עורך דין': 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1920&h=1080&fit=crop',
@@ -58,31 +35,13 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     if (formData.heroStyle === 'image') {
       const imageUrl = heroImage || getBusinessImage(formData.businessType);
       return {
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.3)), url(${imageUrl})`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url(${imageUrl})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
       };
-    } else if (formData.heroStyle === 'glass') {
-      return {
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
-        backdropFilter: 'blur(25px)',
-        border: '1px solid rgba(255,255,255,0.2)'
-      };
-    } else if (formData.heroStyle === 'metal') {
-      return {
-        background: 'linear-gradient(145deg, #3a3a3a 0%, #2a2a2a 25%, #1a1a1a 50%, #2a2a2a 75%, #3a3a3a 100%)',
-        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.5)',
-        textShadow: '0 1px 2px rgba(0,0,0,0.8)'
-      };
-    } else {
-      return {
-        background: gradientBackgrounds[currentGradient],
-        backgroundSize: '400% 400%',
-        animation: 'gradientShift 8s ease infinite',
-        transition: 'background 2s ease-in-out'
-      };
     }
+    return {};
   };
 
   const renderCTAButton = () => {
@@ -92,14 +51,16 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <LiquidButton 
           size="xxl" 
-          className="text-lg px-10 py-5 rounded-2xl floating-animation enhanced-button"
+          className="btn-primary text-lg px-12 py-6 rounded-2xl animate-fade-in-up"
           style={{ 
             backgroundColor: currentColors.primary,
             color: 'white',
             fontSize: '18px',
-            fontWeight: '600'
+            fontWeight: '600',
+            animationDelay: '0.6s'
           }}
         >
+          <ArrowLeft className="w-5 h-5 ml-2" />
           {buttonText}
         </LiquidButton>
       );
@@ -107,34 +68,35 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <MetalButton 
           variant="primary"
-          className="text-lg px-10 py-5 floating-animation enhanced-button"
-          style={{ fontSize: '18px', fontWeight: '600' }}
+          className="btn-primary text-lg px-12 py-6 animate-fade-in-up"
+          style={{ fontSize: '18px', fontWeight: '600', animationDelay: '0.6s' }}
         >
+          <ArrowLeft className="w-5 h-5 ml-2" />
           {buttonText}
         </MetalButton>
       );
     }
 
     return (
-      <Button 
-        size="lg" 
-        className="text-lg px-10 py-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 floating-animation tech-glow enhanced-button"
+      <button 
+        className="btn-primary text-lg px-12 py-6 rounded-2xl animate-fade-in-up inline-flex items-center gap-3"
         style={{ 
           backgroundColor: currentColors.primary,
-          color: 'white',
+          animationDelay: '0.6s',
           fontSize: '18px',
           fontWeight: '600'
         }}
       >
+        <ArrowLeft className="w-5 h-5" />
         {buttonText}
-      </Button>
+      </button>
     );
   };
 
   // Geometric Hero Style
   if (formData.heroStyle === 'geometric') {
     return (
-      <div className="geometric-hero">
+      <div className="hero-tech min-h-screen">
         <HeroGeometric
           badge={formData.businessType}
           title1={content?.headline || formData.businessName}
@@ -144,37 +106,99 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     );
   }
 
-  // Standard hero with enhanced styling
+  const getHeroBackgroundClass = () => {
+    switch (formData.heroStyle) {
+      case 'glass':
+        return 'hero-tech';
+      case 'metal':
+        return 'hero-tech';
+      case 'image':
+        return '';
+      default:
+        return 'hero-gradient';
+    }
+  };
+
+  // Main hero design
   return (
     <section 
-      className={`min-h-screen flex items-center justify-center px-6 relative overflow-hidden ${
-        formData.heroStyle === 'metal' ? 'metal-texture' : 
-        formData.heroStyle === 'glass' ? 'glass-morphism' : 'matrix-bg'
-      }`}
+      className={`min-h-screen flex items-center justify-center relative overflow-hidden ${getHeroBackgroundClass()}`}
       style={getHeroStyle()}
     >
-      {/* Glass overlay for glass style */}
+      {/* Background Effects */}
       {formData.heroStyle === 'glass' && (
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-purple-500/20 to-pink-500/20" />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20" />
       )}
 
-      <div className="container mx-auto text-center z-10 relative max-w-6xl">
-        <h1 className={`text-5xl md:text-8xl font-bold mb-8 leading-tight ${
-          formData.heroStyle === 'metal' ? 'metal-text' :
-          formData.heroStyle === 'glass' ? 'glass-text' : 'tech-title'
-        }`}>
+      {/* Main Content */}
+      <div className="container mx-auto px-6 text-center z-10 relative max-w-7xl">
+        {/* Trust Indicators */}
+        <div className="flex items-center justify-center gap-6 mb-8 animate-fade-in-up">
+          <div className="flex items-center gap-2 glass-card px-4 py-2">
+            <Star className="w-4 h-4 text-yellow-400 fill-current" />
+            <span className="text-sm font-medium text-white">דירוג 5 כוכבים</span>
+          </div>
+          <div className="flex items-center gap-2 glass-card px-4 py-2">
+            <CheckCircle className="w-4 h-4 text-green-400" />
+            <span className="text-sm font-medium text-white">מומחה מוסמך</span>
+          </div>
+          <div className="flex items-center gap-2 glass-card px-4 py-2">
+            <Zap className="w-4 h-4 text-blue-400" />
+            <span className="text-sm font-medium text-white">תוצאות מיידיות</span>
+          </div>
+        </div>
+
+        {/* Main Headline */}
+        <h1 className="typography-display text-6xl md:text-8xl font-black mb-8 leading-tight animate-fade-in-up text-white"
+            style={{ animationDelay: '0.2s' }}>
           {content?.headline || formData.businessName}
         </h1>
-        <div 
-          className={`text-xl md:text-3xl mb-12 max-w-5xl mx-auto leading-relaxed ${
-            formData.heroStyle === 'glass' ? 'glass-subtitle' : 'tech-glow'
-          }`}
-          style={{ color: currentColors.subheadlineColor }}
-        >
+
+        {/* Subheadline */}
+        <div className="typography-body text-xl md:text-3xl mb-12 max-w-5xl mx-auto leading-relaxed animate-fade-in-up glass-card-dark p-8 rounded-3xl"
+             style={{ 
+               color: currentColors.subheadlineColor,
+               animationDelay: '0.4s'
+             }}>
           {content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
         </div>
-        <div className="mt-8">
+
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
           {renderCTAButton()}
+          
+          <button className="btn-secondary text-lg px-8 py-4 rounded-2xl animate-fade-in-up inline-flex items-center gap-3"
+                  style={{ animationDelay: '0.7s' }}>
+            <Play className="w-5 h-5" />
+            צפה בדוגמה
+          </button>
+        </div>
+
+        {/* Stats */}
+        <div className="stats-grid max-w-4xl mx-auto animate-scale-in" style={{ animationDelay: '0.8s' }}>
+          <div className="stat-item">
+            <div className="stat-number">500+</div>
+            <div className="text-gray-300 font-medium">לקוחות מרוצים</div>
+          </div>
+          <div className="stat-item">
+            <div className="stat-number">98%</div>
+            <div className="text-gray-300 font-medium">שביעות רצון</div>
+          </div>
+          <div className="stat-item">
+            <div className="stat-number">10+</div>
+            <div className="text-gray-300 font-medium">שנות ניסיון</div>
+          </div>
+          <div className="stat-item">
+            <div className="stat-number">24/7</div>
+            <div className="text-gray-300 font-medium">זמינות</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-float">
+        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-white/50 rounded-full mt-2 animate-pulse"></div>
         </div>
       </div>
     </section>
