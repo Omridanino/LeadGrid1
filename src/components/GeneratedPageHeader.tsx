@@ -1,14 +1,13 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, RotateCcw, Eye } from "lucide-react";
+import { ArrowRight, Eye } from "lucide-react";
 
 interface GeneratedPageHeaderProps {
   onNavigateBack: () => void;
-  onRegenerate: () => void;
   onDownloadCode: () => void;
 }
 
-const GeneratedPageHeader = ({ onNavigateBack, onRegenerate, onDownloadCode }: GeneratedPageHeaderProps) => {
+const GeneratedPageHeader = ({ onNavigateBack, onDownloadCode }: GeneratedPageHeaderProps) => {
   return (
     <header className="sticky top-0 z-40 bg-gray-900 border-b border-gray-700 px-4 py-3">
       <div className="flex items-center justify-between">
@@ -24,14 +23,6 @@ const GeneratedPageHeader = ({ onNavigateBack, onRegenerate, onDownloadCode }: G
         </div>
 
         <div className="flex items-center gap-3">
-          <Button
-            onClick={onRegenerate}
-            className="bg-purple-600 hover:bg-purple-700"
-          >
-            <RotateCcw className="w-4 h-4 ml-2" />
-            יצירה מחדש
-          </Button>
-
           <Button
             onClick={onDownloadCode}
             className="bg-green-600 hover:bg-green-700"

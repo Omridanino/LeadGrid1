@@ -1,7 +1,7 @@
 
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Sparkles, Heart, Zap } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 interface DesignStyleStepProps {
   formData: {
@@ -12,51 +12,26 @@ interface DesignStyleStepProps {
 }
 
 export const DesignStyleStep = ({ formData, updateFormData }: DesignStyleStepProps) => {
-  const getStyleDescription = (style: string) => {
-    switch (style) {
-      case '3d':
-        return "חוויה ויזואלית מרשימה, דינמית וסוחפת. שימוש באלמנטים תלת-ממדיים (מודלים, צללים, עומק). אנימציות חלקות בזמן גלילה. מתאים למותגים חדשניים, טכנולוגיים או יוקרתיים.";
-      case 'storytelling':
-        return "מכוון לרגש, לסיפור האישי וליצירת חיבור אנושי. פתיח עם סיפור: איך הכל התחיל, למה אתה עושה את זה. תמונות אישיות / לקוחות אמיתיים / המלצות מצולמות. שפה בגובה העיניים, הדגשת ערכים כמו אמון, יחס אישי, שקיפות. מתאים ליועצים, מטפלים, נותני שירותים שרוצים 'לחבק' את הגולש.";
-      case 'minimal':
-        return "יעיל, חד, טכני – הכל בפרונט, בלי חפירות. מבנה של סקשנים קצרים: פתרונות – יתרונות – מחירים – שאלות נפוצות. שפה תכל'סית עם אייקונים, מספרים, והדגשת יתרונות תחרותיים. מתאים לשירותים דיגיטליים, אפליקציות, סטארטאפים.";
-      default:
-        return "";
-    }
-  };
+  // Set 3D as default if not already set
+  if (!formData.designStyle) {
+    updateFormData('designStyle', '3d');
+  }
 
   return (
     <div className="space-y-6">
       <div>
-        <Label htmlFor="designStyle" className="text-white font-semibold">איזה סגנון עיצוב מתאים לכם? *</Label>
-        <Select onValueChange={(value) => updateFormData('designStyle', value)} value={formData.designStyle}>
-          <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
-            <SelectValue placeholder="בחר סגנון עיצוב" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="3d">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4" />
-                סגנון תלת מימדי (3D)
-              </div>
-            </SelectItem>
-            <SelectItem value="storytelling">
-              <div className="flex items-center gap-2">
-                <Heart className="w-4 h-4" />
-                סגנון אישי-רגשי (Storytelling & Trust)
-              </div>
-            </SelectItem>
-            <SelectItem value="minimal">
-              <div className="flex items-center gap-2">
-                <Zap className="w-4 h-4" />
-                סגנון מהיר וחד (One-Pager Tech / SaaS)
-              </div>
-            </SelectItem>
-          </SelectContent>
-        </Select>
-        <p className="text-sm text-gray-400 mt-2">
-          {getStyleDescription(formData.designStyle)}
-        </p>
+        <Label htmlFor="designStyle" className="text-white font-semibold">סגנון העיצוב שלנו *</Label>
+        <div className="mt-3 p-4 bg-gray-700 border border-gray-600 rounded-lg">
+          <div className="flex items-center gap-3 mb-3">
+            <Sparkles className="w-6 h-6 text-purple-400" />
+            <h3 className="text-lg font-semibold text-white">סגנון תלת מימדי (3D)</h3>
+          </div>
+          <p className="text-gray-300 leading-relaxed">
+            חוויה ויזואלית מרשימה, דינמית וסוחפת עם אלמנטים תלת-ממדיים מתקדמים. 
+            כולל מודלים מרחפים, צללים עמוקים, אנימציות חלקות ואפקטים אינטראקטיביים שיוצרים חוויית משתמש בלתי נשכחת. 
+            מתאים למותגים חדשניים, טכנולוגיים או יוקרתיים שרוצים להרשים ולהיזכר.
+          </p>
+        </div>
       </div>
 
       <div>
@@ -69,21 +44,21 @@ export const DesignStyleStep = ({ formData, updateFormData }: DesignStyleStepPro
             <SelectItem value="gradient">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
-                רקע יפה עם משפטים (ללא תמונה)
+                רקע תלת מימדי עם משפטים (ללא תמונה)
               </div>
             </SelectItem>
             <SelectItem value="image">
               <div className="flex items-center gap-2">
-                <Heart className="w-4 h-4" />
-                תמונה עם משפטים על גביה
+                <Sparkles className="w-4 h-4" />
+                תמונה עם אפקטים תלת מימדיים
               </div>
             </SelectItem>
           </SelectContent>
         </Select>
         <p className="text-sm text-gray-400 mt-2">
           {formData.heroStyle === 'gradient' 
-            ? "הדף יוצג עם רקע בצבעי הדרגה יפים ללא תמונות"
-            : "הדף יוצג עם תמונה רלוונטית לעסק שלכם ברקע"
+            ? "הדף יוצג עם רקע תלת מימדי מרהיב עם אפקטי תאורה ואנימציות"
+            : "הדף יוצג עם תמונה רלוונטית עם שכבות תלת מימדיות ואפקטים חזותיים"
           }
         </p>
       </div>

@@ -21,7 +21,7 @@ export const initialFormData: FormData = {
   keyFeatures: "",
   contactInfo: "",
   heroStyle: "gradient",
-  designStyle: "3d",
+  designStyle: "3d", // Default to 3D
   selectedElements: []
 };
 
