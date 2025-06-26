@@ -27,7 +27,7 @@ const GeneratedLandingPage = () => {
 
   // Convert PageElement[] to string[] for elements prop
   const elementsAsStrings = state.elements?.map(element => 
-    typeof element === 'string' ? element : element.type || element.name || ''
+    typeof element === 'string' ? element : element.type || ''
   ).filter(Boolean) || [];
 
   return (
