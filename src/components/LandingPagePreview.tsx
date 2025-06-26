@@ -1,4 +1,10 @@
 import { ColorScheme } from "./ColorEditor";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+import { Send, Phone, Mail, MapPin } from "lucide-react";
 
 interface LandingPagePreviewProps {
   content: any;
@@ -9,6 +15,14 @@ interface LandingPagePreviewProps {
 }
 
 const LandingPagePreview = ({ content, currentColors, formData, heroImage, elements = [] }: LandingPagePreviewProps) => {
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
+  const { toast } = useToast();
+
   if (!content) {
     return (
       <div className="w-full h-96 bg-gray-900 rounded-lg flex items-center justify-center">
@@ -18,6 +32,39 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   }
 
   const finalHeroImage = formData.heroStyle === 'image' && heroImage ? heroImage : null;
+
+  const handleContactSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!contactForm.name || !contactForm.email || !contactForm.message) {
+      toast({
+        title: "שגיאה",
+        description: "אנא מלא את כל השדות הנדרשים",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Simulate form submission
+    toast({
+      title: "ההודעה נשלחה בהצלחה! 📧",
+      description: "נחזור אליך בהקדם האפשרי",
+    });
+
+    // Reset form
+    setContactForm({ name: '', email: '', phone: '', message: '' });
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setContactForm(prev => ({ ...prev, [field]: value }));
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <div className="w-full bg-black text-white overflow-hidden rounded-lg" dir="rtl">
@@ -180,106 +227,50 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         }
 
         .glassmorphism-card {
-          background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.05));
-          border: 2px solid ${currentColors.primary}50;
-          backdrop-filter: blur(25px);
-          box-shadow: 
-            0 25px 80px rgba(0,0,0,0.4), 
-            inset 0 3px 0 rgba(255,255,255,0.25),
-            0 0 0 1px rgba(255,255,255,0.1);
-          transform: perspective(1000px) rotateX(8deg) rotateY(3deg);
-          transition: all 0.8s cubic-bezier(0.23, 1, 0.320, 1);
-          animation: cardFloat 4s ease-in-out infinite;
-        }
-
-        @keyframes cardFloat {
-          0%, 100% { transform: perspective(1000px) rotateX(8deg) rotateY(3deg) translateY(0px); }
-          50% { transform: perspective(1000px) rotateX(8deg) rotateY(3deg) translateY(-8px); }
+          background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+          border: 1px solid rgba(255,255,255,0.2);
+          backdrop-filter: blur(15px);
+          box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+          transition: all 0.3s ease;
         }
 
         .glassmorphism-card:hover {
-          transform: perspective(1000px) rotateX(8deg) rotateY(3deg) scale(1.08) translateY(-15px);
-          box-shadow: 
-            0 35px 100px rgba(0,0,0,0.5), 
-            inset 0 3px 0 rgba(255,255,255,0.35),
-            0 0 40px ${currentColors.primary}40;
+          transform: translateY(-5px);
+          box-shadow: 0 12px 40px rgba(0,0,0,0.4);
         }
 
-        .badge {
-          background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.1));
-          border: 2px solid rgba(255,255,255,0.3);
-          backdrop-filter: blur(10px);
-          transform: perspective(300px) rotateX(10deg);
-          animation: badgeFloat 3s ease-in-out infinite;
+        .advantage-card {
+          background: linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+          border: 1px solid rgba(255,255,255,0.2);
+          backdrop-filter: blur(20px);
+          border-radius: 24px;
+          padding: 2rem;
+          text-align: center;
+          transition: all 0.3s ease;
         }
 
-        @keyframes badgeFloat {
-          0%, 100% { transform: perspective(300px) rotateX(10deg) translateY(0); }
-          50% { transform: perspective(300px) rotateX(10deg) translateY(-5px); }
-        }
-
-        .icon-container {
-          background: linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary}, ${currentColors.accent});
-          box-shadow: 
-            0 15px 30px ${currentColors.primary}60, 
-            inset 0 2px 0 rgba(255,255,255,0.4);
-          transform: perspective(400px) rotateX(20deg) rotateY(10deg);
-          transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
-          animation: iconFloat 2s ease-in-out infinite;
-        }
-
-        @keyframes iconFloat {
-          0%, 100% { transform: perspective(400px) rotateX(20deg) rotateY(10deg) translateY(0); }
-          50% { transform: perspective(400px) rotateX(20deg) rotateY(10deg) translateY(-8px); }
-        }
-
-        .icon-container:hover {
-          transform: perspective(400px) rotateX(20deg) rotateY(10deg) scale(1.2) rotate(8deg) translateY(-10px);
-          box-shadow: 
-            0 20px 40px ${currentColors.primary}70, 
-            inset 0 2px 0 rgba(255,255,255,0.5),
-            0 0 25px ${currentColors.accent}50;
+        .advantage-card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+          border-color: ${currentColors.primary}50;
         }
 
         .cta-button {
-          background: linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary}, ${currentColors.secondary});
-          box-shadow: 
-            0 15px 40px ${currentColors.accent}60,
-            0 0 20px ${currentColors.primary}40;
-          transform: perspective(400px) rotateX(6deg);
-          transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
-          animation: buttonGlow 2s ease-in-out infinite;
+          background: linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary});
+          box-shadow: 0 8px 25px ${currentColors.accent}40;
+          transition: all 0.3s ease;
         }
 
         .cta-button:hover {
-          transform: perspective(400px) rotateX(6deg) scale(1.1) translateY(-3px);
-          box-shadow: 
-            0 20px 50px ${currentColors.accent}70,
-            0 0 30px ${currentColors.primary}50;
+          transform: translateY(-2px);
+          box-shadow: 0 12px 35px ${currentColors.accent}60;
         }
 
-        @keyframes buttonGlow {
-          0%, 100% { box-shadow: 0 15px 40px ${currentColors.accent}60, 0 0 20px ${currentColors.primary}40; }
-          50% { box-shadow: 0 18px 45px ${currentColors.accent}70, 0 0 25px ${currentColors.primary}50; }
-        }
-
-        .stat-card {
-          background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.1));
-          backdrop-filter: blur(15px);
-          border: 2px solid ${currentColors.primary}40;
-          transform: perspective(500px) rotateX(8deg) rotateY(3deg);
-          transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
-          animation: statFloat 3s ease-in-out infinite;
-        }
-
-        @keyframes statFloat {
-          0%, 100% { transform: perspective(500px) rotateX(8deg) rotateY(3deg) translateY(0); }
-          50% { transform: perspective(500px) rotateX(8deg) rotateY(3deg) translateY(-8px); }
-        }
-
-        .stat-card:hover {
-          transform: perspective(500px) rotateX(8deg) rotateY(3deg) scale(1.1) translateY(-10px);
-          box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+        .contact-form {
+          background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+          border: 1px solid rgba(255,255,255,0.2);
+          backdrop-filter: blur(20px);
+          border-radius: 24px;
         }
       `}</style>
 
@@ -305,17 +296,14 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         <div className="glassmorphism-bg absolute inset-0 opacity-8"></div>
 
         <div className="relative z-10 max-w-4xl mx-auto">
-          <span className="badge inline-block px-6 py-3 mb-6 text-white rounded-full font-semibold text-sm">
+          <span className="inline-block px-6 py-3 mb-6 text-white rounded-full font-semibold text-sm glassmorphism-card">
             {content.badge}
           </span>
           
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-shadow-lg"
+          <h1 className="text-4xl md:text-5xl font-bold mb-6"
               style={{ 
                 color: currentColors.headlineColor || 'white',
-                background: `linear-gradient(135deg, ${currentColors.headlineColor || 'white'}, ${currentColors.primary})`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
+                textShadow: '0 4px 8px rgba(0,0,0,0.3)'
               }}>
             {content.headline}
           </h1>
@@ -325,18 +313,64 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             {content.subheadline}
           </p>
           
-          <a href="#contact" className="cta-button inline-block px-8 py-4 text-white font-bold rounded-lg text-lg transition-all duration-300">
+          <button 
+            onClick={() => scrollToSection('contact')}
+            className="cta-button inline-block px-8 py-4 text-white font-bold rounded-lg text-lg"
+          >
             {content.cta}
-          </a>
+          </button>
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-3xl mx-auto">
             {Object.entries(content.stats).map(([key, value]) => (
-              <div key={key} className="stat-card p-4 rounded-xl text-center">
+              <div key={key} className="glassmorphism-card p-4 rounded-xl text-center">
                 <div className="text-2xl md:text-3xl font-bold text-white mb-1">{String(value)}</div>
                 <div className="text-sm text-white opacity-80">{key}</div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Advantages Section - Based on uploaded image */}
+      <section className="relative py-16 px-8">
+        <div className="relative z-10 max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12" style={{ color: currentColors.text }}>
+            💎 יתרון מובהק
+          </h2>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="advantage-card">
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                   style={{ background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary})` }}>
+                <span className="text-2xl">🎧</span>
+              </div>
+              <h3 className="text-lg font-bold mb-3 text-white">תמיכה 24/7 לכל שאלה</h3>
+            </div>
+
+            <div className="advantage-card">
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                   style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
+                <span className="text-2xl">🏆</span>
+              </div>
+              <h3 className="text-lg font-bold mb-3 text-white">ניסיון רב שנים בתחום</h3>
+            </div>
+
+            <div className="advantage-card">
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                   style={{ background: `linear-gradient(135deg, ${currentColors.secondary}, ${currentColors.accent})` }}>
+                <span className="text-2xl">⭐</span>
+              </div>
+              <h3 className="text-lg font-bold mb-3 text-white">שירות מקצועי ואמין</h3>
+            </div>
+
+            <div className="advantage-card">
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                   style={{ background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.secondary})` }}>
+                <span className="text-2xl">🏠</span>
+              </div>
+              <h3 className="text-lg font-bold mb-3 text-white">מחירים הוגנים ושקופים</h3>
+            </div>
           </div>
         </div>
       </section>
@@ -357,7 +391,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             ].map((feature, idx) => (
               <div key={idx} className="text-center">
                 <div className="glassmorphism-card p-6 rounded-2xl">
-                  <div className="icon-container w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6">
+                  <div className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6"
+                       style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
                     <span className="text-2xl">{feature.icon}</span>
                   </div>
                   <h3 className="text-xl font-bold mb-4" style={{ color: currentColors.text }}>
@@ -369,6 +404,93 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Form Section - Based on uploaded image */}
+      <section id="contact" className="relative py-16 px-8">
+        <div className="glassmorphism-bg absolute inset-0 opacity-5"></div>
+        <div className="relative z-10 max-w-4xl mx-auto">
+          <div className="contact-form p-8 text-center">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                 style={{ background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary})` }}>
+              <span className="text-2xl">💬</span>
+            </div>
+            
+            <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: currentColors.text }}>
+              בואו נתחיל לעבוד יחד
+            </h2>
+            
+            <form onSubmit={handleContactSubmit} className="max-w-2xl mx-auto space-y-6">
+              <div className="grid md:grid-cols-2 gap-4">
+                <Input
+                  type="text"
+                  placeholder="שם מלא *"
+                  value={contactForm.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/60 backdrop-blur-sm"
+                  required
+                />
+                <Input
+                  type="email"
+                  placeholder="כתובת אימייל *"
+                  value={contactForm.email}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/60 backdrop-blur-sm"
+                  required
+                />
+              </div>
+              
+              <Input
+                type="tel"
+                placeholder="מספר טלפון"
+                value={contactForm.phone}
+                onChange={(e) => handleInputChange('phone', e.target.value)}
+                className="bg-white/10 border-white/20 text-white placeholder:text-white/60 backdrop-blur-sm"
+              />
+              
+              <Textarea
+                placeholder="איך נוכל לעזור לך? *"
+                rows={4}
+                value={contactForm.message}
+                onChange={(e) => handleInputChange('message', e.target.value)}
+                className="bg-white/10 border-white/20 text-white placeholder:text-white/60 backdrop-blur-sm"
+                required
+              />
+              
+              <Button 
+                type="submit"
+                className="w-full py-4 text-lg font-bold cta-button border-0"
+                style={{
+                  background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary})`,
+                }}
+              >
+                <Send className="w-5 h-5 ml-2" />
+                צור קשר
+              </Button>
+            </form>
+
+            {/* Contact Info */}
+            <div className="grid md:grid-cols-3 gap-6 mt-12">
+              <div className="glassmorphism-card p-4 rounded-xl text-center">
+                <Phone className="w-8 h-8 mx-auto mb-3" style={{ color: currentColors.accent }} />
+                <h4 className="font-bold text-white mb-1">טלפון</h4>
+                <p className="text-white/80 text-sm">050-1234567</p>
+              </div>
+              
+              <div className="glassmorphism-card p-4 rounded-xl text-center">
+                <Mail className="w-8 h-8 mx-auto mb-3" style={{ color: currentColors.accent }} />
+                <h4 className="font-bold text-white mb-1">אימייל</h4>
+                <p className="text-white/80 text-sm">info@business.co.il</p>
+              </div>
+              
+              <div className="glassmorphism-card p-4 rounded-xl text-center">
+                <MapPin className="w-8 h-8 mx-auto mb-3" style={{ color: currentColors.accent }} />
+                <h4 className="font-bold text-white mb-1">כתובת</h4>
+                <p className="text-white/80 text-sm">תל אביב, ישראל</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -388,7 +510,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             <div className="grid md:grid-cols-2 gap-6">
               {content.whyChooseUs.items.map((item: any, idx: number) => (
                 <div key={idx} className="glassmorphism-card p-6 rounded-2xl flex items-center text-right">
-                  <div className="icon-container w-12 h-12 rounded-lg flex items-center justify-center ml-4 flex-shrink-0">
+                  <div className="w-12 h-12 rounded-lg flex items-center justify-center ml-4 flex-shrink-0"
+                       style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
                     <span className="text-lg">🚀</span>
                   </div>
                   <div>
@@ -407,9 +530,12 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               <p className="text-xl mb-6" style={{ color: currentColors.text }}>
                 מוכנים להתחיל את המסע איתנו?
               </p>
-              <a href="#contact" className="cta-button inline-block px-8 py-4 text-white font-bold rounded-lg text-lg">
+              <button 
+                onClick={() => scrollToSection('contact')}
+                className="cta-button inline-block px-8 py-4 text-white font-bold rounded-lg text-lg"
+              >
                 בואו נתחיל עכשיו ✨
-              </a>
+              </button>
             </div>
           </div>
         </section>
@@ -432,7 +558,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               ].map((service, idx) => (
                 <div key={idx} className="text-center">
                   <div className="glassmorphism-card p-6 rounded-2xl">
-                    <div className="icon-container w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6">
+                    <div className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6"
+                         style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
                       <span className="text-2xl">{service.icon}</span>
                     </div>
                     <h3 className="text-xl font-bold mb-4" style={{ color: currentColors.text }}>
@@ -465,9 +592,12 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                  style={{ color: currentColors.aboutTextColor || currentColors.text }}>
                 {content.aboutText}
               </p>
-              <a href="#about" className="cta-button inline-block px-8 py-4 text-white font-bold rounded-lg text-lg">
+              <button 
+                onClick={() => scrollToSection('contact')}
+                className="cta-button inline-block px-8 py-4 text-white font-bold rounded-lg text-lg"
+              >
                 למד עוד עלינו
-              </a>
+              </button>
             </div>
           </div>
         </section>
@@ -538,25 +668,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           </div>
         </section>
       )}
-
-      {/* Contact Section */}
-      <section id="contact" className="relative py-16 px-8">
-        <div className="glassmorphism-bg absolute inset-0 opacity-5"></div>
-        <div className="relative z-10 max-w-4xl mx-auto text-center">
-          <div className="glassmorphism-card p-8 rounded-2xl">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: currentColors.text }}>
-              💬 {content.contactTitle}
-            </h2>
-            <div className="mb-8 whitespace-pre-line text-lg leading-relaxed"
-                 style={{ color: currentColors.contactTextColor || currentColors.text }}>
-              {formData.contactInfo}
-            </div>
-            <a href="#contact" className="cta-button inline-block px-8 py-4 text-white font-bold rounded-lg text-lg">
-              {content.cta}
-            </a>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
