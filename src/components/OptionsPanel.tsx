@@ -37,7 +37,7 @@ interface OptionsPanelProps {
   onWordPressIntegration: () => void;
   onAdvancedEdit: () => void;
   onSave: () => void;
-  generateHtmlFile: () => void;
+  generateHtmlFile: () => string;
   content: any;
   onContentChange: (newContent: any) => void;
   formData: any;
@@ -138,7 +138,10 @@ const OptionsPanel = ({
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        callback(e.target?.result as string);
+        const result = e.target?.result;
+        if (result && typeof result === 'string') {
+          callback(result);
+        }
       };
       reader.readAsDataURL(file);
     }
