@@ -20,6 +20,7 @@ const defaultFormData = {
   brandColors: "כחול וכסף",
   contactInfo: "טלפון: 050-1234567\nאימייל: info@business.co.il",
   heroStyle: "gradient",
+  navigationStyle: "traditional",
   selectedElements: [] as string[]
 };
 

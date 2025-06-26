@@ -1,10 +1,12 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Phone, Mail, MapPin, Star, CheckCircle2, Users, Target, Image, Award, Zap, Cpu, Network, Rocket } from "lucide-react";
+import { Phone, Mail, MapPin, Star, CheckCircle2, Users, Target, Image, Award, Zap, Cpu, Network, Rocket, Home, User, Briefcase, MessageSquare } from "lucide-react";
 import { ColorScheme } from "@/components/ColorEditor";
+import { HeroGeometric } from "@/components/ui/shape-landing-hero";
+import { LiquidButton, MetalButton } from "@/components/ui/liquid-glass-button";
+import { Dock, DockIcon, DockItem, DockLabel } from "@/components/ui/dock";
 
 interface LandingPagePreviewProps {
   content: any;
@@ -104,6 +106,116 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     }
   };
 
+  const renderHeroSection = () => {
+    if (formData.heroStyle === 'geometric') {
+      return (
+        <HeroGeometric
+          badge={formData.businessType}
+          title1={content?.headline || formData.businessName}
+          title2={content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
+        />
+      );
+    }
+
+    // Traditional hero section for other styles
+    return (
+      <section 
+        className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden matrix-bg"
+        style={getHeroStyle()}
+      >
+        <div className="container mx-auto text-center z-10 relative">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight tech-title">
+            {content?.headline || formData.businessName}
+          </h1>
+          <p 
+            className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto leading-relaxed tech-glow"
+            style={{ color: currentColors.subheadlineColor }}
+          >
+            {content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
+          </p>
+          {renderCTAButton()}
+        </div>
+      </section>
+    );
+  };
+
+  const renderCTAButton = () => {
+    const buttonText = content?.cta || 'בואו נתחיל לעבוד יחד';
+    
+    if (formData.heroStyle === 'glass') {
+      return (
+        <LiquidButton 
+          size="xxl" 
+          className="text-lg px-8 py-4 rounded-2xl floating-animation"
+          style={{ 
+            backgroundColor: currentColors.primary,
+            color: 'white'
+          }}
+        >
+          {buttonText}
+        </LiquidButton>
+      );
+    } else if (formData.heroStyle === 'metal') {
+      return (
+        <MetalButton 
+          variant="primary"
+          className="text-lg px-8 py-4 floating-animation"
+        >
+          {buttonText}
+        </MetalButton>
+      );
+    }
+
+    return (
+      <Button 
+        size="lg" 
+        className="text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 floating-animation tech-glow"
+        style={{ 
+          backgroundColor: currentColors.primary,
+          color: 'white'
+        }}
+      >
+        {buttonText}
+      </Button>
+    );
+  };
+
+  const renderNavigation = () => {
+    if (formData.navigationStyle === 'dock') {
+      return (
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
+          <Dock>
+            <DockItem>
+              <DockIcon>
+                <Home className="w-6 h-6" />
+              </DockIcon>
+              <DockLabel>בית</DockLabel>
+            </DockItem>
+            <DockItem>
+              <DockIcon>
+                <User className="w-6 h-6" />
+              </DockIcon>
+              <DockLabel>אודות</DockLabel>
+            </DockItem>
+            <DockItem>
+              <DockIcon>
+                <Briefcase className="w-6 h-6" />
+              </DockIcon>
+              <DockLabel>שירותים</DockLabel>
+            </DockItem>
+            <DockItem>
+              <DockIcon>
+                <MessageSquare className="w-6 h-6" />
+              </DockIcon>
+              <DockLabel>צור קשר</DockLabel>
+            </DockItem>
+          </Dock>
+        </div>
+      );
+    }
+    return null;
+  };
+
   const selectedElements = formData?.selectedElements || [];
 
   return (
@@ -167,32 +279,10 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       `}</style>
 
       {/* Hero Section */}
-      <section 
-        className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden matrix-bg"
-        style={getHeroStyle()}
-      >
-        <div className="container mx-auto text-center z-10 relative">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight tech-title">
-            {content?.headline || formData.businessName}
-          </h1>
-          <p 
-            className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto leading-relaxed tech-glow"
-            style={{ color: currentColors.subheadlineColor }}
-          >
-            {content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
-          </p>
-          <Button 
-            size="lg" 
-            className="text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 floating-animation tech-glow"
-            style={{ 
-              backgroundColor: currentColors.primary,
-              color: 'white'
-            }}
-          >
-            {content?.cta || 'בואו נתחיל לעבוד יחד'}
-          </Button>
-        </div>
-      </section>
+      {renderHeroSection()}
+
+      {/* Navigation */}
+      {renderNavigation()}
 
       {/* Emotional Section */}
       {content?.sections?.emotionalSection && (

@@ -1,7 +1,7 @@
 
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Palette, Image as ImageIcon, Zap } from "lucide-react";
+import { Palette, Image as ImageIcon, Zap, Sparkles, Layers, Gem } from "lucide-react";
 
 interface HeroStyleStepProps {
   formData: {
@@ -32,6 +32,24 @@ export const HeroStyleStep = ({ formData, updateFormData }: HeroStyleStepProps) 
                 רקע חי ומונפש
               </div>
             </SelectItem>
+            <SelectItem value="geometric">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4" />
+                עיצוב גיאומטרי מתקדם
+              </div>
+            </SelectItem>
+            <SelectItem value="glass">
+              <div className="flex items-center gap-2">
+                <Layers className="w-4 h-4" />
+                אפקט זכוכית נוזלית
+              </div>
+            </SelectItem>
+            <SelectItem value="metal">
+              <div className="flex items-center gap-2">
+                <Gem className="w-4 h-4" />
+                עיצוב מתכתי יוקרתי
+              </div>
+            </SelectItem>
             <SelectItem value="image">
               <div className="flex items-center gap-2">
                 <ImageIcon className="w-4 h-4" />
@@ -43,6 +61,9 @@ export const HeroStyleStep = ({ formData, updateFormData }: HeroStyleStepProps) 
         <p className="text-sm text-gray-400 mt-2">
           {formData.heroStyle === 'gradient' && "הדף יוצג עם רקע בצבעי דרגה יפים ומשתנים"}
           {formData.heroStyle === 'animated' && "הדף יוצג עם רקע מונפש וצבעוני שמשתנה כל הזמן"}
+          {formData.heroStyle === 'geometric' && "הדף יוצג עם צורות גיאומטריות מרחפות ואפקטי תאורה מתקדמים"}
+          {formData.heroStyle === 'glass' && "הדף יוצג עם אפקטי זכוכית נוזלית וכפתורים מתקדמים"}
+          {formData.heroStyle === 'metal' && "הדף יוצג עם עיצוב מתכתי יוקרתי וכפתורים תלת מימדיים"}
           {formData.heroStyle === 'image' && "הדף יוצג עם תמונה רלוונטית לעסק שלכם ברקע"}
         </p>
       </div>

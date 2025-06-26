@@ -9,6 +9,7 @@ export interface FormData {
   contactInfo: string;
   heroStyle: string;
   designStyle: string;
+  navigationStyle: string;
   selectedElements: string[];
 }
 
@@ -22,6 +23,7 @@ export const initialFormData: FormData = {
   contactInfo: "",
   heroStyle: "gradient",
   designStyle: "3d", // Default to 3D
+  navigationStyle: "traditional", // Default to traditional
   selectedElements: []
 };
 
