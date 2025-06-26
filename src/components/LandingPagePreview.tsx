@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Phone, Mail, MapPin, Star, CheckCircle2, Users, Target, Image, Award } from "lucide-react";
+import { Phone, Mail, MapPin, Star, CheckCircle2, Users, Target, Image, Award, Zap, Cpu, Network, Rocket } from "lucide-react";
 import { ColorScheme } from "@/components/ColorEditor";
 
 interface LandingPagePreviewProps {
@@ -18,7 +18,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   const [currentGradient, setCurrentGradient] = useState(0);
   const [currentAnimation, setCurrentAnimation] = useState(0);
 
-  // Gradient backgrounds for gradient style
+  // Enhanced gradient backgrounds
   const gradientBackgrounds = [
     'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
@@ -32,7 +32,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     'linear-gradient(135deg, #fad0c4 0%, #ffd1ff 100%)'
   ];
 
-  // Animated backgrounds for animated style
+  // Enhanced animated backgrounds with more sophisticated effects
   const animatedBackgrounds = [
     'radial-gradient(circle at 20% 80%, #120078 0%, #9d0208 50%, #f48c06 100%)',
     'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
@@ -44,7 +44,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     'conic-gradient(from 90deg, #ef4444, #f97316, #eab308, #22c55e, #06b6d4, #8b5cf6, #ef4444)'
   ];
 
-  // Business type to image mapping
   const getBusinessImage = (businessType: string) => {
     const businessImages = {
       'עורך דין': 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1920&h=1080&fit=crop',
@@ -62,7 +61,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     return businessImages[businessType as keyof typeof businessImages] || businessImages.default;
   };
 
-  // Cycle through gradients for gradient style
+  // Cycle through gradients
   useEffect(() => {
     if (formData.heroStyle === 'gradient') {
       const interval = setInterval(() => {
@@ -72,7 +71,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     }
   }, [formData.heroStyle]);
 
-  // Cycle through animations for animated style
+  // Cycle through animations
   useEffect(() => {
     if (formData.heroStyle === 'animated') {
       const interval = setInterval(() => {
@@ -105,9 +104,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     }
   };
 
-  // קבלת האלמנטים שנבחרו בשאלון
   const selectedElements = formData?.selectedElements || [];
-  console.log('Selected elements:', selectedElements);
 
   return (
     <div className="w-full bg-gray-900 text-white overflow-y-auto max-h-screen">
@@ -124,6 +121,14 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-20px); }
         }
+        .tech-glow {
+          box-shadow: 0 0 30px rgba(59, 130, 246, 0.3), 0 0 60px rgba(59, 130, 246, 0.1);
+          animation: pulse-glow 3s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+          0%, 100% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.3), 0 0 60px rgba(59, 130, 246, 0.1); }
+          50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.5), 0 0 80px rgba(59, 130, 246, 0.2); }
+        }
       `}</style>
 
       {/* Hero Section */}
@@ -134,7 +139,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         <div className="container mx-auto text-center z-10 relative">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
             <span 
-              className="block"
+              className="block tech-glow"
               style={{ color: currentColors.headlineColor }}
             >
               {content?.headline || formData.businessName}
@@ -148,7 +153,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           </p>
           <Button 
             size="lg" 
-            className="text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 floating-animation"
+            className="text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 floating-animation tech-glow"
             style={{ 
               backgroundColor: currentColors.primary,
               color: 'white'
@@ -180,11 +185,11 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             <h2 className="text-4xl font-bold mb-12 text-center" style={{ color: currentColors.featuresColor }}>
               {content.sections.whyUs.title}
             </h2>
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {content.sections.whyUs.reasons?.map((reason: any, index: number) => (
-                <Card key={index} className="bg-gray-800/50 border-gray-700 hover:bg-gray-700/50 transition-all duration-300 transform hover:scale-105">
+                <Card key={index} className="bg-gray-800/50 border-gray-700 hover:bg-gray-700/50 transition-all duration-300 transform hover:scale-105 tech-glow">
                   <CardContent className="p-6 text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ backgroundColor: currentColors.primary }}>
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center tech-glow" style={{ backgroundColor: currentColors.primary }}>
                       <Award className="w-8 h-8 text-white" />
                     </div>
                     <h3 className="text-xl font-semibold mb-3" style={{ color: currentColors.featuresColor }}>
@@ -210,7 +215,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {content.sections.whatWeGive.services?.map((service: any, index: number) => (
-                <Card key={index} className="bg-gray-800/50 border-gray-700 hover:bg-gray-700/50 transition-all duration-300">
+                <Card key={index} className="bg-gray-800/50 border-gray-700 hover:bg-gray-700/50 transition-all duration-300 tech-glow">
                   <CardContent className="p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <CheckCircle2 className="w-6 h-6" style={{ color: currentColors.primary }} />
@@ -229,7 +234,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         </section>
       )}
 
-      {/* Gallery Section - מוצג רק אם נבחר */}
+      {/* Gallery Section */}
       {selectedElements.includes('gallery') && (
         <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
           <div className="container mx-auto">
@@ -238,46 +243,56 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               {content?.sections?.gallery?.title || 'גלריית העבודות שלנו'}
             </h2>
             <div className="grid md:grid-cols-3 gap-6">
-              {[1, 2, 3, 4, 5, 6].map((item) => {
-                const galleryImage = content?.sections?.gallery?.images?.[item - 1];
-                return (
-                  <div key={item} className="relative group overflow-hidden rounded-lg aspect-square">
-                    <img 
-                      src={galleryImage?.url || `https://images.unsplash.com/photo-150000000${item}?w=400&h=400&fit=crop`}
-                      alt={galleryImage?.description || `עבודה ${item}`}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <p className="text-white font-semibold">{galleryImage?.description || `עבודה ${item}`}</p>
-                    </div>
+              {content?.sections?.gallery?.images?.filter((img: any) => img?.url).map((galleryImage: any, index: number) => (
+                <div key={index} className="relative group overflow-hidden rounded-lg aspect-square tech-glow">
+                  <img 
+                    src={galleryImage.url}
+                    alt={galleryImage.description || `עבודה ${index + 1}`}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <p className="text-white font-semibold">{galleryImage.description || `עבודה ${index + 1}`}</p>
                   </div>
-                );
-              })}
+                </div>
+              )) || (
+                <div className="col-span-3 text-center py-12">
+                  <Image className="w-16 h-16 mx-auto mb-4 text-gray-500" />
+                  <p className="text-gray-400">עדיין לא הועלו תמונות לגלריה</p>
+                </div>
+              )}
             </div>
           </div>
         </section>
       )}
 
-      {/* Process Section - מוצג רק אם נבחר */}
+      {/* Enhanced Process Section */}
       {selectedElements.includes('process') && (
         <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
           <div className="container mx-auto">
             <h2 className="text-4xl font-bold mb-12 text-center" style={{ color: currentColors.featuresColor }}>
-              <Target className="w-8 h-8 inline-block mr-3" />
-              תהליך העבודה שלנו
+              <Cpu className="w-8 h-8 inline-block mr-3" />
+              תהליך העבודה הטכנולוגי שלנו
             </h2>
             <div className="grid md:grid-cols-4 gap-8">
               {[
-                { step: 1, title: "יעוץ ראשוני", desc: "פגישה ללא התחייבות להבנת הצרכים" },
-                { step: 2, title: "תכנון מפורט", desc: "הכנת תוכנית עבודה מותאמת אישית" },
-                { step: 3, title: "ביצוע מקצועי", desc: "יישום הפרויקט על פי הסטנדרטים הגבוהים" },
-                { step: 4, title: "מעקב ותמיכה", desc: "ליווי מתמשך וזמינות לשאלות" }
+                { step: 1, title: "ניתוח חכם", desc: "ניתוח מתקדם של הצרכים באמצעות AI", icon: <Zap className="w-8 h-8" /> },
+                { step: 2, title: "תכנון דיגיטלי", desc: "עיצוב מתקדם באמצעות כלים טכנולוגיים", icon: <Cpu className="w-8 h-8" /> },
+                { step: 3, title: "פיתוח חכם", desc: "יישום מתקדם עם טכנולוגיות חדישות", icon: <Network className="w-8 h-8" /> },
+                { step: 4, title: "השקה חדשנית", desc: "הטמעה חכמה ומעקב בזמן אמת", icon: <Rocket className="w-8 h-8" /> }
               ].map((process, index) => (
-                <Card key={index} className="bg-gray-800/50 border-gray-700 text-center">
+                <Card key={index} className="bg-gray-800/50 border-gray-700 text-center tech-glow">
                   <CardContent className="p-6">
                     <div 
-                      className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center text-2xl font-bold text-white"
+                      className="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center tech-glow"
                       style={{ backgroundColor: currentColors.primary }}
+                    >
+                      <div className="text-white">
+                        {process.icon}
+                      </div>
+                    </div>
+                    <div 
+                      className="text-3xl font-bold mb-2"
+                      style={{ color: currentColors.primary }}
                     >
                       {process.step}
                     </div>
@@ -295,7 +310,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         </section>
       )}
 
-      {/* About Section - מוצג רק אם נבחר */}
+      {/* About Section */}
       {selectedElements.includes('about') && (
         <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
           <div className="container mx-auto">
@@ -316,7 +331,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                 <img 
                   src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop"
                   alt="הצוות שלנו"
-                  className="rounded-lg shadow-lg"
+                  className="rounded-lg shadow-lg tech-glow"
                 />
               </div>
             </div>
@@ -333,7 +348,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
               {content.sections.testimonials.filter((t: any) => t.name && t.content).map((testimonial: any, index: number) => (
-                <Card key={index} className="bg-gray-800/50 border-gray-700">
+                <Card key={index} className="bg-gray-800/50 border-gray-700 tech-glow">
                   <CardContent className="p-6">
                     <div className="flex mb-4">
                       {[...Array(5)].map((_, i) => (
@@ -388,7 +403,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           </div>
           <Button 
             size="lg" 
-            className="mt-8 text-lg px-8 py-4 rounded-2xl"
+            className="mt-8 text-lg px-8 py-4 rounded-2xl tech-glow"
             style={{ 
               backgroundColor: currentColors.primary,
               color: 'white'

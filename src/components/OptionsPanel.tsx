@@ -7,6 +7,7 @@ import ColorEditor, { ColorScheme } from "./ColorEditor";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import WordPressGuide from "./WordPressGuide";
 import { 
   Palette, 
   Code, 
@@ -20,7 +21,10 @@ import {
   MessageSquare,
   Phone,
   Target,
-  Award
+  Award,
+  Upload,
+  X,
+  FileText
 } from "lucide-react";
 
 interface OptionsPanelProps {
@@ -61,6 +65,7 @@ const OptionsPanel = ({
   onHeroImageChange
 }: OptionsPanelProps) => {
   const [editingSection, setEditingSection] = useState<string | null>(null);
+  const [showWordPressModal, setShowWordPressModal] = useState(false);
 
   const updateContent = (section: string, field: string, value: any) => {
     const newContent = { ...content };
@@ -102,7 +107,67 @@ const OptionsPanel = ({
     onContentChange(newContent);
   };
 
+  const removeGalleryImage = (index: number) => {
+    const newContent = { ...content };
+    if (newContent.sections.gallery && newContent.sections.gallery.images) {
+      newContent.sections.gallery.images.splice(index, 1);
+      onContentChange(newContent);
+    }
+  };
+
+  const addGalleryImage = () => {
+    const newContent = { ...content };
+    if (!newContent.sections.gallery) {
+      newContent.sections.gallery = { title: "גלריית העבודות שלנו", images: [] };
+    }
+    newContent.sections.gallery.images.push({ url: '', description: '' });
+    onContentChange(newContent);
+  };
+
+  const updateAboutSection = (field: string, value: string) => {
+    const newContent = { ...content };
+    if (!newContent.sections.about) {
+      newContent.sections.about = {};
+    }
+    newContent.sections.about[field] = value;
+    onContentChange(newContent);
+  };
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>, callback: (url: string) => void) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        callback(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const selectedElements = formData?.selectedElements || [];
+
+  if (showWordPressGuide) {
+    return (
+      <Card className="w-full bg-gray-800 border-gray-700 text-white">
+        <CardHeader>
+          <CardTitle className="text-xl font-bold flex items-center gap-2">
+            <Globe className="w-5 h-5" />
+            מדריך WordPress מלא
+            <Button
+              onClick={() => setShowWordPressModal(false)}
+              className="mr-auto bg-red-600 hover:bg-red-700 p-2"
+              size="sm"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <WordPressGuide htmlCode={generateHtmlFile()} />
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="w-full bg-gray-800 border-gray-700 text-white">
@@ -145,6 +210,23 @@ const OptionsPanel = ({
                 onChange={(e) => onHeroImageChange(e.target.value)}
                 className="bg-gray-700 border-gray-600 text-white"
               />
+              <div className="flex gap-2">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageUpload(e, onHeroImageChange)}
+                  className="hidden"
+                  id="hero-upload"
+                />
+                <Button
+                  onClick={() => document.getElementById('hero-upload')?.click()}
+                  className="bg-blue-600 hover:bg-blue-700 text-xs"
+                  size="sm"
+                >
+                  <Upload className="w-3 h-3 mr-1" />
+                  העלה תמונה
+                </Button>
+              </div>
               <p className="text-xs text-gray-400">
                 רלוונטי רק כשנבחר "תמונת רקע" בסגנון ההירו
               </p>
@@ -185,69 +267,6 @@ const OptionsPanel = ({
               </div>
             </div>
 
-            {/* Emotional Section */}
-            {content?.sections?.emotionalSection && (
-              <div className="space-y-3">
-                <h3 className="font-semibold text-purple-400 flex items-center gap-2">
-                  <MessageSquare className="w-4 h-4" />
-                  פסקת רגש
-                </h3>
-                <div className="space-y-2">
-                  <Label>כותרת</Label>
-                  <Input
-                    value={content.sections.emotionalSection.title || ''}
-                    onChange={(e) => updateContent('emotionalSection', 'title', e.target.value)}
-                    className="bg-gray-700 border-gray-600 text-white"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>תוכן</Label>
-                  <Textarea
-                    value={content.sections.emotionalSection.content || ''}
-                    onChange={(e) => updateContent('emotionalSection', 'content', e.target.value)}
-                    className="bg-gray-700 border-gray-600 text-white"
-                    rows={4}
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Why Us Section */}
-            {content?.sections?.whyUs && (
-              <div className="space-y-3">
-                <h3 className="font-semibold text-green-400 flex items-center gap-2">
-                  <Award className="w-4 h-4" />
-                  למה לבחור בנו
-                </h3>
-                <div className="space-y-2">
-                  <Label>כותרת ראשית</Label>
-                  <Input
-                    value={content.sections.whyUs.title || ''}
-                    onChange={(e) => updateContent('whyUs', 'title', e.target.value)}
-                    className="bg-gray-700 border-gray-600 text-white"
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* What We Give Section */}
-            {content?.sections?.whatWeGive && (
-              <div className="space-y-3">
-                <h3 className="font-semibold text-blue-400 flex items-center gap-2">
-                  <Target className="w-4 h-4" />
-                  מה אנחנו נותנים
-                </h3>
-                <div className="space-y-2">
-                  <Label>כותרת ראשית</Label>
-                  <Input
-                    value={content.sections.whatWeGive.title || ''}
-                    onChange={(e) => updateContent('whatWeGive', 'title', e.target.value)}
-                    className="bg-gray-700 border-gray-600 text-white"
-                  />
-                </div>
-              </div>
-            )}
-
             {/* Gallery Section Editing */}
             {selectedElements.includes('gallery') && (
               <div className="space-y-3">
@@ -264,24 +283,122 @@ const OptionsPanel = ({
                   />
                 </div>
                 <div className="space-y-3">
-                  <Label>תמונות (עד 6)</Label>
-                  {[0, 1, 2, 3, 4, 5].map((index) => (
+                  <div className="flex justify-between items-center">
+                    <Label>תמונות</Label>
+                    <Button
+                      onClick={addGalleryImage}
+                      className="bg-green-600 hover:bg-green-700 text-xs"
+                      size="sm"
+                    >
+                      <Upload className="w-3 h-3 mr-1" />
+                      הוסף תמונה
+                    </Button>
+                  </div>
+                  {content?.sections?.gallery?.images?.map((image: any, index: number) => (
                     <div key={index} className="border border-gray-600 rounded-lg p-3 space-y-2">
-                      <Label>תמונה {index + 1}</Label>
+                      <div className="flex justify-between items-center">
+                        <Label>תמונה {index + 1}</Label>
+                        <Button
+                          onClick={() => removeGalleryImage(index)}
+                          className="bg-red-600 hover:bg-red-700 p-1"
+                          size="sm"
+                        >
+                          <X className="w-3 h-3" />
+                        </Button>
+                      </div>
                       <Input
                         placeholder="קישור לתמונה"
-                        value={content?.sections?.gallery?.images?.[index]?.url || ''}
+                        value={image.url || ''}
                         onChange={(e) => updateGalleryImage(index, 'url', e.target.value)}
                         className="bg-gray-700 border-gray-600 text-white"
                       />
+                      <div className="flex gap-2">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleImageUpload(e, (url) => updateGalleryImage(index, 'url', url))}
+                          className="hidden"
+                          id={`gallery-upload-${index}`}
+                        />
+                        <Button
+                          onClick={() => document.getElementById(`gallery-upload-${index}`)?.click()}
+                          className="bg-blue-600 hover:bg-blue-700 text-xs"
+                          size="sm"
+                        >
+                          <Upload className="w-3 h-3 mr-1" />
+                          העלה
+                        </Button>
+                      </div>
                       <Input
                         placeholder="תיאור התמונה"
-                        value={content?.sections?.gallery?.images?.[index]?.description || ''}
+                        value={image.description || ''}
                         onChange={(e) => updateGalleryImage(index, 'description', e.target.value)}
                         className="bg-gray-700 border-gray-600 text-white"
                       />
                     </div>
-                  ))}
+                  )) || []}
+                </div>
+              </div>
+            )}
+
+            {/* About Section Editing */}
+            {selectedElements.includes('about') && (
+              <div className="space-y-3">
+                <h3 className="font-semibold text-purple-400 flex items-center gap-2">
+                  <Users className="w-4 h-4" />
+                  עריכת "קצת עלינו"
+                </h3>
+                <div className="space-y-2">
+                  <Label>כותרת</Label>
+                  <Input
+                    value={content?.sections?.about?.title || 'קצת עלינו'}
+                    onChange={(e) => updateAboutSection('title', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>פסקה ראשונה</Label>
+                  <Textarea
+                    value={content?.sections?.about?.paragraph1 || 'אנחנו צוות מקצועי עם ניסיון של מעל 10 שנים בתחום.'}
+                    onChange={(e) => updateAboutSection('paragraph1', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                    rows={3}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>פסקה שנייה</Label>
+                  <Textarea
+                    value={content?.sections?.about?.paragraph2 || 'המטרה שלנו היא לספק שירות ברמה הגבוהה ביותר.'}
+                    onChange={(e) => updateAboutSection('paragraph2', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                    rows={3}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>תמונת הצוות</Label>
+                  <Input
+                    placeholder="קישור לתמונה"
+                    value={content?.sections?.about?.image || ''}
+                    onChange={(e) => updateAboutSection('image', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                  />
+                  <div className="flex gap-2">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageUpload(e, (url) => updateAboutSection('image', url))}
+                      className="hidden"
+                      id="about-upload"
+                    />
+                    <Button
+                      onClick={() => document.getElementById('about-upload')?.click()}
+                      className="bg-blue-600 hover:bg-blue-700 text-xs"
+                      size="sm"
+                    >
+                      <Upload className="w-3 h-3 mr-1" />
+                      העלה תמונה
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}
@@ -322,12 +439,12 @@ const OptionsPanel = ({
             <div className="space-y-3">
               <h3 className="font-semibold text-red-400 flex items-center gap-2">
                 <Phone className="w-4 h-4" />
-                בואו נתחיל לעבוד יחד
+                יצירת קשר
               </h3>
               <div className="space-y-2">
                 <Label>כותרת יצירת קשר</Label>
                 <Input
-                  value={content?.contactTitle || content?.sections?.contactTitle || ''}
+                  value={content?.contactTitle || ''}
                   onChange={(e) => updateContent('root', 'contactTitle', e.target.value)}
                   className="bg-gray-700 border-gray-600 text-white"
                 />
@@ -338,7 +455,6 @@ const OptionsPanel = ({
           <TabsContent value="elements" className="space-y-4">
             <h3 className="font-semibold text-white">אלמנטים נבחרים</h3>
             
-            {/* Gallery Element */}
             {selectedElements.includes('gallery') && (
               <div className="border border-gray-600 rounded-lg p-4 space-y-3">
                 <h4 className="font-medium text-blue-400 flex items-center gap-2">
@@ -351,20 +467,18 @@ const OptionsPanel = ({
               </div>
             )}
 
-            {/* Process Element */}
             {selectedElements.includes('process') && (
               <div className="border border-gray-600 rounded-lg p-4 space-y-3">
                 <h4 className="font-medium text-green-400 flex items-center gap-2">
                   <Target className="w-4 h-4" />
-                  תהליך השירות
+                  תהליך השירות הטכנולוגי
                 </h4>
                 <p className="text-sm text-gray-400">
-                  ✅ תהליך השירות מוצג בדף עם 4 שלבים
+                  ✅ תהליך השירות מוצג בדף עם עיצוב טכנולוגי מתקדם
                 </p>
               </div>
             )}
 
-            {/* About Element */}
             {selectedElements.includes('about') && (
               <div className="border border-gray-600 rounded-lg p-4 space-y-3">
                 <h4 className="font-medium text-purple-400 flex items-center gap-2">
@@ -372,7 +486,7 @@ const OptionsPanel = ({
                   קצת עלינו
                 </h4>
                 <p className="text-sm text-gray-400">
-                  ✅ סקשן "קצת עלינו" מוצג בדף עם תמונה וטקסט
+                  ✅ סקשן "קצת עלינו" מוצג בדף - ניתן לערוך בלשונית התוכן
                 </p>
               </div>
             )}
@@ -395,7 +509,18 @@ const OptionsPanel = ({
               </Button>
               
               <Button
-                onClick={generateHtmlFile}
+                onClick={() => {
+                  const htmlContent = generateHtmlFile();
+                  const blob = new Blob([htmlContent], { type: 'text/html' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `${formData.businessName?.replace(/\s+/g, '_') || 'landing_page'}.html`;
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                  URL.revokeObjectURL(url);
+                }}
                 className="w-full bg-blue-600 hover:bg-blue-700"
               >
                 <Download className="w-4 h-4 mr-2" />
@@ -403,11 +528,11 @@ const OptionsPanel = ({
               </Button>
               
               <Button
-                onClick={onWordPressIntegration}
+                onClick={() => setShowWordPressModal(true)}
                 className="w-full bg-green-600 hover:bg-green-700"
               >
                 <Globe className="w-4 h-4 mr-2" />
-                ייצוא ל-WordPress
+                מדריך WordPress מלא
               </Button>
               
               <Button
@@ -418,8 +543,37 @@ const OptionsPanel = ({
                 עריכה מתקדמת
               </Button>
             </div>
+
+            <div className="bg-blue-900/30 p-4 rounded-lg border border-blue-600/30">
+              <h4 className="text-white font-semibold mb-2 flex items-center gap-2">
+                <FileText className="w-4 h-4" />
+                מידע חשוב:
+              </h4>
+              <ul className="text-sm text-gray-300 space-y-1">
+                <li>• קובץ ה-HTML כולל את כל הקוד הדרוש</li>
+                <li>• המדריך כולל הסברים מפורטים על WordPress</li>
+                <li>• הסבר על אלמנטור ואחסון</li>
+                <li>• הוראות ליצירת משתמש חדש</li>
+              </ul>
+            </div>
           </TabsContent>
         </Tabs>
+
+        {showWordPressModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+              <WordPressGuide htmlCode={generateHtmlFile()} />
+              <div className="p-4 border-t border-gray-700">
+                <Button
+                  onClick={() => setShowWordPressModal(false)}
+                  className="w-full bg-red-600 hover:bg-red-700"
+                >
+                  סגור
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
