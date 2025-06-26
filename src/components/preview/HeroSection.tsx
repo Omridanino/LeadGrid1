@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/components/ColorEditor";
@@ -36,8 +35,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     
     if (formData.heroStyle === 'glass') {
       return (
-        <button className={`btn-base btn-glass animate-slide-up ${isPrimary ? 'animate-delay-3' : 'animate-delay-4'}`}>
-          <ArrowLeft className="w-5 h-5" />
+        <button className={`btn-base btn-liquid-glass animate-slide-up ${isPrimary ? 'animate-delay-3' : 'animate-delay-4'}`}>
+          <img src="https://cdn.iconscout.com/3d-pack/left-arrow/thumb-400-2.png" alt="arrow" style={{width: '20px', height: '20px'}} />
           {buttonText}
         </button>
       );
@@ -64,6 +63,112 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       </button>
     );
   };
+
+  // COMPLETELY REDESIGNED LIQUID GLASS HERO - Fluid and Dynamic
+  if (formData.heroStyle === 'glass') {
+    return (
+      <section className="liquid-glass-hero section-hero">
+        <div className="liquid-background">
+          <div className="liquid-orb liquid-orb-hero-1"></div>
+          <div className="liquid-orb liquid-orb-hero-2"></div>
+          <div className="liquid-orb liquid-orb-hero-3"></div>
+          <div className="liquid-orb liquid-orb-hero-4"></div>
+        </div>
+        
+        <div className="liquid-waves">
+          <div className="liquid-wave liquid-wave-1"></div>
+          <div className="liquid-wave liquid-wave-2"></div>
+          <div className="liquid-wave liquid-wave-3"></div>
+        </div>
+        
+        <div className="container-hero relative z-10">
+          <div className="liquid-hero-grid">
+            <div className="liquid-content-flow">
+              {/* Floating Status Badge */}
+              <div className="liquid-status-orb animate-slide-up">
+                <div className="liquid-pulse"></div>
+                <img src="https://cdn.iconscout.com/3d-pack/online/thumb-400-2.png" alt="online" style={{width: '20px', height: '20px'}} />
+                <span className="typography-liquid text-white font-semibold">זמין עכשיו</span>
+              </div>
+
+              {/* Liquid Hero Title */}
+              <h1 className="typography-liquid text-7xl md:text-9xl mb-8 animate-slide-up animate-delay-1 liquid-title-glow">
+                {content?.headline || formData.businessName}
+              </h1>
+
+              {/* Flowing Subtitle Container */}
+              <div className="liquid-subtitle-flow mb-12 animate-slide-up animate-delay-2">
+                <div className="liquid-text-orb">
+                  <p className="typography-liquid text-xl md:text-2xl text-white leading-relaxed liquid-text-glow">
+                    {content?.subheadline || `חוויה נוזלית ייחודית ל${formData.targetAudience}`}
+                  </p>
+                </div>
+              </div>
+
+              {/* Liquid Action Buttons */}
+              <div className="liquid-actions-flow mb-16">
+                {renderCTAButton(true)}
+                {renderCTAButton(false)}
+              </div>
+
+              {/* Floating Features Orbs */}
+              <div className="liquid-features-constellation animate-scale-in animate-delay-4">
+                {[
+                  { icon: 'https://cdn.iconscout.com/3d-pack/lightning/thumb-400-2.png', title: 'מהירות נוזלית' },
+                  { icon: 'https://cdn.iconscout.com/3d-pack/shield/thumb-400-2.png', title: 'אמינות זורמת' },
+                  { icon: 'https://cdn.iconscout.com/3d-pack/infinity/thumb-400-2.png', title: 'זמינות תמידית' }
+                ].map((feature, index) => (
+                  <div key={index} className="liquid-feature-orb">
+                    <div className="liquid-feature-glow">
+                      <img src={feature.icon} alt={feature.title} style={{width: '24px', height: '24px'}} />
+                    </div>
+                    <span className="typography-liquid text-white text-sm font-medium liquid-text-glow">
+                      {feature.title}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Liquid Visual Showcase */}
+            <div className="liquid-visual-flow animate-scale-in animate-delay-3">
+              <div className="liquid-showcase-orb">
+                <div className="liquid-showcase-rings">
+                  <div className="liquid-ring liquid-ring-1"></div>
+                  <div className="liquid-ring liquid-ring-2"></div>
+                  <div className="liquid-ring liquid-ring-3"></div>
+                </div>
+                <div className="liquid-center-orb">
+                  <img src="https://cdn.iconscout.com/3d-pack/atom/thumb-400-2.png" alt="core" style={{width: '80px', height: '80px'}} />
+                </div>
+              </div>
+              
+              {/* Floating Stats Bubbles */}
+              <div className="liquid-stats-bubbles">
+                {[
+                  { number: '500+', label: 'זרימות מוצלחות', position: 'top-left' },
+                  { number: '99%', label: 'שביעות רצון', position: 'top-right' },
+                  { number: '24/7', label: 'זרימה רציפה', position: 'bottom-left' },
+                  { number: '10+', label: 'שנות זרימה', position: 'bottom-right' }
+                ].map((stat, index) => (
+                  <div key={index} className={`liquid-stat-bubble liquid-bubble-${stat.position}`}>
+                    <div className="liquid-stat-glow">
+                      <div className="typography-liquid text-2xl font-bold text-white liquid-text-glow">
+                        {stat.number}
+                      </div>
+                      <div className="typography-liquid text-xs text-blue-200">
+                        {stat.label}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   // Geometric Hero Style - Enhanced
   if (formData.heroStyle === 'geometric') {
@@ -122,66 +227,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   <div className="typography-body text-gray-300 text-sm">
                     {stat.label}
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  // Glass Morphism Style - Enhanced
-  if (formData.heroStyle === 'glass') {
-    return (
-      <section className="hero-3d section-hero">
-        <div className="floating-element"></div>
-        <div className="floating-element"></div>
-        <div className="floating-element"></div>
-        
-        <div className="container-hero relative z-10">
-          <div className="text-center">
-            {/* Premium Badge */}
-            <div className="inline-flex items-center gap-2 glass-intense px-6 py-3 rounded-full mb-8 animate-slide-up">
-              <Award className="w-5 h-5 text-blue-400" />
-              <span className="typography-body text-white font-medium">מספר 1 בתחום</span>
-            </div>
-
-            {/* Hero Title */}
-            <h1 className="typography-hero text-7xl md:text-9xl mb-8 animate-slide-up animate-delay-1">
-              {content?.headline || formData.businessName}
-            </h1>
-
-            {/* Subtitle */}
-            <div className="glass-card p-8 max-w-5xl mx-auto mb-12 animate-slide-up animate-delay-2">
-              <p className="typography-body text-xl md:text-2xl text-white leading-relaxed">
-                {content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
-              </p>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
-              {renderCTAButton(true)}
-              {renderCTAButton(false)}
-            </div>
-
-            {/* Feature Highlights */}
-            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto animate-scale-in animate-delay-4">
-              {[
-                { icon: <Zap className="w-6 h-6" />, title: 'תוצאות מיידיות', desc: 'פתרונות מהירים ויעילים' },
-                { icon: <Shield className="w-6 h-6" />, title: 'אמינות מוחלטת', desc: 'ביטחון ואמינות ברמה הגבוהה' },
-                { icon: <Clock className="w-6 h-6" />, title: 'זמינות 24/7', desc: 'תמיכה מלאה בכל עת' }
-              ].map((feature, index) => (
-                <div key={index} className="glass-card p-6 text-center">
-                  <div className="icon-glass mx-auto mb-4 text-blue-400">
-                    {feature.icon}
-                  </div>
-                  <h3 className="typography-modern text-lg font-semibold text-white mb-2">
-                    {feature.title}
-                  </h3>
-                  <p className="typography-body text-gray-300 text-sm">
-                    {feature.desc}
-                  </p>
                 </div>
               ))}
             </div>
