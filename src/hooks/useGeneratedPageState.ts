@@ -4,6 +4,13 @@ import { useLocation } from "react-router-dom";
 import { ColorScheme } from "@/components/ColorEditor";
 import { useContentGeneration } from "@/hooks/useContentGeneration";
 
+interface PageElement {
+  id: string;
+  type: 'title' | 'text' | 'image' | 'testimonial' | 'faq' | 'blog' | 'whychoose';
+  content: any;
+  order: number;
+}
+
 const defaultFormData = {
   businessName: "העסק שלי",
   businessType: "שירותים עסקיים",
@@ -42,6 +49,7 @@ export const useGeneratedPageState = () => {
   const [heroImage, setHeroImage] = useState<string>('');
   const [currentColors, setCurrentColors] = useState<ColorScheme>(defaultColors);
   const [formData, setFormData] = useState(location.state?.formData || defaultFormData);
+  const [elements, setElements] = useState<PageElement[]>([]);
 
   const { generatedContent, setGeneratedContent, generateCreativeContent } = useContentGeneration(formData);
 
@@ -57,7 +65,7 @@ export const useGeneratedPageState = () => {
   // Track changes for save status
   useEffect(() => {
     setIsSaved(false);
-  }, [generatedContent, currentColors, formData, heroImage]);
+  }, [generatedContent, currentColors, formData, heroImage, elements]);
 
   return {
     showSidePanel,
@@ -79,6 +87,8 @@ export const useGeneratedPageState = () => {
     content,
     generatedContent,
     setGeneratedContent,
-    generateCreativeContent
+    generateCreativeContent,
+    elements,
+    setElements
   };
 };

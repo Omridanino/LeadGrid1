@@ -36,17 +36,52 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       case 'title':
         const TitleTag = element.content.size as keyof JSX.IntrinsicElements;
         return (
-          <div key={element.id} className="p-8" style={{ backgroundColor: currentColors.background }}>
+          <div key={element.id} className="p-8 relative" style={{ backgroundColor: currentColors.background }}>
+            {/* 3D Background Effects */}
+            <div className="absolute inset-0 opacity-5">
+              <div 
+                className="absolute top-10 left-10 w-20 h-20 rounded-full animate-pulse"
+                style={{ 
+                  background: `radial-gradient(circle, ${currentColors.primary}, transparent)`,
+                  transform: 'perspective(500px) rotateX(30deg) rotateY(30deg)'
+                }}
+              ></div>
+              <div 
+                className="absolute bottom-10 right-10 w-16 h-16 rounded-full animate-pulse"
+                style={{ 
+                  background: `radial-gradient(circle, ${currentColors.accent}, transparent)`,
+                  animationDelay: '1s',
+                  transform: 'perspective(500px) rotateX(-30deg) rotateY(-30deg)'
+                }}
+              ></div>
+            </div>
+            
             <TitleTag 
-              className="text-center font-bold flex items-center justify-center gap-3"
+              className="text-center font-bold flex items-center justify-center gap-4 relative z-10"
               style={{ 
                 color: currentColors.text,
                 fontSize: element.content.size === 'h1' ? '3rem' : 
-                         element.content.size === 'h2' ? '2.5rem' : '2rem'
+                         element.content.size === 'h2' ? '2.5rem' : '2rem',
+                textShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                transform: 'perspective(1000px) rotateX(5deg)'
               }}
             >
               {element.content.icon && (
-                <i className={`ri-${element.content.icon} text-3xl`} style={{ color: currentColors.accent }}></i>
+                <div 
+                  className="animate-bounce"
+                  style={{
+                    transform: 'perspective(300px) rotateY(15deg)',
+                    filter: `drop-shadow(0 8px 16px ${currentColors.accent}40)`
+                  }}
+                >
+                  <i 
+                    className={`ri-${element.content.icon} text-4xl`} 
+                    style={{ 
+                      color: currentColors.accent,
+                      textShadow: `0 0 20px ${currentColors.accent}80`
+                    }}
+                  ></i>
+                </div>
               )}
               {element.content.text}
             </TitleTag>
@@ -55,14 +90,44 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
 
       case 'text':
         return (
-          <div key={element.id} className="p-8" style={{ backgroundColor: currentColors.background }}>
-            <div className="max-w-4xl mx-auto">
+          <div key={element.id} className="p-8 relative" style={{ backgroundColor: currentColors.background }}>
+            {/* 3D Background */}
+            <div className="absolute inset-0 opacity-5">
+              <div 
+                className="absolute top-1/2 left-1/4 w-24 h-24 rounded-full animate-pulse"
+                style={{ 
+                  background: `conic-gradient(from 0deg, ${currentColors.primary}, ${currentColors.secondary}, ${currentColors.primary})`,
+                  transform: 'perspective(500px) rotateX(45deg) rotateZ(45deg)',
+                  animationDelay: '0.5s'
+                }}
+              ></div>
+            </div>
+            
+            <div className="max-w-4xl mx-auto relative z-10">
               <p 
-                className="text-lg leading-relaxed text-center flex items-center justify-center gap-3"
-                style={{ color: currentColors.text }}
+                className="text-lg leading-relaxed text-center flex items-center justify-center gap-4"
+                style={{ 
+                  color: currentColors.text,
+                  textShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                  transform: 'perspective(800px) rotateX(2deg)'
+                }}
               >
                 {element.content.icon && (
-                  <i className={`ri-${element.content.icon} text-2xl`} style={{ color: currentColors.primary }}></i>
+                  <div 
+                    className="hover:scale-110 transition-transform duration-300"
+                    style={{
+                      transform: 'perspective(200px) rotateY(10deg)',
+                      filter: `drop-shadow(0 4px 8px ${currentColors.primary}40)`
+                    }}
+                  >
+                    <i 
+                      className={`ri-${element.content.icon} text-3xl`} 
+                      style={{ 
+                        color: currentColors.primary,
+                        textShadow: `0 0 15px ${currentColors.primary}60`
+                      }}
+                    ></i>
+                  </div>
                 )}
                 {element.content.text}
               </p>
@@ -75,18 +140,22 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           <div key={element.id} className="p-8" style={{ backgroundColor: currentColors.background }}>
             <div className="max-w-4xl mx-auto text-center">
               {element.content.url && (
-                <>
+                <div className="relative">
                   <img 
                     src={element.content.url} 
                     alt={element.content.alt} 
-                    className="w-full max-w-2xl mx-auto rounded-xl shadow-lg"
+                    className="w-full max-w-2xl mx-auto rounded-xl shadow-2xl hover:scale-105 transition-transform duration-300"
+                    style={{
+                      transform: 'perspective(1000px) rotateY(2deg)',
+                      filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.3))'
+                    }}
                   />
                   {element.content.caption && (
                     <p className="mt-4 text-sm opacity-80" style={{ color: currentColors.text }}>
                       {element.content.caption}
                     </p>
                   )}
-                </>
+                </div>
               )}
             </div>
           </div>
@@ -95,29 +164,36 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       case 'whychoose':
         return (
           <div key={element.id} className="p-12 relative overflow-hidden" style={{ backgroundColor: currentColors.background }}>
-            {/* 3D Background Effects */}
+            {/* Advanced 3D Background Effects */}
             <div className="absolute inset-0 opacity-10">
+              {/* Floating Geometric Shapes */}
               <div 
-                className="absolute top-20 left-20 w-32 h-32 rounded-full animate-pulse"
+                className="absolute top-20 left-20 w-32 h-32 animate-pulse"
                 style={{ 
-                  background: `radial-gradient(circle, ${currentColors.primary}, transparent)`,
-                  transform: 'perspective(1000px) rotateX(45deg)'
+                  background: `conic-gradient(from 45deg, ${currentColors.primary}, ${currentColors.secondary}, ${currentColors.accent}, ${currentColors.primary})`,
+                  transform: 'perspective(1000px) rotateX(45deg) rotateY(45deg) rotateZ(15deg)',
+                  borderRadius: '20px',
+                  filter: 'blur(2px)'
                 }}
               ></div>
               <div 
-                className="absolute bottom-20 right-20 w-24 h-24 rounded-full animate-pulse"
+                className="absolute bottom-20 right-20 w-24 h-24 animate-pulse"
                 style={{ 
-                  background: `radial-gradient(circle, ${currentColors.secondary}, transparent)`,
-                  animationDelay: '0.3s',
-                  transform: 'perspective(1000px) rotateY(45deg)'
-                }}
-              ></div>
-              <div 
-                className="absolute top-1/2 left-1/2 w-40 h-40 rounded-full animate-pulse"
-                style={{ 
-                  background: `radial-gradient(circle, ${currentColors.accent}, transparent)`,
+                  background: `linear-gradient(135deg, ${currentColors.secondary}80, ${currentColors.accent}80)`,
                   animationDelay: '0.7s',
-                  transform: 'perspective(1000px) rotateZ(45deg)'
+                  transform: 'perspective(800px) rotateX(-30deg) rotateY(60deg)',
+                  borderRadius: '50%',
+                  filter: 'blur(1px)'
+                }}
+              ></div>
+              {/* Spinning Rings */}
+              <div 
+                className="absolute top-1/2 left-1/2 w-40 h-40 animate-spin"
+                style={{ 
+                  background: `conic-gradient(from 0deg, transparent, ${currentColors.primary}30, transparent)`,
+                  animationDuration: '20s',
+                  transform: 'perspective(1000px) rotateX(75deg) translate(-50%, -50%)',
+                  borderRadius: '50%'
                 }}
               ></div>
             </div>
@@ -127,10 +203,11 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                 className="text-4xl font-bold mb-4 text-center"
                 style={{ 
                   color: currentColors.text,
-                  textShadow: '0 4px 8px rgba(0,0,0,0.3)'
+                  textShadow: '0 8px 16px rgba(0,0,0,0.4)',
+                  transform: 'perspective(1000px) rotateX(10deg)'
                 }}
               >
-                <Award className="w-10 h-10 ml-3 inline" style={{ color: currentColors.accent }} />
+                <Award className="w-10 h-10 ml-3 inline animate-bounce" style={{ color: currentColors.accent }} />
                 {element.content.title}
               </h2>
               <p className="text-center text-lg mb-12 opacity-80" style={{ color: currentColors.text }}>
@@ -141,108 +218,148 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                 {element.content.items.map((item: any, index: number) => (
                   <div 
                     key={index}
-                    className="group relative p-8 rounded-3xl transition-all duration-500 hover:scale-105 cursor-pointer"
+                    className="group relative p-8 rounded-3xl transition-all duration-500 hover:scale-110 cursor-pointer"
                     style={{ 
                       background: `linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02))`,
-                      border: `1px solid ${currentColors.primary}30`,
-                      backdropFilter: 'blur(10px)',
-                      boxShadow: `0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1)`,
-                      transform: 'perspective(1000px) rotateX(0deg)'
+                      border: `2px solid ${currentColors.primary}30`,
+                      backdropFilter: 'blur(15px)',
+                      boxShadow: `0 20px 60px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)`,
+                      transform: 'perspective(1000px) rotateX(10deg) rotateY(5deg)'
                     }}
                   >
-                    {/* 3D Icon Container */}
+                    {/* Advanced 3D Icon Container */}
                     <div className="relative mb-6">
                       <div 
-                        className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-all duration-300 relative"
+                        className="w-24 h-24 rounded-3xl flex items-center justify-center mx-auto group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 relative"
                         style={{ 
-                          background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})`,
-                          boxShadow: `0 10px 25px ${currentColors.primary}40, inset 0 1px 0 rgba(255,255,255,0.2)`,
-                          transform: 'perspective(500px) rotateX(15deg)'
+                          background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary} 50%, ${currentColors.accent})`,
+                          boxShadow: `0 20px 40px ${currentColors.primary}50, inset 0 2px 0 rgba(255,255,255,0.3)`,
+                          transform: 'perspective(500px) rotateX(20deg) rotateY(10deg)'
                         }}
                       >
-                        {/* 3D Effect Shadow */}
+                        {/* Multiple Shadow Layers for 3D Effect */}
                         <div 
-                          className="absolute inset-0 rounded-2xl transform translate-y-1 -z-10"
+                          className="absolute inset-0 rounded-3xl transform translate-y-2 translate-x-1 -z-10"
                           style={{ 
-                            background: `linear-gradient(135deg, ${currentColors.primary}80, ${currentColors.secondary}80)`,
-                            filter: 'blur(4px)'
+                            background: `linear-gradient(135deg, ${currentColors.primary}60, ${currentColors.secondary}60)`,
+                            filter: 'blur(8px)'
+                          }}
+                        ></div>
+                        <div 
+                          className="absolute inset-0 rounded-3xl transform translate-y-4 translate-x-2 -z-20"
+                          style={{ 
+                            background: `linear-gradient(135deg, ${currentColors.primary}30, ${currentColors.secondary}30)`,
+                            filter: 'blur(16px)'
                           }}
                         ></div>
                         
-                        {/* Icon */}
+                        {/* 3D Icon */}
                         <i 
-                          className={`ri-${item.icon} text-3xl text-white group-hover:scale-110 transition-transform duration-300`}
-                          style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
+                          className={`ri-${item.icon} text-4xl text-white group-hover:scale-125 transition-all duration-500`}
+                          style={{ 
+                            textShadow: '0 4px 8px rgba(0,0,0,0.5)',
+                            transform: 'perspective(200px) rotateX(-10deg)'
+                          }}
                         ></i>
                         
-                        {/* Shine Effect */}
+                        {/* Holographic Shine Effect */}
                         <div 
-                          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                           style={{ 
-                            background: `linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%)`
+                            background: `linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%)`,
+                            animation: 'none'
                           }}
                         ></div>
                       </div>
 
                       {/* Floating Particles */}
-                      <div className="absolute -top-2 -right-2 w-3 h-3 rounded-full opacity-60 animate-pulse" 
-                           style={{ backgroundColor: currentColors.accent }}></div>
-                      <div className="absolute -bottom-1 -left-1 w-2 h-2 rounded-full opacity-40 animate-pulse" 
-                           style={{ backgroundColor: currentColors.secondary, animationDelay: '0.5s' }}></div>
+                      <div className="absolute -top-2 -right-2 w-4 h-4 rounded-full opacity-80 animate-pulse" 
+                           style={{ backgroundColor: currentColors.accent, boxShadow: `0 0 15px ${currentColors.accent}` }}></div>
+                      <div className="absolute -bottom-1 -left-1 w-3 h-3 rounded-full opacity-60 animate-pulse" 
+                           style={{ backgroundColor: currentColors.secondary, animationDelay: '0.5s', boxShadow: `0 0 10px ${currentColors.secondary}` }}></div>
+                      <div className="absolute top-1/2 -right-3 w-2 h-2 rounded-full opacity-40 animate-pulse" 
+                           style={{ backgroundColor: currentColors.primary, animationDelay: '1s', boxShadow: `0 0 8px ${currentColors.primary}` }}></div>
                     </div>
                     
-                    {/* Content */}
+                    {/* Content with 3D Text */}
                     <div className="text-center relative">
                       <p 
-                        className="text-lg leading-relaxed font-medium group-hover:text-opacity-90 transition-all duration-300"
+                        className="text-lg leading-relaxed font-semibold group-hover:text-opacity-100 transition-all duration-500"
                         style={{ 
                           color: currentColors.text,
-                          textShadow: '0 1px 2px rgba(0,0,0,0.1)'
+                          textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+                          transform: 'perspective(500px) rotateX(5deg)'
                         }}
                       >
                         {item.text}
                       </p>
                       
-                      {/* Hover Glow Effect */}
+                      {/* Dynamic Hover Glow */}
                       <div 
-                        className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 -z-10"
+                        className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-30 transition-opacity duration-700 -z-10"
                         style={{ 
-                          background: `radial-gradient(circle at center, ${currentColors.primary}, transparent 70%)`
+                          background: `radial-gradient(ellipse at center, ${currentColors.primary}40, ${currentColors.secondary}20, transparent 70%)`
                         }}
                       ></div>
                     </div>
 
-                    {/* Border Glow */}
+                    {/* Enhanced Border Glow */}
                     <div 
-                      className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-20"
+                      className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-all duration-500 -z-20"
                       style={{ 
-                        background: `linear-gradient(145deg, ${currentColors.primary}20, ${currentColors.secondary}20)`,
-                        filter: 'blur(1px)'
+                        background: `linear-gradient(145deg, ${currentColors.primary}30, ${currentColors.secondary}30, ${currentColors.accent}30)`,
+                        filter: 'blur(2px)',
+                        transform: 'scale(1.05)'
+                      }}
+                    ></div>
+
+                    {/* Pulsing Edge Light */}
+                    <div 
+                      className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-60 transition-opacity duration-300 animate-pulse -z-30"
+                      style={{ 
+                        boxShadow: `0 0 30px ${currentColors.accent}60, inset 0 0 20px ${currentColors.primary}30`
                       }}
                     ></div>
                   </div>
                 ))}
               </div>
 
-              {/* Bottom CTA */}
-              <div className="text-center mt-12">
-                <p className="text-lg mb-6 opacity-80" style={{ color: currentColors.text }}>
+              {/* Enhanced Bottom CTA */}
+              <div className="text-center mt-16">
+                <p className="text-xl mb-8 opacity-90" style={{ color: currentColors.text }}>
                   מוכנים להתחיל את המסע איתנו?
                 </p>
                 <Button 
                   size="lg"
-                  className="px-12 py-4 text-lg font-bold rounded-2xl hover:scale-105 transition-all duration-300 shadow-2xl"
+                  className="px-16 py-6 text-xl font-bold rounded-3xl hover:scale-110 transition-all duration-500 shadow-2xl relative overflow-hidden"
                   style={{ 
-                    background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary})`,
+                    background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary}, ${currentColors.secondary})`,
                     color: 'white',
-                    boxShadow: `0 10px 30px ${currentColors.accent}40`
+                    boxShadow: `0 15px 50px ${currentColors.accent}50`,
+                    transform: 'perspective(500px) rotateX(10deg)'
                   }}
                   onClick={handleCtaClick}
                 >
-                  בואו נתחיל עכשיו ✨
+                  <span className="relative z-10">בואו נתחיל עכשיו ✨</span>
+                  {/* Animated Background */}
+                  <div 
+                    className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300"
+                    style={{
+                      background: `linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%)`,
+                      animation: 'shimmer 2s infinite'
+                    }}
+                  ></div>
                 </Button>
               </div>
             </div>
+
+            {/* CSS Animation */}
+            <style jsx>{`
+              @keyframes shimmer {
+                0% { transform: translateX(-100%); }
+                100% { transform: translateX(100%); }
+              }
+            `}</style>
           </div>
         );
 
@@ -605,10 +722,13 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           </div>
         </div>
         
-        {/* Custom Elements */}
+        {/* Custom Elements - תיקון הצגת האלמנטים */}
         {elements && elements.length > 0 && (
           <div>
-            {elements.map((element) => renderPageElement(element))}
+            {elements
+              .sort((a, b) => a.order - b.order)
+              .map((element) => renderPageElement(element))
+            }
           </div>
         )}
 
