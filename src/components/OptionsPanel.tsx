@@ -149,6 +149,27 @@ const OptionsPanel = ({
 
   const selectedElements = formData?.selectedElements || [];
 
+  const handleDownloadHtml = () => {
+    try {
+      const htmlContent = generateHtmlFile();
+      const blob = new Blob([htmlContent], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${formData.businessName?.replace(/\s+/g, '_') || 'landing_page'}.html`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error generating HTML:', error);
+    }
+  };
+
+  const handleWordPressGuideOpen = () => {
+    setShowWordPressModal(true);
+  };
+
   if (showWordPressGuide) {
     return (
       <Card className="w-full bg-gray-800 border-gray-700 text-white">
@@ -512,18 +533,7 @@ const OptionsPanel = ({
               </Button>
               
               <Button
-                onClick={() => {
-                  const htmlContent = generateHtmlFile();
-                  const blob = new Blob([htmlContent], { type: 'text/html' });
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = `${formData.businessName?.replace(/\s+/g, '_') || 'landing_page'}.html`;
-                  document.body.appendChild(a);
-                  a.click();
-                  document.body.removeChild(a);
-                  URL.revokeObjectURL(url);
-                }}
+                onClick={handleDownloadHtml}
                 className="w-full bg-blue-600 hover:bg-blue-700"
               >
                 <Download className="w-4 h-4 mr-2" />
@@ -531,7 +541,7 @@ const OptionsPanel = ({
               </Button>
               
               <Button
-                onClick={() => setShowWordPressModal(true)}
+                onClick={handleWordPressGuideOpen}
                 className="w-full bg-green-600 hover:bg-green-700"
               >
                 <Globe className="w-4 h-4 mr-2" />

@@ -129,24 +129,54 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           0%, 100% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.3), 0 0 60px rgba(59, 130, 246, 0.1); }
           50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.5), 0 0 80px rgba(59, 130, 246, 0.2); }
         }
+        .tech-title {
+          background: linear-gradient(45deg, #00f5ff, #0066ff, #00ccff);
+          background-size: 200% 200%;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: tech-gradient 3s ease infinite;
+        }
+        @keyframes tech-gradient {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .matrix-bg {
+          position: relative;
+          overflow: hidden;
+        }
+        .matrix-bg::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-image: 
+            linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+            linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+          background-size: 50px 50px;
+          animation: matrix-move 20s linear infinite;
+          pointer-events: none;
+        }
+        @keyframes matrix-move {
+          0% { transform: translate(0, 0); }
+          100% { transform: translate(50px, 50px); }
+        }
       `}</style>
 
       {/* Hero Section */}
       <section 
-        className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden"
+        className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden matrix-bg"
         style={getHeroStyle()}
       >
         <div className="container mx-auto text-center z-10 relative">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-            <span 
-              className="block tech-glow"
-              style={{ color: currentColors.headlineColor }}
-            >
-              {content?.headline || formData.businessName}
-            </span>
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight tech-title">
+            {content?.headline || formData.businessName}
           </h1>
           <p 
-            className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto leading-relaxed"
+            className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto leading-relaxed tech-glow"
             style={{ color: currentColors.subheadlineColor }}
           >
             {content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
