@@ -898,7 +898,6 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
             </div>
           </section>
         )}
-      </div>
-    );
-  }
+    </div>
+  );
 };
