@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Send, Phone, Mail, MapPin, Edit2, Share2, Download, Palette, Type } from "lucide-react";
+import { Send, Phone, Mail, MapPin, Edit2 } from "lucide-react";
 
 interface LandingPagePreviewProps {
   content: any;
@@ -68,41 +68,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     }
   };
 
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: content.headline,
-          text: content.subheadline,
-          url: window.location.href,
-        });
-        toast({
-          title: "שותף בהצלחה! 🎉",
-          description: "הדף שותף בהצלחה",
-        });
-      } catch (err) {
-        console.log('Error sharing:', err);
-      }
-    } else {
-      // Fallback for browsers that don't support Web Share API
-      navigator.clipboard.writeText(window.location.href);
-      toast({
-        title: "הקישור הועתק! 📋",
-        description: "הקישור הועתק ללוח העתקות",
-      });
-    }
-  };
-
-  const handleExportPDF = () => {
-    window.print();
-    toast({
-      title: "מייצא ל-PDF... 📄",
-      description: "בחר 'שמור כ-PDF' בחלון ההדפסה",
-    });
-  };
-
-  // Dynamic tech background styles
-  const techBackgroundStyle = isTechy3D && content.techBackground ? {
+  // Dynamic tech background styles for hero
+  const techHeroBackgroundStyle = isTechy3D && content.techBackground ? {
     background: `${content.techBackground}, 
       radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
       radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
@@ -116,13 +83,16 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       className={`absolute top-2 right-2 bg-blue-600/80 hover:bg-blue-700/80 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all z-10 ${className}`}
       size="sm"
     >
-      {editingSection === section ? <Palette className="w-3 h-3" /> : <Edit2 className="w-3 h-3" />}
+      <Edit2 className="w-3 h-3" />
     </Button>
   );
 
   return (
     <div className="w-full text-white overflow-hidden rounded-lg" 
-         style={isTechy3D ? techBackgroundStyle : { background: 'linear-gradient(to-b, from-gray-900, via-black, to-gray-900)' }}
+         style={isTechy3D ? {
+           background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2d2d5f 100%)',
+           position: 'relative'
+         } : { background: 'linear-gradient(to-b, from-gray-900, via-black, to-gray-900)' }}
          dir="rtl">
       
       {/* Enhanced Tech Styles */}
@@ -209,6 +179,53 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           50% { box-shadow: 0 0 40px rgba(255,255,255,0.2); }
         }
 
+        .tech-hero-animated {
+          position: relative;
+          overflow: hidden;
+        }
+
+        .tech-hero-animated::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: 
+            radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+            linear-gradient(45deg, transparent 30%, rgba(6, 182, 212, 0.1) 50%, transparent 70%);
+          animation: techHeroAnimation 8s ease-in-out infinite;
+          pointer-events: none;
+        }
+
+        @keyframes techHeroAnimation {
+          0%, 100% {
+            background: 
+              radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+              linear-gradient(45deg, transparent 30%, rgba(6, 182, 212, 0.1) 50%, transparent 70%);
+          }
+          25% {
+            background: 
+              radial-gradient(circle at 75% 25%, rgba(139, 92, 246, 0.2) 0%, transparent 60%),
+              radial-gradient(circle at 25% 75%, rgba(59, 130, 246, 0.2) 0%, transparent 60%),
+              linear-gradient(135deg, transparent 30%, rgba(6, 182, 212, 0.15) 50%, transparent 70%);
+          }
+          50% {
+            background: 
+              radial-gradient(circle at 75% 75%, rgba(6, 182, 212, 0.18) 0%, transparent 55%),
+              radial-gradient(circle at 25% 25%, rgba(139, 92, 246, 0.18) 0%, transparent 55%),
+              linear-gradient(225deg, transparent 30%, rgba(59, 130, 246, 0.12) 50%, transparent 70%);
+          }
+          75% {
+            background: 
+              radial-gradient(circle at 25% 75%, rgba(59, 130, 246, 0.16) 0%, transparent 52%),
+              radial-gradient(circle at 75% 25%, rgba(6, 182, 212, 0.16) 0%, transparent 52%),
+              linear-gradient(315deg, transparent 30%, rgba(139, 92, 246, 0.13) 50%, transparent 70%);
+          }
+        }
+
         /* Enhanced mobile responsiveness */
         @media (max-width: 768px) {
           .hero-section { min-height: 70vh !important; padding: 2rem 1rem !important; }
@@ -242,39 +259,19 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         }
       `}</style>
 
-      {/* Action Buttons */}
-      <div className="fixed top-20 left-4 z-50 flex flex-col gap-2">
-        <Button
-          onClick={() => setEditMode(!editMode)}
-          className="bg-blue-600 hover:bg-blue-700 rounded-full p-3"
-          size="sm"
-        >
-          <Edit2 className="w-4 h-4" />
-        </Button>
-        <Button
-          onClick={handleShare}
-          className="bg-green-600 hover:bg-green-700 rounded-full p-3"
-          size="sm"
-        >
-          <Share2 className="w-4 h-4" />
-        </Button>
-        <Button
-          onClick={handleExportPDF}
-          className="bg-red-600 hover:bg-red-700 rounded-full p-3"
-          size="sm"
-        >
-          <Download className="w-4 h-4" />
-        </Button>
-      </div>
-
       {/* Section 1: Hero Section */}
-      <section id="hero" className="section-container group relative min-h-[600px] flex items-center justify-center text-center p-8"
-               style={{
+      <section id="hero" className="section-container group relative min-h-[600px] flex items-center justify-center text-center p-8 tech-hero-animated"
+               style={isTechy3D ? {
+                 ...techHeroBackgroundStyle,
                  background: finalHeroImage 
                    ? `linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,0,0,0.5)), url('${finalHeroImage}')` 
-                   : isTechy3D 
-                     ? 'transparent'
-                     : `linear-gradient(135deg, ${currentColors.primary}20, ${currentColors.secondary}10, ${currentColors.background})`,
+                   : content.techBackground || 'linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2d2d5f 100%)',
+                 backgroundSize: 'cover',
+                 backgroundPosition: 'center'
+               } : {
+                 background: finalHeroImage 
+                   ? `linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,0,0,0.5)), url('${finalHeroImage}')` 
+                   : `linear-gradient(135deg, ${currentColors.primary}20, ${currentColors.secondary}10, ${currentColors.background})`,
                  backgroundSize: 'cover',
                  backgroundPosition: 'center'
                }}>
@@ -318,7 +315,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         </div>
       </section>
 
-      {/* Section 2: Emotional Section (Tech Style Only) */}
+      {/* Section 2: Emotional Section */}
       {isTechy3D && content.sections?.emotionalSection && (
         <section id="emotional" className="section-container group py-20 px-8 relative">
           {editMode && <EditButton section="emotional" />}
@@ -337,7 +334,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         </section>
       )}
 
-      {/* Section 3: Why Us (Tech Style) */}
+      {/* Section 3: Why Us */}
       {isTechy3D && content.sections?.whyUs ? (
         <section id="why-us" className="section-container group py-20 px-8">
           {editMode && <EditButton section="why-us" />}
@@ -390,7 +387,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         </section>
       )}
 
-      {/* Section 4: What We Give (Tech Style) */}
+      {/* Section 4: What We Give */}
       {isTechy3D && content.sections?.whatWeGive && (
         <section id="what-we-give" className="section-container group py-20 px-8 bg-gradient-to-r from-gray-900/30 to-black/50">
           {editMode && <EditButton section="what-we-give" />}
