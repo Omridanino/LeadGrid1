@@ -6,14 +6,22 @@ import { ColorScheme } from "@/components/ColorEditor";
 import { useToast } from "@/hooks/use-toast";
 import { getHeroImageUrl } from "@/utils/heroImageUtils";
 
+interface PageElement {
+  id: string;
+  type: 'title' | 'text' | 'image' | 'testimonial' | 'faq' | 'blog' | 'whychoose';
+  content: any;
+  order: number;
+}
+
 interface LandingPagePreviewProps {
   content: any;
   currentColors: ColorScheme;
   formData: any;
   heroImage?: string;
+  elements?: PageElement[];
 }
 
-const LandingPagePreview = ({ content, currentColors, formData, heroImage }: LandingPagePreviewProps) => {
+const LandingPagePreview = ({ content, currentColors, formData, heroImage, elements = [] }: LandingPagePreviewProps) => {
   const { toast } = useToast();
 
   const handleCtaClick = () => {
@@ -21,6 +29,226 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
       title: "🎯 קריאה לפעולה!",
       description: "בדף האמיתי זה יוביל לטופס יצירת קשר או דף הזמנה",
     });
+  };
+
+  const renderPageElement = (element: PageElement) => {
+    switch (element.type) {
+      case 'title':
+        const TitleTag = element.content.size as keyof JSX.IntrinsicElements;
+        return (
+          <div key={element.id} className="p-8" style={{ backgroundColor: currentColors.background }}>
+            <TitleTag 
+              className="text-center font-bold flex items-center justify-center gap-3"
+              style={{ 
+                color: currentColors.text,
+                fontSize: element.content.size === 'h1' ? '3rem' : 
+                         element.content.size === 'h2' ? '2.5rem' : '2rem'
+              }}
+            >
+              {element.content.icon && (
+                <i className={`ri-${element.content.icon} text-3xl`} style={{ color: currentColors.accent }}></i>
+              )}
+              {element.content.text}
+            </TitleTag>
+          </div>
+        );
+
+      case 'text':
+        return (
+          <div key={element.id} className="p-8" style={{ backgroundColor: currentColors.background }}>
+            <div className="max-w-4xl mx-auto">
+              <p 
+                className="text-lg leading-relaxed text-center flex items-center justify-center gap-3"
+                style={{ color: currentColors.text }}
+              >
+                {element.content.icon && (
+                  <i className={`ri-${element.content.icon} text-2xl`} style={{ color: currentColors.primary }}></i>
+                )}
+                {element.content.text}
+              </p>
+            </div>
+          </div>
+        );
+
+      case 'image':
+        return (
+          <div key={element.id} className="p-8" style={{ backgroundColor: currentColors.background }}>
+            <div className="max-w-4xl mx-auto text-center">
+              {element.content.url && (
+                <>
+                  <img 
+                    src={element.content.url} 
+                    alt={element.content.alt} 
+                    className="w-full max-w-2xl mx-auto rounded-xl shadow-lg"
+                  />
+                  {element.content.caption && (
+                    <p className="mt-4 text-sm opacity-80" style={{ color: currentColors.text }}>
+                      {element.content.caption}
+                    </p>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        );
+
+      case 'whychoose':
+        return (
+          <div key={element.id} className="p-12 relative overflow-hidden" style={{ backgroundColor: currentColors.background }}>
+            {/* 3D Background Effects */}
+            <div className="absolute inset-0 opacity-10">
+              <div 
+                className="absolute top-20 left-20 w-32 h-32 rounded-full animate-pulse"
+                style={{ 
+                  background: `radial-gradient(circle, ${currentColors.primary}, transparent)`,
+                  transform: 'perspective(1000px) rotateX(45deg)'
+                }}
+              ></div>
+              <div 
+                className="absolute bottom-20 right-20 w-24 h-24 rounded-full animate-pulse"
+                style={{ 
+                  background: `radial-gradient(circle, ${currentColors.secondary}, transparent)`,
+                  animationDelay: '0.3s',
+                  transform: 'perspective(1000px) rotateY(45deg)'
+                }}
+              ></div>
+              <div 
+                className="absolute top-1/2 left-1/2 w-40 h-40 rounded-full animate-pulse"
+                style={{ 
+                  background: `radial-gradient(circle, ${currentColors.accent}, transparent)`,
+                  animationDelay: '0.7s',
+                  transform: 'perspective(1000px) rotateZ(45deg)'
+                }}
+              ></div>
+            </div>
+
+            <div className="relative z-10">
+              <h2 
+                className="text-4xl font-bold mb-4 text-center"
+                style={{ 
+                  color: currentColors.text,
+                  textShadow: '0 4px 8px rgba(0,0,0,0.3)'
+                }}
+              >
+                <Award className="w-10 h-10 ml-3 inline" style={{ color: currentColors.accent }} />
+                {element.content.title}
+              </h2>
+              <p className="text-center text-lg mb-12 opacity-80" style={{ color: currentColors.text }}>
+                הסיבות המובילות לבחור בנו מבין כל האפשרויות
+              </p>
+              
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                {element.content.items.map((item: any, index: number) => (
+                  <div 
+                    key={index}
+                    className="group relative p-8 rounded-3xl transition-all duration-500 hover:scale-105 cursor-pointer"
+                    style={{ 
+                      background: `linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02))`,
+                      border: `1px solid ${currentColors.primary}30`,
+                      backdropFilter: 'blur(10px)',
+                      boxShadow: `0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1)`,
+                      transform: 'perspective(1000px) rotateX(0deg)'
+                    }}
+                  >
+                    {/* 3D Icon Container */}
+                    <div className="relative mb-6">
+                      <div 
+                        className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-all duration-300 relative"
+                        style={{ 
+                          background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})`,
+                          boxShadow: `0 10px 25px ${currentColors.primary}40, inset 0 1px 0 rgba(255,255,255,0.2)`,
+                          transform: 'perspective(500px) rotateX(15deg)'
+                        }}
+                      >
+                        {/* 3D Effect Shadow */}
+                        <div 
+                          className="absolute inset-0 rounded-2xl transform translate-y-1 -z-10"
+                          style={{ 
+                            background: `linear-gradient(135deg, ${currentColors.primary}80, ${currentColors.secondary}80)`,
+                            filter: 'blur(4px)'
+                          }}
+                        ></div>
+                        
+                        {/* Icon */}
+                        <i 
+                          className={`ri-${item.icon} text-3xl text-white group-hover:scale-110 transition-transform duration-300`}
+                          style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
+                        ></i>
+                        
+                        {/* Shine Effect */}
+                        <div 
+                          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          style={{ 
+                            background: `linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%)`
+                          }}
+                        ></div>
+                      </div>
+
+                      {/* Floating Particles */}
+                      <div className="absolute -top-2 -right-2 w-3 h-3 rounded-full opacity-60 animate-pulse" 
+                           style={{ backgroundColor: currentColors.accent }}></div>
+                      <div className="absolute -bottom-1 -left-1 w-2 h-2 rounded-full opacity-40 animate-pulse" 
+                           style={{ backgroundColor: currentColors.secondary, animationDelay: '0.5s' }}></div>
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="text-center relative">
+                      <p 
+                        className="text-lg leading-relaxed font-medium group-hover:text-opacity-90 transition-all duration-300"
+                        style={{ 
+                          color: currentColors.text,
+                          textShadow: '0 1px 2px rgba(0,0,0,0.1)'
+                        }}
+                      >
+                        {item.text}
+                      </p>
+                      
+                      {/* Hover Glow Effect */}
+                      <div 
+                        className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 -z-10"
+                        style={{ 
+                          background: `radial-gradient(circle at center, ${currentColors.primary}, transparent 70%)`
+                        }}
+                      ></div>
+                    </div>
+
+                    {/* Border Glow */}
+                    <div 
+                      className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-20"
+                      style={{ 
+                        background: `linear-gradient(145deg, ${currentColors.primary}20, ${currentColors.secondary}20)`,
+                        filter: 'blur(1px)'
+                      }}
+                    ></div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Bottom CTA */}
+              <div className="text-center mt-12">
+                <p className="text-lg mb-6 opacity-80" style={{ color: currentColors.text }}>
+                  מוכנים להתחיל את המסע איתנו?
+                </p>
+                <Button 
+                  size="lg"
+                  className="px-12 py-4 text-lg font-bold rounded-2xl hover:scale-105 transition-all duration-300 shadow-2xl"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary})`,
+                    color: 'white',
+                    boxShadow: `0 10px 30px ${currentColors.accent}40`
+                  }}
+                  onClick={handleCtaClick}
+                >
+                  בואו נתחיל עכשיו ✨
+                </Button>
+              </div>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
   };
 
   const renderServiceCards = (serviceCards: any[]) => (
@@ -377,6 +605,13 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
           </div>
         </div>
         
+        {/* Custom Elements */}
+        {elements && elements.length > 0 && (
+          <div>
+            {elements.map((element) => renderPageElement(element))}
+          </div>
+        )}
+
         {/* Features Section */}
         <div className="p-8" style={{ backgroundColor: currentColors.background }}>
           <h2 

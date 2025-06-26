@@ -62,6 +62,7 @@ const GeneratedLandingPage = () => {
               currentColors={state.currentColors}
               formData={state.formData}
               heroImage={state.heroImage}
+              elements={state.elements}
             />
           </div>
 

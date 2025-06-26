@@ -1,5 +1,168 @@
-
 import { getHeroImageUrl } from "./heroImageUtils";
+
+interface PageElement {
+  id: string;
+  type: 'title' | 'text' | 'image' | 'testimonial' | 'faq' | 'blog' | 'whychoose';
+  content: any;
+  order: number;
+}
+
+const renderPageElements = (elements: PageElement[], colors: any) => {
+  if (!elements || elements.length === 0) {
+    return '';
+  }
+
+  return elements.map((element: PageElement) => {
+    switch (element.type) {
+      case 'title':
+        const titleSize = element.content.size === 'h1' ? '3rem' : 
+                         element.content.size === 'h2' ? '2.5rem' : '2rem';
+        return `
+          <div class="p-8" style="background-color: ${colors.background};">
+            <${element.content.size} class="text-center font-bold flex items-center justify-center gap-3" 
+                                     style="color: ${colors.text}; font-size: ${titleSize};">
+              ${element.content.icon ? `<i class="ri-${element.content.icon} text-3xl" style="color: ${colors.accent};"></i>` : ''}
+              ${element.content.text}
+            </${element.content.size}>
+          </div>
+        `;
+
+      case 'text':
+        return `
+          <div class="p-8" style="background-color: ${colors.background};">
+            <div class="max-w-4xl mx-auto">
+              <p class="text-lg leading-relaxed text-center flex items-center justify-center gap-3" 
+                 style="color: ${colors.text};">
+                ${element.content.icon ? `<i class="ri-${element.content.icon} text-2xl" style="color: ${colors.primary};"></i>` : ''}
+                ${element.content.text}
+              </p>
+            </div>
+          </div>
+        `;
+
+      case 'image':
+        return `
+          <div class="p-8" style="background-color: ${colors.background};">
+            <div class="max-w-4xl mx-auto text-center">
+              ${element.content.url ? `
+                <img src="${element.content.url}" alt="${element.content.alt}" 
+                     class="w-full max-w-2xl mx-auto rounded-xl shadow-lg">
+                ${element.content.caption ? `
+                  <p class="mt-4 text-sm opacity-80" style="color: ${colors.text};">
+                    ${element.content.caption}
+                  </p>
+                ` : ''}
+              ` : ''}
+            </div>
+          </div>
+        `;
+
+      case 'whychoose':
+        return `
+          <div class="p-12 relative overflow-hidden" style="background-color: ${colors.background};">
+            <!-- 3D Background Effects -->
+            <div class="absolute inset-0 opacity-10">
+              <div class="absolute top-20 left-20 w-32 h-32 rounded-full animate-pulse"
+                   style="background: radial-gradient(circle, ${colors.primary}, transparent); 
+                          transform: perspective(1000px) rotateX(45deg);"></div>
+              <div class="absolute bottom-20 right-20 w-24 h-24 rounded-full animate-pulse"
+                   style="background: radial-gradient(circle, ${colors.secondary}, transparent);
+                          animation-delay: 0.3s;
+                          transform: perspective(1000px) rotateY(45deg);"></div>
+              <div class="absolute top-1/2 left-1/2 w-40 h-40 rounded-full animate-pulse"
+                   style="background: radial-gradient(circle, ${colors.accent}, transparent);
+                          animation-delay: 0.7s;
+                          transform: perspective(1000px) rotateZ(45deg);"></div>
+            </div>
+
+            <div class="relative z-10">
+              <h2 class="text-4xl font-bold mb-4 text-center" 
+                  style="color: ${colors.text}; text-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+                <i class="ri-award-line text-3xl ml-3" style="color: ${colors.accent};"></i>
+                ${element.content.title}
+              </h2>
+              <p class="text-center text-lg mb-12 opacity-80" style="color: ${colors.text};">
+                הסיבות המובילות לבחור בנו מבין כל האפשרויות
+              </p>
+              
+              <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                ${element.content.items.map((item: any) => `
+                  <div class="group relative p-8 rounded-3xl transition-all duration-500 hover:scale-105 cursor-pointer"
+                       style="background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
+                              border: 1px solid ${colors.primary}30;
+                              backdrop-filter: blur(10px);
+                              box-shadow: 0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1);
+                              transform: perspective(1000px) rotateX(0deg);">
+                    
+                    <!-- 3D Icon Container -->
+                    <div class="relative mb-6">
+                      <div class="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-all duration-300 relative"
+                           style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});
+                                  box-shadow: 0 10px 25px ${colors.primary}40, inset 0 1px 0 rgba(255,255,255,0.2);
+                                  transform: perspective(500px) rotateX(15deg);">
+                        
+                        <!-- 3D Effect Shadow -->
+                        <div class="absolute inset-0 rounded-2xl transform translate-y-1 -z-10"
+                             style="background: linear-gradient(135deg, ${colors.primary}80, ${colors.secondary}80);
+                                    filter: blur(4px);"></div>
+                        
+                        <!-- Icon -->
+                        <i class="ri-${item.icon} text-3xl text-white group-hover:scale-110 transition-transform duration-300"
+                           style="text-shadow: 0 2px 4px rgba(0,0,0,0.3);"></i>
+                        
+                        <!-- Shine Effect -->
+                        <div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                             style="background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);"></div>
+                      </div>
+
+                      <!-- Floating Particles -->
+                      <div class="absolute -top-2 -right-2 w-3 h-3 rounded-full opacity-60 animate-pulse" 
+                           style="background-color: ${colors.accent};"></div>
+                      <div class="absolute -bottom-1 -left-1 w-2 h-2 rounded-full opacity-40 animate-pulse" 
+                           style="background-color: ${colors.secondary}; animation-delay: 0.5s;"></div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="text-center relative">
+                      <p class="text-lg leading-relaxed font-medium group-hover:text-opacity-90 transition-all duration-300"
+                         style="color: ${colors.text}; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+                        ${item.text}
+                      </p>
+                      
+                      <!-- Hover Glow Effect -->
+                      <div class="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 -z-10"
+                           style="background: radial-gradient(circle at center, ${colors.primary}, transparent 70%);"></div>
+                    </div>
+
+                    <!-- Border Glow -->
+                    <div class="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-20"
+                         style="background: linear-gradient(145deg, ${colors.primary}20, ${colors.secondary}20);
+                                filter: blur(1px);"></div>
+                  </div>
+                `).join('')}
+              </div>
+
+              <!-- Bottom CTA -->
+              <div class="text-center mt-12">
+                <p class="text-lg mb-6 opacity-80" style="color: ${colors.text};">
+                  מוכנים להתחיל את המסע איתנו?
+                </p>
+                <button class="px-12 py-4 text-lg font-bold rounded-2xl hover:scale-105 transition-all duration-300 shadow-2xl"
+                        style="background: linear-gradient(135deg, ${colors.accent}, ${colors.primary});
+                               color: white;
+                               box-shadow: 0 10px 30px ${colors.accent}40;">
+                  בואו נתחיל עכשיו ✨
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+
+      default:
+        return '';
+    }
+  }).join('');
+};
 
 const renderServiceCards = (serviceCards: any, colors: any) => {
   return `
@@ -205,7 +368,7 @@ const renderWhyChooseUs = (whyChoose: any, colors: any) => {
   `;
 };
 
-export const generateHtmlFile = (content: any, colors: any, formData: any, heroImage?: string) => {
+export const generateHtmlFile = (content: any, colors: any, formData: any, heroImage?: string, elements?: PageElement[]) => {
   const finalHeroImage = formData.heroStyle === 'image' ? getHeroImageUrl(content, heroImage || '', formData) : null;
   
   const renderCreativeElements = (content: any, colors: any) => {
@@ -394,6 +557,9 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, heroI
             </button>
         </div>
     </div>
+
+    <!-- Custom Elements -->
+    ${elements ? renderPageElements(elements, colors) : ''}
 </body>
 </html>`;
 };

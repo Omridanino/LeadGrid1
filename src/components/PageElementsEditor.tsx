@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -34,39 +35,19 @@ const PageElementsEditor = ({ elements, onElementsChange, content, onContentChan
       content: getDefaultContent(type)
     };
     
-    // אם זה ביקורת, נוסיף לסקשן הביקורות
-    if (type === 'testimonial') {
-      const newTestimonial = {
-        name: newElement.content.name,
-        role: newElement.content.role,
-        content: newElement.content.content,
-        rating: newElement.content.rating
-      };
-      
-      onContentChange({
-        ...content,
-        testimonials: [...(content.testimonials || []), newTestimonial]
-      });
-      
-      toast({
-        title: "✨ ביקורת נוספה!",
-        description: "הביקורת החדשה נוספה לסקשן הביקורות",
-      });
-    } else {
-      onElementsChange([...elements, newElement]);
-      toast({
-        title: "✨ אלמנט נוסף!",
-        description: `אלמנט ${getElementTypeName(type)} נוסף לדף`,
-      });
-    }
+    onElementsChange([...elements, newElement]);
+    toast({
+      title: "✨ אלמנט נוסף!",
+      description: `אלמנט ${getElementTypeName(type)} נוסף לדף`,
+    });
   };
 
   const getDefaultContent = (type: PageElement['type']) => {
     switch (type) {
       case 'title':
-        return { text: 'כותרת חדשה', size: 'h2' };
+        return { text: 'כותרת חדשה', size: 'h2', icon: '' };
       case 'text':
-        return { text: 'טקסט חדש כאן...' };
+        return { text: 'טקסט חדש כאן...', icon: '' };
       case 'image':
         return { url: '', alt: 'תיאור התמונה', caption: '' };
       case 'testimonial':
@@ -208,17 +189,51 @@ const PageElementsEditor = ({ elements, onElementsChange, content, onContentChan
               <option value="h2">כותרת בינונית (H2)</option>
               <option value="h3">כותרת קטנה (H3)</option>
             </select>
+            <div className="space-y-2">
+              <Label className="text-white text-sm">בחירת אייקון (אופציונלי):</Label>
+              <div className="flex items-center gap-3">
+                <IconSelector
+                  selectedIcon={element.content.icon || ''}
+                  onIconSelect={(icon) => updateElement(element.id, { ...element.content, icon })}
+                  triggerClassName="bg-gray-500 border-gray-400 text-white hover:bg-gray-400 min-w-[120px]"
+                />
+                {element.content.icon && (
+                  <div className="flex items-center gap-2 p-2 bg-gray-500 rounded">
+                    <i className={`ri-${element.content.icon} text-xl text-white`}></i>
+                    <span className="text-sm text-gray-300">{element.content.icon}</span>
+                  </div>
+                )}
+              </div>
+            </div>
           </>
         )}
 
         {element.type === 'text' && (
-          <Textarea
-            value={element.content.text}
-            onChange={(e) => updateElement(element.id, { ...element.content, text: e.target.value })}
-            placeholder="טקסט"
-            className="bg-gray-600 text-white"
-            rows={4}
-          />
+          <>
+            <Textarea
+              value={element.content.text}
+              onChange={(e) => updateElement(element.id, { ...element.content, text: e.target.value })}
+              placeholder="טקסט"
+              className="bg-gray-600 text-white"
+              rows={4}
+            />
+            <div className="space-y-2">
+              <Label className="text-white text-sm">בחירת אייקון (אופציונלי):</Label>
+              <div className="flex items-center gap-3">
+                <IconSelector
+                  selectedIcon={element.content.icon || ''}
+                  onIconSelect={(icon) => updateElement(element.id, { ...element.content, icon })}
+                  triggerClassName="bg-gray-500 border-gray-400 text-white hover:bg-gray-400 min-w-[120px]"
+                />
+                {element.content.icon && (
+                  <div className="flex items-center gap-2 p-2 bg-gray-500 rounded">
+                    <i className={`ri-${element.content.icon} text-xl text-white`}></i>
+                    <span className="text-sm text-gray-300">{element.content.icon}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </>
         )}
 
         {element.type === 'image' && (
