@@ -67,38 +67,31 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   return (
     <div className="w-full bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white overflow-hidden rounded-lg" dir="rtl">
       <style>{`
-        @keyframes float3D {
+        @keyframes gentleFloat {
           0%, 100% { 
-            transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px);
-          }
-          25% { 
-            transform: perspective(1000px) rotateX(3deg) rotateY(5deg) translateY(-8px);
+            transform: translateY(0px);
           }
           50% { 
-            transform: perspective(1000px) rotateX(0deg) rotateY(10deg) translateY(-15px);
-          }
-          75% { 
-            transform: perspective(1000px) rotateX(-3deg) rotateY(5deg) translateY(-8px);
+            transform: translateY(-8px);
           }
         }
 
-        @keyframes holographicGlow {
+        @keyframes subtleGlow {
           0%, 100% {
-            background: linear-gradient(135deg, ${currentColors.accent}80, ${currentColors.primary}60, ${currentColors.secondary}80);
-            filter: hue-rotate(0deg) brightness(1);
+            box-shadow: 0 0 15px rgba(192, 192, 192, 0.3);
           }
           50% {
-            filter: hue-rotate(60deg) brightness(1.2);
+            box-shadow: 0 0 25px rgba(192, 192, 192, 0.5);
           }
         }
 
-        @keyframes shimmerEffect {
+        @keyframes shimmer {
           0% { 
             transform: translateX(-100%);
             opacity: 0;
           }
           50% { 
-            opacity: 0.6;
+            opacity: 0.4;
           }
           100% { 
             transform: translateX(100%);
@@ -106,58 +99,31 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           }
         }
 
-        @keyframes pulseGlow {
-          0%, 100% {
-            box-shadow: 0 0 20px ${currentColors.accent}40, 0 0 40px ${currentColors.primary}20;
-          }
-          50% {
-            box-shadow: 0 0 30px ${currentColors.accent}60, 0 0 60px ${currentColors.primary}30;
-          }
-        }
-
-        @keyframes rotate3DGentle {
-          from { 
-            transform: perspective(1000px) rotateY(0deg);
-          }
-          to { 
-            transform: perspective(1000px) rotateY(360deg);
-          }
-        }
-
-        .float-3d {
-          animation: float3D 6s ease-in-out infinite;
-          transform-style: preserve-3d;
-        }
-
-        .float-3d:nth-child(2) { animation-delay: -1.5s; }
-        .float-3d:nth-child(3) { animation-delay: -3s; }
-        .float-3d:nth-child(4) { animation-delay: -4.5s; }
-
-        .holographic-card {
-          background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-          backdrop-filter: blur(25px);
-          border: 1px solid rgba(255,255,255,0.2);
-          border-radius: 20px;
+        .tech-card {
+          background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(30,30,30,0.9));
+          backdrop-filter: blur(15px);
+          border: 1px solid rgba(192, 192, 192, 0.2);
+          border-radius: 15px;
           position: relative;
           overflow: hidden;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.3s ease;
         }
 
-        .holographic-card::before {
+        .tech-card::before {
           content: '';
           position: absolute;
           top: 0;
           left: -100%;
           width: 100%;
           height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-          animation: shimmerEffect 3s ease-in-out infinite;
+          background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.1), transparent);
+          animation: shimmer 3s ease-in-out infinite;
         }
 
-        .holographic-card:hover {
-          transform: perspective(1000px) rotateY(10deg) rotateX(5deg) translateZ(30px);
-          background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08));
-          border-color: ${currentColors.accent}80;
+        .tech-card:hover {
+          transform: translateY(-5px);
+          border-color: rgba(192, 192, 192, 0.4);
+          animation: subtleGlow 2s ease-in-out infinite;
         }
 
         .tech-button {
@@ -165,8 +131,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           border: none;
           position: relative;
           overflow: hidden;
-          animation: holographicGlow 4s ease-in-out infinite;
           transition: all 0.3s ease;
+          border-radius: 12px;
         }
 
         .tech-button::before {
@@ -176,90 +142,104 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           left: -100%;
           width: 100%;
           height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-          animation: shimmerEffect 2s ease-in-out infinite;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+          animation: shimmer 2s ease-in-out infinite;
         }
 
         .tech-button:hover {
-          transform: translateY(-3px);
-          animation: pulseGlow 2s ease-in-out infinite;
+          transform: translateY(-2px);
+          box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
-        .neon-text {
-          text-shadow: 
-            0 0 5px ${currentColors.accent}80,
-            0 0 10px ${currentColors.accent}60,
-            0 0 15px ${currentColors.accent}40;
+        .silver-icon {
+          color: rgba(192, 192, 192, 0.8);
+          background: linear-gradient(135deg, rgba(192, 192, 192, 0.1), rgba(169, 169, 169, 0.05));
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(192, 192, 192, 0.2);
+          border-radius: 15px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.3s ease;
+          animation: gentleFloat 4s ease-in-out infinite;
         }
 
-        .glass-form {
-          background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(31,41,55,0.9));
-          backdrop-filter: blur(30px);
-          border: 2px solid rgba(255,255,255,0.1);
-          border-radius: 25px;
+        .silver-icon:hover {
+          color: rgba(192, 192, 192, 1);
+          border-color: rgba(192, 192, 192, 0.4);
+          animation: subtleGlow 1.5s ease-in-out infinite;
+        }
+
+        .tech-form {
+          background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(20,20,20,0.95));
+          backdrop-filter: blur(20px);
+          border: 2px solid rgba(192, 192, 192, 0.1);
+          border-radius: 20px;
           position: relative;
           overflow: hidden;
-          transform-style: preserve-3d;
         }
 
-        .glass-form::before {
+        .tech-form::before {
           content: '';
           position: absolute;
           top: 0;
           left: 0;
           right: 0;
           bottom: 0;
-          background: linear-gradient(45deg, ${currentColors.primary}15, transparent, ${currentColors.accent}15);
-          opacity: 0.7;
+          background: linear-gradient(45deg, ${currentColors.primary}10, transparent, ${currentColors.accent}10);
+          opacity: 0.5;
           pointer-events: none;
         }
 
-        .form-field-3d {
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.2);
-          backdrop-filter: blur(15px);
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          transform-style: preserve-3d;
+        .form-field {
+          background: rgba(0,0,0,0.6);
+          border: 1px solid rgba(192, 192, 192, 0.2);
+          backdrop-filter: blur(10px);
+          transition: all 0.3s ease;
+          border-radius: 10px;
+          color: white;
         }
 
-        .form-field-3d:focus {
-          background: rgba(255,255,255,0.1);
-          border-color: ${currentColors.accent};
-          box-shadow: 
-            0 0 20px ${currentColors.accent}30,
-            0 8px 25px rgba(0,0,0,0.3);
-          transform: perspective(1000px) translateZ(10px);
+        .form-field:focus {
+          background: rgba(0,0,0,0.8);
+          border-color: rgba(192, 192, 192, 0.5);
+          box-shadow: 0 0 15px rgba(192, 192, 192, 0.2);
           outline: none;
         }
 
-        .floating-icon {
-          animation: rotate3DGentle 20s linear infinite;
-          transform-style: preserve-3d;
+        .stats-card {
+          background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(30,30,30,0.8));
+          backdrop-filter: blur(15px);
+          border: 1px solid rgba(192, 192, 192, 0.2);
+          border-radius: 15px;
+          transition: all 0.3s ease;
+          animation: gentleFloat 5s ease-in-out infinite;
         }
 
-        .stats-card {
-          background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-          backdrop-filter: blur(20px);
-          border: 1px solid rgba(255,255,255,0.2);
-          border-radius: 20px;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          transform-style: preserve-3d;
-        }
+        .stats-card:nth-child(2) { animation-delay: -1s; }
+        .stats-card:nth-child(3) { animation-delay: -2s; }
+        .stats-card:nth-child(4) { animation-delay: -3s; }
 
         .stats-card:hover {
-          transform: perspective(1000px) rotateY(15deg) rotateX(10deg) translateZ(20px);
-          border-color: ${currentColors.accent}60;
-          box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+          transform: translateY(-8px);
+          border-color: rgba(192, 192, 192, 0.4);
+          animation: subtleGlow 2s ease-in-out infinite;
+        }
+
+        .neon-text {
+          text-shadow: 
+            0 0 5px ${currentColors.accent}60,
+            0 0 10px ${currentColors.accent}40;
         }
 
         @media (max-width: 768px) {
-          .holographic-card:hover,
+          .tech-card:hover,
           .stats-card:hover {
-            transform: perspective(1000px) rotateY(5deg) rotateX(3deg) translateZ(10px);
+            transform: translateY(-3px);
           }
           
           .tech-button:hover {
-            transform: translateY(-2px);
+            transform: translateY(-1px);
           }
         }
       `}</style>
@@ -275,7 +255,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                }}>
         
         <div className="relative z-10 max-w-4xl mx-auto">
-          <span className="inline-block px-6 py-3 mb-8 text-white rounded-full font-semibold text-sm holographic-card float-3d">
+          <span className="inline-block px-6 py-3 mb-8 text-white rounded-full font-semibold text-sm tech-card">
             {content.badge}
           </span>
           
@@ -294,7 +274,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           
           <button 
             onClick={() => scrollToSection('contact')}
-            className="tech-button inline-block px-10 py-5 text-white font-bold rounded-xl text-lg mb-16"
+            className="tech-button inline-block px-10 py-5 text-white font-bold text-lg mb-16"
           >
             {content.cta}
           </button>
@@ -302,7 +282,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           {/* Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
             {Object.entries(content.stats).map(([key, value], index) => (
-              <div key={key} className={`stats-card float-3d p-6 text-center`}>
+              <div key={key} className="stats-card p-6 text-center">
                 <div className="text-3xl md:text-4xl font-bold text-white mb-2 neon-text">{String(value)}</div>
                 <div className="text-sm md:text-base text-white opacity-80">{key}</div>
               </div>
@@ -319,36 +299,32 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           </h2>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="holographic-card float-3d p-8 text-center">
-              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 floating-icon"
-                   style={{ background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary})` }}>
+            <div className="tech-card p-8 text-center">
+              <div className="w-20 h-20 rounded-2xl mx-auto mb-6 silver-icon">
                 <span className="text-3xl">🎧</span>
               </div>
               <h3 className="text-xl font-bold mb-4 text-white neon-text">תמיכה 24/7</h3>
               <p className="text-gray-300 text-sm leading-relaxed">זמינים עבורכם בכל שעה</p>
             </div>
 
-            <div className="holographic-card float-3d p-8 text-center">
-              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 floating-icon"
-                   style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
+            <div className="tech-card p-8 text-center">
+              <div className="w-20 h-20 rounded-2xl mx-auto mb-6 silver-icon">
                 <span className="text-3xl">🏆</span>
               </div>
               <h3 className="text-xl font-bold mb-4 text-white neon-text">ניסיון רב שנים</h3>
               <p className="text-gray-300 text-sm leading-relaxed">מומחיות מוכחת בתחום</p>
             </div>
 
-            <div className="holographic-card float-3d p-8 text-center">
-              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 floating-icon"
-                   style={{ background: `linear-gradient(135deg, ${currentColors.secondary}, ${currentColors.accent})` }}>
+            <div className="tech-card p-8 text-center">
+              <div className="w-20 h-20 rounded-2xl mx-auto mb-6 silver-icon">
                 <span className="text-3xl">⭐</span>
               </div>
               <h3 className="text-xl font-bold mb-4 text-white neon-text">שירות מקצועי</h3>
               <p className="text-gray-300 text-sm leading-relaxed">איכות ללא פשרות</p>
             </div>
 
-            <div className="holographic-card float-3d p-8 text-center">
-              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 floating-icon"
-                   style={{ background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.secondary})` }}>
+            <div className="tech-card p-8 text-center">
+              <div className="w-20 h-20 rounded-2xl mx-auto mb-6 silver-icon">
                 <span className="text-3xl">💰</span>
               </div>
               <h3 className="text-xl font-bold mb-4 text-white neon-text">מחירים הוגנים</h3>
@@ -372,9 +348,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               { icon: "🎧", title: "תמיכה מלאה", desc: "ליווי צמוד לאורך כל הדרך" }
             ].map((feature, idx) => (
               <div key={idx} className="text-center">
-                <div className="holographic-card float-3d p-8">
-                  <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-8 floating-icon"
-                       style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
+                <div className="tech-card p-8">
+                  <div className="w-20 h-20 rounded-2xl mx-auto mb-8 silver-icon">
                     <span className="text-3xl">{feature.icon}</span>
                   </div>
                   <h3 className="text-2xl font-bold mb-6 neon-text" style={{ color: currentColors.text }}>
@@ -393,10 +368,9 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       {/* Contact Form Section */}
       <section id="contact" className="py-24 px-8">
         <div className="max-w-5xl mx-auto">
-          <div className="glass-form p-10 md:p-12">
+          <div className="tech-form p-10 md:p-12">
             <div className="text-center mb-12 relative z-10">
-              <div className="w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-8 floating-icon"
-                   style={{ background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary})` }}>
+              <div className="w-24 h-24 rounded-3xl mx-auto mb-8 silver-icon">
                 <span className="text-4xl">💬</span>
               </div>
               
@@ -415,7 +389,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                     placeholder="השם שלך"
                     value={contactForm.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    className="form-field-3d text-white placeholder:text-white/50 h-14 text-lg rounded-xl border-0"
+                    className="form-field placeholder:text-white/50 h-14 text-lg border-0"
                     required
                   />
                 </div>
@@ -426,7 +400,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                     placeholder="example@email.com"
                     value={contactForm.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    className="form-field-3d text-white placeholder:text-white/50 h-14 text-lg rounded-xl border-0"
+                    className="form-field placeholder:text-white/50 h-14 text-lg border-0"
                     required
                   />
                 </div>
@@ -439,7 +413,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                   placeholder="050-1234567"
                   value={contactForm.phone}
                   onChange={(e) => handleInputChange('phone', e.target.value)}
-                  className="form-field-3d text-white placeholder:text-white/50 h-14 text-lg rounded-xl border-0"
+                  className="form-field placeholder:text-white/50 h-14 text-lg border-0"
                 />
               </div>
               
@@ -450,14 +424,14 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                   rows={6}
                   value={contactForm.message}
                   onChange={(e) => handleInputChange('message', e.target.value)}
-                  className="form-field-3d text-white placeholder:text-white/50 text-lg rounded-xl border-0"
+                  className="form-field placeholder:text-white/50 text-lg border-0"
                   required
                 />
               </div>
               
               <Button 
                 type="submit"
-                className="w-full py-6 text-xl font-bold tech-button rounded-xl border-0"
+                className="w-full py-6 text-xl font-bold tech-button border-0"
               >
                 <Send className="w-6 h-6 ml-3" />
                 שלח הודעה
@@ -466,20 +440,26 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
 
             {/* Contact Info Cards */}
             <div className="grid md:grid-cols-3 gap-8 mt-16 relative z-10">
-              <div className="holographic-card float-3d p-8 text-center">
-                <Phone className="w-10 h-10 mx-auto mb-4 floating-icon" style={{ color: currentColors.accent }} />
+              <div className="tech-card p-8 text-center">
+                <div className="w-16 h-16 rounded-xl mx-auto mb-4 silver-icon">
+                  <Phone className="w-8 h-8" />
+                </div>
                 <h4 className="font-bold text-white mb-3 text-lg neon-text">טלפון</h4>
                 <p className="text-gray-300 text-lg">050-1234567</p>
               </div>
               
-              <div className="holographic-card float-3d p-8 text-center">
-                <Mail className="w-10 h-10 mx-auto mb-4 floating-icon" style={{ color: currentColors.accent }} />
+              <div className="tech-card p-8 text-center">
+                <div className="w-16 h-16 rounded-xl mx-auto mb-4 silver-icon">
+                  <Mail className="w-8 h-8" />
+                </div>
                 <h4 className="font-bold text-white mb-3 text-lg neon-text">אימייל</h4>
                 <p className="text-gray-300 text-lg">info@business.co.il</p>
               </div>
               
-              <div className="holographic-card float-3d p-8 text-center">
-                <MapPin className="w-10 h-10 mx-auto mb-4 floating-icon" style={{ color: currentColors.accent }} />
+              <div className="tech-card p-8 text-center">
+                <div className="w-16 h-16 rounded-xl mx-auto mb-4 silver-icon">
+                  <MapPin className="w-8 h-8" />
+                </div>
                 <h4 className="font-bold text-white mb-3 text-lg neon-text">כתובת</h4>
                 <p className="text-gray-300 text-lg">תל אביב, ישראל</p>
               </div>
@@ -501,9 +481,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             
             <div className="grid md:grid-cols-2 gap-8">
               {content.whyChooseUs.items.map((item: any, idx: number) => (
-                <div key={idx} className="holographic-card float-3d p-8 flex items-center text-right">
-                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center ml-6 flex-shrink-0 floating-icon"
-                       style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
+                <div key={idx} className="tech-card p-8 flex items-center text-right">
+                  <div className="w-16 h-16 rounded-2xl ml-6 flex-shrink-0 silver-icon">
                     <span className="text-2xl">🚀</span>
                   </div>
                   <div>
@@ -521,7 +500,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             <div className="text-center mt-16">
               <button 
                 onClick={() => scrollToSection('contact')}
-                className="tech-button inline-block px-10 py-5 text-white font-bold rounded-xl text-lg"
+                className="tech-button inline-block px-10 py-5 text-white font-bold text-lg"
               >
                 בואו נתחיל עכשיו ✨
               </button>
@@ -545,9 +524,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                 { icon: "🚀", title: "פתרון מהיר", desc: "תוצאות מהירות ויעילות ללא פשרות", price: "החל מ₪399" }
               ].map((service, idx) => (
                 <div key={idx} className="text-center">
-                  <div className="holographic-card float-3d p-8 rounded-2xl">
-                    <div className="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-8 floating-icon"
-                         style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
+                  <div className="tech-card p-8 rounded-2xl">
+                    <div className="w-20 h-20 rounded-xl mx-auto mb-8 silver-icon">
                       <span className="text-3xl">{service.icon}</span>
                     </div>
                     <h3 className="text-2xl font-bold mb-6 neon-text" style={{ color: currentColors.text }}>
@@ -574,14 +552,14 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             <h2 className="text-3xl md:text-5xl font-bold mb-12 neon-text" style={{ color: currentColors.text }}>
               👥 {content.aboutTitle}
             </h2>
-            <div className="holographic-card float-3d p-12 rounded-2xl">
+            <div className="tech-card p-12 rounded-2xl">
               <p className="text-lg leading-relaxed mb-8" 
                  style={{ color: currentColors.aboutTextColor || currentColors.text }}>
                 {content.aboutText}
               </p>
               <button 
                 onClick={() => scrollToSection('contact')}
-                className="tech-button inline-block px-10 py-5 text-white font-bold rounded-xl text-lg"
+                className="tech-button inline-block px-10 py-5 text-white font-bold text-lg"
               >
                 למד עוד עלינו
               </button>
@@ -600,10 +578,9 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             
             <div className="grid md:grid-cols-3 gap-10">
               {content.testimonials.map((testimonial: any, idx: number) => (
-                <div key={idx} className="holographic-card float-3d p-8 rounded-2xl">
+                <div key={idx} className="tech-card p-8 rounded-2xl">
                   <div className="flex items-center mb-6">
-                    <div className="w-16 h-16 rounded-lg flex items-center justify-center ml-4 floating-icon"
-                         style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
+                    <div className="w-16 h-16 rounded-lg ml-4 silver-icon">
                       <span className="text-lg">{testimonial.image}</span>
                     </div>
                     <div>
@@ -640,7 +617,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             
             <div className="space-y-8">
               {content.faq.map((item: any, idx: number) => (
-                <div key={idx} className="holographic-card float-3d p-8 rounded-2xl">
+                <div key={idx} className="tech-card p-8 rounded-2xl">
                   <h3 className="font-bold mb-4 text-xl" style={{ color: currentColors.secondary }}>
                     {item.question}
                   </h3>
