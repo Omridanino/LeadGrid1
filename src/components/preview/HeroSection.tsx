@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/components/ColorEditor";
@@ -64,7 +65,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     );
   };
 
-  // COMPLETELY REDESIGNED LIQUID GLASS HERO - Fluid and Dynamic
+  // LIQUID GLASS HERO - Enhanced with left visual element
   if (formData.heroStyle === 'glass') {
     return (
       <section className="liquid-glass-hero section-hero">
@@ -83,6 +84,35 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
         
         <div className="container-hero relative z-10">
           <div className="liquid-hero-grid">
+            {/* Left Visual Enhancement - NEW */}
+            <div className="liquid-left-visual animate-scale-in animate-delay-1">
+              <div className="liquid-mega-orb">
+                <div className="liquid-mega-rings">
+                  <div className="liquid-mega-ring liquid-mega-ring-1"></div>
+                  <div className="liquid-mega-ring liquid-mega-ring-2"></div>
+                  <div className="liquid-mega-ring liquid-mega-ring-3"></div>
+                  <div className="liquid-mega-ring liquid-mega-ring-4"></div>
+                </div>
+                <div className="liquid-core-orb">
+                  <div className="liquid-core-pulse"></div>
+                  <i className="ri-water-flash-line text-blue-300 text-6xl"></i>
+                </div>
+              </div>
+              
+              {/* Floating Elements */}
+              <div className="liquid-float-elements">
+                <div className="liquid-float-orb liquid-float-1">
+                  <i className="ri-flashlight-line text-cyan-400 text-xl"></i>
+                </div>
+                <div className="liquid-float-orb liquid-float-2">
+                  <i className="ri-shield-check-line text-green-400 text-xl"></i>
+                </div>
+                <div className="liquid-float-orb liquid-float-3">
+                  <i className="ri-infinity-line text-purple-400 text-xl"></i>
+                </div>
+              </div>
+            </div>
+
             <div className="liquid-content-flow">
               {/* Floating Status Badge */}
               <div className="liquid-status-orb animate-slide-up">
@@ -91,22 +121,22 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 <span className="typography-liquid text-white font-semibold">זמין עכשיו</span>
               </div>
 
-              {/* Liquid Hero Title */}
-              <h1 className="typography-liquid text-7xl md:text-9xl mb-8 animate-slide-up animate-delay-1 liquid-title-glow">
+              {/* REDUCED Liquid Hero Title */}
+              <h1 className="typography-liquid text-4xl md:text-6xl mb-6 animate-slide-up animate-delay-1 liquid-title-glow">
                 {content?.headline || formData.businessName}
               </h1>
 
               {/* Flowing Subtitle Container */}
-              <div className="liquid-subtitle-flow mb-12 animate-slide-up animate-delay-2">
+              <div className="liquid-subtitle-flow mb-8 animate-slide-up animate-delay-2">
                 <div className="liquid-text-orb">
-                  <p className="typography-liquid text-xl md:text-2xl text-white leading-relaxed liquid-text-glow">
+                  <p className="typography-liquid text-lg md:text-xl text-white leading-relaxed liquid-text-glow">
                     {content?.subheadline || `חוויה נוזלית ייחודית ל${formData.targetAudience}`}
                   </p>
                 </div>
               </div>
 
               {/* Liquid Action Buttons */}
-              <div className="liquid-actions-flow mb-16">
+              <div className="liquid-actions-flow mb-12">
                 {renderCTAButton(true)}
                 {renderCTAButton(false)}
               </div>
@@ -129,48 +159,13 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 ))}
               </div>
             </div>
-
-            {/* Liquid Visual Showcase */}
-            <div className="liquid-visual-flow animate-scale-in animate-delay-3">
-              <div className="liquid-showcase-orb">
-                <div className="liquid-showcase-rings">
-                  <div className="liquid-ring liquid-ring-1"></div>
-                  <div className="liquid-ring liquid-ring-2"></div>
-                  <div className="liquid-ring liquid-ring-3"></div>
-                </div>
-                <div className="liquid-center-orb">
-                  <i className="ri-atom-line text-blue-300 text-5xl"></i>
-                </div>
-              </div>
-              
-              {/* Floating Stats Bubbles */}
-              <div className="liquid-stats-bubbles">
-                {[
-                  { number: '500+', label: 'זרימות מוצלחות', position: 'top-left' },
-                  { number: '99%', label: 'שביעות רצון', position: 'top-right' },
-                  { number: '24/7', label: 'זרימה רציפה', position: 'bottom-left' },
-                  { number: '10+', label: 'שנות זרימה', position: 'bottom-right' }
-                ].map((stat, index) => (
-                  <div key={index} className={`liquid-stat-bubble liquid-bubble-${stat.position}`}>
-                    <div className="liquid-stat-glow">
-                      <div className="typography-liquid text-2xl font-bold text-white liquid-text-glow">
-                        {stat.number}
-                      </div>
-                      <div className="typography-liquid text-xs text-blue-200">
-                        {stat.label}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </section>
     );
   }
 
-  // Geometric Hero Style - Enhanced
+  // GEOMETRIC HERO - Reduced text size, removed sticky element
   if (formData.heroStyle === 'geometric') {
     return (
       <section className="geometric-hero section-hero">
@@ -181,7 +176,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
         <div className="container-hero relative z-10">
           <div className="text-center">
             {/* Trust Badges */}
-            <div className="flex items-center justify-center gap-4 mb-8 animate-slide-up">
+            <div className="flex items-center justify-center gap-4 mb-6 animate-slide-up">
               <div className="glass-card px-4 py-2">
                 <div className="flex items-center gap-2">
                   <Star className="w-4 h-4 text-yellow-400 fill-current" />
@@ -196,18 +191,18 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               </div>
             </div>
 
-            {/* Main Headline */}
-            <h1 className="typography-modern text-6xl md:text-8xl text-white mb-8 animate-slide-up animate-delay-1">
+            {/* REDUCED Main Headline */}
+            <h1 className="typography-modern text-4xl md:text-6xl text-white mb-6 animate-slide-up animate-delay-1">
               {content?.headline || formData.businessName}
             </h1>
 
-            {/* Subheadline */}
-            <div className="typography-body text-xl md:text-2xl mb-12 max-w-4xl mx-auto text-gray-300 animate-slide-up animate-delay-2">
+            {/* REDUCED Subheadline */}
+            <div className="typography-body text-lg md:text-xl mb-8 max-w-4xl mx-auto text-gray-300 animate-slide-up animate-delay-2">
               {content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
               {renderCTAButton(true)}
               {renderCTAButton(false)}
             </div>
@@ -221,7 +216,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 { number: '24/7', label: 'זמינות' }
               ].map((stat, index) => (
                 <div key={index} className="geometric-card text-center">
-                  <div className="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">
+                  <div className="typography-modern text-2xl md:text-3xl font-bold text-white mb-2">
                     {stat.number}
                   </div>
                   <div className="typography-body text-gray-300 text-sm">
@@ -236,39 +231,51 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     );
   }
 
-  // Metallic Luxury Style - Enhanced
+  // METALLIC LUXURY - Fixed contrast and reduced text size + metallic visual
   if (formData.heroStyle === 'metal') {
     return (
       <section className="section-hero bg-gradient-to-br from-gray-900 via-gray-800 to-black relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-yellow-900/20 via-transparent to-yellow-800/20"></div>
         
+        {/* NEW: Metallic Visual Effect */}
+        <div className="absolute top-1/2 left-1/4 transform -translate-y-1/2 animate-pulse">
+          <div className="metallic-rings">
+            <div className="metallic-ring metallic-ring-1"></div>
+            <div className="metallic-ring metallic-ring-2"></div>
+            <div className="metallic-ring metallic-ring-3"></div>
+          </div>
+          <div className="metallic-core">
+            <Award className="w-16 h-16 text-yellow-600" />
+          </div>
+        </div>
+        
         <div className="container-hero relative z-10">
           <div className="text-center">
             {/* Luxury Badge */}
-            <div className="inline-flex items-center gap-2 metal-card px-6 py-3 rounded-full mb-8 animate-slide-up">
+            <div className="inline-flex items-center gap-2 metal-card px-6 py-3 rounded-full mb-6 animate-slide-up">
               <Award className="w-5 h-5 text-yellow-600" />
-              <span className="typography-luxury text-gray-800 font-semibold">פרימיום</span>
+              <span className="typography-luxury text-gray-900 font-semibold">פרימיום</span>
             </div>
 
-            {/* Luxury Title */}
-            <h1 className="typography-luxury text-7xl md:text-9xl metal-text mb-8 animate-slide-up animate-delay-1">
+            {/* REDUCED Luxury Title with PROPER CONTRAST */}
+            <h1 className="typography-luxury text-4xl md:text-6xl text-white mb-6 animate-slide-up animate-delay-1">
               {content?.headline || formData.businessName}
             </h1>
 
-            {/* Elegant Subtitle */}
-            <div className="metal-card p-8 max-w-5xl mx-auto mb-12 animate-slide-up animate-delay-2">
-              <p className="typography-luxury text-xl md:text-2xl text-gray-800 leading-relaxed">
+            {/* REDUCED Elegant Subtitle with PROPER CONTRAST */}
+            <div className="metal-card p-6 max-w-5xl mx-auto mb-8 animate-slide-up animate-delay-2">
+              <p className="typography-luxury text-lg md:text-xl text-gray-900 leading-relaxed">
                 {content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
               </p>
             </div>
 
             {/* Premium Actions */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
               {renderCTAButton(true)}
               {renderCTAButton(false)}
             </div>
 
-            {/* Luxury Stats */}
+            {/* Luxury Stats with PROPER CONTRAST */}
             <div className="grid md:grid-cols-4 gap-6 max-w-4xl mx-auto animate-scale-in animate-delay-4">
               {[
                 { number: '500+', label: 'לקוחות VIP' },
@@ -277,10 +284,10 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 { number: '24/7', label: 'שירות פרמיום' }
               ].map((stat, index) => (
                 <div key={index} className="metal-card p-6 text-center">
-                  <div className="typography-luxury text-3xl font-bold text-gray-800 mb-2">
+                  <div className="typography-luxury text-2xl font-bold text-gray-900 mb-2">
                     {stat.number}
                   </div>
-                  <div className="typography-body text-gray-700 text-sm">
+                  <div className="typography-body text-gray-800 text-sm">
                     {stat.label}
                   </div>
                 </div>
@@ -292,7 +299,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     );
   }
 
-  // Image with 3D Effects Style - Enhanced
+  // IMAGE with 3D Effects - REDUCED text size + enhanced 3D effects
   if (formData.heroStyle === 'image') {
     const imageUrl = heroImage || getBusinessImage(formData.businessType);
     
@@ -308,6 +315,11 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       >
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-transparent to-purple-900/30"></div>
         
+        {/* NEW: Enhanced 3D Parallax Effects */}
+        <div className="parallax-layer parallax-layer-1"></div>
+        <div className="parallax-layer parallax-layer-2"></div>
+        <div className="parallax-layer parallax-layer-3"></div>
+        
         <div className="container-hero relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-center lg:text-right">
@@ -319,12 +331,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 </div>
               </div>
 
-              <h1 className="typography-hero text-6xl md:text-8xl mb-8 animate-slide-up animate-delay-1">
+              {/* REDUCED Hero Title */}
+              <h1 className="typography-hero text-4xl md:text-6xl mb-6 animate-slide-up animate-delay-1">
                 {content?.headline || formData.businessName}
               </h1>
 
-              <div className="glass-card p-6 mb-8 animate-slide-up animate-delay-2">
-                <p className="typography-body text-xl text-white leading-relaxed">
+              {/* REDUCED Subtitle */}
+              <div className="glass-card p-6 mb-6 animate-slide-up animate-delay-2">
+                <p className="typography-body text-lg text-white leading-relaxed">
                   {content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
                 </p>
               </div>
@@ -336,7 +350,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             </div>
 
             <div className="hidden lg:block animate-scale-in animate-delay-4">
-              <div className="glass-card p-8">
+              <div className="glass-card p-8 transform-3d">
                 <div className="grid grid-cols-2 gap-4">
                   {[
                     { icon: <Award className="w-8 h-8" />, title: 'איכות מובטחת' },
@@ -344,7 +358,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                     { icon: <Zap className="w-8 h-8" />, title: 'ביצוע מהיר' },
                     { icon: <Clock className="w-8 h-8" />, title: 'זמינות תמידית' }
                   ].map((item, index) => (
-                    <div key={index} className="text-center p-4">
+                    <div key={index} className="text-center p-4 depth-card">
                       <div className="icon-glass mx-auto mb-3 text-blue-400">
                         {item.icon}
                       </div>
@@ -362,7 +376,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     );
   }
 
-  // Default 3D Background Style - Enhanced
+  // DEFAULT 3D Background - REDUCED text size
   return (
     <section className="hero-3d section-hero">
       <div className="floating-element"></div>
@@ -372,7 +386,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       <div className="container-hero relative z-10">
         <div className="text-center">
           {/* Trust Indicators */}
-          <div className="flex items-center justify-center gap-6 mb-8 animate-slide-up">
+          <div className="flex items-center justify-center gap-6 mb-6 animate-slide-up">
             <div className="glass-card px-4 py-2">
               <div className="flex items-center gap-2">
                 <Star className="w-4 h-4 text-yellow-400 fill-current" />
@@ -387,19 +401,19 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             </div>
           </div>
 
-          {/* Main Hero Content */}
-          <h1 className="typography-hero text-7xl md:text-9xl mb-8 animate-slide-up animate-delay-1">
+          {/* REDUCED Main Hero Content */}
+          <h1 className="typography-hero text-4xl md:text-6xl mb-6 animate-slide-up animate-delay-1">
             {content?.headline || formData.businessName}
           </h1>
 
-          <div className="glass-card p-8 max-w-5xl mx-auto mb-12 animate-slide-up animate-delay-2">
-            <p className="typography-body text-xl md:text-2xl text-white leading-relaxed">
+          <div className="glass-card p-6 max-w-5xl mx-auto mb-8 animate-slide-up animate-delay-2">
+            <p className="typography-body text-lg md:text-xl text-white leading-relaxed">
               {content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
             </p>
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
             {renderCTAButton(true)}
             {renderCTAButton(false)}
           </div>
@@ -413,7 +427,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               { number: '24/7', label: 'זמינות' }
             ].map((stat, index) => (
               <div key={index} className="glass-card p-6 text-center">
-                <div className="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">
+                <div className="typography-modern text-2xl md:text-3xl font-bold text-white mb-2">
                   {stat.number}
                 </div>
                 <div className="typography-body text-gray-300 text-sm">
