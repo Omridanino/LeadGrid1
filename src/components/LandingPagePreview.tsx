@@ -32,13 +32,16 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     'linear-gradient(135deg, #fad0c4 0%, #ffd1ff 100%)'
   ];
 
-  // Animated backgrounds
+  // Animated backgrounds for animated style
   const animatedBackgrounds = [
     'radial-gradient(circle at 20% 80%, #120078 0%, #9d0208 50%, #f48c06 100%)',
     'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
     'conic-gradient(from 0deg at 50% 50%, #ff006e, #fb5607, #ffbe0b, #8338ec)',
     'radial-gradient(circle at 50% 50%, #667eea 0%, #764ba2 50%, #f2994a 100%)',
-    'linear-gradient(45deg, #fa709a, #fee140, #43e97b, #38f9d7)'
+    'linear-gradient(45deg, #fa709a, #fee140, #43e97b, #38f9d7)',
+    'linear-gradient(270deg, #8b5cf6, #06b6d4, #10b981, #f59e0b)',
+    'radial-gradient(ellipse at top, #e11d48, #7c3aed, #2563eb)',
+    'conic-gradient(from 90deg, #ef4444, #f97316, #eab308, #22c55e, #06b6d4, #8b5cf6, #ef4444)'
   ];
 
   // Business type to image mapping
@@ -102,7 +105,9 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     }
   };
 
+  // קבלת האלמנטים שנבחרו בשאלון
   const selectedElements = formData?.selectedElements || [];
+  console.log('Selected elements:', selectedElements);
 
   return (
     <div className="w-full bg-gray-900 text-white overflow-y-auto max-h-screen">
@@ -224,33 +229,36 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         </section>
       )}
 
-      {/* Gallery Section */}
+      {/* Gallery Section - מוצג רק אם נבחר */}
       {selectedElements.includes('gallery') && (
         <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
           <div className="container mx-auto">
             <h2 className="text-4xl font-bold mb-12 text-center" style={{ color: currentColors.featuresColor }}>
               <Image className="w-8 h-8 inline-block mr-3" />
-              גלריית העבודות שלנו
+              {content?.sections?.gallery?.title || 'גלריית העבודות שלנו'}
             </h2>
             <div className="grid md:grid-cols-3 gap-6">
-              {[1, 2, 3, 4, 5, 6].map((item) => (
-                <div key={item} className="relative group overflow-hidden rounded-lg aspect-square">
-                  <img 
-                    src={`https://images.unsplash.com/photo-150000000${item}?w=400&h=400&fit=crop`}
-                    alt={`עבודה ${item}`}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <p className="text-white font-semibold">עבודה {item}</p>
+              {[1, 2, 3, 4, 5, 6].map((item) => {
+                const galleryImage = content?.sections?.gallery?.images?.[item - 1];
+                return (
+                  <div key={item} className="relative group overflow-hidden rounded-lg aspect-square">
+                    <img 
+                      src={galleryImage?.url || `https://images.unsplash.com/photo-150000000${item}?w=400&h=400&fit=crop`}
+                      alt={galleryImage?.description || `עבודה ${item}`}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <p className="text-white font-semibold">{galleryImage?.description || `עבודה ${item}`}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
       )}
 
-      {/* Process Section */}
+      {/* Process Section - מוצג רק אם נבחר */}
       {selectedElements.includes('process') && (
         <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
           <div className="container mx-auto">
@@ -287,7 +295,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         </section>
       )}
 
-      {/* About Section */}
+      {/* About Section - מוצג רק אם נבחר */}
       {selectedElements.includes('about') && (
         <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
           <div className="container mx-auto">
@@ -317,14 +325,14 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       )}
 
       {/* Testimonials Section */}
-      {content?.sections?.testimonials && (
+      {content?.sections?.testimonials && content.sections.testimonials.some((t: any) => t.name && t.content) && (
         <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
           <div className="container mx-auto">
             <h2 className="text-4xl font-bold mb-12 text-center" style={{ color: currentColors.featuresColor }}>
               מה הלקוחות שלנו אומרים
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
-              {content.sections.testimonials.map((testimonial: any, index: number) => (
+              {content.sections.testimonials.filter((t: any) => t.name && t.content).map((testimonial: any, index: number) => (
                 <Card key={index} className="bg-gray-800/50 border-gray-700">
                   <CardContent className="p-6">
                     <div className="flex mb-4">
@@ -343,9 +351,11 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                         <p className="font-semibold" style={{ color: currentColors.featuresColor }}>
                           {testimonial.name}
                         </p>
-                        <p className="text-sm" style={{ color: currentColors.featuresTextColor }}>
-                          {testimonial.role}
-                        </p>
+                        {testimonial.role && (
+                          <p className="text-sm" style={{ color: currentColors.featuresTextColor }}>
+                            {testimonial.role}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </CardContent>
