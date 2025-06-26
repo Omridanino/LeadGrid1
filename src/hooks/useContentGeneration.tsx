@@ -38,6 +38,162 @@ export const useContentGeneration = (formData: any) => {
       return variations[category][Math.floor(Math.random() * variations[category].length)] || baseText;
     };
 
+    // Get appropriate style based on business type
+    const getWhyChooseStyle = () => {
+      const lowerBusinessType = businessType.toLowerCase();
+      
+      if (lowerBusinessType.includes('אדריכל') || lowerBusinessType.includes('עיצוב') || lowerBusinessType.includes('בניה')) {
+        return 'architecture';
+      } else if (lowerBusinessType.includes('רפואה') || lowerBusinessType.includes('בריאות') || lowerBusinessType.includes('דוקטור')) {
+        return 'medical';
+      } else if (lowerBusinessType.includes('טכנולוגיה') || lowerBusinessType.includes('תוכנה') || lowerBusinessType.includes('מחשבים')) {
+        return 'tech';
+      } else if (lowerBusinessType.includes('חינוך') || lowerBusinessType.includes('הוראה') || lowerBusinessType.includes('לימודים')) {
+        return 'education';
+      } else if (lowerBusinessType.includes('מזון') || lowerBusinessType.includes('מסעדה') || lowerBusinessType.includes('קייטרינג')) {
+        return 'food';
+      } else if (lowerBusinessType.includes('אופנה') || lowerBusinessType.includes('ביגוד') || lowerBusinessType.includes('יופי')) {
+        return 'fashion';
+      } else if (lowerBusinessType.includes('משפטים') || lowerBusinessType.includes('עורך דין') || lowerBusinessType.includes('יעוץ')) {
+        return 'legal';
+      } else if (lowerBusinessType.includes('נדלן') || lowerBusinessType.includes('השקעות') || lowerBusinessType.includes('בית')) {
+        return 'realestate';
+      } else if (lowerBusinessType.includes('ספורט') || lowerBusinessType.includes('כושר') || lowerBusinessType.includes('אימון')) {
+        return 'fitness';
+      } else if (lowerBusinessType.includes('אמנות') || lowerBusinessType.includes('תרבות') || lowerBusinessType.includes('יצירה')) {
+        return 'creative';
+      } else {
+        return 'general';
+      }
+    };
+
+    const whyChooseStyles = {
+      architecture: {
+        title: "למה לבחור בנו לפרויקט שלכם?",
+        items: [
+          { text: "מומחיות בתכנון אדריכלי מתקדם", icon: "building-line" },
+          { text: "שירות אדריכלי ברמה הגבוהה ביותר", icon: "pencil-ruler-2-line" },
+          { text: "פתרונות יצירתיים ומותאמים אישית", icon: "lightbulb-line" },
+          { text: "ליווי מלא לאורך כל הפרויקט", icon: "team-line" },
+          { text: "ניסיון רב שנים בפרויקטים מורכבים", icon: "award-line" },
+          { text: "עמידה בתקציב ולוחות זמנים", icon: "time-line" }
+        ]
+      },
+      medical: {
+        title: "למה לבחור בנו לבריאות שלכם?",
+        items: [
+          { text: "רפואה מתקדמת וטכנולוגיה חדישה", icon: "stethoscope-line" },
+          { text: "צוות רפואי מקצועי ומנוסה", icon: "user-heart-line" },
+          { text: "טיפול אישי ומסור לכל מטופל", icon: "heart-line" },
+          { text: "זמינות 24/7 למקרי חירום", icon: "phone-line" },
+          { text: "מחירים הוגנים וביטוח בריאות", icon: "money-dollar-circle-line" },
+          { text: "מתקנים מתקדמים ונקיים", icon: "hospital-line" }
+        ]
+      },
+      tech: {
+        title: "למה לבחור בנו לפתרונות טכנולוגיים?",
+        items: [
+          { text: "טכנולוגיות מתקדמות וחדשניות", icon: "rocket-line" },
+          { text: "פיתוח תוכנה מותאם לצרכים", icon: "code-line" },
+          { text: "תמיכה טכנית מקצועית 24/7", icon: "customer-service-line" },
+          { text: "אבטחת מידע ברמה הגבוהה", icon: "shield-check-line" },
+          { text: "ביצועים מהירים ויציבים", icon: "flashlight-line" },
+          { text: "עדכונים שוטפים ותחזוקה", icon: "settings-3-line" }
+        ]
+      },
+      education: {
+        title: "למה לבחור בנו ללימודים?",
+        items: [
+          { text: "צוות הוראה מקצועי ומנוסה", icon: "graduation-cap-line" },
+          { text: "שיטות הוראה חדשניות ומותאמות", icon: "book-open-line" },
+          { text: "ליווי אישי לכל תלמיד", icon: "user-line" },
+          { text: "תוצאות לימודיות מוכחות", icon: "trophy-line" },
+          { text: "סביבת לימודים תומכת ומעודדת", icon: "team-line" },
+          { text: "גישה למשאבים וכלים מתקדמים", icon: "computer-line" }
+        ]
+      },
+      food: {
+        title: "למה לבחור בנו לחוויית הקולינרית?",
+        items: [
+          { text: "מזון טרי ואיכותי ביותר", icon: "restaurant-line" },
+          { text: "שפים מקצועיים ומנוסים", icon: "user-star-line" },
+          { text: "תפריט מגוון ומתחדש", icon: "file-list-3-line" },
+          { text: "שירות מהיר ואדיב", icon: "customer-service-2-line" },
+          { text: "אווירה נעימה ומזמינה", icon: "emotion-happy-line" },
+          { text: "מחירים הוגנים ומשתלמים", icon: "price-tag-3-line" }
+        ]
+      },
+      fashion: {
+        title: "למה לבחור בנו לסטייל המושלם?",
+        items: [
+          { text: "אופנה עדכנית ומגמות חמות", icon: "shirt-line" },
+          { text: "איכות בדים ותפירה מעולה", icon: "scissors-line" },
+          { text: "עיצובים ייחודיים ובלעדיים", icon: "palette-line" },
+          { text: "התאמה אישית למידות", icon: "ruler-line" },
+          { text: "שירות אישי ויעוץ סטייל", icon: "user-heart-line" },
+          { text: "מחירים נגישים לכל כיס", icon: "wallet-3-line" }
+        ]
+      },
+      legal: {
+        title: "למה לבחור בנו לייצוג משפטי?",
+        items: [
+          { text: "ניסיון משפטי רב ומוכח", icon: "scales-3-line" },
+          { text: "ייצוג מקצועי בכל התחומים", icon: "briefcase-line" },
+          { text: "יעוץ משפטי זמין ונגיש", icon: "question-answer-line" },
+          { text: "שקיפות מלאה ויושרה", icon: "eye-line" },
+          { text: "התמחות בתחומים מורכבים", icon: "focus-3-line" },
+          { text: "תוצאות מוכחות בבתי משפט", icon: "government-line" }
+        ]
+      },
+      realestate: {
+        title: "למה לבחור בנו לנדלן?",
+        items: [
+          { text: "ידע עמוק בשוק הנדלן", icon: "home-4-line" },
+          { text: "רשת קשרים נרחבת ומקצועית", icon: "links-line" },
+          { text: "שירות מלא מהחיפוש לעסקה", icon: "hand-heart-line" },
+          { text: "ייעוץ השקעות מקצועי", icon: "line-chart-line" },
+          { text: "שקיפות ויושרה בכל עסקה", icon: "checkbox-circle-line" },
+          { text: "תמיכה גם אחרי החתימה", icon: "customer-service-line" }
+        ]
+      },
+      fitness: {
+        title: "למה לבחור בנו לכושר ובריאות?",
+        items: [
+          { text: "מדרכים מקצועיים ומוסמכים", icon: "run-line" },
+          { text: "תוכניות אימון מותאמות אישית", icon: "heart-pulse-line" },
+          { text: "ציוד מתקדם ומתקני ספורט", icon: "dumbbell-line" },
+          { text: "מעקב התקדמות ותוצאות", icon: "bar-chart-line" },
+          { text: "אווירה מוטיבציונית ותומכת", icon: "team-line" },
+          { text: "גמישות בזמנים ובמיקומים", icon: "time-line" }
+        ]
+      },
+      creative: {
+        title: "למה לבחור בנו ליצירה ואמנות?",
+        items: [
+          { text: "יצירתיות ללא גבולות", icon: "brush-line" },
+          { text: "אמנים ויצרנים מקצועיים", icon: "user-star-line" },
+          { text: "חדשנות ורעיונות מקוריים", icon: "lightbulb-line" },
+          { text: "איכות ביצוע ברמה הגבוהה", icon: "award-line" },
+          { text: "התאמה לחזון האישי שלכם", icon: "eye-line" },
+          { text: "ליווי מקצועי לאורך התהליך", icon: "hand-heart-line" }
+        ]
+      },
+      general: {
+        title: "למה כדאי לבחור בנו?",
+        items: [
+          { text: "שירות מקצועי ואמין", icon: "star-line" },
+          { text: "ניסיון רב שנים בתחום", icon: "award-line" },
+          { text: "תמיכה 24/7 לכל שאלה", icon: "headphone-line" },
+          { text: "מחירים הוגנים ושקופים", icon: "price-tag-line" },
+          { text: "יחס אישי לכל לקוח", icon: "user-heart-line" },
+          { text: "תוצאות מוכחות ומספקות", icon: "checkbox-circle-line" }
+        ]
+      }
+    };
+
+    const selectedStyle = getWhyChooseStyle();
+    const whyChooseUsContent = whyChooseStyles[selectedStyle];
+
     return {
       badge: `${businessType} מקצועי`,
       headline: `${businessName} - ${generateVariedContent('הפתרון המושלם עבורכם', 'service')}`,
@@ -106,20 +262,8 @@ export const useContentGeneration = (formData: any) => {
 
       contactTitle: "בואו נתחיל לעבוד יחד",
       
-      // Add default Why Choose Us section
-      whyChooseUs: {
-        title: "למה כדאי לבחור בנו?",
-        items: [
-          { text: "מומחיות בתחום האדריכלות הגבוהה ביותר", icon: "award-line" },
-          { text: "שירותי אדריכל ברמה הגבוהה ביותר", icon: "star-line" },
-          { text: "שירות אדריכלי מקצועי ואמין", icon: "shield-check-line" },
-          { text: "פתרונות אדריכלים מותאמים אישית", icon: "settings-3-line" },
-          { text: "מומחיות בתחום האדריכלות", icon: "palette-line" },
-          { text: "שירותי אדריכל ברמה הגבוהה ביותר", icon: "rocket-line" },
-          { text: "מומחיות בתחום האדריכלות", icon: "thumb-up-line" },
-          { text: "שירות אדריכלי מקצועי ואמין", icon: "heart-line" }
-        ]
-      },
+      // Add the Why Choose Us section
+      whyChooseUs: whyChooseUsContent,
       
       creativeElements: []
     };

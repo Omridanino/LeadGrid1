@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -486,168 +485,69 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   );
 
   const renderWhyChooseUs = (whyChoose: any) => (
-    <div className="p-16 relative overflow-hidden" style={{ backgroundColor: currentColors.background }}>
-      <div className="absolute inset-0 opacity-5">
-        <div 
-          className="absolute top-20 left-20 w-64 h-64 rounded-full animate-pulse"
-          style={{ 
-            background: `conic-gradient(from 45deg, ${currentColors.primary}, ${currentColors.secondary}, ${currentColors.accent}, ${currentColors.primary})`,
-            transform: 'perspective(1000px) rotateX(45deg) rotateY(45deg) rotateZ(15deg)',
-            filter: 'blur(4px)'
-          }}
-        ></div>
-        <div 
-          className="absolute bottom-20 right-20 w-48 h-48 rounded-full animate-pulse"
-          style={{ 
-            background: `linear-gradient(135deg, ${currentColors.secondary}60, ${currentColors.accent}60)`,
-            animationDelay: '0.7s',
-            transform: 'perspective(800px) rotateX(-30deg) rotateY(60deg)',
-            filter: 'blur(3px)'
-          }}
-        ></div>
-        <div 
-          className="absolute top-1/2 left-1/2 w-80 h-80 rounded-full"
-          style={{ 
-            background: `conic-gradient(from 0deg, transparent, ${currentColors.primary}20, transparent)`,
-            animation: 'spin 20s linear infinite',
-            transform: 'perspective(1000px) rotateX(75deg) translate(-50%, -50%)'
-          }}
-        ></div>
-      </div>
-
+    <div className="p-8 relative overflow-hidden" style={{ backgroundColor: currentColors.background }}>
       <div className="relative z-10">
-        <h2 className="text-5xl font-bold mb-6 text-center" style={{ color: currentColors.text }}>
-          <Award className="w-12 h-12 ml-4 inline animate-bounce" style={{ color: currentColors.accent }} />
+        <h2 className="text-3xl font-bold mb-6 text-center" style={{ color: currentColors.text }}>
+          <Award className="w-8 h-8 ml-4 inline" style={{ color: currentColors.accent }} />
           {whyChoose.title}
         </h2>
-        <p className="text-center text-xl mb-16 opacity-80" style={{ color: currentColors.text }}>
+        <p className="text-center text-lg mb-12 opacity-80" style={{ color: currentColors.text }}>
           הסיבות המובילות לבחור בנו מבין כל האפשרויות
         </p>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {whyChoose.items.map((item: any, index: number) => (
             <div 
               key={index}
-              className="group relative p-10 rounded-3xl transition-all duration-700 hover:scale-110 cursor-pointer"
+              className="group relative p-6 rounded-2xl transition-all duration-300 hover:scale-105 cursor-pointer border"
               style={{ 
-                background: `linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05))`,
-                border: `3px solid ${currentColors.primary}40`,
-                backdropFilter: 'blur(20px)',
-                boxShadow: `0 25px 80px rgba(0,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.2)`,
-                transform: 'perspective(1000px) rotateX(15deg) rotateY(8deg)'
+                background: 'rgba(255,255,255,0.05)',
+                borderColor: `${currentColors.primary}40`,
+                backdropFilter: 'blur(10px)'
               }}
             >
-              <div className="relative mb-8">
+              <div className="relative mb-4">
                 <div 
-                  className="w-28 h-28 rounded-3xl flex items-center justify-center mx-auto group-hover:scale-125 group-hover:rotate-12 transition-all duration-700 relative"
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-all duration-300"
                   style={{ 
-                    background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary} 50%, ${currentColors.accent})`,
-                    boxShadow: `0 25px 50px ${currentColors.primary}60, inset 0 3px 0 rgba(255,255,255,0.4)`,
-                    transform: 'perspective(500px) rotateX(25deg) rotateY(15deg)'
+                    background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})`,
+                    boxShadow: `0 8px 20px ${currentColors.primary}40`
                   }}
                 >
-                  <div 
-                    className="absolute inset-0 rounded-3xl transform translate-y-3 translate-x-2 -z-10"
-                    style={{ 
-                      background: `linear-gradient(135deg, ${currentColors.primary}80, ${currentColors.secondary}80)`,
-                      filter: 'blur(12px)'
-                    }}
-                  ></div>
-                  <div 
-                    className="absolute inset-0 rounded-3xl transform translate-y-6 translate-x-4 -z-20"
-                    style={{ 
-                      background: `linear-gradient(135deg, ${currentColors.primary}40, ${currentColors.secondary}40)`,
-                      filter: 'blur(20px)'
-                    }}
-                  ></div>
-                  
                   <i 
-                    className={`ri-${item.icon} text-5xl text-white group-hover:scale-125 transition-all duration-700`}
-                    style={{ 
-                      textShadow: '0 6px 12px rgba(0,0,0,0.6)',
-                      transform: 'perspective(200px) rotateX(-15deg)'
-                    }}
+                    className={`ri-${item.icon} text-2xl text-white`}
+                    style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
                   ></i>
-                  
-                  <div 
-                    className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"
-                    style={{ 
-                      background: `linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.5) 50%, transparent 70%)`,
-                      animation: 'shimmer 3s infinite'
-                    }}
-                  ></div>
                 </div>
-
-                <div className="absolute -top-3 -right-3 w-6 h-6 rounded-full opacity-80 animate-pulse" 
-                     style={{ backgroundColor: currentColors.accent, boxShadow: `0 0 20px ${currentColors.accent}` }}></div>
-                <div className="absolute -bottom-2 -left-2 w-4 h-4 rounded-full opacity-60 animate-pulse" 
-                     style={{ backgroundColor: currentColors.secondary, animationDelay: '0.5s', boxShadow: `0 0 15px ${currentColors.secondary}` }}></div>
-                <div className="absolute top-1/2 -right-4 w-3 h-3 rounded-full opacity-40 animate-pulse" 
-                     style={{ backgroundColor: currentColors.primary, animationDelay: '1s', boxShadow: `0 0 12px ${currentColors.primary}` }}></div>
               </div>
               
-              <div className="text-center relative">
+              <div className="text-center">
                 <p 
-                  className="text-xl leading-relaxed font-bold group-hover:text-opacity-100 transition-all duration-700"
-                  style={{ 
-                    color: currentColors.text,
-                    textShadow: '0 3px 6px rgba(0,0,0,0.4)',
-                    transform: 'perspective(500px) rotateX(8deg)'
-                  }}
+                  className="text-sm leading-relaxed font-medium"
+                  style={{ color: currentColors.text }}
                 >
                   {item.text}
                 </p>
-                
-                <div 
-                  className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-40 transition-opacity duration-1000 -z-10"
-                  style={{ 
-                    background: `radial-gradient(ellipse at center, ${currentColors.primary}50, ${currentColors.secondary}30, transparent 70%)`
-                  }}
-                ></div>
               </div>
-
-              <div 
-                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-all duration-700 -z-20"
-                style={{ 
-                  background: `linear-gradient(145deg, ${currentColors.primary}40, ${currentColors.secondary}40, ${currentColors.accent}40)`,
-                  filter: 'blur(3px)',
-                  transform: 'scale(1.08)'
-                }}
-              ></div>
-
-              <div 
-                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-80 transition-opacity duration-500 animate-pulse -z-30"
-                style={{ 
-                  boxShadow: `0 0 40px ${currentColors.accent}80, inset 0 0 30px ${currentColors.primary}40`
-                }}
-              ></div>
             </div>
           ))}
         </div>
 
-        <div className="text-center mt-20">
-          <p className="text-2xl mb-10 opacity-90" style={{ color: currentColors.text }}>
+        <div className="text-center mt-12">
+          <p className="text-lg mb-6 opacity-90" style={{ color: currentColors.text }}>
             מוכנים להתחיל את המסע איתנו?
           </p>
           <Button 
             size="lg"
-            className="px-20 py-8 text-2xl font-bold rounded-3xl hover:scale-110 transition-all duration-700 shadow-2xl relative overflow-hidden"
+            className="px-12 py-4 text-lg font-bold rounded-xl hover:scale-105 transition-all duration-300 shadow-lg"
             style={{ 
-              background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary}, ${currentColors.secondary})`,
+              background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary})`,
               color: 'white',
-              boxShadow: `0 20px 60px ${currentColors.accent}60`,
-              transform: 'perspective(500px) rotateX(10deg)'
+              boxShadow: `0 8px 20px ${currentColors.accent}40`
             }}
             onClick={handleCtaClick}
           >
-            <span className="relative z-10">בואו נתחיל עכשיו ✨</span>
-            <div 
-              className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
-              style={{
-                background: `linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%)`,
-                animation: 'shimmer 2s infinite'
-              }}
-            ></div>
+            בואו נתחיל עכשיו ✨
           </Button>
         </div>
       </div>
