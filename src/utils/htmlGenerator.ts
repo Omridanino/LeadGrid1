@@ -12,13 +12,31 @@ export const generateHtmlFile = (
   const ctaText = content?.cta || "בואו נתחיל לעבוד יחד";
   const selectedElements = formData?.selectedElements || [];
 
+  const getBusinessImage = (businessType: string) => {
+    const businessImages = {
+      'עורך דין': 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1920&h=1080&fit=crop',
+      'רופא': 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=1920&h=1080&fit=crop',
+      'מעצב גרפי': 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=1920&h=1080&fit=crop',
+      'יועץ עסקי': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1920&h=1080&fit=crop',
+      'מורה פרטי': 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1920&h=1080&fit=crop',
+      'מאמן כושר': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&h=1080&fit=crop',
+      'צלם': 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=1920&h=1080&fit=crop',
+      'נהג': 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1920&h=1080&fit=crop',
+      'מספר': 'https://images.unsplash.com/photo-1562004760-aceed7bb0fe3?w=1920&h=1080&fit=crop',
+      'default': 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=1080&fit=crop'
+    };
+
+    return businessImages[businessType as keyof typeof businessImages] || businessImages.default;
+  };
+
   const getHeroBackground = () => {
-    if (formData?.heroStyle === 'image' && heroImageUrl) {
-      return `background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('${heroImageUrl}'); background-size: cover; background-position: center;`;
+    if (formData?.heroStyle === 'image') {
+      const imageUrl = heroImageUrl || getBusinessImage(formData.businessType);
+      return `background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('${imageUrl}'); background-size: cover; background-position: center;`;
     } else if (formData?.heroStyle === 'animated') {
       return `background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); background-size: 400% 400%; animation: gradient 8s ease infinite;`;
     } else {
-      return `background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);`;
+      return `background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); transition: background 2s ease-in-out;`;
     }
   };
 
@@ -26,10 +44,12 @@ export const generateHtmlFile = (
     if (!content?.sections?.emotionalSection) return '';
     
     return `
-    <section class="tech-section py-20">
-      <div class="container">
-        <h2 class="tech-title text-center mb-8">${content.sections.emotionalSection.title}</h2>
-        <p class="text-xl text-center max-w-4xl mx-auto leading-relaxed" style="color: ${colors.featuresTextColor};">
+    <section class="py-20 px-4" style="background-color: ${colors.background}">
+      <div class="container mx-auto text-center">
+        <h2 class="text-4xl font-bold mb-8 tech-title" style="color: ${colors.featuresColor}">
+          ${content.sections.emotionalSection.title}
+        </h2>
+        <p class="text-xl max-w-4xl mx-auto leading-relaxed" style="color: ${colors.featuresTextColor};">
           ${content.sections.emotionalSection.content}
         </p>
       </div>
@@ -40,16 +60,18 @@ export const generateHtmlFile = (
     if (!content?.sections?.whyUs || !content.sections.whyUs.reasons) return '';
     
     return `
-    <section class="tech-section py-20">
-      <div class="container">
-        <h2 class="tech-title text-center mb-12">${content.sections.whyUs.title}</h2>
+    <section class="py-20 px-4" style="background-color: ${colors.background}">
+      <div class="container mx-auto">
+        <h2 class="text-4xl font-bold mb-12 text-center tech-title" style="color: ${colors.featuresColor}">
+          ${content.sections.whyUs.title}
+        </h2>
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           ${content.sections.whyUs.reasons.map((reason: any) => `
             <div class="feature-card tech-glow hover:scale-105 transition-all duration-300">
               <div class="feature-icon tech-glow floating-animation" style="background-color: ${colors.primary}">
                 🏆
               </div>
-              <h3 style="color: ${colors.featuresColor}">${reason.title}</h3>
+              <h3 class="text-xl font-semibold mb-3" style="color: ${colors.featuresColor}">${reason.title}</h3>
               <p style="color: ${colors.featuresTextColor}">${reason.description}</p>
             </div>
           `).join('')}
@@ -62,14 +84,16 @@ export const generateHtmlFile = (
     if (!content?.sections?.whatWeGive || !content.sections.whatWeGive.services) return '';
     
     return `
-    <section class="tech-section py-20">
-      <div class="container">
-        <h2 class="tech-title text-center mb-12">${content.sections.whatWeGive.title}</h2>
+    <section class="py-20 px-4" style="background-color: ${colors.background}">
+      <div class="container mx-auto">
+        <h2 class="text-4xl font-bold mb-12 text-center tech-title" style="color: ${colors.featuresColor}">
+          ${content.sections.whatWeGive.title}
+        </h2>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           ${content.sections.whatWeGive.services.map((service: any) => `
             <div class="service-card tech-glow hover:scale-105 transition-all duration-300">
               <div class="service-check" style="color: ${colors.primary}">✓</div>
-              <h3 style="color: ${colors.featuresColor}">${service.title}</h3>
+              <h3 class="text-lg font-semibold mb-3" style="color: ${colors.featuresColor}">${service.title}</h3>
               <p style="color: ${colors.featuresTextColor}">${service.description}</p>
             </div>
           `).join('')}
@@ -82,9 +106,9 @@ export const generateHtmlFile = (
     if (!selectedElements.includes('gallery') || !content?.sections?.gallery?.images?.length) return '';
     
     return `
-    <section class="tech-section py-20">
-      <div class="container">
-        <h2 class="tech-title text-center mb-12">
+    <section class="py-20 px-4" style="background-color: ${colors.background}">
+      <div class="container mx-auto">
+        <h2 class="text-4xl font-bold mb-12 text-center tech-title" style="color: ${colors.featuresColor}">
           🖼️ ${content.sections.gallery.title || 'גלריית העבודות שלנו'}
         </h2>
         <div class="gallery-grid">
@@ -112,9 +136,9 @@ export const generateHtmlFile = (
     ];
     
     return `
-    <section class="tech-section py-20">
-      <div class="container">
-        <h2 class="tech-title text-center mb-12">
+    <section class="py-20 px-4" style="background-color: ${colors.background}">
+      <div class="container mx-auto">
+        <h2 class="text-4xl font-bold mb-12 text-center tech-title" style="color: ${colors.featuresColor}">
           💻 תהליך העבודה הטכנולוגי שלנו
         </h2>
         <div class="grid md:grid-cols-4 gap-8">
@@ -124,7 +148,7 @@ export const generateHtmlFile = (
                 ${process.icon}
               </div>
               <div class="process-number" style="color: ${colors.primary}">${process.step}</div>
-              <h3 style="color: ${colors.featuresColor}">${process.title}</h3>
+              <h3 class="text-xl font-semibold mb-3" style="color: ${colors.featuresColor}">${process.title}</h3>
               <p style="color: ${colors.featuresTextColor}">${process.desc}</p>
             </div>
           `).join('')}
@@ -137,11 +161,11 @@ export const generateHtmlFile = (
     if (!selectedElements.includes('about')) return '';
     
     return `
-    <section class="tech-section py-20">
-      <div class="container">
+    <section class="py-20 px-4" style="background-color: ${colors.background}">
+      <div class="container mx-auto">
         <div class="about-content">
           <div class="about-text">
-            <h2 class="tech-title mb-6">
+            <h2 class="text-4xl font-bold mb-6 tech-title" style="color: ${colors.aboutColor}">
               👥 ${content?.sections?.about?.title || 'קצת עלינו'}
             </h2>
             <p style="color: ${colors.aboutTextColor}; margin-bottom: 1.5rem;" class="text-lg mb-6">
@@ -165,9 +189,9 @@ export const generateHtmlFile = (
     if (!testimonials.length) return '';
     
     return `
-    <section class="tech-section py-20">
-      <div class="container">
-        <h2 class="tech-title text-center mb-12">מה הלקוחות שלנו אומרים</h2>
+    <section class="py-20 px-4" style="background-color: ${colors.background}">
+      <div class="container mx-auto">
+        <h2 class="text-4xl font-bold mb-12 text-center tech-title" style="color: ${colors.featuresColor}">מה הלקוחות שלנו אומרים</h2>
         <div class="testimonials-grid">
           ${testimonials.map((testimonial: any) => `
             <div class="testimonial-card tech-glow">
@@ -207,7 +231,7 @@ export const generateHtmlFile = (
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: white;
-            background: #111827;
+            background: ${colors.background};
             direction: rtl;
         }
         
@@ -247,6 +271,7 @@ export const generateHtmlFile = (
             text-align: center;
             z-index: 10;
             position: relative;
+            padding: 0 20px;
         }
         
         .tech-title {
@@ -295,33 +320,6 @@ export const generateHtmlFile = (
         .tech-glow {
             box-shadow: 0 0 30px rgba(59, 130, 246, 0.3), 0 0 60px rgba(59, 130, 246, 0.1);
             animation: pulse-glow 3s ease-in-out infinite;
-        }
-        
-        .tech-section {
-            padding: 80px 0;
-            background-color: ${colors.background};
-            position: relative;
-        }
-        
-        .tech-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-        }
-        
-        .tech-section h2 {
-            text-align: center;
-            margin-bottom: 3rem;
-            position: relative;
-            z-index: 1;
         }
         
         /* Grid Layouts */
@@ -373,11 +371,6 @@ export const generateHtmlFile = (
             font-size: 2rem;
         }
         
-        .feature-card h3 {
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-        
         /* Service Cards */
         .service-card {
             background: rgba(31, 41, 55, 0.5);
@@ -397,11 +390,6 @@ export const generateHtmlFile = (
             font-size: 1.5rem;
             font-weight: bold;
             margin-bottom: 10px;
-        }
-        
-        .service-card h3 {
-            margin-bottom: 10px;
-            font-size: 1.2rem;
         }
         
         /* Gallery */
@@ -474,11 +462,6 @@ export const generateHtmlFile = (
             margin-bottom: 10px;
         }
         
-        .process-card h3 {
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-        
         /* About Section */
         .about-content {
             display: grid;
@@ -532,7 +515,7 @@ export const generateHtmlFile = (
         /* Contact Section */
         .contact-section {
             padding: 80px 0;
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            background: ${colors.background};
             text-align: center;
         }
         
@@ -554,13 +537,17 @@ export const generateHtmlFile = (
         .text-center { text-align: center; }
         .text-lg { font-size: 1.125rem; }
         .text-xl { font-size: 1.25rem; }
+        .text-4xl { font-size: 2.25rem; }
         .mb-6 { margin-bottom: 1.5rem; }
         .mb-8 { margin-bottom: 2rem; }
         .mb-12 { margin-bottom: 3rem; }
         .py-20 { padding-top: 5rem; padding-bottom: 5rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
         .max-w-4xl { max-width: 56rem; }
         .mx-auto { margin-left: auto; margin-right: auto; }
         .leading-relaxed { line-height: 1.625; }
+        .font-bold { font-weight: bold; }
+        .font-semibold { font-weight: 600; }
         
         /* Animations */
         @keyframes gradient {
@@ -638,19 +625,19 @@ export const generateHtmlFile = (
     <!-- Contact Section -->
     <section class="contact-section" id="contact">
         <div class="container">
-            <h2 class="tech-title">${content?.contactTitle || 'בואו נתחיל לעבוד יחד'}</h2>
+            <h2 class="tech-title" style="color: ${colors.contactColor}">${content?.contactTitle || 'בואו נתחיל לעבוד יחד'}</h2>
             <div class="contact-info">
                 <div class="contact-item">
-                    <span>📞</span>
-                    <span>050-1234567</span>
+                    <span style="color: ${colors.primary}">📞</span>
+                    <span style="color: ${colors.contactTextColor}">050-1234567</span>
                 </div>
                 <div class="contact-item">
-                    <span>✉️</span>
-                    <span>info@business.co.il</span>
+                    <span style="color: ${colors.primary}">✉️</span>
+                    <span style="color: ${colors.contactTextColor}">info@business.co.il</span>
                 </div>
                 <div class="contact-item">
-                    <span>📍</span>
-                    <span>תל אביב, ישראל</span>
+                    <span style="color: ${colors.primary}">📍</span>
+                    <span style="color: ${colors.contactTextColor}">תל אביב, ישראל</span>
                 </div>
             </div>
             <a href="tel:0501234567" class="cta-button tech-glow floating-animation">צור קשר עכשיו</a>
