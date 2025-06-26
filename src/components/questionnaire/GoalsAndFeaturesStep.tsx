@@ -1,11 +1,13 @@
 
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { FormData } from "@/utils/questionnaireUtils";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface GoalsAndFeaturesStepProps {
-  formData: FormData;
+  formData: {
+    mainGoal: string;
+    keyFeatures: string;
+  };
   updateFormData: (field: string, value: string) => void;
 }
 
@@ -13,43 +15,31 @@ export const GoalsAndFeaturesStep = ({ formData, updateFormData }: GoalsAndFeatu
   return (
     <div className="space-y-6">
       <div>
-        <Label htmlFor="businessServices" className="text-white text-lg font-semibold mb-3 block">
-          מה השירותים שאתם מציעים? *
-        </Label>
+        <Label htmlFor="mainGoal" className="text-white font-semibold">המטרה העיקרית של הדף</Label>
+        <Select onValueChange={(value) => updateFormData('mainGoal', value)}>
+          <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+            <SelectValue placeholder="בחר מטרה עיקרית" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="sales">הגדלת מכירות</SelectItem>
+            <SelectItem value="leads">יצירת לידים</SelectItem>
+            <SelectItem value="awareness">הגדלת המודעות למותג</SelectItem>
+            <SelectItem value="signup">רישום לשירות</SelectItem>
+            <SelectItem value="contact">יצירת קשר</SelectItem>
+            <SelectItem value="booking">קביעת תורים</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div>
+        <Label htmlFor="keyFeatures" className="text-white font-semibold">מה מיוחד בעסק שלך?</Label>
         <Textarea
-          id="businessServices"
-          placeholder="תאר את השירותים או המוצרים העיקריים שלך (לדוגמה: ייעוץ עסקי, פיתוח אתרים, טיפול רפואי, וכו')"
-          value={formData.businessServices || ''}
-          onChange={(e) => updateFormData('businessServices', e.target.value)}
-          className="bg-gray-800 border-gray-600 text-white min-h-[100px]"
+          id="keyFeatures"
+          value={formData.keyFeatures}
+          onChange={(e) => updateFormData('keyFeatures', e.target.value)}
+          className="bg-gray-700 border-gray-600 text-white"
+          placeholder="כתב כמה נקודות על מה שעושה את העסק שלך מיוחד (איכות, מחיר, שירות, ניסיון, מיקום וכו')"
           rows={4}
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="businessAdvantages" className="text-white text-lg font-semibold mb-3 block">
-          מה 3 היתרונות העיקריים שלך? *
-        </Label>
-        <Textarea
-          id="businessAdvantages"
-          placeholder="כתב 3 יתרונות עיקריים שמבדילים אותך מהמתחרים&#10;לדוגמה:&#10;ניסיון של 10 שנים בתחום&#10;שירות אישי ומקצועי&#10;מחירים תחרותיים"
-          value={formData.businessAdvantages}
-          onChange={(e) => updateFormData('businessAdvantages', e.target.value)}
-          className="bg-gray-800 border-gray-600 text-white min-h-[120px]"
-          rows={5}
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="mainGoal" className="text-white text-lg font-semibold mb-3 block">
-          מה המטרה העיקרית של דף הנחיתה?
-        </Label>
-        <Input
-          id="mainGoal"
-          placeholder="לדוגמה: הגדלת מכירות, קבלת פניות, הרשמה לשירות"
-          value={formData.mainGoal}
-          onChange={(e) => updateFormData('mainGoal', e.target.value)}
-          className="bg-gray-800 border-gray-600 text-white"
         />
       </div>
     </div>

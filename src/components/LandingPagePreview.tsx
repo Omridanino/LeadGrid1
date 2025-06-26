@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,7 +34,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
       return 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
     } else if (businessType.includes('מסעדה') || businessType.includes('אוכל')) {
       return 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
-    } else if (businessType.includes('טכנולוגי') || businessType.includes('תוכנה') || businessType.includes('פיתוח')) {
+    } else if (businessType.includes('טכנולוגי') || businessType.includes('תוכנה')) {
       return 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
     } else if (businessType.includes('יועץ') || businessType.includes('ייעוץ')) {
       return 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
@@ -66,7 +67,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
               className="w-16 h-16 rounded-xl mb-4 flex items-center justify-center text-2xl"
               style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}
             >
-              <span className="text-white">{service.icon}</span>
+              {service.icon}
             </div>
             <h3 className="font-bold mb-2" style={{ color: currentColors.primary }}>{service.title}</h3>
             <p className="text-sm" style={{ color: currentColors.text }}>{service.desc}</p>
@@ -248,7 +249,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
               {content.cta}
             </Button>
 
-            {/* Stats with gradient from selected colors */}
+            {/* Stats with user selected colors */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 max-w-4xl mx-auto">
               {Object.entries(content.stats).map(([key, value], index) => (
                 <div 
@@ -457,3 +458,4 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
 };
 
 export default LandingPagePreview;
+

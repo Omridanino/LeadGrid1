@@ -3,7 +3,6 @@ export interface FormData {
   businessName: string;
   businessType: string;
   targetAudience: string;
-  businessServices: string;
   businessAdvantages: string;
   mainGoal: string;
   keyFeatures: string;
@@ -17,7 +16,6 @@ export const initialFormData: FormData = {
   businessName: "",
   businessType: "",
   targetAudience: "",
-  businessServices: "",
   businessAdvantages: "",
   mainGoal: "",
   keyFeatures: "",
@@ -32,7 +30,7 @@ export const getStepTitle = (step: number): string => {
     case 1:
       return "פרטי העסק";
     case 2:
-      return "שירותים ויתרונות";
+      return "יעדים ותכונות";
     case 3:
       return "מיתוג וצבעים";
     case 4:
@@ -45,5 +43,5 @@ export const getStepTitle = (step: number): string => {
 };
 
 export const validateRequiredFields = (formData: FormData): boolean => {
-  return !!(formData.businessName && formData.businessType && formData.businessServices && formData.businessAdvantages);
+  return !!(formData.businessName && formData.businessType);
 };
