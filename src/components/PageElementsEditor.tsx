@@ -5,12 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Edit, Trash2, Type, MessageSquare, Image, FileText, HelpCircle, Star, Upload } from "lucide-react";
+import { Plus, Edit, Trash2, Type, MessageSquare, Image, FileText, HelpCircle, Star, Upload, Award } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import IconSelector from "@/components/IconSelector";
 
 interface PageElement {
   id: string;
-  type: 'title' | 'text' | 'image' | 'testimonial' | 'faq' | 'blog';
+  type: 'title' | 'text' | 'image' | 'testimonial' | 'faq' | 'blog' | 'whychoose';
   content: any;
   order: number;
 }
@@ -75,6 +76,15 @@ const PageElementsEditor = ({ elements, onElementsChange, content, onContentChan
         return { question: 'שאלה חדשה?', answer: 'תשובה מפורטת כאן...' };
       case 'blog':
         return { title: 'כותרת הבלוג', excerpt: 'תקציר קצר...', content: 'תוכן הבלוג המלא...' };
+      case 'whychoose':
+        return { 
+          title: 'למה לבחור בנו?',
+          items: [
+            { text: 'שירות מקצועי ואמין', icon: 'star' },
+            { text: 'ניסיון רב שנים', icon: 'award' },
+            { text: 'תמיכה 24/7', icon: 'headphones' }
+          ]
+        };
       default:
         return {};
     }
@@ -87,7 +97,8 @@ const PageElementsEditor = ({ elements, onElementsChange, content, onContentChan
       image: 'תמונה',
       testimonial: 'ביקורת',
       faq: 'שאלה נפוצה',
-      blog: 'בלוג'
+      blog: 'בלוג',
+      whychoose: 'למה לבחור בנו'
     };
     return names[type];
   };
@@ -124,6 +135,31 @@ const PageElementsEditor = ({ elements, onElementsChange, content, onContentChan
         }
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const addWhyChooseItem = (elementId: string) => {
+    const element = elements.find(el => el.id === elementId);
+    if (element) {
+      const newItems = [...element.content.items, { text: 'סיבה חדשה', icon: 'star' }];
+      updateElement(elementId, { ...element.content, items: newItems });
+    }
+  };
+
+  const removeWhyChooseItem = (elementId: string, index: number) => {
+    const element = elements.find(el => el.id === elementId);
+    if (element) {
+      const newItems = element.content.items.filter((_: any, i: number) => i !== index);
+      updateElement(elementId, { ...element.content, items: newItems });
+    }
+  };
+
+  const updateWhyChooseItem = (elementId: string, index: number, field: string, value: string) => {
+    const element = elements.find(el => el.id === elementId);
+    if (element) {
+      const newItems = [...element.content.items];
+      newItems[index] = { ...newItems[index], [field]: value };
+      updateElement(elementId, { ...element.content, items: newItems });
     }
   };
 
@@ -240,6 +276,64 @@ const PageElementsEditor = ({ elements, onElementsChange, content, onContentChan
           </>
         )}
 
+        {element.type === 'whychoose' && (
+          <>
+            <Input
+              value={element.content.title}
+              onChange={(e) => updateElement(element.id, { ...element.content, title: e.target.value })}
+              placeholder="כותרת הסקשן"
+              className="bg-gray-600 text-white"
+            />
+            
+            <div className="space-y-3">
+              <Label className="text-white">פריטים:</Label>
+              {element.content.items.map((item: any, index: number) => (
+                <div key={index} className="p-3 bg-gray-600 rounded space-y-2">
+                  <div className="flex gap-2">
+                    <Input
+                      value={item.text}
+                      onChange={(e) => updateWhyChooseItem(element.id, index, 'text', e.target.value)}
+                      placeholder="טקסט הפריט"
+                      className="bg-gray-500 text-white flex-1"
+                    />
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => removeWhyChooseItem(element.id, index)}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <Label className="text-white text-sm">אייקון:</Label>
+                    <IconSelector
+                      selectedIcon={item.icon}
+                      onIconSelect={(icon) => updateWhyChooseItem(element.id, index, 'icon', icon)}
+                      triggerClassName="bg-gray-500 border-gray-400 text-white hover:bg-gray-400"
+                    />
+                    {item.icon && (
+                      <div className="flex items-center gap-1">
+                        <i className={`ri-${item.icon} text-lg text-white`}></i>
+                        <span className="text-xs text-gray-300">{item.icon}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+              
+              <Button
+                onClick={() => addWhyChooseItem(element.id)}
+                className="bg-green-600 hover:bg-green-700 w-full"
+                size="sm"
+              >
+                <Plus className="w-4 h-4 ml-2" />
+                הוסף פריט
+              </Button>
+            </div>
+          </>
+        )}
+
         {element.type === 'testimonial' && (
           <>
             <Input
@@ -340,6 +434,7 @@ const PageElementsEditor = ({ elements, onElementsChange, content, onContentChan
     { type: 'title' as const, icon: Type, label: 'כותרת' },
     { type: 'text' as const, icon: FileText, label: 'טקסט' },
     { type: 'image' as const, icon: Image, label: 'תמונה' },
+    { type: 'whychoose' as const, icon: Award, label: 'למה לבחור בנו' },
     { type: 'testimonial' as const, icon: MessageSquare, label: 'ביקורת' },
     { type: 'faq' as const, icon: HelpCircle, label: 'שאלה נפוצה' },
     { type: 'blog' as const, icon: Star, label: 'בלוג' },

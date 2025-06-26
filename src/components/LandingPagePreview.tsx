@@ -149,6 +149,40 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
     </div>
   );
 
+  const renderWhyChooseUs = (whyChoose: any) => (
+    <div className="p-8" style={{ backgroundColor: currentColors.background }}>
+      <h2 className="text-3xl font-bold mb-8 text-center" style={{ color: currentColors.text }}>
+        <Award className="w-8 h-8 ml-3 inline" style={{ color: currentColors.accent }} />
+        {whyChoose.title}
+      </h2>
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        {whyChoose.items.map((item: any, index: number) => (
+          <div 
+            key={index}
+            className="flex items-start p-6 rounded-xl hover:scale-105 transition-all duration-300 border"
+            style={{ 
+              backgroundColor: 'rgba(255,255,255,0.05)',
+              borderColor: `${currentColors.primary}40`
+            }}
+          >
+            <div 
+              className="w-12 h-12 rounded-xl flex items-center justify-center ml-4 flex-shrink-0 mt-1"
+              style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}
+            >
+              <i className={`ri-${item.icon} text-xl text-white`}></i>
+            </div>
+            <span 
+              className="text-sm leading-relaxed"
+              style={{ color: currentColors.text }}
+            >
+              {item.text}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
   const renderCreativeElements = () => {
     if (!content.creativeElements || content.creativeElements.length === 0) {
       return null;
@@ -156,6 +190,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
 
     return content.creativeElements.map((element: any, index: number) => {
       switch (element.type) {
+        case 'whychoose':
+          return <div key={index}>{renderWhyChooseUs(element.content)}</div>;
         case 'serviceCards':
           return <div key={index}>{renderServiceCards(element.content)}</div>;
         case 'timeline':

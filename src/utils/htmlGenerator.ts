@@ -1,181 +1,160 @@
+import { getHeroImageUrl } from "./heroImageUtils";
 
-export const generateHtmlFile = (content: any, colors: any, formData: any, getHeroImageUrl: () => string) => {
-  const getBusinessHeroImage = () => {
-    const businessType = formData.businessType?.toLowerCase() || '';
-    
-    if (businessType.includes('קפה') || businessType.includes('בית קפה')) {
-      return 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
-    } else if (businessType.includes('מסעדה') || businessType.includes('אוכל')) {
-      return 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
-    } else if (businessType.includes('טכנולוגי') || businessType.includes('תוכנה')) {
-      return 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
-    } else if (businessType.includes('יועץ') || businessType.includes('ייעוץ')) {
-      return 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
-    } else if (businessType.includes('רפואה') || businessType.includes('בריאות')) {
-      return 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
-    } else if (businessType.includes('חנות') || businessType.includes('אופנה')) {
-      return 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
-    }
-    
-    return 'https://images.unsplash.com/photo-1497486751825-1233686d5d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
+const renderServiceCards = (serviceCards: any, colors: any) => {
+  return `
+    <div class="p-8" style="background-color: ${colors.background};">
+      <h2 class="text-3xl font-bold mb-8 text-center" style="color: ${colors.text};">
+        <i class="ri-target-line text-2xl ml-3" style="color: ${colors.accent};"></i>
+        השירותים שלנו
+      </h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+        ${serviceCards.map((service: any) => `
+          <div class="group p-6 rounded-2xl border hover:scale-105 transition-all duration-300"
+               style="background-color: rgba(255,255,255,0.05); border-color: ${colors.primary}40;">
+            <div class="w-16 h-16 rounded-xl mb-4 flex items-center justify-center text-2xl"
+                 style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});">
+              ${service.icon}
+            </div>
+            <h3 class="font-bold mb-2" style="color: ${colors.primary};">${service.title}</h3>
+            <p class="text-sm" style="color: ${colors.text};">${service.desc}</p>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+};
+
+const renderTimeline = (timelineSteps: any, colors: any) => {
+  return `
+    <div class="p-8" style="background-color: ${colors.background};">
+      <h2 class="text-3xl font-bold mb-12 text-center" style="color: ${colors.text};">
+        <i class="ri-calendar-line text-2xl ml-3" style="color: ${colors.secondary};"></i>
+        התהליך שלנו
+      </h2>
+      <div class="max-w-4xl mx-auto">
+        <div class="relative">
+          <div class="absolute right-8 top-0 bottom-0 w-0.5" style="background: linear-gradient(to bottom, ${colors.primary}, ${colors.secondary});"></div>
+          ${timelineSteps.map((step: any) => `
+            <div class="relative flex items-center mb-12">
+              <div class="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-lg z-10"
+                   style="background-color: ${step.color};">
+                ${step.step}
+              </div>
+              <div class="mr-8">
+                <h3 class="text-xl font-bold mb-2" style="color: ${step.color};">${step.title}</h3>
+                <p style="color: ${colors.text};">${step.desc}</p>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+};
+
+const renderPricing = (plans: any, colors: any) => {
+  return `
+    <div class="p-8" style="background-color: ${colors.background};">
+      <h2 class="text-3xl font-bold mb-12 text-center" style="color: ${colors.text};">
+        <i class="ri-award-line text-2xl ml-3" style="color: ${colors.accent};"></i>
+        התכניות שלנו
+      </h2>
+      <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        ${plans.map((plan: any) => `
+          <div class="p-8 rounded-2xl border relative ${plan.highlighted ? 'scale-105 shadow-2xl' : ''}"
+               style="background-color: ${plan.highlighted ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.05)'};
+                      border-color: ${plan.highlighted ? colors.accent : `${colors.primary}40`};">
+            ${plan.highlighted ? `
+              <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-full text-white text-sm font-bold"
+                   style="background-color: ${colors.accent};">
+                הכי פופולרי
+              </div>
+            ` : ''}
+            <h3 class="text-2xl font-bold mb-4" style="color: ${colors.primary};">${plan.name}</h3>
+            <div class="mb-6">
+              <span class="text-4xl font-bold" style="color: ${colors.text};">${plan.price}</span>
+              <span class="text-gray-400">/${plan.period}</span>
+            </div>
+            <ul class="space-y-3 mb-8">
+              ${plan.features.map((feature: string) => `
+                <li class="flex items-center">
+                  <i class="ri-check-line text-lg ml-2" style="color: ${colors.accent};"></i>
+                  <span style="color: ${colors.text};">${feature}</span>
+                </li>
+              `).join('')}
+            </ul>
+            <button class="w-full rounded-xl font-bold"
+                    style="background-color: ${plan.highlighted ? colors.accent : colors.primary}; color: white; border: none;">
+              ${plan.buttonText}
+            </button>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+};
+
+const renderEmotional = (emotional: any, colors: any) => {
+  return `
+    <div class="p-8" style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});">
+      <h2 class="text-3xl font-bold mb-8 text-center flex items-center justify-center text-white">
+        <i class="ri-heart-line text-2xl ml-3"></i>
+        ${emotional.title}
+      </h2>
+      <div class="p-8 rounded-xl max-w-4xl mx-auto">
+        <p class="text-lg leading-relaxed text-center text-gray-200">
+          ${emotional.content}
+        </p>
+      </div>
+    </div>
+  `;
+};
+
+export const generateHtmlFile = (content: any, colors: any, formData: any, heroImage?: string) => {
+  const finalHeroImage = formData.heroStyle === 'image' ? getHeroImageUrl(content, heroImage || '', formData) : null;
+  
+  const renderWhyChooseUs = (whyChoose: any, colors: any) => {
+    return `
+      <div class="p-8" style="background-color: ${colors.background};">
+        <h2 class="text-3xl font-bold mb-8 text-center flex items-center justify-center" style="color: ${colors.text};">
+          <i class="ri-award-line text-2xl ml-3" style="color: ${colors.accent};"></i>
+          ${whyChoose.title}
+        </h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          ${whyChoose.items.map((item: any) => `
+            <div class="flex items-start p-6 rounded-xl hover:scale-105 transition-all duration-300 border" 
+                 style="background-color: rgba(255,255,255,0.05); border-color: ${colors.primary}40;">
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center ml-4 flex-shrink-0 mt-1"
+                   style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});">
+                <i class="ri-${item.icon} text-xl text-white"></i>
+              </div>
+              <span class="text-sm leading-relaxed" style="color: ${colors.text};">
+                ${item.text}
+              </span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
   };
 
-  const heroImageUrl = getHeroImageUrl() || getBusinessHeroImage();
-  
-  // Generate creative elements HTML
-  const generateCreativeElementsHTML = () => {
-    if (!content.creativeElements || !Array.isArray(content.creativeElements)) {
+  const renderCreativeElements = (content: any, colors: any) => {
+    if (!content.creativeElements || content.creativeElements.length === 0) {
       return '';
     }
 
-    return content.creativeElements.map(element => {
+    return content.creativeElements.map((element: any) => {
       switch (element.type) {
+        case 'whychoose':
+          return renderWhyChooseUs(element.content, colors);
         case 'serviceCards':
-          return `
-            <section class="py-20 bg-gray-900">
-              <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                  ${element.content.map(card => `
-                    <div class="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-all duration-300 transform hover:scale-105">
-                      <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary})">
-                        <i class="ri-${card.icon} text-white text-xl"></i>
-                      </div>
-                      <h3 class="text-xl font-bold text-white mb-3">${card.title}</h3>
-                      <p class="text-gray-300">${card.desc}</p>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-            </section>
-          `;
-
+          return renderServiceCards(element.content, colors);
         case 'timeline':
-          return `
-            <section class="py-20 bg-gray-800">
-              <div class="container mx-auto px-4">
-                <h2 class="text-4xl font-bold text-center text-white mb-16">התהליך שלנו</h2>
-                <div class="relative">
-                  <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full" style="background: linear-gradient(to bottom, ${colors.primary}, ${colors.secondary})"></div>
-                  ${element.content.map((step, index) => `
-                    <div class="flex items-center mb-12 ${index % 2 === 0 ? 'flex-row-reverse' : ''}">
-                      <div class="flex-1 ${index % 2 === 0 ? 'text-right pr-8' : 'text-left pl-8'}">
-                        <div class="bg-gray-700 rounded-xl p-6">
-                          <div class="text-2xl font-bold mb-2" style="color: ${step.color}">${step.step}</div>
-                          <h3 class="text-xl font-bold text-white mb-3">${step.title}</h3>
-                          <p class="text-gray-300">${step.desc}</p>
-                        </div>
-                      </div>
-                      <div class="w-8 h-8 rounded-full border-4 border-white z-10 relative flex items-center justify-center" style="background-color: ${step.color}">
-                        <i class="ri-${step.icon || 'check-line'} text-white text-sm"></i>
-                      </div>
-                      <div class="flex-1"></div>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-            </section>
-          `;
-
+          return renderTimeline(element.content, colors);
         case 'pricing':
-          return `
-            <section class="py-20 bg-gray-900">
-              <div class="container mx-auto px-4">
-                <h2 class="text-4xl font-bold text-center text-white mb-16">התכניות שלנו</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                  ${element.content.map(plan => `
-                    <div class="bg-gray-800 rounded-xl p-8 relative ${plan.highlighted ? 'ring-4 ring-purple-500 transform scale-105' : ''}">
-                      ${plan.highlighted ? `<div class="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-full text-white text-sm font-bold" style="background-color: ${colors.accent}">הכי פופולרי</div>` : ''}
-                      <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary})">
-                        <i class="ri-${plan.icon || 'price-tag-3-line'} text-white text-xl"></i>
-                      </div>
-                      <h3 class="text-2xl font-bold text-white mb-4">${plan.name}</h3>
-                      <div class="text-4xl font-bold mb-2" style="color: ${colors.primary}">${plan.price}</div>
-                      <div class="text-gray-400 mb-6">${plan.period}</div>
-                      <ul class="space-y-3 mb-8">
-                        ${plan.features.map(feature => `
-                          <li class="flex items-center text-gray-300">
-                            <i class="ri-check-line ml-2" style="color: ${colors.accent}"></i>
-                            ${feature}
-                          </li>
-                        `).join('')}
-                      </ul>
-                      <button class="w-full py-3 px-6 rounded-xl font-semibold transition-colors" style="background-color: ${plan.highlighted ? colors.accent : colors.primary}; color: white;">
-                        ${plan.buttonText}
-                      </button>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-            </section>
-          `;
-
-        case 'teamSection':
-          return `
-            <section class="py-20 bg-gray-800">
-              <div class="container mx-auto px-4">
-                <h2 class="text-4xl font-bold text-center text-white mb-4">${element.content.title}</h2>
-                <p class="text-xl text-gray-300 text-center mb-16">${element.content.subtitle}</p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  ${element.content.members?.map(member => `
-                    <div class="bg-gray-700 rounded-xl p-6 text-center">
-                      <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="ri-${member.icon || 'user-line'} text-white text-2xl"></i>
-                      </div>
-                      <h3 class="text-xl font-bold text-white mb-2">${member.name}</h3>
-                      <p class="text-purple-400 mb-2">${member.role}</p>
-                      <p class="text-gray-300">${member.experience}</p>
-                    </div>
-                  `).join('') || ''}
-                </div>
-              </div>
-            </section>
-          `;
-
-        case 'portfolio':
-          return `
-            <section class="py-20 bg-gray-900">
-              <div class="container mx-auto px-4">
-                <h2 class="text-4xl font-bold text-center text-white mb-4">${element.content.title}</h2>
-                <p class="text-xl text-gray-300 text-center mb-16">${element.content.subtitle}</p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  ${element.content.projects?.map(project => `
-                    <div class="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-colors">
-                      <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mb-4">
-                        <i class="ri-${project.icon || 'briefcase-line'} text-white text-xl"></i>
-                      </div>
-                      <div class="bg-gradient-to-r from-purple-500 to-blue-500 text-white text-sm px-3 py-1 rounded-full inline-block mb-4">
-                        ${project.category}
-                      </div>
-                      <h3 class="text-xl font-bold text-white mb-3">${project.title}</h3>
-                      <p class="text-gray-300 mb-4">${project.description}</p>
-                      <div class="text-green-400 font-semibold">${project.result}</div>
-                    </div>
-                  `).join('') || ''}
-                </div>
-              </div>
-            </section>
-          `;
-
-        case 'floatingFeatures':
-          return `
-            <section class="py-20 bg-gray-800 relative overflow-hidden">
-              <div class="container mx-auto px-4 relative z-10">
-                <h2 class="text-4xl font-bold text-center text-white mb-16">יתרונות מיוחדים</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  ${element.content.map(feature => `
-                    <div class="bg-gradient-to-r ${feature.gradient} rounded-xl p-6 text-white transform hover:scale-105 transition-transform">
-                      <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4">
-                        <i class="ri-${feature.icon || 'star-line'} text-white text-xl"></i>
-                      </div>
-                      <h3 class="text-xl font-bold mb-3">${feature.title}</h3>
-                      <p>${feature.desc}</p>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-            </section>
-          `;
-
+          return renderPricing(element.content, colors);
+        case 'emotional':
+          return renderEmotional(element.content, colors);
         default:
           return '';
       }
@@ -189,168 +168,155 @@ export const generateHtmlFile = (content: any, colors: any, formData: any, getHe
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${content.headline}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
-        body { font-family: 'Heebo', sans-serif; }
-        :root {
-            --primary: ${colors.primary};
-            --secondary: ${colors.secondary};
-            --accent: ${colors.accent};
-            --background: ${colors.background};
-            --text: ${colors.text};
+        body { 
+            background-color: ${colors.background}; 
+            color: ${colors.text}; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 50%, ${colors.accent} 100%);
+        }
+        .hero-bg {
+            ${finalHeroImage 
+              ? `background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${finalHeroImage}'); background-size: cover; background-position: center;`
+              : `background: linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 50%, ${colors.accent} 100%);`
+            }
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white">
+<body>
     <!-- Hero Section -->
-    <section class="min-h-screen flex items-center justify-center relative overflow-hidden" 
-             style="background: ${formData.heroStyle === 'gradient' 
-               ? `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 100%)` 
-               : formData.heroStyle === 'image' 
-                 ? `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('${heroImageUrl}') center/cover` 
-                 : colors.background};">
-        <div class="container mx-auto px-4 text-center relative z-10">
-            <div class="inline-block backdrop-blur-sm rounded-full px-6 py-2 mb-6" style="background-color: rgba(255,255,255,0.1);">
-                <span class="text-sm font-medium">${content.badge}</span>
+    <div class="hero-bg p-12 text-center relative overflow-hidden min-h-screen flex flex-col justify-center">
+        <div class="relative z-10">
+            <div class="inline-block mb-6 text-lg px-4 py-2 border rounded-full" 
+                 style="background-color: rgba(255,255,255,0.2); color: white; border-color: rgba(255,255,255,0.3);">
+                ${content.badge}
             </div>
-            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight" style="color: ${colors.headlineColor};">
+            
+            <h1 class="text-4xl md:text-6xl font-bold mb-6" style="color: ${colors.headlineColor || 'white'};">
                 ${content.headline}
             </h1>
-            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed" style="color: ${colors.subheadlineColor};">
+            
+            <p class="text-xl mb-8 max-w-2xl mx-auto leading-relaxed" 
+               style="color: ${colors.subheadlineColor || 'rgba(255,255,255,0.9)'};">
                 ${content.subheadline}
             </p>
-            <button class="px-8 py-4 rounded-xl text-lg font-semibold hover:scale-105 transition-all" style="background-color: ${colors.accent}; color: white;">
+            
+            <button class="text-xl px-10 py-4 rounded-xl font-bold mb-8 hover:scale-105 transition-transform shadow-2xl" 
+                    style="background-color: ${colors.accent}; color: white; border: none;">
                 ${content.cta}
             </button>
-        </div>
-    </section>
 
-    <!-- Stats Section -->
-    <section class="py-20 bg-gray-800">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 max-w-4xl mx-auto">
                 ${Object.entries(content.stats).map(([key, value]) => `
-                    <div class="text-center p-6 rounded-2xl hover:scale-105 transition-transform" style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});">
+                    <div class="p-6 rounded-2xl hover:scale-105 transition-transform shadow-lg"
+                         style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});">
                         <div class="text-3xl md:text-4xl font-bold text-white mb-2">${value}</div>
                         <div class="text-white font-semibold text-lg">${key}</div>
                     </div>
                 `).join('')}
             </div>
         </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="py-20 bg-gray-900">
-        <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-bold text-center mb-16" style="color: ${colors.featuresColor};">
-                ${content.featuresTitle}
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                ${content.features.map(feature => `
-                    <div class="bg-gray-800 rounded-xl p-6 hover:bg-gray-700 transition-colors">
-                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});">
-                            <i class="ri-check-line text-white text-xl"></i>
-                        </div>
-                        <p class="text-gray-300">${feature}</p>
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    </section>
-
-    ${generateCreativeElementsHTML()}
+    </div>
+    
+    ${renderCreativeElements(content, colors)}
 
     <!-- About Section -->
-    <section class="py-20 bg-gray-800">
-        <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-4xl font-bold mb-8" style="color: ${colors.aboutColor};">
-                    ${content.aboutTitle}
-                </h2>
-                <p class="text-xl leading-relaxed" style="color: ${colors.aboutTextColor};">
-                    ${content.aboutText}
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Emotional Section -->
-    ${content.emotional ? `
-    <section class="py-20" style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-4xl font-bold mb-8 text-white">
-                ${content.emotional.title}
-            </h2>
-            <p class="text-xl leading-relaxed text-gray-200 max-w-3xl mx-auto">
-                ${content.emotional.content}
+    <div class="p-8" style="background-color: ${colors.background};">
+        <h2 class="text-3xl font-bold mb-8 text-center flex items-center justify-center" 
+            style="color: ${colors.aboutColor || colors.text};">
+            <i class="ri-team-line text-2xl ml-3" style="color: ${colors.secondary};"></i>
+            ${content.aboutTitle}
+        </h2>
+        <div class="p-8 rounded-xl border max-w-4xl mx-auto" 
+             style="background-color: rgba(255,255,255,0.05); border-color: ${colors.secondary}40;">
+            <p class="text-lg leading-relaxed text-center" 
+               style="color: ${colors.aboutTextColor || colors.text};">
+                ${content.aboutText}
             </p>
         </div>
-    </section>
-    ` : ''}
+    </div>
 
     <!-- Testimonials Section -->
-    <section class="py-20 bg-gray-900">
-        <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-bold text-center text-white mb-16">מה אומרים עלינו</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                ${content.testimonials.map(testimonial => `
-                    <div class="bg-gray-800 rounded-xl p-6">
-                        <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center text-white text-2xl" style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});">
-                                ${testimonial.image}
-                            </div>
-                            <div class="mr-4">
-                                <div class="font-semibold text-white">${testimonial.name}</div>
-                                <div class="text-gray-400 text-sm">${testimonial.role}</div>
-                            </div>
+    <div class="p-8" style="background-color: ${colors.background};">
+        <h2 class="text-3xl font-bold mb-8 text-center flex items-center justify-center" 
+            style="color: ${colors.text};">
+            <i class="ri-chat-quote-line text-2xl ml-3" style="color: ${colors.primary};"></i>
+            מה אומרים עלינו
+        </h2>
+        <div class="grid md:grid-cols-3 gap-6">
+            ${content.testimonials.map((testimonial: any) => `
+                <div class="p-6 rounded-xl border hover:scale-105 transition-transform" 
+                     style="background-color: rgba(255,255,255,0.05); border-color: ${colors.primary}40;">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center text-white text-2xl"
+                             style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});">
+                            ${testimonial.image}
                         </div>
-                        <p class="text-gray-300 mb-4">"${testimonial.content}"</p>
-                        <div class="flex text-yellow-400">
-                            ${'<i class="ri-star-fill"></i>'.repeat(testimonial.rating)}
+                        <div class="mr-4">
+                            <div class="font-semibold" style="color: ${colors.primary};">${testimonial.name}</div>
+                            <div class="text-gray-400 text-sm">${testimonial.role}</div>
                         </div>
                     </div>
-                `).join('')}
-            </div>
+                    <p class="mb-4 text-sm leading-relaxed" style="color: ${colors.text};">
+                        "${testimonial.content}"
+                    </p>
+                    <div class="flex">
+                        ${Array(testimonial.rating).fill('').map(() => 
+                            '<i class="ri-star-fill text-yellow-400"></i>'
+                        ).join('')}
+                    </div>
+                </div>
+            `).join('')}
         </div>
-    </section>
+    </div>
 
     <!-- FAQ Section -->
-    <section class="py-20 bg-gray-800">
-        <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-bold text-center text-white mb-16">שאלות נפוצות</h2>
-            <div class="max-w-3xl mx-auto space-y-6">
-                ${content.faq.map(item => `
-                    <div class="bg-gray-700 rounded-xl p-6">
-                        <h3 class="text-xl font-semibold text-white mb-3">${item.question}</h3>
-                        <p class="text-gray-300">${item.answer}</p>
-                    </div>
-                `).join('')}
-            </div>
+    <div class="p-8" style="background-color: ${colors.background};">
+        <h2 class="text-3xl font-bold mb-8 text-center flex items-center justify-center" 
+            style="color: ${colors.text};">
+            <i class="ri-question-line text-2xl ml-3" style="color: ${colors.secondary};"></i>
+            שאלות נפוצות
+        </h2>
+        <div class="max-w-4xl mx-auto space-y-4">
+            ${content.faq.map((item: any) => `
+                <div class="p-6 rounded-xl border hover:scale-105 transition-transform" 
+                     style="background-color: rgba(255,255,255,0.05); border-color: ${colors.secondary}40;">
+                    <h3 class="font-semibold mb-3 text-lg" style="color: ${colors.secondary};">
+                        ${item.question}
+                    </h3>
+                    <p class="leading-relaxed" style="color: ${colors.text};">
+                        ${item.answer}
+                    </p>
+                </div>
+            `).join('')}
         </div>
-    </section>
-
+    </div>
+    
     <!-- Contact Section -->
-    <section class="py-20 bg-gray-900">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-4xl font-bold mb-8" style="color: ${colors.contactColor};">
+    <div class="p-8" style="background-color: ${colors.background};">
+        <div class="p-8 rounded-2xl border text-center max-w-4xl mx-auto" 
+             style="background-color: rgba(255,255,255,0.05); border-color: ${colors.primary}40;">
+            <h2 class="text-2xl font-bold mb-6 flex items-center justify-center" 
+                style="color: ${colors.contactColor || colors.text};">
+                <i class="ri-message-3-line text-xl ml-3" style="color: ${colors.accent};"></i>
                 ${content.contactTitle}
             </h2>
-            <div class="text-xl mb-8" style="color: ${colors.contactTextColor};">
-                ${formData.contactInfo.split('\n').map(line => `<div>${line}</div>`).join('')}
+            <div class="p-6 rounded-xl mb-6" style="background-color: rgba(0,0,0,0.2);">
+                <div class="whitespace-pre-line leading-relaxed" 
+                     style="color: ${colors.contactTextColor || colors.text};">
+                    ${formData.contactInfo}
+                </div>
             </div>
-            <button class="px-8 py-4 rounded-xl text-lg font-semibold hover:scale-105 transition-all" style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary}); color: white;">
-                צור קשר עכשיו
+            <button class="text-xl px-8 py-4 rounded-xl font-bold hover:scale-105 transition-transform" 
+                    style="background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary}); color: white; border: none;">
+                ${content.cta}
             </button>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 py-8">
-        <div class="container mx-auto px-4 text-center">
-            <p class="text-gray-400">© 2024 ${formData.businessName}. כל הזכויות שמורות.</p>
-        </div>
-    </footer>
+    </div>
 </body>
 </html>`;
 };
