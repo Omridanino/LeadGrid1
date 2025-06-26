@@ -1,3 +1,4 @@
+
 import { useState, useCallback } from "react";
 
 export const useContentGeneration = (formData: any) => {
@@ -9,171 +10,151 @@ export const useContentGeneration = (formData: any) => {
     const targetAudience = formData.targetAudience || "לקוחות פוטנציאליים";
     const mainGoal = formData.mainGoal || "הגדלת מכירות";
     const keyFeatures = formData.keyFeatures || "שירות מקצועי, מהירות, אמינות";
+    const isTechy3D = formData.designStyle === '3d'; // Check if tech style is selected
 
-    // Enhanced content generation with more professional and varied language
-    const generateVariedContent = (baseText: string, category: 'service' | 'testimonial' | 'faq' | 'general' = 'general') => {
-      const variations = {
-        service: [
-          `שירות ${businessType} מקצועי ואמין`,
-          `פתרונות ${businessType} מותאמים אישית`,
-          `מומחיות בתחום ה${businessType}`,
-          `שירותי ${businessType} ברמה הגבוהה ביותר`
-        ],
-        testimonial: [
-          `שירות מעולה ומקצועי ב${businessType}`,
-          `התוצאות הטובות ביותר שקיבלתי ב${businessType}`,
-          `ממליץ בחום על השירות המקצועי`,
-          `חוויה נהדרת וטיפול אישי`
-        ],
-        faq: [
-          `איך ${businessName} יכול לעזור לי?`,
-          `מה הופך את ${businessName} למיוחד?`,
-          `כמה זמן לוקח התהליך?`,
-          `איך אפשר ליצור קשר?`
-        ],
-        general: [baseText]
-      };
+    // 15 different animated tech backgrounds for variety
+    const techBackgrounds = [
+      'linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2d2d5f 100%)',
+      'linear-gradient(135deg, #0a0a1f 0%, #1e1e3f 50%, #3232b3 100%)',
+      'linear-gradient(135deg, #0c0c26 0%, #1b1b42 50%, #2929a3 100%)',
+      'linear-gradient(135deg, #111133 0%, #1f1f4d 50%, #3636cc 100%)',
+      'linear-gradient(135deg, #0e0e2a 0%, #1c1c46 50%, #3030b8 100%)',
+      'linear-gradient(135deg, #0d0d28 0%, #1a1a44 50%, #2e2eb6 100%)',
+      'linear-gradient(135deg, #101030 0%, #1d1d48 50%, #3434ba 100%)',
+      'linear-gradient(135deg, #0b0b24 0%, #181840 50%, #2c2cb0 100%)',
+      'linear-gradient(135deg, #0f0f2c 0%, #1b1b45 50%, #3131b5 100%)',
+      'linear-gradient(135deg, #0a0a22 0%, #17173e 50%, #2a2aae 100%)',
+      'linear-gradient(135deg, #0e0e29 0%, #1a1a43 50%, #2f2fb4 100%)',
+      'linear-gradient(135deg, #0c0c27 0%, #181841 50%, #2d2db2 100%)',
+      'linear-gradient(135deg, #10102e 0%, #1c1c47 50%, #3333b7 100%)',
+      'linear-gradient(135deg, #0d0d2b 0%, #191943 50%, #3030b3 100%)',
+      'linear-gradient(135deg, #0f0f2d 0%, #1e1e49 50%, #3535b9 100%)'
+    ];
 
-      return variations[category][Math.floor(Math.random() * variations[category].length)] || baseText;
-    };
+    // Select random background for variety
+    const selectedBackground = techBackgrounds[Math.floor(Math.random() * techBackgrounds.length)];
 
-    // Get appropriate style based on business type - now with only 4 items each
-    const getWhyChooseStyle = () => {
+    // Enhanced content generation with domain-specific copy
+    const generateDomainSpecificContent = (businessType: string) => {
       const lowerBusinessType = businessType.toLowerCase();
       
       if (lowerBusinessType.includes('אדריכל') || lowerBusinessType.includes('עיצוב') || lowerBusinessType.includes('בניה')) {
-        return 'architecture';
+        return {
+          emotionalSection: {
+            title: "החלום שלכם הופך למציאות",
+            content: "כל פרויקט מתחיל בחלום. אנחנו כאן כדי להפוך את החלום שלכם למבנה מרהיב שישרת אתכם לשנים רבות. עם ניסיון של שנים בתכנון ועיצוב, אנחנו יוצרים חללים שמשקפים את האישיות והצרכים שלכם.",
+            icon: "🏗️"
+          },
+          whyUs: {
+            title: "למה בדיוק אנחנו?",
+            items: [
+              { title: "תכנון חדשני ומתקדם", desc: "שימוש בטכנולוגיות המתקדמות ביותר בתכנון", icon: "🎯" },
+              { title: "צוות מקצועי ומנוסה", desc: "אדריכלים ומהנדסים עם עשרות שנות ניסיון", icon: "👥" },
+              { title: "ליווי מלא לאורך הפרויקט", desc: "מהרעיון הראשוני ועד למסירת המפתחות", icon: "🔄" },
+              { title: "עמידה בלוחות זמנים", desc: "מחויבות מלאה ללוחות הזמנים שנקבעו", icon: "⏰" }
+            ]
+          },
+          whatWeGive: {
+            title: "מה אתם מקבלים מאיתנו",
+            items: [
+              { title: "תכנון אדריכלי מלא", desc: "כולל תוכניות מפורטות ותלת מימד", icon: "📐" },
+              { title: "ייעוץ הנדסי מקצועי", desc: "בדיקות יציבות ובטיחות מלאות", icon: "🔧" },
+              { title: "ליווי רגולטורי", desc: "טיפול בכל הרישיונות והאישורים", icon: "📋" },
+              { title: "פיקוח על הביצוע", desc: "מעקב צמוד אחר איכות הביצוע", icon: "👁️" }
+            ]
+          }
+        };
       } else if (lowerBusinessType.includes('רפואה') || lowerBusinessType.includes('בריאות') || lowerBusinessType.includes('דוקטור')) {
-        return 'medical';
+        return {
+          emotionalSection: {
+            title: "הבריאות שלכם - השליחות שלנו",
+            content: "כל מטופל הוא עולם שלם. אנחנו כאן כדי לדאוג לבריאותכם ולרפואתכם ברמה הגבוהה ביותר. עם ציוד רפואי מתקדם וצוות מקצועי, אנחנו נותנים מענה מקצועי ואמין לכל הצרכים הרפואיים שלכם.",
+            icon: "🏥"
+          },
+          whyUs: {
+            title: "למה כדאי לבחור בנו לבריאות שלכם?",
+            items: [
+              { title: "צוות רפואי מומחה", desc: "רופאים מומחים עם הכשרה מתקדמת", icon: "👨‍⚕️" },
+              { title: "ציוד רפואי מתקדם", desc: "טכנולוגיה רפואית חדישה ומדויקת", icon: "🔬" },
+              { title: "זמינות מלאה", desc: "שירות רפואי זמין 24/7 למקרי חירום", icon: "🚑" },
+              { title: "טיפול אישי ומסור", desc: "יחס אישי וחם לכל מטופל", icon: "❤️" }
+            ]
+          },
+          whatWeGive: {
+            title: "השירותים הרפואיים שלנו",
+            items: [
+              { title: "בדיקות מקיפות", desc: "אבחון מדויק עם ציוד מתקדם", icon: "🩺" },
+              { title: "טיפולים מתקדמים", desc: "טכנולוגיות טיפול חדישות", icon: "💊" },
+              { title: "מעקב רפואי", desc: "ליווי רפואי מתמשך ומקצועי", icon: "📊" },
+              { title: "ייעוץ מקצועי", desc: "הדרכה והסברים מפורטים", icon: "💬" }
+            ]
+          }
+        };
       } else if (lowerBusinessType.includes('טכנולוגיה') || lowerBusinessType.includes('תוכנה') || lowerBusinessType.includes('מחשבים')) {
-        return 'tech';
-      } else if (lowerBusinessType.includes('חינוך') || lowerBusinessType.includes('הוראה') || lowerBusinessType.includes('לימודים')) {
-        return 'education';
-      } else if (lowerBusinessType.includes('מזון') || lowerBusinessType.includes('מסעדה') || lowerBusinessType.includes('קייטרינג')) {
-        return 'food';
-      } else if (lowerBusinessType.includes('אופנה') || lowerBusinessType.includes('ביגוד') || lowerBusinessType.includes('יופי')) {
-        return 'fashion';
-      } else if (lowerBusinessType.includes('משפטים') || lowerBusinessType.includes('עורך דין') || lowerBusinessType.includes('יעוץ')) {
-        return 'legal';
-      } else if (lowerBusinessType.includes('נדלן') || lowerBusinessType.includes('השקעות') || lowerBusinessType.includes('בית')) {
-        return 'realestate';
-      } else if (lowerBusinessType.includes('ספורט') || lowerBusinessType.includes('כושר') || lowerBusinessType.includes('אימון')) {
-        return 'fitness';
-      } else if (lowerBusinessType.includes('אמנות') || lowerBusinessType.includes('תרבות') || lowerBusinessType.includes('יצירה')) {
-        return 'creative';
-      } else {
-        return 'general';
+        return {
+          emotionalSection: {
+            title: "הטכנולוגיה שמניעה את העתיד",
+            content: "בעולם דיגיטלי שמתפתח בקצב מסחרר, אנחנו כאן כדי להוביל אתכם קדימה. עם פתרונות טכנולוגיים מתקדמים ויצירתיים, אנחנו הופכים את החזון הדיגיטלי שלכם למציאות מרשימה שמניבה תוצאות.",
+            icon: "💻"
+          },
+          whyUs: {
+            title: "למה אנחנו הבחירה הטכנולוגית הנכונה?",
+            items: [
+              { title: "חדשנות טכנולוגית מתקדמת", desc: "שימוש בטכנולוגיות החדישות ביותר", icon: "🚀" },
+              { title: "צוות מפתחים מומחים", desc: "מהנדסי תוכנה עם ניסיון בינלאומי", icon: "👨‍💻" },
+              { title: "פתרונות מותאמים אישית", desc: "פיתוח בהתאם לצרכים הייחודיים שלכם", icon: "⚡" },
+              { title: "תמיכה טכנית 24/7", desc: "זמינות מלאה לכל בעיה טכנית", icon: "🛠️" }
+            ]
+          },
+          whatWeGive: {
+            title: "הפתרונות הטכנולוגיים שלנו",
+            items: [
+              { title: "פיתוח אפליקציות", desc: "אפליקציות מותאמות לנייד ואינטרנט", icon: "📱" },
+              { title: "מערכות ניהול", desc: "פלטפורמות ניהול מתקדמות וידידותיות", icon: "💼" },
+              { title: "אבטחת מידע", desc: "הגנה מתקדמת על המידע הדיגיטלי", icon: "🔒" },
+              { title: "ייעוץ טכנולוגי", desc: "הדרכה והטמעה של הטכנולוגיות", icon: "🎯" }
+            ]
+          }
+        };
       }
+      
+      // Default content for other business types
+      return {
+        emotionalSection: {
+          title: "השירות שמשנה את המשחק",
+          content: `בעולם שמתפתח במהירות, ${businessName} כאן כדי לספק לכם את השירות המקצועי והאמין ביותר בתחום ${businessType}. אנחנו מבינים את הצרכים שלכם ומתמחים במתן פתרונות מותאמים אישית שמביאים תוצאות אמיתיות.`,
+          icon: "⭐"
+        },
+        whyUs: {
+          title: "למה כדאי לבחור דווקא בנו?",
+          items: [
+            { title: "שירות מקצועי ברמה הגבוהה", desc: "צוות מנוסה עם מומחיות מוכחת", icon: "🏆" },
+            { title: "זמינות ומהירות בשירות", desc: "מענה מהיר ויעיל לכל פנייה", icon: "⚡" },
+            { title: "יחס אישי ומסור", desc: "טיפול אישי בכל לקוח ופרויקט", icon: "❤️" },
+            { title: "מחירים הוגנים ושקופים", desc: "תמחור ברור ללא הפתעות", icon: "💰" }
+          ]
+        },
+        whatWeGive: {
+          title: "מה אתם מקבלים מאיתנו",
+          items: [
+            { title: "שירות מותאם אישית", desc: "פתרונות מותאמים לצרכים שלכם", icon: "🎯" },
+            { title: "איכות ללא פשרות", desc: "רמת שירות גבוהה בכל שלב", icon: "✨" },
+            { title: "ליווי מלא", desc: "תמיכה צמודה לאורך כל התהליך", icon: "🤝" },
+            { title: "תוצאות מוכחות", desc: "הישגים קונקרטיים ומדידים", icon: "📈" }
+          ]
+        }
+      };
     };
 
-    const whyChooseStyles = {
-      architecture: {
-        title: "למה לבחור בנו לפרויקט שלכם?",
-        items: [
-          { text: "מומחיות בתכנון אדריכלי מתקדם", icon: "building-line" },
-          { text: "שירות אדריכלי ברמה הגבוהה ביותר", icon: "pencil-ruler-2-line" },
-          { text: "פתרונות יצירתיים ומותאמים אישית", icon: "lightbulb-line" },
-          { text: "ליווי מלא לאורך כל הפרויקט", icon: "team-line" }
-        ]
-      },
-      medical: {
-        title: "למה לבחור בנו לבריאות שלכם?",
-        items: [
-          { text: "רפואה מתקדמת וטכנולוגיה חדישה", icon: "stethoscope-line" },
-          { text: "צוות רפואי מקצועי ומנוסה", icon: "user-heart-line" },
-          { text: "טיפול אישי ומסור לכל מטופל", icon: "heart-line" },
-          { text: "זמינות 24/7 למקרי חירום", icon: "phone-line" }
-        ]
-      },
-      tech: {
-        title: "למה לבחור בנו לפתרונות טכנולוגיים?",
-        items: [
-          { text: "טכנולוגיות מתקדמות וחדשניות", icon: "rocket-line" },
-          { text: "פיתוח תוכנה מותאם לצרכים", icon: "code-line" },
-          { text: "תמיכה טכנית מקצועית 24/7", icon: "customer-service-line" },
-          { text: "אבטחת מידע ברמה הגבוהה", icon: "shield-check-line" }
-        ]
-      },
-      education: {
-        title: "למה לבחור בנו ללימודים?",
-        items: [
-          { text: "צוות הוראה מקצועי ומנוסה", icon: "graduation-cap-line" },
-          { text: "שיטות הוראה חדשניות ומותאמות", icon: "book-open-line" },
-          { text: "ליווי אישי לכל תלמיד", icon: "user-line" },
-          { text: "תוצאות לימודיות מוכחות", icon: "trophy-line" }
-        ]
-      },
-      food: {
-        title: "למה לבחור בנו לחוויית הקולינרית?",
-        items: [
-          { text: "מזון טרי ואיכותי ביותר", icon: "restaurant-line" },
-          { text: "שפים מקצועיים ומנוסים", icon: "user-star-line" },
-          { text: "תפריט מגוון ומתחדש", icon: "file-list-3-line" },
-          { text: "שירות מהיר ואדיב", icon: "customer-service-2-line" }
-        ]
-      },
-      fashion: {
-        title: "למה לבחור בנו לסטייל המושלם?",
-        items: [
-          { text: "אופנה עדכנית ומגמות חמות", icon: "shirt-line" },
-          { text: "איכות בדים ותפירה מעולה", icon: "scissors-line" },
-          { text: "עיצובים ייחודיים ובלעדיים", icon: "palette-line" },
-          { text: "התאמה אישית למידות", icon: "ruler-line" }
-        ]
-      },
-      legal: {
-        title: "למה לבחור בנו לייצוג משפטי?",
-        items: [
-          { text: "ניסיון משפטי רב ומוכח", icon: "scales-3-line" },
-          { text: "ייצוג מקצועי בכל התחומים", icon: "briefcase-line" },
-          { text: "יעוץ משפטי זמין ונגיש", icon: "question-answer-line" },
-          { text: "שקיפות מלאה ויושרה", icon: "eye-line" }
-        ]
-      },
-      realestate: {
-        title: "למה לבחור בנו לנדלן?",
-        items: [
-          { text: "ידע עמוק בשוק הנדלן", icon: "home-4-line" },
-          { text: "רשת קשרים נרחבת ומקצועית", icon: "links-line" },
-          { text: "שירות מלא מהחיפוש לעסקה", icon: "hand-heart-line" },
-          { text: "ייעוץ השקעות מקצועי", icon: "line-chart-line" }
-        ]
-      },
-      fitness: {
-        title: "למה לבחור בנו לכושר ובריאות?",
-        items: [
-          { text: "מדרכים מקצועיים ומוסמכים", icon: "run-line" },
-          { text: "תוכניות אימון מותאמות אישית", icon: "heart-pulse-line" },
-          { text: "ציוד מתקדם ומתקני ספורט", icon: "dumbbell-line" },
-          { text: "מעקב התקדמות ותוצאות", icon: "bar-chart-line" }
-        ]
-      },
-      creative: {
-        title: "למה לבחור בנו ליצירה ואמנות?",
-        items: [
-          { text: "יצירתיות ללא גבולות", icon: "brush-line" },
-          { text: "אמנים ויצרנים מקצועיים", icon: "user-star-line" },
-          { text: "חדשנות ורעיונות מקוריים", icon: "lightbulb-line" },
-          { text: "איכות ביצוע ברמה הגבוהה", icon: "award-line" }
-        ]
-      },
-      general: {
-        title: "למה כדאי לבחור בנו?",
-        items: [
-          { text: "שירות מקצועי ואמין", icon: "star-line" },
-          { text: "ניסיון רב שנים בתחום", icon: "award-line" },
-          { text: "תמיכה 24/7 לכל שאלה", icon: "headphone-line" },
-          { text: "מחירים הוגנים ושקופים", icon: "price-tag-line" }
-        ]
-      }
-    };
-
-    const selectedStyle = getWhyChooseStyle();
-    const whyChooseUsContent = whyChooseStyles[selectedStyle];
+    const domainContent = generateDomainSpecificContent(businessType);
 
     return {
+      // Tech background for 3D style
+      techBackground: isTechy3D ? selectedBackground : null,
+      
+      // Hero Section
       badge: `${businessType} מקצועי`,
-      headline: `${businessName} - ${generateVariedContent('הפתרון המושלם עבורכם', 'service')}`,
+      headline: `${businessName} - ${domainContent.emotionalSection.title.split(' ').slice(0, 4).join(' ')}`,
       subheadline: `מספקים שירותי ${businessType} ברמה הגבוהה ביותר עבור ${targetAudience}. המומחיות והניסיון שלנו מבטיחים תוצאות מעולות שעונות על כל הצרכים שלכם.`,
       cta: mainGoal === "יצירת לידים" ? "קבלו הצעת מחיר" : 
            mainGoal === "הגדלת מכירות" ? "התחילו עכשיו" :
@@ -186,42 +167,58 @@ export const useContentGeneration = (formData: any) => {
         "הצלחה": "98%"
       },
 
+      // 6 Fixed Sections for tech style
+      sections: isTechy3D ? {
+        // Section 1: Hero (already above)
+        
+        // Section 2: Emotional paragraph
+        emotionalSection: domainContent.emotionalSection,
+        
+        // Section 3: Why us
+        whyUs: domainContent.whyUs,
+        
+        // Section 4: What we give
+        whatWeGive: domainContent.whatWeGive,
+        
+        // Section 5: Reviews/Testimonials
+        testimonials: [
+          {
+            name: "דני כהן",
+            role: "מנהל עסק",
+            content: `השירות של ${businessName} פשוט מעולה! הצוות המקצועי והיחס האישי עשו את כל הההבדל. בהחלט ממליץ!`,
+            rating: 5,
+            image: "👨‍💼"
+          },
+          {
+            name: "שרה לוי", 
+            role: "יזמת",
+            content: `עבדנו עם ${businessName} על מספר פרויקטים והתוצאות תמיד מעולות. מקצועיות ברמה אחרת לגמרי!`,
+            rating: 5,
+            image: "👩‍💼"
+          },
+          {
+            name: "מיכל רוזן",
+            role: "בעלת חנות",
+            content: `הליווי והתמיכה שקיבלתי היו פשוט מדהימים. השירות החרג מכל הציפיות שלי!`,
+            rating: 5,
+            image: "👩‍🔧"
+          }
+        ],
+        
+        // Section 6: Contact (handled separately)
+        contactTitle: "בואו נתחיל לעבוד יחד"
+      } : null,
+
+      // Legacy content for non-tech styles
       featuresTitle: "למה כדאי לבחור בנו?",
-      features: keyFeatures.split(',').map(feature => 
-        generateVariedContent(feature.trim(), 'service')
-      ),
-
+      features: keyFeatures.split(',').map(feature => feature.trim()),
       aboutTitle: `אודות ${businessName}`,
-      aboutText: `${businessName} הוא ${businessType} מוביל עם ${generateVariedContent('שנות ניסיון רבות', 'service')}. אנו מתמחים במתן פתרונות מקצועיים ומותאמים אישית עבור ${targetAudience}, תוך הקפדה על איכות גבוהה ושירות אישי.`,
-
-      testimonials: [
-        {
-          name: "דני כהן",
-          role: "מנהל עסק",
-          content: generateVariedContent('', 'testimonial'),
-          rating: 5,
-          image: "👨‍💼"
-        },
-        {
-          name: "שרה לוי", 
-          role: "יזמת",
-          content: generateVariedContent('', 'testimonial'),
-          rating: 5,
-          image: "👩‍💼"
-        },
-        {
-          name: "מיכל רוזן",
-          role: "בעלת חנות",
-          content: generateVariedContent('', 'testimonial'),
-          rating: 5,
-          image: "👩‍🔧"
-        }
-      ],
-
+      aboutText: `${businessName} הוא ${businessType} מוביל עם שנות ניסיון רבות. אנו מתמחים במתן פתרונות מקצועיים ומותאמים אישית עבור ${targetAudience}, תוך הקפדה על איכות גבוהה ושירות אישי.`,
+      
       faq: [
         {
-          question: generateVariedContent('', 'faq'),
-          answer: `ב${businessName} אנו מספקים ${generateVariedContent('שירות מקצועי ואמין', 'service')} המותאם לצרכיכם הספציפיים.`
+          question: `איך ${businessName} יכול לעזור לי?`,
+          answer: `ב${businessName} אנו מספקים שירות מקצועי ואמין המותאם לצרכיכם הספציפיים.`
         },
         {
           question: "כמה זמן לוקח התהליך?",
@@ -238,10 +235,6 @@ export const useContentGeneration = (formData: any) => {
       ],
 
       contactTitle: "בואו נתחיל לעבוד יחד",
-      
-      // Always include Why Choose Us section
-      whyChooseUs: whyChooseUsContent,
-      
       creativeElements: []
     };
   }, [formData]);
