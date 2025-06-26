@@ -1,4 +1,3 @@
-
 import { ColorScheme } from "@/components/ColorEditor";
 
 export const generateHtmlFile = (
@@ -29,29 +28,451 @@ export const generateHtmlFile = (
     return businessImages[businessType as keyof typeof businessImages] || businessImages.default;
   };
 
+  const getStyleClass = () => {
+    switch (formData?.heroStyle) {
+      case 'geometric':
+        return 'style-geometric';
+      case 'glass':
+        return 'style-glass';
+      case 'metal':
+        return 'style-metal';
+      case 'image':
+        return 'style-image';
+      default:
+        return 'style-3d';
+    }
+  };
+
+  const getCardClass = () => {
+    switch (formData?.heroStyle) {
+      case 'geometric':
+        return 'card-geometric';
+      case 'glass':
+        return 'card-glass';
+      case 'metal':
+        return 'card-metal';
+      case 'image':
+        return 'card-image';
+      default:
+        return 'card-3d';
+    }
+  };
+
+  const getButtonClass = () => {
+    switch (formData?.heroStyle) {
+      case 'geometric':
+        return 'btn-geometric';
+      case 'glass':
+        return 'btn-glass';
+      case 'metal':
+        return 'btn-metal';
+      case 'image':
+        return 'btn-image';
+      default:
+        return 'btn-3d';
+    }
+  };
+
+  const getTypographyClass = () => {
+    switch (formData?.heroStyle) {
+      case 'geometric':
+        return 'typography-modern';
+      case 'glass':
+        return 'typography-modern';
+      case 'metal':
+        return 'typography-luxury';
+      case 'image':
+        return 'typography-modern';
+      default:
+        return 'typography-tech';
+    }
+  };
+
   const getHeroBackground = () => {
     if (formData?.heroStyle === 'image') {
       const imageUrl = heroImageUrl || getBusinessImage(formData.businessType);
-      return `background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('${imageUrl}'); background-size: cover; background-position: center;`;
-    } else if (formData?.heroStyle === 'animated') {
-      return `background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); background-size: 400% 400%; animation: gradient 8s ease infinite;`;
-    } else {
-      return `background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); transition: background 2s ease-in-out;`;
+      return `background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url('${imageUrl}'); background-size: cover; background-position: center; background-attachment: fixed;`;
     }
+    return '';
   };
+
+  // Include the exact same CSS from PreviewStyles.tsx
+  const getCSSStyles = () => `
+    /* Professional Typography System */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+    :root {
+      --gradient-3d: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f0f23 75%, #000000 100%);
+      --gradient-geometric: linear-gradient(45deg, #ff6b6b 0%, #4ecdc4 25%, #45b7d1 50%, #f9ca24 75%, #ff6b6b 100%);
+      --gradient-glass: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 50%, rgba(15, 23, 42, 0.9) 100%);
+      --gradient-metal: linear-gradient(135deg, #2c1810 0%, #8b7355 25%, #c9aa7c 50%, #f4e4bc 75%, #8b7355 100%);
+      --gradient-image: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.8) 100%);
+      
+      --shadow-3d: 0 25px 50px rgba(0,0,0,0.8), 0 12px 25px rgba(59, 130, 246, 0.3);
+      --shadow-geometric: 0 0 0 1px rgba(255, 107, 107, 0.3), 0 15px 35px rgba(255, 107, 107, 0.2);
+      --shadow-glass: 0 8px 32px rgba(15, 23, 42, 0.4), 0 0 0 1px rgba(255,255,255,0.1);
+      --shadow-metal: 0 12px 24px rgba(139, 115, 85, 0.4), inset 0 1px 0 rgba(244, 228, 188, 0.3);
+      --shadow-image: 0 20px 40px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      direction: rtl;
+    }
+
+    /* Typography Classes */
+    .typography-hero {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+    }
+
+    .typography-luxury {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .typography-modern {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+
+    .typography-tech {
+      font-family: 'Orbitron', monospace;
+      font-weight: 600;
+      line-height: 1.3;
+      letter-spacing: 0.02em;
+    }
+
+    .typography-body {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      letter-spacing: -0.005em;
+    }
+
+    /* Style Classes */
+    .style-3d {
+      background: var(--gradient-3d);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .style-3d::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(147, 51, 234, 0.15) 0%, transparent 50%);
+      animation: float3D 20s ease-in-out infinite;
+    }
+
+    .style-geometric {
+      background: linear-gradient(45deg, #1a1a2e 0%, #16213e 25%, #0f0f23 50%, #e94560 75%, #0f0f23 100%);
+      background-size: 400% 400%;
+      animation: geometricFlow 15s ease infinite;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .style-geometric::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        linear-gradient(30deg, rgba(255, 107, 107, 0.1) 12%, transparent 12.5%),
+        linear-gradient(150deg, rgba(78, 205, 196, 0.1) 12%, transparent 12.5%);
+      background-size: 80px 80px;
+      animation: geometricMove 30s linear infinite;
+    }
+
+    .style-glass {
+      background: var(--gradient-glass);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .style-glass::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+      backdrop-filter: blur(1px);
+    }
+
+    .style-metal {
+      background: var(--gradient-metal);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .style-image {
+      position: relative;
+      ${getHeroBackground()}
+    }
+
+    .style-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient-image);
+    }
+
+    /* Card Classes */
+    .card-3d {
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 1rem;
+      box-shadow: var(--shadow-3d);
+      transform: perspective(1000px) rotateX(2deg) rotateY(-2deg);
+      transition: all 0.3s ease;
+      padding: 2rem;
+    }
+
+    .card-3d:hover {
+      transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(-10px);
+    }
+
+    .card-geometric {
+      background: linear-gradient(135deg, rgba(233, 69, 96, 0.2) 0%, rgba(78, 205, 196, 0.2) 100%);
+      border: 2px solid;
+      border-image: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24) 1;
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+      box-shadow: var(--shadow-geometric);
+      transition: all 0.3s ease;
+      padding: 2rem;
+    }
+
+    .card-glass {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 1.5rem;
+      box-shadow: var(--shadow-glass);
+      position: relative;
+      overflow: hidden;
+      padding: 2rem;
+    }
+
+    .card-glass::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    }
+
+    .card-metal {
+      background: linear-gradient(135deg, #c9aa7c 0%, #f4e4bc 25%, #c9aa7c 50%, #8b7355 75%, #f4e4bc 100%);
+      background-size: 200% 200%;
+      border-radius: 1.5rem;
+      box-shadow: var(--shadow-metal);
+      position: relative;
+      overflow: hidden;
+      animation: metalFlow 12s ease infinite;
+      padding: 2rem;
+    }
+
+    .card-image {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 1rem;
+      box-shadow: var(--shadow-image);
+      padding: 2rem;
+    }
+
+    /* Button Classes */
+    .btn-base {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 1rem 2rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      font-size: 1rem;
+      line-height: 1.5;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      color: white;
+    }
+
+    .btn-3d {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      border: 1px solid rgba(59, 130, 246, 0.5);
+      box-shadow: var(--shadow-3d);
+      transform: perspective(500px) rotateX(10deg);
+    }
+
+    .btn-geometric {
+      background: var(--gradient-geometric);
+      background-size: 200% 200%;
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      animation: geometricFlow 4s ease infinite;
+    }
+
+    .btn-glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: var(--shadow-glass);
+    }
+
+    .btn-metal {
+      background: var(--gradient-metal);
+      background-size: 200% 200%;
+      color: #2d1810;
+      box-shadow: var(--shadow-metal);
+      animation: metalFlow 8s ease infinite;
+    }
+
+    .btn-image {
+      background: rgba(59, 130, 246, 0.9);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(59, 130, 246, 0.5);
+      box-shadow: var(--shadow-image);
+    }
+
+    /* Layout Classes */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .section-hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 4rem 0;
+    }
+
+    .section-standard {
+      padding: 8rem 0;
+    }
+
+    .grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    .grid-cols-1 { grid-template-columns: 1fr; }
+    .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+    /* Utility Classes */
+    .text-center { text-align: center; }
+    .text-white { color: white; }
+    .text-lg { font-size: 1.125rem; }
+    .text-xl { font-size: 1.25rem; }
+    .text-2xl { font-size: 1.5rem; }
+    .text-3xl { font-size: 1.875rem; }
+    .text-4xl { font-size: 2.25rem; }
+    .text-5xl { font-size: 3rem; }
+    .text-6xl { font-size: 3.75rem; }
+    .text-7xl { font-size: 4.5rem; }
+    .font-bold { font-weight: bold; }
+    .font-black { font-weight: 900; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .mb-8 { margin-bottom: 2rem; }
+    .mb-12 { margin-bottom: 3rem; }
+    .mb-16 { margin-bottom: 4rem; }
+    .max-w-3xl { max-width: 48rem; }
+    .max-w-4xl { max-width: 56rem; }
+    .max-w-6xl { max-width: 72rem; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .leading-relaxed { line-height: 1.625; }
+
+    /* Animations */
+    @keyframes float3D {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes geometricFlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    @keyframes geometricMove {
+      0% { transform: translateX(0) translateY(0); }
+      100% { transform: translateX(80px) translateY(80px); }
+    }
+
+    @keyframes metalFlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container { padding: 0 1rem; }
+      .section-hero { min-height: 80vh; padding: 2rem 0; }
+      .section-standard { padding: 4rem 0; }
+      .grid-cols-2, .grid-cols-3, .grid-cols-4 { grid-template-columns: 1fr; }
+      .text-5xl { font-size: 2.5rem; }
+      .text-6xl { font-size: 3rem; }
+      .text-7xl { font-size: 3.5rem; }
+    }
+
+    @media (max-width: 480px) {
+      .btn-base { padding: 0.75rem 1.25rem; font-size: 0.875rem; }
+      .text-5xl { font-size: 2rem; }
+      .text-6xl { font-size: 2.5rem; }
+      .text-7xl { font-size: 3rem; }
+    }
+  `;
 
   const generateEmotionalSection = () => {
     if (!content?.sections?.emotionalSection) return '';
     
     return `
-    <section class="py-20 px-4" style="background-color: ${colors.background}">
-      <div class="container mx-auto text-center">
-        <h2 class="text-4xl font-bold mb-8 tech-title" style="color: ${colors.featuresColor}">
+    <section class="section-standard">
+      <div class="container text-center max-w-6xl mx-auto">
+        <h2 class="${getTypographyClass()} text-5xl text-7xl font-black mb-8 text-white">
           ${content.sections.emotionalSection.title}
         </h2>
-        <p class="text-xl max-w-4xl mx-auto leading-relaxed" style="color: ${colors.featuresTextColor};">
-          ${content.sections.emotionalSection.content}
-        </p>
+        <div class="${getCardClass()} mb-12">
+          <p class="typography-body text-xl text-2xl leading-relaxed text-white">
+            ${content.sections.emotionalSection.content}
+          </p>
+        </div>
       </div>
     </section>`;
   };
@@ -60,19 +481,25 @@ export const generateHtmlFile = (
     if (!content?.sections?.whyUs || !content.sections.whyUs.reasons) return '';
     
     return `
-    <section class="py-20 px-4" style="background-color: ${colors.background}">
-      <div class="container mx-auto">
-        <h2 class="text-4xl font-bold mb-12 text-center tech-title" style="color: ${colors.featuresColor}">
-          ${content.sections.whyUs.title}
-        </h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <section class="section-standard">
+      <div class="container">
+        <div class="text-center mb-16">
+          <h2 class="${getTypographyClass()} text-5xl text-6xl font-black mb-6 text-white">
+            ${content.sections.whyUs.title}
+          </h2>
+          <p class="typography-body text-xl max-w-3xl mx-auto" style="color: #d1d5db;">
+            הסיבות שעושות אותנו לבחירה הטובה ביותר עבורכם
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-4 gap-8">
           ${content.sections.whyUs.reasons.map((reason: any) => `
-            <div class="feature-card tech-glow hover:scale-105 transition-all duration-300">
-              <div class="feature-icon tech-glow floating-animation" style="background-color: ${colors.primary}">
+            <div class="${getCardClass()} text-center">
+              <div style="width: 4rem; height: 4rem; border-radius: 1rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);">
                 🏆
               </div>
-              <h3 class="text-xl font-semibold mb-3" style="color: ${colors.featuresColor}">${reason.title}</h3>
-              <p style="color: ${colors.featuresTextColor}">${reason.description}</p>
+              <h3 class="${getTypographyClass()} text-2xl font-bold mb-4 text-white">${reason.title}</h3>
+              <p class="typography-body leading-relaxed" style="color: #d1d5db;">${reason.description}</p>
             </div>
           `).join('')}
         </div>
@@ -84,101 +511,31 @@ export const generateHtmlFile = (
     if (!content?.sections?.whatWeGive || !content.sections.whatWeGive.services) return '';
     
     return `
-    <section class="py-20 px-4" style="background-color: ${colors.background}">
-      <div class="container mx-auto">
-        <h2 class="text-4xl font-bold mb-12 text-center tech-title" style="color: ${colors.featuresColor}">
-          ${content.sections.whatWeGive.title}
-        </h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <section class="section-standard">
+      <div class="container">
+        <div class="text-center mb-16">
+          <h2 class="${getTypographyClass()} text-5xl text-6xl font-black mb-6 text-white">
+            ${content.sections.whatWeGive.title}
+          </h2>
+          <p class="typography-body text-xl max-w-3xl mx-auto" style="color: #d1d5db;">
+            השירותים המקצועיים שלנו מותאמים בדיוק לצרכים שלכם
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-3 gap-8">
           ${content.sections.whatWeGive.services.map((service: any) => `
-            <div class="service-card tech-glow hover:scale-105 transition-all duration-300">
-              <div class="service-check" style="color: ${colors.primary}">✓</div>
-              <h3 class="text-lg font-semibold mb-3" style="color: ${colors.featuresColor}">${service.title}</h3>
-              <p style="color: ${colors.featuresTextColor}">${service.description}</p>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    </section>`;
-  };
-
-  const generateGallerySection = () => {
-    if (!selectedElements.includes('gallery') || !content?.sections?.gallery?.images?.length) return '';
-    
-    return `
-    <section class="py-20 px-4" style="background-color: ${colors.background}">
-      <div class="container mx-auto">
-        <h2 class="text-4xl font-bold mb-12 text-center tech-title" style="color: ${colors.featuresColor}">
-          🖼️ ${content.sections.gallery.title || 'גלריית העבודות שלנו'}
-        </h2>
-        <div class="gallery-grid">
-          ${content.sections.gallery.images.filter((img: any) => img?.url).map((image: any, index: number) => `
-            <div class="gallery-item tech-glow">
-              <img src="${image.url}" alt="${image.description || `עבודה ${index + 1}`}" />
-              <div class="gallery-overlay">
-                <p>${image.description || `עבודה ${index + 1}`}</p>
+            <div class="${getCardClass()}">
+              <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem;">
+                <div style="width: 3rem; height: 3rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);">
+                  ✓
+                </div>
+                <div>
+                  <h3 class="${getTypographyClass()} text-xl font-bold text-white mb-2">${service.title}</h3>
+                  <p class="typography-body leading-relaxed" style="color: #d1d5db;">${service.description}</p>
+                </div>
               </div>
             </div>
           `).join('')}
-        </div>
-      </div>
-    </section>`;
-  };
-
-  const generateProcessSection = () => {
-    if (!selectedElements.includes('process')) return '';
-    
-    const processes = [
-      { step: 1, title: "ניתוח חכם", desc: "ניתוח מתקדם של הצרכים באמצעות AI", icon: "⚡" },
-      { step: 2, title: "תכנון דיגיטלי", desc: "עיצוב מתקדם באמצעות כלים טכנולוגיים", icon: "💻" },
-      { step: 3, title: "פיתוח חכם", desc: "יישום מתקדם עם טכנולוגיות חדישות", icon: "🌐" },
-      { step: 4, title: "השקה חדשנית", desc: "הטמעה חכמה ומעקב בזמן אמת", icon: "🚀" }
-    ];
-    
-    return `
-    <section class="py-20 px-4" style="background-color: ${colors.background}">
-      <div class="container mx-auto">
-        <h2 class="text-4xl font-bold mb-12 text-center tech-title" style="color: ${colors.featuresColor}">
-          💻 תהליך העבודה הטכנולוגי שלנו
-        </h2>
-        <div class="grid md:grid-cols-4 gap-8">
-          ${processes.map((process) => `
-            <div class="process-card tech-glow text-center">
-              <div class="process-icon tech-glow floating-animation" style="background-color: ${colors.primary}">
-                ${process.icon}
-              </div>
-              <div class="process-number" style="color: ${colors.primary}">${process.step}</div>
-              <h3 class="text-xl font-semibold mb-3" style="color: ${colors.featuresColor}">${process.title}</h3>
-              <p style="color: ${colors.featuresTextColor}">${process.desc}</p>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    </section>`;
-  };
-
-  const generateAboutSection = () => {
-    if (!selectedElements.includes('about')) return '';
-    
-    return `
-    <section class="py-20 px-4" style="background-color: ${colors.background}">
-      <div class="container mx-auto">
-        <div class="about-content">
-          <div class="about-text">
-            <h2 class="text-4xl font-bold mb-6 tech-title" style="color: ${colors.aboutColor}">
-              👥 ${content?.sections?.about?.title || 'קצת עלינו'}
-            </h2>
-            <p style="color: ${colors.aboutTextColor}; margin-bottom: 1.5rem;" class="text-lg mb-6">
-              ${content?.sections?.about?.paragraph1 || 'אנחנו צוות מקצועי עם ניסיון של מעל 10 שנים בתחום.'}
-            </p>
-            <p style="color: ${colors.aboutTextColor};" class="text-lg">
-              ${content?.sections?.about?.paragraph2 || 'המטרה שלנו היא לספק שירות ברמה הגבוהה ביותר.'}
-            </p>
-          </div>
-          <div class="about-image">
-            <img src="${content?.sections?.about?.image || 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop'}" 
-                 alt="הצוות שלנו" class="tech-glow" />
-          </div>
         </div>
       </div>
     </section>`;
@@ -189,21 +546,28 @@ export const generateHtmlFile = (
     if (!testimonials.length) return '';
     
     return `
-    <section class="py-20 px-4" style="background-color: ${colors.background}">
-      <div class="container mx-auto">
-        <h2 class="text-4xl font-bold mb-12 text-center tech-title" style="color: ${colors.featuresColor}">מה הלקוחות שלנו אומרים</h2>
-        <div class="testimonials-grid">
+    <section class="section-standard">
+      <div class="container">
+        <div class="text-center mb-16">
+          <h2 class="${getTypographyClass()} text-5xl text-6xl font-black mb-6 text-white">מה הלקוחות שלנו אומרים</h2>
+          <p class="typography-body text-xl max-w-3xl mx-auto" style="color: #d1d5db;">
+            עדויות אמיתיות מלקוחות מרוצים
+          </p>
+        </div>
+        <div class="grid grid-cols-3 gap-8">
           ${testimonials.map((testimonial: any) => `
-            <div class="testimonial-card tech-glow">
-              <div class="stars">⭐⭐⭐⭐⭐</div>
-              <p style="color: ${colors.featuresTextColor}; font-style: italic; margin-bottom: 1rem;">
+            <div class="${getCardClass()}">
+              <div style="margin-bottom: 1rem;">⭐⭐⭐⭐⭐</div>
+              <p class="typography-body text-lg leading-relaxed text-white mb-6" style="font-style: italic;">
                 "${testimonial.content}"
               </p>
-              <div class="testimonial-author">
-                <div class="author-avatar">👤</div>
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <div style="width: 3rem; height: 3rem; border-radius: 50%; background: linear-gradient(45deg, #3b82f6, #8b5cf6); display: flex; align-items: center; justify-content: center;">
+                  👤
+                </div>
                 <div>
-                  <p style="color: ${colors.featuresColor}; font-weight: bold;">${testimonial.name}</p>
-                  ${testimonial.role ? `<p style="color: ${colors.featuresTextColor}; font-size: 0.9rem;">${testimonial.role}</p>` : ''}
+                  <p class="${getTypographyClass()} font-bold text-white">${testimonial.name}</p>
+                  ${testimonial.role ? `<p class="typography-body text-sm" style="color: #9ca3af;">${testimonial.role}</p>` : ''}
                 </div>
               </div>
             </div>
@@ -221,426 +585,99 @@ export const generateHtmlFile = (
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${businessName}</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: white;
-            background: ${colors.background};
-            direction: rtl;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            ${getHeroBackground()}
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .matrix-bg::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: matrix-move 20s linear infinite;
-            pointer-events: none;
-        }
-        
-        .hero-content {
-            text-align: center;
-            z-index: 10;
-            position: relative;
-            padding: 0 20px;
-        }
-        
-        .tech-title {
-            font-size: 3.5rem;
-            font-weight: bold;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(45deg, #00f5ff, #0066ff, #00ccff);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: tech-gradient 3s ease infinite;
-        }
-        
-        .hero-subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            color: ${colors.subheadlineColor};
-            text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
-        }
-        
-        .cta-button {
-            background-color: ${colors.primary};
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
-        }
-        
-        .cta-button:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
-        }
-        
-        /* Tech Effects */
-        .tech-glow {
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3), 0 0 60px rgba(59, 130, 246, 0.1);
-            animation: pulse-glow 3s ease-in-out infinite;
-        }
-        
-        /* Grid Layouts */
-        .grid {
-            display: grid;
-            gap: 30px;
-        }
-        
-        .md\\:grid-cols-2 {
-            grid-template-columns: repeat(2, 1fr);
-        }
-        
-        .lg\\:grid-cols-3 {
-            grid-template-columns: repeat(3, 1fr);
-        }
-        
-        .lg\\:grid-cols-4 {
-            grid-template-columns: repeat(4, 1fr);
-        }
-        
-        .md\\:grid-cols-4 {
-            grid-template-columns: repeat(4, 1fr);
-        }
-        
-        /* Feature Cards */
-        .feature-card {
-            background: rgba(31, 41, 55, 0.5);
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            border: 2px solid rgba(59, 130, 246, 0.2);
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            border-color: ${colors.primary};
-        }
-        
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-        }
-        
-        /* Service Cards */
-        .service-card {
-            background: rgba(31, 41, 55, 0.5);
-            padding: 25px;
-            border-radius: 15px;
-            border: 2px solid rgba(59, 130, 246, 0.2);
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-        
-        .service-card:hover {
-            transform: translateY(-5px);
-            border-color: ${colors.primary};
-        }
-        
-        .service-check {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        
-        /* Gallery */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        
-        .gallery-item {
-            position: relative;
-            aspect-ratio: 1;
-            overflow: hidden;
-            border-radius: 15px;
-        }
-        
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-        
-        .gallery-item:hover img {
-            transform: scale(1.1);
-        }
-        
-        .gallery-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-        
-        .gallery-item:hover .gallery-overlay {
-            opacity: 1;
-        }
-        
-        /* Process Cards */
-        .process-card {
-            background: rgba(31, 41, 55, 0.5);
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            border: 2px solid rgba(59, 130, 246, 0.2);
-            position: relative;
-            backdrop-filter: blur(10px);
-        }
-        
-        .process-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-        }
-        
-        .process-number {
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        
-        /* About Section */
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            align-items: center;
-        }
-        
-        .about-image img {
-            width: 100%;
-            border-radius: 15px;
-        }
-        
-        /* Testimonials */
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .testimonial-card {
-            background: rgba(31, 41, 55, 0.5);
-            padding: 25px;
-            border-radius: 15px;
-            border: 2px solid rgba(59, 130, 246, 0.2);
-            backdrop-filter: blur(10px);
-        }
-        
-        .stars {
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-        }
-        
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .author-avatar {
-            width: 50px;
-            height: 50px;
-            background: rgba(107, 114, 128, 0.5);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-        
-        /* Contact Section */
-        .contact-section {
-            padding: 80px 0;
-            background: ${colors.background};
-            text-align: center;
-        }
-        
-        .contact-info {
-            max-width: 500px;
-            margin: 0 auto 30px;
-        }
-        
-        .contact-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-        }
-        
-        /* Utility Classes */
-        .text-center { text-align: center; }
-        .text-lg { font-size: 1.125rem; }
-        .text-xl { font-size: 1.25rem; }
-        .text-4xl { font-size: 2.25rem; }
-        .mb-6 { margin-bottom: 1.5rem; }
-        .mb-8 { margin-bottom: 2rem; }
-        .mb-12 { margin-bottom: 3rem; }
-        .py-20 { padding-top: 5rem; padding-bottom: 5rem; }
-        .px-4 { padding-left: 1rem; padding-right: 1rem; }
-        .max-w-4xl { max-width: 56rem; }
-        .mx-auto { margin-left: auto; margin-right: auto; }
-        .leading-relaxed { line-height: 1.625; }
-        .font-bold { font-weight: bold; }
-        .font-semibold { font-weight: 600; }
-        
-        /* Animations */
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        @keyframes tech-gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.3), 0 0 60px rgba(59, 130, 246, 0.1); }
-            50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.5), 0 0 80px rgba(59, 130, 246, 0.2); }
-        }
-        
-        @keyframes matrix-move {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        .floating-animation {
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .tech-title {
-                font-size: 2.5rem;
-            }
-            
-            .hero-subtitle {
-                font-size: 1.2rem;
-            }
-            
-            .about-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .md\\:grid-cols-2,
-            .lg\\:grid-cols-3,
-            .lg\\:grid-cols-4,
-            .md\\:grid-cols-4 {
-                grid-template-columns: 1fr;
-            }
-        }
+        ${getCSSStyles()}
     </style>
 </head>
-<body>
+<body class="${getStyleClass()}">
     <!-- Hero Section -->
-    <section class="hero matrix-bg">
-        <div class="hero-content">
-            <h1 class="tech-title">${businessName}</h1>
-            <p class="hero-subtitle tech-glow">${subheadline}</p>
-            <a href="#contact" class="cta-button tech-glow floating-animation">${ctaText}</a>
+    <section class="section-hero">
+        <div class="container text-center">
+            <h1 class="${getTypographyClass()} text-7xl font-black mb-8 text-white">${businessName}</h1>
+            <div class="${getCardClass()} mb-12">
+                <p class="typography-body text-xl text-2xl text-white leading-relaxed">${subheadline}</p>
+            </div>
+            <a href="#contact" class="btn-base ${getButtonClass()}">${ctaText}</a>
+            
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-4 gap-6 max-w-4xl mx-auto" style="margin-top: 4rem;">
+                <div class="${getCardClass()} text-center">
+                    <div class="${getTypographyClass()} text-3xl text-4xl font-bold text-white mb-2">500+</div>
+                    <div class="typography-body" style="color: #d1d5db; font-size: 0.875rem;">לקוחות מרוצים</div>
+                </div>
+                <div class="${getCardClass()} text-center">
+                    <div class="${getTypographyClass()} text-3xl text-4xl font-bold text-white mb-2">98%</div>
+                    <div class="typography-body" style="color: #d1d5db; font-size: 0.875rem;">שביעות רצון</div>
+                </div>
+                <div class="${getCardClass()} text-center">
+                    <div class="${getTypographyClass()} text-3xl text-4xl font-bold text-white mb-2">10+</div>
+                    <div class="typography-body" style="color: #d1d5db; font-size: 0.875rem;">שנות ניסיון</div>
+                </div>
+                <div class="${getCardClass()} text-center">
+                    <div class="${getTypographyClass()} text-3xl text-4xl font-bold text-white mb-2">24/7</div>
+                    <div class="typography-body" style="color: #d1d5db; font-size: 0.875rem;">זמינות</div>
+                </div>
+            </div>
         </div>
     </section>
 
     ${generateEmotionalSection()}
     ${generateWhyUsSection()}
     ${generateWhatWeGiveSection()}
-    ${generateGallerySection()}
-    ${generateProcessSection()}
-    ${generateAboutSection()}
     ${generateTestimonialsSection()}
 
     <!-- Contact Section -->
-    <section class="contact-section" id="contact">
-        <div class="container">
-            <h2 class="tech-title" style="color: ${colors.contactColor}">${content?.contactTitle || 'בואו נתחיל לעבוד יחד'}</h2>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <span style="color: ${colors.primary}">📞</span>
-                    <span style="color: ${colors.contactTextColor}">050-1234567</span>
+    <section class="section-standard" id="contact">
+        <div class="container text-center">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="${getTypographyClass()} text-5xl text-6xl font-black mb-8 text-white">
+                    ${content?.contactTitle || 'מוכנים להתחיל?'}
+                </h2>
+                
+                <div class="${getCardClass()} mb-12">
+                    <p class="typography-body text-xl text-2xl text-white leading-relaxed">
+                        בואו ניצור יחד משהו מדהים שיקדם את העסק שלכם
+                    </p>
                 </div>
-                <div class="contact-item">
-                    <span style="color: ${colors.primary}">✉️</span>
-                    <span style="color: ${colors.contactTextColor}">info@business.co.il</span>
+
+                <div class="grid grid-cols-2 gap-6 max-w-2xl mx-auto mb-12">
+                    <div class="${getCardClass()}">
+                        <div style="display: flex; align-items: center; gap: 1rem; justify-content: center;">
+                            <span style="color: #60a5fa;">📞</span>
+                            <span class="typography-body text-white font-medium">050-1234567</span>
+                        </div>
+                    </div>
+                    <div class="${getCardClass()}">
+                        <div style="display: flex; align-items: center; gap: 1rem; justify-content: center;">
+                            <span style="color: #60a5fa;">✉️</span>
+                            <span class="typography-body text-white font-medium">info@business.co.il</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="contact-item">
-                    <span style="color: ${colors.primary}">📍</span>
-                    <span style="color: ${colors.contactTextColor}">תל אביב, ישראל</span>
+
+                <div style="display: flex; flex-direction: column; gap: 1.5rem; justify-content: center; align-items: center; margin-bottom: 3rem;">
+                    <a href="tel:0501234567" class="btn-base ${getButtonClass()}" style="font-size: 1.125rem;">צור קשר עכשיו</a>
+                    <a href="#" class="btn-base ${getButtonClass()}" style="font-size: 1.125rem;">קבל הצעת מחיר</a>
+                </div>
+
+                <!-- Trust Badges -->
+                <div class="grid grid-cols-3 gap-6 max-w-3xl mx-auto">
+                    <div class="${getCardClass()} text-center">
+                        <div style="width: 3rem; height: 3rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);">🛡️</div>
+                        <h3 class="${getTypographyClass()} font-semibold text-white mb-1">מוגן ומאובטח</h3>
+                        <p class="typography-body text-sm" style="color: #d1d5db;">ביטחון מלא</p>
+                    </div>
+                    <div class="${getCardClass()} text-center">
+                        <div style="width: 3rem; height: 3rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);">⏰</div>
+                        <h3 class="${getTypographyClass()} font-semibold text-white mb-1">מענה מהיר</h3>
+                        <p class="typography-body text-sm" style="color: #d1d5db;">תוך 24 שעות</p>
+                    </div>
+                    <div class="${getCardClass()} text-center">
+                        <div style="width: 3rem; height: 3rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.75rem; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);">❤️</div>
+                        <h3 class="${getTypographyClass()} font-semibold text-white mb-1">ללא התחייבות</h3>
+                        <p class="typography-body text-sm" style="color: #d1d5db;">ייעוץ חינם</p>
+                    </div>
                 </div>
             </div>
-            <a href="tel:0501234567" class="cta-button tech-glow floating-animation">צור קשר עכשיו</a>
         </div>
     </section>
 </body>

@@ -1,7 +1,6 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { LiquidButton, MetalButton } from "@/components/ui/liquid-glass-button";
 import { Phone, Mail, MapPin, Star, CheckCircle2, Users, Target, Image, Award, Zap, Cpu, Network, Rocket, ArrowLeft, Quote, Shield, Clock, ThumbsUp, TrendingUp, Heart, Sparkles } from "lucide-react";
 import { ColorScheme } from "@/components/ColorEditor";
 
@@ -13,72 +12,102 @@ interface ContentSectionsProps {
 }
 
 export const ContentSections = ({ content, currentColors, formData, selectedElements }: ContentSectionsProps) => {
-  const renderButton = (text: string, className?: string, isSecondary?: boolean) => {
-    const baseClass = `btn-base ${className || ''}`;
-    
-    if (formData.heroStyle === 'glass') {
-      return (
-        <button className={`${baseClass} ${isSecondary ? 'btn-glass' : 'btn-primary'}`}>
-          <ArrowLeft className="w-5 h-5" />
-          {text}
-        </button>
-      );
-    } else if (formData.heroStyle === 'metal') {
-      return (
-        <button className={`${baseClass} ${isSecondary ? 'btn-glass' : 'btn-metal'}`}>
-          <ArrowLeft className="w-5 h-5" />
-          {text}
-        </button>
-      );
-    } else if (formData.heroStyle === 'geometric') {
-      return (
-        <button className={`${baseClass} ${isSecondary ? 'btn-glass' : 'btn-geometric'}`}>
-          <ArrowLeft className="w-5 h-5" />
-          {text}
-        </button>
-      );
+  
+  // Get consistent styling classes based on hero style
+  const getCardClass = () => {
+    switch (formData.heroStyle) {
+      case 'geometric':
+        return 'card-geometric';
+      case 'glass':
+        return 'card-glass';
+      case 'metal':
+        return 'card-metal';
+      case 'image':
+        return 'card-image';
+      default:
+        return 'card-3d';
     }
+  };
 
+  const getBackgroundClass = () => {
+    switch (formData.heroStyle) {
+      case 'geometric':
+        return 'bg-geometric';
+      case 'glass':
+        return 'bg-glass';
+      case 'metal':
+        return 'bg-metal';
+      case 'image':
+        return 'bg-image';
+      default:
+        return 'bg-3d';
+    }
+  };
+
+  const getButtonClass = () => {
+    switch (formData.heroStyle) {
+      case 'geometric':
+        return 'btn-geometric';
+      case 'glass':
+        return 'btn-glass';
+      case 'metal':
+        return 'btn-metal';
+      case 'image':
+        return 'btn-image';
+      default:
+        return 'btn-3d';
+    }
+  };
+
+  const getIconClass = () => {
+    switch (formData.heroStyle) {
+      case 'geometric':
+        return 'icon-geometric';
+      case 'glass':
+        return 'icon-glass';
+      case 'metal':
+        return 'icon-metal';
+      case 'image':
+        return 'icon-image';
+      default:
+        return 'icon-3d';
+    }
+  };
+
+  const getTypographyClass = () => {
+    switch (formData.heroStyle) {
+      case 'geometric':
+        return 'typography-modern';
+      case 'glass':
+        return 'typography-modern';
+      case 'metal':
+        return 'typography-luxury';
+      case 'image':
+        return 'typography-modern';
+      default:
+        return 'typography-tech';
+    }
+  };
+
+  const renderButton = (text: string, className?: string, isSecondary?: boolean) => {
+    const baseClass = `btn-base ${getButtonClass()} ${className || ''}`;
+    
     return (
-      <button className={`${baseClass} ${isSecondary ? 'btn-glass' : 'btn-primary'}`}>
+      <button className={baseClass}>
         <ArrowLeft className="w-5 h-5" />
         {text}
       </button>
     );
   };
 
-  const getSectionBackground = (index: number) => {
-    const backgrounds = [
-      'bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900',
-      'bg-gradient-to-br from-purple-900 via-slate-900 to-blue-900',
-      'bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900',
-      'bg-gradient-to-br from-blue-900 via-slate-900 to-purple-900'
-    ];
-    return backgrounds[index % backgrounds.length];
-  };
-
-  const getCardClass = () => {
-    if (formData.heroStyle === 'glass') return 'glass-card';
-    if (formData.heroStyle === 'metal') return 'metal-card';
-    if (formData.heroStyle === 'geometric') return 'geometric-card';
-    return 'glass-card';
-  };
-
-  const getIconClass = () => {
-    if (formData.heroStyle === 'glass') return 'icon-glass';
-    if (formData.heroStyle === 'metal') return 'icon-metal';
-    if (formData.heroStyle === 'geometric') return 'icon-premium';
-    return 'icon-premium';
-  };
-
   return (
     <>
       {/* Value Proposition Section */}
       {content?.sections?.emotionalSection && (
-        <section className={`section-standard ${getSectionBackground(0)}`}>
+        <section className={`section-standard ${getBackgroundClass()}`}>
           <div className="container-hero">
             <div className="text-center max-w-6xl mx-auto">
-              <h2 className="typography-modern text-5xl md:text-7xl font-black mb-8 text-white animate-slide-up">
+              <h2 className={`${getTypographyClass()} text-5xl md:text-7xl font-black mb-8 text-white animate-slide-up`}>
                 {content.sections.emotionalSection.title}
               </h2>
               <div className={`${getCardClass()} p-12 animate-slide-up animate-delay-1`}>
@@ -93,10 +122,10 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
 
       {/* Why Choose Us Section */}
       {content?.sections?.whyUs && (
-        <section className={`section-standard ${getSectionBackground(1)}`}>
+        <section className={`section-standard ${getBackgroundClass()}`}>
           <div className="container-hero">
             <div className="text-center mb-16 animate-slide-up">
-              <h2 className="typography-modern text-5xl md:text-6xl font-black mb-6 text-white">
+              <h2 className={`${getTypographyClass()} text-5xl md:text-6xl font-black mb-6 text-white`}>
                 {content.sections.whyUs.title}
               </h2>
               <p className="typography-body text-xl text-gray-300 max-w-3xl mx-auto">
@@ -110,7 +139,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                   <div className={`${getIconClass()} mx-auto mb-6`}>
                     <Award className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="typography-modern text-2xl font-bold mb-4 text-white">
+                  <h3 className={`${getTypographyClass()} text-2xl font-bold mb-4 text-white`}>
                     {reason.title}
                   </h3>
                   <p className="typography-body text-gray-300 leading-relaxed">
@@ -125,10 +154,10 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
 
       {/* Services Section */}
       {content?.sections?.whatWeGive && (
-        <section className={`section-standard ${getSectionBackground(2)}`}>
+        <section className={`section-standard ${getBackgroundClass()}`}>
           <div className="container-hero">
             <div className="text-center mb-16 animate-slide-up">
-              <h2 className="typography-modern text-5xl md:text-6xl font-black mb-6 text-white">
+              <h2 className={`${getTypographyClass()} text-5xl md:text-6xl font-black mb-6 text-white`}>
                 {content.sections.whatWeGive.title}
               </h2>
               <p className="typography-body text-xl text-gray-300 max-w-3xl mx-auto">
@@ -144,7 +173,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                       <CheckCircle2 className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="typography-modern text-xl font-bold text-white mb-2">
+                      <h3 className={`${getTypographyClass()} text-xl font-bold text-white mb-2`}>
                         {service.title}
                       </h3>
                       <p className="typography-body text-gray-300 leading-relaxed">
@@ -161,10 +190,10 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
 
       {/* Process Section */}
       {selectedElements.includes('process') && (
-        <section className={`section-standard ${getSectionBackground(3)}`}>
+        <section className={`section-standard ${getBackgroundClass()}`}>
           <div className="container-hero">
             <div className="text-center mb-16 animate-slide-up">
-              <h2 className="typography-modern text-5xl md:text-6xl font-black mb-6 text-white">
+              <h2 className={`${getTypographyClass()} text-5xl md:text-6xl font-black mb-6 text-white`}>
                 <Cpu className="w-12 h-12 inline-block ml-4" />
                 תהליך העבודה שלנו
               </h2>
@@ -182,7 +211,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               ].map((process, index) => (
                 <div key={index} className={`${getCardClass()} text-center p-8 animate-scale-in animate-delay-${index + 1}`}>
                   <div className="relative mb-8">
-                    <div className={getIconClass()} style={{ margin: '0 auto' }}>
+                    <div className={`${getIconClass()} mx-auto`}>
                       <div className="text-white">
                         {process.icon}
                       </div>
@@ -191,7 +220,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                       {process.step}
                     </div>
                   </div>
-                  <h3 className="typography-modern text-xl font-bold mb-4 text-white">
+                  <h3 className={`${getTypographyClass()} text-xl font-bold mb-4 text-white`}>
                     {process.title}
                   </h3>
                   <p className="typography-body text-gray-300 leading-relaxed">
@@ -206,10 +235,10 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
 
       {/* Testimonials Section */}
       {content?.sections?.testimonials && content.sections.testimonials.some((t: any) => t.name && t.content) && (
-        <section className={`section-standard ${getSectionBackground(0)}`}>
+        <section className={`section-standard ${getBackgroundClass()}`}>
           <div className="container-hero">
             <div className="text-center mb-16 animate-slide-up">
-              <h2 className="typography-modern text-5xl md:text-6xl font-black mb-6 text-white">
+              <h2 className={`${getTypographyClass()} text-5xl md:text-6xl font-black mb-6 text-white`}>
                 מה הלקוחות שלנו אומרים
               </h2>
               <p className="typography-body text-xl text-gray-300 max-w-3xl mx-auto">
@@ -237,7 +266,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                       <Users className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <p className="typography-modern font-bold text-white">
+                      <p className={`${getTypographyClass()} font-bold text-white`}>
                         {testimonial.name}
                       </p>
                       {testimonial.role && (
@@ -255,12 +284,12 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
       )}
 
       {/* Enhanced CTA Section */}
-      <section className="section-standard bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 relative overflow-hidden">
+      <section className={`section-standard ${getBackgroundClass()} relative overflow-hidden`}>
         <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
         
         <div className="container-hero text-center relative z-10">
           <div className="max-w-4xl mx-auto">
-            <h2 className="typography-hero text-5xl md:text-6xl font-black mb-8 text-white animate-slide-up">
+            <h2 className={`${getTypographyClass()} text-5xl md:text-6xl font-black mb-8 text-white animate-slide-up`}>
               {content?.contactTitle || 'מוכנים להתחיל?'}
             </h2>
             
@@ -287,7 +316,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12 animate-slide-up animate-delay-3">
               {renderButton('צור קשר עכשיו', 'text-lg')}
-              {renderButton('קבל הצעת מחיר', 'text-lg', true)}
+              {renderButton('קבל הצעת מחיר', 'text-lg')}
             </div>
 
             {/* Enhanced Trust Badges */}
@@ -301,7 +330,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                   <div className={`${getIconClass()} mx-auto mb-3 text-white`}>
                     {badge.icon}
                   </div>
-                  <h3 className="typography-modern font-semibold text-white mb-1">
+                  <h3 className={`${getTypographyClass()} font-semibold text-white mb-1`}>
                     {badge.title}
                   </h3>
                   <p className="typography-body text-gray-300 text-sm">

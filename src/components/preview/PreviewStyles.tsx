@@ -2,7 +2,7 @@
 export const PreviewStyles = () => (
   <style>{`
     /* Professional Typography System */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
 
     :root {
       /* Professional Color System */
@@ -25,40 +25,40 @@ export const PreviewStyles = () => (
       --gold-500: #f59e0b;
       --gold-600: #d97706;
       
-      /* Premium Gradients */
-      --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-      --gradient-geometric: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24);
-      --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-      --gradient-metal: linear-gradient(135deg, #c9aa7c 0%, #f4e4bc 25%, #c9aa7c 50%, #8b7355 75%, #f4e4bc 100%);
-      --gradient-liquid: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+      /* Unique Style Gradients */
+      --gradient-3d: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f0f23 75%, #000000 100%);
+      --gradient-geometric: linear-gradient(45deg, #ff6b6b 0%, #4ecdc4 25%, #45b7d1 50%, #f9ca24 75%, #ff6b6b 100%);
+      --gradient-glass: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 50%, rgba(15, 23, 42, 0.9) 100%);
+      --gradient-metal: linear-gradient(135deg, #2c1810 0%, #8b7355 25%, #c9aa7c 50%, #f4e4bc 75%, #8b7355 100%);
+      --gradient-image: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.8) 100%);
       
       /* Advanced Shadows */
-      --shadow-soft: 0 2px 4px rgba(0,0,0,0.02), 0 8px 16px rgba(0,0,0,0.06);
-      --shadow-medium: 0 4px 8px rgba(0,0,0,0.04), 0 12px 24px rgba(0,0,0,0.08);
-      --shadow-large: 0 8px 16px rgba(0,0,0,0.06), 0 20px 40px rgba(0,0,0,0.1);
-      --shadow-glass: 0 8px 32px rgba(31, 38, 135, 0.37);
-      --shadow-metal: 0 12px 48px rgba(198, 170, 124, 0.25);
-      
-      /* Blur Effects */
-      --blur-xs: blur(2px);
-      --blur-sm: blur(4px);
-      --blur-md: blur(8px);
-      --blur-lg: blur(16px);
-      --blur-xl: blur(24px);
+      --shadow-3d: 0 25px 50px rgba(0,0,0,0.8), 0 12px 25px rgba(59, 130, 246, 0.3);
+      --shadow-geometric: 0 0 0 1px rgba(255, 107, 107, 0.3), 0 15px 35px rgba(255, 107, 107, 0.2);
+      --shadow-glass: 0 8px 32px rgba(15, 23, 42, 0.4), 0 0 0 1px rgba(255,255,255,0.1);
+      --shadow-metal: 0 12px 24px rgba(139, 115, 85, 0.4), inset 0 1px 0 rgba(244, 228, 188, 0.3);
+      --shadow-image: 0 20px 40px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      direction: rtl;
     }
 
     /* Typography Excellence */
     .typography-hero {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Space Grotesk', sans-serif;
       font-weight: 800;
       line-height: 1.1;
       letter-spacing: -0.04em;
-      background: var(--gradient-hero);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-size: 200% 200%;
-      animation: gradientFlow 8s ease infinite;
     }
 
     .typography-luxury {
@@ -75,6 +75,13 @@ export const PreviewStyles = () => (
       letter-spacing: -0.01em;
     }
 
+    .typography-tech {
+      font-family: 'Orbitron', monospace;
+      font-weight: 600;
+      line-height: 1.3;
+      letter-spacing: 0.02em;
+    }
+
     .typography-body {
       font-family: 'Inter', sans-serif;
       font-weight: 400;
@@ -82,78 +89,307 @@ export const PreviewStyles = () => (
       letter-spacing: -0.005em;
     }
 
-    /* Advanced Animations */
-    @keyframes gradientFlow {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
+    /* === 3D STYLE === */
+    .style-3d {
+      background: var(--gradient-3d);
+      position: relative;
+      overflow: hidden;
     }
 
-    @keyframes float3D {
-      0%, 100% { 
-        transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px) translateZ(0px);
-      }
-      25% { 
-        transform: perspective(1000px) rotateX(5deg) rotateY(10deg) translateY(-10px) translateZ(20px);
-      }
-      50% { 
-        transform: perspective(1000px) rotateX(0deg) rotateY(20deg) translateY(-20px) translateZ(40px);
-      }
-      75% { 
-        transform: perspective(1000px) rotateX(-5deg) rotateY(10deg) translateY(-10px) translateZ(20px);
-      }
+    .style-3d::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(147, 51, 234, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 40% 60%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+      animation: float3D 20s ease-in-out infinite;
     }
 
-    @keyframes geometricPulse {
-      0%, 100% { 
-        transform: scale(1) rotate(0deg);
-        opacity: 0.8;
-      }
-      50% { 
-        transform: scale(1.1) rotate(180deg);
-        opacity: 1;
-      }
+    .bg-3d {
+      background: var(--gradient-3d);
     }
 
-    @keyframes liquidShimmer {
-      0% { 
-        background-position: -200% 0;
-        transform: translateX(-100%);
-      }
-      100% { 
-        background-position: 200% 0;
-        transform: translateX(100%);
-      }
+    .card-3d {
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 1rem;
+      box-shadow: var(--shadow-3d);
+      transform: perspective(1000px) rotateX(2deg) rotateY(-2deg);
+      transition: all 0.3s ease;
     }
 
-    @keyframes metalGlow {
-      0%, 100% { 
-        box-shadow: 0 0 20px rgba(198, 170, 124, 0.3);
-      }
-      50% { 
-        box-shadow: 0 0 40px rgba(198, 170, 124, 0.6);
-      }
+    .card-3d:hover {
+      transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(-10px);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.9), 0 15px 30px rgba(59, 130, 246, 0.4);
     }
 
-    @keyframes slideInUp {
-      from {
-        opacity: 0;
-        transform: translateY(60px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .btn-3d {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+      border: 1px solid rgba(59, 130, 246, 0.5);
+      box-shadow: var(--shadow-3d);
+      transform: perspective(500px) rotateX(10deg);
     }
 
-    @keyframes scaleIn {
-      from {
-        opacity: 0;
-        transform: scale(0.9);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+    .btn-3d:hover {
+      transform: perspective(500px) rotateX(0deg) translateY(-5px);
+      box-shadow: 0 20px 40px rgba(59, 130, 246, 0.4);
+    }
+
+    /* === GEOMETRIC STYLE === */
+    .style-geometric {
+      background: linear-gradient(45deg, #1a1a2e 0%, #16213e 25%, #0f0f23 50%, #e94560 75%, #0f0f23 100%);
+      background-size: 400% 400%;
+      animation: geometricFlow 15s ease infinite;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .style-geometric::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        linear-gradient(30deg, rgba(255, 107, 107, 0.1) 12%, transparent 12.5%, transparent 87%, rgba(255, 107, 107, 0.1) 87.5%),
+        linear-gradient(150deg, rgba(78, 205, 196, 0.1) 12%, transparent 12.5%, transparent 87%, rgba(78, 205, 196, 0.1) 87.5%),
+        linear-gradient(90deg, rgba(69, 183, 209, 0.1) 12%, transparent 12.5%, transparent 87%, rgba(69, 183, 209, 0.1) 87.5%);
+      background-size: 80px 80px;
+      animation: geometricMove 30s linear infinite;
+    }
+
+    .bg-geometric {
+      background: linear-gradient(135deg, #e94560 0%, #ff6b6b 25%, #4ecdc4 50%, #45b7d1 75%, #f9ca24 100%);
+      background-size: 300% 300%;
+      animation: geometricFlow 8s ease infinite;
+    }
+
+    .card-geometric {
+      background: linear-gradient(135deg, rgba(233, 69, 96, 0.2) 0%, rgba(78, 205, 196, 0.2) 100%);
+      border: 2px solid;
+      border-image: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24) 1;
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+      box-shadow: var(--shadow-geometric);
+      transition: all 0.3s ease;
+    }
+
+    .card-geometric:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.5), var(--shadow-geometric);
+    }
+
+    .btn-geometric {
+      background: var(--gradient-geometric);
+      background-size: 200% 200%;
+      color: white;
+      font-weight: bold;
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      animation: geometricFlow 4s ease infinite;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .btn-geometric:hover {
+      animation-duration: 2s;
+      transform: translateY(-3px) scale(1.05);
+    }
+
+    /* === GLASS STYLE === */
+    .style-glass {
+      background: var(--gradient-glass);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .style-glass::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+      backdrop-filter: blur(1px);
+    }
+
+    .bg-glass {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
+      backdrop-filter: blur(20px);
+    }
+
+    .card-glass {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 1.5rem;
+      box-shadow: var(--shadow-glass);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-glass::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    }
+
+    .card-glass:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.6), 0 0 0 1px rgba(255,255,255,0.2);
+    }
+
+    .btn-glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      box-shadow: var(--shadow-glass);
+    }
+
+    .btn-glass:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.5);
+    }
+
+    /* === METAL STYLE === */
+    .style-metal {
+      background: var(--gradient-metal);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .style-metal::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 30% 30%, rgba(244, 228, 188, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(201, 170, 124, 0.1) 0%, transparent 50%);
+    }
+
+    .bg-metal {
+      background: linear-gradient(135deg, #2c1810 0%, #8b7355 25%, #c9aa7c 50%, #f4e4bc 75%, #8b7355 100%);
+      background-size: 200% 200%;
+      animation: metalFlow 8s ease infinite;
+    }
+
+    .card-metal {
+      background: linear-gradient(135deg, #c9aa7c 0%, #f4e4bc 25%, #c9aa7c 50%, #8b7355 75%, #f4e4bc 100%);
+      background-size: 200% 200%;
+      border-radius: 1.5rem;
+      box-shadow: var(--shadow-metal);
+      position: relative;
+      overflow: hidden;
+      animation: metalFlow 12s ease infinite;
+    }
+
+    .card-metal::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(244, 228, 188, 0.8), transparent);
+    }
+
+    .card-metal:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(139, 115, 85, 0.6), inset 0 1px 0 rgba(244, 228, 188, 0.5);
+      animation-duration: 6s;
+    }
+
+    .btn-metal {
+      background: var(--gradient-metal);
+      background-size: 200% 200%;
+      color: #2d1810;
+      font-weight: bold;
+      box-shadow: var(--shadow-metal);
+      animation: metalFlow 8s ease infinite;
+    }
+
+    .btn-metal:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px rgba(139, 115, 85, 0.5);
+      animation-duration: 4s;
+    }
+
+    .text-metal {
+      background: var(--gradient-metal);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: metalFlow 8s ease infinite;
+    }
+
+    /* === IMAGE STYLE === */
+    .style-image {
+      position: relative;
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .style-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient-image);
+    }
+
+    .bg-image {
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(2px);
+    }
+
+    .card-image {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 1rem;
+      box-shadow: var(--shadow-image);
+    }
+
+    .card-image:hover {
+      background: rgba(0, 0, 0, 0.7);
+      transform: translateY(-5px);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+    }
+
+    .btn-image {
+      background: rgba(59, 130, 246, 0.9);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(59, 130, 246, 0.5);
+      color: white;
+      box-shadow: var(--shadow-image);
+    }
+
+    .btn-image:hover {
+      background: rgba(59, 130, 246, 1);
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(59, 130, 246, 0.4);
     }
 
     /* Professional Button System */
@@ -176,245 +412,14 @@ export const PreviewStyles = () => (
     }
 
     .btn-primary {
-      background: var(--gradient-hero);
-      background-size: 200% 200%;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
       color: white;
-      box-shadow: var(--shadow-large);
-      animation: gradientFlow 8s ease infinite;
+      box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
     }
 
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.15), 0 20px 40px rgba(102, 126, 234, 0.3);
-    }
-
-    .btn-glass {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: var(--blur-lg);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: white;
-      box-shadow: var(--shadow-glass);
-    }
-
-    .btn-glass:hover {
-      background: rgba(255, 255, 255, 0.15);
-      transform: translateY(-2px);
-      box-shadow: 0 16px 32px rgba(31, 38, 135, 0.5);
-    }
-
-    .btn-metal {
-      background: var(--gradient-metal);
-      background-size: 200% 200%;
-      color: #2d1810;
-      box-shadow: var(--shadow-metal);
-      animation: gradientFlow 6s ease infinite, metalGlow 4s ease infinite;
-    }
-
-    .btn-metal:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 16px 32px rgba(198, 170, 124, 0.4);
-    }
-
-    .btn-geometric {
-      background: var(--gradient-geometric);
-      background-size: 400% 400%;
-      color: white;
-      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
-      animation: gradientFlow 4s ease infinite;
-    }
-
-    .btn-geometric:hover {
-      transform: translateY(-2px) scale(1.02);
-      animation-duration: 2s;
-    }
-
-    /* Glass Morphism System */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: var(--blur-xl);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 1.5rem;
-      box-shadow: var(--shadow-glass);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .glass-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    }
-
-    .glass-card:hover {
-      background: rgba(255, 255, 255, 0.12);
-      transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(31, 38, 135, 0.5);
-    }
-
-    .glass-intense {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: var(--blur-xl);
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      border-radius: 2rem;
-      box-shadow: 
-        inset 0 1px 0 rgba(255, 255, 255, 0.2),
-        0 20px 40px rgba(31, 38, 135, 0.4);
-    }
-
-    /* Metallic System */
-    .metal-card {
-      background: var(--gradient-metal);
-      background-size: 200% 200%;
-      border-radius: 1.5rem;
-      box-shadow: var(--shadow-metal);
-      position: relative;
-      overflow: hidden;
-      animation: gradientFlow 8s ease infinite;
-    }
-
-    .metal-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-    }
-
-    .metal-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(198, 170, 124, 0.5);
-      animation-duration: 4s;
-    }
-
-    .metal-text {
-      background: var(--gradient-metal);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-size: 200% 200%;
-      animation: gradientFlow 6s ease infinite;
-    }
-
-    /* Geometric Design System */
-    .geometric-hero {
-      position: relative;
-      background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
-      overflow: hidden;
-    }
-
-    .geometric-hero::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: 
-        radial-gradient(circle at 20% 20%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(78, 205, 196, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(69, 183, 209, 0.1) 0%, transparent 50%);
-      animation: geometricPulse 12s ease infinite;
-    }
-
-    .geometric-shape {
-      position: absolute;
-      background: var(--gradient-geometric);
-      border-radius: 50%;
-      filter: blur(1px);
-      animation: float3D 8s ease-in-out infinite;
-    }
-
-    .geometric-shape:nth-child(1) {
-      width: 300px;
-      height: 300px;
-      top: 10%;
-      left: 10%;
-      animation-delay: 0s;
-    }
-
-    .geometric-shape:nth-child(2) {
-      width: 200px;
-      height: 200px;
-      top: 60%;
-      right: 15%;
-      animation-delay: 2s;
-    }
-
-    .geometric-shape:nth-child(3) {
-      width: 150px;
-      height: 150px;
-      bottom: 20%;
-      left: 20%;
-      animation-delay: 4s;
-    }
-
-    .geometric-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-      position: relative;
-    }
-
-    .geometric-card {
-      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-      border: 1px solid rgba(255,255,255,0.1);
-      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
-      padding: 2rem;
-      transition: all 0.3s ease;
-    }
-
-    .geometric-card:hover {
-      transform: translateY(-10px) scale(1.02);
-      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 100%);
-    }
-
-    /* 3D Background System */
-    .hero-3d {
-      position: relative;
-      background: 
-        radial-gradient(ellipse at center top, rgba(59, 130, 246, 0.15) 0%, transparent 70%),
-        radial-gradient(ellipse at center bottom, rgba(147, 51, 234, 0.15) 0%, transparent 70%),
-        linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-      overflow: hidden;
-    }
-
-    .floating-element {
-      position: absolute;
-      background: var(--gradient-liquid);
-      border-radius: 50%;
-      filter: blur(2px);
-      opacity: 0.6;
-      animation: float3D 12s ease-in-out infinite;
-    }
-
-    .floating-element:nth-child(1) {
-      width: 400px;
-      height: 400px;
-      top: -200px;
-      left: -200px;
-      animation-delay: 0s;
-    }
-
-    .floating-element:nth-child(2) {
-      width: 300px;
-      height: 300px;
-      top: 50%;
-      right: -150px;
-      animation-delay: 4s;
-    }
-
-    .floating-element:nth-child(3) {
-      width: 250px;
-      height: 250px;
-      bottom: -125px;
-      left: 30%;
-      animation-delay: 8s;
+      box-shadow: 0 12px 24px rgba(59, 130, 246, 0.4);
     }
 
     /* Professional Grid System */
@@ -448,38 +453,107 @@ export const PreviewStyles = () => (
       padding: 8rem 0;
     }
 
-    .section-compact {
-      padding: 6rem 0;
-    }
-
     /* Icon System */
     .icon-premium {
       width: 4rem;
       height: 4rem;
-      background: var(--gradient-hero);
       border-radius: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 1.5rem;
-      box-shadow: var(--shadow-medium);
       transition: all 0.3s ease;
     }
 
     .icon-premium:hover {
       transform: translateY(-4px) scale(1.1);
-      box-shadow: var(--shadow-large);
+    }
+
+    .icon-3d {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      box-shadow: var(--shadow-3d);
+      transform: perspective(500px) rotateX(10deg);
+    }
+
+    .icon-geometric {
+      background: var(--gradient-geometric);
+      background-size: 200% 200%;
+      animation: geometricFlow 6s ease infinite;
+      clip-path: polygon(20% 0%, 100% 0%, 80% 100%, 0% 100%);
     }
 
     .icon-glass {
       background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: var(--blur-md);
+      backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: var(--shadow-glass);
     }
 
     .icon-metal {
       background: var(--gradient-metal);
-      animation: metalGlow 4s ease infinite;
+      background-size: 200% 200%;
+      animation: metalFlow 8s ease infinite;
+      box-shadow: var(--shadow-metal);
+    }
+
+    .icon-image {
+      background: rgba(59, 130, 246, 0.8);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(59, 130, 246, 0.5);
+      box-shadow: var(--shadow-image);
+    }
+
+    /* Animations */
+    @keyframes float3D {
+      0%, 100% { 
+        transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+      }
+      25% { 
+        transform: translateY(-20px) rotateX(5deg) rotateY(10deg);
+      }
+      50% { 
+        transform: translateY(-40px) rotateX(0deg) rotateY(20deg);
+      }
+      75% { 
+        transform: translateY(-20px) rotateX(-5deg) rotateY(10deg);
+      }
+    }
+
+    @keyframes geometricFlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    @keyframes geometricMove {
+      0% { transform: translateX(0) translateY(0); }
+      100% { transform: translateX(80px) translateY(80px); }
+    }
+
+    @keyframes metalFlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(60px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
 
     /* Animation Classes */
@@ -528,14 +602,6 @@ export const PreviewStyles = () => (
       .typography-hero {
         font-size: 2.5rem;
       }
-      
-      .geometric-shape {
-        display: none;
-      }
-      
-      .floating-element {
-        opacity: 0.3;
-      }
     }
 
     @media (max-width: 480px) {
@@ -543,38 +609,17 @@ export const PreviewStyles = () => (
         gap: 1.5rem;
       }
       
-      .glass-card,
-      .metal-card,
-      .geometric-card {
+      .card-3d,
+      .card-glass,
+      .card-metal,
+      .card-geometric,
+      .card-image {
         padding: 1.5rem;
       }
       
       .btn-base {
         padding: 0.75rem 1.25rem;
         font-size: 0.875rem;
-      }
-    }
-
-    /* High DPI Displays */
-    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-      .glass-card {
-        backdrop-filter: var(--blur-lg);
-      }
-      
-      .btn-glass {
-        backdrop-filter: var(--blur-md);
-      }
-    }
-
-    /* Dark Mode Optimization */
-    @media (prefers-color-scheme: dark) {
-      .glass-card {
-        background: rgba(255, 255, 255, 0.05);
-        border-color: rgba(255, 255, 255, 0.08);
-      }
-      
-      .geometric-card {
-        background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
       }
     }
 
@@ -591,20 +636,6 @@ export const PreviewStyles = () => (
     .btn-base:focus-visible {
       outline: 2px solid rgba(59, 130, 246, 0.6);
       outline-offset: 2px;
-    }
-
-    /* Print Styles */
-    @media print {
-      .floating-element,
-      .geometric-shape {
-        display: none;
-      }
-      
-      .glass-card,
-      .metal-card {
-        background: white;
-        border: 1px solid #ccc;
-      }
     }
   `}</style>
 );

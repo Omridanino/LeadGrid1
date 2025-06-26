@@ -47,17 +47,20 @@ export const useGeneratedPageActions = ({
   };
 
   const handleSaveDesign = () => {
-    // יצירה אוטומטית של קוד HTML מעודכן
+    // Auto-generate clean HTML that matches the preview exactly
     const heroUrl = getHeroImageUrl(content, heroImage, formData);
     const updatedHtmlContent = generateHtmlFile(content, currentColors, formData, heroUrl);
     
-    // שמירת הקוד החדש ברקע
+    // Store the generated HTML for download
     localStorage.setItem('latestHtmlContent', updatedHtmlContent);
+    localStorage.setItem('latestFormData', JSON.stringify(formData));
+    localStorage.setItem('latestColors', JSON.stringify(currentColors));
+    localStorage.setItem('latestContent', JSON.stringify(content));
     
     setIsSaved(true);
     toast({
       title: "💾 העיצוב נשמר בהצלחה!",
-      description: "קוד HTML מעודכן נוצר אוטומatically - כעת תוכל להוריד אותו או לחבר לוורדפרס",
+      description: "קוד HTML מעודכן נוצר אוטומטית - כעת תוכל להוריד או לחבר לוורדפרס",
     });
   };
 
@@ -96,7 +99,7 @@ export const useGeneratedPageActions = ({
       return;
     }
     
-    // שימוש בקוד המעודכן שנשמר
+    // Use the auto-generated HTML that matches the preview exactly
     const savedHtmlContent = localStorage.getItem('latestHtmlContent');
     let htmlContent;
     
@@ -119,7 +122,7 @@ export const useGeneratedPageActions = ({
     
     toast({
       title: "💻 קוד המקור הורד!",
-      description: "קובץ HTML מלא עם העיצוב המעודכן הורד בהצלחה",
+      description: "קובץ HTML מלא עם העיצוב המעודכן הורד בהצלחה - זהה לחלוטין לתצוגה המקדימה",
     });
   };
 

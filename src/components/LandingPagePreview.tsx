@@ -17,24 +17,24 @@ interface LandingPagePreviewProps {
 const LandingPagePreview = ({ content, currentColors, formData, heroImage, elements }: LandingPagePreviewProps) => {
   const selectedElements = formData?.selectedElements || [];
 
-  // Enhanced background system based on design style
-  const getBackgroundClass = () => {
+  // Get unique style class based on hero style
+  const getStyleClass = () => {
     switch (formData.heroStyle) {
       case 'geometric':
-        return 'bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900';
+        return 'style-geometric';
       case 'glass':
-        return 'bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900';
+        return 'style-glass';
       case 'metal':
-        return 'bg-gradient-to-br from-gray-900 via-yellow-900 to-gray-800';
+        return 'style-metal';
       case 'image':
-        return 'bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900';
+        return 'style-image';
       default:
-        return 'bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900';
+        return 'style-3d';
     }
   };
 
   return (
-    <div className={`w-full text-white overflow-y-auto max-h-screen ${getBackgroundClass()}`}>
+    <div className={`w-full text-white overflow-y-auto max-h-screen ${getStyleClass()}`}>
       <PreviewStyles />
 
       {/* Hero Section */}
