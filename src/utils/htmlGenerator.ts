@@ -111,6 +111,7 @@ export const generateHtmlFile = (
       overflow-x: hidden;
       min-height: 100vh;
       height: auto;
+      overflow-y: auto;
     }
 
     /* Typography Excellence */
@@ -710,7 +711,7 @@ export const generateHtmlFile = (
           ]).map((reason, index) => `
             <div class="card-${styleClass} p-6 text-center animate-scale-in animate-delay-${index + 1}">
               <div class="icon-${styleClass} mx-auto mb-4 w-12 h-12 flex items-center justify-center">
-                <span style="font-size: 2rem;">🏆</span>
+                <img src="https://img.icons8.com/3d-fluency/94/trophy.png" alt="trophy" style="width: 32px; height: 32px;" />
               </div>
               <h3 class="typography-${typographyClass} text-lg font-bold mb-3 text-white">
                 ${reason.title}
@@ -746,7 +747,7 @@ export const generateHtmlFile = (
             <div class="card-${styleClass} p-6 animate-slide-up animate-delay-${index + 1}">
               <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem;">
                 <div class="icon-${styleClass} w-8 h-8 flex items-center justify-center">
-                  <span style="color: white; font-size: 1.5rem;">✓</span>
+                  <img src="https://img.icons8.com/3d-fluency/94/checkmark.png" alt="check" style="width: 24px; height: 24px;" />
                 </div>
                 <div>
                   <h3 class="typography-${typographyClass} text-lg font-bold text-white mb-2">
@@ -768,7 +769,7 @@ export const generateHtmlFile = (
       <div class="container mx-auto max-w-6xl">
         <div class="text-center mb-12 animate-slide-up">
           <h2 class="typography-${typographyClass} text-4xl text-5xl font-black mb-6 text-white">
-            <span style="font-size: 2.5rem; margin-left: 0.75rem;">💼</span>
+            <img src="https://img.icons8.com/3d-fluency/94/laptop.png" alt="process" style="width: 40px; height: 40px; display: inline-block; margin-left: 12px;" />
             תהליך העבודה שלנו
           </h2>
           <p class="typography-body text-lg text-gray-300 max-w-3xl mx-auto">
@@ -778,15 +779,15 @@ export const generateHtmlFile = (
         
         <div class="grid grid-cols-2 grid-cols-4 gap-6">
           ${[
-            { step: 1, title: "ניתוח צרכים", desc: "בדיקה מעמיקה של הדרישות והמטרות שלכם", icon: "🎯" },
-            { step: 2, title: "תכנון אסטרטגי", desc: "עיצוב תוכנית עבודה מותאמת אישית", icon: "💡" },
-            { step: 3, title: "ביצוע מקצועי", desc: "יישום הפתרון ברמה הגבוהה ביותר", icon: "🔧" },
-            { step: 4, title: "מעקב ותמיכה", desc: "ליווי מתמשך ושיפורים נוספים", icon: "🚀" }
+            { step: 1, title: "ניתוח צרכים", desc: "בדיקה מעמיקה של הדרישות והמטרות שלכם", icon: "https://img.icons8.com/3d-fluency/94/bullseye.png" },
+            { step: 2, title: "תכנון אסטרטגי", desc: "עיצוב תוכנית עבודה מותאמת אישית", icon: "https://img.icons8.com/3d-fluency/94/idea.png" },
+            { step: 3, title: "ביצוע מקצועי", desc: "יישום הפתרון ברמה הגבוהה ביותר", icon: "https://img.icons8.com/3d-fluency/94/gear.png" },
+            { step: 4, title: "מעקב ותמיכה", desc: "ליווי מתמשך ושיפורים נוספים", icon: "https://img.icons8.com/3d-fluency/94/rocket.png" }
           ].map((process, index) => `
             <div class="card-${styleClass} text-center p-6 animate-scale-in animate-delay-${index + 1}">
               <div style="position: relative; margin-bottom: 1.5rem;">
                 <div class="icon-${styleClass} mx-auto w-12 h-12 flex items-center justify-center">
-                  <span style="font-size: 1.5rem;">${process.icon}</span>
+                  <img src="${process.icon}" alt="${process.title}" style="width: 24px; height: 24px;" />
                 </div>
                 <div style="position: absolute; top: -0.5rem; right: -0.5rem; width: 1.5rem; height: 1.5rem; background: #facc15; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: black; font-weight: bold; font-size: 0.75rem;">
                   ${process.step}
@@ -824,18 +825,18 @@ export const generateHtmlFile = (
           ]).map((testimonial, index) => `
             <div class="card-${styleClass} p-6 animate-scale-in animate-delay-${index + 1}">
               <div style="margin-bottom: 1rem;">
-                <span style="color: #facc15; font-size: 1.25rem;">★★★★★</span>
+                ${[...Array(5)].map(() => '<img src="https://img.icons8.com/3d-fluency/94/star.png" alt="star" style="width: 16px; height: 16px; display: inline-block;" />').join('')}
               </div>
               
-              <span style="color: #60a5fa; font-size: 1.5rem; margin-bottom: 0.75rem; display: block;">"</span>
+              <img src="https://img.icons8.com/3d-fluency/94/quote-left.png" alt="quote" style="width: 24px; height: 24px; margin-bottom: 12px; display: block;" />
               
               <p class="typography-body leading-relaxed text-white mb-4 text-sm" style="font-style: italic;">
-                ${testimonial.content}
+                "${testimonial.content}"
               </p>
               
               <div style="display: flex; align-items: center; gap: 0.75rem;">
                 <div style="width: 2.5rem; height: 2.5rem; border-radius: 50%; background: linear-gradient(45deg, #3b82f6, #8b5cf6); display: flex; align-items: center; justify-content: center;">
-                  <span style="color: white; font-size: 1.25rem;">👤</span>
+                  <img src="https://img.icons8.com/3d-fluency/94/user.png" alt="user" style="width: 20px; height: 20px;" />
                 </div>
                 <div>
                   <p class="typography-${typographyClass} font-bold text-white text-sm">
@@ -905,13 +906,13 @@ export const generateHtmlFile = (
           <div class="grid grid-cols-2 gap-4 max-w-2xl mx-auto mb-8 animate-slide-up animate-delay-2">
             <div class="card-${styleClass} p-4">
               <div style="display: flex; align-items: center; gap: 0.75rem; justify-content: center;">
-                <span style="color: #60a5fa; font-size: 1.25rem;">📞</span>
+                <img src="https://img.icons8.com/3d-fluency/94/phone.png" alt="phone" style="width: 20px; height: 20px;" />
                 <span class="typography-body text-white font-medium">050-1234567</span>
               </div>
             </div>
             <div class="card-${styleClass} p-4">
               <div style="display: flex; align-items: center; gap: 0.75rem; justify-content: center;">
-                <span style="color: #60a5fa; font-size: 1.25rem;">✉️</span>
+                <img src="https://img.icons8.com/3d-fluency/94/email.png" alt="email" style="width: 20px; height: 20px;" />
                 <span class="typography-body text-white font-medium">info@business.co.il</span>
               </div>
             </div>
@@ -919,11 +920,11 @@ export const generateHtmlFile = (
 
           <div style="display: flex; flex-direction: column; gap: 1rem; justify-content: center; align-items: center; margin-bottom: 2rem;" class="animate-slide-up animate-delay-3">
             <a href="tel:0501234567" class="btn-base btn-${styleClass}">
-              <span style="margin-left: 0.5rem;">←</span>
+              <img src="https://img.icons8.com/3d-fluency/94/left.png" alt="arrow" style="width: 20px; height: 20px;" />
               צור קשר עכשיו
             </a>
             <a href="#" class="btn-base btn-${styleClass}">
-              <span style="margin-left: 0.5rem;">←</span>
+              <img src="https://img.icons8.com/3d-fluency/94/left.png" alt="arrow" style="width: 20px; height: 20px;" />
               קבל הצעת מחיר
             </a>
           </div>
@@ -931,13 +932,13 @@ export const generateHtmlFile = (
           <!-- Enhanced Trust Badges -->
           <div class="grid grid-cols-3 gap-4 max-w-3xl mx-auto animate-slide-up animate-delay-4">
             ${[
-              { icon: '🛡️', title: 'מוגן ומאובטח', desc: 'ביטחון מלא' },
-              { icon: '⏰', title: 'מענה מהיר', desc: 'תוך 24 שעות' },
-              { icon: '❤️', title: 'ללא התחייבות', desc: 'ייעוץ חינם' }
+              { icon: 'https://img.icons8.com/3d-fluency/94/security-checked.png', title: 'מוגן ומאובטח', desc: 'ביטחון מלא' },
+              { icon: 'https://img.icons8.com/3d-fluency/94/clock.png', title: 'מענה מהיר', desc: 'תוך 24 שעות' },
+              { icon: 'https://img.icons8.com/3d-fluency/94/heart.png', title: 'ללא התחייבות', desc: 'ייעוץ חינם' }
             ].map((badge, index) => `
               <div class="card-${styleClass} p-4 text-center">
                 <div class="icon-${styleClass} mx-auto mb-2 w-8 h-8 flex items-center justify-center">
-                  <span style="font-size: 1.5rem;">${badge.icon}</span>
+                  <img src="${badge.icon}" alt="${badge.title}" style="width: 20px; height: 20px;" />
                 </div>
                 <h3 class="typography-${typographyClass} font-semibold text-white mb-1 text-sm">
                   ${badge.title}
@@ -976,7 +977,7 @@ export const generateHtmlFile = (
         ${getCSSStyles()}
     </style>
 </head>
-<body class="${getStyleClass()}" style="position: relative;">
+<body class="${getStyleClass()}" style="position: relative; overflow-y: auto; overflow-x: hidden;">
     <!-- Hero Section -->
     <section class="section-hero">
         <div class="container text-center" style="position: relative; z-index: 2;">
@@ -985,7 +986,7 @@ export const generateHtmlFile = (
                 <p class="typography-body text-lg text-xl text-white leading-relaxed">${subheadline}</p>
             </div>
             <a href="#contact" class="btn-base btn-${formData?.heroStyle || '3d'}">
-                <span style="margin-left: 0.5rem;">←</span>
+                <img src="https://img.icons8.com/3d-fluency/94/left.png" alt="arrow" style="width: 20px; height: 20px;" />
                 ${ctaText}
             </a>
         </div>

@@ -1,7 +1,6 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail, MapPin, Star, CheckCircle2, Users, Target, Image, Award, Zap, Cpu, Network, Rocket, ArrowLeft, Quote, Shield, Clock, ThumbsUp, TrendingUp, Heart, Sparkles } from "lucide-react";
 import { ColorScheme } from "@/components/ColorEditor";
 
 interface ContentSectionsProps {
@@ -89,12 +88,12 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
     }
   };
 
-  const renderButton = (text: string, className?: string, isSecondary?: boolean) => {
+  const renderButton = (text: string, className?: string) => {
     const baseClass = `btn-base ${getButtonClass()} ${className || ''}`;
     
     return (
       <button className={baseClass}>
-        <ArrowLeft className="w-5 h-5" />
+        <img src="https://img.icons8.com/3d-fluency/94/left.png" alt="arrow" style={{width: '20px', height: '20px'}} />
         {text}
       </button>
     );
@@ -103,7 +102,6 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
   // Generate default content with business name integration
   const businessName = formData?.businessName || 'העסק שלי';
   const businessType = formData?.businessType || 'שירותים עסקיים';
-  const targetAudience = formData?.targetAudience || 'לקוחות פוטנציאליים';
 
   return (
     <div className="w-full">
@@ -144,7 +142,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
             ]).map((reason: any, index: number) => (
               <div key={index} className={`${getCardClass()} p-6 text-center animate-scale-in animate-delay-${index + 1}`}>
                 <div className={`${getIconClass()} mx-auto mb-4 w-12 h-12 flex items-center justify-center`}>
-                  <Award className="w-8 h-8 text-white" />
+                  <img src="https://img.icons8.com/3d-fluency/94/trophy.png" alt="trophy" style={{width: '32px', height: '32px'}} />
                 </div>
                 <h3 className={`${getTypographyClass()} text-lg font-bold mb-3 text-white`}>
                   {reason.title}
@@ -180,7 +178,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               <div key={index} className={`${getCardClass()} p-6 animate-slide-up animate-delay-${index + 1}`}>
                 <div className="flex items-start gap-4 mb-4">
                   <div className={`${getIconClass()} w-8 h-8 flex items-center justify-center`}>
-                    <CheckCircle2 className="w-6 h-6 text-white" />
+                    <img src="https://img.icons8.com/3d-fluency/94/checkmark.png" alt="check" style={{width: '24px', height: '24px'}} />
                   </div>
                   <div>
                     <h3 className={`${getTypographyClass()} text-lg font-bold text-white mb-2`}>
@@ -202,7 +200,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12 animate-slide-up">
             <h2 className={`${getTypographyClass()} text-4xl md:text-5xl font-black mb-6 text-white`}>
-              <Cpu className="w-10 h-10 inline-block ml-3" />
+              <img src="https://img.icons8.com/3d-fluency/94/laptop.png" alt="process" style={{width: '40px', height: '40px', display: 'inline-block', marginLeft: '12px'}} />
               תהליך העבודה שלנו
             </h2>
             <p className="typography-body text-lg text-gray-300 max-w-3xl mx-auto">
@@ -212,17 +210,15 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { step: 1, title: "ניתוח צרכים", desc: "בדיקה מעמיקה של הדרישות והמטרות שלכם", icon: <Target className="w-6 h-6" /> },
-              { step: 2, title: "תכנון אסטרטגי", desc: "עיצוב תוכנית עבודה מותאמת אישית", icon: <Cpu className="w-6 h-6" /> },
-              { step: 3, title: "ביצוע מקצועי", desc: "יישום הפתרון ברמה הגבוהה ביותר", icon: <Network className="w-6 h-6" /> },
-              { step: 4, title: "מעקב ותמיכה", desc: "ליווי מתמשך ושיפורים נוספים", icon: <Rocket className="w-6 h-6" /> }
+              { step: 1, title: "ניתוח צרכים", desc: "בדיקה מעמיקה של הדרישות והמטרות שלכם", icon: "https://img.icons8.com/3d-fluency/94/bullseye.png" },
+              { step: 2, title: "תכנון אסטרטגי", desc: "עיצוב תוכנית עבודה מותאמת אישית", icon: "https://img.icons8.com/3d-fluency/94/idea.png" },
+              { step: 3, title: "ביצוע מקצועי", desc: "יישום הפתרון ברמה הגבוהה ביותר", icon: "https://img.icons8.com/3d-fluency/94/gear.png" },
+              { step: 4, title: "מעקב ותמיכה", desc: "ליווי מתמשך ושיפורים נוספים", icon: "https://img.icons8.com/3d-fluency/94/rocket.png" }
             ].map((process, index) => (
               <div key={index} className={`${getCardClass()} text-center p-6 animate-scale-in animate-delay-${index + 1}`}>
                 <div className="relative mb-6">
                   <div className={`${getIconClass()} mx-auto w-12 h-12 flex items-center justify-center`}>
-                    <div className="text-white">
-                      {process.icon}
-                    </div>
+                    <img src={process.icon} alt={process.title} style={{width: '24px', height: '24px'}} />
                   </div>
                   <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center text-black font-bold text-xs">
                     {process.step}
@@ -261,11 +257,11 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               <div key={index} className={`${getCardClass()} p-6 animate-scale-in animate-delay-${index + 1}`}>
                 <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <img key={i} src="https://img.icons8.com/3d-fluency/94/star.png" alt="star" style={{width: '16px', height: '16px'}} />
                   ))}
                 </div>
                 
-                <Quote className="w-6 h-6 text-blue-400 mb-3" />
+                <img src="https://img.icons8.com/3d-fluency/94/quote-left.png" alt="quote" style={{width: '24px', height: '24px', marginBottom: '12px'}} />
                 
                 <p className="typography-body leading-relaxed text-white mb-4 italic text-sm">
                   "{testimonial.content}"
@@ -273,7 +269,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                 
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
-                    <Users className="w-5 h-5 text-white" />
+                    <img src="https://img.icons8.com/3d-fluency/94/user.png" alt="user" style={{width: '20px', height: '20px'}} />
                   </div>
                   <div>
                     <p className={`${getTypographyClass()} font-bold text-white text-sm`}>
@@ -343,13 +339,13 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
             <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto mb-8 animate-slide-up animate-delay-2">
               <div className={`${getCardClass()} p-4`}>
                 <div className="flex items-center gap-3 justify-center">
-                  <Phone className="w-5 h-5 text-blue-400" />
+                  <img src="https://img.icons8.com/3d-fluency/94/phone.png" alt="phone" style={{width: '20px', height: '20px'}} />
                   <span className="typography-body text-white font-medium">050-1234567</span>
                 </div>
               </div>
               <div className={`${getCardClass()} p-4`}>
                 <div className="flex items-center gap-3 justify-center">
-                  <Mail className="w-5 h-5 text-blue-400" />
+                  <img src="https://img.icons8.com/3d-fluency/94/email.png" alt="email" style={{width: '20px', height: '20px'}} />
                   <span className="typography-body text-white font-medium">info@business.co.il</span>
                 </div>
               </div>
@@ -363,13 +359,13 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
             {/* Enhanced Trust Badges */}
             <div className="grid md:grid-cols-3 gap-4 max-w-3xl mx-auto animate-slide-up animate-delay-4">
               {[
-                { icon: <Shield className="w-5 h-5" />, title: 'מוגן ומאובטח', desc: 'ביטחון מלא' },
-                { icon: <Clock className="w-5 h-5" />, title: 'מענה מהיר', desc: 'תוך 24 שעות' },
-                { icon: <Heart className="w-5 h-5" />, title: 'ללא התחייבות', desc: 'ייעוץ חינם' }
+                { icon: 'https://img.icons8.com/3d-fluency/94/security-checked.png', title: 'מוגן ומאובטח', desc: 'ביטחון מלא' },
+                { icon: 'https://img.icons8.com/3d-fluency/94/clock.png', title: 'מענה מהיר', desc: 'תוך 24 שעות' },
+                { icon: 'https://img.icons8.com/3d-fluency/94/heart.png', title: 'ללא התחייבות', desc: 'ייעוץ חינם' }
               ].map((badge, index) => (
                 <div key={index} className={`${getCardClass()} p-4 text-center`}>
-                  <div className={`${getIconClass()} mx-auto mb-2 w-8 h-8 flex items-center justify-center text-white`}>
-                    {badge.icon}
+                  <div className={`${getIconClass()} mx-auto mb-2 w-8 h-8 flex items-center justify-center`}>
+                    <img src={badge.icon} alt={badge.title} style={{width: '20px', height: '20px'}} />
                   </div>
                   <h3 className={`${getTypographyClass()} font-semibold text-white mb-1 text-sm`}>
                     {badge.title}
