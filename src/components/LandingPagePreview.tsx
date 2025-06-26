@@ -17,14 +17,15 @@ interface LandingPagePreviewProps {
 const LandingPagePreview = ({ content, currentColors, formData, heroImage, elements }: LandingPagePreviewProps) => {
   const selectedElements = formData?.selectedElements || [];
 
-  // Get appropriate background class based on design style
+  // Enhanced background system based on design style
   const getBackgroundClass = () => {
     switch (formData.heroStyle) {
       case 'geometric':
-        return 'bg-[#030303]';
+        return 'bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900';
       case 'glass':
+        return 'bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900';
       case 'metal':
-        return 'bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900';
+        return 'bg-gradient-to-br from-gray-900 via-yellow-900 to-gray-800';
       case 'image':
         return 'bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900';
       default:

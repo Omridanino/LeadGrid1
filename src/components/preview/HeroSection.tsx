@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/components/ColorEditor";
 import { HeroGeometric } from "@/components/ui/shape-landing-hero";
 import { LiquidButton, MetalButton } from "@/components/ui/liquid-glass-button";
-import { ArrowLeft, Play, CheckCircle, Star, Zap } from "lucide-react";
+import { ArrowLeft, Play, CheckCircle, Star, Zap, Award, Shield, Clock } from "lucide-react";
 
 interface HeroSectionProps {
   content: any;
@@ -31,174 +31,352 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     return businessImages[businessType as keyof typeof businessImages] || businessImages.default;
   };
 
-  const getHeroStyle = () => {
-    if (formData.heroStyle === 'image') {
-      const imageUrl = heroImage || getBusinessImage(formData.businessType);
-      return {
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url(${imageUrl})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
-      };
-    }
-    return {};
-  };
-
-  const renderCTAButton = () => {
-    const buttonText = content?.cta || 'בואו נתחיל לעבוד יחד';
+  const renderCTAButton = (isPrimary = true) => {
+    const buttonText = isPrimary ? (content?.cta || 'בואו נתחיל לעבוד יחד') : 'למד עוד';
     
     if (formData.heroStyle === 'glass') {
       return (
-        <LiquidButton 
-          size="xxl" 
-          className="btn-primary text-lg px-12 py-6 rounded-2xl animate-fade-in-up"
-          style={{ 
-            backgroundColor: currentColors.primary,
-            color: 'white',
-            fontSize: '18px',
-            fontWeight: '600',
-            animationDelay: '0.6s'
-          }}
-        >
-          <ArrowLeft className="w-5 h-5 ml-2" />
+        <button className={`btn-base btn-glass animate-slide-up ${isPrimary ? 'animate-delay-3' : 'animate-delay-4'}`}>
+          <ArrowLeft className="w-5 h-5" />
           {buttonText}
-        </LiquidButton>
+        </button>
       );
     } else if (formData.heroStyle === 'metal') {
       return (
-        <MetalButton 
-          variant="primary"
-          className="btn-primary text-lg px-12 py-6 animate-fade-in-up"
-          style={{ fontSize: '18px', fontWeight: '600', animationDelay: '0.6s' }}
-        >
-          <ArrowLeft className="w-5 h-5 ml-2" />
+        <button className={`btn-base btn-metal animate-slide-up ${isPrimary ? 'animate-delay-3' : 'animate-delay-4'}`}>
+          <ArrowLeft className="w-5 h-5" />
           {buttonText}
-        </MetalButton>
+        </button>
+      );
+    } else if (formData.heroStyle === 'geometric') {
+      return (
+        <button className={`btn-base btn-geometric animate-slide-up ${isPrimary ? 'animate-delay-3' : 'animate-delay-4'}`}>
+          <ArrowLeft className="w-5 h-5" />
+          {buttonText}
+        </button>
       );
     }
 
     return (
-      <button 
-        className="btn-primary text-lg px-12 py-6 rounded-2xl animate-fade-in-up inline-flex items-center gap-3"
-        style={{ 
-          backgroundColor: currentColors.primary,
-          animationDelay: '0.6s',
-          fontSize: '18px',
-          fontWeight: '600'
-        }}
-      >
+      <button className={`btn-base btn-primary animate-slide-up ${isPrimary ? 'animate-delay-3' : 'animate-delay-4'}`}>
         <ArrowLeft className="w-5 h-5" />
         {buttonText}
       </button>
     );
   };
 
-  // Geometric Hero Style
+  // Geometric Hero Style - Enhanced
   if (formData.heroStyle === 'geometric') {
     return (
-      <div className="hero-tech min-h-screen">
-        <HeroGeometric
-          badge={formData.businessType}
-          title1={content?.headline || formData.businessName}
-          title2={content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
-        />
-      </div>
+      <section className="geometric-hero section-hero">
+        <div className="geometric-shape"></div>
+        <div className="geometric-shape"></div>
+        <div className="geometric-shape"></div>
+        
+        <div className="container-hero relative z-10">
+          <div className="text-center">
+            {/* Trust Badges */}
+            <div className="flex items-center justify-center gap-4 mb-8 animate-slide-up">
+              <div className="glass-card px-4 py-2">
+                <div className="flex items-center gap-2">
+                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                  <span className="text-sm font-medium text-white">דירוג 5 כוכבים</span>
+                </div>
+              </div>
+              <div className="glass-card px-4 py-2">
+                <div className="flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-green-400" />
+                  <span className="text-sm font-medium text-white">מומחה מוסמך</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Main Headline */}
+            <h1 className="typography-modern text-6xl md:text-8xl text-white mb-8 animate-slide-up animate-delay-1">
+              {content?.headline || formData.businessName}
+            </h1>
+
+            {/* Subheadline */}
+            <div className="typography-body text-xl md:text-2xl mb-12 max-w-4xl mx-auto text-gray-300 animate-slide-up animate-delay-2">
+              {content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+              {renderCTAButton(true)}
+              {renderCTAButton(false)}
+            </div>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto animate-scale-in animate-delay-4">
+              {[
+                { number: '500+', label: 'לקוחות מרוצים' },
+                { number: '98%', label: 'שביעות רצון' },
+                { number: '10+', label: 'שנות ניסיון' },
+                { number: '24/7', label: 'זמינות' }
+              ].map((stat, index) => (
+                <div key={index} className="geometric-card text-center">
+                  <div className="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">
+                    {stat.number}
+                  </div>
+                  <div className="typography-body text-gray-300 text-sm">
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
     );
   }
 
-  const getHeroBackgroundClass = () => {
-    switch (formData.heroStyle) {
-      case 'glass':
-        return 'hero-tech';
-      case 'metal':
-        return 'hero-tech';
-      case 'image':
-        return '';
-      default:
-        return 'hero-gradient';
-    }
-  };
+  // Glass Morphism Style - Enhanced
+  if (formData.heroStyle === 'glass') {
+    return (
+      <section className="hero-3d section-hero">
+        <div className="floating-element"></div>
+        <div className="floating-element"></div>
+        <div className="floating-element"></div>
+        
+        <div className="container-hero relative z-10">
+          <div className="text-center">
+            {/* Premium Badge */}
+            <div className="inline-flex items-center gap-2 glass-intense px-6 py-3 rounded-full mb-8 animate-slide-up">
+              <Award className="w-5 h-5 text-blue-400" />
+              <span className="typography-body text-white font-medium">מספר 1 בתחום</span>
+            </div>
 
-  // Main hero design
+            {/* Hero Title */}
+            <h1 className="typography-hero text-7xl md:text-9xl mb-8 animate-slide-up animate-delay-1">
+              {content?.headline || formData.businessName}
+            </h1>
+
+            {/* Subtitle */}
+            <div className="glass-card p-8 max-w-5xl mx-auto mb-12 animate-slide-up animate-delay-2">
+              <p className="typography-body text-xl md:text-2xl text-white leading-relaxed">
+                {content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+              {renderCTAButton(true)}
+              {renderCTAButton(false)}
+            </div>
+
+            {/* Feature Highlights */}
+            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto animate-scale-in animate-delay-4">
+              {[
+                { icon: <Zap className="w-6 h-6" />, title: 'תוצאות מיידיות', desc: 'פתרונות מהירים ויעילים' },
+                { icon: <Shield className="w-6 h-6" />, title: 'אמינות מוחלטת', desc: 'ביטחון ואמינות ברמה הגבוהה' },
+                { icon: <Clock className="w-6 h-6" />, title: 'זמינות 24/7', desc: 'תמיכה מלאה בכל עת' }
+              ].map((feature, index) => (
+                <div key={index} className="glass-card p-6 text-center">
+                  <div className="icon-glass mx-auto mb-4 text-blue-400">
+                    {feature.icon}
+                  </div>
+                  <h3 className="typography-modern text-lg font-semibold text-white mb-2">
+                    {feature.title}
+                  </h3>
+                  <p className="typography-body text-gray-300 text-sm">
+                    {feature.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Metallic Luxury Style - Enhanced
+  if (formData.heroStyle === 'metal') {
+    return (
+      <section className="section-hero bg-gradient-to-br from-gray-900 via-gray-800 to-black relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-900/20 via-transparent to-yellow-800/20"></div>
+        
+        <div className="container-hero relative z-10">
+          <div className="text-center">
+            {/* Luxury Badge */}
+            <div className="inline-flex items-center gap-2 metal-card px-6 py-3 rounded-full mb-8 animate-slide-up">
+              <Award className="w-5 h-5 text-yellow-600" />
+              <span className="typography-luxury text-gray-800 font-semibold">פרימיום</span>
+            </div>
+
+            {/* Luxury Title */}
+            <h1 className="typography-luxury text-7xl md:text-9xl metal-text mb-8 animate-slide-up animate-delay-1">
+              {content?.headline || formData.businessName}
+            </h1>
+
+            {/* Elegant Subtitle */}
+            <div className="metal-card p-8 max-w-5xl mx-auto mb-12 animate-slide-up animate-delay-2">
+              <p className="typography-luxury text-xl md:text-2xl text-gray-800 leading-relaxed">
+                {content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
+              </p>
+            </div>
+
+            {/* Premium Actions */}
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+              {renderCTAButton(true)}
+              {renderCTAButton(false)}
+            </div>
+
+            {/* Luxury Stats */}
+            <div className="grid md:grid-cols-4 gap-6 max-w-4xl mx-auto animate-scale-in animate-delay-4">
+              {[
+                { number: '500+', label: 'לקוחות VIP' },
+                { number: '98%', label: 'שביעות רצון' },
+                { number: '10+', label: 'שנות מצוינות' },
+                { number: '24/7', label: 'שירות פרמיום' }
+              ].map((stat, index) => (
+                <div key={index} className="metal-card p-6 text-center">
+                  <div className="typography-luxury text-3xl font-bold text-gray-800 mb-2">
+                    {stat.number}
+                  </div>
+                  <div className="typography-body text-gray-700 text-sm">
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Image with 3D Effects Style - Enhanced
+  if (formData.heroStyle === 'image') {
+    const imageUrl = heroImage || getBusinessImage(formData.businessType);
+    
+    return (
+      <section 
+        className="section-hero relative overflow-hidden"
+        style={{
+          backgroundImage: `linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.7) 100%), url(${imageUrl})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-transparent to-purple-900/30"></div>
+        
+        <div className="container-hero relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="text-center lg:text-right">
+              {/* Image Hero Content */}
+              <div className="glass-card p-2 inline-block rounded-full mb-6 animate-slide-up">
+                <div className="flex items-center gap-2 px-4 py-2">
+                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                  <span className="text-sm font-medium text-white">מומלץ בחום</span>
+                </div>
+              </div>
+
+              <h1 className="typography-hero text-6xl md:text-8xl mb-8 animate-slide-up animate-delay-1">
+                {content?.headline || formData.businessName}
+              </h1>
+
+              <div className="glass-card p-6 mb-8 animate-slide-up animate-delay-2">
+                <p className="typography-body text-xl text-white leading-relaxed">
+                  {content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-slide-up animate-delay-3">
+                {renderCTAButton(true)}
+                {renderCTAButton(false)}
+              </div>
+            </div>
+
+            <div className="hidden lg:block animate-scale-in animate-delay-4">
+              <div className="glass-card p-8">
+                <div className="grid grid-cols-2 gap-4">
+                  {[
+                    { icon: <Award className="w-8 h-8" />, title: 'איכות מובטחת' },
+                    { icon: <Shield className="w-8 h-8" />, title: 'אמינות מוחלטת' },
+                    { icon: <Zap className="w-8 h-8" />, title: 'ביצוע מהיר' },
+                    { icon: <Clock className="w-8 h-8" />, title: 'זמינות תמידית' }
+                  ].map((item, index) => (
+                    <div key={index} className="text-center p-4">
+                      <div className="icon-glass mx-auto mb-3 text-blue-400">
+                        {item.icon}
+                      </div>
+                      <h3 className="typography-body text-white font-medium text-sm">
+                        {item.title}
+                      </h3>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Default 3D Background Style - Enhanced
   return (
-    <section 
-      className={`min-h-screen flex items-center justify-center relative overflow-hidden ${getHeroBackgroundClass()}`}
-      style={getHeroStyle()}
-    >
-      {/* Background Effects */}
-      {formData.heroStyle === 'glass' && (
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20" />
-      )}
+    <section className="hero-3d section-hero">
+      <div className="floating-element"></div>
+      <div className="floating-element"></div>
+      <div className="floating-element"></div>
+      
+      <div className="container-hero relative z-10">
+        <div className="text-center">
+          {/* Trust Indicators */}
+          <div className="flex items-center justify-center gap-6 mb-8 animate-slide-up">
+            <div className="glass-card px-4 py-2">
+              <div className="flex items-center gap-2">
+                <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                <span className="text-sm font-medium text-white">דירוג 5 כוכבים</span>
+              </div>
+            </div>
+            <div className="glass-card px-4 py-2">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-green-400" />
+                <span className="text-sm font-medium text-white">מומחה מוסמך</span>
+              </div>
+            </div>
+          </div>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-6 text-center z-10 relative max-w-7xl">
-        {/* Trust Indicators */}
-        <div className="flex items-center justify-center gap-6 mb-8 animate-fade-in-up">
-          <div className="flex items-center gap-2 glass-card px-4 py-2">
-            <Star className="w-4 h-4 text-yellow-400 fill-current" />
-            <span className="text-sm font-medium text-white">דירוג 5 כוכבים</span>
-          </div>
-          <div className="flex items-center gap-2 glass-card px-4 py-2">
-            <CheckCircle className="w-4 h-4 text-green-400" />
-            <span className="text-sm font-medium text-white">מומחה מוסמך</span>
-          </div>
-          <div className="flex items-center gap-2 glass-card px-4 py-2">
-            <Zap className="w-4 h-4 text-blue-400" />
-            <span className="text-sm font-medium text-white">תוצאות מיידיות</span>
-          </div>
-        </div>
+          {/* Main Hero Content */}
+          <h1 className="typography-hero text-7xl md:text-9xl mb-8 animate-slide-up animate-delay-1">
+            {content?.headline || formData.businessName}
+          </h1>
 
-        {/* Main Headline */}
-        <h1 className="typography-display text-6xl md:text-8xl font-black mb-8 leading-tight animate-fade-in-up text-white"
-            style={{ animationDelay: '0.2s' }}>
-          {content?.headline || formData.businessName}
-        </h1>
-
-        {/* Subheadline */}
-        <div className="typography-body text-xl md:text-3xl mb-12 max-w-5xl mx-auto leading-relaxed animate-fade-in-up glass-card-dark p-8 rounded-3xl"
-             style={{ 
-               color: currentColors.subheadlineColor,
-               animationDelay: '0.4s'
-             }}>
-          {content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
-        </div>
-
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
-          {renderCTAButton()}
-          
-          <button className="btn-secondary text-lg px-8 py-4 rounded-2xl animate-fade-in-up inline-flex items-center gap-3"
-                  style={{ animationDelay: '0.7s' }}>
-            <Play className="w-5 h-5" />
-            צפה בדוגמה
-          </button>
-        </div>
-
-        {/* Stats */}
-        <div className="stats-grid max-w-4xl mx-auto animate-scale-in" style={{ animationDelay: '0.8s' }}>
-          <div className="stat-item">
-            <div className="stat-number">500+</div>
-            <div className="text-gray-300 font-medium">לקוחות מרוצים</div>
+          <div className="glass-card p-8 max-w-5xl mx-auto mb-12 animate-slide-up animate-delay-2">
+            <p className="typography-body text-xl md:text-2xl text-white leading-relaxed">
+              {content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
+            </p>
           </div>
-          <div className="stat-item">
-            <div className="stat-number">98%</div>
-            <div className="text-gray-300 font-medium">שביעות רצון</div>
-          </div>
-          <div className="stat-item">
-            <div className="stat-number">10+</div>
-            <div className="text-gray-300 font-medium">שנות ניסיון</div>
-          </div>
-          <div className="stat-item">
-            <div className="stat-number">24/7</div>
-            <div className="text-gray-300 font-medium">זמינות</div>
-          </div>
-        </div>
-      </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-float">
-        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white/50 rounded-full mt-2 animate-pulse"></div>
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+            {renderCTAButton(true)}
+            {renderCTAButton(false)}
+          </div>
+
+          {/* Professional Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto animate-scale-in animate-delay-4">
+            {[
+              { number: '500+', label: 'לקוחות מרוצים' },
+              { number: '98%', label: 'שביעות רצון' },
+              { number: '10+', label: 'שנות ניסיון' },
+              { number: '24/7', label: 'זמינות' }
+            ].map((stat, index) => (
+              <div key={index} className="glass-card p-6 text-center">
+                <div className="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">
+                  {stat.number}
+                </div>
+                <div className="typography-body text-gray-300 text-sm">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
