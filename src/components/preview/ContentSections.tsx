@@ -1,6 +1,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { LiquidButton, MetalButton } from "@/components/ui/liquid-glass-button";
 import { Phone, Mail, MapPin, Star, CheckCircle2, Users, Target, Image, Award, Zap, Cpu, Network, Rocket } from "lucide-react";
 import { ColorScheme } from "@/components/ColorEditor";
 
@@ -12,13 +13,72 @@ interface ContentSectionsProps {
 }
 
 export const ContentSections = ({ content, currentColors, formData, selectedElements }: ContentSectionsProps) => {
+  // Get appropriate card class based on hero style
+  const getCardClass = () => {
+    switch (formData.heroStyle) {
+      case 'glass':
+        return 'glass-card border-0';
+      case 'metal':
+        return 'metal-card border-0';
+      case 'geometric':
+        return 'geometric-card';
+      default:
+        return 'bg-gray-800/50 border-gray-700 tech-glow';
+    }
+  };
+
+  // Get appropriate button component
+  const renderButton = (text: string, className?: string) => {
+    const baseClass = "text-lg px-8 py-4 rounded-2xl transition-all duration-300 transform hover:scale-105";
+    
+    if (formData.heroStyle === 'glass') {
+      return (
+        <LiquidButton 
+          size="lg" 
+          className={`${baseClass} ${className || ''}`}
+          style={{ 
+            backgroundColor: currentColors.primary,
+            color: 'white'
+          }}
+        >
+          {text}
+        </LiquidButton>
+      );
+    } else if (formData.heroStyle === 'metal') {
+      return (
+        <MetalButton 
+          variant="primary"
+          className={`${baseClass} ${className || ''}`}
+        >
+          {text}
+        </MetalButton>
+      );
+    }
+
+    return (
+      <Button 
+        size="lg" 
+        className={`${baseClass} shadow-lg hover:shadow-xl tech-glow ${className || ''}`}
+        style={{ 
+          backgroundColor: currentColors.primary,
+          color: 'white'
+        }}
+      >
+        {text}
+      </Button>
+    );
+  };
+
   return (
     <>
       {/* Emotional Section */}
       {content?.sections?.emotionalSection && (
-        <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
+        <section 
+          className={`py-20 px-4 ${formData.heroStyle === 'glass' ? 'glass-morphism' : formData.heroStyle === 'metal' ? 'metal-texture' : ''}`}
+          style={{ backgroundColor: formData.heroStyle === 'glass' || formData.heroStyle === 'metal' ? 'transparent' : currentColors.background }}
+        >
           <div className="container mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-8" style={{ color: currentColors.featuresColor }}>
+            <h2 className={`text-4xl font-bold mb-8 ${formData.heroStyle === 'metal' ? 'metal-text' : formData.heroStyle === 'glass' ? 'glass-text' : ''}`} style={{ color: currentColors.featuresColor }}>
               {content.sections.emotionalSection.title}
             </h2>
             <p className="text-xl max-w-4xl mx-auto leading-relaxed" style={{ color: currentColors.featuresTextColor }}>
@@ -30,14 +90,17 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
 
       {/* Why Us Section */}
       {content?.sections?.whyUs && (
-        <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
+        <section 
+          className={`py-20 px-4 ${formData.heroStyle === 'glass' ? 'glass-morphism' : formData.heroStyle === 'metal' ? 'metal-texture' : ''}`}
+          style={{ backgroundColor: formData.heroStyle === 'glass' || formData.heroStyle === 'metal' ? 'transparent' : currentColors.background }}
+        >
           <div className="container mx-auto">
-            <h2 className="text-4xl font-bold mb-12 text-center" style={{ color: currentColors.featuresColor }}>
+            <h2 className={`text-4xl font-bold mb-12 text-center ${formData.heroStyle === 'metal' ? 'metal-text' : formData.heroStyle === 'glass' ? 'glass-text' : ''}`} style={{ color: currentColors.featuresColor }}>
               {content.sections.whyUs.title}
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {content.sections.whyUs.reasons?.map((reason: any, index: number) => (
-                <Card key={index} className="bg-gray-800/50 border-gray-700 hover:bg-gray-700/50 transition-all duration-300 transform hover:scale-105 tech-glow">
+                <Card key={index} className={`${getCardClass()} hover:bg-gray-700/50 transition-all duration-300 transform hover:scale-105`}>
                   <CardContent className="p-6 text-center">
                     <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center tech-glow" style={{ backgroundColor: currentColors.primary }}>
                       <Award className="w-8 h-8 text-white" />
@@ -58,14 +121,17 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
 
       {/* What We Give Section */}
       {content?.sections?.whatWeGive && (
-        <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
+        <section 
+          className={`py-20 px-4 ${formData.heroStyle === 'glass' ? 'glass-morphism' : formData.heroStyle === 'metal' ? 'metal-texture' : ''}`}
+          style={{ backgroundColor: formData.heroStyle === 'glass' || formData.heroStyle === 'metal' ? 'transparent' : currentColors.background }}
+        >
           <div className="container mx-auto">
-            <h2 className="text-4xl font-bold mb-12 text-center" style={{ color: currentColors.featuresColor }}>
+            <h2 className={`text-4xl font-bold mb-12 text-center ${formData.heroStyle === 'metal' ? 'metal-text' : formData.heroStyle === 'glass' ? 'glass-text' : ''}`} style={{ color: currentColors.featuresColor }}>
               {content.sections.whatWeGive.title}
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {content.sections.whatWeGive.services?.map((service: any, index: number) => (
-                <Card key={index} className="bg-gray-800/50 border-gray-700 hover:bg-gray-700/50 transition-all duration-300 tech-glow">
+                <Card key={index} className={`${getCardClass()} hover:bg-gray-700/50 transition-all duration-300`}>
                   <CardContent className="p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <CheckCircle2 className="w-6 h-6" style={{ color: currentColors.primary }} />
@@ -86,9 +152,12 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
 
       {/* Gallery Section */}
       {selectedElements.includes('gallery') && (
-        <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
+        <section 
+          className={`py-20 px-4 ${formData.heroStyle === 'glass' ? 'glass-morphism' : formData.heroStyle === 'metal' ? 'metal-texture' : ''}`}
+          style={{ backgroundColor: formData.heroStyle === 'glass' || formData.heroStyle === 'metal' ? 'transparent' : currentColors.background }}
+        >
           <div className="container mx-auto">
-            <h2 className="text-4xl font-bold mb-12 text-center" style={{ color: currentColors.featuresColor }}>
+            <h2 className={`text-4xl font-bold mb-12 text-center ${formData.heroStyle === 'metal' ? 'metal-text' : formData.heroStyle === 'glass' ? 'glass-text' : ''}`} style={{ color: currentColors.featuresColor }}>
               <Image className="w-8 h-8 inline-block mr-3" />
               {content?.sections?.gallery?.title || 'גלריית העבודות שלנו'}
             </h2>
@@ -117,9 +186,12 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
 
       {/* Enhanced Process Section */}
       {selectedElements.includes('process') && (
-        <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
+        <section 
+          className={`py-20 px-4 ${formData.heroStyle === 'glass' ? 'glass-morphism' : formData.heroStyle === 'metal' ? 'metal-texture' : ''}`}
+          style={{ backgroundColor: formData.heroStyle === 'glass' || formData.heroStyle === 'metal' ? 'transparent' : currentColors.background }}
+        >
           <div className="container mx-auto">
-            <h2 className="text-4xl font-bold mb-12 text-center" style={{ color: currentColors.featuresColor }}>
+            <h2 className={`text-4xl font-bold mb-12 text-center ${formData.heroStyle === 'metal' ? 'metal-text' : formData.heroStyle === 'glass' ? 'glass-text' : ''}`} style={{ color: currentColors.featuresColor }}>
               <Cpu className="w-8 h-8 inline-block mr-3" />
               תהליך העבודה הטכנולוגי שלנו
             </h2>
@@ -130,7 +202,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                 { step: 3, title: "פיתוח חכם", desc: "יישום מתקדם עם טכנולוגיות חדישות", icon: <Network className="w-8 h-8" /> },
                 { step: 4, title: "השקה חדשנית", desc: "הטמעה חכמה ומעקב בזמן אמת", icon: <Rocket className="w-8 h-8" /> }
               ].map((process, index) => (
-                <Card key={index} className="bg-gray-800/50 border-gray-700 text-center tech-glow">
+                <Card key={index} className={`${getCardClass()} text-center`}>
                   <CardContent className="p-6">
                     <div 
                       className="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center tech-glow"
@@ -162,11 +234,14 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
 
       {/* About Section */}
       {selectedElements.includes('about') && (
-        <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
+        <section 
+          className={`py-20 px-4 ${formData.heroStyle === 'glass' ? 'glass-morphism' : formData.heroStyle === 'metal' ? 'metal-texture' : ''}`}
+          style={{ backgroundColor: formData.heroStyle === 'glass' || formData.heroStyle === 'metal' ? 'transparent' : currentColors.background }}
+        >
           <div className="container mx-auto">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
-                <h2 className="text-4xl font-bold mb-6" style={{ color: currentColors.aboutColor }}>
+                <h2 className={`text-4xl font-bold mb-6 ${formData.heroStyle === 'metal' ? 'metal-text' : formData.heroStyle === 'glass' ? 'glass-text' : ''}`} style={{ color: currentColors.aboutColor }}>
                   <Users className="w-8 h-8 inline-block mr-3" />
                   קצת עלינו
                 </h2>
@@ -191,14 +266,17 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
 
       {/* Testimonials Section */}
       {content?.sections?.testimonials && content.sections.testimonials.some((t: any) => t.name && t.content) && (
-        <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
+        <section 
+          className={`py-20 px-4 ${formData.heroStyle === 'glass' ? 'glass-morphism' : formData.heroStyle === 'metal' ? 'metal-texture' : ''}`}
+          style={{ backgroundColor: formData.heroStyle === 'glass' || formData.heroStyle === 'metal' ? 'transparent' : currentColors.background }}
+        >
           <div className="container mx-auto">
-            <h2 className="text-4xl font-bold mb-12 text-center" style={{ color: currentColors.featuresColor }}>
+            <h2 className={`text-4xl font-bold mb-12 text-center ${formData.heroStyle === 'metal' ? 'metal-text' : formData.heroStyle === 'glass' ? 'glass-text' : ''}`} style={{ color: currentColors.featuresColor }}>
               מה הלקוחות שלנו אומרים
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
               {content.sections.testimonials.filter((t: any) => t.name && t.content).map((testimonial: any, index: number) => (
-                <Card key={index} className="bg-gray-800/50 border-gray-700 tech-glow">
+                <Card key={index} className={getCardClass()}>
                   <CardContent className="p-6">
                     <div className="flex mb-4">
                       {[...Array(5)].map((_, i) => (
@@ -232,9 +310,12 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
       )}
 
       {/* Contact Section */}
-      <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
+      <section 
+        className={`py-20 px-4 ${formData.heroStyle === 'glass' ? 'glass-morphism' : formData.heroStyle === 'metal' ? 'metal-texture' : ''}`}
+        style={{ backgroundColor: formData.heroStyle === 'glass' || formData.heroStyle === 'metal' ? 'transparent' : currentColors.background }}
+      >
         <div className="container mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-8" style={{ color: currentColors.contactColor }}>
+          <h2 className={`text-4xl font-bold mb-8 ${formData.heroStyle === 'metal' ? 'metal-text' : formData.heroStyle === 'glass' ? 'glass-text' : ''}`} style={{ color: currentColors.contactColor }}>
             {content?.contactTitle || 'בואו נתחיל לעבוד יחד'}
           </h2>
           <div className="max-w-md mx-auto space-y-4">
@@ -251,16 +332,9 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               <span style={{ color: currentColors.contactTextColor }}>תל אביב, ישראל</span>
             </div>
           </div>
-          <Button 
-            size="lg" 
-            className="mt-8 text-lg px-8 py-4 rounded-2xl tech-glow"
-            style={{ 
-              backgroundColor: currentColors.primary,
-              color: 'white'
-            }}
-          >
-            צור קשר עכשיו
-          </Button>
+          <div className="mt-8">
+            {renderButton('צור קשר עכשיו')}
+          </div>
         </div>
       </section>
     </>
