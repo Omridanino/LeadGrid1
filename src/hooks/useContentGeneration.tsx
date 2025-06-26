@@ -105,6 +105,22 @@ export const useContentGeneration = (formData: any) => {
       ],
 
       contactTitle: "בואו נתחיל לעבוד יחד",
+      
+      // Add default Why Choose Us section
+      whyChooseUs: {
+        title: "למה כדאי לבחור בנו?",
+        items: [
+          { text: "מומחיות בתחום האדריכלות הגבוהה ביותר", icon: "award-line" },
+          { text: "שירותי אדריכל ברמה הגבוהה ביותר", icon: "star-line" },
+          { text: "שירות אדריכלי מקצועי ואמין", icon: "shield-check-line" },
+          { text: "פתרונות אדריכלים מותאמים אישית", icon: "settings-3-line" },
+          { text: "מומחיות בתחום האדריכלות", icon: "palette-line" },
+          { text: "שירותי אדריכל ברמה הגבוהה ביותר", icon: "rocket-line" },
+          { text: "מומחיות בתחום האדריכלות", icon: "thumb-up-line" },
+          { text: "שירות אדריכלי מקצועי ואמין", icon: "heart-line" }
+        ]
+      },
+      
       creativeElements: []
     };
   }, [formData]);

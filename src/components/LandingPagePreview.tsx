@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -32,13 +33,22 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   };
 
   const renderPageElement = (element: PageElement) => {
+    const isEditing = false;
+
+    if (!isEditing) {
+      return (
+        <div className="flex items-center justify-between p-3 bg-gray-700 rounded">
+          <span className="text-white">{element.type}</span>
+        </div>
+      );
+    }
+
     switch (element.type) {
       case 'title':
         const TitleTag = element.content.size as keyof JSX.IntrinsicElements;
         return (
-          <div key={element.id} className="p-8 relative" style={{ backgroundColor: currentColors.background }}>
-            {/* 3D Background Effects */}
-            <div className="absolute inset-0 opacity-5">
+          <div key={element.id} className="p-8 relative overflow-hidden" style={{ backgroundColor: currentColors.background }}>
+            <div className="absolute inset-0 opacity-10">
               <div 
                 className="absolute top-10 left-10 w-20 h-20 rounded-full animate-pulse"
                 style={{ 
@@ -90,8 +100,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
 
       case 'text':
         return (
-          <div key={element.id} className="p-8 relative" style={{ backgroundColor: currentColors.background }}>
-            {/* 3D Background */}
+          <div key={element.id} className="p-8 relative overflow-hidden" style={{ backgroundColor: currentColors.background }}>
             <div className="absolute inset-0 opacity-5">
               <div 
                 className="absolute top-1/2 left-1/4 w-24 h-24 rounded-full animate-pulse"
@@ -163,189 +172,172 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
 
       case 'whychoose':
         return (
-          <div key={element.id} className="p-12 relative overflow-hidden" style={{ backgroundColor: currentColors.background }}>
-            {/* Advanced 3D Background Effects */}
-            <div className="absolute inset-0 opacity-10">
-              {/* Floating Geometric Shapes */}
+          <div key={element.id} className="p-16 relative overflow-hidden" style={{ backgroundColor: currentColors.background }}>
+            <div className="absolute inset-0 opacity-5">
               <div 
-                className="absolute top-20 left-20 w-32 h-32 animate-pulse"
+                className="absolute top-20 left-20 w-64 h-64 rounded-full animate-pulse"
                 style={{ 
                   background: `conic-gradient(from 45deg, ${currentColors.primary}, ${currentColors.secondary}, ${currentColors.accent}, ${currentColors.primary})`,
                   transform: 'perspective(1000px) rotateX(45deg) rotateY(45deg) rotateZ(15deg)',
-                  borderRadius: '20px',
-                  filter: 'blur(2px)'
+                  filter: 'blur(4px)'
                 }}
               ></div>
               <div 
-                className="absolute bottom-20 right-20 w-24 h-24 animate-pulse"
+                className="absolute bottom-20 right-20 w-48 h-48 rounded-full animate-pulse"
                 style={{ 
-                  background: `linear-gradient(135deg, ${currentColors.secondary}80, ${currentColors.accent}80)`,
+                  background: `linear-gradient(135deg, ${currentColors.secondary}60, ${currentColors.accent}60)`,
                   animationDelay: '0.7s',
                   transform: 'perspective(800px) rotateX(-30deg) rotateY(60deg)',
-                  borderRadius: '50%',
-                  filter: 'blur(1px)'
+                  filter: 'blur(3px)'
                 }}
               ></div>
-              {/* Spinning Rings */}
               <div 
-                className="absolute top-1/2 left-1/2 w-40 h-40 animate-spin"
+                className="absolute top-1/2 left-1/2 w-80 h-80 rounded-full"
                 style={{ 
-                  background: `conic-gradient(from 0deg, transparent, ${currentColors.primary}30, transparent)`,
-                  animationDuration: '20s',
-                  transform: 'perspective(1000px) rotateX(75deg) translate(-50%, -50%)',
-                  borderRadius: '50%'
+                  background: `conic-gradient(from 0deg, transparent, ${currentColors.primary}20, transparent)`,
+                  animation: 'spin 20s linear infinite',
+                  transform: 'perspective(1000px) rotateX(75deg) translate(-50%, -50%)'
                 }}
               ></div>
             </div>
 
             <div className="relative z-10">
               <h2 
-                className="text-4xl font-bold mb-4 text-center"
+                className="text-5xl font-bold mb-6 text-center"
                 style={{ 
                   color: currentColors.text,
                   textShadow: '0 8px 16px rgba(0,0,0,0.4)',
                   transform: 'perspective(1000px) rotateX(10deg)'
                 }}
               >
-                <Award className="w-10 h-10 ml-3 inline animate-bounce" style={{ color: currentColors.accent }} />
+                <Award className="w-12 h-12 ml-4 inline animate-bounce" style={{ color: currentColors.accent }} />
                 {element.content.title}
               </h2>
-              <p className="text-center text-lg mb-12 opacity-80" style={{ color: currentColors.text }}>
+              <p className="text-center text-xl mb-16 opacity-80" style={{ color: currentColors.text }}>
                 הסיבות המובילות לבחור בנו מבין כל האפשרויות
               </p>
               
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
                 {element.content.items.map((item: any, index: number) => (
                   <div 
                     key={index}
-                    className="group relative p-8 rounded-3xl transition-all duration-500 hover:scale-110 cursor-pointer"
+                    className="group relative p-10 rounded-3xl transition-all duration-700 hover:scale-110 cursor-pointer"
                     style={{ 
-                      background: `linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02))`,
-                      border: `2px solid ${currentColors.primary}30`,
-                      backdropFilter: 'blur(15px)',
-                      boxShadow: `0 20px 60px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1)`,
-                      transform: 'perspective(1000px) rotateX(10deg) rotateY(5deg)'
+                      background: `linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05))`,
+                      border: `3px solid ${currentColors.primary}40`,
+                      backdropFilter: 'blur(20px)',
+                      boxShadow: `0 25px 80px rgba(0,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.2)`,
+                      transform: 'perspective(1000px) rotateX(15deg) rotateY(8deg)'
                     }}
                   >
-                    {/* Advanced 3D Icon Container */}
-                    <div className="relative mb-6">
+                    <div className="relative mb-8">
                       <div 
-                        className="w-24 h-24 rounded-3xl flex items-center justify-center mx-auto group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 relative"
+                        className="w-28 h-28 rounded-3xl flex items-center justify-center mx-auto group-hover:scale-125 group-hover:rotate-12 transition-all duration-700 relative"
                         style={{ 
                           background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary} 50%, ${currentColors.accent})`,
-                          boxShadow: `0 20px 40px ${currentColors.primary}50, inset 0 2px 0 rgba(255,255,255,0.3)`,
-                          transform: 'perspective(500px) rotateX(20deg) rotateY(10deg)'
+                          boxShadow: `0 25px 50px ${currentColors.primary}60, inset 0 3px 0 rgba(255,255,255,0.4)`,
+                          transform: 'perspective(500px) rotateX(25deg) rotateY(15deg)'
                         }}
                       >
-                        {/* Multiple Shadow Layers for 3D Effect */}
                         <div 
-                          className="absolute inset-0 rounded-3xl transform translate-y-2 translate-x-1 -z-10"
+                          className="absolute inset-0 rounded-3xl transform translate-y-3 translate-x-2 -z-10"
                           style={{ 
-                            background: `linear-gradient(135deg, ${currentColors.primary}60, ${currentColors.secondary}60)`,
-                            filter: 'blur(8px)'
+                            background: `linear-gradient(135deg, ${currentColors.primary}80, ${currentColors.secondary}80)`,
+                            filter: 'blur(12px)'
                           }}
                         ></div>
                         <div 
-                          className="absolute inset-0 rounded-3xl transform translate-y-4 translate-x-2 -z-20"
+                          className="absolute inset-0 rounded-3xl transform translate-y-6 translate-x-4 -z-20"
                           style={{ 
-                            background: `linear-gradient(135deg, ${currentColors.primary}30, ${currentColors.secondary}30)`,
-                            filter: 'blur(16px)'
+                            background: `linear-gradient(135deg, ${currentColors.primary}40, ${currentColors.secondary}40)`,
+                            filter: 'blur(20px)'
                           }}
                         ></div>
                         
-                        {/* 3D Icon */}
                         <i 
-                          className={`ri-${item.icon} text-4xl text-white group-hover:scale-125 transition-all duration-500`}
+                          className={`ri-${item.icon} text-5xl text-white group-hover:scale-125 transition-all duration-700`}
                           style={{ 
-                            textShadow: '0 4px 8px rgba(0,0,0,0.5)',
-                            transform: 'perspective(200px) rotateX(-10deg)'
+                            textShadow: '0 6px 12px rgba(0,0,0,0.6)',
+                            transform: 'perspective(200px) rotateX(-15deg)'
                           }}
                         ></i>
                         
-                        {/* Holographic Shine Effect */}
                         <div 
-                          className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                          className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"
                           style={{ 
-                            background: `linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%)`,
-                            animation: 'none'
+                            background: `linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.5) 50%, transparent 70%)`,
+                            animation: 'shimmer 3s infinite'
                           }}
                         ></div>
                       </div>
 
-                      {/* Floating Particles */}
-                      <div className="absolute -top-2 -right-2 w-4 h-4 rounded-full opacity-80 animate-pulse" 
-                           style={{ backgroundColor: currentColors.accent, boxShadow: `0 0 15px ${currentColors.accent}` }}></div>
-                      <div className="absolute -bottom-1 -left-1 w-3 h-3 rounded-full opacity-60 animate-pulse" 
-                           style={{ backgroundColor: currentColors.secondary, animationDelay: '0.5s', boxShadow: `0 0 10px ${currentColors.secondary}` }}></div>
-                      <div className="absolute top-1/2 -right-3 w-2 h-2 rounded-full opacity-40 animate-pulse" 
-                           style={{ backgroundColor: currentColors.primary, animationDelay: '1s', boxShadow: `0 0 8px ${currentColors.primary}` }}></div>
+                      <div className="absolute -top-3 -right-3 w-6 h-6 rounded-full opacity-80 animate-pulse" 
+                           style={{ backgroundColor: currentColors.accent, boxShadow: `0 0 20px ${currentColors.accent}` }}></div>
+                      <div className="absolute -bottom-2 -left-2 w-4 h-4 rounded-full opacity-60 animate-pulse" 
+                           style={{ backgroundColor: currentColors.secondary, animationDelay: '0.5s', boxShadow: `0 0 15px ${currentColors.secondary}` }}></div>
+                      <div className="absolute top-1/2 -right-4 w-3 h-3 rounded-full opacity-40 animate-pulse" 
+                           style={{ backgroundColor: currentColors.primary, animationDelay: '1s', boxShadow: `0 0 12px ${currentColors.primary}` }}></div>
                     </div>
                     
-                    {/* Content with 3D Text */}
                     <div className="text-center relative">
                       <p 
-                        className="text-lg leading-relaxed font-semibold group-hover:text-opacity-100 transition-all duration-500"
+                        className="text-xl leading-relaxed font-bold group-hover:text-opacity-100 transition-all duration-700"
                         style={{ 
                           color: currentColors.text,
-                          textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-                          transform: 'perspective(500px) rotateX(5deg)'
+                          textShadow: '0 3px 6px rgba(0,0,0,0.4)',
+                          transform: 'perspective(500px) rotateX(8deg)'
                         }}
                       >
                         {item.text}
                       </p>
                       
-                      {/* Dynamic Hover Glow */}
                       <div 
-                        className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-30 transition-opacity duration-700 -z-10"
+                        className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-40 transition-opacity duration-1000 -z-10"
                         style={{ 
-                          background: `radial-gradient(ellipse at center, ${currentColors.primary}40, ${currentColors.secondary}20, transparent 70%)`
+                          background: `radial-gradient(ellipse at center, ${currentColors.primary}50, ${currentColors.secondary}30, transparent 70%)`
                         }}
                       ></div>
                     </div>
 
-                    {/* Enhanced Border Glow */}
                     <div 
-                      className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-all duration-500 -z-20"
+                      className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-all duration-700 -z-20"
                       style={{ 
-                        background: `linear-gradient(145deg, ${currentColors.primary}30, ${currentColors.secondary}30, ${currentColors.accent}30)`,
-                        filter: 'blur(2px)',
-                        transform: 'scale(1.05)'
+                        background: `linear-gradient(145deg, ${currentColors.primary}40, ${currentColors.secondary}40, ${currentColors.accent}40)`,
+                        filter: 'blur(3px)',
+                        transform: 'scale(1.08)'
                       }}
                     ></div>
 
-                    {/* Pulsing Edge Light */}
                     <div 
-                      className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-60 transition-opacity duration-300 animate-pulse -z-30"
+                      className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-80 transition-opacity duration-500 animate-pulse -z-30"
                       style={{ 
-                        boxShadow: `0 0 30px ${currentColors.accent}60, inset 0 0 20px ${currentColors.primary}30`
+                        boxShadow: `0 0 40px ${currentColors.accent}80, inset 0 0 30px ${currentColors.primary}40`
                       }}
                     ></div>
                   </div>
                 ))}
               </div>
 
-              {/* Enhanced Bottom CTA */}
-              <div className="text-center mt-16">
-                <p className="text-xl mb-8 opacity-90" style={{ color: currentColors.text }}>
+              <div className="text-center mt-20">
+                <p className="text-2xl mb-10 opacity-90" style={{ color: currentColors.text }}>
                   מוכנים להתחיל את המסע איתנו?
                 </p>
                 <Button 
                   size="lg"
-                  className="px-16 py-6 text-xl font-bold rounded-3xl hover:scale-110 transition-all duration-500 shadow-2xl relative overflow-hidden"
+                  className="px-20 py-8 text-2xl font-bold rounded-3xl hover:scale-110 transition-all duration-700 shadow-2xl relative overflow-hidden"
                   style={{ 
                     background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary}, ${currentColors.secondary})`,
                     color: 'white',
-                    boxShadow: `0 15px 50px ${currentColors.accent}50`,
+                    boxShadow: `0 20px 60px ${currentColors.accent}60`,
                     transform: 'perspective(500px) rotateX(10deg)'
                   }}
                   onClick={handleCtaClick}
                 >
                   <span className="relative z-10">בואו נתחיל עכשיו ✨</span>
-                  {/* Animated Background */}
                   <div 
-                    className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300"
+                    className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
                     style={{
-                      background: `linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%)`,
+                      background: `linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%)`,
                       animation: 'shimmer 2s infinite'
                     }}
                   ></div>
@@ -353,7 +345,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               </div>
             </div>
 
-            {/* CSS Animation */}
             <style>{`
               @keyframes shimmer {
                 0% { transform: translateX(-100%); }
@@ -495,133 +486,168 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   );
 
   const renderWhyChooseUs = (whyChoose: any) => (
-    <div className="p-12 relative overflow-hidden" style={{ backgroundColor: currentColors.background }}>
-      {/* Background Animation Elements */}
-      <div className="absolute inset-0 opacity-10">
+    <div className="p-16 relative overflow-hidden" style={{ backgroundColor: currentColors.background }}>
+      <div className="absolute inset-0 opacity-5">
         <div 
-          className="absolute top-20 left-20 w-32 h-32 rounded-full animate-pulse"
-          style={{ background: `radial-gradient(circle, ${currentColors.primary}, transparent)` }}
+          className="absolute top-20 left-20 w-64 h-64 rounded-full animate-pulse"
+          style={{ 
+            background: `conic-gradient(from 45deg, ${currentColors.primary}, ${currentColors.secondary}, ${currentColors.accent}, ${currentColors.primary})`,
+            transform: 'perspective(1000px) rotateX(45deg) rotateY(45deg) rotateZ(15deg)',
+            filter: 'blur(4px)'
+          }}
         ></div>
         <div 
-          className="absolute bottom-20 right-20 w-24 h-24 rounded-full animate-pulse delay-300"
-          style={{ background: `radial-gradient(circle, ${currentColors.secondary}, transparent)` }}
+          className="absolute bottom-20 right-20 w-48 h-48 rounded-full animate-pulse"
+          style={{ 
+            background: `linear-gradient(135deg, ${currentColors.secondary}60, ${currentColors.accent}60)`,
+            animationDelay: '0.7s',
+            transform: 'perspective(800px) rotateX(-30deg) rotateY(60deg)',
+            filter: 'blur(3px)'
+          }}
         ></div>
         <div 
-          className="absolute top-1/2 left-1/2 w-40 h-40 rounded-full animate-pulse delay-700"
-          style={{ background: `radial-gradient(circle, ${currentColors.accent}, transparent)` }}
+          className="absolute top-1/2 left-1/2 w-80 h-80 rounded-full"
+          style={{ 
+            background: `conic-gradient(from 0deg, transparent, ${currentColors.primary}20, transparent)`,
+            animation: 'spin 20s linear infinite',
+            transform: 'perspective(1000px) rotateX(75deg) translate(-50%, -50%)'
+          }}
         ></div>
       </div>
 
       <div className="relative z-10">
-        <h2 className="text-4xl font-bold mb-4 text-center" style={{ color: currentColors.text }}>
-          <Award className="w-10 h-10 ml-3 inline" style={{ color: currentColors.accent }} />
+        <h2 className="text-5xl font-bold mb-6 text-center" style={{ color: currentColors.text }}>
+          <Award className="w-12 h-12 ml-4 inline animate-bounce" style={{ color: currentColors.accent }} />
           {whyChoose.title}
         </h2>
-        <p className="text-center text-lg mb-12 opacity-80" style={{ color: currentColors.text }}>
+        <p className="text-center text-xl mb-16 opacity-80" style={{ color: currentColors.text }}>
           הסיבות המובילות לבחור בנו מבין כל האפשרויות
         </p>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
           {whyChoose.items.map((item: any, index: number) => (
             <div 
               key={index}
-              className="group relative p-8 rounded-3xl transition-all duration-500 hover:scale-105 cursor-pointer"
+              className="group relative p-10 rounded-3xl transition-all duration-700 hover:scale-110 cursor-pointer"
               style={{ 
-                background: `linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02))`,
-                border: `1px solid ${currentColors.primary}30`,
-                backdropFilter: 'blur(10px)',
-                boxShadow: `0 8px 32px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1)`
+                background: `linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05))`,
+                border: `3px solid ${currentColors.primary}40`,
+                backdropFilter: 'blur(20px)',
+                boxShadow: `0 25px 80px rgba(0,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.2)`,
+                transform: 'perspective(1000px) rotateX(15deg) rotateY(8deg)'
               }}
             >
-              {/* 3D Icon Container */}
-              <div className="relative mb-6">
+              <div className="relative mb-8">
                 <div 
-                  className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-all duration-300 relative"
+                  className="w-28 h-28 rounded-3xl flex items-center justify-center mx-auto group-hover:scale-125 group-hover:rotate-12 transition-all duration-700 relative"
                   style={{ 
-                    background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})`,
-                    boxShadow: `0 10px 25px ${currentColors.primary}40, inset 0 1px 0 rgba(255,255,255,0.2)`
+                    background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary} 50%, ${currentColors.accent})`,
+                    boxShadow: `0 25px 50px ${currentColors.primary}60, inset 0 3px 0 rgba(255,255,255,0.4)`,
+                    transform: 'perspective(500px) rotateX(25deg) rotateY(15deg)'
                   }}
                 >
-                  {/* 3D Effect Shadow */}
                   <div 
-                    className="absolute inset-0 rounded-2xl transform translate-y-1 -z-10"
+                    className="absolute inset-0 rounded-3xl transform translate-y-3 translate-x-2 -z-10"
                     style={{ 
                       background: `linear-gradient(135deg, ${currentColors.primary}80, ${currentColors.secondary}80)`,
-                      filter: 'blur(4px)'
+                      filter: 'blur(12px)'
+                    }}
+                  ></div>
+                  <div 
+                    className="absolute inset-0 rounded-3xl transform translate-y-6 translate-x-4 -z-20"
+                    style={{ 
+                      background: `linear-gradient(135deg, ${currentColors.primary}40, ${currentColors.secondary}40)`,
+                      filter: 'blur(20px)'
                     }}
                   ></div>
                   
-                  {/* Icon */}
                   <i 
-                    className={`ri-${item.icon} text-3xl text-white group-hover:scale-110 transition-transform duration-300`}
-                    style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
+                    className={`ri-${item.icon} text-5xl text-white group-hover:scale-125 transition-all duration-700`}
+                    style={{ 
+                      textShadow: '0 6px 12px rgba(0,0,0,0.6)',
+                      transform: 'perspective(200px) rotateX(-15deg)'
+                    }}
                   ></i>
                   
-                  {/* Shine Effect */}
                   <div 
-                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"
                     style={{ 
-                      background: `linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%)`
+                      background: `linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.5) 50%, transparent 70%)`,
+                      animation: 'shimmer 3s infinite'
                     }}
                   ></div>
                 </div>
 
-                {/* Floating Particles */}
-                <div className="absolute -top-2 -right-2 w-3 h-3 rounded-full opacity-60 animate-pulse" 
-                     style={{ backgroundColor: currentColors.accent }}></div>
-                <div className="absolute -bottom-1 -left-1 w-2 h-2 rounded-full opacity-40 animate-pulse delay-500" 
-                     style={{ backgroundColor: currentColors.secondary }}></div>
+                <div className="absolute -top-3 -right-3 w-6 h-6 rounded-full opacity-80 animate-pulse" 
+                     style={{ backgroundColor: currentColors.accent, boxShadow: `0 0 20px ${currentColors.accent}` }}></div>
+                <div className="absolute -bottom-2 -left-2 w-4 h-4 rounded-full opacity-60 animate-pulse" 
+                     style={{ backgroundColor: currentColors.secondary, animationDelay: '0.5s', boxShadow: `0 0 15px ${currentColors.secondary}` }}></div>
+                <div className="absolute top-1/2 -right-4 w-3 h-3 rounded-full opacity-40 animate-pulse" 
+                     style={{ backgroundColor: currentColors.primary, animationDelay: '1s', boxShadow: `0 0 12px ${currentColors.primary}` }}></div>
               </div>
               
-              {/* Content */}
               <div className="text-center relative">
                 <p 
-                  className="text-lg leading-relaxed font-medium group-hover:text-opacity-90 transition-all duration-300"
+                  className="text-xl leading-relaxed font-bold group-hover:text-opacity-100 transition-all duration-700"
                   style={{ 
                     color: currentColors.text,
-                    textShadow: '0 1px 2px rgba(0,0,0,0.1)'
+                    textShadow: '0 3px 6px rgba(0,0,0,0.4)',
+                    transform: 'perspective(500px) rotateX(8deg)'
                   }}
                 >
                   {item.text}
                 </p>
                 
-                {/* Hover Glow Effect */}
                 <div 
-                  className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 -z-10"
+                  className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-40 transition-opacity duration-1000 -z-10"
                   style={{ 
-                    background: `radial-gradient(circle at center, ${currentColors.primary}, transparent 70%)`
+                    background: `radial-gradient(ellipse at center, ${currentColors.primary}50, ${currentColors.secondary}30, transparent 70%)`
                   }}
                 ></div>
               </div>
 
-              {/* Border Glow */}
               <div 
-                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-20"
+                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-all duration-700 -z-20"
                 style={{ 
-                  background: `linear-gradient(145deg, ${currentColors.primary}20, ${currentColors.secondary}20)`,
-                  filter: 'blur(1px)'
+                  background: `linear-gradient(145deg, ${currentColors.primary}40, ${currentColors.secondary}40, ${currentColors.accent}40)`,
+                  filter: 'blur(3px)',
+                  transform: 'scale(1.08)'
+                }}
+              ></div>
+
+              <div 
+                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-80 transition-opacity duration-500 animate-pulse -z-30"
+                style={{ 
+                  boxShadow: `0 0 40px ${currentColors.accent}80, inset 0 0 30px ${currentColors.primary}40`
                 }}
               ></div>
             </div>
           ))}
         </div>
 
-        {/* Bottom CTA */}
-        <div className="text-center mt-12">
-          <p className="text-lg mb-6 opacity-80" style={{ color: currentColors.text }}>
+        <div className="text-center mt-20">
+          <p className="text-2xl mb-10 opacity-90" style={{ color: currentColors.text }}>
             מוכנים להתחיל את המסע איתנו?
           </p>
           <Button 
             size="lg"
-            className="px-12 py-4 text-lg font-bold rounded-2xl hover:scale-105 transition-all duration-300 shadow-2xl"
+            className="px-20 py-8 text-2xl font-bold rounded-3xl hover:scale-110 transition-all duration-700 shadow-2xl relative overflow-hidden"
             style={{ 
-              background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary})`,
+              background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary}, ${currentColors.secondary})`,
               color: 'white',
-              boxShadow: `0 10px 30px ${currentColors.accent}40`
+              boxShadow: `0 20px 60px ${currentColors.accent}60`,
+              transform: 'perspective(500px) rotateX(10deg)'
             }}
             onClick={handleCtaClick}
           >
-            בואו נתחיל עכשיו ✨
+            <span className="relative z-10">בואו נתחיל עכשיו ✨</span>
+            <div 
+              className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+              style={{
+                background: `linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%)`,
+                animation: 'shimmer 2s infinite'
+              }}
+            ></div>
           </Button>
         </div>
       </div>
@@ -706,7 +732,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               {content.cta}
             </Button>
 
-            {/* Stats with user selected colors */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 max-w-4xl mx-auto">
               {Object.entries(content.stats).map(([key, value], index) => (
                 <div 
@@ -722,7 +747,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           </div>
         </div>
         
-        {/* Custom Elements - תיקון הצגת האלמנטים */}
+        {/* Custom Elements */}
         {elements && elements.length > 0 && (
           <div>
             {elements
@@ -768,10 +793,10 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           </div>
         </div>
 
-        {/* Creative Elements */}
-        {renderCreativeElements()}
+        {/* Why Choose Us Section - Always Display */}
+        {content.whyChooseUs && renderWhyChooseUs(content.whyChooseUs)}
 
-        {/* About Section - Enhanced */}
+        {/* About Section */}
         <div className="p-8" style={{ backgroundColor: currentColors.background }}>
           <h2 
             className="text-3xl font-bold mb-8 text-center flex items-center justify-center"
