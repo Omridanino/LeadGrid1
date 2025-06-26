@@ -1,7 +1,7 @@
 
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Palette, Image as ImageIcon } from "lucide-react";
+import { Palette, Image as ImageIcon, Zap } from "lucide-react";
 
 interface HeroStyleStepProps {
   formData: {
@@ -23,7 +23,13 @@ export const HeroStyleStep = ({ formData, updateFormData }: HeroStyleStepProps) 
             <SelectItem value="gradient">
               <div className="flex items-center gap-2">
                 <Palette className="w-4 h-4" />
-                רקע יפה עם משפטים (ללא תמונה)
+                רקע דומם עם צבעים יפים
+              </div>
+            </SelectItem>
+            <SelectItem value="animated">
+              <div className="flex items-center gap-2">
+                <Zap className="w-4 h-4" />
+                רקע חי ומונפש
               </div>
             </SelectItem>
             <SelectItem value="image">
@@ -35,10 +41,9 @@ export const HeroStyleStep = ({ formData, updateFormData }: HeroStyleStepProps) 
           </SelectContent>
         </Select>
         <p className="text-sm text-gray-400 mt-2">
-          {formData.heroStyle === 'gradient' 
-            ? "הדף יוצג עם רקע בצבעי הדרגה יפים ללא תמונות"
-            : "הדף יוצג עם תמונה רלוונטית לעסק שלכם ברקע"
-          }
+          {formData.heroStyle === 'gradient' && "הדף יוצג עם רקע בצבעי הדרגה יפים ללא תמונות"}
+          {formData.heroStyle === 'animated' && "הדף יוצג עם רקע מונפש וצבעוני שמשתנה"}
+          {formData.heroStyle === 'image' && "הדף יוצג עם תמונה רלוונטית לעסק שלכם ברקע"}
         </p>
       </div>
     </div>

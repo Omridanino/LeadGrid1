@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -46,7 +47,12 @@ const iconOptions = [
   { value: "📈", label: "גרף" },
   { value: "🎪", label: "בידור" },
   { value: "🔧", label: "כלים" },
-  { value: "📱", label: "נייד" }
+  { value: "📱", label: "נייד" },
+  { value: "💭", label: "מחשבה" },
+  { value: "💬", label: "דיבור" },
+  { value: "🤝", label: "לחיצת יד" },
+  { value: "❤️", label: "לב" },
+  { value: "💪", label: "כוח" }
 ];
 
 const OptionsPanel = ({
@@ -206,9 +212,9 @@ const OptionsPanel = ({
                               onChange={(e) => updateContent('sections.emotionalSection.title', e.target.value)}
                               className="bg-gray-600 border-gray-500 text-white"
                             />
-                            <Select onValueChange={(icon) => addIcon('sections.emotionalSection.title', icon)}>
+                            <Select onValueChange={(icon) => updateContent('sections.emotionalSection.icon', icon)}>
                               <SelectTrigger className="w-16 bg-gray-600 border-gray-500">
-                                <Plus className="w-4 h-4" />
+                                <span>{editingContent.sections.emotionalSection.icon}</span>
                               </SelectTrigger>
                               <SelectContent className="bg-gray-800 border-gray-600">
                                 {iconOptions.map(icon => (
@@ -293,6 +299,96 @@ const OptionsPanel = ({
                         ))}
                       </div>
                     )}
+
+                    {/* What We Give Section */}
+                    {editingContent.sections.whatWeGive && (
+                      <div className="space-y-3 p-4 bg-gray-700 rounded-lg">
+                        <h4 className="font-medium text-white">מה אתם מקבלים מאיתנו</h4>
+                        <div>
+                          <Label className="text-gray-300">כותרת ראשית</Label>
+                          <div className="flex gap-2 mt-1">
+                            <Input
+                              value={editingContent.sections.whatWeGive.title}
+                              onChange={(e) => updateContent('sections.whatWeGive.title', e.target.value)}
+                              className="bg-gray-600 border-gray-500 text-white"
+                            />
+                            <Select onValueChange={(icon) => addIcon('sections.whatWeGive.title', icon)}>
+                              <SelectTrigger className="w-16 bg-gray-600 border-gray-500">
+                                <Plus className="w-4 h-4" />
+                              </SelectTrigger>
+                              <SelectContent className="bg-gray-800 border-gray-600">
+                                {iconOptions.map(icon => (
+                                  <SelectItem key={icon.value} value={icon.value} className="text-white">
+                                    {icon.value} {icon.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
+                        
+                        {editingContent.sections.whatWeGive.items?.map((item: any, idx: number) => (
+                          <div key={idx} className="space-y-2 p-3 bg-gray-600 rounded">
+                            <Label className="text-gray-300">פריט {idx + 1}</Label>
+                            <div className="flex gap-2">
+                              <Input
+                                value={item.title}
+                                onChange={(e) => updateContent(`sections.whatWeGive.items.${idx}.title`, e.target.value)}
+                                className="bg-gray-500 border-gray-400 text-white"
+                                placeholder="כותרת"
+                              />
+                              <Select onValueChange={(icon) => updateContent(`sections.whatWeGive.items.${idx}.icon`, icon)}>
+                                <SelectTrigger className="w-16 bg-gray-500 border-gray-400">
+                                  <span>{item.icon}</span>
+                                </SelectTrigger>
+                                <SelectContent className="bg-gray-800 border-gray-600">
+                                  {iconOptions.map(icon => (
+                                    <SelectItem key={icon.value} value={icon.value} className="text-white">
+                                      {icon.value} {icon.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <Textarea
+                              value={item.desc}
+                              onChange={(e) => updateContent(`sections.whatWeGive.items.${idx}.desc`, e.target.value)}
+                              className="bg-gray-500 border-gray-400 text-white"
+                              placeholder="תיאור"
+                              rows={2}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Testimonials Section */}
+                    <div className="space-y-3 p-4 bg-gray-700 rounded-lg">
+                      <h4 className="font-medium text-white">💭 מה אומרים עלינו</h4>
+                      <div>
+                        <Label className="text-gray-300">כותרת הסקשן</Label>
+                        <Input
+                          value={getNestedValue(editingContent, 'sections.testimonialsTitle') || '💭 מה אומרים עלינו'}
+                          onChange={(e) => updateContent('sections.testimonialsTitle', e.target.value)}
+                          className="bg-gray-600 border-gray-500 text-white"
+                          placeholder="כותרת סקשן המלצות"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Contact Section */}
+                    <div className="space-y-3 p-4 bg-gray-700 rounded-lg">
+                      <h4 className="font-medium text-white">בואו נתחיל לעבוד יחד</h4>
+                      <div>
+                        <Label className="text-gray-300">כותרת יצירת קשר</Label>
+                        <Input
+                          value={getNestedValue(editingContent, 'sections.contactTitle') || getNestedValue(editingContent, 'contactTitle') || 'בואו נתחיל לעבוד יחד'}
+                          onChange={(e) => updateContent('sections.contactTitle', e.target.value)}
+                          className="bg-gray-600 border-gray-500 text-white"
+                          placeholder="כותרת סקשן יצירת קשר"
+                        />
+                      </div>
+                    </div>
                   </div>
                 )}
 
