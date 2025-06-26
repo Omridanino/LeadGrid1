@@ -22,17 +22,31 @@ export const generateHtmlFile = (
     }
   };
 
+  const generateEmotionalSection = () => {
+    if (!content?.sections?.emotionalSection) return '';
+    
+    return `
+    <section class="tech-section py-20">
+      <div class="container">
+        <h2 class="tech-title text-center mb-8">${content.sections.emotionalSection.title}</h2>
+        <p class="text-xl text-center max-w-4xl mx-auto leading-relaxed" style="color: ${colors.featuresTextColor};">
+          ${content.sections.emotionalSection.content}
+        </p>
+      </div>
+    </section>`;
+  };
+
   const generateWhyUsSection = () => {
     if (!content?.sections?.whyUs || !content.sections.whyUs.reasons) return '';
     
     return `
-    <section class="tech-section">
+    <section class="tech-section py-20">
       <div class="container">
-        <h2 class="tech-title">${content.sections.whyUs.title}</h2>
-        <div class="features-grid">
+        <h2 class="tech-title text-center mb-12">${content.sections.whyUs.title}</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           ${content.sections.whyUs.reasons.map((reason: any) => `
-            <div class="feature-card tech-glow">
-              <div class="feature-icon tech-glow" style="background-color: ${colors.primary}">
+            <div class="feature-card tech-glow hover:scale-105 transition-all duration-300">
+              <div class="feature-icon tech-glow floating-animation" style="background-color: ${colors.primary}">
                 🏆
               </div>
               <h3 style="color: ${colors.featuresColor}">${reason.title}</h3>
@@ -48,12 +62,12 @@ export const generateHtmlFile = (
     if (!content?.sections?.whatWeGive || !content.sections.whatWeGive.services) return '';
     
     return `
-    <section class="tech-section">
+    <section class="tech-section py-20">
       <div class="container">
-        <h2 class="tech-title">${content.sections.whatWeGive.title}</h2>
-        <div class="services-grid">
+        <h2 class="tech-title text-center mb-12">${content.sections.whatWeGive.title}</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           ${content.sections.whatWeGive.services.map((service: any) => `
-            <div class="service-card tech-glow">
+            <div class="service-card tech-glow hover:scale-105 transition-all duration-300">
               <div class="service-check" style="color: ${colors.primary}">✓</div>
               <h3 style="color: ${colors.featuresColor}">${service.title}</h3>
               <p style="color: ${colors.featuresTextColor}">${service.description}</p>
@@ -68,9 +82,9 @@ export const generateHtmlFile = (
     if (!selectedElements.includes('gallery') || !content?.sections?.gallery?.images?.length) return '';
     
     return `
-    <section class="tech-section">
+    <section class="tech-section py-20">
       <div class="container">
-        <h2 class="tech-title">
+        <h2 class="tech-title text-center mb-12">
           🖼️ ${content.sections.gallery.title || 'גלריית העבודות שלנו'}
         </h2>
         <div class="gallery-grid">
@@ -98,15 +112,15 @@ export const generateHtmlFile = (
     ];
     
     return `
-    <section class="tech-section">
+    <section class="tech-section py-20">
       <div class="container">
-        <h2 class="tech-title">
+        <h2 class="tech-title text-center mb-12">
           💻 תהליך העבודה הטכנולוגי שלנו
         </h2>
-        <div class="process-grid">
+        <div class="grid md:grid-cols-4 gap-8">
           ${processes.map((process) => `
-            <div class="process-card tech-glow">
-              <div class="process-icon tech-glow" style="background-color: ${colors.primary}">
+            <div class="process-card tech-glow text-center">
+              <div class="process-icon tech-glow floating-animation" style="background-color: ${colors.primary}">
                 ${process.icon}
               </div>
               <div class="process-number" style="color: ${colors.primary}">${process.step}</div>
@@ -123,17 +137,17 @@ export const generateHtmlFile = (
     if (!selectedElements.includes('about')) return '';
     
     return `
-    <section class="tech-section">
+    <section class="tech-section py-20">
       <div class="container">
         <div class="about-content">
           <div class="about-text">
-            <h2 class="tech-title">
+            <h2 class="tech-title mb-6">
               👥 ${content?.sections?.about?.title || 'קצת עלינו'}
             </h2>
-            <p style="color: ${colors.aboutTextColor}; margin-bottom: 1.5rem;">
+            <p style="color: ${colors.aboutTextColor}; margin-bottom: 1.5rem;" class="text-lg mb-6">
               ${content?.sections?.about?.paragraph1 || 'אנחנו צוות מקצועי עם ניסיון של מעל 10 שנים בתחום.'}
             </p>
-            <p style="color: ${colors.aboutTextColor};">
+            <p style="color: ${colors.aboutTextColor};" class="text-lg">
               ${content?.sections?.about?.paragraph2 || 'המטרה שלנו היא לספק שירות ברמה הגבוהה ביותר.'}
             </p>
           </div>
@@ -151,9 +165,9 @@ export const generateHtmlFile = (
     if (!testimonials.length) return '';
     
     return `
-    <section class="tech-section">
+    <section class="tech-section py-20">
       <div class="container">
-        <h2 class="tech-title">מה הלקוחות שלנו אומרים</h2>
+        <h2 class="tech-title text-center mb-12">מה הלקוחות שלנו אומרים</h2>
         <div class="testimonials-grid">
           ${testimonials.map((testimonial: any) => `
             <div class="testimonial-card tech-glow">
@@ -254,6 +268,7 @@ export const generateHtmlFile = (
             margin-left: auto;
             margin-right: auto;
             color: ${colors.subheadlineColor};
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
         }
         
         .cta-button {
@@ -288,19 +303,50 @@ export const generateHtmlFile = (
             position: relative;
         }
         
+        .tech-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
         .tech-section h2 {
             text-align: center;
             margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
         }
         
-        /* Features Grid */
-        .features-grid {
+        /* Grid Layouts */
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
-            margin: 40px 0;
         }
         
+        .md\\:grid-cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .lg\\:grid-cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        .lg\\:grid-cols-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        
+        .md\\:grid-cols-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        
+        /* Feature Cards */
         .feature-card {
             background: rgba(31, 41, 55, 0.5);
             padding: 30px;
@@ -308,6 +354,7 @@ export const generateHtmlFile = (
             text-align: center;
             border: 2px solid rgba(59, 130, 246, 0.2);
             transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
         
         .feature-card:hover {
@@ -331,19 +378,14 @@ export const generateHtmlFile = (
             font-size: 1.3rem;
         }
         
-        /* Services Grid */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-        
+        /* Service Cards */
         .service-card {
             background: rgba(31, 41, 55, 0.5);
             padding: 25px;
             border-radius: 15px;
             border: 2px solid rgba(59, 130, 246, 0.2);
             transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
         
         .service-card:hover {
@@ -362,7 +404,7 @@ export const generateHtmlFile = (
             font-size: 1.2rem;
         }
         
-        /* Gallery Grid */
+        /* Gallery */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -404,13 +446,7 @@ export const generateHtmlFile = (
             opacity: 1;
         }
         
-        /* Process Grid */
-        .process-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-        
+        /* Process Cards */
         .process-card {
             background: rgba(31, 41, 55, 0.5);
             padding: 30px;
@@ -418,6 +454,7 @@ export const generateHtmlFile = (
             text-align: center;
             border: 2px solid rgba(59, 130, 246, 0.2);
             position: relative;
+            backdrop-filter: blur(10px);
         }
         
         .process-icon {
@@ -467,6 +504,7 @@ export const generateHtmlFile = (
             padding: 25px;
             border-radius: 15px;
             border: 2px solid rgba(59, 130, 246, 0.2);
+            backdrop-filter: blur(10px);
         }
         
         .stars {
@@ -512,6 +550,18 @@ export const generateHtmlFile = (
             font-size: 1.1rem;
         }
         
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mb-12 { margin-bottom: 3rem; }
+        .py-20 { padding-top: 5rem; padding-bottom: 5rem; }
+        .max-w-4xl { max-width: 56rem; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+        .leading-relaxed { line-height: 1.625; }
+        
         /* Animations */
         @keyframes gradient {
             0% { background-position: 0% 50%; }
@@ -535,6 +585,15 @@ export const generateHtmlFile = (
             100% { transform: translate(50px, 50px); }
         }
         
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .tech-title {
@@ -549,10 +608,10 @@ export const generateHtmlFile = (
                 grid-template-columns: 1fr;
             }
             
-            .features-grid,
-            .services-grid,
-            .process-grid,
-            .testimonials-grid {
+            .md\\:grid-cols-2,
+            .lg\\:grid-cols-3,
+            .lg\\:grid-cols-4,
+            .md\\:grid-cols-4 {
                 grid-template-columns: 1fr;
             }
         }
@@ -563,11 +622,12 @@ export const generateHtmlFile = (
     <section class="hero matrix-bg">
         <div class="hero-content">
             <h1 class="tech-title">${businessName}</h1>
-            <p class="hero-subtitle">${subheadline}</p>
-            <a href="#contact" class="cta-button tech-glow">${ctaText}</a>
+            <p class="hero-subtitle tech-glow">${subheadline}</p>
+            <a href="#contact" class="cta-button tech-glow floating-animation">${ctaText}</a>
         </div>
     </section>
 
+    ${generateEmotionalSection()}
     ${generateWhyUsSection()}
     ${generateWhatWeGiveSection()}
     ${generateGallerySection()}
@@ -593,7 +653,7 @@ export const generateHtmlFile = (
                     <span>תל אביב, ישראל</span>
                 </div>
             </div>
-            <a href="tel:0501234567" class="cta-button tech-glow">צור קשר עכשיו</a>
+            <a href="tel:0501234567" class="cta-button tech-glow floating-animation">צור קשר עכשיו</a>
         </div>
     </section>
 </body>

@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { ColorScheme } from "@/components/ColorEditor";
@@ -48,10 +47,17 @@ export const useGeneratedPageActions = ({
   };
 
   const handleSaveDesign = () => {
+    // יצירה אוטומטית של קוד HTML מעודכן
+    const heroUrl = getHeroImageUrl(content, heroImage, formData);
+    const updatedHtmlContent = generateHtmlFile(content, currentColors, formData, heroUrl);
+    
+    // שמירת הקוד החדש ברקע
+    localStorage.setItem('latestHtmlContent', updatedHtmlContent);
+    
     setIsSaved(true);
     toast({
       title: "💾 העיצוב נשמר בהצלחה!",
-      description: "כעת תוכל להוריד את הקוד או לחבר לוורדפרס",
+      description: "קוד HTML מעודכן נוצר אוטומatically - כעת תוכל להוריד אותו או לחבר לוורדפרס",
     });
   };
 
@@ -90,13 +96,22 @@ export const useGeneratedPageActions = ({
       return;
     }
     
-    const heroUrl = getHeroImageUrl(content, heroImage, formData);
-    const htmlContent = generateHtmlFile(content, currentColors, formData, heroUrl);
+    // שימוש בקוד המעודכן שנשמר
+    const savedHtmlContent = localStorage.getItem('latestHtmlContent');
+    let htmlContent;
+    
+    if (savedHtmlContent) {
+      htmlContent = savedHtmlContent;
+    } else {
+      const heroUrl = getHeroImageUrl(content, heroImage, formData);
+      htmlContent = generateHtmlFile(content, currentColors, formData, heroUrl);
+    }
+    
     const blob = new Blob([htmlContent], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${formData.businessName.replace(/\s+/g, '_')}_landing_page.html`;
+    a.download = `${formData.businessName?.replace(/\s+/g, '_') || 'landing_page'}.html`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -104,7 +119,7 @@ export const useGeneratedPageActions = ({
     
     toast({
       title: "💻 קוד המקור הורד!",
-      description: "קובץ HTML מלא עם כל הקוד הורד בהצלחה",
+      description: "קובץ HTML מלא עם העיצוב המעודכן הורד בהצלחה",
     });
   };
 
@@ -134,6 +149,12 @@ export const useGeneratedPageActions = ({
   };
 
   const generateHtmlFileWrapper = () => {
+    // שימוש בקוד המעודכן אם קיים
+    const savedHtmlContent = localStorage.getItem('latestHtmlContent');
+    if (savedHtmlContent && isSaved) {
+      return savedHtmlContent;
+    }
+    
     const heroUrl = getHeroImageUrl(content, heroImage, formData);
     return generateHtmlFile(content, currentColors, formData, heroUrl);
   };
