@@ -77,8 +77,26 @@ const OptionsPanel = ({
     if (!newContent.sections.testimonials) {
       newContent.sections.testimonials = [];
     }
+    if (!newContent.sections.testimonials[index]) {
+      newContent.sections.testimonials[index] = {};
+    }
     newContent.sections.testimonials[index] = {
       ...newContent.sections.testimonials[index],
+      [field]: value
+    };
+    onContentChange(newContent);
+  };
+
+  const updateGalleryImage = (index: number, field: string, value: string) => {
+    const newContent = { ...content };
+    if (!newContent.sections.gallery) {
+      newContent.sections.gallery = { title: "גלריית העבודות שלנו", images: [] };
+    }
+    if (!newContent.sections.gallery.images[index]) {
+      newContent.sections.gallery.images[index] = {};
+    }
+    newContent.sections.gallery.images[index] = {
+      ...newContent.sections.gallery.images[index],
       [field]: value
     };
     onContentChange(newContent);
@@ -127,6 +145,9 @@ const OptionsPanel = ({
                 onChange={(e) => onHeroImageChange(e.target.value)}
                 className="bg-gray-700 border-gray-600 text-white"
               />
+              <p className="text-xs text-gray-400">
+                רלוונטי רק כשנבחר "תמונת רקע" בסגנון ההירו
+              </p>
             </div>
           </TabsContent>
 
@@ -227,6 +248,44 @@ const OptionsPanel = ({
               </div>
             )}
 
+            {/* Gallery Section Editing */}
+            {selectedElements.includes('gallery') && (
+              <div className="space-y-3">
+                <h3 className="font-semibold text-orange-400 flex items-center gap-2">
+                  <Image className="w-4 h-4" />
+                  עריכת גלריה
+                </h3>
+                <div className="space-y-2">
+                  <Label>כותרת הגלריה</Label>
+                  <Input
+                    value={content?.sections?.gallery?.title || 'גלריית העבודות שלנו'}
+                    onChange={(e) => updateContent('gallery', 'title', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                  />
+                </div>
+                <div className="space-y-3">
+                  <Label>תמונות (עד 6)</Label>
+                  {[0, 1, 2, 3, 4, 5].map((index) => (
+                    <div key={index} className="border border-gray-600 rounded-lg p-3 space-y-2">
+                      <Label>תמונה {index + 1}</Label>
+                      <Input
+                        placeholder="קישור לתמונה"
+                        value={content?.sections?.gallery?.images?.[index]?.url || ''}
+                        onChange={(e) => updateGalleryImage(index, 'url', e.target.value)}
+                        className="bg-gray-700 border-gray-600 text-white"
+                      />
+                      <Input
+                        placeholder="תיאור התמונה"
+                        value={content?.sections?.gallery?.images?.[index]?.description || ''}
+                        onChange={(e) => updateGalleryImage(index, 'description', e.target.value)}
+                        className="bg-gray-700 border-gray-600 text-white"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Testimonials Section */}
             <div className="space-y-3">
               <h3 className="font-semibold text-yellow-400 flex items-center gap-2">
@@ -287,7 +346,7 @@ const OptionsPanel = ({
                   גלריית תמונות
                 </h4>
                 <p className="text-sm text-gray-400">
-                  הגלריה מציגה תמונות מתאימות לתחום העסק שלכם באופן אוטומטי
+                  ✅ הגלריה מוצגת בדף - ניתן לערוך בלשונית התוכן
                 </p>
               </div>
             )}
@@ -300,7 +359,7 @@ const OptionsPanel = ({
                   תהליך השירות
                 </h4>
                 <p className="text-sm text-gray-400">
-                  מציג את שלבי העבודה שלכם בצורה מקצועית
+                  ✅ תהליך השירות מוצג בדף עם 4 שלבים
                 </p>
               </div>
             )}
@@ -313,7 +372,7 @@ const OptionsPanel = ({
                   קצת עלינו
                 </h4>
                 <p className="text-sm text-gray-400">
-                  מציג מידע על הצוות והחזון שלכם
+                  ✅ סקשן "קצת עלינו" מוצג בדף עם תמונה וטקסט
                 </p>
               </div>
             )}

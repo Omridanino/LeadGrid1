@@ -23,7 +23,7 @@ export const HeroStyleStep = ({ formData, updateFormData }: HeroStyleStepProps) 
             <SelectItem value="gradient">
               <div className="flex items-center gap-2">
                 <Palette className="w-4 h-4" />
-                רקע דומם עם צבעים יפים
+                רקע בגרדיאנטים יפים
               </div>
             </SelectItem>
             <SelectItem value="animated">
@@ -35,13 +35,13 @@ export const HeroStyleStep = ({ formData, updateFormData }: HeroStyleStepProps) 
             <SelectItem value="image">
               <div className="flex items-center gap-2">
                 <ImageIcon className="w-4 h-4" />
-                תמונה עם משפטים על גביה
+                תמונת רקע מתאימה לעסק
               </div>
             </SelectItem>
           </SelectContent>
         </Select>
         <p className="text-sm text-gray-400 mt-2">
-          {formData.heroStyle === 'gradient' && "הדף יוצג עם רקע בצבעי הדרגה יפים ללא תמונות"}
+          {formData.heroStyle === 'gradient' && "הדף יוצג עם רקע בצבעי דרגה יפים ומשתנים"}
           {formData.heroStyle === 'animated' && "הדף יוצג עם רקע מונפש וצבעוני שמשתנה כל הזמן"}
           {formData.heroStyle === 'image' && "הדף יוצג עם תמונה רלוונטית לעסק שלכם ברקע"}
         </p>

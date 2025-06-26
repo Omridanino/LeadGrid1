@@ -1,374 +1,248 @@
-import { ColorScheme } from "./ColorEditor";
-import { useState, useMemo } from "react";
+
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
-import { Send, Phone, Mail, MapPin, Edit2, Star, Users, Award, Calendar, Play, Image, ArrowRight, CheckCircle, Target, Lightbulb, Shield } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Phone, Mail, MapPin, Star, CheckCircle2, Users, Target, Image, Award } from "lucide-react";
+import { ColorScheme } from "@/components/ColorEditor";
 
 interface LandingPagePreviewProps {
   content: any;
   currentColors: ColorScheme;
   formData: any;
-  heroImage?: string;
-  elements?: string[];
+  heroImage: string;
+  elements: string[];
 }
 
-const LandingPagePreview = ({ content, currentColors, formData, heroImage, elements = [] }: LandingPagePreviewProps) => {
-  const [contactForm, setContactForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
-  });
-  const [editMode, setEditMode] = useState(false);
-  const [editingSection, setEditingSection] = useState<string | null>(null);
-  const { toast } = useToast();
+const LandingPagePreview = ({ content, currentColors, formData, heroImage, elements }: LandingPagePreviewProps) => {
+  const [currentGradient, setCurrentGradient] = useState(0);
+  const [currentAnimation, setCurrentAnimation] = useState(0);
 
-  if (!content) {
-    return (
-      <div className="w-full h-96 bg-gray-900 rounded-lg flex items-center justify-center">
-        <p className="text-gray-400">טוען תצוגה מקדימה...</p>
-      </div>
-    );
-  }
-
-  // Get relevant hero image based on business type
-  const getBusinessImage = (businessType: string) => {
-    const imageMap: { [key: string]: string } = {
-      'טכנולוגיה': 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      'שירות': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      'בריאות': 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
-      'חינוך': 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      'מסחר': 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      'default': 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80'
-    };
-    
-    return imageMap[businessType] || imageMap['default'];
-  };
-
-  const finalHeroImage = formData.heroStyle === 'image' 
-    ? (heroImage || getBusinessImage(formData.businessType))
-    : null;
-  const isAnimatedBackground = formData.heroStyle === 'animated';
-
-  // 15 different animated backgrounds
-  const animatedBackgrounds = [
-    'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
-    'linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c)',
-    'linear-gradient(-45deg, #4facfe, #00f2fe, #43e97b, #38f9d7)',
-    'linear-gradient(-45deg, #fa709a, #fee140, #f093fb, #f5576c)',
-    'linear-gradient(-45deg, #a8edea, #fed6e3, #d299c2, #fef9d7)',
-    'linear-gradient(-45deg, #ff9a9e, #fecfef, #fecfef, #ff9a9e)',
-    'linear-gradient(-45deg, #a1c4fd, #c2e9fb, #667eea, #764ba2)',
-    'linear-gradient(-45deg, #ffecd2, #fcb69f, #ff8a80, #ff5722)',
-    'linear-gradient(-45deg, #e0c3fc, #9bb5ff, #667eea, #764ba2)',
-    'linear-gradient(-45deg, #f093fb, #f5576c, #4facfe, #00f2fe)',
-    'linear-gradient(-45deg, #43e97b, #38f9d7, #667eea, #764ba2)',
-    'linear-gradient(-45deg, #fa709a, #fee140, #a8edea, #fed6e3)',
-    'linear-gradient(-45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24)',
-    'linear-gradient(-45deg, #6c5ce7, #fd79a8, #fdcb6e, #e17055)',
-    'linear-gradient(-45deg, #74b9ff, #0984e3, #00b894, #00cec9)'
+  // Gradient backgrounds for gradient style
+  const gradientBackgrounds = [
+    'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+    'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+    'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+    'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
+    'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+    'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
+    'linear-gradient(135deg, #fad0c4 0%, #ffd1ff 100%)'
   ];
 
-  const randomBackground = animatedBackgrounds[Math.floor(Math.random() * animatedBackgrounds.length)];
+  // Animated backgrounds
+  const animatedBackgrounds = [
+    'radial-gradient(circle at 20% 80%, #120078 0%, #9d0208 50%, #f48c06 100%)',
+    'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
+    'conic-gradient(from 0deg at 50% 50%, #ff006e, #fb5607, #ffbe0b, #8338ec)',
+    'radial-gradient(circle at 50% 50%, #667eea 0%, #764ba2 50%, #f2994a 100%)',
+    'linear-gradient(45deg, #fa709a, #fee140, #43e97b, #38f9d7)'
+  ];
 
-  const handleContactSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!contactForm.name || !contactForm.email || !contactForm.message) {
-      toast({
-        title: "שגיאה",
-        description: "אנא מלא את כל השדות הנדרשים",
-        variant: "destructive"
-      });
-      return;
+  // Business type to image mapping
+  const getBusinessImage = (businessType: string) => {
+    const businessImages = {
+      'עורך דין': 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1920&h=1080&fit=crop',
+      'רופא': 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=1920&h=1080&fit=crop',
+      'מעצב גרפי': 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=1920&h=1080&fit=crop',
+      'יועץ עסקי': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1920&h=1080&fit=crop',
+      'מורה פרטי': 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1920&h=1080&fit=crop',
+      'מאמן כושר': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&h=1080&fit=crop',
+      'צלם': 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=1920&h=1080&fit=crop',
+      'נהג': 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1920&h=1080&fit=crop',
+      'מספר': 'https://images.unsplash.com/photo-1562004760-aceed7bb0fe3?w=1920&h=1080&fit=crop',
+      'default': 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=1080&fit=crop'
+    };
+
+    return businessImages[businessType as keyof typeof businessImages] || businessImages.default;
+  };
+
+  // Cycle through gradients for gradient style
+  useEffect(() => {
+    if (formData.heroStyle === 'gradient') {
+      const interval = setInterval(() => {
+        setCurrentGradient((prev) => (prev + 1) % gradientBackgrounds.length);
+      }, 4000);
+      return () => clearInterval(interval);
     }
+  }, [formData.heroStyle]);
 
-    toast({
-      title: "ההודעה נשלחה בהצלחה! 📧",
-      description: "נחזור אליך בהקדם האפשרי",
-    });
-
-    setContactForm({ name: '', email: '', phone: '', message: '' });
-  };
-
-  const handleInputChange = (field: string, value: string) => {
-    setContactForm(prev => ({ ...prev, [field]: value }));
-  };
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+  // Cycle through animations for animated style
+  useEffect(() => {
+    if (formData.heroStyle === 'animated') {
+      const interval = setInterval(() => {
+        setCurrentAnimation((prev) => (prev + 1) % animatedBackgrounds.length);
+      }, 3000);
+      return () => clearInterval(interval);
     }
-  };
+  }, [formData.heroStyle]);
 
-  const EditButton = ({ section, className = "" }: { section: string; className?: string }) => (
-    <Button
-      onClick={() => setEditingSection(editingSection === section ? null : section)}
-      className={`absolute top-2 right-2 bg-blue-600/80 hover:bg-blue-700/80 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all z-10 ${className}`}
-      size="sm"
-    >
-      <Edit2 className="w-3 h-3" />
-    </Button>
-  );
-
-  // Enhanced styles with 3D effects and animated backgrounds
-  const optimizedStyles = useMemo(() => `
-    .hero-section {
-      background: ${isAnimatedBackground 
-        ? randomBackground
-        : finalHeroImage
-          ? `linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.6)), url('${finalHeroImage}')`
-          : `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})`
+  const getHeroStyle = () => {
+    if (formData.heroStyle === 'image') {
+      const imageUrl = heroImage || getBusinessImage(formData.businessType);
+      return {
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${imageUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
       };
-      ${isAnimatedBackground ? 'background-size: 400% 400%; animation: gradientShift 8s ease infinite;' : ''}
-      ${finalHeroImage ? 'background-size: cover; background-position: center;' : ''}
-      position: relative;
+    } else if (formData.heroStyle === 'animated') {
+      return {
+        background: animatedBackgrounds[currentAnimation],
+        backgroundSize: '400% 400%',
+        animation: 'gradient 8s ease infinite'
+      };
+    } else {
+      return {
+        background: gradientBackgrounds[currentGradient],
+        transition: 'background 2s ease-in-out'
+      };
     }
+  };
 
-    ${isAnimatedBackground ? `
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }` : ''}
-
-    .tech-card {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      transition: all 0.3s ease;
-      transform-style: preserve-3d;
-    }
-
-    .tech-card:hover {
-      transform: translateY(-4px) rotateX(5deg);
-      border-color: rgba(59, 130, 246, 0.3);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    }
-
-    .tech-button {
-      background: linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary});
-      border: none;
-      transition: all 0.3s ease;
-      border-radius: 12px;
-      transform-style: preserve-3d;
-    }
-
-    .tech-button:hover {
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
-
-    .icon-3d {
-      transform-style: preserve-3d;
-      transition: all 0.3s ease;
-      filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
-    }
-
-    .icon-3d:hover {
-      transform: rotateX(15deg) rotateY(15deg) translateZ(10px);
-    }
-
-    .floating-3d {
-      animation: float3D 6s ease-in-out infinite;
-      transform-style: preserve-3d;
-    }
-
-    @keyframes float3D {
-      0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
-      33% { transform: translateY(-10px) rotateX(5deg) rotateY(2deg); }
-      66% { transform: translateY(-5px) rotateX(-3deg) rotateY(-2deg); }
-    }
-
-    .section-container {
-      position: relative;
-      transform-style: preserve-3d;
-    }
-
-    /* Mobile optimizations */
-    @media (max-width: 768px) {
-      .hero-section { min-height: 70vh !important; padding: 2rem 1rem !important; }
-      .hero-title { font-size: 2rem !important; line-height: 1.2 !important; }
-      .hero-subtitle { font-size: 1.1rem !important; }
-      .stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0.75rem !important; }
-      .features-grid { grid-template-columns: 1fr !important; }
-      .contact-grid { grid-template-columns: 1fr !important; }
-      .tech-card:hover { transform: translateY(-2px); }
-    }
-  `, [currentColors, isAnimatedBackground, randomBackground, finalHeroImage]);
+  const selectedElements = formData?.selectedElements || [];
 
   return (
-    <div className="w-full text-white overflow-hidden rounded-lg relative" 
-         style={{
-           background: 'linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%)',
-           position: 'relative'
-         }}
-         dir="rtl">
-      
-      <style>{optimizedStyles}</style>
+    <div className="w-full bg-gray-900 text-white overflow-y-auto max-h-screen">
+      <style>{`
+        @keyframes gradient {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .floating-animation {
+          animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
+        }
+      `}</style>
 
-      {/* Section 1: Hero Section */}
-      <section id="hero" className="section-container group relative min-h-[600px] flex items-center justify-center text-center p-8 hero-section floating-3d">
-        
-        {editMode && <EditButton section="hero" />}
-        
-        <div className="relative z-10 max-w-4xl mx-auto w-full">
-          <div className="mb-6">
-            <span className="inline-block px-6 py-3 text-white rounded-full font-semibold text-sm tech-card">
-              <span className="icon-3d">⭐</span> {content.badge}
+      {/* Hero Section */}
+      <section 
+        className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden"
+        style={getHeroStyle()}
+      >
+        <div className="container mx-auto text-center z-10 relative">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+            <span 
+              className="block"
+              style={{ color: currentColors.headlineColor }}
+            >
+              {content?.headline || formData.businessName}
             </span>
-          </div>
-          
-          <h1 className="hero-title text-4xl lg:text-6xl font-bold mb-8"
-              style={{ 
-                color: currentColors.headlineColor || 'white',
-                fontWeight: '900'
-              }}>
-            {content.headline}
           </h1>
-          
-          <p className="hero-subtitle text-lg lg:text-2xl mb-12 opacity-90 leading-relaxed max-w-3xl mx-auto px-4"
-             style={{ color: currentColors.subheadlineColor || 'rgba(255,255,255,0.9)' }}>
-            {content.subheadline}
-          </p>
-          
-          <button 
-            onClick={() => scrollToSection('contact')}
-            className="tech-button inline-block px-10 py-4 text-white font-bold text-lg mb-16"
+          <p 
+            className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto leading-relaxed"
+            style={{ color: currentColors.subheadlineColor }}
           >
-            {content.cta}
-          </button>
-
-          {/* Stats Grid */}
-          <div className="stats-grid grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto px-4">
-            {Object.entries(content.stats).map(([key, value], index) => (
-              <div key={key} className="tech-card p-6 text-center floating-3d">
-                <div className="text-3xl lg:text-4xl font-bold text-white mb-3 icon-3d">{String(value)}</div>
-                <div className="text-sm lg:text-base text-white opacity-80 font-medium">{key}</div>
-              </div>
-            ))}
-          </div>
+            {content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
+          </p>
+          <Button 
+            size="lg" 
+            className="text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 floating-animation"
+            style={{ 
+              backgroundColor: currentColors.primary,
+              color: 'white'
+            }}
+          >
+            {content?.cta || 'בואו נתחיל לעבוד יחד'}
+          </Button>
         </div>
       </section>
 
-      {/* Section 2: Emotional Section */}
-      {content.sections?.emotionalSection && (
-        <section id="emotional" className="section-container group py-20 px-8 relative">
-          {editMode && <EditButton section="emotional" />}
-          
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="tech-card p-12">
-              <div className="text-6xl mb-8 icon-3d floating-3d">
-                {content.sections.emotionalSection.icon}
-              </div>
-              <h2 className="text-4xl font-bold mb-8" style={{ color: currentColors.text }}>
-                {content.sections.emotionalSection.title}
-              </h2>
-              <p className="text-xl leading-relaxed opacity-90 max-w-2xl mx-auto" style={{ color: currentColors.text }}>
-                {content.sections.emotionalSection.content}
-              </p>
-            </div>
+      {/* Emotional Section */}
+      {content?.sections?.emotionalSection && (
+        <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
+          <div className="container mx-auto text-center">
+            <h2 className="text-4xl font-bold mb-8" style={{ color: currentColors.featuresColor }}>
+              {content.sections.emotionalSection.title}
+            </h2>
+            <p className="text-xl max-w-4xl mx-auto leading-relaxed" style={{ color: currentColors.featuresTextColor }}>
+              {content.sections.emotionalSection.content}
+            </p>
           </div>
         </section>
       )}
 
-      {/* Section 3: Why Us */}
-      {content.sections?.whyUs && (
-        <section id="why-us" className="section-container group py-20 px-8">
-          {editMode && <EditButton section="why-us" />}
-          
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-4xl font-bold text-center mb-16" style={{ color: currentColors.text }}>
+      {/* Why Us Section */}
+      {content?.sections?.whyUs && (
+        <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
+          <div className="container mx-auto">
+            <h2 className="text-4xl font-bold mb-12 text-center" style={{ color: currentColors.featuresColor }}>
               {content.sections.whyUs.title}
             </h2>
-            
-            <div className="features-grid grid grid-cols-1 md:grid-cols-2 gap-8">
-              {content.sections.whyUs.items.map((item: any, idx: number) => (
-                <div key={idx} className="tech-card p-8">
-                  <div className="text-5xl mb-6 icon-3d floating-3d">
-                    {item.icon}
-                  </div>
-                  <h3 className="text-xl font-bold mb-4" style={{ color: currentColors.text }}>
-                    {item.title}
-                  </h3>
-                  <p className="opacity-80 leading-relaxed" style={{ color: currentColors.text }}>
-                    {item.desc}
-                  </p>
-                </div>
+            <div className="grid md:grid-cols-3 gap-8">
+              {content.sections.whyUs.reasons?.map((reason: any, index: number) => (
+                <Card key={index} className="bg-gray-800/50 border-gray-700 hover:bg-gray-700/50 transition-all duration-300 transform hover:scale-105">
+                  <CardContent className="p-6 text-center">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ backgroundColor: currentColors.primary }}>
+                      <Award className="w-8 h-8 text-white" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3" style={{ color: currentColors.featuresColor }}>
+                      {reason.title}
+                    </h3>
+                    <p style={{ color: currentColors.featuresTextColor }}>
+                      {reason.description}
+                    </p>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* Section 4: What We Give */}
-      {content.sections?.whatWeGive && (
-        <section id="what-we-give" className="section-container group py-20 px-8">
-          {editMode && <EditButton section="what-we-give" />}
-          
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-4xl font-bold text-center mb-16" style={{ color: currentColors.text }}>
+      {/* What We Give Section */}
+      {content?.sections?.whatWeGive && (
+        <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
+          <div className="container mx-auto">
+            <h2 className="text-4xl font-bold mb-12 text-center" style={{ color: currentColors.featuresColor }}>
               {content.sections.whatWeGive.title}
             </h2>
-            
-            <div className="features-grid grid grid-cols-1 md:grid-cols-2 gap-10">
-              {content.sections.whatWeGive.items.map((item: any, idx: number) => (
-                <div key={idx} className="text-center">
-                  <div className="tech-card p-10">
-                    <div className="text-6xl mb-8 icon-3d floating-3d">
-                      {item.icon}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {content.sections.whatWeGive.services?.map((service: any, index: number) => (
+                <Card key={index} className="bg-gray-800/50 border-gray-700 hover:bg-gray-700/50 transition-all duration-300">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <CheckCircle2 className="w-6 h-6" style={{ color: currentColors.primary }} />
+                      <h3 className="text-lg font-semibold" style={{ color: currentColors.featuresColor }}>
+                        {service.title}
+                      </h3>
                     </div>
-                    <h3 className="text-2xl font-bold mb-6" style={{ color: currentColors.text }}>
-                      {item.title}
-                    </h3>
-                    <p style={{ color: currentColors.text }} className="opacity-80 text-lg leading-relaxed">
-                      {item.desc}
+                    <p style={{ color: currentColors.featuresTextColor }}>
+                      {service.description}
                     </p>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* Gallery Section - Show if selected */}
-      {elements.includes('gallery') && (
-        <section id="gallery" className="section-container group py-20 px-8">
-          {editMode && <EditButton section="gallery" />}
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-3 mb-4">
-                <Image className="w-6 h-6 text-blue-400 icon-3d" />
-                <h2 className="text-4xl font-bold" style={{ color: currentColors.text }}>
-                  גלריית העבודות שלנו
-                </h2>
-              </div>
-              <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-                עבודות מרשימות שביצענו עבור לקוחות מרבית התחומים
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                getBusinessImage(formData.businessType),
-                'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-                'https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-                'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-                'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-                'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-                'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-                getBusinessImage('default')
-              ].map((imageUrl, idx) => (
-                <div key={idx} className="tech-card aspect-square p-2 floating-3d overflow-hidden">
+      {/* Gallery Section */}
+      {selectedElements.includes('gallery') && (
+        <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
+          <div className="container mx-auto">
+            <h2 className="text-4xl font-bold mb-12 text-center" style={{ color: currentColors.featuresColor }}>
+              <Image className="w-8 h-8 inline-block mr-3" />
+              גלריית העבודות שלנו
+            </h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              {[1, 2, 3, 4, 5, 6].map((item) => (
+                <div key={item} className="relative group overflow-hidden rounded-lg aspect-square">
                   <img 
-                    src={imageUrl} 
-                    alt={`עבודה ${idx + 1}`}
-                    className="w-full h-full object-cover rounded-lg hover:scale-110 transition-transform duration-300"
+                    src={`https://images.unsplash.com/photo-150000000${item}?w=400&h=400&fit=crop`}
+                    alt={`עבודה ${item}`}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                   />
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <p className="text-white font-semibold">עבודה {item}</p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -376,92 +250,66 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         </section>
       )}
 
-      {/* Process Section - Show if selected */}
-      {elements.includes('process') && (
-        <section id="process" className="section-container group py-20 px-8">
-          {editMode && <EditButton section="process" />}
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-3 mb-4">
-                <Target className="w-6 h-6 text-green-400 icon-3d" />
-                <h2 className="text-4xl font-bold" style={{ color: currentColors.text }}>
-                  תהליך העבודה שלנו
-                </h2>
-              </div>
-              <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-                מתכנון ועד ביצוע - כך אנחנו מבטיחים תוצאות מושלמות
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Process Section */}
+      {selectedElements.includes('process') && (
+        <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
+          <div className="container mx-auto">
+            <h2 className="text-4xl font-bold mb-12 text-center" style={{ color: currentColors.featuresColor }}>
+              <Target className="w-8 h-8 inline-block mr-3" />
+              תהליך העבודה שלנו
+            </h2>
+            <div className="grid md:grid-cols-4 gap-8">
               {[
-                { step: "01", title: "תכנון ואפיון", desc: "בדיקת הצרכים והגדרת המטרות", icon: <Lightbulb className="w-6 h-6 icon-3d" /> },
-                { step: "02", title: "פיתוח וביצוע", desc: "יצירה מקצועית לפי הסטנדרטים הגבוהים", icon: <CheckCircle className="w-6 h-6 icon-3d" /> },
-                { step: "03", title: "מסירה ותמיכה", desc: "מסירה מושלמת עם תמיכה שוטפת", icon: <Shield className="w-6 h-6 icon-3d" /> }
-              ].map((process, idx) => (
-                <div key={idx} className="tech-card p-8 text-center floating-3d">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center mx-auto mb-4">
-                    <span className="text-white font-bold">{process.step}</span>
-                  </div>
-                  <div className="text-blue-400 mb-3 flex justify-center">
-                    {process.icon}
-                  </div>
-                  <h3 className="text-xl font-bold mb-3" style={{ color: currentColors.text }}>
-                    {process.title}
-                  </h3>
-                  <p className="text-gray-300 leading-relaxed text-sm">{process.desc}</p>
-                </div>
+                { step: 1, title: "יעוץ ראשוני", desc: "פגישה ללא התחייבות להבנת הצרכים" },
+                { step: 2, title: "תכנון מפורט", desc: "הכנת תוכנית עבודה מותאמת אישית" },
+                { step: 3, title: "ביצוע מקצועי", desc: "יישום הפרויקט על פי הסטנדרטים הגבוהים" },
+                { step: 4, title: "מעקב ותמיכה", desc: "ליווי מתמשך וזמינות לשאלות" }
+              ].map((process, index) => (
+                <Card key={index} className="bg-gray-800/50 border-gray-700 text-center">
+                  <CardContent className="p-6">
+                    <div 
+                      className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center text-2xl font-bold text-white"
+                      style={{ backgroundColor: currentColors.primary }}
+                    >
+                      {process.step}
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3" style={{ color: currentColors.featuresColor }}>
+                      {process.title}
+                    </h3>
+                    <p style={{ color: currentColors.featuresTextColor }}>
+                      {process.desc}
+                    </p>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* About Section - Show if selected */}
-      {elements.includes('about') && (
-        <section id="about" className="section-container group py-20 px-8">
-          {editMode && <EditButton section="about" />}
-          <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      {/* About Section */}
+      {selectedElements.includes('about') && (
+        <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
+          <div className="container mx-auto">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
-                <div className="inline-flex items-center gap-3 mb-6">
-                  <Users className="w-6 h-6 text-purple-400 icon-3d" />
-                  <h2 className="text-4xl font-bold" style={{ color: currentColors.text }}>
-                    קצת עלינו
-                  </h2>
-                </div>
-                <div className="space-y-4 text-gray-300 leading-relaxed">
-                  <p>
-                    אנחנו צוות מקצועי עם ניסיון רב שנים בתחום {formData.businessType}. 
-                    המומחיות שלנו מבוססת על ידע עמוק והבנה של הצרכים הייחודיים של כל לקוח.
-                  </p>
-                  <p>
-                    החזון שלנו הוא להעניק שירות ברמה הגבוהה ביותר, תוך שמירה על יחס אישי 
-                    וליווי צמוד לכל אורך הדרך.
-                  </p>
-                  <div className="flex items-center gap-4 pt-2">
-                    <div className="flex items-center gap-2">
-                      <Award className="w-5 h-5 text-yellow-400 icon-3d" />
-                      <span className="font-semibold text-sm">מומחים מוסמכים</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Star className="w-5 h-5 text-yellow-400 icon-3d" />
-                      <span className="font-semibold text-sm">שירות 5 כוכבים</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="tech-card p-8 text-center floating-3d">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center mx-auto mb-6">
-                  <Users className="w-12 h-12 text-white icon-3d" />
-                </div>
-                <h3 className="text-2xl font-bold mb-4" style={{ color: currentColors.text }}>
-                  הצוות המקצועי
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  צוות מנוסה ומקצועי שיודע להתאים את עצמו לכל אתגר ולהביא תוצאות מעל לציפיות
+                <h2 className="text-4xl font-bold mb-6" style={{ color: currentColors.aboutColor }}>
+                  <Users className="w-8 h-8 inline-block mr-3" />
+                  קצת עלינו
+                </h2>
+                <p className="text-lg mb-6" style={{ color: currentColors.aboutTextColor }}>
+                  אנחנו צוות מקצועי עם ניסיון של מעל 10 שנים בתחום. אנו מתמחים בפתרונות יצירתיים ומותאמים אישית לכל לקוח.
                 </p>
+                <p className="text-lg" style={{ color: currentColors.aboutTextColor }}>
+                  המטרה שלנו היא לספק שירות ברמה הגבוהה ביותר ולהבטיח שביעות רצון מלאה של הלקוחות שלנו.
+                </p>
+              </div>
+              <div className="relative">
+                <img 
+                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop"
+                  alt="הצוות שלנו"
+                  className="rounded-lg shadow-lg"
+                />
               </div>
             </div>
           </div>
@@ -469,158 +317,75 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       )}
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="section-container group py-20 px-8">
-        {editMode && <EditButton section="testimonials" />}
-        
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-16" style={{ color: currentColors.text }}>
-            <span className="icon-3d floating-3d">💭</span> מה אומרים עלינו
-          </h2>
-          
-          <div className="features-grid grid grid-cols-1 md:grid-cols-3 gap-8">
-            {(content.sections?.testimonials || [
-              {
-                name: "דני כהן",
-                role: "מנהל עסק", 
-                content: "שירות מעולה ומקצועי! ממליץ בחום",
-                rating: 5,
-                image: "👨‍💼"
-              },
-              {
-                name: "שרה לוי",
-                role: "יזמת",
-                content: "התוצאות הטובות ביותר שקיבלתי",
-                rating: 5,
-                image: "👩‍💼"
-              },
-              {
-                name: "מיכל רוזן",
-                role: "בעלת חנות",
-                content: "חוויה נהדרת וטיפול אישי",
-                rating: 5,
-                image: "👩‍🔧"
-              }
-            ]).map((testimonial: any, idx: number) => (
-              <div key={idx} className="tech-card p-6 rounded-2xl floating-3d">
-                <div className="flex items-center mb-6">
-                  <div className="w-16 h-16 rounded-xl ml-3 flex items-center justify-center tech-card">
-                    <span className="text-xl icon-3d">{testimonial.image}</span>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-lg" style={{ color: currentColors.primary }}>
-                      {testimonial.name}
-                    </h4>
-                    <p className="text-sm opacity-70" style={{ color: currentColors.text }}>
-                      {testimonial.role}
+      {content?.sections?.testimonials && (
+        <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
+          <div className="container mx-auto">
+            <h2 className="text-4xl font-bold mb-12 text-center" style={{ color: currentColors.featuresColor }}>
+              מה הלקוחות שלנו אומרים
+            </h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              {content.sections.testimonials.map((testimonial: any, index: number) => (
+                <Card key={index} className="bg-gray-800/50 border-gray-700">
+                  <CardContent className="p-6">
+                    <div className="flex mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                      ))}
+                    </div>
+                    <p className="mb-4 italic" style={{ color: currentColors.featuresTextColor }}>
+                      "{testimonial.content}"
                     </p>
-                  </div>
-                </div>
-                <p className="mb-6 italic leading-relaxed" style={{ color: currentColors.text }}>
-                  "{testimonial.content}"
-                </p>
-                <div className="flex">
-                  {'★'.repeat(testimonial.rating).split('').map((star, i) => (
-                    <span key={i} className="text-yellow-400 text-lg icon-3d">{star}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="section-container group py-24 px-8">
-        {editMode && <EditButton section="contact" />}
-        
-        <div className="max-w-5xl mx-auto">
-          <div className="tech-card p-12">
-            <div className="text-center mb-12 relative z-10">
-              <div className="w-24 h-24 rounded-2xl mx-auto mb-8 tech-card flex items-center justify-center floating-3d">
-                <span className="text-4xl icon-3d">💬</span>
-              </div>
-              
-              <h2 className="text-4xl font-bold mb-6" style={{ color: currentColors.text }}>
-                {content.sections?.contactTitle || content.contactTitle}
-              </h2>
-              <p className="text-xl text-gray-300">מלא את הפרטים ונחזור אליך בהקדם</p>
-            </div>
-            
-            <form onSubmit={handleContactSubmit} className="max-w-3xl mx-auto space-y-8 relative z-10">
-              <div className="contact-grid grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-lg font-medium mb-3 text-gray-300">שם מלא *</label>
-                  <Input
-                    type="text"
-                    placeholder="השם שלך"
-                    value={contactForm.name}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
-                    className="bg-black/40 border border-white/20 placeholder:text-white/50 h-12 text-lg rounded-xl"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-lg font-medium mb-3 text-gray-300">כתובת אימייל *</label>
-                  <Input
-                    type="email"
-                    placeholder="example@email.com"
-                    value={contactForm.email}
-                    onChange={(e) => handleInputChange('email', e.target.value)}
-                    className="bg-black/40 border border-white/20 placeholder:text-white/50 h-12 text-lg rounded-xl"
-                    required
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-lg font-medium mb-3 text-gray-300">מספר טלפון</label>
-                <Input
-                  type="tel"
-                  placeholder="050-1234567"
-                  value={contactForm.phone}
-                  onChange={(e) => handleInputChange('phone', e.target.value)}
-                  className="bg-black/40 border border-white/20 placeholder:text-white/50 h-12 text-lg rounded-xl"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-lg font-medium mb-3 text-gray-300">הודעה *</label>
-                <Textarea
-                  placeholder="איך נוכל לעזור לך?"
-                  rows={5}
-                  value={contactForm.message}
-                  onChange={(e) => handleInputChange('message', e.target.value)}
-                  className="bg-black/40 border border-white/20 placeholder:text-white/50 text-lg rounded-xl"
-                  required
-                />
-              </div>
-              
-              <Button 
-                type="submit"
-                className="w-full py-6 text-xl font-bold tech-button"
-              >
-                <Send className="w-6 h-6 ml-3 icon-3d" />
-                שלח הודעה
-              </Button>
-            </form>
-
-            {/* Contact Info Cards */}
-            <div className="contact-grid grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 relative z-10">
-              {[
-                { icon: <Phone className="w-8 h-8 icon-3d" />, title: "טלפון", info: "050-1234567" },
-                { icon: <Mail className="w-8 h-8 icon-3d" />, title: "אימייל", info: "info@business.co.il" },
-                { icon: <MapPin className="w-8 h-8 icon-3d" />, title: "כתובת", info: "תל אביב, ישראל" }
-              ].map((contact, idx) => (
-                <div key={idx} className="tech-card p-6 text-center floating-3d">
-                  <div className="w-16 h-16 rounded-xl mx-auto mb-4 tech-card">
-                    {contact.icon}
-                  </div>
-                  <h4 className="font-bold text-white mb-3 text-lg">{contact.title}</h4>
-                  <p className="text-gray-300">{contact.info}</p>
-                </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-full bg-gray-600 flex items-center justify-center">
+                        <Users className="w-6 h-6 text-gray-300" />
+                      </div>
+                      <div>
+                        <p className="font-semibold" style={{ color: currentColors.featuresColor }}>
+                          {testimonial.name}
+                        </p>
+                        <p className="text-sm" style={{ color: currentColors.featuresTextColor }}>
+                          {testimonial.role}
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
+        </section>
+      )}
+
+      {/* Contact Section */}
+      <section className="py-20 px-4" style={{ backgroundColor: currentColors.background }}>
+        <div className="container mx-auto text-center">
+          <h2 className="text-4xl font-bold mb-8" style={{ color: currentColors.contactColor }}>
+            {content?.contactTitle || 'בואו נתחיל לעבוד יחד'}
+          </h2>
+          <div className="max-w-md mx-auto space-y-4">
+            <div className="flex items-center gap-3 justify-center">
+              <Phone className="w-5 h-5" style={{ color: currentColors.primary }} />
+              <span style={{ color: currentColors.contactTextColor }}>050-1234567</span>
+            </div>
+            <div className="flex items-center gap-3 justify-center">
+              <Mail className="w-5 h-5" style={{ color: currentColors.primary }} />
+              <span style={{ color: currentColors.contactTextColor }}>info@business.co.il</span>
+            </div>
+            <div className="flex items-center gap-3 justify-center">
+              <MapPin className="w-5 h-5" style={{ color: currentColors.primary }} />
+              <span style={{ color: currentColors.contactTextColor }}>תל אביב, ישראל</span>
+            </div>
+          </div>
+          <Button 
+            size="lg" 
+            className="mt-8 text-lg px-8 py-4 rounded-2xl"
+            style={{ 
+              backgroundColor: currentColors.primary,
+              color: 'white'
+            }}
+          >
+            צור קשר עכשיו
+          </Button>
         </div>
       </section>
     </div>
