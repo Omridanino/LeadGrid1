@@ -67,137 +67,199 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   return (
     <div className="w-full bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white overflow-hidden rounded-lg" dir="rtl">
       <style>{`
-        @keyframes gentleFloat {
+        @keyframes float3D {
           0%, 100% { 
-            transform: translateY(0px);
+            transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px);
+          }
+          25% { 
+            transform: perspective(1000px) rotateX(3deg) rotateY(5deg) translateY(-8px);
           }
           50% { 
-            transform: translateY(-10px);
+            transform: perspective(1000px) rotateX(0deg) rotateY(10deg) translateY(-15px);
+          }
+          75% { 
+            transform: perspective(1000px) rotateX(-3deg) rotateY(5deg) translateY(-8px);
           }
         }
 
-        @keyframes softPulse {
+        @keyframes holographicGlow {
           0%, 100% {
-            opacity: 0.8;
-            transform: scale(1);
+            background: linear-gradient(135deg, ${currentColors.accent}80, ${currentColors.primary}60, ${currentColors.secondary}80);
+            filter: hue-rotate(0deg) brightness(1);
           }
           50% {
-            opacity: 1;
-            transform: scale(1.02);
+            filter: hue-rotate(60deg) brightness(1.2);
           }
         }
 
-        @keyframes gradientShift {
+        @keyframes shimmerEffect {
+          0% { 
+            transform: translateX(-100%);
+            opacity: 0;
+          }
+          50% { 
+            opacity: 0.6;
+          }
+          100% { 
+            transform: translateX(100%);
+            opacity: 0;
+          }
+        }
+
+        @keyframes pulseGlow {
           0%, 100% {
-            background-position: 0% 50%;
+            box-shadow: 0 0 20px ${currentColors.accent}40, 0 0 40px ${currentColors.primary}20;
           }
           50% {
-            background-position: 100% 50%;
+            box-shadow: 0 0 30px ${currentColors.accent}60, 0 0 60px ${currentColors.primary}30;
           }
         }
 
-        @keyframes subtleGlow {
-          0%, 100% {
-            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        @keyframes rotate3DGentle {
+          from { 
+            transform: perspective(1000px) rotateY(0deg);
           }
-          50% {
-            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
+          to { 
+            transform: perspective(1000px) rotateY(360deg);
           }
         }
 
-        .tech-card {
+        .float-3d {
+          animation: float3D 6s ease-in-out infinite;
+          transform-style: preserve-3d;
+        }
+
+        .float-3d:nth-child(2) { animation-delay: -1.5s; }
+        .float-3d:nth-child(3) { animation-delay: -3s; }
+        .float-3d:nth-child(4) { animation-delay: -4.5s; }
+
+        .holographic-card {
           background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-          backdrop-filter: blur(20px);
+          backdrop-filter: blur(25px);
           border: 1px solid rgba(255,255,255,0.2);
           border-radius: 20px;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          will-change: transform;
+          position: relative;
+          overflow: hidden;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .tech-card:hover {
-          transform: translateY(-5px) scale(1.02);
+        .holographic-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+          animation: shimmerEffect 3s ease-in-out infinite;
+        }
+
+        .holographic-card:hover {
+          transform: perspective(1000px) rotateY(10deg) rotateX(5deg) translateZ(30px);
           background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08));
-          box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+          border-color: ${currentColors.accent}80;
         }
 
-        .floating-gentle {
-          animation: gentleFloat 4s ease-in-out infinite;
-        }
-
-        .floating-gentle:nth-child(2) { animation-delay: -1s; }
-        .floating-gentle:nth-child(3) { animation-delay: -2s; }
-        .floating-gentle:nth-child(4) { animation-delay: -3s; }
-
-        .holographic-btn {
-          background: linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary}, ${currentColors.secondary});
-          background-size: 200% 200%;
-          animation: gradientShift 3s ease infinite;
+        .tech-button {
+          background: linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary});
           border: none;
+          position: relative;
+          overflow: hidden;
+          animation: holographicGlow 4s ease-in-out infinite;
           transition: all 0.3s ease;
-          will-change: transform;
         }
 
-        .holographic-btn:hover {
-          transform: translateY(-2px);
-          animation: subtleGlow 2s ease infinite;
+        .tech-button::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+          animation: shimmerEffect 2s ease-in-out infinite;
+        }
+
+        .tech-button:hover {
+          transform: translateY(-3px);
+          animation: pulseGlow 2s ease-in-out infinite;
         }
 
         .neon-text {
-          text-shadow: 0 0 10px ${currentColors.accent}80;
+          text-shadow: 
+            0 0 5px ${currentColors.accent}80,
+            0 0 10px ${currentColors.accent}60,
+            0 0 15px ${currentColors.accent}40;
         }
 
-        .contact-form-glass {
+        .glass-form {
           background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(31,41,55,0.9));
-          backdrop-filter: blur(25px);
-          border: 1px solid rgba(255,255,255,0.1);
-          border-radius: 24px;
+          backdrop-filter: blur(30px);
+          border: 2px solid rgba(255,255,255,0.1);
+          border-radius: 25px;
           position: relative;
           overflow: hidden;
+          transform-style: preserve-3d;
         }
 
-        .contact-form-glass::before {
+        .glass-form::before {
           content: '';
           position: absolute;
           top: 0;
           left: 0;
           right: 0;
           bottom: 0;
-          background: linear-gradient(45deg, ${currentColors.primary}20, transparent, ${currentColors.accent}20);
-          opacity: 0.5;
+          background: linear-gradient(45deg, ${currentColors.primary}15, transparent, ${currentColors.accent}15);
+          opacity: 0.7;
           pointer-events: none;
         }
 
-        .form-field {
+        .form-field-3d {
           background: rgba(255,255,255,0.05);
           border: 1px solid rgba(255,255,255,0.2);
-          backdrop-filter: blur(10px);
-          transition: all 0.3s ease;
+          backdrop-filter: blur(15px);
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          transform-style: preserve-3d;
         }
 
-        .form-field:focus {
+        .form-field-3d:focus {
           background: rgba(255,255,255,0.1);
           border-color: ${currentColors.accent};
-          box-shadow: 0 0 20px ${currentColors.accent}40;
+          box-shadow: 
+            0 0 20px ${currentColors.accent}30,
+            0 8px 25px rgba(0,0,0,0.3);
+          transform: perspective(1000px) translateZ(10px);
           outline: none;
         }
 
-        .stats-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-          gap: 1rem;
+        .floating-icon {
+          animation: rotate3DGentle 20s linear infinite;
+          transform-style: preserve-3d;
         }
 
-        .pulse-soft {
-          animation: softPulse 3s ease-in-out infinite;
+        .stats-card {
+          background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255,255,255,0.2);
+          border-radius: 20px;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          transform-style: preserve-3d;
+        }
+
+        .stats-card:hover {
+          transform: perspective(1000px) rotateY(15deg) rotateX(10deg) translateZ(20px);
+          border-color: ${currentColors.accent}60;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
         @media (max-width: 768px) {
-          .tech-card:hover {
-            transform: translateY(-3px) scale(1.01);
+          .holographic-card:hover,
+          .stats-card:hover {
+            transform: perspective(1000px) rotateY(5deg) rotateX(3deg) translateZ(10px);
           }
           
-          .stats-grid {
-            grid-template-columns: repeat(2, 1fr);
+          .tech-button:hover {
+            transform: translateY(-2px);
           }
         }
       `}</style>
@@ -213,14 +275,14 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                }}>
         
         <div className="relative z-10 max-w-4xl mx-auto">
-          <span className="inline-block px-6 py-3 mb-8 text-white rounded-full font-semibold text-sm tech-card pulse-soft">
+          <span className="inline-block px-6 py-3 mb-8 text-white rounded-full font-semibold text-sm holographic-card float-3d">
             {content.badge}
           </span>
           
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 neon-text"
               style={{ 
                 color: currentColors.headlineColor || 'white',
-                textShadow: `0 0 20px ${currentColors.accent}, 0 4px 8px rgba(0,0,0,0.5)`
+                textShadow: `0 0 30px ${currentColors.accent}, 0 8px 16px rgba(0,0,0,0.5)`
               }}>
             {content.headline}
           </h1>
@@ -232,16 +294,16 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           
           <button 
             onClick={() => scrollToSection('contact')}
-            className="holographic-btn inline-block px-10 py-5 text-white font-bold rounded-xl text-lg mb-16"
+            className="tech-button inline-block px-10 py-5 text-white font-bold rounded-xl text-lg mb-16"
           >
             {content.cta}
           </button>
 
           {/* Stats Grid */}
-          <div className="stats-grid max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
             {Object.entries(content.stats).map(([key, value], index) => (
-              <div key={key} className={`tech-card floating-gentle p-6 text-center`}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2 pulse-soft">{String(value)}</div>
+              <div key={key} className={`stats-card float-3d p-6 text-center`}>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2 neon-text">{String(value)}</div>
                 <div className="text-sm md:text-base text-white opacity-80">{key}</div>
               </div>
             ))}
@@ -257,8 +319,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           </h2>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="tech-card p-8 text-center floating-gentle">
-              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 pulse-soft"
+            <div className="holographic-card float-3d p-8 text-center">
+              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 floating-icon"
                    style={{ background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary})` }}>
                 <span className="text-3xl">🎧</span>
               </div>
@@ -266,8 +328,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               <p className="text-gray-300 text-sm leading-relaxed">זמינים עבורכם בכל שעה</p>
             </div>
 
-            <div className="tech-card p-8 text-center floating-gentle">
-              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 pulse-soft"
+            <div className="holographic-card float-3d p-8 text-center">
+              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 floating-icon"
                    style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
                 <span className="text-3xl">🏆</span>
               </div>
@@ -275,8 +337,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               <p className="text-gray-300 text-sm leading-relaxed">מומחיות מוכחת בתחום</p>
             </div>
 
-            <div className="tech-card p-8 text-center floating-gentle">
-              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 pulse-soft"
+            <div className="holographic-card float-3d p-8 text-center">
+              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 floating-icon"
                    style={{ background: `linear-gradient(135deg, ${currentColors.secondary}, ${currentColors.accent})` }}>
                 <span className="text-3xl">⭐</span>
               </div>
@@ -284,8 +346,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               <p className="text-gray-300 text-sm leading-relaxed">איכות ללא פשרות</p>
             </div>
 
-            <div className="tech-card p-8 text-center floating-gentle">
-              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 pulse-soft"
+            <div className="holographic-card float-3d p-8 text-center">
+              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 floating-icon"
                    style={{ background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.secondary})` }}>
                 <span className="text-3xl">💰</span>
               </div>
@@ -310,8 +372,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               { icon: "🎧", title: "תמיכה מלאה", desc: "ליווי צמוד לאורך כל הדרך" }
             ].map((feature, idx) => (
               <div key={idx} className="text-center">
-                <div className="tech-card p-8 floating-gentle">
-                  <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-8 pulse-soft"
+                <div className="holographic-card float-3d p-8">
+                  <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-8 floating-icon"
                        style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
                     <span className="text-3xl">{feature.icon}</span>
                   </div>
@@ -331,9 +393,9 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       {/* Contact Form Section */}
       <section id="contact" className="py-24 px-8">
         <div className="max-w-5xl mx-auto">
-          <div className="contact-form-glass p-10 md:p-12">
+          <div className="glass-form p-10 md:p-12">
             <div className="text-center mb-12 relative z-10">
-              <div className="w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-8 pulse-soft"
+              <div className="w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-8 floating-icon"
                    style={{ background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary})` }}>
                 <span className="text-4xl">💬</span>
               </div>
@@ -353,7 +415,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                     placeholder="השם שלך"
                     value={contactForm.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    className="form-field text-white placeholder:text-white/50 h-14 text-lg rounded-xl border-0"
+                    className="form-field-3d text-white placeholder:text-white/50 h-14 text-lg rounded-xl border-0"
                     required
                   />
                 </div>
@@ -364,7 +426,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                     placeholder="example@email.com"
                     value={contactForm.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    className="form-field text-white placeholder:text-white/50 h-14 text-lg rounded-xl border-0"
+                    className="form-field-3d text-white placeholder:text-white/50 h-14 text-lg rounded-xl border-0"
                     required
                   />
                 </div>
@@ -377,7 +439,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                   placeholder="050-1234567"
                   value={contactForm.phone}
                   onChange={(e) => handleInputChange('phone', e.target.value)}
-                  className="form-field text-white placeholder:text-white/50 h-14 text-lg rounded-xl border-0"
+                  className="form-field-3d text-white placeholder:text-white/50 h-14 text-lg rounded-xl border-0"
                 />
               </div>
               
@@ -388,14 +450,14 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                   rows={6}
                   value={contactForm.message}
                   onChange={(e) => handleInputChange('message', e.target.value)}
-                  className="form-field text-white placeholder:text-white/50 text-lg rounded-xl border-0"
+                  className="form-field-3d text-white placeholder:text-white/50 text-lg rounded-xl border-0"
                   required
                 />
               </div>
               
               <Button 
                 type="submit"
-                className="w-full py-6 text-xl font-bold holographic-btn rounded-xl border-0"
+                className="w-full py-6 text-xl font-bold tech-button rounded-xl border-0"
               >
                 <Send className="w-6 h-6 ml-3" />
                 שלח הודעה
@@ -404,20 +466,20 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
 
             {/* Contact Info Cards */}
             <div className="grid md:grid-cols-3 gap-8 mt-16 relative z-10">
-              <div className="tech-card p-8 text-center floating-gentle">
-                <Phone className="w-10 h-10 mx-auto mb-4 pulse-soft" style={{ color: currentColors.accent }} />
+              <div className="holographic-card float-3d p-8 text-center">
+                <Phone className="w-10 h-10 mx-auto mb-4 floating-icon" style={{ color: currentColors.accent }} />
                 <h4 className="font-bold text-white mb-3 text-lg neon-text">טלפון</h4>
                 <p className="text-gray-300 text-lg">050-1234567</p>
               </div>
               
-              <div className="tech-card p-8 text-center floating-gentle">
-                <Mail className="w-10 h-10 mx-auto mb-4 pulse-soft" style={{ color: currentColors.accent }} />
+              <div className="holographic-card float-3d p-8 text-center">
+                <Mail className="w-10 h-10 mx-auto mb-4 floating-icon" style={{ color: currentColors.accent }} />
                 <h4 className="font-bold text-white mb-3 text-lg neon-text">אימייל</h4>
                 <p className="text-gray-300 text-lg">info@business.co.il</p>
               </div>
               
-              <div className="tech-card p-8 text-center floating-gentle">
-                <MapPin className="w-10 h-10 mx-auto mb-4 pulse-soft" style={{ color: currentColors.accent }} />
+              <div className="holographic-card float-3d p-8 text-center">
+                <MapPin className="w-10 h-10 mx-auto mb-4 floating-icon" style={{ color: currentColors.accent }} />
                 <h4 className="font-bold text-white mb-3 text-lg neon-text">כתובת</h4>
                 <p className="text-gray-300 text-lg">תל אביב, ישראל</p>
               </div>
@@ -439,8 +501,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             
             <div className="grid md:grid-cols-2 gap-8">
               {content.whyChooseUs.items.map((item: any, idx: number) => (
-                <div key={idx} className="tech-card p-8 flex items-center text-right floating-gentle">
-                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center ml-6 flex-shrink-0 pulse-soft"
+                <div key={idx} className="holographic-card float-3d p-8 flex items-center text-right">
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center ml-6 flex-shrink-0 floating-icon"
                        style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
                     <span className="text-2xl">🚀</span>
                   </div>
@@ -459,7 +521,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             <div className="text-center mt-16">
               <button 
                 onClick={() => scrollToSection('contact')}
-                className="holographic-btn inline-block px-10 py-5 text-white font-bold rounded-xl text-lg"
+                className="tech-button inline-block px-10 py-5 text-white font-bold rounded-xl text-lg"
               >
                 בואו נתחיל עכשיו ✨
               </button>
@@ -483,8 +545,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                 { icon: "🚀", title: "פתרון מהיר", desc: "תוצאות מהירות ויעילות ללא פשרות", price: "החל מ₪399" }
               ].map((service, idx) => (
                 <div key={idx} className="text-center">
-                  <div className="tech-card p-8 rounded-2xl floating-gentle">
-                    <div className="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-8 pulse-soft"
+                  <div className="holographic-card float-3d p-8 rounded-2xl">
+                    <div className="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-8 floating-icon"
                          style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
                       <span className="text-3xl">{service.icon}</span>
                     </div>
@@ -512,14 +574,14 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             <h2 className="text-3xl md:text-5xl font-bold mb-12 neon-text" style={{ color: currentColors.text }}>
               👥 {content.aboutTitle}
             </h2>
-            <div className="tech-card p-12 rounded-2xl floating-gentle">
+            <div className="holographic-card float-3d p-12 rounded-2xl">
               <p className="text-lg leading-relaxed mb-8" 
                  style={{ color: currentColors.aboutTextColor || currentColors.text }}>
                 {content.aboutText}
               </p>
               <button 
                 onClick={() => scrollToSection('contact')}
-                className="holographic-btn inline-block px-10 py-5 text-white font-bold rounded-xl text-lg"
+                className="tech-button inline-block px-10 py-5 text-white font-bold rounded-xl text-lg"
               >
                 למד עוד עלינו
               </button>
@@ -538,9 +600,9 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             
             <div className="grid md:grid-cols-3 gap-10">
               {content.testimonials.map((testimonial: any, idx: number) => (
-                <div key={idx} className="tech-card p-8 rounded-2xl floating-gentle">
+                <div key={idx} className="holographic-card float-3d p-8 rounded-2xl">
                   <div className="flex items-center mb-6">
-                    <div className="w-16 h-16 rounded-lg flex items-center justify-center ml-4 pulse-soft"
+                    <div className="w-16 h-16 rounded-lg flex items-center justify-center ml-4 floating-icon"
                          style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
                       <span className="text-lg">{testimonial.image}</span>
                     </div>
@@ -578,7 +640,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             
             <div className="space-y-8">
               {content.faq.map((item: any, idx: number) => (
-                <div key={idx} className="tech-card p-8 rounded-2xl floating-gentle">
+                <div key={idx} className="holographic-card float-3d p-8 rounded-2xl">
                   <h3 className="font-bold mb-4 text-xl" style={{ color: currentColors.secondary }}>
                     {item.question}
                   </h3>
