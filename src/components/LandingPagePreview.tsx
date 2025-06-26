@@ -27,7 +27,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       case 'geometric':
         return 'bg-[#030303]';
       default:
-        return 'bg-gray-900';
+        return 'bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900';
     }
   };
 
