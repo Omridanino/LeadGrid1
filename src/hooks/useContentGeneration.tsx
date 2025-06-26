@@ -239,7 +239,7 @@ export const useContentGeneration = (formData: any) => {
 
       contactTitle: "בואו נתחיל לעבוד יחד",
       
-      // Add the Why Choose Us section with 4 items
+      // Always include Why Choose Us section
       whyChooseUs: whyChooseUsContent,
       
       creativeElements: []
