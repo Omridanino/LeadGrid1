@@ -1,4 +1,3 @@
-
 import { ColorScheme } from "@/components/ColorEditor";
 
 export const generateHtmlFile = (content: any, colors: ColorScheme, formData: any, heroImageUrl: string): string => {
@@ -429,143 +428,155 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
     `;
   };
 
-  // Generate all content sections - EXACT match with ContentSections component
+  // Generate all content sections - ALWAYS include ALL sections regardless of content
   const generateAllSections = () => {
-    const heroStyle = formData.heroStyle || 'default';
     let sectionsHtml = '';
 
-    // About Section
-    if (content?.sections?.emotionalSection) {
-      sectionsHtml += `
-        <section id="about" class="section-content section-about">
-          <div class="container mx-auto px-4 py-20">
-            <div class="max-w-6xl mx-auto text-center">
-              <h2 class="section-title mb-8 animate-slide-up">
-                ${content.sections.emotionalSection.title || "השירות שמשנה את המשחק"}
-              </h2>
-              <div class="content-card max-w-4xl mx-auto animate-slide-up animate-delay-1">
-                <p class="section-text">
-                  ${content.sections.emotionalSection.content || `בעולם שמתפתח במהירות, ${businessName} כאן כדי לספק לכם את השירות המקצועי והאמין ביותר בתחום ${businessType}.`}
-                </p>
-              </div>
+    // About Section - ALWAYS include
+    sectionsHtml += `
+      <section id="about" class="section-content section-about">
+        <div class="container mx-auto px-4 py-20">
+          <div class="max-w-6xl mx-auto text-center">
+            <h2 class="section-title mb-8 animate-slide-up">
+              ${content?.sections?.emotionalSection?.title || "השירות שמשנה את המשחק"}
+            </h2>
+            <div class="content-card max-w-4xl mx-auto animate-slide-up animate-delay-1">
+              <p class="section-text">
+                ${content?.sections?.emotionalSection?.content || `בעולם שמתפתח במהירות, ${businessName} כאן כדי לספק לכם את השירות המקצועי והאמין ביותר בתחום ${businessType}.`}
+              </p>
             </div>
           </div>
-        </section>
-      `;
-    }
+        </div>
+      </section>
+    `;
 
-    // Features Section
-    if (content?.sections?.features && content.sections.features.length > 0) {
-      sectionsHtml += `
-        <section id="services" class="section-content section-features">
-          <div class="container mx-auto px-4 py-20">
-            <div class="max-w-6xl mx-auto">
-              <div class="text-center mb-16">
-                <h2 class="section-title animate-slide-up">השירותים שלנו</h2>
-              </div>
-              <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                ${content.sections.features.map((feature: any, index: number) => `
-                  <div class="feature-card animate-slide-up" style="animation-delay: ${index * 0.2}s">
-                    <div class="feature-icon">${feature.icon || '🔥'}</div>
-                    <h3 class="feature-title">${feature.title}</h3>
-                    <p class="feature-description">${feature.description}</p>
+    // Features Section - ALWAYS include
+    const features = content?.sections?.features || [
+      { title: "שירות מקצועי", description: "אנו מציעים שירות ברמה הגבוהה ביותר", icon: "🔥" },
+      { title: "זמינות תמידית", description: "אנחנו כאן בשבילכם 24/7", icon: "⭐" },
+      { title: "מחירים הוגנים", description: "מחירים תחרותיים ללא פשרות על איכות", icon: "💎" }
+    ];
+
+    sectionsHtml += `
+      <section id="services" class="section-content section-features">
+        <div class="container mx-auto px-4 py-20">
+          <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+              <h2 class="section-title animate-slide-up">השירותים שלנו</h2>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              ${features.map((feature: any, index: number) => `
+                <div class="feature-card animate-slide-up" style="animation-delay: ${index * 0.2}s">
+                  <div class="feature-icon">${feature.icon || '🔥'}</div>
+                  <h3 class="feature-title">${feature.title}</h3>
+                  <p class="feature-description">${feature.description}</p>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+
+    // Why Choose Us Section - ALWAYS include
+    const whyChooseUs = content?.sections?.whyChooseUs || [
+      { title: "ניסיון עשיר", description: "שנים של ניסיון בתחום", icon: "✅" },
+      { title: "צוות מקצועי", description: "אנשי מקצוע מיומנים ומנוסים", icon: "✅" }
+    ];
+
+    sectionsHtml += `
+      <section class="section-content section-why-choose">
+        <div class="container mx-auto px-4 py-20">
+          <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+              <h2 class="section-title animate-slide-up">למה לבחור בנו?</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+              ${whyChooseUs.map((reason: any, index: number) => `
+                <div class="why-choose-card animate-slide-up" style="animation-delay: ${index * 0.2}s">
+                  <div class="flex items-center gap-4 mb-4">
+                    <div class="why-choose-icon">${reason.icon || '✅'}</div>
+                    <h3 class="why-choose-title">${reason.title}</h3>
                   </div>
-                `).join('')}
-              </div>
+                  <p class="why-choose-description">${reason.description}</p>
+                </div>
+              `).join('')}
             </div>
           </div>
-        </section>
-      `;
-    }
+        </div>
+      </section>
+    `;
 
-    // Why Choose Us Section
-    if (content?.sections?.whyChooseUs && content.sections.whyChooseUs.length > 0) {
-      sectionsHtml += `
-        <section class="section-content section-why-choose">
-          <div class="container mx-auto px-4 py-20">
-            <div class="max-w-6xl mx-auto">
-              <div class="text-center mb-16">
-                <h2 class="section-title animate-slide-up">למה לבחור בנו?</h2>
-              </div>
-              <div class="grid md:grid-cols-2 gap-8">
-                ${content.sections.whyChooseUs.map((reason: any, index: number) => `
-                  <div class="why-choose-card animate-slide-up" style="animation-delay: ${index * 0.2}s">
-                    <div class="flex items-center gap-4 mb-4">
-                      <div class="why-choose-icon">${reason.icon || '✅'}</div>
-                      <h3 class="why-choose-title">${reason.title}</h3>
+    // Testimonials Section - ALWAYS include
+    const testimonials = content?.sections?.testimonials || [
+      { name: "יוסי כהן", role: "לקוח מרוצה", content: "שירות מעולה ומקצועי! ממליץ בחום על השירותים." },
+      { name: "רחל לוי", role: "לקוחה קבועה", content: "התמחות גבוהה וזמינות מלאה. בדיוק מה שחיפשתי." },
+      { name: "דוד אברהם", role: "בעל עסק", content: "עזרו לי להגשים את החלום שלי. תודה רבה!" }
+    ];
+
+    sectionsHtml += `
+      <section class="section-content section-testimonials">
+        <div class="container mx-auto px-4 py-20">
+          <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+              <h2 class="section-title animate-slide-up">מה אומרים עלינו</h2>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              ${testimonials.map((testimonial: any, index: number) => `
+                <div class="testimonial-card animate-slide-up" style="animation-delay: ${index * 0.2}s">
+                  <div class="testimonial-stars">
+                    ${Array(5).fill(0).map(() => `
+                      <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
+                      </svg>
+                    `).join('')}
+                  </div>
+                  <p class="testimonial-content">"${testimonial.content}"</p>
+                  <div class="testimonial-author">
+                    <div class="testimonial-avatar">
+                      <span>${testimonial.name.charAt(0)}</span>
                     </div>
-                    <p class="why-choose-description">${reason.description}</p>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-          </div>
-        </section>
-      `;
-    }
-
-    // Testimonials Section
-    if (content?.sections?.testimonials && content.sections.testimonials.length > 0) {
-      sectionsHtml += `
-        <section class="section-content section-testimonials">
-          <div class="container mx-auto px-4 py-20">
-            <div class="max-w-6xl mx-auto">
-              <div class="text-center mb-16">
-                <h2 class="section-title animate-slide-up">מה אומרים עלינו</h2>
-              </div>
-              <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                ${content.sections.testimonials.map((testimonial: any, index: number) => `
-                  <div class="testimonial-card animate-slide-up" style="animation-delay: ${index * 0.2}s">
-                    <div class="testimonial-stars">
-                      ${Array(5).fill(0).map(() => `
-                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
-                          <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
-                        </svg>
-                      `).join('')}
-                    </div>
-                    <p class="testimonial-content">"${testimonial.content}"</p>
-                    <div class="testimonial-author">
-                      <div class="testimonial-avatar">
-                        <span>${testimonial.name.charAt(0)}</span>
-                      </div>
-                      <div>
-                        <div class="testimonial-name">${testimonial.name}</div>
-                        <div class="testimonial-role">${testimonial.role}</div>
-                      </div>
+                    <div>
+                      <div class="testimonial-name">${testimonial.name}</div>
+                      <div class="testimonial-role">${testimonial.role}</div>
                     </div>
                   </div>
-                `).join('')}
-              </div>
+                </div>
+              `).join('')}
             </div>
           </div>
-        </section>
-      `;
-    }
+        </div>
+      </section>
+    `;
 
-    // FAQ Section
-    if (content?.sections?.faq && content.sections.faq.length > 0) {
-      sectionsHtml += `
-        <section class="section-content section-faq">
-          <div class="container mx-auto px-4 py-20">
-            <div class="max-w-4xl mx-auto">
-              <div class="text-center mb-16">
-                <h2 class="section-title animate-slide-up">שאלות נפוצות</h2>
-              </div>
-              <div class="space-y-4">
-                ${content.sections.faq.map((faq: any, index: number) => `
-                  <div class="faq-card animate-slide-up" style="animation-delay: ${index * 0.1}s">
-                    <h3 class="faq-question">${faq.question}</h3>
-                    <p class="faq-answer">${faq.answer}</p>
-                  </div>
-                `).join('')}
-              </div>
+    // FAQ Section - ALWAYS include
+    const faq = content?.sections?.faq || [
+      { question: "איך אפשר ליצור קשר?", answer: "ניתן ליצור קשר דרך הטלפון או האימייל המופיעים באתר." },
+      { question: "מה שעות הפעילות?", answer: "אנחנו זמינים 24/7 לשירותכם." },
+      { question: "האם יש אחריות על השירות?", answer: "כן, אנו נותנים אחריות מלאה על כל השירותים שלנו." }
+    ];
+
+    sectionsHtml += `
+      <section class="section-content section-faq">
+        <div class="container mx-auto px-4 py-20">
+          <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16">
+              <h2 class="section-title animate-slide-up">שאלות נפוצות</h2>
+            </div>
+            <div class="space-y-4">
+              ${faq.map((faq: any, index: number) => `
+                <div class="faq-card animate-slide-up" style="animation-delay: ${index * 0.1}s">
+                  <h3 class="faq-question">${faq.question}</h3>
+                  <p class="faq-answer">${faq.answer}</p>
+                </div>
+              `).join('')}
             </div>
           </div>
-        </section>
-      `;
-    }
+        </div>
+      </section>
+    `;
 
-    // Contact/CTA Section
+    // Contact/CTA Section - ALWAYS include
     sectionsHtml += `
       <section id="contact" class="section-content section-contact">
         <div class="container mx-auto px-4 py-20">
@@ -584,11 +595,11 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
               <div class="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-8 animate-slide-up animate-delay-2">
                 <div class="contact-info-card">
                   <i class="ri-phone-line text-blue-400 text-xl"></i>
-                  <span class="contact-info-text">050-1234567</span>
+                  <span class="contact-info-text">${formData?.contactInfo?.split('\n')[0]?.replace('טלפון: ', '') || '050-1234567'}</span>
                 </div>
                 <div class="contact-info-card">
                   <i class="ri-mail-line text-blue-400 text-xl"></i>
-                  <span class="contact-info-text">info@business.co.il</span>
+                  <span class="contact-info-text">${formData?.contactInfo?.split('\n')[1]?.replace('אימייל: ', '') || 'info@business.co.il'}</span>
                 </div>
               </div>
 
@@ -605,7 +616,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
     return sectionsHtml;
   };
 
-  // Generate footer
+  // Generate footer - ALWAYS include
   const generateFooter = () => {
     return `
       <footer class="footer-section">
@@ -618,8 +629,8 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
               © 2024 כל הזכויות שמורות. בניית אתרים מקצועית ואמינה.
             </p>
             <div class="flex justify-center gap-8 text-gray-400">
-              <span>טלפון: 050-1234567</span>
-              <span>אימייל: info@business.co.il</span>
+              <span>טלפון: ${formData?.contactInfo?.split('\n')[0]?.replace('טלפון: ', '') || '050-1234567'}</span>
+              <span>אימייל: ${formData?.contactInfo?.split('\n')[1]?.replace('אימייל: ', '') || 'info@business.co.il'}</span>
             </div>
           </div>
         </div>
