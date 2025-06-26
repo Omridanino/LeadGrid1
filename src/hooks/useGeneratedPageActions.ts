@@ -90,8 +90,8 @@ export const useGeneratedPageActions = ({
       return;
     }
     
-    const getHeroUrl = () => getHeroImageUrl(content, heroImage, formData);
-    const htmlContent = generateHtmlFile(content, currentColors, formData, getHeroUrl);
+    const heroUrl = getHeroImageUrl(content, heroImage, formData);
+    const htmlContent = generateHtmlFile(content, currentColors, formData, heroUrl);
     const blob = new Blob([htmlContent], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -134,8 +134,8 @@ export const useGeneratedPageActions = ({
   };
 
   const generateHtmlFileWrapper = () => {
-    const getHeroUrl = () => getHeroImageUrl(content, heroImage, formData);
-    return generateHtmlFile(content, currentColors, formData, getHeroUrl);
+    const heroUrl = getHeroImageUrl(content, heroImage, formData);
+    return generateHtmlFile(content, currentColors, formData, heroUrl);
   };
 
   return {
