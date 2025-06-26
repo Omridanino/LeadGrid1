@@ -1,4 +1,3 @@
-
 import { ColorScheme } from "./ColorEditor";
 
 interface LandingPagePreviewProps {
@@ -22,7 +21,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
 
   return (
     <div className="w-full bg-black text-white overflow-hidden rounded-lg" dir="rtl">
-      <style jsx>{`
+      <style>{`
         .floating-orb {
           position: absolute;
           border-radius: 50%;
@@ -33,84 +32,144 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         }
 
         .floating-orb:nth-child(1) {
-          width: 60px;
-          height: 60px;
-          top: 20%;
-          left: 10%;
+          width: 80px;
+          height: 80px;
+          top: 15%;
+          left: 8%;
           animation-delay: 0s;
         }
 
         .floating-orb:nth-child(2) {
-          width: 80px;
-          height: 80px;
-          top: 60%;
-          right: 15%;
+          width: 120px;
+          height: 120px;
+          top: 55%;
+          right: 12%;
           animation-delay: -2s;
         }
 
         .floating-orb:nth-child(3) {
-          width: 40px;
-          height: 40px;
-          top: 80%;
-          left: 70%;
+          width: 60px;
+          height: 60px;
+          top: 75%;
+          left: 65%;
           animation-delay: -4s;
+        }
+
+        .floating-orb:nth-child(4) {
+          width: 100px;
+          height: 100px;
+          top: 25%;
+          right: 55%;
+          animation-delay: -1s;
+        }
+
+        .floating-particle {
+          position: absolute;
+          width: 4px;
+          height: 4px;
+          background: ${currentColors.accent};
+          border-radius: 50%;
+          animation: particleFloat 8s linear infinite;
+          opacity: 0.7;
+        }
+
+        .floating-particle:nth-child(5) {
+          top: 30%;
+          left: 20%;
+          animation-delay: -1s;
+        }
+
+        .floating-particle:nth-child(6) {
+          top: 60%;
+          right: 30%;
+          animation-delay: -3s;
+        }
+
+        .floating-particle:nth-child(7) {
+          top: 80%;
+          left: 40%;
+          animation-delay: -5s;
         }
 
         @keyframes float {
           0%, 100% {
-            transform: translateY(0px) translateX(0px) rotate(0deg);
+            transform: translateY(0px) translateX(0px) rotate(0deg) scale(1);
             opacity: 0.6;
           }
           25% {
-            transform: translateY(-30px) translateX(15px) rotate(90deg);
+            transform: translateY(-40px) translateX(20px) rotate(90deg) scale(1.1);
             opacity: 0.8;
           }
           50% {
-            transform: translateY(-60px) translateX(-10px) rotate(180deg);
+            transform: translateY(-80px) translateX(-15px) rotate(180deg) scale(1.2);
             opacity: 1;
           }
           75% {
-            transform: translateY(-20px) translateX(-25px) rotate(270deg);
+            transform: translateY(-30px) translateX(-35px) rotate(270deg) scale(1.05);
             opacity: 0.7;
+          }
+        }
+
+        @keyframes particleFloat {
+          0% {
+            transform: translateY(100vh) translateX(0px);
+            opacity: 0;
+          }
+          10% {
+            opacity: 0.7;
+          }
+          90% {
+            opacity: 0.7;
+          }
+          100% {
+            transform: translateY(-100px) translateX(50px);
+            opacity: 0;
           }
         }
 
         .glassmorphism-bg::before {
           content: '';
           position: absolute;
-          top: 2rem;
-          left: 2rem;
-          width: 8rem;
-          height: 8rem;
+          top: 3rem;
+          left: 3rem;
+          width: 12rem;
+          height: 12rem;
           border-radius: 50%;
           background: conic-gradient(from 45deg, ${currentColors.primary}, ${currentColors.secondary}, ${currentColors.accent}, ${currentColors.primary});
-          animation: spin 20s linear infinite, pulse 4s ease-in-out infinite;
-          filter: blur(8px);
-          transform: perspective(1000px) rotateX(45deg) rotateY(45deg);
+          animation: spin 25s linear infinite, pulse 5s ease-in-out infinite, drift 15s ease-in-out infinite;
+          filter: blur(10px);
+          transform: perspective(1200px) rotateX(45deg) rotateY(45deg);
         }
 
         .glassmorphism-bg::after {
           content: '';
           position: absolute;
-          bottom: 2rem;
-          right: 2rem;
-          width: 6rem;
-          height: 6rem;
+          bottom: 3rem;
+          right: 3rem;
+          width: 10rem;
+          height: 10rem;
           border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
           background: linear-gradient(135deg, ${currentColors.secondary}70, ${currentColors.accent}50);
-          animation: morph 8s ease-in-out infinite, float 6s ease-in-out infinite;
-          filter: blur(6px);
-          transform: perspective(800px) rotateX(-30deg) rotateY(60deg);
+          animation: morph 10s ease-in-out infinite, float 8s ease-in-out infinite, drift 20s ease-in-out infinite;
+          filter: blur(8px);
+          transform: perspective(1000px) rotateX(-30deg) rotateY(60deg);
         }
 
         @keyframes spin {
-          from { transform: perspective(1000px) rotateX(45deg) rotateY(45deg) rotate(0deg); }
-          to { transform: perspective(1000px) rotateX(45deg) rotateY(45deg) rotate(360deg); }
+          from { transform: perspective(1200px) rotateX(45deg) rotateY(45deg) rotate(0deg); }
+          to { transform: perspective(1200px) rotateX(45deg) rotateY(45deg) rotate(360deg); }
         }
 
         @keyframes pulse {
           0%, 100% { opacity: 0.1; transform: scale(1); }
-          50% { opacity: 0.2; transform: scale(1.1); }
+          50% { opacity: 0.25; transform: scale(1.15); }
+        }
+
+        @keyframes drift {
+          0%, 100% { transform: translateX(0px) translateY(0px); }
+          25% { transform: translateX(20px) translateY(-15px); }
+          50% { transform: translateX(-15px) translateY(-25px); }
+          75% { transform: translateX(-10px) translateY(10px); }
         }
 
         @keyframes morph {
@@ -121,22 +180,29 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         }
 
         .glassmorphism-card {
-          background: linear-gradient(145deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+          background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.05));
           border: 2px solid ${currentColors.primary}50;
-          backdrop-filter: blur(20px);
+          backdrop-filter: blur(25px);
           box-shadow: 
-            0 20px 50px rgba(0,0,0,0.3), 
-            inset 0 2px 0 rgba(255,255,255,0.2);
-          transform: perspective(1000px) rotateX(5deg) rotateY(2deg);
-          transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            0 25px 80px rgba(0,0,0,0.4), 
+            inset 0 3px 0 rgba(255,255,255,0.25),
+            0 0 0 1px rgba(255,255,255,0.1);
+          transform: perspective(1000px) rotateX(8deg) rotateY(3deg);
+          transition: all 0.8s cubic-bezier(0.23, 1, 0.320, 1);
+          animation: cardFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes cardFloat {
+          0%, 100% { transform: perspective(1000px) rotateX(8deg) rotateY(3deg) translateY(0px); }
+          50% { transform: perspective(1000px) rotateX(8deg) rotateY(3deg) translateY(-8px); }
         }
 
         .glassmorphism-card:hover {
-          transform: perspective(1000px) rotateX(5deg) rotateY(2deg) scale(1.05) translateY(-5px);
+          transform: perspective(1000px) rotateX(8deg) rotateY(3deg) scale(1.08) translateY(-15px);
           box-shadow: 
-            0 25px 60px rgba(0,0,0,0.4), 
-            inset 0 2px 0 rgba(255,255,255,0.3),
-            0 0 20px ${currentColors.primary}30;
+            0 35px 100px rgba(0,0,0,0.5), 
+            inset 0 3px 0 rgba(255,255,255,0.35),
+            0 0 40px ${currentColors.primary}40;
         }
 
         .badge {
@@ -217,10 +283,14 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         }
       `}</style>
 
-      {/* Floating Elements */}
+      {/* Enhanced Floating Elements */}
       <div className="floating-orb"></div>
       <div className="floating-orb"></div>
       <div className="floating-orb"></div>
+      <div className="floating-orb"></div>
+      <div className="floating-particle"></div>
+      <div className="floating-particle"></div>
+      <div className="floating-particle"></div>
 
       {/* Hero Section */}
       <section className="relative min-h-[500px] flex items-center justify-center text-center p-8 overflow-hidden"
@@ -232,7 +302,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                  backgroundPosition: 'center'
                }}>
         
-        <div className="glassmorphism-bg absolute inset-0 opacity-5"></div>
+        <div className="glassmorphism-bg absolute inset-0 opacity-8"></div>
 
         <div className="relative z-10 max-w-4xl mx-auto">
           <span className="badge inline-block px-6 py-3 mb-6 text-white rounded-full font-semibold text-sm">
@@ -263,7 +333,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-3xl mx-auto">
             {Object.entries(content.stats).map(([key, value]) => (
               <div key={key} className="stat-card p-4 rounded-xl text-center">
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1">{value}</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1">{String(value)}</div>
                 <div className="text-sm text-white opacity-80">{key}</div>
               </div>
             ))}

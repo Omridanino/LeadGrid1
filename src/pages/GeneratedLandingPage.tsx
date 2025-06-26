@@ -25,6 +25,11 @@ const GeneratedLandingPage = () => {
     heroImage: state.heroImage
   });
 
+  // Convert PageElement[] to string[] for elements prop
+  const elementsAsStrings = state.elements?.map(element => 
+    typeof element === 'string' ? element : element.type || element.name || ''
+  ).filter(Boolean) || [];
+
   return (
     <div className="min-h-screen bg-black text-white" dir="rtl">
       <GeneratedPageHeader 
@@ -61,7 +66,7 @@ const GeneratedLandingPage = () => {
               currentColors={state.currentColors}
               formData={state.formData}
               heroImage={state.heroImage}
-              elements={state.elements}
+              elements={elementsAsStrings}
             />
           </div>
 
