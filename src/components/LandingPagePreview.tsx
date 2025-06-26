@@ -23,8 +23,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
     });
   };
 
-  const colors = content.colors || currentColors;
-
   const getHeroImageUrl = () => {
     if (heroImage && heroImage.startsWith('data:')) {
       return heroImage;
@@ -52,7 +50,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
   const renderServiceCards = (serviceCards: any[]) => (
     <div className="p-8" style={{ backgroundColor: currentColors.background }}>
       <h2 className="text-3xl font-bold mb-8 text-center" style={{ color: currentColors.text }}>
-        <Target className="w-8 h-8 ml-3 inline" style={{ color: colors.accent }} />
+        <Target className="w-8 h-8 ml-3 inline" style={{ color: currentColors.accent }} />
         השירותים שלנו
       </h2>
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
@@ -62,16 +60,16 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
             className="group p-6 rounded-2xl border backdrop-blur-sm hover:scale-105 transition-all duration-300"
             style={{ 
               backgroundColor: 'rgba(255,255,255,0.05)',
-              borderColor: `${colors.primary}40`
+              borderColor: `${currentColors.primary}40`
             }}
           >
             <div 
               className="w-16 h-16 rounded-xl mb-4 flex items-center justify-center text-2xl"
-              style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}
+              style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}
             >
               {service.icon}
             </div>
-            <h3 className="font-bold mb-2" style={{ color: colors.primary }}>{service.title}</h3>
+            <h3 className="font-bold mb-2" style={{ color: currentColors.primary }}>{service.title}</h3>
             <p className="text-sm" style={{ color: currentColors.text }}>{service.desc}</p>
           </div>
         ))}
@@ -82,12 +80,12 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
   const renderTimeline = (timelineSteps: any[]) => (
     <div className="p-8" style={{ backgroundColor: currentColors.background }}>
       <h2 className="text-3xl font-bold mb-12 text-center" style={{ color: currentColors.text }}>
-        <Calendar className="w-8 h-8 ml-3 inline" style={{ color: colors.secondary }} />
+        <Calendar className="w-8 h-8 ml-3 inline" style={{ color: currentColors.secondary }} />
         התהליך שלנו
       </h2>
       <div className="max-w-4xl mx-auto">
         <div className="relative">
-          <div className="absolute right-8 top-0 bottom-0 w-0.5" style={{ background: `linear-gradient(to bottom, ${colors.primary}, ${colors.secondary})` }}></div>
+          <div className="absolute right-8 top-0 bottom-0 w-0.5" style={{ background: `linear-gradient(to bottom, ${currentColors.primary}, ${currentColors.secondary})` }}></div>
           
           {timelineSteps.map((step: any, index: number) => (
             <div key={index} className="relative flex items-center mb-12">
@@ -111,7 +109,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
   const renderPricing = (plans: any[]) => (
     <div className="p-8" style={{ backgroundColor: currentColors.background }}>
       <h2 className="text-3xl font-bold mb-12 text-center" style={{ color: currentColors.text }}>
-        <Award className="w-8 h-8 ml-3 inline" style={{ color: colors.accent }} />
+        <Award className="w-8 h-8 ml-3 inline" style={{ color: currentColors.accent }} />
         התכניות שלנו
       </h2>
       <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -121,18 +119,18 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
             className={`p-8 rounded-2xl border relative ${plan.highlighted ? 'scale-105 shadow-2xl' : ''}`}
             style={{ 
               backgroundColor: plan.highlighted ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.05)',
-              borderColor: plan.highlighted ? colors.accent : `${colors.primary}40`
+              borderColor: plan.highlighted ? currentColors.accent : `${currentColors.primary}40`
             }}
           >
             {plan.highlighted && (
               <div 
                 className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-full text-white text-sm font-bold"
-                style={{ backgroundColor: colors.accent }}
+                style={{ backgroundColor: currentColors.accent }}
               >
                 הכי פופולרי
               </div>
             )}
-            <h3 className="text-2xl font-bold mb-4" style={{ color: colors.primary }}>{plan.name}</h3>
+            <h3 className="text-2xl font-bold mb-4" style={{ color: currentColors.primary }}>{plan.name}</h3>
             <div className="mb-6">
               <span className="text-4xl font-bold" style={{ color: currentColors.text }}>{plan.price}</span>
               <span className="text-gray-400">/{plan.period}</span>
@@ -140,7 +138,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
             <ul className="space-y-3 mb-8">
               {plan.features.map((feature: string, idx: number) => (
                 <li key={idx} className="flex items-center">
-                  <Check className="w-5 h-5 ml-2" style={{ color: colors.accent }} />
+                  <Check className="w-5 h-5 ml-2" style={{ color: currentColors.accent }} />
                   <span style={{ color: currentColors.text }}>{feature}</span>
                 </li>
               ))}
@@ -148,7 +146,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
             <Button 
               className="w-full rounded-xl font-bold"
               style={{ 
-                backgroundColor: plan.highlighted ? colors.accent : colors.primary,
+                backgroundColor: plan.highlighted ? currentColors.accent : currentColors.primary,
                 color: 'white'
               }}
               onClick={handleCtaClick}
@@ -161,8 +159,21 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
     </div>
   );
 
+  const renderEmotional = (emotional: any) => (
+    <div className="p-8" style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
+      <h2 className="text-3xl font-bold mb-8 text-center flex items-center justify-center text-white">
+        <Heart className="w-8 h-8 ml-3" />
+        {emotional.title}
+      </h2>
+      <div className="p-8 rounded-xl max-w-4xl mx-auto">
+        <p className="text-lg leading-relaxed text-center text-gray-200">
+          {emotional.content}
+        </p>
+      </div>
+    </div>
+  );
+
   const renderCreativeElements = () => {
-    // Only render elements that are actually selected and exist in content
     if (!content.creativeElements || content.creativeElements.length === 0) {
       return null;
     }
@@ -175,6 +186,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
           return <div key={index}>{renderTimeline(element.content)}</div>;
         case 'pricing':
           return <div key={index}>{renderPricing(element.content)}</div>;
+        case 'emotional':
+          return <div key={index}>{renderEmotional(element.content)}</div>;
         default:
           return null;
       }
@@ -192,7 +205,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
           style={{
             background: finalHeroImage 
               ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${finalHeroImage}')` 
-              : `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 50%, ${colors.accent} 100%)`,
+              : `linear-gradient(135deg, ${currentColors.primary} 0%, ${currentColors.secondary} 50%, ${currentColors.accent} 100%)`,
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}
@@ -227,7 +240,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
               size="lg" 
               className="text-xl px-10 py-4 shadow-2xl rounded-xl hover:scale-105 transition-transform font-bold mb-8"
               style={{ 
-                backgroundColor: colors.accent, 
+                backgroundColor: currentColors.accent, 
                 color: 'white',
                 border: 'none'
               }}
@@ -236,13 +249,13 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
               {content.cta}
             </Button>
 
-            {/* Stats with correct colors */}
+            {/* Stats with user selected colors */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 max-w-4xl mx-auto">
               {Object.entries(content.stats).map(([key, value], index) => (
                 <div 
                   key={index} 
                   className="p-6 rounded-2xl hover:scale-105 transition-transform shadow-lg"
-                  style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}
+                  style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}
                 >
                   <div className="text-3xl md:text-4xl font-bold text-white mb-2">{value as string}</div>
                   <div className="text-white font-semibold text-lg">{key}</div>
@@ -258,7 +271,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
             className="text-3xl font-bold mb-8 text-center flex items-center justify-center"
             style={{ color: currentColors.featuresColor || currentColors.text }}
           >
-            <Star className="w-8 h-8 ml-3" style={{ color: colors.accent }} />
+            <Star className="w-8 h-8 ml-3" style={{ color: currentColors.accent }} />
             {content.featuresTitle}
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
@@ -268,12 +281,12 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
                 className="flex items-start p-6 rounded-xl hover:scale-105 transition-all duration-300 border"
                 style={{ 
                   backgroundColor: 'rgba(255,255,255,0.05)',
-                  borderColor: `${colors.primary}40`
+                  borderColor: `${currentColors.primary}40`
                 }}
               >
                 <div 
                   className="w-8 h-8 rounded-full flex items-center justify-center ml-4 flex-shrink-0 mt-1"
-                  style={{ backgroundColor: colors.primary }}
+                  style={{ backgroundColor: currentColors.primary }}
                 >
                   <Check className="w-5 h-5 text-white" />
                 </div>
@@ -288,23 +301,23 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
           </div>
         </div>
 
-        {/* Creative Elements - only render if they exist */}
+        {/* Creative Elements */}
         {renderCreativeElements()}
 
-        {/* About Section */}
+        {/* About Section - Enhanced */}
         <div className="p-8" style={{ backgroundColor: currentColors.background }}>
           <h2 
             className="text-3xl font-bold mb-8 text-center flex items-center justify-center"
             style={{ color: currentColors.aboutColor || currentColors.text }}
           >
-            <Users className="w-8 h-8 ml-3" style={{ color: colors.secondary }} />
+            <Users className="w-8 h-8 ml-3" style={{ color: currentColors.secondary }} />
             {content.aboutTitle}
           </h2>
           <div 
             className="p-8 rounded-xl border max-w-4xl mx-auto"
             style={{ 
               backgroundColor: 'rgba(255,255,255,0.05)',
-              borderColor: `${colors.secondary}40`
+              borderColor: `${currentColors.secondary}40`
             }}
           >
             <p 
@@ -316,28 +329,13 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
           </div>
         </div>
 
-        {/* Emotional Section */}
-        {content.emotional && (
-          <div className="p-8" style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}>
-            <h2 className="text-3xl font-bold mb-8 text-center flex items-center justify-center text-white">
-              <Heart className="w-8 h-8 ml-3" />
-              {content.emotional.title}
-            </h2>
-            <div className="p-8 rounded-xl max-w-4xl mx-auto">
-              <p className="text-lg leading-relaxed text-center text-gray-200">
-                {content.emotional.content}
-              </p>
-            </div>
-          </div>
-        )}
-
         {/* Testimonials Section */}
         <div className="p-8" style={{ backgroundColor: currentColors.background }}>
           <h2 
             className="text-3xl font-bold mb-8 text-center flex items-center justify-center"
             style={{ color: currentColors.text }}
           >
-            <Quote className="w-8 h-8 ml-3" style={{ color: colors.primary }} />
+            <Quote className="w-8 h-8 ml-3" style={{ color: currentColors.primary }} />
             מה אומרים עלינו
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
@@ -347,18 +345,18 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
                 className="p-6 rounded-xl border hover:scale-105 transition-transform"
                 style={{ 
                   backgroundColor: 'rgba(255,255,255,0.05)',
-                  borderColor: `${colors.primary}40`
+                  borderColor: `${currentColors.primary}40`
                 }}
               >
                 <div className="flex items-center mb-4">
                   <div 
                     className="w-12 h-12 rounded-full flex items-center justify-center text-white text-2xl"
-                    style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}
+                    style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}
                   >
                     {testimonial.image}
                   </div>
                   <div className="mr-4">
-                    <div className="font-semibold" style={{ color: colors.primary }}>{testimonial.name}</div>
+                    <div className="font-semibold" style={{ color: currentColors.primary }}>{testimonial.name}</div>
                     <div className="text-gray-400 text-sm">{testimonial.role}</div>
                   </div>
                 </div>
@@ -384,7 +382,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
             className="text-3xl font-bold mb-8 text-center flex items-center justify-center"
             style={{ color: currentColors.text }}
           >
-            <HelpCircle className="w-8 h-8 ml-3" style={{ color: colors.secondary }} />
+            <HelpCircle className="w-8 h-8 ml-3" style={{ color: currentColors.secondary }} />
             שאלות נפוצות
           </h2>
           <div className="max-w-4xl mx-auto space-y-4">
@@ -394,12 +392,12 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
                 className="p-6 rounded-xl border hover:scale-105 transition-transform"
                 style={{ 
                   backgroundColor: 'rgba(255,255,255,0.05)',
-                  borderColor: `${colors.secondary}40`
+                  borderColor: `${currentColors.secondary}40`
                 }}
               >
                 <h3 
                   className="font-semibold mb-3 text-lg"
-                  style={{ color: colors.secondary }}
+                  style={{ color: currentColors.secondary }}
                 >
                   {item.question}
                 </h3>
@@ -420,14 +418,14 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
             className="p-8 rounded-2xl border text-center max-w-4xl mx-auto"
             style={{ 
               backgroundColor: 'rgba(255,255,255,0.05)',
-              borderColor: `${colors.primary}40`
+              borderColor: `${currentColors.primary}40`
             }}
           >
             <h2 
               className="text-2xl font-bold mb-6 flex items-center justify-center"
               style={{ color: currentColors.contactColor || currentColors.text }}
             >
-              <MessageCircle className="w-6 h-6 ml-3" style={{ color: colors.accent }} />
+              <MessageCircle className="w-6 h-6 ml-3" style={{ color: currentColors.accent }} />
               {content.contactTitle}
             </h2>
             <div 
@@ -444,7 +442,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
             <Button 
               className="text-xl px-8 py-4 rounded-xl hover:scale-105 transition-transform font-bold"
               style={{ 
-                background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`, 
+                background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})`, 
                 color: 'white',
                 border: 'none'
               }}
@@ -460,3 +458,4 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage }: Lan
 };
 
 export default LandingPagePreview;
+
