@@ -34,7 +34,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   };
 
   return (
-    <div className={`w-full text-white overflow-y-auto max-h-screen ${getStyleClass()}`}>
+    <div className={`w-full h-full overflow-y-auto overflow-x-hidden ${getStyleClass()}`} style={{ maxHeight: 'calc(100vh - 120px)' }}>
       <PreviewStyles />
 
       {/* Hero Section */}

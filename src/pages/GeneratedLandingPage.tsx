@@ -1,13 +1,16 @@
 
 import GeneratedPageHeader from "@/components/GeneratedPageHeader";
 import LandingPagePreview from "@/components/LandingPagePreview";
+import FullScreenPreview from "@/components/FullScreenPreview";
 import OptionsPanel from "@/components/OptionsPanel";
 import { Button } from "@/components/ui/button";
 import { PanelRightClose, PanelRightOpen, Save, CheckCircle } from "lucide-react";
 import { useGeneratedPageState } from "@/hooks/useGeneratedPageState";
 import { useGeneratedPageActions } from "@/hooks/useGeneratedPageActions";
+import { useState } from "react";
 
 const GeneratedLandingPage = () => {
+  const [showFullScreenPreview, setShowFullScreenPreview] = useState(false);
   const state = useGeneratedPageState();
   const actions = useGeneratedPageActions({
     isSaved: state.isSaved,
@@ -35,6 +38,17 @@ const GeneratedLandingPage = () => {
       <GeneratedPageHeader 
         onNavigateBack={actions.onNavigateBack}
         onDownloadCode={actions.handleDownloadCode}
+        onPreviewFullScreen={() => setShowFullScreenPreview(true)}
+      />
+
+      {/* Full Screen Preview */}
+      <FullScreenPreview
+        content={state.content}
+        currentColors={state.currentColors}
+        formData={state.formData}
+        heroImage={state.heroImage}
+        isOpen={showFullScreenPreview}
+        onClose={() => setShowFullScreenPreview(false)}
       />
 
       {/* Save Button */}
