@@ -1,15 +1,9 @@
+
 import { ColorScheme } from "@/components/ColorEditor";
 
 export const generateHtmlFile = (content: any, currentColors: ColorScheme, formData: any, heroImage?: string) => {
   const finalHeroImage = formData.heroStyle === 'image' && heroImage ? heroImage : null;
   
-  const shouldShowSection = (sectionId: string) => {
-    if (!formData.selectedElements || formData.selectedElements.length === 0) {
-      return true; // Show all sections if none selected
-    }
-    return formData.selectedElements.includes(sectionId);
-  };
-
   const getStylesByDesignStyle = () => {
     switch (formData.designStyle) {
       case 'storytelling':
@@ -421,8 +415,6 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
 
   const generateStorytellingStyles = () => `
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
-      
       * {
         margin: 0;
         padding: 0;
@@ -430,173 +422,104 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
       }
 
       body {
-        font-family: 'Inter', sans-serif;
-        line-height: 1.7;
+        font-family: 'Georgia', serif;
+        line-height: 1.8;
         color: #2c3e50;
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        overflow-x: hidden;
+        background: #f8f9fa;
       }
 
       .hero {
-        min-height: 100vh;
+        min-height: 600px;
         display: flex;
         align-items: center;
-        padding: 4rem 2rem;
-        background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #4a6741 100%);
+        padding: 5rem 2rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         text-align: center;
-        position: relative;
-      }
-
-      .hero::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="g"><stop offset="0%" stop-color="rgba(255,255,255,0.1)"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><circle cx="20" cy="20" r="15" fill="url(%23g)"/><circle cx="80" cy="70" r="20" fill="url(%23g)"/></svg>') no-repeat;
-        background-size: cover;
-        opacity: 0.3;
       }
 
       .hero-content {
-        max-width: 1000px;
+        max-width: 900px;
         margin: 0 auto;
-        z-index: 10;
-        position: relative;
       }
 
       .badge {
         display: inline-block;
-        padding: 1rem 2.5rem;
-        background: rgba(255,255,255,0.15);
-        border: 2px solid rgba(255,255,255,0.3);
-        border-radius: 50px;
-        margin-bottom: 3rem;
-        font-size: 1.1rem;
-        font-weight: 500;
-        backdrop-filter: blur(20px);
-        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        padding: 0.75rem 2rem;
+        background: rgba(255,255,255,0.2);
+        border-radius: 25px;
+        margin-bottom: 2rem;
+        font-size: 1rem;
       }
 
       .hero h1 {
-        font-family: 'Playfair Display', serif;
-        font-size: 4.5rem;
+        font-size: 3.5rem;
         font-weight: 300;
-        margin-bottom: 2.5rem;
-        line-height: 1.1;
-        text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        margin-bottom: 2rem;
+        line-height: 1.2;
       }
 
       .hero p {
-        font-size: 1.8rem;
-        margin-bottom: 3.5rem;
-        opacity: 0.95;
+        font-size: 1.5rem;
+        margin-bottom: 3rem;
+        opacity: 0.9;
         line-height: 1.6;
-        font-weight: 300;
-        max-width: 800px;
-        margin-left: auto;
-        margin-right: auto;
       }
 
       .cta-button {
         display: inline-block;
-        padding: 1.5rem 3rem;
-        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        padding: 1.25rem 2.5rem;
+        background: #e74c3c;
         color: white;
         text-decoration: none;
         border-radius: 50px;
-        font-size: 1.3rem;
-        font-weight: 600;
-        transition: all 0.4s ease;
-        box-shadow: 0 10px 30px rgba(231,76,60,0.4);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .cta-button::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
-        opacity: 0;
-        transition: opacity 0.4s ease;
-      }
-
-      .cta-button:hover::before {
-        opacity: 1;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
       }
 
       .cta-button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 15px 40px rgba(231,76,60,0.6);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
       }
 
       .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 2.5rem;
-        margin-top: 5rem;
-        max-width: 900px;
-        margin-left: auto;
-        margin-right: auto;
+        gap: 2rem;
+        margin-top: 4rem;
       }
 
       .stat-card {
         text-align: center;
-        padding: 2.5rem;
+        padding: 2rem;
         background: rgba(255,255,255,0.1);
-        border-radius: 25px;
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.2);
-        transition: all 0.3s ease;
-      }
-
-      .stat-card:hover {
-        transform: translateY(-10px);
-        background: rgba(255,255,255,0.15);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
       }
 
       .stat-number {
-        font-size: 3.5rem;
-        font-weight: 700;
+        font-size: 3rem;
+        font-weight: bold;
         display: block;
-        margin-bottom: 0.5rem;
       }
 
       .stat-label {
-        font-size: 1.2rem;
-        opacity: 0.9;
-        font-weight: 400;
+        font-size: 1.1rem;
+        opacity: 0.8;
+        margin-top: 0.5rem;
       }
 
       .section {
-        padding: 8rem 2rem;
-        position: relative;
-      }
-
-      .section:nth-child(even) {
-        background: linear-gradient(135deg, #ecf0f1 0%, #bdc3c7 100%);
+        padding: 6rem 2rem;
       }
 
       .section h2 {
-        font-family: 'Playfair Display', serif;
-        font-size: 3.5rem;
-        font-weight: 400;
+        font-size: 3rem;
+        font-weight: 300;
         text-align: center;
         margin-bottom: 4rem;
         color: #2c3e50;
-        position: relative;
-      }
-
-      .section h2::after {
-        content: '';
-        position: absolute;
-        bottom: -1rem;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100px;
-        height: 3px;
-        background: linear-gradient(135deg, #e74c3c, #f39c12);
-        border-radius: 2px;
       }
 
       .container {
@@ -604,175 +527,229 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
         margin: 0 auto;
       }
 
-      .story-content, .values-content {
-        max-width: 900px;
+      .story-section {
+        background: linear-gradient(to right, #e3f2fd, #f3e5f5);
+      }
+
+      .story-content {
+        max-width: 1000px;
         margin: 0 auto;
         text-align: center;
       }
 
-      .story-content p, .values-content p {
-        font-size: 1.4rem;
+      .story-content p {
+        font-size: 1.3rem;
         line-height: 1.8;
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
         color: #34495e;
-        font-weight: 300;
       }
 
       .story-quote {
         background: white;
-        padding: 4rem;
+        padding: 3rem;
         border-radius: 30px;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-        margin: 4rem 0;
-        position: relative;
-      }
-
-      .story-quote::before {
-        content: '"';
-        position: absolute;
-        top: -30px;
-        left: 40px;
-        font-size: 8rem;
-        color: #e74c3c;
-        font-family: 'Playfair Display', serif;
-        line-height: 1;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        margin-top: 3rem;
       }
 
       .story-quote p {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
         font-style: italic;
         color: #7f8c8d;
-        margin-top: 2rem;
       }
 
       .values-grid, .why-choose-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 3rem;
         margin-top: 4rem;
       }
 
       .value-item, .why-choose-item {
         text-align: center;
-        padding: 4rem 2rem;
+        padding: 3rem;
         background: white;
-        border-radius: 30px;
-        box-shadow: 0 15px 50px rgba(0,0,0,0.08);
-        transition: all 0.4s ease;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .value-item::before, .why-choose-item::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 5px;
-        background: linear-gradient(135deg, #e74c3c, #f39c12);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
       }
 
       .value-item:hover, .why-choose-item:hover {
-        transform: translateY(-15px);
-        box-shadow: 0 25px 80px rgba(0,0,0,0.15);
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
       }
 
       .icon-container {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #e74c3c, #f39c12);
+        background: linear-gradient(135deg, #667eea, #764ba2);
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 2.5rem;
-        box-shadow: 0 10px 30px rgba(231,76,60,0.3);
+        margin: 0 auto 2rem;
       }
 
       .icon-container i {
-        font-size: 3rem;
+        font-size: 2.5rem;
         color: white;
       }
 
       .value-item h3, .why-choose-item h3 {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
         margin-bottom: 1.5rem;
         color: #2c3e50;
-        font-weight: 600;
       }
 
       .value-item p, .why-choose-item p {
         color: #7f8c8d;
         line-height: 1.6;
-        font-size: 1.2rem;
-        font-weight: 400;
+        font-size: 1.1rem;
+      }
+
+      .about-section {
+        background: linear-gradient(to left, #f3e5f5, #e3f2fd);
+      }
+
+      .about-content {
+        max-width: 1000px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .about-content p {
+        font-size: 1.3rem;
+        line-height: 1.8;
+        margin-bottom: 3rem;
+        color: #34495e;
+      }
+
+      .about-cta {
+        background: white;
+        padding: 4rem;
+        border-radius: 30px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+      }
+
+      .about-cta p {
+        font-size: 1.8rem;
+        font-weight: 300;
+        line-height: 1.6;
+        margin-bottom: 3rem;
       }
 
       .testimonials-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
         gap: 3rem;
         margin-top: 4rem;
       }
 
       .testimonial-card {
         background: white;
-        padding: 4rem;
+        padding: 3rem;
         border-radius: 30px;
-        box-shadow: 0 15px 50px rgba(0,0,0,0.08);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         position: relative;
-        transition: all 0.3s ease;
       }
 
-      .testimonial-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 25px 80px rgba(0,0,0,0.15);
+      .testimonial-card::before {
+        content: '"';
+        position: absolute;
+        top: -20px;
+        left: 30px;
+        font-size: 5rem;
+        color: #e74c3c;
+        line-height: 1;
       }
 
       .testimonial-header {
         display: flex;
         align-items: center;
-        margin-bottom: 2.5rem;
+        margin-bottom: 2rem;
+        margin-top: 1rem;
       }
 
       .testimonial-avatar {
-        width: 90px;
-        height: 90px;
+        width: 80px;
+        height: 80px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #e74c3c, #f39c12);
+        background: linear-gradient(135deg, #667eea, #764ba2);
         display: flex;
         align-items: center;
         justify-content: center;
         color: white;
-        font-size: 2.5rem;
+        font-size: 2rem;
         margin-left: 1.5rem;
-        box-shadow: 0 8px 25px rgba(231,76,60,0.3);
+      }
+
+      .testimonial-info h4 {
+        font-size: 1.3rem;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+      }
+
+      .testimonial-info p {
+        color: #7f8c8d;
+        font-size: 1rem;
+      }
+
+      .testimonial-content {
+        font-style: italic;
+        color: #34495e;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        font-size: 1.2rem;
+      }
+
+      .stars {
+        display: flex;
+      }
+
+      .star {
+        color: #f39c12;
+        font-size: 1.5rem;
       }
 
       .contact-section {
-        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        background: linear-gradient(to right, #667eea, #764ba2);
         color: white;
         text-align: center;
       }
 
-      .contact-section h2 {
-        color: white;
+      .contact-content p {
+        font-size: 1.3rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
       }
 
-      @media (max-width: 768px) {
-        .hero h1 { font-size: 3rem; }
-        .hero p { font-size: 1.4rem; }
-        .stats-grid { grid-template-columns: repeat(2, 1fr); }
-        .section h2 { font-size: 2.5rem; }
+      .contact-info {
+        max-width: 800px;
+        margin: 0 auto 3rem;
+        background: rgba(255,255,255,0.1);
+        padding: 3rem;
+        border-radius: 30px;
+        backdrop-filter: blur(10px);
+        white-space: pre-line;
+        font-size: 1.2rem;
+        line-height: 1.8;
+      }
+
+      @media (min-width: 768px) {
+        .hero h1 { font-size: 4rem; }
+        .hero p { font-size: 1.8rem; }
+        .section h2 { font-size: 3.5rem; }
+        .values-grid { grid-template-columns: repeat(3, 1fr); }
+        .stats-grid { grid-template-columns: repeat(4, 1fr); }
       }
     </style>
   `;
 
   const generateMinimalStyles = () => `
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-      
       * {
         margin: 0;
         padding: 0;
@@ -781,72 +758,50 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
 
       body {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        line-height: 1.5;
+        line-height: 1.6;
         color: #1a202c;
         background: #ffffff;
-        font-weight: 400;
       }
 
       .hero {
-        min-height: 100vh;
+        min-height: 80vh;
         display: flex;
         align-items: center;
         padding: 3rem;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        position: relative;
-      }
-
-      .hero::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.05) 50%, transparent 60%);
-        background-size: 20px 20px;
-        animation: slide 20s linear infinite;
-      }
-
-      @keyframes slide {
-        0% { background-position: 0 0; }
-        100% { background-position: 100px 100px; }
       }
 
       .hero-content {
-        max-width: 900px;
+        max-width: 800px;
         margin: 0 auto;
-        z-index: 10;
-        position: relative;
       }
 
       .badge {
         display: inline-block;
-        padding: 0.75rem 1.5rem;
-        background: rgba(255,255,255,0.1);
-        border: 1px solid rgba(255,255,255,0.2);
-        border-radius: 6px;
-        font-size: 0.875rem;
-        font-weight: 600;
-        margin-bottom: 3rem;
+        padding: 0.5rem 1rem;
+        background: rgba(255,255,255,0.2);
+        border-radius: 4px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 2rem;
         text-transform: uppercase;
-        letter-spacing: 1px;
-        backdrop-filter: blur(10px);
+        letter-spacing: 0.5px;
       }
 
       .hero h1 {
-        font-size: 5rem;
-        font-weight: 800;
+        font-size: 4rem;
+        font-weight: 700;
         margin-bottom: 2rem;
-        line-height: 0.9;
-        letter-spacing: -0.02em;
+        line-height: 1.1;
       }
 
       .hero p {
         font-size: 1.5rem;
-        margin-bottom: 4rem;
+        margin-bottom: 3rem;
         opacity: 0.9;
         font-weight: 300;
-        line-height: 1.4;
-        max-width: 700px;
+        line-height: 1.5;
       }
 
       .cta-button {
@@ -856,26 +811,23 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
         color: white;
         text-decoration: none;
         border-radius: 0;
-        font-weight: 700;
+        font-weight: 600;
         transition: all 0.2s ease;
         border: 2px solid #000;
         font-size: 1.1rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
       }
 
       .cta-button:hover {
         background: transparent;
         color: #000;
-        background: white;
       }
 
       .stats-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 4rem;
-        margin-top: 6rem;
-        padding-top: 4rem;
+        gap: 3rem;
+        margin-top: 5rem;
+        padding-top: 3rem;
         border-top: 1px solid rgba(255,255,255,0.2);
       }
 
@@ -884,35 +836,34 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
       }
 
       .stat-number {
-        font-size: 3rem;
-        font-weight: 900;
+        font-size: 2.5rem;
+        font-weight: 700;
         display: block;
-        margin-bottom: 0.5rem;
       }
 
       .stat-label {
-        font-size: 0.875rem;
+        font-size: 1rem;
         opacity: 0.8;
-        font-weight: 500;
+        font-weight: 300;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 0.5px;
+        margin-top: 0.5rem;
       }
 
       .section {
-        padding: 10rem 3rem;
+        padding: 8rem 3rem;
       }
 
       .section:nth-child(even) {
-        background: #f8fafc;
+        background: #f7fafc;
       }
 
       .section h2 {
-        font-size: 4rem;
-        font-weight: 800;
+        font-size: 3rem;
+        font-weight: 700;
         text-align: center;
-        margin-bottom: 6rem;
+        margin-bottom: 5rem;
         color: #1a202c;
-        letter-spacing: -0.02em;
       }
 
       .container {
@@ -922,23 +873,21 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
 
       .problem-grid, .solution-grid, .benefits-grid, .pricing-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: 0;
-        margin-top: 4rem;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 3rem;
+        margin-top: 3rem;
       }
 
       .problem-item, .solution-item, .benefit-item, .pricing-item {
         background: white;
-        padding: 4rem;
+        padding: 3rem;
         border: 1px solid #e2e8f0;
-        text-align: left;
+        text-align: center;
         transition: all 0.2s ease;
-        position: relative;
       }
 
       .problem-item:hover, .solution-item:hover, .benefit-item:hover {
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        z-index: 10;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
       }
 
       .icon-container {
@@ -948,7 +897,7 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 2rem;
+        margin: 0 auto 2rem;
         border-radius: 0;
       }
 
@@ -961,7 +910,7 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
         font-size: 1.5rem;
         margin-bottom: 1.5rem;
         color: #1a202c;
-        font-weight: 700;
+        font-weight: 600;
       }
 
       .problem-item p, .solution-item p, .benefit-item p {
@@ -971,16 +920,26 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
         font-size: 1.1rem;
       }
 
+      .solution-content, .problem-content {
+        max-width: 1000px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .solution-content p, .problem-content p {
+        font-size: 1.3rem;
+        leading-relaxed: 1.8;
+        color: #4a5568;
+        margin-bottom: 3rem;
+      }
+
       .pricing-item {
         position: relative;
         text-align: center;
-        transition: all 0.3s ease;
       }
 
       .pricing-popular {
         border: 2px solid #667eea;
-        transform: scale(1.05);
-        z-index: 10;
       }
 
       .pricing-popular::before {
@@ -991,48 +950,168 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
         transform: translateX(-50%);
         background: #667eea;
         color: white;
-        padding: 0.5rem 1.5rem;
+        padding: 0.5rem 1rem;
         font-size: 0.875rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        font-weight: 600;
       }
 
       .pricing-title {
         font-size: 1.5rem;
-        font-weight: 700;
+        font-weight: 600;
         margin-bottom: 2rem;
         color: #1a202c;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
       }
 
       .pricing-price {
-        font-size: 4rem;
-        font-weight: 900;
+        font-size: 3rem;
+        font-weight: 700;
         color: #667eea;
         margin-bottom: 2rem;
-        line-height: 1;
+      }
+
+      .pricing-features {
+        list-style: none;
+        margin-bottom: 3rem;
+      }
+
+      .pricing-features li {
+        padding: 0.75rem 0;
+        color: #4a5568;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .pricing-features li::before {
+        content: '✓';
+        color: #48bb78;
+        font-weight: bold;
+        margin-left: 0.5rem;
+      }
+
+      .pricing-button {
+        width: 100%;
+        padding: 1rem 2rem;
+        border: 1px solid #e2e8f0;
+        background: #f7fafc;
+        color: #1a202c;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+
+      .pricing-popular .pricing-button {
+        background: #667eea;
+        color: white;
+        border-color: #667eea;
+      }
+
+      .pricing-button:hover {
+        background: #e2e8f0;
+      }
+
+      .pricing-popular .pricing-button:hover {
+        background: #5a67d8;
       }
 
       .testimonials-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-        gap: 0;
-        margin-top: 4rem;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 3rem;
+        margin-top: 3rem;
       }
 
       .testimonial-card {
         background: white;
-        padding: 4rem;
+        padding: 3rem;
         border: 1px solid #e2e8f0;
         transition: all 0.2s ease;
-        position: relative;
       }
 
       .testimonial-card:hover {
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        z-index: 10;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      }
+
+      .testimonial-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+
+      .testimonial-avatar {
+        width: 60px;
+        height: 60px;
+        background: #667eea;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        margin-left: 1rem;
+        border-radius: 0;
+      }
+
+      .testimonial-info h4 {
+        font-size: 1.1rem;
+        color: #1a202c;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+      }
+
+      .testimonial-info p {
+        color: #718096;
+        font-size: 0.9rem;
+      }
+
+      .testimonial-content {
+        color: #4a5568;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        font-weight: 400;
+        font-size: 1.1rem;
+      }
+
+      .stars {
+        display: flex;
+      }
+
+      .star {
+        color: #f6ad55;
+        font-size: 1.2rem;
+      }
+
+      .faq-grid {
+        display: grid;
+        gap: 2rem;
+        max-width: 1000px;
+        margin: 0 auto;
+        margin-top: 3rem;
+      }
+
+      .faq-item {
+        background: white;
+        padding: 3rem;
+        border: 1px solid #e2e8f0;
+      }
+
+      .faq-item h3 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        color: #1a202c;
+        font-weight: 600;
+      }
+
+      .faq-item p {
+        color: #4a5568;
+        font-weight: 400;
+        font-size: 1.1rem;
+        line-height: 1.6;
+      }
+
+      .contact-content {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
       }
 
       .contact-section {
@@ -1044,105 +1123,285 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
         color: white;
       }
 
+      .contact-section p {
+        font-size: 1.3rem;
+        margin-bottom: 3rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .contact-info {
+        padding: 3rem;
+        background: #2d3748;
+        border: 1px solid #4a5568;
+        margin-bottom: 3rem;
+        white-space: pre-line;
+        color: #e2e8f0;
+        font-size: 1.2rem;
+        line-height: 1.8;
+      }
+
+      .contact-section .cta-button {
+        background: white;
+        color: #1a202c;
+        border-color: white;
+      }
+
+      .contact-section .cta-button:hover {
+        background: #f7fafc;
+        color: #1a202c;
+      }
+
       @media (max-width: 768px) {
-        .hero h1 { font-size: 3.5rem; }
-        .section h2 { font-size: 2.5rem; }
+        .hero h1 { font-size: 3rem; }
+        .hero p { font-size: 1.25rem; }
         .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        .section { padding: 5rem 1.5rem; }
+        .section h2 { font-size: 2.5rem; }
         .pricing-grid { grid-template-columns: 1fr; }
       }
     </style>
   `;
 
   const renderContentByStyle = () => {
-    const sections = [];
-    
-    // Always include hero
-    sections.push(renderHeroContent());
-    
-    // Add sections based on selected elements
-    if (shouldShowSection('why-choose') && content.whyChooseUs) {
-      sections.push(renderWhyChooseContent());
+    switch (formData.designStyle) {
+      case 'storytelling':
+        return renderStorytellingContent();
+      case 'minimal':
+        return renderMinimalContent();
+      default: // '3d'
+        return render3DContent();
     }
-    
-    if (shouldShowSection('story') && formData.designStyle === 'storytelling') {
-      sections.push(renderStoryContent());
-    }
-    
-    if (shouldShowSection('values') && formData.designStyle === 'storytelling') {
-      sections.push(renderValuesContent());
-    }
-    
-    if (shouldShowSection('problem-solution') && formData.designStyle === 'minimal') {
-      sections.push(renderProblemSolutionContent());
-    }
-    
-    if (shouldShowSection('pricing') && formData.designStyle === 'minimal') {
-      sections.push(renderPricingContent());
-    }
-    
-    if (shouldShowSection('about')) {
-      sections.push(renderAboutContent());
-    }
-    
-    if (shouldShowSection('services')) {
-      sections.push(renderServicesContent());
-    }
-    
-    if (shouldShowSection('testimonials')) {
-      sections.push(renderTestimonialsContent());
-    }
-    
-    if (shouldShowSection('faq')) {
-      sections.push(renderFAQContent());
-    }
-    
-    if (shouldShowSection('contact')) {
-      sections.push(renderContactContent());
-    }
-    
-    return sections.join('');
   };
 
-  const renderHeroContent = () => `
+  const render3DContent = () => `
+    <div class="glassmorphism-section">
+      <div class="glassmorphism-bg"></div>
+      <div class="hero">
+        <div class="hero-content">
+          <span class="badge">${content.badge}</span>
+          <h1>${content.headline}</h1>
+          <p>${content.subheadline}</p>
+          <a href="#contact" class="cta-button">${content.cta}</a>
+          <div class="stats-grid">
+            ${Object.entries(content.stats).map(([key, value]) => `
+              <div class="stat-card">
+                <div class="stat-number">${value}</div>
+                <div class="stat-label">${key}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glassmorphism-section">
+      <div class="glassmorphism-bg"></div>
+      <div class="section">
+        <div class="container">
+          <h2>⚡ התכונות המרכזיות שלנו</h2>
+          <div class="features-grid">
+            <div class="feature-item">
+              <div class="glassmorphism-card">
+                <div class="icon-container">
+                  <i class="ri-speed-fill"></i>
+                </div>
+                <h3>מהירות במתן שירות</h3>
+                <p>זמן תגובה מהיר ושירות יעיל</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="glassmorphism-card">
+                <div class="icon-container">
+                  <i class="ri-shield-check-fill"></i>
+                </div>
+                <h3>אמינות וביטחון</h3>
+                <p>שירות אמין עם רמת ביטחון גבוהה</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="glassmorphism-card">
+                <div class="icon-container">
+                  <i class="ri-customer-service-2-fill"></i>
+                </div>
+                <h3>תמיכה 24/7</h3>
+                <p>זמינים עבורכם בכל שעות היום</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    ${content.whyChooseUs ? `
+    <div class="glassmorphism-section">
+      <div class="glassmorphism-bg"></div>
+      <div class="section">
+        <div class="container">
+          <h2>🏆 ${content.whyChooseUs.title}</h2>
+          <p style="text-align: center; font-size: 1.25rem; margin-bottom: 3rem; color: ${currentColors.text};">הסיבות המובילות לבחור בנו מבין כל האפשרויות</p>
+          <div class="why-choose-grid">
+            ${content.whyChooseUs.items.map(item => `
+              <div class="why-choose-item">
+                <div class="glassmorphism-card" style="display: flex; align-items: center; text-align: right;">
+                  <div class="icon-container" style="margin: 0 1rem 0 0; flex-shrink: 0;">
+                    <i class="ri-${item.icon}"></i>
+                  </div>
+                  <div>
+                    <h3 style="color: ${currentColors.primary}; margin-bottom: 0.5rem;">יתרון מוביל</h3>
+                    <p style="color: ${currentColors.text}; margin: 0;">${item.text}</p>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="cta-section">
+            <p>מוכנים להתחיל את המסע איתנו?</p>
+            <a href="#contact" class="cta-button">בואו נתחיל עכשיו ✨</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    ` : ''}
+
+    <div class="glassmorphism-section">
+      <div class="glassmorphism-bg"></div>
+      <div class="section">
+        <div class="container">
+          <h2>🎯 השירותים שלנו</h2>
+          <div class="services-grid">
+            <div class="service-item">
+              <div class="glassmorphism-card">
+                <div class="icon-container">
+                  <i class="ri-tools-fill"></i>
+                </div>
+                <h3>פתרונות מקצועיים</h3>
+                <p>שירותים מקצועיים המותאמים לצרכים שלכם</p>
+                <div class="service-price">החל מ₪199</div>
+              </div>
+            </div>
+            <div class="service-item">
+              <div class="glassmorphism-card">
+                <div class="icon-container">
+                  <i class="ri-team-fill"></i>
+                </div>
+                <h3>ייעוץ אישי</h3>
+                <p>ליווי צמוד ויעוץ מקצועי לאורך כל הדרך</p>
+                <div class="service-price">החל מ₪299</div>
+              </div>
+            </div>
+            <div class="service-item">
+              <div class="glassmorphism-card">
+                <div class="icon-container">
+                  <i class="ri-rocket-2-fill"></i>
+                </div>
+                <h3>פתרון מהיר</h3>
+                <p>תוצאות מהירות ויעילות ללא פשרות</p>
+                <div class="service-price">החל מ₪399</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glassmorphism-section">
+      <div class="glassmorphism-bg"></div>
+      <div class="section">
+        <div class="container">
+          <h2>👥 ${content.aboutTitle}</h2>
+          <div class="glassmorphism-card" style="max-width: 1000px; margin: 0 auto; padding: 3rem; text-align: center;">
+            <p style="font-size: 1.25rem; color: ${currentColors.aboutTextColor || currentColors.text}; line-height: 1.8; margin-bottom: 2rem;">${content.aboutText}</p>
+            <a href="#about" class="cta-button">למד עוד עלינו</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glassmorphism-section">
+      <div class="glassmorphism-bg"></div>
+      <div class="section">
+        <div class="container">
+          <h2>💭 מה אומרים עלינו</h2>
+          <div class="testimonials-grid">
+            ${content.testimonials.map(testimonial => `
+              <div class="testimonial-card">
+                <div class="glassmorphism-card">
+                  <div class="testimonial-header">
+                    <div class="testimonial-avatar">${testimonial.image}</div>
+                    <div class="testimonial-info">
+                      <h4>${testimonial.name}</h4>
+                      <p>${testimonial.role}</p>
+                    </div>
+                  </div>
+                  <div class="testimonial-content">"${testimonial.content}"</div>
+                  <div class="stars">
+                    ${'★'.repeat(testimonial.rating)}
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glassmorphism-section">
+      <div class="glassmorphism-bg"></div>
+      <div class="section">
+        <div class="container">
+          <h2>❓ שאלות נפוצות</h2>
+          <div class="faq-grid">
+            ${content.faq.map(item => `
+              <div class="faq-item">
+                <div class="glassmorphism-card">
+                  <h3>${item.question}</h3>
+                  <p>${item.answer}</p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glassmorphism-section">
+      <div class="glassmorphism-bg"></div>
+      <div class="section" id="contact">
+        <div class="container">
+          <div class="contact-content">
+            <div class="glassmorphism-card">
+              <h2>💬 ${content.contactTitle}</h2>
+              <div class="contact-info">${formData.contactInfo}</div>
+              <a href="#contact" class="cta-button">${content.cta}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const renderStorytellingContent = () => `
     <div class="hero">
       <div class="hero-content">
         <span class="badge">${content.badge}</span>
-        <h1>${content.headline}</h1>
-        <p>${content.subheadline}</p>
-        <a href="#contact" class="cta-button">${content.cta}</a>
+        <h1>הסיפור שלנו התחיל כאן</h1>
+        <p>מתוך חלום להביא שינוי אמיתי, התחלנו במסע שמטרתו לתת לכם את השירות הטוב ביותר. כל לקוח הוא חלק מהסיפור שלנו.</p>
+        <a href="#contact" class="cta-button">בואו נכיר</a>
         <div class="stats-grid">
           ${Object.entries(content.stats).map(([key, value]) => `
             <div class="stat-card">
-              <div class="stat-number">${value}</div>
-              <div class="stat-label">${key}</div>
+              <span class="stat-number">${value}</span>
+              <span class="stat-label">${key}</span>
             </div>
           `).join('')}
         </div>
       </div>
     </div>
-  `;
 
-  const renderWhyChooseContent = () => `
-    <div class="section">
-      <div class="container">
-        <h2>${content.whyChooseUs.title}</h2>
-        <div class="why-choose-grid">
-          ${content.whyChooseUs.items.map(item => `
-            <div class="why-choose-item">
-              <div class="icon-container">
-                <i class="ri-${item.icon}"></i>
-              </div>
-              <h3>יתרון מוביל</h3>
-              <p>${item.text}</p>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    </div>
-  `;
-
-  const renderStoryContent = () => `
-    <div class="section">
+    <div class="section story-section">
       <div class="container">
         <h2>💗 איך הכל התחיל</h2>
         <div class="story-content">
@@ -1153,9 +1412,26 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
         </div>
       </div>
     </div>
-  `;
 
-  const renderValuesContent = () => `
+    ${content.whyChooseUs ? `
+    <div class="section">
+      <div class="container">
+        <h2>למה אנחנו שונים?</h2>
+        <div class="why-choose-grid">
+          ${content.whyChooseUs.items.map(item => `
+            <div class="why-choose-item">
+              <div class="icon-container">
+                <i class="ri-${item.icon}"></i>
+              </div>
+              <h3>הערך שלנו</h3>
+              <p>${item.text}</p>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+    ` : ''}
+
     <div class="section">
       <div class="container">
         <h2>🛡️ הערכים שמנחים אותנו</h2>
@@ -1184,9 +1460,73 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
         </div>
       </div>
     </div>
+
+    <div class="section about-section">
+      <div class="container">
+        <h2>הסיפור מאחורי ${content.aboutTitle}</h2>
+        <div class="about-content">
+          <p>${content.aboutText}</p>
+          <div class="about-cta">
+            <p>"אנחנו מאמינים שכל לקוח ראוי לחוויה אישית ומיוחדת שתישמר איתו לתמיד. זה לא רק עסק עבורנו - זו מסירות אמיתית למטרה."</p>
+            <a href="#team" class="cta-button">הכירו את הצוות שלנו</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="container">
+        <h2>הסיפורים של הלקוחות שלנו</h2>
+        <div class="testimonials-grid">
+          ${content.testimonials.map(testimonial => `
+            <div class="testimonial-card">
+              <div class="testimonial-header">
+                <div class="testimonial-avatar">${testimonial.image}</div>
+                <div class="testimonial-info">
+                  <h4>${testimonial.name}</h4>
+                  <p>${testimonial.role}</p>
+                </div>
+              </div>
+              <div class="testimonial-content">${testimonial.content}</div>
+              <div class="stars">
+                ${'★'.repeat(testimonial.rating)}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+
+    <div class="section contact-section" id="contact">
+      <div class="container">
+        <div class="contact-content">
+          <h2>בואו נתחיל את הסיפור שלכם</h2>
+          <p>מוכנים להפוך את החלום שלכם למציאות? בואו נכיר ונתחיל לכתוב יחד את הפרק הבא.</p>
+          <div class="contact-info">${formData.contactInfo}</div>
+          <a href="#contact" class="cta-button">התחילו עכשיו</a>
+        </div>
+      </div>
+    </div>
   `;
 
-  const renderProblemSolutionContent = () => `
+  const renderMinimalContent = () => `
+    <div class="hero">
+      <div class="hero-content">
+        <span class="badge">${content.badge}</span>
+        <h1>${content.headline}</h1>
+        <p>${content.subheadline}</p>
+        <a href="#contact" class="cta-button">${content.cta}</a>
+        <div class="stats-grid">
+          ${Object.entries(content.stats).map(([key, value]) => `
+            <div class="stat-card">
+              <span class="stat-number">${value}</span>
+              <span class="stat-label">${key}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+
     <div class="section">
       <div class="container">
         <h2>📈 הבעיה</h2>
@@ -1250,9 +1590,26 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
         </div>
       </div>
     </div>
-  `;
 
-  const renderPricingContent = () => `
+    ${content.whyChooseUs ? `
+    <div class="section">
+      <div class="container">
+        <h2>${content.whyChooseUs.title}</h2>
+        <div class="benefits-grid">
+          ${content.whyChooseUs.items.map(item => `
+            <div class="benefit-item">
+              <div class="icon-container">
+                <i class="ri-${item.icon}"></i>
+              </div>
+              <h3>יתרון תחרותי</h3>
+              <p>${item.text}</p>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+    ` : ''}
+
     <div class="section">
       <div class="container">
         <h2>🕐 מחירים</h2>
@@ -1292,57 +1649,10 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
         </div>
       </div>
     </div>
-  `;
 
-  const renderAboutContent = () => `
     <div class="section">
       <div class="container">
-        <h2>👥 ${content.aboutTitle}</h2>
-        <div class="about-content">
-          <p style="font-size: 1.25rem; color: ${currentColors.aboutTextColor || currentColors.text}; line-height: 1.8; margin-bottom: 2rem; text-align: center; max-width: 1000px; margin-left: auto; margin-right: auto;">${content.aboutText}</p>
-        </div>
-      </div>
-    </div>
-  `;
-
-  const renderServicesContent = () => `
-    <div class="section">
-      <div class="container">
-        <h2>🎯 השירותים שלנו</h2>
-        <div class="services-grid">
-          <div class="service-item">
-            <div class="icon-container">
-              <i class="ri-tools-fill"></i>
-            </div>
-            <h3>פתרונות מקצועיים</h3>
-            <p>שירותים מקצועיים המותאמים לצרכים שלכם</p>
-            <div class="service-price">החל מ₪199</div>
-          </div>
-          <div class="service-item">
-            <div class="icon-container">
-              <i class="ri-team-fill"></i>
-            </div>
-            <h3>ייעוץ אישי</h3>
-            <p>ליווי צמוד ויעוץ מקצועי לאורך כל הדרך</p>
-            <div class="service-price">החל מ₪299</div>
-          </div>
-          <div class="service-item">
-            <div class="icon-container">
-              <i class="ri-rocket-2-fill"></i>
-            </div>
-            <h3>פתרון מהיר</h3>
-            <p>תוצאות מהירות ויעילות ללא פשרות</p>
-            <div class="service-price">החל מ₪399</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  const renderTestimonialsContent = () => `
-    <div class="section">
-      <div class="container">
-        <h2>💭 מה אומרים עלינו</h2>
+        <h2>המלצות</h2>
         <div class="testimonials-grid">
           ${content.testimonials.map(testimonial => `
             <div class="testimonial-card">
@@ -1353,7 +1663,7 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
                   <p>${testimonial.role}</p>
                 </div>
               </div>
-              <div class="testimonial-content">"${testimonial.content}"</div>
+              <div class="testimonial-content">${testimonial.content}</div>
               <div class="stars">
                 ${'★'.repeat(testimonial.rating)}
               </div>
@@ -1362,12 +1672,10 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
         </div>
       </div>
     </div>
-  `;
 
-  const renderFAQContent = () => `
     <div class="section">
       <div class="container">
-        <h2>❓ שאלות נפוצות</h2>
+        <h2>שאלות נפוצות</h2>
         <div class="faq-grid">
           ${content.faq.map(item => `
             <div class="faq-item">
@@ -1378,13 +1686,12 @@ export const generateHtmlFile = (content: any, currentColors: ColorScheme, formD
         </div>
       </div>
     </div>
-  `;
 
-  const renderContactContent = () => `
     <div class="section contact-section" id="contact">
       <div class="container">
         <div class="contact-content">
-          <h2>💬 ${content.contactTitle}</h2>
+          <h2>יצירת קשר</h2>
+          <p>מוכנים להתחיל? צרו קשר היום ובואו נראה איך אנחנו יכולים לעזור לכם.</p>
           <div class="contact-info">${formData.contactInfo}</div>
           <a href="#contact" class="cta-button">${content.cta}</a>
         </div>
