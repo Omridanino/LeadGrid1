@@ -67,184 +67,136 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   return (
     <div className="w-full bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white overflow-hidden rounded-lg" dir="rtl">
       <style>{`
-        @keyframes float3D {
+        @keyframes gentleFloat {
           0%, 100% { 
-            transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px) translateZ(0px);
-          }
-          25% { 
-            transform: perspective(1000px) rotateX(5deg) rotateY(10deg) translateY(-15px) translateZ(20px);
+            transform: translateY(0px);
           }
           50% { 
-            transform: perspective(1000px) rotateX(0deg) rotateY(20deg) translateY(-25px) translateZ(40px);
-          }
-          75% { 
-            transform: perspective(1000px) rotateX(-5deg) rotateY(10deg) translateY(-15px) translateZ(20px);
+            transform: translateY(-10px);
           }
         }
 
-        @keyframes holographicGlow {
+        @keyframes softPulse {
           0%, 100% {
-            background: linear-gradient(45deg, ${currentColors.primary}40, ${currentColors.secondary}40, ${currentColors.accent}40);
-            box-shadow: 0 0 20px ${currentColors.primary}30, 0 0 40px ${currentColors.secondary}20, 0 0 60px ${currentColors.accent}10;
-            filter: hue-rotate(0deg);
-          }
-          25% {
-            filter: hue-rotate(90deg);
-            box-shadow: 0 0 25px ${currentColors.accent}40, 0 0 45px ${currentColors.primary}30, 0 0 65px ${currentColors.secondary}20;
+            opacity: 0.8;
+            transform: scale(1);
           }
           50% {
-            filter: hue-rotate(180deg);
-            box-shadow: 0 0 30px ${currentColors.secondary}50, 0 0 50px ${currentColors.accent}40, 0 0 70px ${currentColors.primary}30;
-          }
-          75% {
-            filter: hue-rotate(270deg);
-            box-shadow: 0 0 25px ${currentColors.primary}40, 0 0 45px ${currentColors.secondary}30, 0 0 65px ${currentColors.accent}20;
+            opacity: 1;
+            transform: scale(1.02);
           }
         }
 
-        @keyframes neonPulse {
+        @keyframes gradientShift {
           0%, 100% {
-            text-shadow: 0 0 5px ${currentColors.accent}, 0 0 10px ${currentColors.accent}, 0 0 15px ${currentColors.accent}, 0 0 20px ${currentColors.accent};
+            background-position: 0% 50%;
           }
           50% {
-            text-shadow: 0 0 2px ${currentColors.accent}, 0 0 5px ${currentColors.accent}, 0 0 8px ${currentColors.accent}, 0 0 12px ${currentColors.accent};
+            background-position: 100% 50%;
           }
         }
 
-        @keyframes rotate3D {
-          0% { transform: perspective(1000px) rotateY(0deg) rotateX(0deg); }
-          100% { transform: perspective(1000px) rotateY(360deg) rotateX(360deg); }
+        @keyframes subtleGlow {
+          0%, 100% {
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+          }
+          50% {
+            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
+          }
         }
 
-        @keyframes shimmer {
-          0% { transform: translateX(-100%) skewX(-15deg); opacity: 0; }
-          50% { opacity: 1; }
-          100% { transform: translateX(100%) skewX(-15deg); opacity: 0; }
-        }
-
-        .tech-card-3d {
+        .tech-card {
           background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
           backdrop-filter: blur(20px);
           border: 1px solid rgba(255,255,255,0.2);
           border-radius: 20px;
-          animation: float3D 8s ease-in-out infinite;
-          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-          position: relative;
-          overflow: hidden;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          will-change: transform;
         }
 
-        .tech-card-3d::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-          animation: shimmer 3s infinite;
-        }
-
-        .tech-card-3d:hover {
-          transform: perspective(1000px) rotateY(15deg) rotateX(10deg) translateY(-10px) translateZ(50px);
+        .tech-card:hover {
+          transform: translateY(-5px) scale(1.02);
           background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08));
-          box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 30px ${currentColors.accent}40;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
-        .holographic-button {
+        .floating-gentle {
+          animation: gentleFloat 4s ease-in-out infinite;
+        }
+
+        .floating-gentle:nth-child(2) { animation-delay: -1s; }
+        .floating-gentle:nth-child(3) { animation-delay: -2s; }
+        .floating-gentle:nth-child(4) { animation-delay: -3s; }
+
+        .holographic-btn {
           background: linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary}, ${currentColors.secondary});
           background-size: 200% 200%;
-          animation: holographicGlow 4s ease-in-out infinite;
+          animation: gradientShift 3s ease infinite;
           border: none;
-          position: relative;
-          overflow: hidden;
-          transform-style: preserve-3d;
+          transition: all 0.3s ease;
+          will-change: transform;
         }
 
-        .holographic-button::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-          animation: shimmer 2s infinite;
-        }
-
-        .holographic-button:hover {
-          transform: perspective(1000px) rotateY(10deg) translateY(-5px) translateZ(20px);
-          box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 25px ${currentColors.accent}60;
+        .holographic-btn:hover {
+          transform: translateY(-2px);
+          animation: subtleGlow 2s ease infinite;
         }
 
         .neon-text {
-          animation: neonPulse 2s ease-in-out infinite;
+          text-shadow: 0 0 10px ${currentColors.accent}80;
         }
 
-        .floating-icon-3d {
-          animation: rotate3D 20s linear infinite;
-          filter: drop-shadow(0 0 10px ${currentColors.accent}80);
-        }
-
-        .contact-form-3d {
+        .contact-form-glass {
           background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(31,41,55,0.9));
           backdrop-filter: blur(25px);
-          border: 2px solid rgba(255,255,255,0.1);
-          border-radius: 30px;
+          border: 1px solid rgba(255,255,255,0.1);
+          border-radius: 24px;
           position: relative;
           overflow: hidden;
-          transform-style: preserve-3d;
         }
 
-        .contact-form-3d::before {
+        .contact-form-glass::before {
           content: '';
           position: absolute;
-          top: -2px;
-          left: -2px;
-          right: -2px;
-          bottom: -2px;
-          background: linear-gradient(45deg, ${currentColors.primary}, ${currentColors.accent}, ${currentColors.secondary}, ${currentColors.primary});
-          background-size: 400% 400%;
-          animation: holographicGlow 6s ease-in-out infinite;
-          border-radius: 30px;
-          z-index: -1;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(45deg, ${currentColors.primary}20, transparent, ${currentColors.accent}20);
+          opacity: 0.5;
+          pointer-events: none;
         }
 
-        .form-field-3d {
+        .form-field {
           background: rgba(255,255,255,0.05);
           border: 1px solid rgba(255,255,255,0.2);
           backdrop-filter: blur(10px);
           transition: all 0.3s ease;
         }
 
-        .form-field-3d:focus {
+        .form-field:focus {
           background: rgba(255,255,255,0.1);
           border-color: ${currentColors.accent};
-          box-shadow: 0 0 20px ${currentColors.accent}40, inset 0 0 20px rgba(255,255,255,0.1);
-          transform: translateY(-2px);
+          box-shadow: 0 0 20px ${currentColors.accent}40;
+          outline: none;
         }
 
-        .stats-grid-3d {
+        .stats-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
           gap: 1rem;
-          perspective: 1000px;
         }
 
-        .stat-card-3d {
-          transform-style: preserve-3d;
-          animation: float3D 6s ease-in-out infinite;
+        .pulse-soft {
+          animation: softPulse 3s ease-in-out infinite;
         }
-
-        .stat-card-3d:nth-child(2) { animation-delay: -1s; }
-        .stat-card-3d:nth-child(3) { animation-delay: -2s; }
-        .stat-card-3d:nth-child(4) { animation-delay: -3s; }
 
         @media (max-width: 768px) {
-          .tech-card-3d:hover {
-            transform: perspective(800px) rotateY(8deg) rotateX(5deg) translateY(-5px) translateZ(25px);
+          .tech-card:hover {
+            transform: translateY(-3px) scale(1.01);
           }
           
-          .stats-grid-3d {
+          .stats-grid {
             grid-template-columns: repeat(2, 1fr);
           }
         }
@@ -261,7 +213,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                }}>
         
         <div className="relative z-10 max-w-4xl mx-auto">
-          <span className="inline-block px-6 py-3 mb-8 text-white rounded-full font-semibold text-sm tech-card-3d neon-text">
+          <span className="inline-block px-6 py-3 mb-8 text-white rounded-full font-semibold text-sm tech-card pulse-soft">
             {content.badge}
           </span>
           
@@ -280,16 +232,16 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           
           <button 
             onClick={() => scrollToSection('contact')}
-            className="holographic-button inline-block px-10 py-5 text-white font-bold rounded-xl text-lg mb-16 transition-all duration-300"
+            className="holographic-btn inline-block px-10 py-5 text-white font-bold rounded-xl text-lg mb-16"
           >
             {content.cta}
           </button>
 
-          {/* 3D Stats Grid */}
-          <div className="stats-grid-3d max-w-4xl mx-auto">
+          {/* Stats Grid */}
+          <div className="stats-grid max-w-4xl mx-auto">
             {Object.entries(content.stats).map(([key, value], index) => (
-              <div key={key} className={`tech-card-3d stat-card-3d p-6 text-center`}>
-                <div className="floating-icon-3d text-3xl md:text-4xl font-bold text-white mb-2">{String(value)}</div>
+              <div key={key} className={`tech-card floating-gentle p-6 text-center`}>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2 pulse-soft">{String(value)}</div>
                 <div className="text-sm md:text-base text-white opacity-80">{key}</div>
               </div>
             ))}
@@ -305,8 +257,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           </h2>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="tech-card-3d p-8 text-center">
-              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 floating-icon-3d"
+            <div className="tech-card p-8 text-center floating-gentle">
+              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 pulse-soft"
                    style={{ background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary})` }}>
                 <span className="text-3xl">🎧</span>
               </div>
@@ -314,8 +266,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               <p className="text-gray-300 text-sm leading-relaxed">זמינים עבורכם בכל שעה</p>
             </div>
 
-            <div className="tech-card-3d p-8 text-center">
-              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 floating-icon-3d"
+            <div className="tech-card p-8 text-center floating-gentle">
+              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 pulse-soft"
                    style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
                 <span className="text-3xl">🏆</span>
               </div>
@@ -323,8 +275,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               <p className="text-gray-300 text-sm leading-relaxed">מומחיות מוכחת בתחום</p>
             </div>
 
-            <div className="tech-card-3d p-8 text-center">
-              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 floating-icon-3d"
+            <div className="tech-card p-8 text-center floating-gentle">
+              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 pulse-soft"
                    style={{ background: `linear-gradient(135deg, ${currentColors.secondary}, ${currentColors.accent})` }}>
                 <span className="text-3xl">⭐</span>
               </div>
@@ -332,8 +284,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               <p className="text-gray-300 text-sm leading-relaxed">איכות ללא פשרות</p>
             </div>
 
-            <div className="tech-card-3d p-8 text-center">
-              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 floating-icon-3d"
+            <div className="tech-card p-8 text-center floating-gentle">
+              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 pulse-soft"
                    style={{ background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.secondary})` }}>
                 <span className="text-3xl">💰</span>
               </div>
@@ -358,8 +310,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               { icon: "🎧", title: "תמיכה מלאה", desc: "ליווי צמוד לאורך כל הדרך" }
             ].map((feature, idx) => (
               <div key={idx} className="text-center">
-                <div className="tech-card-3d p-8">
-                  <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-8 floating-icon-3d"
+                <div className="tech-card p-8 floating-gentle">
+                  <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-8 pulse-soft"
                        style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
                     <span className="text-3xl">{feature.icon}</span>
                   </div>
@@ -376,12 +328,12 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         </div>
       </section>
 
-      {/* 3D Contact Form Section */}
+      {/* Contact Form Section */}
       <section id="contact" className="py-24 px-8">
         <div className="max-w-5xl mx-auto">
-          <div className="contact-form-3d p-10 md:p-12">
-            <div className="text-center mb-12">
-              <div className="w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-8 floating-icon-3d"
+          <div className="contact-form-glass p-10 md:p-12">
+            <div className="text-center mb-12 relative z-10">
+              <div className="w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-8 pulse-soft"
                    style={{ background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary})` }}>
                 <span className="text-4xl">💬</span>
               </div>
@@ -392,7 +344,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
               <p className="text-xl text-gray-300">מלא את הפרטים ונחזור אליך בהקדם</p>
             </div>
             
-            <form onSubmit={handleContactSubmit} className="max-w-3xl mx-auto space-y-8">
+            <form onSubmit={handleContactSubmit} className="max-w-3xl mx-auto space-y-8 relative z-10">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-lg font-medium mb-3 text-gray-300">שם מלא *</label>
@@ -401,7 +353,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                     placeholder="השם שלך"
                     value={contactForm.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    className="form-field-3d text-white placeholder:text-white/50 h-14 text-lg rounded-xl"
+                    className="form-field text-white placeholder:text-white/50 h-14 text-lg rounded-xl border-0"
                     required
                   />
                 </div>
@@ -412,7 +364,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                     placeholder="example@email.com"
                     value={contactForm.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    className="form-field-3d text-white placeholder:text-white/50 h-14 text-lg rounded-xl"
+                    className="form-field text-white placeholder:text-white/50 h-14 text-lg rounded-xl border-0"
                     required
                   />
                 </div>
@@ -425,7 +377,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                   placeholder="050-1234567"
                   value={contactForm.phone}
                   onChange={(e) => handleInputChange('phone', e.target.value)}
-                  className="form-field-3d text-white placeholder:text-white/50 h-14 text-lg rounded-xl"
+                  className="form-field text-white placeholder:text-white/50 h-14 text-lg rounded-xl border-0"
                 />
               </div>
               
@@ -436,14 +388,14 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                   rows={6}
                   value={contactForm.message}
                   onChange={(e) => handleInputChange('message', e.target.value)}
-                  className="form-field-3d text-white placeholder:text-white/50 text-lg rounded-xl"
+                  className="form-field text-white placeholder:text-white/50 text-lg rounded-xl border-0"
                   required
                 />
               </div>
               
               <Button 
                 type="submit"
-                className="w-full py-6 text-xl font-bold holographic-button rounded-xl"
+                className="w-full py-6 text-xl font-bold holographic-btn rounded-xl border-0"
               >
                 <Send className="w-6 h-6 ml-3" />
                 שלח הודעה
@@ -451,21 +403,21 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             </form>
 
             {/* Contact Info Cards */}
-            <div className="grid md:grid-cols-3 gap-8 mt-16">
-              <div className="tech-card-3d p-8 text-center">
-                <Phone className="w-10 h-10 mx-auto mb-4 floating-icon-3d" style={{ color: currentColors.accent }} />
+            <div className="grid md:grid-cols-3 gap-8 mt-16 relative z-10">
+              <div className="tech-card p-8 text-center floating-gentle">
+                <Phone className="w-10 h-10 mx-auto mb-4 pulse-soft" style={{ color: currentColors.accent }} />
                 <h4 className="font-bold text-white mb-3 text-lg neon-text">טלפון</h4>
                 <p className="text-gray-300 text-lg">050-1234567</p>
               </div>
               
-              <div className="tech-card-3d p-8 text-center">
-                <Mail className="w-10 h-10 mx-auto mb-4 floating-icon-3d" style={{ color: currentColors.accent }} />
+              <div className="tech-card p-8 text-center floating-gentle">
+                <Mail className="w-10 h-10 mx-auto mb-4 pulse-soft" style={{ color: currentColors.accent }} />
                 <h4 className="font-bold text-white mb-3 text-lg neon-text">אימייל</h4>
                 <p className="text-gray-300 text-lg">info@business.co.il</p>
               </div>
               
-              <div className="tech-card-3d p-8 text-center">
-                <MapPin className="w-10 h-10 mx-auto mb-4 floating-icon-3d" style={{ color: currentColors.accent }} />
+              <div className="tech-card p-8 text-center floating-gentle">
+                <MapPin className="w-10 h-10 mx-auto mb-4 pulse-soft" style={{ color: currentColors.accent }} />
                 <h4 className="font-bold text-white mb-3 text-lg neon-text">כתובת</h4>
                 <p className="text-gray-300 text-lg">תל אביב, ישראל</p>
               </div>
@@ -487,8 +439,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             
             <div className="grid md:grid-cols-2 gap-8">
               {content.whyChooseUs.items.map((item: any, idx: number) => (
-                <div key={idx} className="tech-card-3d p-8 flex items-center text-right">
-                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center ml-6 flex-shrink-0 floating-icon-3d"
+                <div key={idx} className="tech-card p-8 flex items-center text-right floating-gentle">
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center ml-6 flex-shrink-0 pulse-soft"
                        style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
                     <span className="text-2xl">🚀</span>
                   </div>
@@ -507,7 +459,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             <div className="text-center mt-16">
               <button 
                 onClick={() => scrollToSection('contact')}
-                className="holographic-button inline-block px-10 py-5 text-white font-bold rounded-xl text-lg"
+                className="holographic-btn inline-block px-10 py-5 text-white font-bold rounded-xl text-lg"
               >
                 בואו נתחיל עכשיו ✨
               </button>
@@ -519,7 +471,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       {/* Services Section */}
       {elements.includes('services') && (
         <section className="relative py-20 px-8">
-          <div className="glassmorphism-bg absolute inset-0 opacity-5"></div>
           <div className="relative z-10 max-w-6xl mx-auto">
             <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 neon-text" style={{ color: currentColors.text }}>
               🎯 השירותים שלנו
@@ -532,8 +483,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                 { icon: "🚀", title: "פתרון מהיר", desc: "תוצאות מהירות ויעילות ללא פשרות", price: "החל מ₪399" }
               ].map((service, idx) => (
                 <div key={idx} className="text-center">
-                  <div className="tech-card-3d p-8 rounded-2xl">
-                    <div className="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-8 floating-icon-3d"
+                  <div className="tech-card p-8 rounded-2xl floating-gentle">
+                    <div className="w-20 h-20 rounded-xl flex items-center justify-center mx-auto mb-8 pulse-soft"
                          style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
                       <span className="text-3xl">{service.icon}</span>
                     </div>
@@ -557,19 +508,18 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       {/* About Section */}
       {elements.includes('about') && (
         <section className="relative py-20 px-8">
-          <div className="glassmorphism-bg absolute inset-0 opacity-5"></div>
           <div className="relative z-10 max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-5xl font-bold mb-12 neon-text" style={{ color: currentColors.text }}>
               👥 {content.aboutTitle}
             </h2>
-            <div className="tech-card-3d p-12 rounded-2xl">
+            <div className="tech-card p-12 rounded-2xl floating-gentle">
               <p className="text-lg leading-relaxed mb-8" 
                  style={{ color: currentColors.aboutTextColor || currentColors.text }}>
                 {content.aboutText}
               </p>
               <button 
                 onClick={() => scrollToSection('contact')}
-                className="holographic-button inline-block px-10 py-5 text-white font-bold rounded-xl text-lg"
+                className="holographic-btn inline-block px-10 py-5 text-white font-bold rounded-xl text-lg"
               >
                 למד עוד עלינו
               </button>
@@ -581,7 +531,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       {/* Testimonials Section */}
       {elements.includes('testimonials') && (
         <section className="relative py-20 px-8">
-          <div className="glassmorphism-bg absolute inset-0 opacity-5"></div>
           <div className="relative z-10 max-w-6xl mx-auto">
             <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 neon-text" style={{ color: currentColors.text }}>
               💭 מה אומרים עלינו
@@ -589,9 +538,9 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             
             <div className="grid md:grid-cols-3 gap-10">
               {content.testimonials.map((testimonial: any, idx: number) => (
-                <div key={idx} className="tech-card-3d p-8 rounded-2xl">
+                <div key={idx} className="tech-card p-8 rounded-2xl floating-gentle">
                   <div className="flex items-center mb-6">
-                    <div className="w-16 h-16 rounded-lg flex items-center justify-center ml-4"
+                    <div className="w-16 h-16 rounded-lg flex items-center justify-center ml-4 pulse-soft"
                          style={{ background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})` }}>
                       <span className="text-lg">{testimonial.image}</span>
                     </div>
@@ -622,7 +571,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       {/* FAQ Section */}
       {elements.includes('faq') && (
         <section className="relative py-20 px-8">
-          <div className="glassmorphism-bg absolute inset-0 opacity-5"></div>
           <div className="relative z-10 max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 neon-text" style={{ color: currentColors.text }}>
               ❓ שאלות נפוצות
@@ -630,7 +578,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             
             <div className="space-y-8">
               {content.faq.map((item: any, idx: number) => (
-                <div key={idx} className="tech-card-3d p-8 rounded-2xl">
+                <div key={idx} className="tech-card p-8 rounded-2xl floating-gentle">
                   <h3 className="font-bold mb-4 text-xl" style={{ color: currentColors.secondary }}>
                     {item.question}
                   </h3>
