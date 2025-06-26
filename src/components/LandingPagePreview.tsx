@@ -238,21 +238,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                           transform: 'perspective(500px) rotateX(25deg) rotateY(15deg)'
                         }}
                       >
-                        <div 
-                          className="absolute inset-0 rounded-3xl transform translate-y-3 translate-x-2 -z-10"
-                          style={{ 
-                            background: `linear-gradient(135deg, ${currentColors.primary}80, ${currentColors.secondary}80)`,
-                            filter: 'blur(12px)'
-                          }}
-                        ></div>
-                        <div 
-                          className="absolute inset-0 rounded-3xl transform translate-y-6 translate-x-4 -z-20"
-                          style={{ 
-                            background: `linear-gradient(135deg, ${currentColors.primary}40, ${currentColors.secondary}40)`,
-                            filter: 'blur(20px)'
-                          }}
-                        ></div>
-                        
                         <i 
                           className={`ri-${item.icon} text-5xl text-white group-hover:scale-125 transition-all duration-700`}
                           style={{ 
@@ -333,13 +318,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                   onClick={handleCtaClick}
                 >
                   <span className="relative z-10">בואו נתחיל עכשיו ✨</span>
-                  <div 
-                    className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
-                    style={{
-                      background: `linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%)`,
-                      animation: 'shimmer 2s infinite'
-                    }}
-                  ></div>
                 </Button>
               </div>
             </div>
@@ -357,6 +335,150 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         return null;
     }
   };
+
+  // The amazing Why Choose Us section with 4 items in 2x2 grid
+  const renderWhyChooseUs = (whyChoose: any) => (
+    <div className="p-16 relative overflow-hidden" style={{ backgroundColor: currentColors.background }}>
+      {/* Optimized background animations */}
+      <div className="absolute inset-0 opacity-5">
+        <div 
+          className="absolute top-20 left-20 w-64 h-64 rounded-full"
+          style={{ 
+            background: `conic-gradient(from 45deg, ${currentColors.primary}, ${currentColors.secondary}, ${currentColors.accent}, ${currentColors.primary})`,
+            animation: 'spin 30s linear infinite',
+            filter: 'blur(8px)'
+          }}
+        />
+        <div 
+          className="absolute bottom-20 right-20 w-48 h-48 rounded-full"
+          style={{ 
+            background: `linear-gradient(135deg, ${currentColors.secondary}60, ${currentColors.accent}60)`,
+            animation: 'pulse 4s ease-in-out infinite',
+            filter: 'blur(6px)'
+          }}
+        />
+      </div>
+
+      <div className="relative z-10">
+        <h2 
+          className="text-5xl font-bold mb-6 text-center"
+          style={{ 
+            color: currentColors.text,
+            textShadow: '0 8px 16px rgba(0,0,0,0.4)',
+            transform: 'perspective(1000px) rotateX(10deg)'
+          }}
+        >
+          <Award className="w-12 h-12 ml-4 inline animate-bounce" style={{ color: currentColors.accent }} />
+          {whyChoose.title}
+        </h2>
+        <p className="text-center text-xl mb-16 opacity-80" style={{ color: currentColors.text }}>
+          הסיבות המובילות לבחור בנו מבין כל האפשרויות
+        </p>
+        
+        {/* Changed to 2x2 grid for 4 items */}
+        <div className="grid grid-cols-2 gap-12 max-w-5xl mx-auto">
+          {whyChoose.items.map((item: any, index: number) => (
+            <div 
+              key={index}
+              className="group relative p-10 rounded-3xl transition-all duration-700 hover:scale-110 cursor-pointer"
+              style={{ 
+                background: `linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05))`,
+                border: `3px solid ${currentColors.primary}40`,
+                backdropFilter: 'blur(20px)',
+                boxShadow: `0 25px 80px rgba(0,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.2)`,
+                transform: 'perspective(1000px) rotateX(15deg) rotateY(8deg)'
+              }}
+            >
+              <div className="relative mb-8">
+                <div 
+                  className="w-28 h-28 rounded-3xl flex items-center justify-center mx-auto group-hover:scale-125 group-hover:rotate-12 transition-all duration-700 relative"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary} 50%, ${currentColors.accent})`,
+                    boxShadow: `0 25px 50px ${currentColors.primary}60, inset 0 3px 0 rgba(255,255,255,0.4)`,
+                    transform: 'perspective(500px) rotateX(25deg) rotateY(15deg)'
+                  }}
+                >
+                  <i 
+                    className={`ri-${item.icon} text-5xl text-white group-hover:scale-125 transition-all duration-700`}
+                    style={{ 
+                      textShadow: '0 6px 12px rgba(0,0,0,0.6)',
+                      transform: 'perspective(200px) rotateX(-15deg)'
+                    }}
+                  />
+                  
+                  {/* Shimmer effect */}
+                  <div 
+                    className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+                    style={{ 
+                      background: `linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.5) 50%, transparent 70%)`,
+                      transform: 'translateX(-100%)',
+                      animation: 'shimmer 3s infinite'
+                    }}
+                  />
+                </div>
+
+                {/* Floating particles */}
+                <div className="absolute -top-3 -right-3 w-6 h-6 rounded-full animate-pulse" 
+                     style={{ backgroundColor: currentColors.accent, boxShadow: `0 0 20px ${currentColors.accent}` }} />
+                <div className="absolute -bottom-2 -left-2 w-4 h-4 rounded-full animate-pulse" 
+                     style={{ backgroundColor: currentColors.secondary, animationDelay: '0.5s', boxShadow: `0 0 15px ${currentColors.secondary}` }} />
+              </div>
+              
+              <div className="text-center relative">
+                <p 
+                  className="text-xl leading-relaxed font-bold group-hover:text-opacity-100 transition-all duration-700"
+                  style={{ 
+                    color: currentColors.text,
+                    textShadow: '0 3px 6px rgba(0,0,0,0.4)',
+                    transform: 'perspective(500px) rotateX(8deg)'
+                  }}
+                >
+                  {item.text}
+                </p>
+              </div>
+
+              {/* Hover glow effect */}
+              <div 
+                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-40 transition-all duration-700 -z-10"
+                style={{ 
+                  background: `radial-gradient(ellipse at center, ${currentColors.primary}50, ${currentColors.secondary}30, transparent 70%)`
+                }}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-20">
+          <p className="text-2xl mb-10 opacity-90" style={{ color: currentColors.text }}>
+            מוכנים להתחיל את המסע איתנו?
+          </p>
+          <Button 
+            size="lg"
+            className="px-20 py-8 text-2xl font-bold rounded-3xl hover:scale-110 transition-all duration-700 shadow-2xl relative overflow-hidden"
+            style={{ 
+              background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary}, ${currentColors.secondary})`,
+              color: 'white',
+              boxShadow: `0 20px 60px ${currentColors.accent}60`,
+              transform: 'perspective(500px) rotateX(10deg)'
+            }}
+            onClick={handleCtaClick}
+          >
+            <span className="relative z-10">בואו נתחיל עכשיו ✨</span>
+          </Button>
+        </div>
+      </div>
+
+      {/* CSS animations */}
+      <style>
+        {`
+          @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+          }
+        `}
+      </style>
+    </div>
+  );
 
   const renderServiceCards = (serviceCards: any[]) => (
     <div className="p-8" style={{ backgroundColor: currentColors.background }}>
@@ -483,172 +605,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       </div>
     </div>
   );
-
-  // The amazing Why Choose Us section with optimized animations
-  const renderWhyChooseUs = (whyChoose: any) => (
-    <div className="p-16 relative overflow-hidden" style={{ backgroundColor: currentColors.background }}>
-      {/* Optimized background animations */}
-      <div className="absolute inset-0 opacity-5">
-        <div 
-          className="absolute top-20 left-20 w-64 h-64 rounded-full"
-          style={{ 
-            background: `conic-gradient(from 45deg, ${currentColors.primary}, ${currentColors.secondary}, ${currentColors.accent}, ${currentColors.primary})`,
-            animation: 'spin 30s linear infinite',
-            filter: 'blur(8px)'
-          }}
-        />
-        <div 
-          className="absolute bottom-20 right-20 w-48 h-48 rounded-full"
-          style={{ 
-            background: `linear-gradient(135deg, ${currentColors.secondary}60, ${currentColors.accent}60)`,
-            animation: 'pulse 4s ease-in-out infinite',
-            filter: 'blur(6px)'
-          }}
-        />
-      </div>
-
-      <div className="relative z-10">
-        <h2 
-          className="text-5xl font-bold mb-6 text-center"
-          style={{ 
-            color: currentColors.text,
-            textShadow: '0 8px 16px rgba(0,0,0,0.4)',
-            transform: 'perspective(1000px) rotateX(10deg)'
-          }}
-        >
-          <Award className="w-12 h-12 ml-4 inline animate-bounce" style={{ color: currentColors.accent }} />
-          {whyChoose.title}
-        </h2>
-        <p className="text-center text-xl mb-16 opacity-80" style={{ color: currentColors.text }}>
-          הסיבות המובילות לבחור בנו מבין כל האפשרויות
-        </p>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-          {whyChoose.items.map((item: any, index: number) => (
-            <div 
-              key={index}
-              className="group relative p-10 rounded-3xl transition-all duration-700 hover:scale-110 cursor-pointer"
-              style={{ 
-                background: `linear-gradient(145deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05))`,
-                border: `3px solid ${currentColors.primary}40`,
-                backdropFilter: 'blur(20px)',
-                boxShadow: `0 25px 80px rgba(0,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.2)`,
-                transform: 'perspective(1000px) rotateX(15deg) rotateY(8deg)'
-              }}
-            >
-              <div className="relative mb-8">
-                <div 
-                  className="w-28 h-28 rounded-3xl flex items-center justify-center mx-auto group-hover:scale-125 group-hover:rotate-12 transition-all duration-700 relative"
-                  style={{ 
-                    background: `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary} 50%, ${currentColors.accent})`,
-                    boxShadow: `0 25px 50px ${currentColors.primary}60, inset 0 3px 0 rgba(255,255,255,0.4)`,
-                    transform: 'perspective(500px) rotateX(25deg) rotateY(15deg)'
-                  }}
-                >
-                  <i 
-                    className={`ri-${item.icon} text-5xl text-white group-hover:scale-125 transition-all duration-700`}
-                    style={{ 
-                      textShadow: '0 6px 12px rgba(0,0,0,0.6)',
-                      transform: 'perspective(200px) rotateX(-15deg)'
-                    }}
-                  />
-                  
-                  {/* Shimmer effect - optimized */}
-                  <div 
-                    className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"
-                    style={{ 
-                      background: `linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.5) 50%, transparent 70%)`,
-                      transform: 'translateX(-100%)',
-                      animation: 'shimmer 3s infinite'
-                    }}
-                  />
-                </div>
-
-                {/* Floating particles - simplified */}
-                <div className="absolute -top-3 -right-3 w-6 h-6 rounded-full animate-pulse" 
-                     style={{ backgroundColor: currentColors.accent, boxShadow: `0 0 20px ${currentColors.accent}` }} />
-                <div className="absolute -bottom-2 -left-2 w-4 h-4 rounded-full animate-pulse" 
-                     style={{ backgroundColor: currentColors.secondary, animationDelay: '0.5s', boxShadow: `0 0 15px ${currentColors.secondary}` }} />
-              </div>
-              
-              <div className="text-center relative">
-                <p 
-                  className="text-xl leading-relaxed font-bold group-hover:text-opacity-100 transition-all duration-700"
-                  style={{ 
-                    color: currentColors.text,
-                    textShadow: '0 3px 6px rgba(0,0,0,0.4)',
-                    transform: 'perspective(500px) rotateX(8deg)'
-                  }}
-                >
-                  {item.text}
-                </p>
-              </div>
-
-              {/* Hover glow effect */}
-              <div 
-                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-40 transition-all duration-700 -z-10"
-                style={{ 
-                  background: `radial-gradient(ellipse at center, ${currentColors.primary}50, ${currentColors.secondary}30, transparent 70%)`
-                }}
-              />
-            </div>
-          ))}
-        </div>
-
-        <div className="text-center mt-20">
-          <p className="text-2xl mb-10 opacity-90" style={{ color: currentColors.text }}>
-            מוכנים להתחיל את המסע איתנו?
-          </p>
-          <Button 
-            size="lg"
-            className="px-20 py-8 text-2xl font-bold rounded-3xl hover:scale-110 transition-all duration-700 shadow-2xl relative overflow-hidden"
-            style={{ 
-              background: `linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary}, ${currentColors.secondary})`,
-              color: 'white',
-              boxShadow: `0 20px 60px ${currentColors.accent}60`,
-              transform: 'perspective(500px) rotateX(10deg)'
-            }}
-            onClick={handleCtaClick}
-          >
-            <span className="relative z-10">בואו נתחיל עכשיו ✨</span>
-          </Button>
-        </div>
-      </div>
-
-      {/* Optimized CSS animations */}
-      <style>
-        {`
-          @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-          }
-        `}
-      </style>
-    </div>
-  );
-
-  const renderCreativeElements = () => {
-    if (!content.creativeElements || content.creativeElements.length === 0) {
-      return null;
-    }
-
-    return content.creativeElements.map((element: any, index: number) => {
-      switch (element.type) {
-        case 'whychoose':
-          return <div key={index}>{renderWhyChooseUs(element.content)}</div>;
-        case 'serviceCards':
-          return <div key={index}>{renderServiceCards(element.content)}</div>;
-        case 'timeline':
-          return <div key={index}>{renderTimeline(element.content)}</div>;
-        case 'pricing':
-          return <div key={index}>{renderPricing(element.content)}</div>;
-        case 'emotional':
-          return <div key={index}>{renderEmotional(element.content)}</div>;
-        default:
-          return null;
-      }
-    });
-  };
 
   const finalHeroImage = formData.heroStyle === 'image' ? getHeroImageUrl(content, heroImage || '', formData) : null;
 

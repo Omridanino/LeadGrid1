@@ -1,4 +1,3 @@
-
 import { useState, useCallback } from "react";
 
 export const useContentGeneration = (formData: any) => {
@@ -38,7 +37,7 @@ export const useContentGeneration = (formData: any) => {
       return variations[category][Math.floor(Math.random() * variations[category].length)] || baseText;
     };
 
-    // Get appropriate style based on business type
+    // Get appropriate style based on business type - now with only 4 items each
     const getWhyChooseStyle = () => {
       const lowerBusinessType = businessType.toLowerCase();
       
@@ -74,9 +73,7 @@ export const useContentGeneration = (formData: any) => {
           { text: "מומחיות בתכנון אדריכלי מתקדם", icon: "building-line" },
           { text: "שירות אדריכלי ברמה הגבוהה ביותר", icon: "pencil-ruler-2-line" },
           { text: "פתרונות יצירתיים ומותאמים אישית", icon: "lightbulb-line" },
-          { text: "ליווי מלא לאורך כל הפרויקט", icon: "team-line" },
-          { text: "ניסיון רב שנים בפרויקטים מורכבים", icon: "award-line" },
-          { text: "עמידה בתקציב ולוחות זמנים", icon: "time-line" }
+          { text: "ליווי מלא לאורך כל הפרויקט", icon: "team-line" }
         ]
       },
       medical: {
@@ -85,9 +82,7 @@ export const useContentGeneration = (formData: any) => {
           { text: "רפואה מתקדמת וטכנולוגיה חדישה", icon: "stethoscope-line" },
           { text: "צוות רפואי מקצועי ומנוסה", icon: "user-heart-line" },
           { text: "טיפול אישי ומסור לכל מטופל", icon: "heart-line" },
-          { text: "זמינות 24/7 למקרי חירום", icon: "phone-line" },
-          { text: "מחירים הוגנים וביטוח בריאות", icon: "money-dollar-circle-line" },
-          { text: "מתקנים מתקדמים ונקיים", icon: "hospital-line" }
+          { text: "זמינות 24/7 למקרי חירום", icon: "phone-line" }
         ]
       },
       tech: {
@@ -96,9 +91,7 @@ export const useContentGeneration = (formData: any) => {
           { text: "טכנולוגיות מתקדמות וחדשניות", icon: "rocket-line" },
           { text: "פיתוח תוכנה מותאם לצרכים", icon: "code-line" },
           { text: "תמיכה טכנית מקצועית 24/7", icon: "customer-service-line" },
-          { text: "אבטחת מידע ברמה הגבוהה", icon: "shield-check-line" },
-          { text: "ביצועים מהירים ויציבים", icon: "flashlight-line" },
-          { text: "עדכונים שוטפים ותחזוקה", icon: "settings-3-line" }
+          { text: "אבטחת מידע ברמה הגבוהה", icon: "shield-check-line" }
         ]
       },
       education: {
@@ -107,9 +100,7 @@ export const useContentGeneration = (formData: any) => {
           { text: "צוות הוראה מקצועי ומנוסה", icon: "graduation-cap-line" },
           { text: "שיטות הוראה חדשניות ומותאמות", icon: "book-open-line" },
           { text: "ליווי אישי לכל תלמיד", icon: "user-line" },
-          { text: "תוצאות לימודיות מוכחות", icon: "trophy-line" },
-          { text: "סביבת לימודים תומכת ומעודדת", icon: "team-line" },
-          { text: "גישה למשאבים וכלים מתקדמים", icon: "computer-line" }
+          { text: "תוצאות לימודיות מוכחות", icon: "trophy-line" }
         ]
       },
       food: {
@@ -118,9 +109,7 @@ export const useContentGeneration = (formData: any) => {
           { text: "מזון טרי ואיכותי ביותר", icon: "restaurant-line" },
           { text: "שפים מקצועיים ומנוסים", icon: "user-star-line" },
           { text: "תפריט מגוון ומתחדש", icon: "file-list-3-line" },
-          { text: "שירות מהיר ואדיב", icon: "customer-service-2-line" },
-          { text: "אווירה נעימה ומזמינה", icon: "emotion-happy-line" },
-          { text: "מחירים הוגנים ומשתלמים", icon: "price-tag-3-line" }
+          { text: "שירות מהיר ואדיב", icon: "customer-service-2-line" }
         ]
       },
       fashion: {
@@ -129,9 +118,7 @@ export const useContentGeneration = (formData: any) => {
           { text: "אופנה עדכנית ומגמות חמות", icon: "shirt-line" },
           { text: "איכות בדים ותפירה מעולה", icon: "scissors-line" },
           { text: "עיצובים ייחודיים ובלעדיים", icon: "palette-line" },
-          { text: "התאמה אישית למידות", icon: "ruler-line" },
-          { text: "שירות אישי ויעוץ סטייל", icon: "user-heart-line" },
-          { text: "מחירים נגישים לכל כיס", icon: "wallet-3-line" }
+          { text: "התאמה אישית למידות", icon: "ruler-line" }
         ]
       },
       legal: {
@@ -140,9 +127,7 @@ export const useContentGeneration = (formData: any) => {
           { text: "ניסיון משפטי רב ומוכח", icon: "scales-3-line" },
           { text: "ייצוג מקצועי בכל התחומים", icon: "briefcase-line" },
           { text: "יעוץ משפטי זמין ונגיש", icon: "question-answer-line" },
-          { text: "שקיפות מלאה ויושרה", icon: "eye-line" },
-          { text: "התמחות בתחומים מורכבים", icon: "focus-3-line" },
-          { text: "תוצאות מוכחות בבתי משפט", icon: "government-line" }
+          { text: "שקיפות מלאה ויושרה", icon: "eye-line" }
         ]
       },
       realestate: {
@@ -151,9 +136,7 @@ export const useContentGeneration = (formData: any) => {
           { text: "ידע עמוק בשוק הנדלן", icon: "home-4-line" },
           { text: "רשת קשרים נרחבת ומקצועית", icon: "links-line" },
           { text: "שירות מלא מהחיפוש לעסקה", icon: "hand-heart-line" },
-          { text: "ייעוץ השקעות מקצועי", icon: "line-chart-line" },
-          { text: "שקיפות ויושרה בכל עסקה", icon: "checkbox-circle-line" },
-          { text: "תמיכה גם אחרי החתימה", icon: "customer-service-line" }
+          { text: "ייעוץ השקעות מקצועי", icon: "line-chart-line" }
         ]
       },
       fitness: {
@@ -162,9 +145,7 @@ export const useContentGeneration = (formData: any) => {
           { text: "מדרכים מקצועיים ומוסמכים", icon: "run-line" },
           { text: "תוכניות אימון מותאמות אישית", icon: "heart-pulse-line" },
           { text: "ציוד מתקדם ומתקני ספורט", icon: "dumbbell-line" },
-          { text: "מעקב התקדמות ותוצאות", icon: "bar-chart-line" },
-          { text: "אווירה מוטיבציונית ותומכת", icon: "team-line" },
-          { text: "גמישות בזמנים ובמיקומים", icon: "time-line" }
+          { text: "מעקב התקדמות ותוצאות", icon: "bar-chart-line" }
         ]
       },
       creative: {
@@ -173,9 +154,7 @@ export const useContentGeneration = (formData: any) => {
           { text: "יצירתיות ללא גבולות", icon: "brush-line" },
           { text: "אמנים ויצרנים מקצועיים", icon: "user-star-line" },
           { text: "חדשנות ורעיונות מקוריים", icon: "lightbulb-line" },
-          { text: "איכות ביצוע ברמה הגבוהה", icon: "award-line" },
-          { text: "התאמה לחזון האישי שלכם", icon: "eye-line" },
-          { text: "ליווי מקצועי לאורך התהליך", icon: "hand-heart-line" }
+          { text: "איכות ביצוע ברמה הגבוהה", icon: "award-line" }
         ]
       },
       general: {
@@ -184,9 +163,7 @@ export const useContentGeneration = (formData: any) => {
           { text: "שירות מקצועי ואמין", icon: "star-line" },
           { text: "ניסיון רב שנים בתחום", icon: "award-line" },
           { text: "תמיכה 24/7 לכל שאלה", icon: "headphone-line" },
-          { text: "מחירים הוגנים ושקופים", icon: "price-tag-line" },
-          { text: "יחס אישי לכל לקוח", icon: "user-heart-line" },
-          { text: "תוצאות מוכחות ומספקות", icon: "checkbox-circle-line" }
+          { text: "מחירים הוגנים ושקופים", icon: "price-tag-line" }
         ]
       }
     };
@@ -262,7 +239,7 @@ export const useContentGeneration = (formData: any) => {
 
       contactTitle: "בואו נתחיל לעבוד יחד",
       
-      // Add the Why Choose Us section
+      // Add the Why Choose Us section with 4 items
       whyChooseUs: whyChooseUsContent,
       
       creativeElements: []
