@@ -49,7 +49,13 @@ const FullScreenPreview = ({ content, currentColors, formData, heroImage, isOpen
       </Button>
 
       {/* Full Screen Preview - Scrollable */}
-      <div className={`w-full h-full overflow-y-auto overflow-x-hidden ${getStyleClass()}`} style={{ scrollBehavior: 'smooth' }}>
+      <div 
+        className={`w-full h-full overflow-y-auto overflow-x-hidden ${getStyleClass()}`} 
+        style={{ 
+          scrollBehavior: 'smooth',
+          position: 'relative'
+        }}
+      >
         <PreviewStyles />
 
         {/* Hero Section */}
@@ -72,7 +78,12 @@ const FullScreenPreview = ({ content, currentColors, formData, heroImage, isOpen
         />
 
         {/* Footer Section */}
-        <footer className="bg-black/50 backdrop-blur-sm py-16 text-center">
+        <footer style={{ 
+          background: 'rgba(0,0,0,0.5)', 
+          backdropFilter: 'blur(16px)', 
+          padding: '4rem 0', 
+          textAlign: 'center' 
+        }}>
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <h3 className="text-2xl font-bold text-white mb-4">

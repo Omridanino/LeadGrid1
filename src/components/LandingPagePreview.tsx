@@ -34,8 +34,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   };
 
   return (
-    <div className="w-full" style={{ overflowY: 'auto', overflowX: 'hidden' }}>
-      <div className={`w-full ${getStyleClass()}`} style={{ scrollBehavior: 'smooth', minHeight: 'auto' }}>
+    <div className="w-full h-full" style={{ position: 'relative', overflowY: 'auto', overflowX: 'hidden' }}>
+      <div className={`w-full min-h-screen ${getStyleClass()}`} style={{ position: 'relative' }}>
         <PreviewStyles />
 
         {/* Hero Section */}
@@ -58,7 +58,12 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         />
 
         {/* Footer Section */}
-        <footer className="bg-black/50 backdrop-blur-sm py-16 text-center">
+        <footer style={{ 
+          background: 'rgba(0,0,0,0.5)', 
+          backdropFilter: 'blur(16px)', 
+          padding: '4rem 0', 
+          textAlign: 'center' 
+        }}>
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <h3 className="text-2xl font-bold text-white mb-4">

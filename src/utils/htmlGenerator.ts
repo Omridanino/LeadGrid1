@@ -101,6 +101,7 @@ export const generateHtmlFile = (
     html {
       scroll-behavior: smooth;
       overflow-x: hidden;
+      height: 100%;
     }
 
     body {
@@ -109,6 +110,7 @@ export const generateHtmlFile = (
       direction: rtl;
       overflow-x: hidden;
       min-height: 100vh;
+      height: auto;
     }
 
     /* Typography Excellence */
@@ -153,6 +155,7 @@ export const generateHtmlFile = (
       position: relative;
       overflow-x: hidden;
       width: 100%;
+      min-height: 100vh;
     }
 
     .style-3d::before {
@@ -209,6 +212,7 @@ export const generateHtmlFile = (
       position: relative;
       overflow-x: hidden;
       width: 100%;
+      min-height: 100vh;
     }
 
     .style-geometric::before {
@@ -267,6 +271,7 @@ export const generateHtmlFile = (
       position: relative;
       overflow-x: hidden;
       width: 100%;
+      min-height: 100vh;
     }
 
     .style-glass::before {
@@ -333,6 +338,7 @@ export const generateHtmlFile = (
       position: relative;
       overflow-x: hidden;
       width: 100%;
+      min-height: 100vh;
     }
 
     .style-metal::before {
@@ -411,6 +417,7 @@ export const generateHtmlFile = (
       background-position: center;
       width: 100%;
       overflow-x: hidden;
+      min-height: 100vh;
       ${getHeroBackground()}
     }
 
@@ -499,10 +506,12 @@ export const generateHtmlFile = (
       display: flex;
       align-items: center;
       padding: 4rem 0;
+      position: relative;
     }
 
     .section-standard {
       padding: 4rem 0;
+      position: relative;
     }
 
     /* Responsive Design */
@@ -665,7 +674,7 @@ export const generateHtmlFile = (
 
     return `
     <!-- Value Proposition Section -->
-    <section class="py-16 px-4">
+    <section class="section-standard">
       <div class="container mx-auto max-w-6xl">
         <div class="text-center">
           <h2 class="typography-${typographyClass} text-4xl text-5xl font-black mb-8 text-white animate-slide-up">
@@ -681,7 +690,7 @@ export const generateHtmlFile = (
     </section>
 
     <!-- Why Choose Us Section -->
-    <section class="py-16 px-4">
+    <section class="section-standard">
       <div class="container mx-auto max-w-6xl">
         <div class="text-center mb-12 animate-slide-up">
           <h2 class="typography-${typographyClass} text-4xl text-5xl font-black mb-6 text-white">
@@ -716,7 +725,7 @@ export const generateHtmlFile = (
     </section>
 
     <!-- Services Section -->
-    <section class="py-16 px-4">
+    <section class="section-standard">
       <div class="container mx-auto max-w-6xl">
         <div class="text-center mb-12 animate-slide-up">
           <h2 class="typography-${typographyClass} text-4xl text-5xl font-black mb-6 text-white">
@@ -755,7 +764,7 @@ export const generateHtmlFile = (
     </section>
 
     <!-- Process Section -->
-    <section class="py-16 px-4">
+    <section class="section-standard">
       <div class="container mx-auto max-w-6xl">
         <div class="text-center mb-12 animate-slide-up">
           <h2 class="typography-${typographyClass} text-4xl text-5xl font-black mb-6 text-white">
@@ -796,7 +805,7 @@ export const generateHtmlFile = (
     </section>
 
     <!-- Testimonials Section -->
-    <section class="py-16 px-4">
+    <section class="section-standard">
       <div class="container mx-auto max-w-6xl">
         <div class="text-center mb-12 animate-slide-up">
           <h2 class="typography-${typographyClass} text-4xl text-5xl font-black mb-6 text-white">
@@ -846,7 +855,7 @@ export const generateHtmlFile = (
     </section>
 
     <!-- FAQ Section -->
-    <section class="py-16 px-4">
+    <section class="section-standard">
       <div class="container mx-auto max-w-6xl">
         <div class="text-center mb-12 animate-slide-up">
           <h2 class="typography-${typographyClass} text-4xl text-5xl font-black mb-6 text-white">
@@ -878,7 +887,7 @@ export const generateHtmlFile = (
     </section>
 
     <!-- Enhanced CTA Section -->
-    <section class="py-16 px-4" style="position: relative; overflow: hidden;">
+    <section class="section-standard" style="position: relative; overflow: hidden;">
       <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom right, rgba(0,0,0,0.2), rgba(0,0,0,0), rgba(0,0,0,0.2));"></div>
       
       <div class="container mx-auto max-w-6xl text-center" style="position: relative; z-index: 10;">
@@ -944,7 +953,7 @@ export const generateHtmlFile = (
     </section>
 
     <!-- Footer Section -->
-    <footer class="py-16" style="background: rgba(0,0,0,0.5); backdrop-filter: blur(16px);">
+    <footer class="section-standard" style="background: rgba(0,0,0,0.5); backdrop-filter: blur(16px);">
       <div class="container mx-auto max-w-4xl text-center">
         <h3 class="text-2xl font-bold text-white mb-4">${businessName}</h3>
         <p class="text-gray-400 mb-8">© 2024 כל הזכויות שמורות. בניית אתרים מקצועית ואמינה.</p>
@@ -967,10 +976,10 @@ export const generateHtmlFile = (
         ${getCSSStyles()}
     </style>
 </head>
-<body class="${getStyleClass()}">
+<body class="${getStyleClass()}" style="position: relative;">
     <!-- Hero Section -->
     <section class="section-hero">
-        <div class="container text-center">
+        <div class="container text-center" style="position: relative; z-index: 2;">
             <h1 class="typography-${formData?.heroStyle === 'metal' ? 'luxury' : 'hero'} text-5xl font-black mb-8 text-white">${businessName}</h1>
             <div class="card-${formData?.heroStyle || '3d'} p-8 mb-12">
                 <p class="typography-body text-lg text-xl text-white leading-relaxed">${subheadline}</p>
