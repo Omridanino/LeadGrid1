@@ -33,7 +33,23 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     );
   }
 
-  const finalHeroImage = formData.heroStyle === 'image' && heroImage ? heroImage : null;
+  // Get relevant hero image based on business type
+  const getBusinessImage = (businessType: string) => {
+    const imageMap: { [key: string]: string } = {
+      'טכנולוגיה': 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      'שירות': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      'בריאות': 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
+      'חינוך': 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      'מסחר': 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      'default': 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80'
+    };
+    
+    return imageMap[businessType] || imageMap['default'];
+  };
+
+  const finalHeroImage = formData.heroStyle === 'image' 
+    ? (heroImage || getBusinessImage(formData.businessType))
+    : null;
   const isAnimatedBackground = formData.heroStyle === 'animated';
 
   // 15 different animated backgrounds
@@ -105,7 +121,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         ? randomBackground
         : finalHeroImage
           ? `linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.6)), url('${finalHeroImage}')`
-          : 'linear-gradient(135deg, rgba(10, 10, 26, 0.95) 0%, rgba(26, 26, 58, 0.85) 50%, rgba(10, 10, 26, 0.95) 100%)'
+          : `linear-gradient(135deg, ${currentColors.primary}, ${currentColors.secondary})`
       };
       ${isAnimatedBackground ? 'background-size: 400% 400%; animation: gradientShift 8s ease infinite;' : ''}
       ${finalHeroImage ? 'background-size: cover; background-position: center;' : ''}
@@ -337,11 +353,22 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             </div>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[1,2,3,4,5,6,7,8].map((item, idx) => (
-                <div key={idx} className="tech-card aspect-square p-4 floating-3d">
-                  <div className="w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg flex items-center justify-center">
-                    <Image className="w-8 h-8 text-white/60 icon-3d" />
-                  </div>
+              {[
+                getBusinessImage(formData.businessType),
+                'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                'https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                getBusinessImage('default')
+              ].map((imageUrl, idx) => (
+                <div key={idx} className="tech-card aspect-square p-2 floating-3d overflow-hidden">
+                  <img 
+                    src={imageUrl} 
+                    alt={`עבודה ${idx + 1}`}
+                    className="w-full h-full object-cover rounded-lg hover:scale-110 transition-transform duration-300"
+                  />
                 </div>
               ))}
             </div>

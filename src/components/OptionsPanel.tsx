@@ -3,14 +3,25 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Label } from "@/components/ui/label";
+import { ColorEditor, ColorScheme } from "./ColorEditor";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ColorScheme } from "./ColorEditor";
-import ColorEditor from "./ColorEditor";
-import WordPressIntegration from "./WordPressIntegration";
-import { Save, Palette, FileCode, Download, Type, Hash, Plus } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { 
+  Palette, 
+  Code, 
+  Download, 
+  Save, 
+  Wordpress,
+  Edit,
+  Image,
+  Users,
+  Star,
+  MessageSquare,
+  Phone,
+  Target,
+  Award
+} from "lucide-react";
 
 interface OptionsPanelProps {
   showDesignEditor: boolean;
@@ -22,38 +33,14 @@ interface OptionsPanelProps {
   onWordPressIntegration: () => void;
   onAdvancedEdit: () => void;
   onSave: () => void;
-  generateHtmlFile: () => string;
+  generateHtmlFile: () => void;
   content: any;
-  onContentChange: (content: any) => void;
+  onContentChange: (newContent: any) => void;
   formData: any;
-  onFormDataChange: (formData: any) => void;
+  onFormDataChange: (newFormData: any) => void;
   heroImage: string;
-  onHeroImageChange: (image: string) => void;
+  onHeroImageChange: (imageUrl: string) => void;
 }
-
-// Icon options for enhanced content editing
-const iconOptions = [
-  { value: "🚀", label: "רקטה" },
-  { value: "⭐", label: "כוכב" },
-  { value: "💎", label: "יהלום" },
-  { value: "🎯", label: "מטרה" },
-  { value: "💡", label: "נורה" },
-  { value: "🔥", label: "אש" },
-  { value: "⚡", label: "ברק" },
-  { value: "🏆", label: "גביע" },
-  { value: "💰", label: "כסף" },
-  { value: "🎨", label: "צבעים" },
-  { value: "🛡️", label: "מגן" },
-  { value: "📈", label: "גרף" },
-  { value: "🎪", label: "בידור" },
-  { value: "🔧", label: "כלים" },
-  { value: "📱", label: "נייד" },
-  { value: "💭", label: "מחשבה" },
-  { value: "💬", label: "דיבור" },
-  { value: "🤝", label: "לחיצת יד" },
-  { value: "❤️", label: "לב" },
-  { value: "💪", label: "כוח" }
-];
 
 const OptionsPanel = ({
   showDesignEditor,
@@ -73,428 +60,309 @@ const OptionsPanel = ({
   heroImage,
   onHeroImageChange
 }: OptionsPanelProps) => {
-  const [editingContent, setEditingContent] = useState(content);
+  const [editingSection, setEditingSection] = useState<string | null>(null);
 
-  const updateContent = (path: string, value: any) => {
-    const newContent = { ...editingContent };
-    const keys = path.split('.');
-    let current = newContent;
-    
-    for (let i = 0; i < keys.length - 1; i++) {
-      if (!current[keys[i]]) current[keys[i]] = {};
-      current = current[keys[i]];
+  const updateContent = (section: string, field: string, value: any) => {
+    const newContent = { ...content };
+    if (section === 'root') {
+      newContent[field] = value;
+    } else if (newContent.sections && newContent.sections[section]) {
+      newContent.sections[section][field] = value;
     }
-    
-    current[keys[keys.length - 1]] = value;
-    setEditingContent(newContent);
     onContentChange(newContent);
   };
 
-  const addIcon = (path: string, icon: string) => {
-    const currentValue = getNestedValue(editingContent, path) || "";
-    updateContent(path, `${icon} ${currentValue}`.trim());
+  const updateTestimonial = (index: number, field: string, value: string) => {
+    const newContent = { ...content };
+    if (!newContent.sections.testimonials) {
+      newContent.sections.testimonials = [];
+    }
+    newContent.sections.testimonials[index] = {
+      ...newContent.sections.testimonials[index],
+      [field]: value
+    };
+    onContentChange(newContent);
   };
 
-  const getNestedValue = (obj: any, path: string) => {
-    return path.split('.').reduce((current, key) => current?.[key], obj);
-  };
+  const selectedElements = formData?.selectedElements || [];
 
   return (
-    <div className="h-full bg-gray-900 border-l border-gray-700">
-      <div className="p-4 border-b border-gray-700">
-        <h2 className="text-lg font-semibold text-white">עריכת הדף</h2>
-      </div>
-
-      <div className="p-4 space-y-4 h-[calc(100%-80px)] overflow-y-auto">
-        <Tabs defaultValue="content" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-gray-800">
-            <TabsTrigger value="content" className="text-white">
-              <Type className="w-4 h-4 ml-2" />
-              תוכן
-            </TabsTrigger>
-            <TabsTrigger value="design" className="text-white">
-              <Palette className="w-4 h-4 ml-2" />
+    <Card className="w-full bg-gray-800 border-gray-700 text-white">
+      <CardHeader>
+        <CardTitle className="text-xl font-bold flex items-center gap-2">
+          <Edit className="w-5 h-5" />
+          עריכה מתקדמת
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <Tabs defaultValue="design" className="w-full">
+          <TabsList className="grid w-full grid-cols-4 bg-gray-700">
+            <TabsTrigger value="design" className="text-xs">
+              <Palette className="w-4 h-4 mr-1" />
               עיצוב
             </TabsTrigger>
-            <TabsTrigger value="export" className="text-white">
-              <Download className="w-4 h-4 ml-2" />
+            <TabsTrigger value="content" className="text-xs">
+              <Edit className="w-4 h-4 mr-1" />
+              תוכן
+            </TabsTrigger>
+            <TabsTrigger value="elements" className="text-xs">
+              <Target className="w-4 h-4 mr-1" />
+              אלמנטים
+            </TabsTrigger>
+            <TabsTrigger value="export" className="text-xs">
+              <Download className="w-4 h-4 mr-1" />
               ייצוא
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="content" className="space-y-4">
-            <Card className="bg-gray-800 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <Type className="w-5 h-5" />
-                  עריכת תוכן מתקדמת
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Hero Section Editing */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-white">סקשן הירו</h3>
-                  
-                  <div>
-                    <Label className="text-gray-300">כותרת ראשית</Label>
-                    <div className="flex gap-2 mt-1">
-                      <Input
-                        value={getNestedValue(editingContent, 'headline') || ''}
-                        onChange={(e) => updateContent('headline', e.target.value)}
-                        className="bg-gray-700 border-gray-600 text-white"
-                        placeholder="הכותרת הראשית שלכם"
-                      />
-                      <Select onValueChange={(icon) => addIcon('headline', icon)}>
-                        <SelectTrigger className="w-16 bg-gray-700 border-gray-600">
-                          <Plus className="w-4 h-4" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-800 border-gray-600">
-                          {iconOptions.map(icon => (
-                            <SelectItem key={icon.value} value={icon.value} className="text-white">
-                              {icon.value} {icon.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label className="text-gray-300">תת כותרת</Label>
-                    <div className="flex gap-2 mt-1">
-                      <Textarea
-                        value={getNestedValue(editingContent, 'subheadline') || ''}
-                        onChange={(e) => updateContent('subheadline', e.target.value)}
-                        className="bg-gray-700 border-gray-600 text-white"
-                        placeholder="תיאור קצר ומושך"
-                        rows={3}
-                      />
-                      <Select onValueChange={(icon) => addIcon('subheadline', icon)}>
-                        <SelectTrigger className="w-16 bg-gray-700 border-gray-600">
-                          <Plus className="w-4 h-4" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-800 border-gray-600">
-                          {iconOptions.map(icon => (
-                            <SelectItem key={icon.value} value={icon.value} className="text-white">
-                              {icon.value} {icon.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label className="text-gray-300">כפתור קריאה לפעולה</Label>
-                    <Input
-                      value={getNestedValue(editingContent, 'cta') || ''}
-                      onChange={(e) => updateContent('cta', e.target.value)}
-                      className="bg-gray-700 border-gray-600 text-white"
-                      placeholder="טקסט הכפתור"
-                    />
-                  </div>
-                </div>
-
-                {/* Sections Editing */}
-                {editingContent.sections && (
-                  <div className="space-y-6">
-                    <h3 className="text-lg font-semibold text-white">סקשנים</h3>
-                    
-                    {/* Emotional Section */}
-                    {editingContent.sections.emotionalSection && (
-                      <div className="space-y-3 p-4 bg-gray-700 rounded-lg">
-                        <h4 className="font-medium text-white">פסקת רגש</h4>
-                        <div>
-                          <Label className="text-gray-300">כותרת</Label>
-                          <div className="flex gap-2 mt-1">
-                            <Input
-                              value={editingContent.sections.emotionalSection.title}
-                              onChange={(e) => updateContent('sections.emotionalSection.title', e.target.value)}
-                              className="bg-gray-600 border-gray-500 text-white"
-                            />
-                            <Select onValueChange={(icon) => updateContent('sections.emotionalSection.icon', icon)}>
-                              <SelectTrigger className="w-16 bg-gray-600 border-gray-500">
-                                <span>{editingContent.sections.emotionalSection.icon}</span>
-                              </SelectTrigger>
-                              <SelectContent className="bg-gray-800 border-gray-600">
-                                {iconOptions.map(icon => (
-                                  <SelectItem key={icon.value} value={icon.value} className="text-white">
-                                    {icon.value} {icon.label}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </div>
-                        <div>
-                          <Label className="text-gray-300">תוכן</Label>
-                          <Textarea
-                            value={editingContent.sections.emotionalSection.content}
-                            onChange={(e) => updateContent('sections.emotionalSection.content', e.target.value)}
-                            className="bg-gray-600 border-gray-500 text-white"
-                            rows={3}
-                          />
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Why Us Section */}
-                    {editingContent.sections.whyUs && (
-                      <div className="space-y-3 p-4 bg-gray-700 rounded-lg">
-                        <h4 className="font-medium text-white">למה לבחור בנו</h4>
-                        <div>
-                          <Label className="text-gray-300">כותרת ראשית</Label>
-                          <div className="flex gap-2 mt-1">
-                            <Input
-                              value={editingContent.sections.whyUs.title}
-                              onChange={(e) => updateContent('sections.whyUs.title', e.target.value)}
-                              className="bg-gray-600 border-gray-500 text-white"
-                            />
-                            <Select onValueChange={(icon) => addIcon('sections.whyUs.title', icon)}>
-                              <SelectTrigger className="w-16 bg-gray-600 border-gray-500">
-                                <Plus className="w-4 h-4" />
-                              </SelectTrigger>
-                              <SelectContent className="bg-gray-800 border-gray-600">
-                                {iconOptions.map(icon => (
-                                  <SelectItem key={icon.value} value={icon.value} className="text-white">
-                                    {icon.value} {icon.label}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </div>
-                        
-                        {editingContent.sections.whyUs.items?.map((item: any, idx: number) => (
-                          <div key={idx} className="space-y-2 p-3 bg-gray-600 rounded">
-                            <Label className="text-gray-300">פריט {idx + 1}</Label>
-                            <div className="flex gap-2">
-                              <Input
-                                value={item.title}
-                                onChange={(e) => updateContent(`sections.whyUs.items.${idx}.title`, e.target.value)}
-                                className="bg-gray-500 border-gray-400 text-white"
-                                placeholder="כותרת"
-                              />
-                              <Select onValueChange={(icon) => updateContent(`sections.whyUs.items.${idx}.icon`, icon)}>
-                                <SelectTrigger className="w-16 bg-gray-500 border-gray-400">
-                                  <span>{item.icon}</span>
-                                </SelectTrigger>
-                                <SelectContent className="bg-gray-800 border-gray-600">
-                                  {iconOptions.map(icon => (
-                                    <SelectItem key={icon.value} value={icon.value} className="text-white">
-                                      {icon.value} {icon.label}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            <Textarea
-                              value={item.desc}
-                              onChange={(e) => updateContent(`sections.whyUs.items.${idx}.desc`, e.target.value)}
-                              className="bg-gray-500 border-gray-400 text-white"
-                              placeholder="תיאור"
-                              rows={2}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* What We Give Section */}
-                    {editingContent.sections.whatWeGive && (
-                      <div className="space-y-3 p-4 bg-gray-700 rounded-lg">
-                        <h4 className="font-medium text-white">מה אתם מקבלים מאיתנו</h4>
-                        <div>
-                          <Label className="text-gray-300">כותרת ראשית</Label>
-                          <div className="flex gap-2 mt-1">
-                            <Input
-                              value={editingContent.sections.whatWeGive.title}
-                              onChange={(e) => updateContent('sections.whatWeGive.title', e.target.value)}
-                              className="bg-gray-600 border-gray-500 text-white"
-                            />
-                            <Select onValueChange={(icon) => addIcon('sections.whatWeGive.title', icon)}>
-                              <SelectTrigger className="w-16 bg-gray-600 border-gray-500">
-                                <Plus className="w-4 h-4" />
-                              </SelectTrigger>
-                              <SelectContent className="bg-gray-800 border-gray-600">
-                                {iconOptions.map(icon => (
-                                  <SelectItem key={icon.value} value={icon.value} className="text-white">
-                                    {icon.value} {icon.label}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </div>
-                        
-                        {editingContent.sections.whatWeGive.items?.map((item: any, idx: number) => (
-                          <div key={idx} className="space-y-2 p-3 bg-gray-600 rounded">
-                            <Label className="text-gray-300">פריט {idx + 1}</Label>
-                            <div className="flex gap-2">
-                              <Input
-                                value={item.title}
-                                onChange={(e) => updateContent(`sections.whatWeGive.items.${idx}.title`, e.target.value)}
-                                className="bg-gray-500 border-gray-400 text-white"
-                                placeholder="כותרת"
-                              />
-                              <Select onValueChange={(icon) => updateContent(`sections.whatWeGive.items.${idx}.icon`, icon)}>
-                                <SelectTrigger className="w-16 bg-gray-500 border-gray-400">
-                                  <span>{item.icon}</span>
-                                </SelectTrigger>
-                                <SelectContent className="bg-gray-800 border-gray-600">
-                                  {iconOptions.map(icon => (
-                                    <SelectItem key={icon.value} value={icon.value} className="text-white">
-                                      {icon.value} {icon.label}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            <Textarea
-                              value={item.desc}
-                              onChange={(e) => updateContent(`sections.whatWeGive.items.${idx}.desc`, e.target.value)}
-                              className="bg-gray-500 border-gray-400 text-white"
-                              placeholder="תיאור"
-                              rows={2}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Testimonials Section */}
-                    <div className="space-y-3 p-4 bg-gray-700 rounded-lg">
-                      <h4 className="font-medium text-white">💭 מה אומרים עלינו</h4>
-                      <div>
-                        <Label className="text-gray-300">כותרת הסקשן</Label>
-                        <Input
-                          value={getNestedValue(editingContent, 'sections.testimonialsTitle') || '💭 מה אומרים עלינו'}
-                          onChange={(e) => updateContent('sections.testimonialsTitle', e.target.value)}
-                          className="bg-gray-600 border-gray-500 text-white"
-                          placeholder="כותרת סקשן המלצות"
-                        />
-                      </div>
-                      
-                      {/* Individual testimonials editing */}
-                      <div className="space-y-3">
-                        <Label className="text-gray-300">ביקורות</Label>
-                        {(editingContent.sections?.testimonials || [
-                          { name: "דני כהן", role: "מנהל עסק", content: "שירות מעולה ומקצועי! ממליץ בחום", rating: 5, image: "👨‍💼" },
-                          { name: "שרה לוי", role: "יזמת", content: "התוצאות הטובות ביותר שקיבלתי", rating: 5, image: "👩‍💼" },
-                          { name: "מיכל רוזן", role: "בעלת חנות", content: "חוויה נהדרת וטיפול אישי", rating: 5, image: "👩‍🔧" }
-                        ]).map((testimonial: any, idx: number) => (
-                          <div key={idx} className="space-y-2 p-3 bg-gray-600 rounded">
-                            <Label className="text-gray-300">ביקורת {idx + 1}</Label>
-                            <div className="grid grid-cols-2 gap-2">
-                              <Input
-                                value={testimonial.name || ''}
-                                onChange={(e) => {
-                                  const newTestimonials = [...(editingContent.sections?.testimonials || [])];
-                                  if (!newTestimonials[idx]) newTestimonials[idx] = {};
-                                  newTestimonials[idx].name = e.target.value;
-                                  updateContent('sections.testimonials', newTestimonials);
-                                }}
-                                className="bg-gray-500 border-gray-400 text-white"
-                                placeholder="שם"
-                              />
-                              <Input
-                                value={testimonial.role || ''}
-                                onChange={(e) => {
-                                  const newTestimonials = [...(editingContent.sections?.testimonials || [])];
-                                  if (!newTestimonials[idx]) newTestimonials[idx] = {};
-                                  newTestimonials[idx].role = e.target.value;
-                                  updateContent('sections.testimonials', newTestimonials);
-                                }}
-                                className="bg-gray-500 border-gray-400 text-white"
-                                placeholder="תפקיד"
-                              />
-                            </div>
-                            <Textarea
-                              value={testimonial.content || ''}
-                              onChange={(e) => {
-                                const newTestimonials = [...(editingContent.sections?.testimonials || [])];
-                                if (!newTestimonials[idx]) newTestimonials[idx] = {};
-                                newTestimonials[idx].content = e.target.value;
-                                updateContent('sections.testimonials', newTestimonials);
-                              }}
-                              className="bg-gray-500 border-gray-400 text-white"
-                              placeholder="תוכן הביקורת"
-                              rows={2}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Contact Section */}
-                    <div className="space-y-3 p-4 bg-gray-700 rounded-lg">
-                      <h4 className="font-medium text-white">בואו נתחיל לעבוד יחד</h4>
-                      <div>
-                        <Label className="text-gray-300">כותרת יצירת קשר</Label>
-                        <Input
-                          value={getNestedValue(editingContent, 'sections.contactTitle') || getNestedValue(editingContent, 'contactTitle') || 'בואו נתחיל לעבוד יחד'}
-                          onChange={(e) => updateContent('sections.contactTitle', e.target.value)}
-                          className="bg-gray-600 border-gray-500 text-white"
-                          placeholder="כותרת סקשן יצירת קשר"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                <Button 
-                  onClick={onSave}
-                  className="w-full bg-green-600 hover:bg-green-700"
-                >
-                  <Save className="w-4 h-4 ml-2" />
-                  שמור שינויים
-                </Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
           <TabsContent value="design" className="space-y-4">
             <ColorEditor onColorChange={onColorChange} />
+            
+            <div className="space-y-3">
+              <Label className="text-white font-medium">תמונת רקע להירו</Label>
+              <Input
+                type="url"
+                placeholder="הכנס קישור לתמונה"
+                value={heroImage}
+                onChange={(e) => onHeroImageChange(e.target.value)}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="content" className="space-y-4">
+            {/* Hero Section Editing */}
+            <div className="space-y-3">
+              <h3 className="font-semibold text-blue-400 flex items-center gap-2">
+                <Star className="w-4 h-4" />
+                עריכת סקשן הירו
+              </h3>
+              <div className="space-y-2">
+                <Label>כותרת ראשית</Label>
+                <Input
+                  value={content?.headline || ''}
+                  onChange={(e) => updateContent('root', 'headline', e.target.value)}
+                  className="bg-gray-700 border-gray-600 text-white"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>תת-כותרת</Label>
+                <Textarea
+                  value={content?.subheadline || ''}
+                  onChange={(e) => updateContent('root', 'subheadline', e.target.value)}
+                  className="bg-gray-700 border-gray-600 text-white"
+                  rows={3}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>טקסט הכפתור</Label>
+                <Input
+                  value={content?.cta || ''}
+                  onChange={(e) => updateContent('root', 'cta', e.target.value)}
+                  className="bg-gray-700 border-gray-600 text-white"
+                />
+              </div>
+            </div>
+
+            {/* Emotional Section */}
+            {content?.sections?.emotionalSection && (
+              <div className="space-y-3">
+                <h3 className="font-semibold text-purple-400 flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4" />
+                  פסקת רגש
+                </h3>
+                <div className="space-y-2">
+                  <Label>כותרת</Label>
+                  <Input
+                    value={content.sections.emotionalSection.title || ''}
+                    onChange={(e) => updateContent('emotionalSection', 'title', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>תוכן</Label>
+                  <Textarea
+                    value={content.sections.emotionalSection.content || ''}
+                    onChange={(e) => updateContent('emotionalSection', 'content', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                    rows={4}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Why Us Section */}
+            {content?.sections?.whyUs && (
+              <div className="space-y-3">
+                <h3 className="font-semibold text-green-400 flex items-center gap-2">
+                  <Award className="w-4 h-4" />
+                  למה לבחור בנו
+                </h3>
+                <div className="space-y-2">
+                  <Label>כותרת ראשית</Label>
+                  <Input
+                    value={content.sections.whyUs.title || ''}
+                    onChange={(e) => updateContent('whyUs', 'title', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* What We Give Section */}
+            {content?.sections?.whatWeGive && (
+              <div className="space-y-3">
+                <h3 className="font-semibold text-blue-400 flex items-center gap-2">
+                  <Target className="w-4 h-4" />
+                  מה אנחנו נותנים
+                </h3>
+                <div className="space-y-2">
+                  <Label>כותרת ראשית</Label>
+                  <Input
+                    value={content.sections.whatWeGive.title || ''}
+                    onChange={(e) => updateContent('whatWeGive', 'title', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Testimonials Section */}
+            <div className="space-y-3">
+              <h3 className="font-semibold text-yellow-400 flex items-center gap-2">
+                <Users className="w-4 h-4" />
+                ביקורות לקוחות
+              </h3>
+              {[0, 1, 2].map((index) => (
+                <div key={index} className="border border-gray-600 rounded-lg p-3 space-y-2">
+                  <Label>לקוח {index + 1}</Label>
+                  <Input
+                    placeholder="שם הלקוח"
+                    value={content?.sections?.testimonials?.[index]?.name || ''}
+                    onChange={(e) => updateTestimonial(index, 'name', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                  />
+                  <Input
+                    placeholder="תפקיד"
+                    value={content?.sections?.testimonials?.[index]?.role || ''}
+                    onChange={(e) => updateTestimonial(index, 'role', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                  />
+                  <Textarea
+                    placeholder="המלצה"
+                    value={content?.sections?.testimonials?.[index]?.content || ''}
+                    onChange={(e) => updateTestimonial(index, 'content', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                    rows={2}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Contact Section */}
+            <div className="space-y-3">
+              <h3 className="font-semibold text-red-400 flex items-center gap-2">
+                <Phone className="w-4 h-4" />
+                בואו נתחיל לעבוד יחד
+              </h3>
+              <div className="space-y-2">
+                <Label>כותרת יצירת קשר</Label>
+                <Input
+                  value={content?.contactTitle || content?.sections?.contactTitle || ''}
+                  onChange={(e) => updateContent('root', 'contactTitle', e.target.value)}
+                  className="bg-gray-700 border-gray-600 text-white"
+                />
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="elements" className="space-y-4">
+            <h3 className="font-semibold text-white">אלמנטים נבחרים</h3>
+            
+            {/* Gallery Element */}
+            {selectedElements.includes('gallery') && (
+              <div className="border border-gray-600 rounded-lg p-4 space-y-3">
+                <h4 className="font-medium text-blue-400 flex items-center gap-2">
+                  <Image className="w-4 h-4" />
+                  גלריית תמונות
+                </h4>
+                <p className="text-sm text-gray-400">
+                  הגלריה מציגה תמונות מתאימות לתחום העסק שלכם באופן אוטומטי
+                </p>
+              </div>
+            )}
+
+            {/* Process Element */}
+            {selectedElements.includes('process') && (
+              <div className="border border-gray-600 rounded-lg p-4 space-y-3">
+                <h4 className="font-medium text-green-400 flex items-center gap-2">
+                  <Target className="w-4 h-4" />
+                  תהליך השירות
+                </h4>
+                <p className="text-sm text-gray-400">
+                  מציג את שלבי העבודה שלכם בצורה מקצועית
+                </p>
+              </div>
+            )}
+
+            {/* About Element */}
+            {selectedElements.includes('about') && (
+              <div className="border border-gray-600 rounded-lg p-4 space-y-3">
+                <h4 className="font-medium text-purple-400 flex items-center gap-2">
+                  <Users className="w-4 h-4" />
+                  קצת עלינו
+                </h4>
+                <p className="text-sm text-gray-400">
+                  מציג מידע על הצוות והחזון שלכם
+                </p>
+              </div>
+            )}
+
+            {selectedElements.length === 0 && (
+              <p className="text-gray-400 text-center py-8">
+                לא נבחרו אלמנטים נוספים
+              </p>
+            )}
           </TabsContent>
 
           <TabsContent value="export" className="space-y-4">
-            <Card className="bg-gray-800 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <FileCode className="w-5 h-5" />
-                  ייצוא ואינטגרציה
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Button
-                  onClick={onSave}
-                  className={`w-full ${isSaved ? 'bg-green-600 hover:bg-green-700' : 'bg-purple-600 hover:bg-purple-700'}`}
-                >
-                  <Save className="w-4 h-4 ml-2" />
-                  {isSaved ? 'נשמר!' : 'שמור עיצוב'}
-                </Button>
-
-                <Button
-                  onClick={onWordPressIntegration}
-                  variant="outline"
-                  className="w-full border-gray-600 text-gray-300 hover:bg-gray-700"
-                  disabled={!isSaved}
-                >
-                  <Download className="w-4 h-4 ml-2" />
-                  חבר לוורדפרס
-                </Button>
-
-                {showWordPressGuide && (
-                  <WordPressIntegration 
-                    htmlCode={generateHtmlFile()}
-                  />
-                )}
-              </CardContent>
-            </Card>
+            <div className="space-y-3">
+              <Button
+                onClick={onSave}
+                className={`w-full ${isSaved ? 'bg-green-600 hover:bg-green-700' : 'bg-purple-600 hover:bg-purple-700'}`}
+              >
+                <Save className="w-4 h-4 mr-2" />
+                {isSaved ? 'נשמר בהצלחה' : 'שמור עיצוב'}
+              </Button>
+              
+              <Button
+                onClick={generateHtmlFile}
+                className="w-full bg-blue-600 hover:bg-blue-700"
+              >
+                <Download className="w-4 h-4 mr-2" />
+                הורד קובץ HTML
+              </Button>
+              
+              <Button
+                onClick={onWordPressIntegration}
+                className="w-full bg-green-600 hover:bg-green-700"
+              >
+                <Wordpress className="w-4 h-4 mr-2" />
+                ייצוא ל-WordPress
+              </Button>
+              
+              <Button
+                onClick={onAdvancedEdit}
+                className="w-full bg-orange-600 hover:bg-orange-700"
+              >
+                <Code className="w-4 h-4 mr-2" />
+                עריכה מתקדמת
+              </Button>
+            </div>
           </TabsContent>
         </Tabs>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
