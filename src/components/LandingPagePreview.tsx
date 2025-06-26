@@ -1,10 +1,11 @@
+
 import { ColorScheme } from "./ColorEditor";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Send, Phone, Mail, MapPin } from "lucide-react";
+import { Send, Phone, Mail, MapPin, Edit2 } from "lucide-react";
 
 interface LandingPagePreviewProps {
   content: any;
@@ -21,6 +22,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     phone: '',
     message: ''
   });
+  const [editMode, setEditMode] = useState(false);
   const { toast } = useToast();
 
   if (!content) {
@@ -67,90 +69,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   return (
     <div className="w-full bg-gradient-to-b from-gray-900 via-black to-gray-900 text-white overflow-hidden rounded-lg" dir="rtl">
       <style>{`
-        @keyframes gentleFloat {
-          0%, 100% { 
-            transform: translateY(0px);
-          }
-          50% { 
-            transform: translateY(-8px);
-          }
-        }
-
-        @keyframes subtleGlow {
-          0%, 100% {
-            box-shadow: 0 0 15px rgba(192, 192, 192, 0.3);
-          }
-          50% {
-            box-shadow: 0 0 25px rgba(192, 192, 192, 0.5);
-          }
-        }
-
-        @keyframes shimmer {
-          0% { 
-            transform: translateX(-100%);
-            opacity: 0;
-          }
-          50% { 
-            opacity: 0.4;
-          }
-          100% { 
-            transform: translateX(100%);
-            opacity: 0;
-          }
-        }
-
-        .tech-card {
-          background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(30,30,30,0.9));
-          backdrop-filter: blur(15px);
-          border: 1px solid rgba(192, 192, 192, 0.2);
-          border-radius: 15px;
-          position: relative;
-          overflow: hidden;
-          transition: all 0.3s ease;
-        }
-
-        .tech-card::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.1), transparent);
-          animation: shimmer 3s ease-in-out infinite;
-        }
-
-        .tech-card:hover {
-          transform: translateY(-5px);
-          border-color: rgba(192, 192, 192, 0.4);
-          animation: subtleGlow 2s ease-in-out infinite;
-        }
-
-        .tech-button {
-          background: linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary});
-          border: none;
-          position: relative;
-          overflow: hidden;
-          transition: all 0.3s ease;
-          border-radius: 12px;
-        }
-
-        .tech-button::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-          animation: shimmer 2s ease-in-out infinite;
-        }
-
-        .tech-button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-
         .silver-icon {
           color: rgba(192, 192, 192, 0.8);
           background: linear-gradient(135deg, rgba(192, 192, 192, 0.1), rgba(169, 169, 169, 0.05));
@@ -161,13 +79,37 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           align-items: center;
           justify-content: center;
           transition: all 0.3s ease;
-          animation: gentleFloat 4s ease-in-out infinite;
         }
 
         .silver-icon:hover {
           color: rgba(192, 192, 192, 1);
           border-color: rgba(192, 192, 192, 0.4);
-          animation: subtleGlow 1.5s ease-in-out infinite;
+          transform: translateY(-2px);
+        }
+
+        .tech-card {
+          background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(30,30,30,0.9));
+          backdrop-filter: blur(15px);
+          border: 1px solid rgba(192, 192, 192, 0.2);
+          border-radius: 15px;
+          transition: all 0.3s ease;
+        }
+
+        .tech-card:hover {
+          transform: translateY(-3px);
+          border-color: rgba(192, 192, 192, 0.4);
+        }
+
+        .tech-button {
+          background: linear-gradient(135deg, ${currentColors.accent}, ${currentColors.primary});
+          border: none;
+          transition: all 0.3s ease;
+          border-radius: 12px;
+        }
+
+        .tech-button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
         .tech-form {
@@ -175,20 +117,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           backdrop-filter: blur(20px);
           border: 2px solid rgba(192, 192, 192, 0.1);
           border-radius: 20px;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .tech-form::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: linear-gradient(45deg, ${currentColors.primary}10, transparent, ${currentColors.accent}10);
-          opacity: 0.5;
-          pointer-events: none;
         }
 
         .form-field {
@@ -203,7 +131,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         .form-field:focus {
           background: rgba(0,0,0,0.8);
           border-color: rgba(192, 192, 192, 0.5);
-          box-shadow: 0 0 15px rgba(192, 192, 192, 0.2);
           outline: none;
         }
 
@@ -213,17 +140,11 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
           border: 1px solid rgba(192, 192, 192, 0.2);
           border-radius: 15px;
           transition: all 0.3s ease;
-          animation: gentleFloat 5s ease-in-out infinite;
         }
 
-        .stats-card:nth-child(2) { animation-delay: -1s; }
-        .stats-card:nth-child(3) { animation-delay: -2s; }
-        .stats-card:nth-child(4) { animation-delay: -3s; }
-
         .stats-card:hover {
-          transform: translateY(-8px);
+          transform: translateY(-3px);
           border-color: rgba(192, 192, 192, 0.4);
-          animation: subtleGlow 2s ease-in-out infinite;
         }
 
         .neon-text {
@@ -232,20 +153,84 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             0 0 10px ${currentColors.accent}40;
         }
 
+        /* Mobile Responsive Styles */
         @media (max-width: 768px) {
-          .tech-card:hover,
-          .stats-card:hover {
-            transform: translateY(-3px);
+          .hero-section {
+            min-height: 70vh !important;
+            padding: 2rem 1rem !important;
           }
           
-          .tech-button:hover {
-            transform: translateY(-1px);
+          .hero-title {
+            font-size: 2rem !important;
+            line-height: 1.2 !important;
+            margin-bottom: 1rem !important;
+          }
+          
+          .hero-subtitle {
+            font-size: 1.1rem !important;
+            margin-bottom: 2rem !important;
+          }
+          
+          .stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.75rem !important;
+          }
+          
+          .features-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1.5rem !important;
+          }
+          
+          .contact-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+          }
+          
+          .tech-card {
+            padding: 1.5rem !important;
+          }
+          
+          .silver-icon {
+            width: 3rem !important;
+            height: 3rem !important;
+          }
+          
+          .contact-form {
+            padding: 1.5rem !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .hero-title {
+            font-size: 1.75rem !important;
+          }
+          
+          .hero-subtitle {
+            font-size: 1rem !important;
+          }
+          
+          .section-title {
+            font-size: 1.75rem !important;
+          }
+          
+          .tech-button {
+            padding: 0.75rem 1.5rem !important;
+            font-size: 1rem !important;
           }
         }
       `}</style>
 
+      {/* Edit Mode Toggle */}
+      <Button
+        onClick={() => setEditMode(!editMode)}
+        className="fixed top-32 left-4 z-50 bg-blue-600 hover:bg-blue-700 rounded-full p-3"
+        size="sm"
+      >
+        <Edit2 className="w-4 h-4" />
+      </Button>
+
       {/* Hero Section */}
-      <section className="relative min-h-[600px] flex items-center justify-center text-center p-8"
+      <section className="hero-section relative min-h-[600px] flex items-center justify-center text-center p-8"
                style={{
                  background: finalHeroImage 
                    ? `linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,0,0,0.5)), url('${finalHeroImage}')` 
@@ -254,12 +239,12 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
                  backgroundPosition: 'center'
                }}>
         
-        <div className="relative z-10 max-w-4xl mx-auto">
-          <span className="inline-block px-6 py-3 mb-8 text-white rounded-full font-semibold text-sm tech-card">
+        <div className="relative z-10 max-w-4xl mx-auto w-full">
+          <span className="inline-block px-4 md:px-6 py-2 md:py-3 mb-6 md:mb-8 text-white rounded-full font-semibold text-sm tech-card">
             {content.badge}
           </span>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 neon-text"
+          <h1 className="hero-title text-3xl md:text-4xl lg:text-6xl xl:text-7xl font-bold mb-6 md:mb-8 neon-text"
               style={{ 
                 color: currentColors.headlineColor || 'white',
                 textShadow: `0 0 30px ${currentColors.accent}, 0 8px 16px rgba(0,0,0,0.5)`
@@ -267,24 +252,24 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
             {content.headline}
           </h1>
           
-          <p className="text-lg md:text-xl lg:text-2xl mb-12 opacity-90 leading-relaxed max-w-3xl mx-auto"
+          <p className="hero-subtitle text-lg md:text-xl lg:text-2xl mb-8 md:mb-12 opacity-90 leading-relaxed max-w-3xl mx-auto px-4"
              style={{ color: currentColors.subheadlineColor || 'rgba(255,255,255,0.9)' }}>
             {content.subheadline}
           </p>
           
           <button 
             onClick={() => scrollToSection('contact')}
-            className="tech-button inline-block px-10 py-5 text-white font-bold text-lg mb-16"
+            className="tech-button inline-block px-8 md:px-10 py-4 md:py-5 text-white font-bold text-base md:text-lg mb-12 md:mb-16"
           >
             {content.cta}
           </button>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+          <div className="stats-grid grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto px-4">
             {Object.entries(content.stats).map(([key, value], index) => (
-              <div key={key} className="stats-card p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2 neon-text">{String(value)}</div>
-                <div className="text-sm md:text-base text-white opacity-80">{key}</div>
+              <div key={key} className="stats-card p-4 md:p-6 text-center">
+                <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 neon-text">{String(value)}</div>
+                <div className="text-xs md:text-sm lg:text-base text-white opacity-80">{key}</div>
               </div>
             ))}
           </div>
@@ -292,42 +277,42 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       </section>
 
       {/* Advantages Section */}
-      <section className="py-20 px-8">
+      <section className="py-12 md:py-20 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 neon-text" style={{ color: currentColors.text }}>
+          <h2 className="section-title text-2xl md:text-3xl lg:text-5xl font-bold text-center mb-12 md:mb-16 neon-text" style={{ color: currentColors.text }}>
             💎 למה לבחור בנו?
           </h2>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="tech-card p-8 text-center">
-              <div className="w-20 h-20 rounded-2xl mx-auto mb-6 silver-icon">
-                <span className="text-3xl">🎧</span>
+          <div className="features-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            <div className="tech-card p-6 md:p-8 text-center">
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl mx-auto mb-4 md:mb-6 silver-icon">
+                <span className="text-2xl md:text-3xl">🎧</span>
               </div>
-              <h3 className="text-xl font-bold mb-4 text-white neon-text">תמיכה 24/7</h3>
+              <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4 text-white neon-text">תמיכה 24/7</h3>
               <p className="text-gray-300 text-sm leading-relaxed">זמינים עבורכם בכל שעה</p>
             </div>
 
-            <div className="tech-card p-8 text-center">
-              <div className="w-20 h-20 rounded-2xl mx-auto mb-6 silver-icon">
-                <span className="text-3xl">🏆</span>
+            <div className="tech-card p-6 md:p-8 text-center">
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl mx-auto mb-4 md:mb-6 silver-icon">
+                <span className="text-2xl md:text-3xl">🏆</span>
               </div>
-              <h3 className="text-xl font-bold mb-4 text-white neon-text">ניסיון רב שנים</h3>
+              <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4 text-white neon-text">ניסיון רב שנים</h3>
               <p className="text-gray-300 text-sm leading-relaxed">מומחיות מוכחת בתחום</p>
             </div>
 
-            <div className="tech-card p-8 text-center">
-              <div className="w-20 h-20 rounded-2xl mx-auto mb-6 silver-icon">
-                <span className="text-3xl">⭐</span>
+            <div className="tech-card p-6 md:p-8 text-center">
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl mx-auto mb-4 md:mb-6 silver-icon">
+                <span className="text-2xl md:text-3xl">⭐</span>
               </div>
-              <h3 className="text-xl font-bold mb-4 text-white neon-text">שירות מקצועי</h3>
+              <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4 text-white neon-text">שירות מקצועי</h3>
               <p className="text-gray-300 text-sm leading-relaxed">איכות ללא פשרות</p>
             </div>
 
-            <div className="tech-card p-8 text-center">
-              <div className="w-20 h-20 rounded-2xl mx-auto mb-6 silver-icon">
-                <span className="text-3xl">💰</span>
+            <div className="tech-card p-6 md:p-8 text-center">
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl mx-auto mb-4 md:mb-6 silver-icon">
+                <span className="text-2xl md:text-3xl">💰</span>
               </div>
-              <h3 className="text-xl font-bold mb-4 text-white neon-text">מחירים הוגנים</h3>
+              <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4 text-white neon-text">מחירים הוגנים</h3>
               <p className="text-gray-300 text-sm leading-relaxed">שקיפות מלאה במחירים</p>
             </div>
           </div>
@@ -335,27 +320,27 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-8 bg-gradient-to-r from-gray-900/30 to-black/50">
+      <section className="py-12 md:py-20 px-4 md:px-8 bg-gradient-to-r from-gray-900/30 to-black/50">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 neon-text" style={{ color: currentColors.text }}>
+          <h2 className="section-title text-2xl md:text-3xl lg:text-5xl font-bold text-center mb-12 md:mb-16 neon-text" style={{ color: currentColors.text }}>
             ⚡ השירותים שלנו
           </h2>
           
-          <div className="grid md:grid-cols-3 gap-10">
+          <div className="features-grid grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
             {[
               { icon: "⚡", title: "מהירות במתן שירות", desc: "זמן תגובה מהיר ושירות יעיל" },
               { icon: "🛡️", title: "אמינות וביטחון", desc: "שירות אמין עם רמת ביטחון גבוהה" },
               { icon: "🎧", title: "תמיכה מלאה", desc: "ליווי צמוד לאורך כל הדרך" }
             ].map((feature, idx) => (
               <div key={idx} className="text-center">
-                <div className="tech-card p-8">
-                  <div className="w-20 h-20 rounded-2xl mx-auto mb-8 silver-icon">
-                    <span className="text-3xl">{feature.icon}</span>
+                <div className="tech-card p-6 md:p-8">
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl mx-auto mb-6 md:mb-8 silver-icon">
+                    <span className="text-2xl md:text-3xl">{feature.icon}</span>
                   </div>
-                  <h3 className="text-2xl font-bold mb-6 neon-text" style={{ color: currentColors.text }}>
+                  <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 neon-text" style={{ color: currentColors.text }}>
                     {feature.title}
                   </h3>
-                  <p style={{ color: currentColors.text }} className="opacity-80 text-lg leading-relaxed">
+                  <p style={{ color: currentColors.text }} className="opacity-80 text-base md:text-lg leading-relaxed">
                     {feature.desc}
                   </p>
                 </div>
@@ -366,238 +351,138 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       </section>
 
       {/* Contact Form Section */}
-      <section id="contact" className="py-24 px-8">
+      <section id="contact" className="py-16 md:py-24 px-4 md:px-8">
         <div className="max-w-5xl mx-auto">
-          <div className="tech-form p-10 md:p-12">
-            <div className="text-center mb-12 relative z-10">
-              <div className="w-24 h-24 rounded-3xl mx-auto mb-8 silver-icon">
-                <span className="text-4xl">💬</span>
+          <div className="tech-form contact-form p-8 md:p-10 lg:p-12">
+            <div className="text-center mb-8 md:mb-12 relative z-10">
+              <div className="w-20 h-20 md:w-24 md:h-24 rounded-3xl mx-auto mb-6 md:mb-8 silver-icon">
+                <span className="text-3xl md:text-4xl">💬</span>
               </div>
               
-              <h2 className="text-3xl md:text-5xl font-bold mb-6 neon-text" style={{ color: currentColors.text }}>
+              <h2 className="section-title text-2xl md:text-3xl lg:text-5xl font-bold mb-4 md:mb-6 neon-text" style={{ color: currentColors.text }}>
                 בואו נתחיל לעבוד יחד
               </h2>
-              <p className="text-xl text-gray-300">מלא את הפרטים ונחזור אליך בהקדם</p>
+              <p className="text-lg md:text-xl text-gray-300">מלא את הפרטים ונחזור אליך בהקדם</p>
             </div>
             
-            <form onSubmit={handleContactSubmit} className="max-w-3xl mx-auto space-y-8 relative z-10">
-              <div className="grid md:grid-cols-2 gap-6">
+            <form onSubmit={handleContactSubmit} className="max-w-3xl mx-auto space-y-6 md:space-y-8 relative z-10">
+              <div className="contact-grid grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <div>
-                  <label className="block text-lg font-medium mb-3 text-gray-300">שם מלא *</label>
+                  <label className="block text-base md:text-lg font-medium mb-2 md:mb-3 text-gray-300">שם מלא *</label>
                   <Input
                     type="text"
                     placeholder="השם שלך"
                     value={contactForm.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    className="form-field placeholder:text-white/50 h-14 text-lg border-0"
+                    className="form-field placeholder:text-white/50 h-12 md:h-14 text-base md:text-lg border-0"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-lg font-medium mb-3 text-gray-300">כתובת אימייל *</label>
+                  <label className="block text-base md:text-lg font-medium mb-2 md:mb-3 text-gray-300">כתובת אימייל *</label>
                   <Input
                     type="email"
                     placeholder="example@email.com"
                     value={contactForm.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    className="form-field placeholder:text-white/50 h-14 text-lg border-0"
+                    className="form-field placeholder:text-white/50 h-12 md:h-14 text-base md:text-lg border-0"
                     required
                   />
                 </div>
               </div>
               
               <div>
-                <label className="block text-lg font-medium mb-3 text-gray-300">מספר טלפון</label>
+                <label className="block text-base md:text-lg font-medium mb-2 md:mb-3 text-gray-300">מספר טלפון</label>
                 <Input
                   type="tel"
                   placeholder="050-1234567"
                   value={contactForm.phone}
                   onChange={(e) => handleInputChange('phone', e.target.value)}
-                  className="form-field placeholder:text-white/50 h-14 text-lg border-0"
+                  className="form-field placeholder:text-white/50 h-12 md:h-14 text-base md:text-lg border-0"
                 />
               </div>
               
               <div>
-                <label className="block text-lg font-medium mb-3 text-gray-300">הודעה *</label>
+                <label className="block text-base md:text-lg font-medium mb-2 md:mb-3 text-gray-300">הודעה *</label>
                 <Textarea
                   placeholder="איך נוכל לעזור לך?"
-                  rows={6}
+                  rows={5}
                   value={contactForm.message}
                   onChange={(e) => handleInputChange('message', e.target.value)}
-                  className="form-field placeholder:text-white/50 text-lg border-0"
+                  className="form-field placeholder:text-white/50 text-base md:text-lg border-0"
                   required
                 />
               </div>
               
               <Button 
                 type="submit"
-                className="w-full py-6 text-xl font-bold tech-button border-0"
+                className="w-full py-5 md:py-6 text-lg md:text-xl font-bold tech-button border-0"
               >
-                <Send className="w-6 h-6 ml-3" />
+                <Send className="w-5 h-5 md:w-6 md:h-6 ml-2 md:ml-3" />
                 שלח הודעה
               </Button>
             </form>
 
             {/* Contact Info Cards */}
-            <div className="grid md:grid-cols-3 gap-8 mt-16 relative z-10">
-              <div className="tech-card p-8 text-center">
-                <div className="w-16 h-16 rounded-xl mx-auto mb-4 silver-icon">
-                  <Phone className="w-8 h-8" />
+            <div className="contact-grid grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-12 md:mt-16 relative z-10">
+              <div className="tech-card p-6 md:p-8 text-center">
+                <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl mx-auto mb-3 md:mb-4 silver-icon">
+                  <Phone className="w-6 h-6 md:w-8 md:h-8" />
                 </div>
-                <h4 className="font-bold text-white mb-3 text-lg neon-text">טלפון</h4>
-                <p className="text-gray-300 text-lg">050-1234567</p>
+                <h4 className="font-bold text-white mb-2 md:mb-3 text-base md:text-lg neon-text">טלפון</h4>
+                <p className="text-gray-300 text-base md:text-lg">050-1234567</p>
               </div>
               
-              <div className="tech-card p-8 text-center">
-                <div className="w-16 h-16 rounded-xl mx-auto mb-4 silver-icon">
-                  <Mail className="w-8 h-8" />
+              <div className="tech-card p-6 md:p-8 text-center">
+                <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl mx-auto mb-3 md:mb-4 silver-icon">
+                  <Mail className="w-6 h-6 md:w-8 md:h-8" />
                 </div>
-                <h4 className="font-bold text-white mb-3 text-lg neon-text">אימייל</h4>
-                <p className="text-gray-300 text-lg">info@business.co.il</p>
+                <h4 className="font-bold text-white mb-2 md:mb-3 text-base md:text-lg neon-text">אימייל</h4>
+                <p className="text-gray-300 text-base md:text-lg">info@business.co.il</p>
               </div>
               
-              <div className="tech-card p-8 text-center">
-                <div className="w-16 h-16 rounded-xl mx-auto mb-4 silver-icon">
-                  <MapPin className="w-8 h-8" />
+              <div className="tech-card p-6 md:p-8 text-center">
+                <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl mx-auto mb-3 md:mb-4 silver-icon">
+                  <MapPin className="w-6 h-6 md:w-8 md:h-8" />
                 </div>
-                <h4 className="font-bold text-white mb-3 text-lg neon-text">כתובת</h4>
-                <p className="text-gray-300 text-lg">תל אביב, ישראל</p>
+                <h4 className="font-bold text-white mb-2 md:mb-3 text-base md:text-lg neon-text">כתובת</h4>
+                <p className="text-gray-300 text-base md:text-lg">תל אביב, ישראל</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
-      {content.whyChooseUs && elements.includes('whyChooseUs') && (
-        <section className="py-20 px-8 bg-gradient-to-r from-gray-900/30 to-black/30">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-bold text-center mb-8 neon-text" style={{ color: currentColors.text }}>
-              🏆 {content.whyChooseUs.title}
-            </h2>
-            <p className="text-center text-xl mb-16 opacity-80" style={{ color: currentColors.text }}>
-              הסיבות המובילות לבחור בנו
-            </p>
-            
-            <div className="grid md:grid-cols-2 gap-8">
-              {content.whyChooseUs.items.map((item: any, idx: number) => (
-                <div key={idx} className="tech-card p-8 flex items-center text-right">
-                  <div className="w-16 h-16 rounded-2xl ml-6 flex-shrink-0 silver-icon">
-                    <span className="text-2xl">🚀</span>
-                  </div>
-                  <div>
-                    <h3 className="font-bold mb-3 text-lg neon-text" style={{ color: currentColors.primary }}>
-                      יתרון מוביל
-                    </h3>
-                    <p style={{ color: currentColors.text }} className="opacity-80 text-lg leading-relaxed">
-                      {item.text}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            <div className="text-center mt-16">
-              <button 
-                onClick={() => scrollToSection('contact')}
-                className="tech-button inline-block px-10 py-5 text-white font-bold text-lg"
-              >
-                בואו נתחיל עכשיו ✨
-              </button>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Services Section */}
-      {elements.includes('services') && (
-        <section className="relative py-20 px-8">
-          <div className="relative z-10 max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 neon-text" style={{ color: currentColors.text }}>
-              🎯 השירותים שלנו
-            </h2>
-            
-            <div className="grid md:grid-cols-3 gap-10">
-              {[
-                { icon: "🔧", title: "פתרונות מקצועיים", desc: "שירותים מקצועיים המותאמים לצרכים שלכם", price: "החל מ₪199" },
-                { icon: "👥", title: "ייעוץ אישי", desc: "ליווי צמוד ויעוץ מקצועי לאורך כל הדרך", price: "החל מ₪299" },
-                { icon: "🚀", title: "פתרון מהיר", desc: "תוצאות מהירות ויעילות ללא פשרות", price: "החל מ₪399" }
-              ].map((service, idx) => (
-                <div key={idx} className="text-center">
-                  <div className="tech-card p-8 rounded-2xl">
-                    <div className="w-20 h-20 rounded-xl mx-auto mb-8 silver-icon">
-                      <span className="text-3xl">{service.icon}</span>
-                    </div>
-                    <h3 className="text-2xl font-bold mb-6 neon-text" style={{ color: currentColors.text }}>
-                      {service.title}
-                    </h3>
-                    <p style={{ color: currentColors.text }} className="opacity-80 text-lg leading-relaxed mb-6">
-                      {service.desc}
-                    </p>
-                    <div className="text-lg font-bold" style={{ color: currentColors.accent }}>
-                      {service.price}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* About Section */}
-      {elements.includes('about') && (
-        <section className="relative py-20 px-8">
-          <div className="relative z-10 max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-5xl font-bold mb-12 neon-text" style={{ color: currentColors.text }}>
-              👥 {content.aboutTitle}
-            </h2>
-            <div className="tech-card p-12 rounded-2xl">
-              <p className="text-lg leading-relaxed mb-8" 
-                 style={{ color: currentColors.aboutTextColor || currentColors.text }}>
-                {content.aboutText}
-              </p>
-              <button 
-                onClick={() => scrollToSection('contact')}
-                className="tech-button inline-block px-10 py-5 text-white font-bold text-lg"
-              >
-                למד עוד עלינו
-              </button>
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* Testimonials Section */}
-      {elements.includes('testimonials') && (
-        <section className="relative py-20 px-8">
-          <div className="relative z-10 max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 neon-text" style={{ color: currentColors.text }}>
+      {elements.includes('testimonials') && content.testimonials && (
+        <section className="py-12 md:py-20 px-4 md:px-8">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="section-title text-2xl md:text-3xl lg:text-5xl font-bold text-center mb-12 md:mb-16 neon-text" style={{ color: currentColors.text }}>
               💭 מה אומרים עלינו
             </h2>
             
-            <div className="grid md:grid-cols-3 gap-10">
+            <div className="features-grid grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
               {content.testimonials.map((testimonial: any, idx: number) => (
-                <div key={idx} className="tech-card p-8 rounded-2xl">
-                  <div className="flex items-center mb-6">
-                    <div className="w-16 h-16 rounded-lg ml-4 silver-icon">
-                      <span className="text-lg">{testimonial.image}</span>
+                <div key={idx} className="tech-card p-6 md:p-8 rounded-2xl">
+                  <div className="flex items-center mb-4 md:mb-6">
+                    <div className="w-12 h-12 md:w-16 md:h-16 rounded-lg ml-3 md:ml-4 silver-icon">
+                      <span className="text-base md:text-lg">{testimonial.image}</span>
                     </div>
                     <div>
-                      <h4 className="font-bold text-xl" style={{ color: currentColors.primary }}>
+                      <h4 className="font-bold text-lg md:text-xl" style={{ color: currentColors.primary }}>
                         {testimonial.name}
                       </h4>
-                      <p className="text-sm opacity-70" style={{ color: currentColors.text }}>
+                      <p className="text-xs md:text-sm opacity-70" style={{ color: currentColors.text }}>
                         {testimonial.role}
                       </p>
                     </div>
                   </div>
-                  <p className="mb-6 italic text-lg" style={{ color: currentColors.text }}>
+                  <p className="mb-4 md:mb-6 italic text-base md:text-lg" style={{ color: currentColors.text }}>
                     "{testimonial.content}"
                   </p>
                   <div className="flex">
                     {'★'.repeat(testimonial.rating).split('').map((star, i) => (
-                      <span key={i} className="text-yellow-400 text-xl">{star}</span>
+                      <span key={i} className="text-yellow-400 text-lg md:text-xl">{star}</span>
                     ))}
                   </div>
                 </div>
@@ -608,20 +493,20 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       )}
 
       {/* FAQ Section */}
-      {elements.includes('faq') && (
-        <section className="relative py-20 px-8">
-          <div className="relative z-10 max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-bold text-center mb-16 neon-text" style={{ color: currentColors.text }}>
+      {elements.includes('faq') && content.faq && (
+        <section className="py-12 md:py-20 px-4 md:px-8">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="section-title text-2xl md:text-3xl lg:text-5xl font-bold text-center mb-12 md:mb-16 neon-text" style={{ color: currentColors.text }}>
               ❓ שאלות נפוצות
             </h2>
             
-            <div className="space-y-8">
+            <div className="space-y-6 md:space-y-8">
               {content.faq.map((item: any, idx: number) => (
-                <div key={idx} className="tech-card p-8 rounded-2xl">
-                  <h3 className="font-bold mb-4 text-xl" style={{ color: currentColors.secondary }}>
+                <div key={idx} className="tech-card p-6 md:p-8 rounded-2xl">
+                  <h3 className="font-bold mb-3 md:mb-4 text-lg md:text-xl" style={{ color: currentColors.secondary }}>
                     {item.question}
                   </h3>
-                  <p style={{ color: currentColors.text }} className="opacity-80 leading-relaxed text-lg">
+                  <p style={{ color: currentColors.text }} className="opacity-80 leading-relaxed text-base md:text-lg">
                     {item.answer}
                   </p>
                 </div>
