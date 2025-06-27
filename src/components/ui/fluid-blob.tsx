@@ -1,6 +1,6 @@
 
 import React, { useRef, useEffect } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas, useFrame, useThree, extend } from '@react-three/fiber';
 import * as THREE from 'three';
 
 const vertexShader = `
@@ -107,9 +107,35 @@ void main() {
 }
 `;
 
+// Create a custom shader material class
+class CustomShaderMaterial extends THREE.ShaderMaterial {
+  constructor() {
+    super({
+      uniforms: {
+        time: { value: 0 },
+        resolution: { value: new THREE.Vector4() }
+      },
+      vertexShader,
+      fragmentShader
+    });
+  }
+}
+
+// Extend React Three Fiber with our custom material
+extend({ CustomShaderMaterial });
+
+// Declare the JSX element
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      customShaderMaterial: any;
+    }
+  }
+}
+
 function LavaLampShader() {
   const meshRef = useRef<THREE.Mesh>(null);
-  const materialRef = useRef<THREE.ShaderMaterial>(null);
+  const materialRef = useRef<CustomShaderMaterial>(null);
   const { size } = useThree();
 
   useEffect(() => {
@@ -126,14 +152,12 @@ function LavaLampShader() {
         a2 = (height / width) / imageAspect;
       }
       
-      if (materialRef.current.uniforms) {
-        materialRef.current.uniforms.resolution.value.set(width, height, a1, a2);
-      }
+      materialRef.current.uniforms.resolution.value.set(width, height, a1, a2);
     }
   }, [size]);
 
   useFrame((state) => {
-    if (materialRef.current && materialRef.current.uniforms) {
+    if (materialRef.current) {
       materialRef.current.uniforms.time.value = state.clock.elapsedTime;
     }
   });
@@ -141,15 +165,7 @@ function LavaLampShader() {
   return (
     <mesh ref={meshRef}>
       <planeGeometry args={[5, 5]} />
-      <shaderMaterial
-        ref={materialRef}
-        uniforms={{
-          time: { value: 0 },
-          resolution: { value: new THREE.Vector4() }
-        }}
-        vertexShader={vertexShader}
-        fragmentShader={fragmentShader}
-      />
+      <customShaderMaterial ref={materialRef} />
     </mesh>
   );
 }
