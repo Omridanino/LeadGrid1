@@ -7,7 +7,6 @@ export interface FormData {
   mainGoal: string;
   keyFeatures: string;
   contactInfo: string;
-  heroStyle: string;
   designStyle: string;
   navigationStyle: string;
   selectedElements: string[];
@@ -21,8 +20,7 @@ export const initialFormData: FormData = {
   mainGoal: "",
   keyFeatures: "",
   contactInfo: "",
-  heroStyle: "gradient-waves",
-  designStyle: "dynamic-gradients", // This is the main style selector - fixed default
+  designStyle: "dynamic-gradients", // Default to the enhanced dynamic gradients
   navigationStyle: "floating",
   selectedElements: []
 };
@@ -34,7 +32,7 @@ export const getStepTitle = (step: number): string => {
     case 2:
       return "יעדים ותכונות";
     case 3:
-      return "סגנון עיצוב פרימיום";
+      return "סגנון עיצוב טכנולוגי מתקדם";
     case 4:
       return "בחירת אלמנטים";
     default:
@@ -46,7 +44,7 @@ export const validateRequiredFields = (formData: FormData): boolean => {
   return !!(formData.businessName && formData.businessType);
 };
 
-// Design style validation and mapping
+// Enhanced design style validation and mapping
 export const validateDesignStyle = (style: string): boolean => {
   const validStyles = [
     'dynamic-gradients',
@@ -61,16 +59,16 @@ export const validateDesignStyle = (style: string): boolean => {
 export const getDesignStyleDescription = (style: string): string => {
   switch (style) {
     case 'dynamic-gradients':
-      return 'גרדיאנטים דינמיים עם אפקטי חלקיקים מרהיבים - הבחירה הבטוחה ביותר';
+      return 'גרדיאנטים דינמיים AI עם אפקטי חלקיקים מתקדמים - טכנולוגיה מהפנטת ברמה בינלאומית';
     case 'sparkles-effects':
-      return 'אפקטי נוצץ אינטראקטיביים עם תאורה דינמית';
+      return 'מערכת חלקיקים אינטראקטיבית עם תגובה לעכבר - אפקטי נוצץ מרהיבים ומתקדמים';
     case 'animated-paths':
-      return 'נתיבים מונפשים עם עקומות חלקות ואלגנטיות';
+      return 'נתיבים מונפשים פרימיום עם עקומות SVG איכותיות - עיצוב מינימליסטי ואלגנטי';
     case 'fluid-blobs':
-      return 'בועות נוזל תלת מימדיות עם אפקטים מתקדמים - מותאם לביצועים';
+      return 'בועות נוזל מרובות צבעים עם אנימציה טבעית ואורגנית - מושלם לעסקים יצירתיים';
     case 'spline-3d':
-      return 'סצנות תלת מימד פרימיום עם אובייקטים מרחפים';
+      return 'סצנות תלת מימד מתקדמות עם תנועה מרשימה - ברמת Three.js ואמנות דיגיטלית';
     default:
-      return 'עיצוב פרימיום מותאם אישית';
+      return 'עיצוב טכנולוגי מתקדם מותאם אישית';
   }
 };

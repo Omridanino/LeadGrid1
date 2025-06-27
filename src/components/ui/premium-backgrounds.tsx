@@ -1,53 +1,101 @@
 
 import React, { useRef, useEffect, useMemo } from 'react';
-import { Canvas, useFrame, useThree, extend } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
-// Extend Three.js with custom shader material
-class CustomShaderMaterial extends THREE.ShaderMaterial {
-  constructor(props: any) {
-    super(props);
-  }
-}
-
-extend({ CustomShaderMaterial });
-
-// Dynamic Gradients with Particle Effects
+// Enhanced Dynamic Gradients with AI-like particle system
 export const DynamicGradients = () => {
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 animate-pulse" />
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20">
-        <div className="absolute top-0 left-0 w-full h-full">
-          {[...Array(50)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-white rounded-full opacity-60"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animation: `float ${3 + Math.random() * 4}s ease-in-out infinite`,
-                animationDelay: `${Math.random() * 2}s`
-              }}
-            />
-          ))}
-        </div>
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+      {/* Multi-layered gradient backgrounds */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 via-purple-600/30 to-pink-600/20 animate-pulse" />
+      <div className="absolute inset-0 bg-gradient-to-bl from-cyan-500/10 via-transparent to-violet-500/10" />
       
+      {/* Advanced particle system */}
+      <div className="absolute inset-0">
+        {[...Array(150)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full opacity-70"
+            style={{
+              width: Math.random() * 4 + 1 + 'px',
+              height: Math.random() * 4 + 1 + 'px',
+              left: Math.random() * 100 + '%',
+              top: Math.random() * 100 + '%',
+              background: `linear-gradient(${Math.random() * 360}deg, 
+                ${['#3b82f6', '#8b5cf6', '#ec4899', '#06b6d4', '#10b981'][Math.floor(Math.random() * 5)]}, 
+                ${['#1e40af', '#7c3aed', '#db2777', '#0891b2', '#059669'][Math.floor(Math.random() * 5)]})`,
+              animation: `aiFloat ${3 + Math.random() * 6}s ease-in-out infinite ${Math.random() * 2}s, 
+                         aiGlow ${2 + Math.random() * 3}s ease-in-out infinite alternate`,
+              boxShadow: '0 0 20px rgba(59, 130, 246, 0.5)',
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Neural network-like connections */}
+      <svg className="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 1000 1000">
+        {[...Array(20)].map((_, i) => (
+          <line
+            key={i}
+            x1={Math.random() * 1000}
+            y1={Math.random() * 1000}
+            x2={Math.random() * 1000}
+            y2={Math.random() * 1000}
+            stroke="url(#neuralGradient)"
+            strokeWidth="0.5"
+            opacity="0.4"
+            style={{
+              animation: `neuralPulse ${4 + Math.random() * 4}s ease-in-out infinite ${Math.random() * 2}s`
+            }}
+          />
+        ))}
+        <defs>
+          <linearGradient id="neuralGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#3b82f6" />
+            <stop offset="50%" stopColor="#8b5cf6" />
+            <stop offset="100%" stopColor="#ec4899" />
+          </linearGradient>
+        </defs>
+      </svg>
+
       <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) scale(1); opacity: 0.6; }
-          50% { transform: translateY(-20px) scale(1.2); opacity: 1; }
+        @keyframes aiFloat {
+          0%, 100% { 
+            transform: translateY(0px) scale(1) rotate(0deg); 
+            opacity: 0.7; 
+          }
+          33% { 
+            transform: translateY(-30px) scale(1.2) rotate(120deg); 
+            opacity: 1; 
+          }
+          66% { 
+            transform: translateY(15px) scale(0.8) rotate(240deg); 
+            opacity: 0.8; 
+          }
+        }
+        @keyframes aiGlow {
+          0% { 
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); 
+          }
+          100% { 
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.8), 0 0 60px rgba(236, 72, 153, 0.3); 
+          }
+        }
+        @keyframes neuralPulse {
+          0%, 100% { opacity: 0.2; stroke-width: 0.5; }
+          50% { opacity: 0.8; stroke-width: 1.5; }
         }
       `}</style>
     </div>
   );
 };
 
-// Advanced Sparkles with Interactive Effects
+// Interactive Sparkles with mouse response
 export const AdvancedSparkles = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [mousePos, setMousePos] = React.useState({ x: 50, y: 50 });
 
   useEffect(() => {
     const container = containerRef.current;
@@ -57,9 +105,7 @@ export const AdvancedSparkles = () => {
       const rect = container.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 100;
       const y = ((e.clientY - rect.top) / rect.height) * 100;
-      
-      container.style.setProperty('--mouse-x', `${x}%`);
-      container.style.setProperty('--mouse-y', `${y}%`);
+      setMousePos({ x, y });
     };
 
     container.addEventListener('mousemove', handleMouseMove);
@@ -68,34 +114,80 @@ export const AdvancedSparkles = () => {
 
   return (
     <div ref={containerRef} className="absolute inset-0 w-full h-full overflow-hidden bg-black">
-      <div className="absolute inset-0" style={{
-        background: `radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(59, 130, 246, 0.3) 0%, rgba(168, 85, 247, 0.2) 30%, transparent 70%)`
-      }} />
+      {/* Interactive gradient that follows mouse */}
+      <div 
+        className="absolute inset-0 transition-all duration-300"
+        style={{
+          background: `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%, 
+            rgba(59, 130, 246, 0.4) 0%, 
+            rgba(168, 85, 247, 0.3) 30%, 
+            rgba(236, 72, 153, 0.2) 60%, 
+            transparent 80%)`
+        }} 
+      />
       
-      {[...Array(100)].map((_, i) => (
+      {/* Multiple layers of interactive sparkles */}
+      {[...Array(200)].map((_, i) => (
         <div
           key={i}
-          className="absolute w-0.5 h-0.5 bg-white rounded-full"
+          className="absolute rounded-full"
           style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animation: `sparkle ${2 + Math.random() * 3}s ease-in-out infinite`,
-            animationDelay: `${Math.random() * 2}s`,
-            boxShadow: '0 0 6px rgba(255, 255, 255, 0.8)'
+            width: Math.random() * 6 + 2 + 'px',
+            height: Math.random() * 6 + 2 + 'px',
+            left: Math.random() * 100 + '%',
+            top: Math.random() * 100 + '%',
+            background: `radial-gradient(circle, 
+              ${['#ffffff', '#3b82f6', '#8b5cf6', '#ec4899', '#06b6d4'][Math.floor(Math.random() * 5)]}, 
+              transparent)`,
+            animation: `interactiveSparkle ${2 + Math.random() * 4}s ease-in-out infinite ${Math.random() * 3}s`,
+            transform: `scale(${Math.random() * 0.5 + 0.5})`,
+            filter: 'blur(0.5px)',
+          }}
+        />
+      ))}
+
+      {/* Floating orbs with depth */}
+      {[...Array(15)].map((_, i) => (
+        <div
+          key={`orb-${i}`}
+          className="absolute rounded-full opacity-60"
+          style={{
+            width: Math.random() * 100 + 50 + 'px',
+            height: Math.random() * 100 + 50 + 'px',
+            left: Math.random() * 100 + '%',
+            top: Math.random() * 100 + '%',
+            background: `conic-gradient(from ${Math.random() * 360}deg, 
+              #3b82f6, #8b5cf6, #ec4899, #06b6d4, #3b82f6)`,
+            animation: `orbFloat ${8 + Math.random() * 8}s ease-in-out infinite ${Math.random() * 4}s`,
+            filter: 'blur(2px)',
           }}
         />
       ))}
       
       <style>{`
-        @keyframes sparkle {
+        @keyframes interactiveSparkle {
           0%, 100% { 
             opacity: 0; 
             transform: scale(0) rotate(0deg); 
           }
           50% { 
             opacity: 1; 
-            transform: scale(1.5) rotate(180deg); 
-            box-shadow: 0 0 20px rgba(255, 255, 255, 1);
+            transform: scale(2) rotate(180deg); 
+            box-shadow: 0 0 30px currentColor;
+          }
+        }
+        @keyframes orbFloat {
+          0%, 100% { 
+            transform: translateY(0px) translateX(0px) scale(1); 
+            opacity: 0.6; 
+          }
+          33% { 
+            transform: translateY(-50px) translateX(30px) scale(1.1); 
+            opacity: 0.8; 
+          }
+          66% { 
+            transform: translateY(20px) translateX(-20px) scale(0.9); 
+            opacity: 0.7; 
           }
         }
       `}</style>
@@ -103,98 +195,13 @@ export const AdvancedSparkles = () => {
   );
 };
 
-// 3D Geometric Shapes
-const GeometricShader = {
-  vertex: `
-    varying vec2 vUv;
-    varying vec3 vPosition;
-    uniform float time;
-    
-    void main() {
-      vUv = uv;
-      vPosition = position;
-      
-      vec3 pos = position;
-      pos.z += sin(pos.x * 2.0 + time) * 0.1;
-      pos.z += cos(pos.y * 2.0 + time) * 0.1;
-      
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-    }
-  `,
-  fragment: `
-    varying vec2 vUv;
-    varying vec3 vPosition;
-    uniform float time;
-    
-    void main() {
-      vec2 uv = vUv;
-      
-      float pattern = sin(uv.x * 10.0 + time) * cos(uv.y * 10.0 + time);
-      vec3 color = mix(
-        vec3(0.2, 0.4, 1.0),
-        vec3(1.0, 0.3, 0.8),
-        pattern * 0.5 + 0.5
-      );
-      
-      gl_FragColor = vec4(color, 0.8);
-    }
-  `
-};
-
-function GeometricMesh() {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  const material = useMemo(() => {
-    return new THREE.ShaderMaterial({
-      uniforms: {
-        time: { value: 0 }
-      },
-      vertexShader: GeometricShader.vertex,
-      fragmentShader: GeometricShader.fragment,
-      transparent: true
-    });
-  }, []);
-
-  useFrame((state) => {
-    if (material) {
-      material.uniforms.time.value = state.clock.elapsedTime;
-    }
-    if (meshRef.current) {
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.2;
-      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.2;
-    }
-  });
-
-  return (
-    <mesh ref={meshRef} material={material}>
-      <boxGeometry args={[2, 2, 2]} />
-    </mesh>
-  );
-}
-
-export const GeometricShapes = () => {
-  return (
-    <div className="absolute inset-0 w-full h-full">
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900" />
-      <Canvas
-        camera={{ position: [0, 0, 5], fov: 75 }}
-        dpr={Math.min(window.devicePixelRatio, 2)}
-      >
-        <ambientLight intensity={0.3} />
-        <pointLight position={[10, 10, 10]} intensity={1} />
-        <GeometricMesh />
-      </Canvas>
-    </div>
-  );
-};
-
-// Animated Paths with Smooth Curves
+// Premium Animated Paths with smooth SVG curves
 export const AnimatedPaths = () => {
   return (
-    <div className="absolute inset-0 w-full h-full overflow-hidden bg-gradient-to-br from-white to-gray-100 dark:from-neutral-950 dark:to-neutral-900">
+    <div className="absolute inset-0 w-full h-full overflow-hidden bg-gradient-to-br from-slate-50 to-gray-100 dark:from-gray-950 dark:to-black">
       <svg
         className="absolute inset-0 w-full h-full"
-        viewBox="0 0 1000 1000"
+        viewBox="0 0 1400 800"
         preserveAspectRatio="xMidYMid slice"
       >
         <defs>
@@ -207,33 +214,75 @@ export const AnimatedPaths = () => {
             <stop offset="0%" stopColor="rgba(34, 211, 238, 0.8)" />
             <stop offset="100%" stopColor="rgba(59, 130, 246, 0.4)" />
           </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge> 
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
         </defs>
         
+        {/* Premium curved paths */}
+        {[...Array(12)].map((_, i) => {
+          const baseY = 100 + i * 60;
+          const amplitude = 80 + Math.sin(i) * 40;
+          const frequency = 0.01 + i * 0.002;
+          
+          return (
+            <path
+              key={i}
+              d={`M-100,${baseY} Q200,${baseY - amplitude} 400,${baseY} T800,${baseY + amplitude * 0.5} T1200,${baseY} T1500,${baseY - amplitude * 0.3}`}
+              stroke={i % 3 === 0 ? "url(#pathGradient1)" : "url(#pathGradient2)"}
+              strokeWidth={4 - i * 0.2}
+              fill="none"
+              opacity={0.8 - i * 0.04}
+              filter="url(#glow)"
+              style={{
+                animation: `premiumPathFlow ${12 + i * 3}s ease-in-out infinite`,
+                animationDelay: `${i * 0.8}s`
+              }}
+            />
+          );
+        })}
+
+        {/* Floating geometric elements */}
         {[...Array(8)].map((_, i) => (
-          <path
-            key={i}
-            d={`M${100 + i * 120},${200 + Math.sin(i) * 100} Q${300 + i * 80},${100 + Math.cos(i) * 150} ${500 + i * 60},${400 + Math.sin(i * 2) * 200} T${800 + i * 40},${600 + Math.cos(i * 1.5) * 100}`}
-            stroke={i % 2 === 0 ? "url(#pathGradient1)" : "url(#pathGradient2)"}
-            strokeWidth={3 - i * 0.2}
-            fill="none"
-            opacity={0.7 - i * 0.05}
+          <circle
+            key={`circle-${i}`}
+            cx={200 + i * 180}
+            cy={150 + Math.sin(i) * 100}
+            r={3 + i * 0.5}
+            fill="url(#pathGradient1)"
+            opacity={0.6}
             style={{
-              animation: `pathFlow ${8 + i * 2}s ease-in-out infinite`,
-              animationDelay: `${i * 0.5}s`
+              animation: `geometricFloat ${6 + i * 2}s ease-in-out infinite ${i * 0.5}s`
             }}
           />
         ))}
       </svg>
       
       <style>{`
-        @keyframes pathFlow {
+        @keyframes premiumPathFlow {
           0%, 100% { 
-            stroke-dasharray: 0 1000;
+            stroke-dasharray: 0 2000;
             opacity: 0.3;
+            transform: translateX(0px);
           }
           50% { 
-            stroke-dasharray: 200 1000;
-            opacity: 0.8;
+            stroke-dasharray: 400 2000;
+            opacity: 0.9;
+            transform: translateX(20px);
+          }
+        }
+        @keyframes geometricFloat {
+          0%, 100% { 
+            transform: translateY(0px) scale(1);
+            opacity: 0.6;
+          }
+          50% { 
+            transform: translateY(-30px) scale(1.3);
+            opacity: 1;
           }
         }
       `}</style>
@@ -241,66 +290,128 @@ export const AnimatedPaths = () => {
   );
 };
 
-// Premium Spline 3D Alternative
-export const Premium3D = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
+// Multi-colored Fluid Blobs with natural animation
+export const FluidBlob = () => {
   return (
-    <div ref={containerRef} className="absolute inset-0 w-full h-full overflow-hidden">
+    <div className="absolute inset-0 w-full h-full overflow-hidden bg-black">
+      {/* Multiple fluid blobs */}
+      {[...Array(4)].map((_, i) => (
+        <div
+          key={i}
+          className="absolute rounded-full opacity-80"
+          style={{
+            width: `${300 + i * 100}px`,
+            height: `${300 + i * 100}px`,
+            left: `${10 + i * 20}%`,
+            top: `${10 + i * 15}%`,
+            background: `conic-gradient(from ${i * 90}deg, 
+              ${['#3b82f6', '#8b5cf6', '#ec4899', '#06b6d4'][i]}, 
+              ${['#1e40af', '#7c3aed', '#db2777', '#0891b2'][i]}, 
+              ${['#3b82f6', '#8b5cf6', '#ec4899', '#06b6d4'][i]})`,
+            animation: `fluidBlob ${15 + i * 5}s ease-in-out infinite ${i * 2}s`,
+            filter: `blur(${2 + i}px)`,
+          }}
+        />
+      ))}
+
+      {/* Liquid overlay effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/30 to-pink-900/20" />
+      
+      <style>{`
+        @keyframes fluidBlob {
+          0%, 100% { 
+            transform: scale(1) rotate(0deg) translateY(0px);
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+          }
+          25% { 
+            transform: scale(1.1) rotate(90deg) translateY(-20px);
+            border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+          }
+          50% { 
+            transform: scale(0.9) rotate(180deg) translateY(10px);
+            border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%;
+          }
+          75% { 
+            transform: scale(1.05) rotate(270deg) translateY(-10px);
+            border-radius: 60% 40% 60% 30% / 70% 30% 60% 40%;
+          }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+// Enhanced Premium 3D with impressive movement
+export const Premium3D = () => {
+  return (
+    <div className="absolute inset-0 w-full h-full overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900" />
       
-      {/* Floating 3D Elements */}
-      <div className="absolute inset-0">
-        {[...Array(6)].map((_, i) => (
+      {/* 3D floating elements with depth */}
+      <div className="absolute inset-0 perspective-1000">
+        {[...Array(12)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-24 h-24 rounded-full opacity-20"
+            className="absolute"
             style={{
-              left: `${20 + i * 15}%`,
-              top: `${10 + (i % 3) * 30}%`,
-              background: `conic-gradient(from ${i * 60}deg, #3b82f6, #8b5cf6, #ec4899, #3b82f6)`,
-              animation: `float3D ${6 + i}s ease-in-out infinite`,
-              animationDelay: `${i * 0.5}s`,
-              transform: `perspective(1000px) rotateX(${i * 15}deg) rotateY(${i * 20}deg)`,
-              filter: 'blur(1px)'
+              width: `${60 + i * 20}px`,
+              height: `${60 + i * 20}px`,
+              left: `${15 + (i % 4) * 20}%`,
+              top: `${10 + Math.floor(i / 4) * 25}%`,
+              background: `conic-gradient(from ${i * 30}deg, 
+                ${['#3b82f6', '#8b5cf6', '#ec4899', '#06b6d4', '#10b981', '#f59e0b'][i % 6]}, 
+                ${['#1e40af', '#7c3aed', '#db2777', '#0891b2', '#059669', '#d97706'][i % 6]})`,
+              borderRadius: '20%',
+              animation: `premium3D ${8 + i * 2}s ease-in-out infinite ${i * 0.5}s`,
+              transformStyle: 'preserve-3d',
+              opacity: 0.8 - i * 0.03,
+              filter: `blur(${Math.max(0, i - 8) * 0.5}px)`,
             }}
           />
         ))}
       </div>
       
-      {/* Particle System */}
+      {/* Particle orbit system */}
       <div className="absolute inset-0">
-        {[...Array(30)].map((_, i) => (
+        {[...Array(50)].map((_, i) => (
           <div
-            key={i}
-            className="absolute w-1 h-1 bg-white rounded-full"
+            key={`particle-${i}`}
+            className="absolute w-2 h-2 bg-white rounded-full opacity-70"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animation: `orbit ${10 + Math.random() * 10}s linear infinite`,
-              animationDelay: `${Math.random() * 5}s`,
-              opacity: 0.6
+              left: '50%',
+              top: '50%',
+              animation: `orbit3D ${15 + Math.random() * 15}s linear infinite`,
+              animationDelay: `${i * 0.3}s`,
+              transform: `rotate(${i * 7.2}deg) translateX(${100 + i * 8}px) rotate(-${i * 7.2}deg)`,
             }}
           />
         ))}
       </div>
       
       <style>{`
-        @keyframes orbit {
-          0% { 
-            transform: rotate(0deg) translateX(50px) rotate(0deg); 
-          }
-          100% { 
-            transform: rotate(360deg) translateX(50px) rotate(-360deg); 
-          }
+        .perspective-1000 {
+          perspective: 1000px;
         }
-        
-        @keyframes float3D {
+        @keyframes premium3D {
           0%, 100% { 
-            transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px); 
+            transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateZ(0px) scale(1);
+          }
+          25% { 
+            transform: perspective(1000px) rotateX(15deg) rotateY(90deg) rotateZ(15deg) translateZ(50px) scale(1.1);
           }
           50% { 
-            transform: perspective(1000px) rotateX(15deg) rotateY(15deg) translateZ(50px); 
+            transform: perspective(1000px) rotateX(30deg) rotateY(180deg) rotateZ(30deg) translateZ(100px) scale(0.9);
+          }
+          75% { 
+            transform: perspective(1000px) rotateX(15deg) rotateY(270deg) rotateZ(15deg) translateZ(50px) scale(1.05);
+          }
+        }
+        @keyframes orbit3D {
+          0% { 
+            transform: rotate(0deg) translateX(100px) rotate(0deg) translateZ(0px); 
+          }
+          100% { 
+            transform: rotate(360deg) translateX(100px) rotate(-360deg) translateZ(50px); 
           }
         }
       `}</style>
