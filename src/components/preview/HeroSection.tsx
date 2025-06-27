@@ -97,7 +97,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     );
   }
 
-  // FIXED: Advanced Sparkles Effects - No more flickering
+  // Advanced Sparkles Effects
   if (currentDesignStyle === 'sparkles-effects') {
     return (
       <section 
@@ -112,7 +112,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     );
   }
 
-  // UPGRADED: Animated Paths - Premium 3D design
+  // Animated Paths - Completely redesigned
   if (currentDesignStyle === 'animated-paths') {
     return (
       <section 
@@ -127,7 +127,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     );
   }
 
-  // FIXED: Fluid Blobs - Now with 6 different blobs
+  // Fluid Blobs - Multiple blobs
   if (currentDesignStyle === 'fluid-blobs') {
     return (
       <section 
