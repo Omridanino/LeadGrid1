@@ -4,7 +4,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
   const businessName = formData?.businessName || 'העסק שלי';
   const businessType = formData?.businessType || 'שירותים עסקיים';
   
-  // Generate the exact HTML that matches FullScreenPreview
+  // Generate the exact HTML that matches FullScreenPreview perfectly
   const generateCompleteHTML = () => {
     const heroStyle = formData.heroStyle || '3d';
     
@@ -44,7 +44,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
     }
   };
 
-  // LIQUID GLASS HERO - Exact match with HeroSection component
+  // LIQUID GLASS HERO - Keep existing implementation
   const generateLiquidGlassHero = () => {
     const title = content?.headline || formData.businessName;
     const subtitle = content?.subheadline || `חוויה נוזלית ייחודית ל${formData.targetAudience}`;
@@ -177,7 +177,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
     `;
   };
 
-  // GEOMETRIC HERO - Match HeroSection component exactly
+  // GEOMETRIC HERO - Keep existing implementation
   const generateGeometricHero = () => {
     const title = content?.headline || formData.businessName;
     const subtitle = content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`;
@@ -262,7 +262,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
     `;
   };
 
-  // METAL HERO - Match HeroSection component exactly
+  // METAL HERO - Keep existing implementation
   const generateMetalHero = () => {
     const title = content?.headline || formData.businessName;
     const subtitle = content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`;
@@ -335,7 +335,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
     `;
   };
 
-  // IMAGE HERO - Match HeroSection component exactly  
+  // IMAGE HERO - Keep existing implementation  
   const generateImageHero = () => {
     const title = content?.headline || formData.businessName;
     const subtitle = content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`;
@@ -432,7 +432,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
     `;
   };
 
-  // DEFAULT 3D HERO - Match HeroSection component exactly
+  // DEFAULT 3D HERO - Keep existing implementation
   const generateDefault3DHero = () => {
     const title = content?.headline || formData.businessName;
     const subtitle = content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`;
@@ -554,21 +554,38 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
     `;
   };
 
-  // Content Sections - Match ContentSections exactly
+  // Content Sections - Match ContentSections component EXACTLY
   const generateContentSections = () => {
+    const selectedElements = formData?.selectedElements || [];
+    
     return `
+    <!-- About Section -->
     ${generateAboutSection()}
-    ${generateFeaturesSection()}
-    ${generateWhyChooseUsSection()}
-    ${generateTestimonialsSection()}
-    ${generateFAQSection()}
+    
+    <!-- Features Section -->
+    ${selectedElements.includes('features') ? generateFeaturesSection() : ''}
+    
+    <!-- Why Choose Us Section -->
+    ${selectedElements.includes('whyChooseUs') ? generateWhyChooseUsSection() : ''}
+    
+    <!-- Testimonials Section -->
+    ${selectedElements.includes('testimonials') ? generateTestimonialsSection() : ''}
+    
+    <!-- FAQ Section -->
+    ${selectedElements.includes('faq') ? generateFAQSection() : ''}
+    
+    <!-- Contact Section -->
     ${generateContactSection()}
     `;
   };
 
   const generateAboutSection = () => {
-    const aboutTitle = content?.sections?.emotionalSection?.title || content?.aboutTitle || "השירות שמשנה את המשחק";
-    const aboutContent = content?.sections?.emotionalSection?.content || content?.aboutContent || `בעולם שמתפתח במהירות, ${businessName} כאן כדי לספק לכם את השירות המקצועי והאמין ביותר בתחום ${businessType}.`;
+    const aboutTitle = content?.sections?.emotionalSection?.title || 
+                      content?.aboutTitle || 
+                      `השירות המקצועי של ${businessName}`;
+    const aboutContent = content?.sections?.emotionalSection?.content || 
+                        content?.aboutContent || 
+                        `בעולם שמתפתח במהירות, ${businessName} כאן כדי לספק לכם את השירות המקצועי והאמין ביותר בתחום ${businessType}. אנו מחויבים למצוינות ולמתן שירות ברמה הגבוהה ביותר.`;
     
     return `
     <section id="about" class="section-content bg-black/80 backdrop-blur-lg py-20 relative">
@@ -595,7 +612,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
       { title: "מחירים הוגנים", description: "מחירים תחרותיים ללא פשרות על איכות", icon: "💎" }
     ];
 
-    const featuresTitle = content?.featuresTitle || 'השירותים שלנו';
+    const featuresTitle = content?.featuresTitle || `השירותים של ${businessName}`;
 
     return `
     <section id="services" class="section-content bg-black/80 backdrop-blur-lg py-20 relative">
@@ -621,11 +638,13 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
 
   const generateWhyChooseUsSection = () => {
     const whyChooseUs = content?.sections?.whyChooseUs || content?.whyChooseUs || [
-      { title: "ניסיון עשיר", description: "שנים של ניסיון בתחום", icon: "✅" },
-      { title: "צוות מקצועי", description: "אנשי מקצוע מיומנים ומנוסים", icon: "✅" }
+      { title: "ניסיון עשיר", description: `שנים של ניסיון בתחום ${businessType}`, icon: "✅" },
+      { title: "צוות מקצועי", description: "אנשי מקצוע מיומנים ומנוסים", icon: "✅" },
+      { title: "שירות אמין", description: "אמינות מוחלטת ושקיפות מלאה", icon: "✅" },
+      { title: "מחירים הוגנים", description: "מחירים תחרותיים ללא עלויות נסתרות", icon: "✅" }
     ];
 
-    const whyChooseTitle = content?.whyChooseTitle || 'למה לבחור בנו?';
+    const whyChooseTitle = content?.whyChooseTitle || `למה לבחור ב${businessName}?`;
 
     return `
     <section class="section-content bg-black/80 backdrop-blur-lg py-20 relative">
@@ -653,12 +672,12 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
 
   const generateTestimonialsSection = () => {
     const testimonials = content?.sections?.testimonials || content?.testimonials || [
-      { name: "יוסי כהן", role: "לקוח מרוצה", content: "שירות מעולה ומקצועי! ממליץ בחום על השירותים." },
+      { name: "יוסי כהן", role: "לקוח מרוצה", content: `שירות מעולה ומקצועי מ${businessName}! ממליץ בחום על השירותים.` },
       { name: "רחל לוי", role: "לקוחה קבועה", content: "התמחות גבוהה וזמינות מלאה. בדיוק מה שחיפשתי." },
       { name: "דוד אברהם", role: "בעל עסק", content: "עזרו לי להגשים את החלום שלי. תודה רבה!" }
     ];
 
-    const testimonialsTitle = content?.testimonialsTitle || 'מה אומרים עלינו';
+    const testimonialsTitle = content?.testimonialsTitle || `מה אומרים על ${businessName}`;
 
     return `
     <section class="section-content bg-black/80 backdrop-blur-lg py-20 relative">
@@ -698,9 +717,10 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
 
   const generateFAQSection = () => {
     const faq = content?.sections?.faq || content?.faq || [
-      { question: "איך אפשר ליצור קשר?", answer: "ניתן ליצור קשר דרך הטלפון או האימייל המופיעים באתר." },
+      { question: "איך אפשר ליצור קשר?", answer: `ניתן ליצור קשר עם ${businessName} דרך הטלפון או האימייל המופיעים באתר.` },
       { question: "מה שעות הפעילות?", answer: "אנחנו זמינים 24/7 לשירותכם." },
-      { question: "האם יש אחריות על השירות?", answer: "כן, אנו נותנים אחריות מלאה על כל השירותים שלנו." }
+      { question: "האם יש אחריות על השירות?", answer: "כן, אנו נותנים אחריות מלאה על כל השירותים שלנו." },
+      { question: `מה מייחד את ${businessName}?`, answer: `אנו מתמחים ב${businessType} ומציעים שירות מקצועי ואמין ברמה הגבוהה ביותר.` }
     ];
 
     const faqTitle = content?.faqTitle || 'שאלות נפוצות';
@@ -728,9 +748,12 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
 
   const generateContactSection = () => {
     const contactTitle = content?.contactTitle || 'מוכנים להתחיל?';
-    const contactSubtitle = content?.contactSubtitle || 'בואו ניצור יחד משהו מרהיב שיקדם את העסק שלכם';
+    const contactSubtitle = content?.contactSubtitle || `בואו ניצור יחד משהו מרהיב עם ${businessName}`;
     const primaryCta = content?.primaryCta || 'צור קשר עכשיו';
     const secondaryCta = content?.secondaryCta || 'קבל הצעת מחיר';
+
+    const contactPhone = formData?.contactInfo?.split('\n')?.[0]?.replace('טלפון: ', '') || '050-1234567';
+    const contactEmail = formData?.contactInfo?.split('\n')?.[1]?.replace('אימייל: ', '') || 'info@business.co.il';
 
     return `
     <section id="contact" class="section-content bg-black/80 backdrop-blur-lg py-20 relative">
@@ -752,13 +775,13 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
                 <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                 </svg>
-                <span class="text-white font-medium">${formData?.contactInfo?.split('\n')[0]?.replace('טלפון: ', '') || '050-1234567'}</span>
+                <span class="text-white font-medium">${contactPhone}</span>
               </div>
               <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 flex items-center justify-center gap-3">
                 <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                 </svg>
-                <span class="text-white font-medium">${formData?.contactInfo?.split('\n')[1]?.replace('אימייל: ', '') || 'info@business.co.il'}</span>
+                <span class="text-white font-medium">${contactEmail}</span>
               </div>
             </div>
 
@@ -779,6 +802,9 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
 
   // Footer - Match FullScreenPreview footer exactly
   const generateFooter = () => {
+    const contactPhone = formData?.contactInfo?.split('\n')?.[0]?.replace('טלפון: ', '') || '050-1234567';
+    const contactEmail = formData?.contactInfo?.split('\n')?.[1]?.replace('אימייל: ', '') || 'info@business.co.il';
+
     return `
     <footer class="bg-black/50 backdrop-blur-md py-16 text-center">
       <div class="container mx-auto px-4">
@@ -790,8 +816,8 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
             © 2024 כל הזכויות שמורות. ${businessType} מקצועית ואמינה.
           </p>
           <div class="flex justify-center gap-8 text-gray-400">
-            <span>טלפון: ${formData?.contactInfo?.split('\n')[0]?.replace('טלפון: ', '') || '050-1234567'}</span>
-            <span>אימייל: ${formData?.contactInfo?.split('\n')[1]?.replace('אימייל: ', '') || 'info@business.co.il'}</span>
+            <span>טלפון: ${contactPhone}</span>
+            <span>אימייל: ${contactEmail}</span>
           </div>
         </div>
       </div>
