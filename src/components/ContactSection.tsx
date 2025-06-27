@@ -1,269 +1,129 @@
 
-import { motion } from "framer-motion";
-import { Mail, MapPin, MessageCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Mail, MessageCircle, Phone, MapPin, Users, Target } from "lucide-react";
+import ChatWidget from "./ChatWidget";
+import { useState } from "react";
 
 const ContactSection = () => {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
   const handleChatClick = () => {
-    // Scroll to chat widget or trigger chat
-    const chatWidget = document.querySelector('[data-chat-widget]');
-    if (chatWidget) {
-      (chatWidget as HTMLElement).click();
-    } else {
-      // Fallback - scroll to bottom and show chat
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-      // Trigger chat widget if available
-      setTimeout(() => {
-        const chatButton = document.querySelector('button[class*="MessageCircle"]')?.closest('button');
-        if (chatButton) {
-          (chatButton as HTMLElement).click();
-        }
-      }, 1000);
-    }
+    console.log("Opening chat widget");
+    setIsChatOpen(true);
   };
 
   const handleEmailClick = () => {
-    window.location.href = 'mailto:info@leadgrid.co.il?subject=פנייה מהאתר - LeadGrid';
+    window.location.href = "mailto:info@leadgrid.co.il";
   };
 
-  const contactMethods = [
-    {
-      icon: MessageCircle,
-      title: "צ'אט ישיר עם מומחה",
-      description: "דברו עם הבוט החכם שלנו בזמן אמת וקבלו תשובות מיידיות לכל שאלה",
-      action: "פתחו צ'אט",
-      gradient: "from-purple-500 to-pink-600",
-      delay: 0.1,
-      onClick: handleChatClick
-    },
-    {
-      icon: Mail,
-      title: "מייל מהיר ואישי",
-      description: "כתבו לנו ותקבלו תשובה מהירה ומפורטת מהצוות המקצועי שלנו",
-      action: "info@leadgrid.co.il",
-      gradient: "from-blue-500 to-cyan-600",
-      delay: 0.2,
-      onClick: handleEmailClick
-    }
-  ];
-
   return (
-    <section id="contact" className="py-20 sm:py-24 bg-black relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5" />
-        <div className="absolute top-1/4 left-1/6 w-72 sm:w-96 h-72 sm:h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/6 w-72 sm:w-96 h-72 sm:h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '3s' }} />
-        <div className="absolute top-3/4 left-1/2 w-48 sm:w-64 h-48 sm:h-64 bg-pink-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
-      </div>
-
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        {/* Section Header */}
-        <motion.div
-          className="text-center mb-16 sm:mb-20"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <motion.h2 
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 sm:mb-6 px-4"
-            style={{
-              textShadow: '0 0 30px rgba(255, 255, 255, 0.2)',
-              letterSpacing: '-0.02em'
-            }}
-          >
-            בואו 
-            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              {" "}נתחיל
+    <section className="py-24 bg-gradient-to-br from-slate-50 to-blue-50/30 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23e5e7eb" fill-opacity="0.3"%3E%3Ccircle cx="7" cy="7" r="1"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-40"></div>
+      
+      <div className="container mx-auto px-4 relative">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-full px-6 py-2 mb-6 backdrop-blur-sm border border-blue-200/30">
+            <Target className="w-4 h-4 text-blue-600" />
+            <span className="text-sm font-medium text-blue-700">בואו נתחיל</span>
+          </div>
+          
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+            מוכנים להתחיל?
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block mt-2">
+              בואו ניצור יחד משהו מדהים
             </span>
-          </motion.h2>
-          <motion.p 
-            className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed px-4"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            מוכנים לראות איך LEADGRID יכול לעזור לעסק שלכם?
-            <br className="hidden sm:block" />
-            בואו נדבר ונבין יחד מה הפתרון הכי מתאים לכם
-          </motion.p>
-        </motion.div>
-
-        {/* Contact Methods Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-12 sm:mb-16 max-w-4xl mx-auto px-4 sm:px-0">
-          {contactMethods.map((method, index) => (
-            <motion.div
-              key={index}
-              className="group relative cursor-pointer"
-              initial={{ opacity: 0, y: 50, scale: 0.9 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ 
-                duration: 0.6, 
-                delay: method.delay,
-                type: "spring",
-                stiffness: 100
-              }}
-              whileHover={{ 
-                y: -10, 
-                scale: 1.02,
-                rotateX: 5,
-                rotateY: 5
-              }}
-              style={{ perspective: "1000px" }}
-              onClick={method.onClick}
-            >
-              <div 
-                className="relative p-6 sm:p-8 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden h-full"
-                style={{
-                  background: `linear-gradient(135deg, 
-                    rgba(255, 255, 255, 0.08), 
-                    rgba(255, 255, 255, 0.02))`,
-                  boxShadow: `
-                    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                    0 25px 50px rgba(0, 0, 0, 0.4),
-                    0 0 0 1px rgba(255, 255, 255, 0.05)
-                  `,
-                  transformStyle: "preserve-3d"
-                }}
-              >
-                {/* Gradient Overlay */}
-                <div 
-                  className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700 bg-gradient-to-br ${method.gradient}`}
-                />
-
-                {/* Icon */}
-                <div className="flex justify-center sm:justify-start mb-4 sm:mb-6">
-                  <div 
-                    className={`w-12 sm:w-16 h-12 sm:h-16 rounded-xl flex items-center justify-center bg-gradient-to-br ${method.gradient} group-hover:scale-110 transition-transform duration-300`}
-                    style={{
-                      boxShadow: `
-                        0 0 30px rgba(107, 115, 255, 0.4),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.2)
-                      `,
-                    }}
-                  >
-                    <method.icon className="w-6 sm:w-8 h-6 sm:h-8 text-white" />
-                  </div>
-                </div>
-
-                {/* Content */}
-                <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 group-hover:bg-clip-text transition-all duration-300 text-center sm:text-right">
-                  {method.title}
-                </h3>
-                
-                <p className="text-gray-400 text-base sm:text-lg leading-relaxed mb-4 sm:mb-6 group-hover:text-gray-300 transition-colors duration-300 text-center sm:text-right">
-                  {method.description}
-                </p>
-
-                <div className="flex justify-center sm:justify-start">
-                  <div 
-                    className={`inline-block px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold text-white bg-gradient-to-r ${method.gradient} group-hover:scale-105 transition-transform duration-300 text-sm sm:text-base`}
-                    style={{
-                      boxShadow: '0 0 20px rgba(107, 115, 255, 0.3)'
-                    }}
-                  >
-                    {method.action}
-                  </div>
-                </div>
-
-                {/* 3D Effect Border */}
-                <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-white/20 transition-all duration-300" />
-                
-                {/* Glow Effects */}
-                <div className="absolute -inset-1 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 blur-lg bg-gradient-to-r from-blue-400 to-purple-400" />
-              </div>
-            </motion.div>
-          ))}
+          </h2>
+          
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            צרו קשר עכשיו ותגלו איך LeadGrid יכול לשנות את העסק שלכם
+          </p>
         </div>
 
-        {/* Main CTA */}
-        <motion.div
-          className="text-center px-4"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          <motion.div
-            className="inline-block p-8 sm:p-12 rounded-3xl backdrop-blur-xl border border-white/20 max-w-2xl w-full"
-            style={{
-              background: `linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.1), 
-                rgba(255, 255, 255, 0.05))`,
-              boxShadow: `
-                inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                0 30px 60px rgba(0, 0, 0, 0.5)
-              `,
-            }}
-            whileHover={{ scale: 1.02, y: -10 }}
-          >
-            <h3 className="text-3xl sm:text-4xl font-black text-white mb-4 sm:mb-6">
-              מוכנים לשינוי?
-            </h3>
-            <p className="text-lg sm:text-xl text-gray-300 mb-6 sm:mb-8 leading-relaxed">
-              בואו נדבר על איך LEADGRID יכול לשפר את התוצאות של העסק שלכם.
-              <br />
-              <span className="text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text font-semibold">
-                התחילו עם שיחת ייעוץ חינמית
-              </span>
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <motion.button
-                className="w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-5 rounded-xl font-bold text-lg sm:text-xl text-white overflow-hidden relative group"
-                style={{
-                  background: `linear-gradient(135deg, 
-                    #6B73FF 0%, 
-                    #9C40FF 50%, 
-                    #FF6B9D 100%)`,
-                  boxShadow: `
-                    0 0 30px rgba(107, 115, 255, 0.4),
-                    0 15px 35px rgba(0, 0, 0, 0.3),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.2)
-                  `,
-                }}
-                whileHover={{ scale: 1.05, y: -3 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleChatClick}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                <span className="relative z-10 flex items-center justify-center gap-3">
-                  <MessageCircle className="w-5 sm:w-6 h-5 sm:h-6 group-hover:rotate-12 transition-transform duration-300" />
-                  בואו נתחיל עכשיו
-                </span>
-              </motion.button>
+        <div className="max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* צ'אט ישיר */}
+            <div className="group relative">
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-400 to-purple-500 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
+              <div className="relative bg-white rounded-xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-100/50 backdrop-blur-sm">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <MessageCircle className="w-7 h-7 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">צ'אט ישיר עם מומחה</h3>
+                    <p className="text-gray-600">זמין 24/7 לעזרה מיידית</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-center gap-3 text-gray-700">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span>תשובות מיידיות לכל שאלה</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-700">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <span>ייעוץ מקצועי ללא עלות</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-700">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                    <span>הדרכה בעברית</span>
+                  </div>
+                </div>
 
-              <motion.button
-                className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 rounded-xl font-bold text-lg sm:text-xl text-white border-2 border-white/20 backdrop-blur-xl hover:bg-white/10 transition-all duration-300"
-                whileHover={{ scale: 1.05, y: -3 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleEmailClick}
-              >
-                <span className="flex items-center justify-center gap-3">
-                  <Mail className="w-4 sm:w-5 h-4 sm:h-5" />
-                  שלחו מייל
-                </span>
-              </motion.button>
+                <Button 
+                  onClick={handleChatClick}
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                >
+                  <MessageCircle className="w-5 h-5 ml-2" />
+                  פתחו צ'אט
+                </Button>
+              </div>
             </div>
 
-            {/* Office Info */}
-            <motion.div
-              className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-white/10"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-            >
-              <div className="flex items-center justify-center gap-2 text-gray-400 text-sm sm:text-base">
-                <MapPin className="w-4 sm:w-5 h-4 sm:h-5" />
-                <span>תל אביב, ישראל | זמינים בשעות העבודה</span>
+            {/* מייל מהיר */}
+            <div className="group relative">
+              <div className="absolute -inset-1 bg-gradient-to-r from-emerald-400 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
+              <div className="relative bg-white rounded-xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-100/50 backdrop-blur-sm">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-14 h-14 bg-gradient-to-r from-emerald-500 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <Mail className="w-7 h-7 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">מייל מהיר ואישי</h3>
+                    <p className="text-gray-600">קבלו הצעה מותאמת תוך 24 שעות</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-center gap-3 text-gray-700">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span>הצעת מחיר מפורטת</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-700">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <span>ניתוח צרכים אישי</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-700">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                    <span>המלצות מותאמות</span>
+                  </div>
+                </div>
+
+                <Button 
+                  onClick={handleEmailClick}
+                  className="w-full bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                >
+                  <Mail className="w-5 h-5 ml-2" />
+                  שלחו מייל
+                </Button>
               </div>
-            </motion.div>
-          </motion.div>
-        </motion.div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <ChatWidget isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </section>
   );
 };
