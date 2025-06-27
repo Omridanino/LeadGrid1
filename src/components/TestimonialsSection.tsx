@@ -1,43 +1,112 @@
 
 import { motion } from "framer-motion";
-import { Star, Quote, Zap, TrendingUp, Users, Camera } from "lucide-react";
+import { Star, Quote, Zap, TrendingUp, Users, User } from "lucide-react";
 
 const TestimonialsSection = () => {
+  // Liquid Glass Icon Component
+  const LiquidGlassIcon = ({ IconComponent, gradient }: { IconComponent: any, gradient: string }) => (
+    <div className="relative group">
+      <div 
+        className={`w-12 h-12 rounded-xl flex items-center justify-center relative overflow-hidden`}
+        style={{
+          background: `linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.25) 0%,
+            rgba(255, 255, 255, 0.1) 25%,
+            rgba(255, 255, 255, 0.05) 50%,
+            rgba(255, 255, 255, 0.1) 75%,
+            rgba(255, 255, 255, 0.25) 100%)`,
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          boxShadow: `
+            inset 0 1px 0 rgba(255, 255, 255, 0.3),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+            0 10px 30px rgba(0, 0, 0, 0.3),
+            0 0 20px rgba(107, 115, 255, 0.2)
+          `,
+        }}
+      >
+        {/* Reflection effect */}
+        <div 
+          className="absolute inset-0 rounded-xl"
+          style={{
+            background: `linear-gradient(135deg, 
+              rgba(255, 255, 255, 0.4) 0%,
+              transparent 30%,
+              transparent 70%,
+              rgba(255, 255, 255, 0.1) 100%)`,
+          }}
+        />
+        
+        {/* Animated shine effect */}
+        <div 
+          className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 shine-animation"
+          style={{
+            background: `linear-gradient(45deg, 
+              transparent 30%,
+              rgba(255, 255, 255, 0.3) 50%,
+              transparent 70%)`,
+            transform: 'translateX(-100%)',
+          }}
+        />
+        
+        <IconComponent 
+          className="w-6 h-6 text-white relative z-10"
+          style={{
+            filter: 'drop-shadow(0 0 10px rgba(107, 115, 255, 0.5))',
+          }}
+        />
+        
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/20 to-transparent" />
+      </div>
+      
+      <style>{`
+        .shine-animation {
+          animation: shine 2s ease-in-out infinite;
+        }
+        @keyframes shine {
+          0% { transform: translateX(-100%); }
+          50% { transform: translateX(100%); }
+          100% { transform: translateX(100%); }
+        }
+      `}</style>
+    </div>
+  );
+
   const testimonials = [
     {
       name: "דן כהן",
-      role: "מנכ'ל, TechFlow",
-      company: "סטארטאפ B2B",
-      content: "אחרי שבועיים עם LEADGRID ראיתי שיפור משמעותי בהמרות. המערכת באמת עוזרת לזהות את הלקוחות הפוטנציאליים הטובים יותר.",
+      role: "מנכ'ל ומייסד",
+      company: "TechFlow Solutions",
+      content: "תוך שבועיים עם הפלטפורמה ראיתי שיפור משמעותי במדדי ההמרה. המערכת מספקת תובנות עסקיות ברורות ומסייעת לזהות הזדמנויות חדשות בצורה מדויקת.",
       rating: 5,
-      results: "שיפור בהמרות",
+      results: "שיפור מדיד בהמרות",
       gradient: "from-blue-500 to-cyan-600"
     },
     {
       name: "שרה לוי",
-      role: "מנהלת שיווק",
+      role: "סמנכ'לית שיווק",
       company: "E-commerce Enterprise",
-      content: "התחלתי עם ספקות, אבל התוצאות מדברות בעד עצמן. המערכת חסכה לי הרבה זמן בניתוח נתונים ועזרה לי להבין טוב יותר את הלקוחות.",
+      content: "הכלי חסך לי זמן רב בניתוח נתונים ומספק המלצות אסטרטגיות מבוססות נתונים. התוצאות הן מדידות וברורות, והתמיכה המקצועית מצוינת.",
       rating: 5,
-      results: "חסכון בזמן",
+      results: "יעילות תפעולית מוגברת",
       gradient: "from-purple-500 to-pink-600"
     },
     {
       name: "מיכאל אברמוב",
-      role: "מייסד",
-      company: "Digital Agency",
-      content: "כלי מקצועי שעוזר לי להציג ללקוחות שלי תוצאות ברורות ומדידות. הממשק נוח לעבודה והתמיכה מהירה ואמינה.",
+      role: "מייסד ובעלים",
+      company: "Digital Marketing Agency",
+      content: "פלטפורמה מקצועית המאפשרת לי להציג ללקוחות תוצאות ברורות ומדידות. הממשק אינטואיטיביווי והתמיכה הטכנית מהירה ואמינה.",
       rating: 4,
-      results: "תוצאות מדידות",
+      results: "דוחות מקצועיים ומדידים",
       gradient: "from-green-500 to-teal-600"
     },
     {
       name: "נועה ברקוביץ'",
       role: "יזמת דיגיטלית",
-      company: "SaaS Startup",
-      content: "המערכת עזרה לי להבין איך להגיע טוב יותר לקהל שלי. יש עוד מה לשפר אבל בהחלט רואה התקדמות בביצועים של הקמפיינים.",
+      company: "SaaS Innovation Hub",
+      content: "המערכת סייעה לי להבין טוב יותר את קהל היעד שלי ולשפר את האסטרטגיה השיווקית. הביצועים השתפרו בצורה ניכרת והתהליכים התייעלו משמעותית.",
       rating: 4,
-      results: "שיפור בקמפיינים",
+      results: "אופטימיזציה אסטרטגית",
       gradient: "from-orange-500 to-red-600"
     }
   ];
@@ -68,9 +137,9 @@ const TestimonialsSection = () => {
               letterSpacing: '-0.02em'
             }}
           >
-            מה אומרים 
+            המלצות מ
             <span className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent">
-              {" "}הלקוחות
+              לקוחות מובילים
             </span>
           </motion.h2>
           <motion.p 
@@ -80,9 +149,9 @@ const TestimonialsSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            חוות דעת אמיתיות מלקוחות שעובדים איתנו
+            עדויות מקצועיות מעסקים מובילים החווים שיפור משמעותי בביצועים
             <br />
-            ורואים שיפור מדיד בתוצאות העסקיות שלהם
+            עם תוצאות מדידות וערך עסקי ברור
           </motion.p>
         </motion.div>
 
@@ -160,15 +229,8 @@ const TestimonialsSection = () => {
 
                 {/* Author Info */}
                 <div className="flex items-center">
-                  <div 
-                    className={`w-12 h-12 rounded-full bg-gradient-to-br ${testimonial.gradient} flex items-center justify-center mr-4`}
-                    style={{
-                      boxShadow: '0 0 20px rgba(107, 115, 255, 0.3)'
-                    }}
-                  >
-                    <Camera className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
+                  <LiquidGlassIcon IconComponent={User} gradient={testimonial.gradient} />
+                  <div className="mr-4">
                     <div className="font-bold text-white text-lg group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 group-hover:bg-clip-text transition-all duration-300">
                       {testimonial.name}
                     </div>
@@ -226,13 +288,8 @@ const TestimonialsSection = () => {
                   `,
                 }}
               >
-                <div 
-                  className={`w-12 h-12 rounded-lg bg-gradient-to-br ${stat.color} flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
-                  style={{
-                    boxShadow: '0 0 20px rgba(107, 115, 255, 0.3)'
-                  }}
-                >
-                  <stat.icon className="w-6 h-6 text-white" />
+                <div className="mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <LiquidGlassIcon IconComponent={stat.icon} gradient={stat.color} />
                 </div>
                 <div className="text-3xl font-black text-white mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 group-hover:bg-clip-text transition-all duration-300">
                   {stat.number}

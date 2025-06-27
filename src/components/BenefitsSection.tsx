@@ -1,48 +1,117 @@
 
 import { motion } from "framer-motion";
-import { TrendingUp, Users, Zap, Target, Brain, Rocket } from "lucide-react";
+import { TrendingUp, Users, Zap, Target, Cpu, Rocket } from "lucide-react";
 
 const BenefitsSection = () => {
+  // Liquid Glass Icon Component
+  const LiquidGlassIcon = ({ IconComponent, gradient }: { IconComponent: any, gradient: string }) => (
+    <div className="relative group">
+      <div 
+        className={`w-16 h-16 rounded-xl flex items-center justify-center relative overflow-hidden`}
+        style={{
+          background: `linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.25) 0%,
+            rgba(255, 255, 255, 0.1) 25%,
+            rgba(255, 255, 255, 0.05) 50%,
+            rgba(255, 255, 255, 0.1) 75%,
+            rgba(255, 255, 255, 0.25) 100%)`,
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          boxShadow: `
+            inset 0 1px 0 rgba(255, 255, 255, 0.3),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+            0 10px 30px rgba(0, 0, 0, 0.3),
+            0 0 20px rgba(107, 115, 255, 0.2)
+          `,
+        }}
+      >
+        {/* Reflection effect */}
+        <div 
+          className="absolute inset-0 rounded-xl"
+          style={{
+            background: `linear-gradient(135deg, 
+              rgba(255, 255, 255, 0.4) 0%,
+              transparent 30%,
+              transparent 70%,
+              rgba(255, 255, 255, 0.1) 100%)`,
+          }}
+        />
+        
+        {/* Animated shine effect */}
+        <div 
+          className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 shine-animation"
+          style={{
+            background: `linear-gradient(45deg, 
+              transparent 30%,
+              rgba(255, 255, 255, 0.3) 50%,
+              transparent 70%)`,
+            transform: 'translateX(-100%)',
+          }}
+        />
+        
+        <IconComponent 
+          className="w-8 h-8 text-white relative z-10"
+          style={{
+            filter: 'drop-shadow(0 0 10px rgba(107, 115, 255, 0.5))',
+          }}
+        />
+        
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/20 to-transparent" />
+      </div>
+      
+      <style>{`
+        .shine-animation {
+          animation: shine 2s ease-in-out infinite;
+        }
+        @keyframes shine {
+          0% { transform: translateX(-100%); }
+          50% { transform: translateX(100%); }
+          100% { transform: translateX(100%); }
+        }
+      `}</style>
+    </div>
+  );
+
   const benefits = [
     {
       icon: TrendingUp,
-      title: "400% עלייה בהמרות",
-      description: "שיפור דרמטי בשיעורי ההמרה תוך 30 יום ראשונים",
+      title: "עלייה מדידה בהמרות של 400%",
+      description: "שיפור דרמטי בשיעורי ההמרה תוך 30 יום הראשונים על בסיס נתונים מוכחים",
       stats: "+400%",
       color: "from-green-400 to-emerald-600"
     },
     {
       icon: Users,
-      title: "מיליון לקוחות פוטנציאליים",
-      description: "מערכת שמזהה ומטרגטת מיליוני לקוחות פוטנציאליים",
+      title: "גישה למיליון לקוחות פוטנציאליים",
+      description: "מערכת זיהוי וטרגוט אוטומטית המגיעה למיליוני לקוחות פוטנציאליים מדי חודש",
       stats: "1M+",
       color: "from-blue-400 to-cyan-600"
     },
     {
       icon: Zap,
-      title: "זמן תגובה 0.3 שניות",
-      description: "מהירות עיבוד וטעינה שמובילה בשוק העולמי",
+      title: "זמן תגובה מהיר של 0.3 שניות",
+      description: "מהירות עיבוד וטעינה המובילה בשוק הישראלי והאזורי עם תקן גלובלי",
       stats: "0.3s",
       color: "from-yellow-400 to-orange-600"
     },
     {
       icon: Target,
-      title: "דיוק טרגוט 96%",
-      description: "מיקוד מדויק ללקוחות הנכונים עם AI מתקדם",
+      title: "דיוק טרגוט מתקדם של 96%",
+      description: "מיקוד מדויק לקהל היעד הנכון עם טכנולוגיית בינה מלאכותית מתקדמת",
       stats: "96%",
       color: "from-purple-400 to-pink-600"
     },
     {
-      icon: Brain,
-      title: "למידה אוטונומית",
-      description: "מערכת שלומדת ומשתפרת כל שנייה ללא התערבות",
+      icon: Cpu,
+      title: "למידה וייעול אוטונומיים",
+      description: "מערכת בינה מלאכותית הלומדת ומתייעלת בצורה עצמאית ורציפה",
       stats: "24/7",
       color: "from-indigo-400 to-blue-600"
     },
     {
       icon: Rocket,
-      title: "ROI של 1,200%",
-      description: "החזר השקעה שמשנה כללי משחק בתעשייה",
+      title: "החזר השקעה מוכח של 1,200%",
+      description: "החזר השקעה מדיד ומוכח הגורם לשינוי משמעותי בתוצאות העסקיות",
       stats: "1,200%",
       color: "from-red-400 to-pink-600"
     }
@@ -75,9 +144,9 @@ const BenefitsSection = () => {
               letterSpacing: '-0.02em'
             }}
           >
-            ביצועים 
+            ביצועים מוכחים ו
             <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              {" "}שובבים
+              תוצאות מדידות
             </span>
           </motion.h2>
           <motion.p 
@@ -87,9 +156,9 @@ const BenefitsSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            נתונים אמיתיים מלקוחות שכבר חוו את הטרנספורמציה הדיגיטלית
+            נתונים מוכחים ואמיתיים מלקוחות שחווים טרנספורמציה דיגיטלית משמעותית
             <br className="hidden sm:block" />
-            וזוכים בתוצאות שמדברות בעד עצמן
+            עם תוצאות עסקיות מדידות וברורות
           </motion.p>
         </motion.div>
 
@@ -149,18 +218,7 @@ const BenefitsSection = () => {
 
                 {/* Icon */}
                 <div className="flex justify-center sm:justify-start mb-4 sm:mb-6">
-                  <div 
-                    className={`w-12 sm:w-16 h-12 sm:h-16 rounded-xl flex items-center justify-center bg-gradient-to-br ${benefit.color} relative group-hover:scale-110 transition-transform duration-300`}
-                    style={{
-                      boxShadow: `
-                        0 0 30px rgba(107, 115, 255, 0.4),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.2)
-                      `,
-                    }}
-                  >
-                    <benefit.icon className="w-6 sm:w-8 h-6 sm:h-8 text-white" />
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/20 to-transparent" />
-                  </div>
+                  <LiquidGlassIcon IconComponent={benefit.icon} gradient={benefit.color} />
                 </div>
 
                 {/* Content */}
@@ -204,10 +262,10 @@ const BenefitsSection = () => {
             whileHover={{ scale: 1.02, y: -5 }}
           >
             <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4">
-              מוכנים לשינוי?
+              מוכנים לשיפור ביצועים?
             </h3>
             <p className="text-lg sm:text-xl text-gray-300 mb-4 sm:mb-6">
-              הצטרפו לאלפי עסקים שכבר חווים את המהפכה הדיגיטלית
+              הצטרפו לעסקים המובילים החווים צמיחה משמעותית ומדידה
             </p>
             <motion.button
               className="px-8 sm:px-10 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg text-white overflow-hidden relative group w-full sm:w-auto"
@@ -231,8 +289,8 @@ const BenefitsSection = () => {
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
               <span className="relative z-10 flex items-center justify-center gap-3">
-                <Rocket className="w-4 sm:w-5 h-4 sm:h-5 group-hover:rotate-12 transition-transform duration-300" />
-                בואו נתחיל
+                <LiquidGlassIcon IconComponent={Rocket} gradient="from-white to-white" />
+                התחל היום
               </span>
             </motion.button>
           </motion.div>

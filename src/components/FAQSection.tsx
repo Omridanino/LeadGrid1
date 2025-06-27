@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Minus, Zap, Shield, Cpu, Target, Camera } from "lucide-react";
+import { Plus, Minus, Zap, Shield, Cpu, Target, User, Clock } from "lucide-react";
 
 const FAQSection = () => {
   const [openItems, setOpenItems] = useState<number[]>([]);
@@ -14,41 +14,110 @@ const FAQSection = () => {
     );
   };
 
+  // Liquid Glass Icon Component
+  const LiquidGlassIcon = ({ IconComponent, gradient }: { IconComponent: any, gradient: string }) => (
+    <div className="relative group">
+      <div 
+        className={`w-12 h-12 rounded-xl flex items-center justify-center relative overflow-hidden`}
+        style={{
+          background: `linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.25) 0%,
+            rgba(255, 255, 255, 0.1) 25%,
+            rgba(255, 255, 255, 0.05) 50%,
+            rgba(255, 255, 255, 0.1) 75%,
+            rgba(255, 255, 255, 0.25) 100%)`,
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          boxShadow: `
+            inset 0 1px 0 rgba(255, 255, 255, 0.3),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+            0 10px 30px rgba(0, 0, 0, 0.3),
+            0 0 20px rgba(107, 115, 255, 0.2)
+          `,
+        }}
+      >
+        {/* Reflection effect */}
+        <div 
+          className="absolute inset-0 rounded-xl"
+          style={{
+            background: `linear-gradient(135deg, 
+              rgba(255, 255, 255, 0.4) 0%,
+              transparent 30%,
+              transparent 70%,
+              rgba(255, 255, 255, 0.1) 100%)`,
+          }}
+        />
+        
+        {/* Animated shine effect */}
+        <div 
+          className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 shine-animation"
+          style={{
+            background: `linear-gradient(45deg, 
+              transparent 30%,
+              rgba(255, 255, 255, 0.3) 50%,
+              transparent 70%)`,
+            transform: 'translateX(-100%)',
+          }}
+        />
+        
+        <IconComponent 
+          className="w-6 h-6 text-white relative z-10"
+          style={{
+            filter: 'drop-shadow(0 0 10px rgba(107, 115, 255, 0.5))',
+          }}
+        />
+        
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/20 to-transparent" />
+      </div>
+      
+      <style>{`
+        .shine-animation {
+          animation: shine 2s ease-in-out infinite;
+        }
+        @keyframes shine {
+          0% { transform: translateX(-100%); }
+          50% { transform: translateX(100%); }
+          100% { transform: translateX(100%); }
+        }
+      `}</style>
+    </div>
+  );
+
   const faqs = [
     {
-      icon: Camera,
-      question: "כמה זמן לוקח לראות תוצאות?",
-      answer: "בדרך כלל לקוחות מתחילים לראות שינויים ראשונים תוך שבוע-שבועיים. התוצאות המלאות מגיעות תוך חודש עד חודשיים, כשהמערכת לומדת את הקהל שלכם. התהליך לוקח זמן - זה לא קסם, אבל כשזה עובד, התוצאות מדברות בעד עצמן.",
+      icon: Clock,
+      question: "כמה זמן נדרש לראות תוצאות מדידות?",
+      answer: "לקוחותינו מתחילים לראות שיפורים ראשונים תוך 7-14 יום. התוצאות המשמעותיות והמלאות מגיעות תוך 30-60 יום, כאשר המערכת לומדת ומתייעלת על פי נתוני הקהל והתנהגות המשתמשים.",
       gradient: "from-blue-500 to-cyan-600"
     },
     {
-      icon: Camera,
-      question: "עד כמה המערכת מאובטחת?",
-      answer: "אנחנו משתמשים בהצפנה ברמה בנקאית ועובדים לפי תקנים מקובלים בתחום. כל הנתונים שלכם מאוחסנים בבטחה ואנחנו עומדים בתקנות הפרטיות הנדרשות. האבטחה חשובה לנו כמו שחשובה לכם.",
+      icon: Shield,
+      question: "מה רמת האבטחה והגנת המידע?",
+      answer: "אנו מיישמים הצפנה ברמה בנקאית (256-bit SSL) ועומדים בתקני אבטחה בינלאומיים. כל הנתונים מאוחסנים בשרתים מאובטחים בישראל ואנו עומדים בדרישות GDPR ותקנות הגנת הפרטיות הישראליות.",
       gradient: "from-green-500 to-teal-600"
     },
     {
-      icon: Camera,
-      question: "איך הבינה המלאכותית עובדת?",
-      answer: "המערכת מנתחת את התנהגות המשתמשים באתר שלכם - מה עובד, מה לא, איפה אנשים יוצאים מהאתר. על סמך הנתונים האלה היא מציעה שיפורים ובודקת איזה שינויים משפרים את התוצאות. זה כמו יועץ שיווק שעובד ללא הפסקה, אבל יותר מהיר.",
+      icon: Cpu,
+      question: "איך פועלת טכנולוגיית הבינה המלאכותית?",
+      answer: "המערכת מנתחת התנהגות משתמשים, מזהה דפוסים ומגמות, ומספקת תובנות אסטרטגיות מבוססות נתונים. האלגוריתמים שלנו מתייעלים באופן אוטומטי ומציעים המלצות לשיפור ביצועים מתמשך.",
       gradient: "from-purple-500 to-pink-600"
     },
     {
-      icon: Camera,
-      question: "מה ההבדל מפלטפורמות אחרות?",
-      answer: "רוב הכלים בשוק נותנים לכם דשבורד עם המון נתונים וזה הכל. אנחנו הולכים צעד קדימה ומציעים המלצות קונקרטיות לשיפור, בודקים אותן, ומראים מה באמת עובד. זה יותר מסתם כלי - זה שותף שעוזר לכם להבין מה לעשות עם כל הדאטה הזה.",
+      icon: Target,
+      question: "מה ההבדל מפלטפורמות דומות בשוק?",
+      answer: "הפלטפורמה שלנו מתמחה בנתוני השוק הישראלי ומספקת ממשק בעברית עם תמיכה מקומית. אנו מציעים אלגוריתמים מותאמים לקהל הישראלי עם דוחות מקצועיים ותובנות עסקיות ממוקדות.",
       gradient: "from-orange-500 to-red-600"
     },
     {
-      icon: Camera,
-      question: "כמה זה עולה ומה ההחזר על ההשקעה?",
-      answer: "המחיר תלוי בגודל העסק ובהיקף השימוש. רוב הלקוחות שלנו רואים החזר על ההשקעה תוך מספר חודשים, אבל זה תלוי בהרבה גורמים. בואו נדבר ונבין יחד מה מתאים לכם ואיך נוכל לעזור לכם להגיע לתוצאות שאתם מחפשים.",
+      icon: Zap,
+      question: "מה המחיר ומהו החזר ההשקעה הצפוי?",
+      answer: "המחיר מותאם לגודל העסק ולהיקף השימוש. רוב הלקוחות רואים החזר השקעה חיובי תוך 3-6 חודשים. נשמח לבנות עבורכם הצעה מותאמת אישית לפי הצרכים העסקיים שלכם.",
       gradient: "from-indigo-500 to-blue-600"
     },
     {
-      icon: Camera,
-      question: "יש תמיכה ושירות לקוחות?",
-      answer: "כן, יש לנו צוות תמיכה זמין בשעות העבודה וגם תמיכה טכנית כשצריך. אנחנו לא זמינים 24/7 (גם לנו יש חיים), אבל אנחנו כאן כשאתם צריכים עזרה. המטרה שלנו היא שתצליחו עם המערכת, אז אנחנו עושים כל מה שצריך בשביל זה.",
+      icon: User,
+      question: "איך מתקיימת התמיכה הטכנית והמקצועית?",
+      answer: "אנו מספקים תמיכה מקצועית בשפה העברית בשעות העסק, עם צוות מומחים זמין לכל שאלה טכנית או עסקית. כולל אימון התארגנות, הדרכות מקצועיות וליווי מתמשך להצלחה מיטבית.",
       gradient: "from-yellow-500 to-orange-600"
     }
   ];
@@ -78,9 +147,9 @@ const FAQSection = () => {
               letterSpacing: '-0.02em'
             }}
           >
-            שאלות 
+            שאלות נפוצות ו
             <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
-              {" "}נפוצות
+              תשובות מקצועיות
             </span>
           </motion.h2>
           <motion.p 
@@ -90,9 +159,9 @@ const FAQSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            התשובות לשאלות שהכי הרבה אנשים שואלים אותנו
+            מידע מקצועי ומפורט על הפלטפורמה, התהליכים והתוצאות
             <br />
-            על המערכת, התהליך והתוצאות שאפשר לצפות
+            שתוכלו לצפות מהשירות שלנו
           </motion.p>
         </motion.div>
 
@@ -125,14 +194,7 @@ const FAQSection = () => {
                   whileHover={{ x: 5 }}
                 >
                   <div className="flex items-center gap-4">
-                    <div 
-                      className={`w-12 h-12 rounded-xl bg-gradient-to-br ${faq.gradient} flex items-center justify-center`}
-                      style={{
-                        boxShadow: '0 0 20px rgba(107, 115, 255, 0.3)'
-                      }}
-                    >
-                      <faq.icon className="w-6 h-6 text-white" />
-                    </div>
+                    <LiquidGlassIcon IconComponent={faq.icon} gradient={faq.gradient} />
                     <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 group-hover:bg-clip-text transition-all duration-300">
                       {faq.question}
                     </h3>
@@ -210,10 +272,10 @@ const FAQSection = () => {
             whileHover={{ scale: 1.02, y: -5 }}
           >
             <h3 className="text-3xl font-bold text-white mb-4">
-              עדיין יש שאלות?
+              יש לכם שאלות נוספות?
             </h3>
             <p className="text-xl text-gray-300 mb-6 max-w-md">
-              הצוות שלנו כאן בשבילכם לכל שאלה או הבהרה
+              הצוות המקצועי שלנו זמין לכל שאלה או הבהרה נוספת
             </p>
             <motion.button
               className="px-10 py-4 rounded-xl font-bold text-lg text-white overflow-hidden relative group"
@@ -233,8 +295,8 @@ const FAQSection = () => {
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
               <span className="relative z-10 flex items-center gap-3">
-                <Camera className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
-                בואו נדבר
+                <LiquidGlassIcon IconComponent={User} gradient="from-white to-white" />
+                יצירת קשר מקצועי
               </span>
             </motion.button>
           </motion.div>
