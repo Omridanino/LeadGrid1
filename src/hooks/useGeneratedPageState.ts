@@ -45,6 +45,7 @@ export const useGeneratedPageState = () => {
       setContent(JSON.parse(savedContent));
     }
     if (savedFormData) {
+      console.log("Loading saved formData from localStorage:", JSON.parse(savedFormData));
       setFormData(JSON.parse(savedFormData));
     }
     if (savedColors) {
@@ -54,6 +55,14 @@ export const useGeneratedPageState = () => {
       setHeroImage(savedHeroImage);
     }
   }, []);
+
+  // Save formData to localStorage when it changes
+  useEffect(() => {
+    if (formData) {
+      console.log("Saving formData to localStorage:", formData);
+      localStorage.setItem('formData', JSON.stringify(formData));
+    }
+  }, [formData]);
 
   // Handle color changes - NO TOAST NOTIFICATIONS
   const handleColorChange = (newColors: ColorScheme) => {

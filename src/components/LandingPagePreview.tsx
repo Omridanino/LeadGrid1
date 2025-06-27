@@ -17,8 +17,12 @@ interface LandingPagePreviewProps {
 const LandingPagePreview = ({ content, currentColors, formData, heroImage, elements }: LandingPagePreviewProps) => {
   const selectedElements = formData?.selectedElements || [];
 
-  // Get unique style class based on hero style
+  // Get unique style class based on hero style - with null check
   const getStyleClass = () => {
+    if (!formData || !formData.heroStyle) {
+      return 'style-3d'; // default fallback
+    }
+    
     switch (formData.heroStyle) {
       case 'geometric':
         return 'style-geometric';
@@ -32,6 +36,18 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         return 'style-3d';
     }
   };
+
+  // Show loading or placeholder if formData is not ready
+  if (!formData) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-gray-900 text-white">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+          <p className="text-lg">טוען את הדף שלך...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-full" style={{ 

@@ -7,11 +7,22 @@ import { Button } from "@/components/ui/button";
 import { PanelRightClose, PanelRightOpen, Save, CheckCircle } from "lucide-react";
 import { useGeneratedPageState } from "@/hooks/useGeneratedPageState";
 import { useGeneratedPageActions } from "@/hooks/useGeneratedPageActions";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const GeneratedLandingPage = () => {
   const [showFullScreenPreview, setShowFullScreenPreview] = useState(false);
   const state = useGeneratedPageState();
+  const location = useLocation();
+  
+  // Get formData from navigation state or use existing formData
+  useEffect(() => {
+    if (location.state?.formData && !state.formData) {
+      console.log("Setting formData from navigation:", location.state.formData);
+      state.setFormData(location.state.formData);
+    }
+  }, [location.state, state.formData]);
+  
   const actions = useGeneratedPageActions({
     isSaved: state.isSaved,
     setIsSaved: state.setIsSaved,
