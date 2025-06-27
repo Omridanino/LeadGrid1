@@ -15,16 +15,30 @@ interface HeroSectionProps {
 }
 
 export const HeroSection = ({ content, currentColors, formData, heroImage }: HeroSectionProps) => {
+  // Apply color scheme to the component
+  useEffect(() => {
+    const root = document.documentElement;
+    Object.entries(currentColors).forEach(([key, value]) => {
+      root.style.setProperty(`--color-${key}`, value);
+    });
+  }, [currentColors]);
+
   const renderCTAButton = (isPrimary = true) => {
     const buttonText = isPrimary ? (content?.cta || 'בואו נתחיל לעבוד יחד') : 'למד עוד';
     
     return (
-      <button className={`relative overflow-hidden px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 ${
-        isPrimary 
-          ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl' 
-          : 'bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20'
-      } animate-slide-up ${isPrimary ? 'animate-delay-3' : 'animate-delay-4'} group`}>
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <button 
+        className={`relative overflow-hidden px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 ${
+          isPrimary 
+            ? 'text-white shadow-lg hover:shadow-xl animate-slide-up animate-delay-3 group' 
+            : 'backdrop-blur-sm border-2 hover:backdrop-blur-md animate-slide-up animate-delay-4 group'
+        }`}
+        style={{
+          backgroundColor: isPrimary ? currentColors.primary : 'transparent',
+          borderColor: isPrimary ? 'transparent' : currentColors.primary,
+          color: isPrimary ? '#ffffff' : currentColors.text
+        }}
+      >
         <div className="relative z-10 flex items-center gap-2">
           <ArrowLeft className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" />
           {buttonText}
@@ -35,19 +49,34 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
 
   const renderHeroContent = () => (
     <div className="text-center relative z-10 max-w-6xl mx-auto">
-      <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-6 py-3 rounded-full mb-8 animate-slide-up group hover:scale-105 transition-transform duration-300">
-        <Star className="w-5 h-5 text-yellow-400 fill-current animate-pulse" />
-        <span className="text-sm font-medium text-white">עיצוב פרימיום ברמה עולמית</span>
+      <div 
+        className="inline-flex items-center gap-2 backdrop-blur-sm border-2 px-6 py-3 rounded-full mb-8 animate-slide-up group hover:scale-105 transition-transform duration-300"
+        style={{
+          backgroundColor: `${currentColors.primary}20`,
+          borderColor: `${currentColors.primary}40`,
+          color: currentColors.text
+        }}
+      >
+        <Star className="w-5 h-5 fill-current animate-pulse" style={{ color: currentColors.accent }} />
+        <span className="text-sm font-medium">עיצוב פרימיום ברמה עולמית</span>
       </div>
 
-      <h1 className="text-5xl md:text-7xl lg:text-8xl mb-8 animate-slide-up animate-delay-1 font-black tracking-tight leading-tight">
-        <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-200 to-purple-200 drop-shadow-2xl">
-          {content?.headline || formData?.businessName || 'העסק שלכם'}
-        </span>
+      <h1 
+        className="text-5xl md:text-7xl lg:text-8xl mb-8 animate-slide-up animate-delay-1 font-black tracking-tight leading-tight drop-shadow-2xl"
+        style={{ color: currentColors.headlineColor }}
+      >
+        {content?.headline || formData?.businessName || 'העסק שלכם'}
       </h1>
 
-      <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-8 max-w-4xl mx-auto mb-12 animate-slide-up animate-delay-2 rounded-2xl">
-        <p className="text-xl md:text-2xl text-blue-100 leading-relaxed font-light">
+      <div 
+        className="backdrop-blur-sm border-2 p-8 max-w-4xl mx-auto mb-12 animate-slide-up animate-delay-2 rounded-2xl"
+        style={{
+          backgroundColor: `${currentColors.background}40`,
+          borderColor: `${currentColors.primary}30`,
+          color: currentColors.subheadlineColor
+        }}
+      >
+        <p className="text-xl md:text-2xl leading-relaxed font-light">
           {content?.subheadline || `עיצוב מהפנט וחדשני ל${formData?.targetAudience || 'הלקוחות שלכם'}`}
         </p>
       </div>
@@ -61,10 +90,13 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
 
   const currentDesignStyle = formData?.designStyle || 'dynamic-gradients';
 
-  // Dynamic Gradients - Default Premium Style
+  // Dynamic Gradients - Enhanced
   if (currentDesignStyle === 'dynamic-gradients') {
     return (
-      <section className="relative overflow-hidden min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <section 
+        className="relative overflow-hidden min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: currentColors.background }}
+      >
         <DynamicGradients />
         <div className="container mx-auto px-4 relative z-10">
           {renderHeroContent()}
@@ -76,7 +108,10 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
   // Advanced Sparkles Effects
   if (currentDesignStyle === 'sparkles-effects') {
     return (
-      <section className="relative overflow-hidden min-h-screen flex items-center justify-center bg-black">
+      <section 
+        className="relative overflow-hidden min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: currentColors.background }}
+      >
         <AdvancedSparkles />
         <div className="container mx-auto px-4 relative z-10">
           {renderHeroContent()}
@@ -85,44 +120,28 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     );
   }
 
-  // Animated Paths - Premium Version
+  // Animated Paths - Completely redesigned
   if (currentDesignStyle === 'animated-paths') {
     return (
-      <section className="relative overflow-hidden min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black">
+      <section 
+        className="relative overflow-hidden min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: currentColors.background }}
+      >
         <AnimatedPaths />
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-6xl mx-auto">
-            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-gray-200/50 px-6 py-3 rounded-full mb-8 animate-slide-up shadow-lg">
-              <Star className="w-5 h-5 text-blue-600 fill-current" />
-              <span className="text-sm font-medium text-gray-800">נתיבים מונפשים פרימיום</span>
-            </div>
-
-            <h1 className="text-5xl md:text-7xl lg:text-8xl mb-8 animate-slide-up animate-delay-1 font-black leading-tight">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700/80 dark:from-white dark:to-white/80">
-                {content?.headline || formData?.businessName || 'העסק שלכם'}
-              </span>
-            </h1>
-
-            <div className="bg-white/80 backdrop-blur-sm border border-gray-200/50 p-8 max-w-4xl mx-auto mb-12 animate-slide-up animate-delay-2 rounded-2xl shadow-lg">
-              <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 leading-relaxed">
-                {content?.subheadline || `נתיבים מונפשים מדהימים ל${formData?.targetAudience || 'הלקוחות שלכם'}`}
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              {renderCTAButton(true)}
-              {renderCTAButton(false)}
-            </div>
-          </div>
+          {renderHeroContent()}
         </div>
       </section>
     );
   }
 
-  // Fluid Blobs - Performance Optimized
+  // Fluid Blobs - Multiple blobs
   if (currentDesignStyle === 'fluid-blobs') {
     return (
-      <section className="relative overflow-hidden min-h-screen flex items-center justify-center bg-black">
+      <section 
+        className="relative overflow-hidden min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: currentColors.background }}
+      >
         <FluidBlob />
         <div className="container mx-auto px-4 relative z-10">
           {renderHeroContent()}
@@ -131,10 +150,13 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     );
   }
 
-  // Premium 3D - Spline Alternative
+  // Premium 3D - Enhanced
   if (currentDesignStyle === 'spline-3d') {
     return (
-      <section className="relative overflow-hidden min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
+      <section 
+        className="relative overflow-hidden min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: currentColors.background }}
+      >
         <Premium3D />
         <div className="container mx-auto px-4 relative z-10">
           {renderHeroContent()}
@@ -145,7 +167,10 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
 
   // Default Fallback
   return (
-    <section className="relative overflow-hidden min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <section 
+      className="relative overflow-hidden min-h-screen flex items-center justify-center"
+      style={{ backgroundColor: currentColors.background }}
+    >
       <DynamicGradients />
       <div className="container mx-auto px-4 relative z-10">
         {renderHeroContent()}

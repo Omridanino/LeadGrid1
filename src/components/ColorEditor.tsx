@@ -30,8 +30,8 @@ const ColorEditor = ({ onColorChange }: ColorEditorProps) => {
     primary: "#3b82f6",
     secondary: "#8b5cf6", 
     accent: "#06b6d4",
-    background: "#000000", // Default black background
-    text: "#ffffff", // Default white text
+    background: "#000000",
+    text: "#ffffff",
     headlineColor: "#ffffff",
     subheadlineColor: "#e0f2fe",
     featuresColor: "#ffffff",
@@ -42,21 +42,17 @@ const ColorEditor = ({ onColorChange }: ColorEditorProps) => {
     contactTextColor: "#d1d5db"
   });
 
-  // Real-time color updates
+  // Apply colors immediately when changed
   useEffect(() => {
     onColorChange(colors);
     
-    // Apply global CSS variables for immediate visual feedback
+    // Apply CSS variables for real-time preview
     const root = document.documentElement;
-    root.style.setProperty('--primary-color', colors.primary);
-    root.style.setProperty('--secondary-color', colors.secondary);
-    root.style.setProperty('--accent-color', colors.accent);
-    root.style.setProperty('--background-color', colors.background);
-    root.style.setProperty('--text-color', colors.text);
-    root.style.setProperty('--headline-color', colors.headlineColor || '#ffffff');
-    root.style.setProperty('--subheadline-color', colors.subheadlineColor || '#e0f2fe');
+    Object.entries(colors).forEach(([key, value]) => {
+      root.style.setProperty(`--color-${key}`, value);
+    });
     
-    // Update page background immediately
+    // Apply to body for immediate background change
     document.body.style.backgroundColor = colors.background;
     document.body.style.color = colors.text;
     
@@ -110,23 +106,12 @@ const ColorEditor = ({ onColorChange }: ColorEditorProps) => {
         aboutColor: "#8b5cf6", aboutTextColor: "#d1d5db", 
         contactColor: "#8b5cf6", contactTextColor: "#d1d5db"
       }
-    },
-    { 
-      name: "ירוק טבעי", 
-      icon: <Zap className="w-4 h-4" />,
-      colors: { 
-        primary: "#10b981", secondary: "#059669", accent: "#34d399", 
-        background: "#064e3b", text: "#ffffff",
-        headlineColor: "#ffffff", subheadlineColor: "#ecfdf5", 
-        featuresColor: "#10b981", featuresTextColor: "#e5e7eb",
-        aboutColor: "#10b981", aboutTextColor: "#d1d5db", 
-        contactColor: "#10b981", contactTextColor: "#d1d5db"
-      }
     }
   ];
 
   const updateColor = (colorKey: keyof ColorScheme, value: string) => {
-    setColors(prev => ({ ...prev, [colorKey]: value }));
+    const newColors = { ...colors, [colorKey]: value };
+    setColors(newColors);
   };
 
   const applyPreset = (preset: ColorScheme) => {
@@ -134,11 +119,11 @@ const ColorEditor = ({ onColorChange }: ColorEditorProps) => {
   };
 
   const colorLabels = {
-    primary: 'צבע עיקרי',
+    background: 'רקע עיקרי',
+    text: 'טקסט עיקרי',
+    primary: 'צבע כפתורים',
     secondary: 'צבע משני', 
     accent: 'צבע הדגשה',
-    background: 'רקע כללי',
-    text: 'טקסט כללי',
     headlineColor: 'כותרת ראשית',
     subheadlineColor: 'כותרת משנה',
     featuresColor: 'כותרות חלקים',
@@ -156,111 +141,92 @@ const ColorEditor = ({ onColorChange }: ColorEditorProps) => {
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
             <Palette className="w-4 h-4 text-white" />
           </div>
-          עורך צבעים חכם - עדכון בזמן אמת
+          עורך צבעים - עובד בזמן אמת
         </CardTitle>
-        <p className="text-purple-200 text-sm">שינויים יוחלו מיידית על הדף</p>
+        <p className="text-purple-200 text-sm">שינויים מוחלים מיידית</p>
       </CardHeader>
-      <CardContent className="space-y-8">
+      <CardContent className="space-y-6">
         {/* Quick preset schemes */}
-        <div className="bg-black/30 p-6 rounded-2xl border border-purple-500/20">
-          <h4 className="text-white font-bold mb-4 flex items-center gap-2">
-            <Zap className="w-4 h-4 text-yellow-400" />
-            ערכות צבעים מוכנות
-          </h4>
-          <div className="grid grid-cols-1 gap-3">
+        <div className="space-y-3">
+          <h4 className="text-white font-bold">ערכות צבעים מהירות</h4>
+          <div className="grid grid-cols-1 gap-2">
             {presetSchemes.map((scheme, index) => (
               <Button
                 key={index}
                 variant="outline"
                 onClick={() => applyPreset(scheme.colors)}
-                className="bg-gray-800/80 border-purple-500/30 text-white hover:bg-purple-700/50 justify-start h-auto p-4 transition-all duration-300 hover:scale-105"
+                className="bg-gray-800/80 border-purple-500/30 text-white hover:bg-purple-700/50 justify-start p-3 transition-all duration-300"
               >
-                <div className="flex items-center gap-4 w-full">
+                <div className="flex items-center gap-3 w-full">
                   <div className="flex gap-1">
                     <div 
-                      className="w-6 h-6 rounded-lg border border-white/20 shadow-lg" 
-                      style={{ backgroundColor: scheme.colors.primary }}
-                    ></div>
-                    <div 
-                      className="w-6 h-6 rounded-lg border border-white/20 shadow-lg" 
+                      className="w-4 h-4 rounded border border-white/20" 
                       style={{ backgroundColor: scheme.colors.background }}
-                    ></div>
+                    />
                     <div 
-                      className="w-6 h-6 rounded-lg border border-white/20 shadow-lg" 
+                      className="w-4 h-4 rounded border border-white/20" 
+                      style={{ backgroundColor: scheme.colors.primary }}
+                    />
+                    <div 
+                      className="w-4 h-4 rounded border border-white/20" 
                       style={{ backgroundColor: scheme.colors.accent }}
-                    ></div>
+                    />
                   </div>
-                  <div className="flex items-center gap-2">
-                    {scheme.icon}
-                    <span className="font-semibold">{scheme.name}</span>
-                  </div>
+                  <span className="font-medium">{scheme.name}</span>
                 </div>
               </Button>
             ))}
           </div>
         </div>
 
-        {/* Main colors section */}
-        <div className="bg-blue-900/20 p-6 rounded-2xl border border-blue-500/20">
-          <h4 className="text-white font-bold mb-4 flex items-center gap-2">
-            <Palette className="w-4 h-4 text-blue-400" />
-            צבעים בסיסיים
-          </h4>
-          <div className="grid grid-cols-1 gap-4">
+        {/* Main colors */}
+        <div className="space-y-4">
+          <h4 className="text-white font-bold">צבעים עיקריים</h4>
+          <div className="grid grid-cols-1 gap-3">
             {['background', 'text', 'primary', 'secondary', 'accent'].map((key) => (
-              <div key={key} className="flex items-center gap-4 p-3 bg-black/30 rounded-xl">
+              <div key={key} className="flex items-center gap-3 p-3 bg-black/30 rounded-lg">
                 <input
                   type="color"
                   value={colors[key as keyof ColorScheme] || '#ffffff'}
                   onChange={(e) => updateColor(key as keyof ColorScheme, e.target.value)}
-                  className="w-12 h-12 rounded-lg border-2 border-white/20 cursor-pointer shadow-lg"
+                  className="w-10 h-10 rounded border-2 border-white/20 cursor-pointer"
                 />
                 <div className="flex-1">
-                  <Label className="text-white font-semibold block">
+                  <Label className="text-white font-medium">
                     {colorLabels[key as keyof typeof colorLabels]}
                   </Label>
-                  <span className="text-gray-400 text-sm font-mono">
+                  <div className="text-gray-400 text-xs font-mono">
                     {colors[key as keyof ColorScheme] || '#ffffff'}
-                  </span>
+                  </div>
                 </div>
-                <div 
-                  className="w-8 h-8 rounded-lg border border-white/20"
-                  style={{ backgroundColor: colors[key as keyof ColorScheme] || '#ffffff' }}
-                />
               </div>
             ))}
           </div>
         </div>
 
-        {/* Section-specific colors */}
-        <div className="bg-green-900/20 p-6 rounded-2xl border border-green-500/20">
-          <h4 className="text-white font-bold mb-4 flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-green-400" />
-            צבעי חלקים ספציפיים
-          </h4>
-          <div className="grid grid-cols-1 gap-3">
+        {/* Section colors */}
+        <div className="space-y-4">
+          <h4 className="text-white font-bold">צבעי חלקים</h4>
+          <div className="grid grid-cols-1 gap-2">
             {['headlineColor', 'subheadlineColor', 'featuresColor', 'featuresTextColor', 'aboutColor', 'aboutTextColor', 'contactColor', 'contactTextColor'].map((key) => (
-              <div key={key} className="flex items-center gap-3 p-2 bg-black/20 rounded-lg">
+              <div key={key} className="flex items-center gap-2 p-2 bg-black/20 rounded">
                 <input
                   type="color"
                   value={colors[key as keyof ColorScheme] || '#ffffff'}
                   onChange={(e) => updateColor(key as keyof ColorScheme, e.target.value)}
-                  className="w-8 h-8 rounded border border-white/20 cursor-pointer"
+                  className="w-6 h-6 rounded border border-white/20 cursor-pointer"
                 />
                 <Label className="text-white text-sm flex-1">
                   {colorLabels[key as keyof typeof colorLabels]}
                 </Label>
-                <span className="text-gray-400 text-xs font-mono w-16">
-                  {colors[key as keyof ColorScheme]?.substring(1) || 'ffffff'}
-                </span>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-purple-900/30 to-pink-900/30 p-4 rounded-xl border border-purple-500/20">
+        <div className="bg-gradient-to-r from-purple-900/30 to-pink-900/30 p-3 rounded-xl">
           <p className="text-purple-100 text-sm text-center">
-            💡 <strong>טיפ מקצועי:</strong> שינויי צבעים מוחלים מיידית על כל החלקים בדף
+            💡 שינויים מוחלים מיידית על הדף
           </p>
         </div>
       </CardContent>
