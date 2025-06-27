@@ -132,14 +132,13 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
         
         {/* Animated shine effect */}
         <div 
-          className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 shine-animation"
           style={{
             background: `linear-gradient(45deg, 
               transparent 30%,
               rgba(255, 255, 255, 0.3) 50%,
               transparent 70%)`,
             transform: 'translateX(-100%)',
-            animation: 'shine 2s ease-in-out infinite',
           }}
         />
         
@@ -151,7 +150,10 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
         />
       </div>
       
-      <style jsx>{`
+      <style>{`
+        .shine-animation {
+          animation: shine 2s ease-in-out infinite;
+        }
         @keyframes shine {
           0% { transform: translateX(-100%); }
           50% { transform: translateX(100%); }
@@ -253,14 +255,14 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, delay: 0.3 }}
             >
-              פלטפורמת נחיתה
+              פלטפורמת נחיתה מבוססת
               <br />
               <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
-                מבוססת בינה מלאכותית
+                בינה מלאכותית לעסקים
               </span>
               <br />
               <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
-                לעסקים מתקדמים
+                מתקדמים
               </span>
             </motion.h1>
 
@@ -282,11 +284,7 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
             >
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
               <p className="text-xl md:text-2xl text-gray-200 leading-relaxed">
-                טכנולוגיה מתקדמת לבניית דפי נחיתה
-                <br />
-                עם אופטימיזציה אוטומטית
-                <br />
-                וניתוח ביצועים בזמן אמת
+                טכנולוגיה מתקדמת לבניית דפי נחיתה עם אופטימיזציה אוטומטית וניתוח ביצועים בזמן אמת
               </p>
             </motion.div>
 

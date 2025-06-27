@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Zap, Target, TrendingUp, Shield, Cpu, Rocket } from "lucide-react";
 
@@ -39,14 +38,13 @@ const ModernFeaturesSection = () => {
         
         {/* Animated shine effect */}
         <div 
-          className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 shine-animation"
           style={{
             background: `linear-gradient(45deg, 
               transparent 30%,
               rgba(255, 255, 255, 0.3) 50%,
               transparent 70%)`,
             transform: 'translateX(-100%)',
-            animation: 'shine 2s ease-in-out infinite',
           }}
         />
         
@@ -60,7 +58,10 @@ const ModernFeaturesSection = () => {
         <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/20 to-transparent" />
       </div>
       
-      <style jsx>{`
+      <style>{`
+        .shine-animation {
+          animation: shine 2s ease-in-out infinite;
+        }
         @keyframes shine {
           0% { transform: translateX(-100%); }
           50% { transform: translateX(100%); }
