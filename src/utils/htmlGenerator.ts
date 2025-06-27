@@ -1,1688 +1,1702 @@
+
 import { ColorScheme } from "@/components/ColorEditor";
 
 export const generateHtmlFile = (content: any, colors: ColorScheme, formData: any, heroImageUrl: string): string => {
   const businessName = formData?.businessName || 'העסק שלי';
   const businessType = formData?.businessType || 'שירותים עסקיים';
+  const selectedElements = formData?.selectedElements || [];
   
-  // Generate the exact HTML that matches FullScreenPreview perfectly
-  const generateCompleteHTML = () => {
-    const heroStyle = formData.heroStyle || '3d';
-    
-    return `
-    <div class="w-full h-full style-${heroStyle}" style="overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; position: relative;">
-      
-      <!-- Hero Section - Match HeroSection component exactly -->
-      ${generateHeroSection()}
-      
-      <!-- Navigation - Match NavigationSection component exactly -->
-      ${generateNavigation()}
-      
-      <!-- Content Sections - Match ContentSections component exactly -->
-      ${generateContentSections()}
-      
-      <!-- Footer Section - Match FullScreenPreview footer exactly -->
-      ${generateFooter()}
-      
-    </div>
-    `;
-  };
-
-  // Generate hero section that EXACTLY matches what user sees in preview
-  const generateHeroSection = () => {
-    const heroStyle = formData.heroStyle || '3d';
-    
-    if (heroStyle === 'glass') {
-      return generateLiquidGlassHero();
-    } else if (heroStyle === 'geometric') {
-      return generateGeometricHero();
-    } else if (heroStyle === 'metal') {
-      return generateMetalHero();
-    } else if (heroStyle === 'image') {
-      return generateImageHero();
-    } else {
-      return generateDefault3DHero();
+  // Get the exact same style classes as used in ContentSections
+  const getStyleClass = () => {
+    switch (formData.heroStyle) {
+      case 'geometric':
+        return 'style-geometric';
+      case 'glass':
+        return 'style-glass';
+      case 'metal':
+        return 'style-metal';
+      case 'image':
+        return 'style-image';
+      default:
+        return 'style-3d';
     }
   };
 
-  // LIQUID GLASS HERO - Keep existing implementation
-  const generateLiquidGlassHero = () => {
-    const title = content?.headline || formData.businessName;
-    const subtitle = content?.subheadline || `חוויה נוזלית ייחודית ל${formData.targetAudience}`;
-    const cta = content?.cta || 'בואו נתחיל לעבוד יחד';
-    
-    return `
-    <section class="liquid-glass-hero section-hero">
-      <div class="liquid-background">
-        <div class="liquid-orb liquid-orb-hero-1"></div>
-        <div class="liquid-orb liquid-orb-hero-2"></div>
-        <div class="liquid-orb liquid-orb-hero-3"></div>
-        <div class="liquid-orb liquid-orb-hero-4"></div>
-      </div>
-      
-      <div class="liquid-waves">
-        <div class="liquid-wave liquid-wave-1"></div>
-        <div class="liquid-wave liquid-wave-2"></div>
-        <div class="liquid-wave liquid-wave-3"></div>
-      </div>
-      
-      <div class="container-hero relative z-10">
-        <div class="liquid-hero-grid">
-          <div class="liquid-content-flow">
-            <!-- Floating Status Badge -->
-            <div class="liquid-status-orb animate-slide-up">
-              <div class="liquid-pulse"></div>
-              <i class="ri-wifi-line text-green-400 text-lg"></i>
-              <span class="typography-liquid text-white font-semibold">זמין עכשיו</span>
+  const getCardClass = () => {
+    switch (formData.heroStyle) {
+      case 'geometric':
+        return 'card-geometric';
+      case 'glass':
+        return 'card-liquid-glass';
+      case 'metal':
+        return 'card-metal';
+      case 'image':
+        return 'card-image-depth';
+      default:
+        return 'card-3d';
+    }
+  };
+
+  const getBackgroundClass = () => {
+    switch (formData.heroStyle) {
+      case 'geometric':
+        return 'bg-geometric';
+      case 'glass':
+        return 'bg-liquid-glass';
+      case 'metal':
+        return 'bg-metal';
+      case 'image':
+        return 'bg-image-depth';
+      default:
+        return 'bg-3d';
+    }
+  };
+
+  const getButtonClass = () => {
+    switch (formData.heroStyle) {
+      case 'geometric':
+        return 'btn-geometric';
+      case 'glass':
+        return 'btn-liquid-glass';
+      case 'metal':
+        return 'btn-metal';
+      case 'image':
+        return 'btn-image-depth';
+      default:
+        return 'btn-3d';
+    }
+  };
+
+  const getTypographyClass = () => {
+    switch (formData.heroStyle) {
+      case 'geometric':
+        return 'typography-modern';
+      case 'glass':
+        return 'typography-liquid';
+      case 'metal':
+        return 'typography-luxury';
+      case 'image':
+        return 'typography-cinematic';
+      default:
+        return 'typography-tech';
+    }
+  };
+
+  // Generate navigation section HTML exactly like NavigationSection component
+  const generateNavigationHTML = () => {
+    if (formData.navigationStyle === 'dock') {
+      return `
+        <div class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
+          <div class="dock">
+            <div class="dock-item">
+              <div class="dock-icon">
+                <i class="ri-home-line text-2xl"></i>
+              </div>
+              <div class="dock-label">בית</div>
             </div>
+            <div class="dock-item">
+              <div class="dock-icon">
+                <i class="ri-user-line text-2xl"></i>
+              </div>
+              <div class="dock-label">אודות</div>
+            </div>
+            <div class="dock-item">
+              <div class="dock-icon">
+                <i class="ri-briefcase-line text-2xl"></i>
+              </div>
+              <div class="dock-label">שירותים</div>
+            </div>
+            <div class="dock-item">
+              <div class="dock-icon">
+                <i class="ri-message-square-line text-2xl"></i>
+              </div>
+              <div class="dock-label">צור קשר</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+    return '';
+  };
 
-            <!-- Liquid Hero Title -->
-            <h1 class="typography-liquid text-7xl md:text-9xl mb-8 animate-slide-up animate-delay-1 liquid-title-glow">
-              ${title}
-            </h1>
-
-            <!-- Flowing Subtitle Container -->
-            <div class="liquid-subtitle-flow mb-12 animate-slide-up animate-delay-2">
-              <div class="liquid-text-orb">
-                <p class="typography-liquid text-xl md:text-2xl text-white leading-relaxed liquid-text-glow">
-                  ${subtitle}
+  // Generate content sections using the exact same logic as ContentSections component
+  const generateContentSectionsHTML = () => {
+    // LIQUID GLASS STYLE - Exact copy from ContentSections
+    if (formData.heroStyle === 'glass') {
+      return `
+        <!-- Liquid Glass Value Proposition - Floating Bubbles Design -->
+        <section class="py-20 px-4 bg-liquid-glass relative overflow-hidden">
+          <div class="liquid-orb liquid-orb-1"></div>
+          <div class="liquid-orb liquid-orb-2"></div>
+          <div class="liquid-orb liquid-orb-3"></div>
+          
+          <div class="container mx-auto max-w-6xl relative z-10">
+            <div class="text-center mb-16">
+              <div class="floating-badge mb-8">
+                <i class="ri-star-fill text-yellow-400 text-xl"></i>
+                <span class="typography-liquid text-white font-semibold">הצעת הערך הייחודית</span>
+              </div>
+              <h2 class="typography-liquid text-5xl md:text-7xl font-black mb-8 text-white liquid-glow">
+                ${content?.sections?.emotionalSection?.title || "חוויה נוזלית מדהימה"}
+              </h2>
+              <div class="liquid-glass-panel p-10 max-w-4xl mx-auto">
+                <p class="typography-liquid text-xl md:text-2xl leading-relaxed text-white liquid-text-glow">
+                  ${content?.sections?.emotionalSection?.content || `בעולם הטכנולוגיה המתקדמת, ${businessName} מציע לכם חוויה נוזלית ייחודה שמשלבת חדשנות עם אלגנטיות.`}
                 </p>
               </div>
             </div>
-
-            <!-- Liquid Action Buttons -->
-            <div class="liquid-actions-flow mb-16">
-              <button class="btn-base btn-liquid-glass animate-slide-up animate-delay-3">
-                <i class="ri-arrow-left-line text-lg"></i>
-                ${cta}
-              </button>
-              <button class="btn-base btn-liquid-glass animate-slide-up animate-delay-4">
-                <i class="ri-arrow-left-line text-lg"></i>
-                למד עוד
-              </button>
-            </div>
-
-            <!-- Floating Features Orbs -->
-            <div class="liquid-features-constellation animate-scale-in animate-delay-4">
-              <div class="liquid-feature-orb">
-                <div class="liquid-feature-glow">
-                  <i class="ri-flashlight-line text-blue-300 text-xl"></i>
-                </div>
-                <span class="typography-liquid text-white text-sm font-medium liquid-text-glow">
-                  מהירות נוזלית
-                </span>
-              </div>
-              <div class="liquid-feature-orb">
-                <div class="liquid-feature-glow">
-                  <i class="ri-shield-check-line text-blue-300 text-xl"></i>
-                </div>
-                <span class="typography-liquid text-white text-sm font-medium liquid-text-glow">
-                  אמינות זורמת
-                </span>
-              </div>
-              <div class="liquid-feature-orb">
-                <div class="liquid-feature-glow">
-                  <i class="ri-infinity-line text-blue-300 text-xl"></i>
-                </div>
-                <span class="typography-liquid text-white text-sm font-medium liquid-text-glow">
-                  זמינות תמידית
-                </span>
-              </div>
-            </div>
           </div>
+        </section>
 
-          <!-- Liquid Visual Showcase -->
-          <div class="liquid-visual-flow animate-scale-in animate-delay-3">
-            <div class="liquid-showcase-orb">
-              <div class="liquid-showcase-rings">
-                <div class="liquid-ring liquid-ring-1"></div>
-                <div class="liquid-ring liquid-ring-2"></div>
-                <div class="liquid-ring liquid-ring-3"></div>
-              </div>
-              <div class="liquid-center-orb">
-                <i class="ri-atom-line text-blue-300 text-5xl"></i>
+        <!-- Liquid Glass Why Choose Us - Morphing Cards -->
+        <section class="py-20 px-4 bg-liquid-glass-alt relative overflow-hidden">
+          <div class="liquid-wave"></div>
+          
+          <div class="container mx-auto max-w-6xl relative z-10">
+            <div class="text-center mb-16">
+              <h2 class="typography-liquid text-5xl md:text-7xl font-black mb-8 text-white liquid-glow">
+                למה לבחור בנו?
+              </h2>
+              <div class="floating-subtitle">
+                <p class="typography-liquid text-xl text-blue-200">
+                  הסיבות הנוזליות שעושות אותנו שונים
+                </p>
               </div>
             </div>
             
-            <!-- Floating Stats Bubbles -->
-            <div class="liquid-stats-bubbles">
-              <div class="liquid-stat-bubble liquid-bubble-top-left">
-                <div class="liquid-stat-glow">
-                  <div class="typography-liquid text-2xl font-bold text-white liquid-text-glow">500+</div>
-                  <div class="typography-liquid text-xs text-blue-200">זרימות מוצלחות</div>
+            <div class="grid md:grid-cols-2 gap-8">
+              ${(content?.sections?.whyUs?.reasons || [
+                { title: "טכנולוגיה נוזלית מתקדמת", description: "פתרונות חדשניים המשלבים זרימה טבעית עם יעילות מקסימלית" },
+                { title: "חוויית משתמש זורמת", description: "אינטראקציה חלקה ואינטואיטיבית שמתאימה לכל צורך" },
+                { title: "גמישות מוחלטת", description: "התאמה דינמית לכל דרישה ושינוי בזמן אמת" },
+                { title: "איכות שקופה ונקייה", description: "שירות ברור וישיר ללא הפתעות או עמימות" }
+              ]).map((reason: any) => `
+                <div class="liquid-morph-card group">
+                  <div class="liquid-icon-orb">
+                    <i class="ri-diamond-line text-blue-300 text-2xl"></i>
+                  </div>
+                  <h3 class="typography-liquid text-2xl font-bold mb-4 text-white liquid-text-glow">
+                    ${reason.title}
+                  </h3>
+                  <p class="typography-liquid text-blue-200 leading-relaxed">
+                    ${reason.description}
+                  </p>
+                  <div class="liquid-ripple"></div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+
+        <!-- Liquid Glass Services - Flowing Grid -->
+        <section class="py-20 px-4 bg-liquid-glass relative overflow-hidden">
+          <div class="liquid-flow-bg"></div>
+          
+          <div class="container mx-auto max-w-6xl relative z-10">
+            <div class="text-center mb-16">
+              <h2 class="typography-liquid text-5xl md:text-7xl font-black mb-8 text-white liquid-glow">
+                השירותים הנוזליים שלנו
+              </h2>
+            </div>
+            
+            <div class="liquid-grid">
+              ${(content?.sections?.whatWeGive?.services || [
+                { title: "פתרונות זורמים", description: "שירותים שמתאימים עצמם לצרכים המשתנים שלכם" },
+                { title: "איכות שקופה", description: "רמת שירות גבוהה וברורה בכל שלב מהתהליך" },
+                { title: "ליווי נוזלי", description: "תמיכה רציפה שזורמת איתכם לאורך כל המסע" },
+                { title: "תוצאות נוזריות", description: "הישגים שמתפתחים ומשתפרים עם הזמן" }
+              ]).map((service: any) => `
+                <div class="liquid-service-card">
+                  <div class="liquid-check-orb">
+                    <i class="ri-check-line text-green-400 text-xl"></i>
+                  </div>
+                  <h3 class="typography-liquid text-xl font-bold text-white mb-3 liquid-text-glow">
+                    ${service.title}
+                  </h3>
+                  <p class="typography-liquid text-blue-200 text-sm leading-relaxed">
+                    ${service.description}
+                  </p>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+
+        <!-- Liquid Glass Process - Flowing Timeline -->
+        <section class="py-20 px-4 bg-liquid-glass-alt relative overflow-hidden">
+          <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16">
+              <h2 class="typography-liquid text-5xl md:text-7xl font-black mb-8 text-white liquid-glow">
+                תהליך העבודה הנוזלי
+              </h2>
+            </div>
+            
+            <div class="liquid-timeline">
+              ${[
+                { step: 1, title: "זרימה ראשונית", desc: "הבנה עמוקה של הצרכים והמטרות", icon: "ri-target-line" },
+                { step: 2, title: "עיצוב נוזלי", desc: "תכנון גמיש שמתאים עצמו לדרישות", icon: "ri-lightbulb-line" },
+                { step: 3, title: "יישום זורם", desc: "ביצוע חלק ומדוייק של הפתרון", icon: "ri-settings-line" },
+                { step: 4, title: "התפתחות מתמשכת", desc: "שיפור וליווי רציף לאורך זמן", icon: "ri-rocket-line" }
+              ].map((process, index) => `
+                <div class="liquid-timeline-item">
+                  <div class="liquid-step-orb">
+                    <span class="typography-liquid font-bold text-lg text-blue-900">${process.step}</span>
+                  </div>
+                  <div class="liquid-process-card">
+                    <div class="liquid-process-icon">
+                      <i class="${process.icon} text-blue-300 text-3xl"></i>
+                    </div>
+                    <h3 class="typography-liquid text-xl font-bold text-white mb-3 liquid-text-glow">
+                      ${process.title}
+                    </h3>
+                    <p class="typography-liquid text-blue-200 leading-relaxed">
+                      ${process.desc}
+                    </p>
+                  </div>
+                  ${index < 3 ? '<div class="liquid-flow-connector"></div>' : ''}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+
+        <!-- Liquid Glass Testimonials - Floating Bubbles -->
+        <section class="py-20 px-4 bg-liquid-glass relative overflow-hidden">
+          <div class="liquid-bubble-field">
+            <div class="liquid-bubble liquid-bubble-1"></div>
+            <div class="liquid-bubble liquid-bubble-2"></div>
+            <div class="liquid-bubble liquid-bubble-3"></div>
+            <div class="liquid-bubble liquid-bubble-4"></div>
+          </div>
+          
+          <div class="container mx-auto max-w-6xl relative z-10">
+            <div class="text-center mb-16">
+              <h2 class="typography-liquid text-5xl md:text-7xl font-black mb-8 text-white liquid-glow">
+                חוויות נוזליות
+              </h2>
+            </div>
+            
+            <div class="liquid-testimonials-grid">
+              ${(content?.sections?.testimonials || [
+                { name: "דני כהן", role: "מנהל חדשנות", content: `החוויה עם ${businessName} הייתה נוזלית לחלוטין - הכל זרם בצורה טבעית ויעילה.` },
+                { name: "שרה לוי", role: "יועצת טכנולוגיות", content: `הגישה הנוזלית שלהם פשוט מהפכנית. כל שינוי מתבצע בזרימה חלקה.` },
+                { name: "מיכל רוזן", role: "מנהלת פרויקטים", content: "השירות זורם כמו נהר - טבעי, רציף ומרשים בתוצאותיו." }
+              ]).map((testimonial: any) => `
+                <div class="liquid-testimonial-bubble">
+                  <div class="liquid-quote-orb">
+                    <i class="ri-chat-quote-line text-blue-300 text-xl"></i>
+                  </div>
+                  
+                  <p class="typography-liquid leading-relaxed text-white mb-6 liquid-text-glow italic">
+                    "${testimonial.content}"
+                  </p>
+                  
+                  <div class="liquid-author">
+                    <div class="liquid-avatar">
+                      <i class="ri-user-line text-blue-300 text-lg"></i>
+                    </div>
+                    <div>
+                      <p class="typography-liquid font-bold text-white">
+                        ${testimonial.name}
+                      </p>
+                      ${testimonial.role ? `
+                        <p class="typography-liquid text-xs text-blue-200">
+                          ${testimonial.role}
+                        </p>
+                      ` : ''}
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+
+        <!-- Liquid Glass CTA - Immersive Experience -->
+        <section class="py-20 px-4 bg-liquid-glass-final relative overflow-hidden">
+          <div class="liquid-immersion-bg"></div>
+          
+          <div class="container mx-auto max-w-6xl text-center relative z-10">
+            <div class="liquid-cta-orb">
+              <h2 class="typography-liquid text-5xl md:text-7xl font-black mb-12 text-white liquid-glow">
+                ${content?.contactTitle || 'צאו למסע נוזלי'}
+              </h2>
+              
+              <div class="liquid-immersion-panel p-10 mb-12">
+                <p class="typography-liquid text-2xl text-white leading-relaxed liquid-text-glow">
+                  בואו ניצור יחד חוויה נוזלית שתשנה את האופן שבו אתם חושבים על השירות
+                </p>
+              </div>
+
+              <div class="liquid-contact-flow mb-12">
+                <div class="liquid-contact-orb">
+                  <i class="ri-phone-line text-blue-300 text-xl"></i>
+                  <span class="typography-liquid text-white font-medium">050-1234567</span>
+                </div>
+                <div class="liquid-contact-orb">
+                  <i class="ri-mail-line text-blue-300 text-xl"></i>
+                  <span class="typography-liquid text-white font-medium">info@business.co.il</span>
                 </div>
               </div>
-              <div class="liquid-stat-bubble liquid-bubble-top-right">
-                <div class="liquid-stat-glow">
-                  <div class="typography-liquid text-2xl font-bold text-white liquid-text-glow">99%</div>
-                  <div class="typography-liquid text-xs text-blue-200">שביעות רצון</div>
+
+              <div class="liquid-action-flow">
+                <button class="btn-base btn-liquid-glass">
+                  <i class="ri-arrow-left-line text-lg"></i>
+                  התחילו את הזרימה
+                </button>
+                <button class="btn-base btn-liquid-glass">
+                  <i class="ri-arrow-left-line text-lg"></i>
+                  גלו את החוויה
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    // IMAGE STYLE - Exact copy from ContentSections
+    if (formData.heroStyle === 'image') {
+      return `
+        <!-- Image Style Value Proposition - Cinematic Parallax -->
+        <section class="py-20 px-4 bg-image-depth relative overflow-hidden">
+          <div class="cinematic-overlay"></div>
+          <div class="depth-layers">
+            <div class="depth-layer depth-layer-1"></div>
+            <div class="depth-layer depth-layer-2"></div>
+            <div class="depth-layer depth-layer-3"></div>
+          </div>
+          
+          <div class="container mx-auto max-w-6xl relative z-10">
+            <div class="cinematic-grid">
+              <div class="cinematic-content">
+                <div class="cinematic-badge">
+                  <i class="ri-movie-line text-yellow-400 text-xl"></i>
+                  <span class="typography-cinematic text-white font-semibold">הצגת הערך</span>
+                </div>
+                <h2 class="typography-cinematic text-5xl md:text-7xl font-black mb-8 text-white cinematic-glow">
+                  ${content?.sections?.emotionalSection?.title || "חוויה קולנועית מרהיבה"}
+                </h2>
+                <div class="cinematic-panel">
+                  <p class="typography-cinematic text-xl leading-relaxed text-white">
+                    ${content?.sections?.emotionalSection?.content || `${businessName} מביא לכם חוויה קולנועית עמוקה שמשלבת אסתטיקה מרהיבה עם תוכן איכותי.`}
+                  </p>
                 </div>
               </div>
-              <div class="liquid-stat-bubble liquid-bubble-bottom-left">
-                <div class="liquid-stat-glow">
-                  <div class="typography-liquid text-2xl font-bold text-white liquid-text-glow">24/7</div>
-                  <div class="typography-liquid text-xs text-blue-200">זרימה רציפה</div>
-                </div>
-              </div>
-              <div class="liquid-stat-bubble liquid-bubble-bottom-right">
-                <div class="liquid-stat-glow">
-                  <div class="typography-liquid text-2xl font-bold text-white liquid-text-glow">10+</div>
-                  <div class="typography-liquid text-xs text-blue-200">שנות זרימה</div>
+              <div class="cinematic-visual">
+                <div class="depth-showcase">
+                  <div class="showcase-frame"></div>
+                  <div class="showcase-content">
+                    <i class="ri-cube-line text-blue-400 text-6xl"></i>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-    `;
-  };
+        </section>
 
-  // GEOMETRIC HERO - Keep existing implementation
-  const generateGeometricHero = () => {
-    const title = content?.headline || formData.businessName;
-    const subtitle = content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`;
-    const cta = content?.cta || 'בואו נתחיל לעבוד יחד';
+        <!-- Image Style Why Choose Us - Depth Cards -->
+        <section class="py-20 px-4 bg-image-depth-alt relative overflow-hidden">
+          <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16">
+              <h2 class="typography-cinematic text-5xl md:text-7xl font-black mb-8 text-white cinematic-glow">
+                הייחודיות שלנו
+              </h2>
+              <div class="cinematic-subtitle">
+                <p class="typography-cinematic text-xl text-gray-300">
+                  העומק והחדות שעושים את ההבדל
+                </p>
+              </div>
+            </div>
+            
+            <div class="depth-cards-grid">
+              ${(content?.sections?.whyUs?.reasons || [
+                { title: "עומק ויזואלי מרהיב", description: "חוויה תלת-מימדית שמביאה את התוכן לחיים בצורה מדהימה" },
+                { title: "פרספקטיבה ייחודית", description: "זווית ראייה חדשה שמציגה את השירות בצורה בלתי נשכחת" },
+                { title: "איכות קולנועית", description: "רמת הפקה גבוהה שמתאימה לסטנדרטים המחמירים ביותר" },
+                { title: "התחושה האמיתית", description: "חוויה אותנטית ומרגשת שנשארת בזיכרון לאורך זמן" }
+              ]).map((reason: any) => `
+                <div class="depth-card">
+                  <div class="depth-card-inner">
+                    <div class="depth-icon-frame">
+                      <i class="ri-award-line text-yellow-400 text-3xl"></i>
+                    </div>
+                    <h3 class="typography-cinematic text-2xl font-bold mb-4 text-white cinematic-glow">
+                      ${reason.title}
+                    </h3>
+                    <p class="typography-cinematic text-gray-300 leading-relaxed">
+                      ${reason.description}
+                    </p>
+                  </div>
+                  <div class="depth-shadow"></div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
 
+        <!-- Image Style Services - Layered Showcase -->
+        <section class="py-20 px-4 bg-image-depth relative overflow-hidden">
+          <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16">
+              <h2 class="typography-cinematic text-5xl md:text-7xl font-black mb-8 text-white cinematic-glow">
+                השירותים המרהיבים שלנו
+              </h2>
+            </div>
+            
+            <div class="layered-services">
+              ${(content?.sections?.whatWeGive?.services || [
+                { title: "יצירה קולנועית", description: "הפקת תוכן ברמה קולנועית עם עומק וחדות מקסימלית" },
+                { title: "עיצוב ממוקד", description: "פתרונות ויזואליים שמשלבים אסתטיקה עם פונקציונליות" },
+                { title: "ליווי מקצועי", description: "הנחיה מומחית לאורך כל תהליך הפקת התוכן" },
+                { title: "תוצאות מרהיבות", description: "הישגים ויזואליים שעוצרים את הנשימה" }
+              ]).map((service: any) => `
+                <div class="layered-service-item">
+                  <div class="service-depth-frame">
+                    <div class="service-icon-3d">
+                      <i class="ri-check-circle-line text-green-400 text-2xl"></i>
+                    </div>
+                    <div class="service-content">
+                      <h3 class="typography-cinematic text-xl font-bold text-white mb-3 cinematic-glow">
+                        ${service.title}
+                      </h3>
+                      <p class="typography-cinematic text-gray-300 leading-relaxed">
+                        ${service.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+
+        <!-- Image Style Process - Cinematic Timeline -->
+        <section class="py-20 px-4 bg-image-depth-alt relative overflow-hidden">
+          <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16">
+              <h2 class="typography-cinematic text-5xl md:text-7xl font-black mb-8 text-white cinematic-glow">
+                תהליך הפקה קולנועי
+              </h2>
+            </div>
+            
+            <div class="cinematic-timeline">
+              ${[
+                { step: 1, title: "חזון ויזואלי", desc: "הגדרת הרעיון והחזון האסתטי", icon: "ri-eye-line" },
+                { step: 2, title: "תכנון הפקה", desc: "עיצוב מפורט של כל שלבי הביצוע", icon: "ri-file-paper-line" },
+                { step: 3, title: "יצירה והפקה", desc: "ביצוע מקצועי ברמה קולנועית", icon: "ri-camera-line" },
+                { step: 4, title: "עיבוד וליטוש", desc: "שיפור וליטוש לתוצאה מושלמת", icon: "ri-diamond-line" }
+              ].map((process) => `
+                <div class="cinematic-process-frame">
+                  <div class="process-number-3d">
+                    <span class="typography-cinematic font-bold text-2xl text-white">${process.step}</span>
+                  </div>
+                  <div class="process-card-3d">
+                    <div class="process-icon-showcase">
+                      <i class="${process.icon} text-blue-400 text-4xl"></i>
+                    </div>
+                    <h3 class="typography-cinematic text-2xl font-bold text-white mb-4 cinematic-glow">
+                      ${process.title}
+                    </h3>
+                    <p class="typography-cinematic text-gray-300 leading-relaxed">
+                      ${process.desc}
+                    </p>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+
+        <!-- Image Style Testimonials - Spotlight Gallery -->
+        <section class="py-20 px-4 bg-image-depth relative overflow-hidden">
+          <div class="spotlight-overlay"></div>
+          
+          <div class="container mx-auto max-w-6xl relative z-10">
+            <div class="text-center mb-16">
+              <h2 class="typography-cinematic text-5xl md:text-7xl font-black mb-8 text-white cinematic-glow">
+                ביקורות מרהיבות
+              </h2>
+            </div>
+            
+            <div class="spotlight-gallery">
+              ${(content?.sections?.testimonials || [
+                { name: "דני כהן", role: "במאי וידאו", content: `העבודה עם ${businessName} הייתה חוויה קולנועית אמיתית - כל פרט מושלם.` },
+                { name: "שרה לוי", role: "מעצבת גרפית", content: `הרמה הוויזואלית פשוט מדהימה. כל פרויקט הופך ליצירת אמנות.` },
+                { name: "מיכל רוזן", role: "מפיקה", content: "המקצועיות והיצירתיות שלהם מביאות תוצאות שעוצרות את הנשימה." }
+              ]).map((testimonial: any) => `
+                <div class="spotlight-card">
+                  <div class="spotlight-beam"></div>
+                  <div class="testimonial-frame-3d">
+                    <div class="quote-icon-3d">
+                      <i class="ri-double-quotes-l text-yellow-400 text-2xl"></i>
+                    </div>
+                    
+                    <p class="typography-cinematic text-lg leading-relaxed text-white mb-6 cinematic-glow italic">
+                      "${testimonial.content}"
+                    </p>
+                    
+                    <div class="author-showcase">
+                      <div class="author-avatar-3d">
+                        <i class="ri-user-3-line text-blue-400 text-3xl"></i>
+                      </div>
+                      <div>
+                        <p class="typography-cinematic text-xl font-bold text-white cinematic-glow">
+                          ${testimonial.name}
+                        </p>
+                        ${testimonial.role ? `
+                          <p class="typography-cinematic text-sm text-gray-400">
+                            ${testimonial.role}
+                          </p>
+                        ` : ''}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+
+        <!-- Image Style CTA - Epic Finale -->
+        <section class="py-20 px-4 bg-image-depth-finale relative overflow-hidden">
+          <div class="epic-backdrop"></div>
+          
+          <div class="container mx-auto max-w-6xl text-center relative z-10">
+            <div class="epic-stage">
+              <h2 class="typography-cinematic text-6xl md:text-8xl font-black mb-12 text-white cinematic-glow epic-title">
+                ${content?.contactTitle || 'הגיע הזמן לפעולה'}
+              </h2>
+              
+              <div class="epic-panel">
+                <p class="typography-cinematic text-2xl text-white leading-relaxed cinematic-glow">
+                  בואו ניצור יחד פרויקט קולנועי שישאיר את כולם ללא מילים
+                </p>
+              </div>
+
+              <div class="epic-contacts">
+                <div class="contact-frame-3d">
+                  <i class="ri-phone-line text-blue-400 text-2xl"></i>
+                  <span class="typography-cinematic text-white font-bold text-lg">050-1234567</span>
+                </div>
+                <div class="contact-frame-3d">
+                  <i class="ri-mail-line text-blue-400 text-2xl"></i>
+                  <span class="typography-cinematic text-white font-bold text-lg">info@business.co.il</span>
+                </div>
+              </div>
+
+              <div class="epic-actions">
+                <button class="btn-base btn-image-depth">
+                  <i class="ri-arrow-left-line text-lg"></i>
+                  התחילו את הפרויקט
+                </button>
+                <button class="btn-base btn-image-depth">
+                  <i class="ri-arrow-left-line text-lg"></i>
+                  גלו את האפשרויות
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    // Default styles (geometric, metal, and 3d) - Exact copy from ContentSections
     return `
-    <section class="geometric-hero section-hero">
-      <div class="geometric-shape"></div>
-      <div class="geometric-shape"></div>
-      <div class="geometric-shape"></div>
-      
-      <div class="container-hero relative z-10">
-        <div class="text-center">
-          <!-- Trust Badges -->
-          <div class="flex items-center justify-center gap-4 mb-8 animate-slide-up">
-            <div class="glass-card px-4 py-2">
-              <div class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
-                  <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
-                </svg>
-                <span class="text-sm font-medium text-white">דירוג 5 כוכבים</span>
-              </div>
-            </div>
-            <div class="glass-card px-4 py-2">
-              <div class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                <span class="text-sm font-medium text-white">מומחה מוסמך</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Main Headline -->
-          <h1 class="typography-modern text-6xl md:text-8xl text-white mb-8 animate-slide-up animate-delay-1">
-            ${title}
-          </h1>
-
-          <!-- Subheadline -->
-          <div class="typography-body text-xl md:text-2xl mb-12 max-w-4xl mx-auto text-gray-300 animate-slide-up animate-delay-2">
-            ${subtitle}
-          </div>
-
-          <!-- CTA Buttons -->
-          <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
-            <button class="btn-base btn-geometric animate-slide-up animate-delay-3">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-              </svg>
-              ${cta}
-            </button>
-            <button class="btn-base btn-geometric animate-slide-up animate-delay-4">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-              </svg>
-              למד עוד
-            </button>
-          </div>
-
-          <!-- Stats Grid -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto animate-scale-in animate-delay-4">
-            <div class="geometric-card text-center">
-              <div class="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">500+</div>
-              <div class="typography-body text-gray-300 text-sm">לקוחות מרוצים</div>
-            </div>
-            <div class="geometric-card text-center">
-              <div class="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">98%</div>
-              <div class="typography-body text-gray-300 text-sm">שביעות רצון</div>
-            </div>
-            <div class="geometric-card text-center">
-              <div class="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">10+</div>
-              <div class="typography-body text-gray-300 text-sm">שנות ניסיון</div>
-            </div>
-            <div class="geometric-card text-center">
-              <div class="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">24/7</div>
-              <div class="typography-body text-gray-300 text-sm">זמינות</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    `;
-  };
-
-  // METAL HERO - Keep existing implementation
-  const generateMetalHero = () => {
-    const title = content?.headline || formData.businessName;
-    const subtitle = content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`;
-    const cta = content?.cta || 'בואו נתחיל לעבוד יחד';
-
-    return `
-    <section class="section-hero bg-gradient-to-br from-gray-900 via-gray-800 to-black relative overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-br from-yellow-900/20 via-transparent to-yellow-800/20"></div>
-      
-      <div class="container-hero relative z-10">
-        <div class="text-center">
-          <!-- Luxury Badge -->
-          <div class="inline-flex items-center gap-2 metal-card px-6 py-3 rounded-full mb-8 animate-slide-up">
-            <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            <span class="typography-luxury text-gray-800 font-semibold">פרימיום</span>
-          </div>
-
-          <!-- Luxury Title -->
-          <h1 class="typography-luxury text-7xl md:text-9xl metal-text mb-8 animate-slide-up animate-delay-1">
-            ${title}
-          </h1>
-
-          <!-- Elegant Subtitle -->
-          <div class="metal-card p-8 max-w-5xl mx-auto mb-12 animate-slide-up animate-delay-2">
-            <p class="typography-luxury text-xl md:text-2xl text-gray-800 leading-relaxed">
-              ${subtitle}
-            </p>
-          </div>
-
-          <!-- Premium Actions -->
-          <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
-            <button class="btn-base btn-metal animate-slide-up animate-delay-3">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-              </svg>
-              ${cta}
-            </button>
-            <button class="btn-base btn-metal animate-slide-up animate-delay-4">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-              </svg>
-              למד עוד
-            </button>
-          </div>
-
-          <!-- Luxury Stats -->
-          <div class="grid md:grid-cols-4 gap-6 max-w-4xl mx-auto animate-scale-in animate-delay-4">
-            <div class="metal-card p-6 text-center">
-              <div class="typography-luxury text-3xl font-bold text-gray-800 mb-2">500+</div>
-              <div class="typography-body text-gray-700 text-sm">לקוחות VIP</div>
-            </div>
-            <div class="metal-card p-6 text-center">
-              <div class="typography-luxury text-3xl font-bold text-gray-800 mb-2">98%</div>
-              <div class="typography-body text-gray-700 text-sm">שביעות רצון</div>
-            </div>
-            <div class="metal-card p-6 text-center">
-              <div class="typography-luxury text-3xl font-bold text-gray-800 mb-2">10+</div>
-              <div class="typography-body text-gray-700 text-sm">שנות מצוינות</div>
-            </div>
-            <div class="metal-card p-6 text-center">
-              <div class="typography-luxury text-3xl font-bold text-gray-800 mb-2">24/7</div>
-              <div class="typography-body text-gray-700 text-sm">שירות פרמיום</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    `;
-  };
-
-  // IMAGE HERO - Keep existing implementation  
-  const generateImageHero = () => {
-    const title = content?.headline || formData.businessName;
-    const subtitle = content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`;
-    const cta = content?.cta || 'בואו נתחיל לעבוד יחד';
-    const imageUrl = heroImageUrl || getBusinessImage(formData.businessType);
-
-    return `
-    <section 
-      class="section-hero relative overflow-hidden"
-      style="background-image: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.7) 100%), url(${imageUrl}); background-size: cover; background-position: center; background-attachment: fixed;"
-    >
-      <div class="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-transparent to-purple-900/30"></div>
-      
-      <div class="container-hero relative z-10">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
-          <div class="text-center lg:text-right">
-            <!-- Image Hero Content -->
-            <div class="glass-card p-2 inline-block rounded-full mb-6 animate-slide-up">
-              <div class="flex items-center gap-2 px-4 py-2">
-                <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
-                  <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
-                </svg>
-                <span class="text-sm font-medium text-white">מומלץ בחום</span>
-              </div>
-            </div>
-
-            <h1 class="typography-hero text-6xl md:text-8xl mb-8 animate-slide-up animate-delay-1">
-              ${title}
-            </h1>
-
-            <div class="glass-card p-6 mb-8 animate-slide-up animate-delay-2">
-              <p class="typography-body text-xl text-white leading-relaxed">
-                ${subtitle}
+      <!-- Value Proposition Section -->
+      <section class="py-16 px-4 ${getBackgroundClass()}">
+        <div class="container mx-auto max-w-6xl">
+          <div class="text-center">
+            <h2 class="${getTypographyClass()} text-4xl md:text-5xl font-black mb-8 text-white animate-slide-up">
+              ${content?.sections?.emotionalSection?.title || "השירות שמשנה את המשחק"}
+            </h2>
+            <div class="${getCardClass()} p-8 animate-slide-up animate-delay-1">
+              <p class="typography-body text-lg md:text-xl leading-relaxed text-white">
+                ${content?.sections?.emotionalSection?.content || `בעולם שמתפתח במהירות, ${businessName} כאן כדי לספק לכם את השירות המקצועי והאמין ביותר בתחום ${businessType}.`}
               </p>
             </div>
-
-            <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-slide-up animate-delay-3">
-              <button class="btn-base btn-primary">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                </svg>
-                ${cta}
-              </button>
-              <button class="btn-base btn-primary">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                </svg>
-                למד עוד
-              </button>
-            </div>
-          </div>
-
-          <div class="hidden lg:block animate-scale-in animate-delay-4">
-            <div class="glass-card p-8">
-              <div class="grid grid-cols-2 gap-4">
-                <div class="text-center p-4">
-                  <div class="icon-glass mx-auto mb-3 text-blue-400">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                  </div>
-                  <h3 class="typography-body text-white font-medium text-sm">איכות מובטחת</h3>
-                </div>
-                <div class="text-center p-4">
-                  <div class="icon-glass mx-auto mb-3 text-blue-400">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                    </svg>
-                  </div>
-                  <h3 class="typography-body text-white font-medium text-sm">אמינות מוחלטת</h3>
-                </div>
-                <div class="text-center p-4">
-                  <div class="icon-glass mx-auto mb-3 text-blue-400">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                  </div>
-                  <h3 class="typography-body text-white font-medium text-sm">ביצוע מהיר</h3>
-                </div>
-                <div class="text-center p-4">
-                  <div class="icon-glass mx-auto mb-3 text-blue-400">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                  </div>
-                  <h3 class="typography-body text-white font-medium text-sm">זמינות תמידית</h3>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-      </div>
-    </section>
-    `;
-  };
+      </section>
 
-  // DEFAULT 3D HERO - Keep existing implementation
-  const generateDefault3DHero = () => {
-    const title = content?.headline || formData.businessName;
-    const subtitle = content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`;
-    const cta = content?.cta || 'בואו נתחיל לעבוד יחד';
-
-    return `
-    <section class="hero-3d section-hero">
-      <div class="floating-element"></div>
-      <div class="floating-element"></div>
-      <div class="floating-element"></div>
-      
-      <div class="container-hero relative z-10">
-        <div class="text-center">
-          <!-- Trust Indicators -->
-          <div class="flex items-center justify-center gap-6 mb-8 animate-slide-up">
-            <div class="glass-card px-4 py-2">
-              <div class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
-                  <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
-                </svg>
-                <span class="text-sm font-medium text-white">דירוג 5 כוכבים</span>
-              </div>
-            </div>
-            <div class="glass-card px-4 py-2">
-              <div class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                <span class="text-sm font-medium text-white">מומחה מוסמך</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Main Hero Content -->
-          <h1 class="typography-hero text-7xl md:text-9xl mb-8 animate-slide-up animate-delay-1">
-            ${title}
-          </h1>
-
-          <div class="glass-card p-8 max-w-5xl mx-auto mb-12 animate-slide-up animate-delay-2">
-            <p class="typography-body text-xl md:text-2xl text-white leading-relaxed">
-              ${subtitle}
+      <!-- Why Choose Us Section -->
+      <section class="py-16 px-4 ${getBackgroundClass()}">
+        <div class="container mx-auto max-w-6xl">
+          <div class="text-center mb-12 animate-slide-up">
+            <h2 class="${getTypographyClass()} text-4xl md:text-5xl font-black mb-6 text-white">
+              ${content?.sections?.whyUs?.title || "למה כדאי לבחור דווקא בנו?"}
+            </h2>
+            <p class="typography-body text-lg text-gray-300 max-w-3xl mx-auto">
+              הסיבות שעושות אותנו לבחירה הטובה ביותר עבורכם
             </p>
           </div>
-
-          <!-- CTA Buttons -->
-          <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
-            <button class="btn-base btn-primary animate-slide-up animate-delay-3">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-              </svg>
-              ${cta}
-            </button>
-            <button class="btn-base btn-primary animate-slide-up animate-delay-4">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-              </svg>
-              למד עוד
-            </button>
-          </div>
-
-          <!-- Professional Stats -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto animate-scale-in animate-delay-4">
-            <div class="glass-card p-6 text-center">
-              <div class="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">500+</div>
-              <div class="typography-body text-gray-300 text-sm">לקוחות מרוצים</div>
-            </div>
-            <div class="glass-card p-6 text-center">
-              <div class="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">98%</div>
-              <div class="typography-body text-gray-300 text-sm">שביעות רצון</div>
-            </div>
-            <div class="glass-card p-6 text-center">
-              <div class="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">10+</div>
-              <div class="typography-body text-gray-300 text-sm">שנות ניסיון</div>
-            </div>
-            <div class="glass-card p-6 text-center">
-              <div class="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">24/7</div>
-              <div class="typography-body text-gray-300 text-sm">זמינות</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    `;
-  };
-
-  // Helper function for business images
-  const getBusinessImage = (businessType: string) => {
-    const businessImages = {
-      'עורך דין': 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1920&h=1080&fit=crop',
-      'רופא': 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=1920&h=1080&fit=crop',
-      'מעצב גרפי': 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=1920&h=1080&fit=crop',
-      'יועץ עסקי': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1920&h=1080&fit=crop',
-      'מורה פרטי': 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1920&h=1080&fit=crop',
-      'מאמן כושר': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&h=1080&fit=crop',
-      'צלם': 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=1920&h=1080&fit=crop',
-      'נהג': 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1920&h=1080&fit=crop',
-      'מספר': 'https://images.unsplash.com/photo-1562004760-aceed7bb0fe3?w=1920&h=1080&fit=crop',
-      'default': 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=1080&fit=crop'
-    };
-    return businessImages[businessType as keyof typeof businessImages] || businessImages.default;
-  };
-
-  // Navigation - Match NavigationSection exactly
-  const generateNavigation = () => {
-    return `
-    <nav class="sticky top-0 z-50 bg-black/20 backdrop-blur-md border-b border-white/10">
-      <div class="container mx-auto px-4">
-        <div class="flex items-center justify-between h-16">
-          <div class="text-xl font-bold text-white">${businessName}</div>
-          <div class="hidden md:flex space-x-8 space-x-reverse">
-            <a href="#hero" class="text-white hover:text-blue-400 transition-colors cursor-pointer">בית</a>
-            <a href="#about" class="text-white hover:text-blue-400 transition-colors cursor-pointer">אודות</a>
-            <a href="#services" class="text-white hover:text-blue-400 transition-colors cursor-pointer">שירותים</a>
-            <a href="#contact" class="text-white hover:text-blue-400 transition-colors cursor-pointer">צור קשר</a>
-          </div>
-        </div>
-      </div>
-    </nav>
-    `;
-  };
-
-  // Content Sections - Match ContentSections component EXACTLY
-  const generateContentSections = () => {
-    const selectedElements = formData?.selectedElements || [];
-    
-    return `
-    <!-- About Section -->
-    ${generateAboutSection()}
-    
-    <!-- Features Section -->
-    ${selectedElements.includes('features') ? generateFeaturesSection() : ''}
-    
-    <!-- Why Choose Us Section -->
-    ${selectedElements.includes('whyChooseUs') ? generateWhyChooseUsSection() : ''}
-    
-    <!-- Testimonials Section -->
-    ${selectedElements.includes('testimonials') ? generateTestimonialsSection() : ''}
-    
-    <!-- FAQ Section -->
-    ${selectedElements.includes('faq') ? generateFAQSection() : ''}
-    
-    <!-- Contact Section -->
-    ${generateContactSection()}
-    `;
-  };
-
-  const generateAboutSection = () => {
-    const aboutTitle = content?.sections?.emotionalSection?.title || 
-                      content?.aboutTitle || 
-                      `השירות המקצועי של ${businessName}`;
-    const aboutContent = content?.sections?.emotionalSection?.content || 
-                        content?.aboutContent || 
-                        `בעולם שמתפתח במהירות, ${businessName} כאן כדי לספק לכם את השירות המקצועי והאמין ביותר בתחום ${businessType}. אנו מחויבים למצוינות ולמתן שירות ברמה הגבוהה ביותר.`;
-    
-    return `
-    <section id="about" class="section-content bg-black/80 backdrop-blur-lg py-20 relative">
-      <div class="container mx-auto px-4">
-        <div class="max-w-6xl mx-auto text-center">
-          <h2 class="text-4xl md:text-5xl font-black text-white mb-8 animate-slide-up">
-            ${aboutTitle}
-          </h2>
-          <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 max-w-4xl mx-auto animate-slide-up delay-100">
-            <p class="text-xl text-white leading-relaxed">
-              ${aboutContent}
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-    `;
-  };
-
-  const generateFeaturesSection = () => {
-    const features = content?.sections?.features || content?.features || [
-      { title: "שירות מקצועי", description: "אנו מציעים שירות ברמה הגבוהה ביותר", icon: "🔥" },
-      { title: "זמינות תמידית", description: "אנחנו כאן בשבילכם 24/7", icon: "⭐" },
-      { title: "מחירים הוגנים", description: "מחירים תחרותיים ללא פשרות על איכות", icon: "💎" }
-    ];
-
-    const featuresTitle = content?.featuresTitle || `השירותים של ${businessName}`;
-
-    return `
-    <section id="services" class="section-content bg-black/80 backdrop-blur-lg py-20 relative">
-      <div class="container mx-auto px-4">
-        <div class="max-w-6xl mx-auto">
-          <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-black text-white animate-slide-up">${featuresTitle}</h2>
-          </div>
-          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            ${features.map((feature: any, index: number) => `
-              <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 text-center animate-slide-up" style="animation-delay: ${index * 0.2}s">
-                <div class="text-4xl mb-6">${feature.icon || '🔥'}</div>
-                <h3 class="text-xl font-bold text-white mb-4">${feature.title}</h3>
-                <p class="text-gray-300 leading-relaxed">${feature.description}</p>
+          
+          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            ${(content?.sections?.whyUs?.reasons || [
+              { title: "שירות מקצועי ברמה הגבוהה", description: "צוות מנוסה עם מומחיות מוכחת ושנות ניסיון רבות" },
+              { title: "זמינות ומהירות בשירות", description: "מענה מהיר ויעיל לכל פנייה תוך זמן קצר" },
+              { title: "יחס אישי ומסור", description: "טיפול אישי בכל לקוח ופרויקט - אתם חשובים לנו" },
+              { title: "מחירים הוגנים ושקופים", description: "תמחור ברור ללא הפתעות או עלויות נסתרות" }
+            ]).map((reason: any, index: number) => `
+              <div class="${getCardClass()} p-6 text-center animate-scale-in animate-delay-${index + 1}">
+                <div class="icon-${formData.heroStyle || '3d'} mx-auto mb-4 w-12 h-12 flex items-center justify-center">
+                  <i class="ri-trophy-line text-yellow-400 text-2xl"></i>
+                </div>
+                <h3 class="${getTypographyClass()} text-lg font-bold mb-3 text-white">
+                  ${reason.title}
+                </h3>
+                <p class="typography-body text-gray-300 leading-relaxed text-sm">
+                  ${reason.description}
+                </p>
               </div>
             `).join('')}
           </div>
         </div>
-      </div>
-    </section>
-    `;
-  };
+      </section>
 
-  const generateWhyChooseUsSection = () => {
-    const whyChooseUs = content?.sections?.whyChooseUs || content?.whyChooseUs || [
-      { title: "ניסיון עשיר", description: `שנים של ניסיון בתחום ${businessType}`, icon: "✅" },
-      { title: "צוות מקצועי", description: "אנשי מקצוע מיומנים ומנוסים", icon: "✅" },
-      { title: "שירות אמין", description: "אמינות מוחלטת ושקיפות מלאה", icon: "✅" },
-      { title: "מחירים הוגנים", description: "מחירים תחרותיים ללא עלויות נסתרות", icon: "✅" }
-    ];
-
-    const whyChooseTitle = content?.whyChooseTitle || `למה לבחור ב${businessName}?`;
-
-    return `
-    <section class="section-content bg-black/80 backdrop-blur-lg py-20 relative">
-      <div class="container mx-auto px-4">
-        <div class="max-w-6xl mx-auto">
-          <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-black text-white animate-slide-up">${whyChooseTitle}</h2>
+      <!-- Services Section -->
+      <section class="py-16 px-4 ${getBackgroundClass()}">
+        <div class="container mx-auto max-w-6xl">
+          <div class="text-center mb-12 animate-slide-up">
+            <h2 class="${getTypographyClass()} text-4xl md:text-5xl font-black mb-6 text-white">
+              ${content?.sections?.whatWeGive?.title || "מה אתם מקבלים מאיתנו"}
+            </h2>
+            <p class="typography-body text-lg text-gray-300 max-w-3xl mx-auto">
+              השירותים המקצועיים שלנו מותאמים בדיוק לצרכים שלכם
+            </p>
           </div>
-          <div class="grid md:grid-cols-2 gap-8">
-            ${whyChooseUs.map((reason: any, index: number) => `
-              <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 animate-slide-up" style="animation-delay: ${index * 0.2}s">
-                <div class="flex items-center gap-4 mb-4">
-                  <div class="text-2xl">${reason.icon || '✅'}</div>
-                  <h3 class="text-xl font-bold text-white">${reason.title}</h3>
-                </div>
-                <p class="text-gray-300 leading-relaxed">${reason.description}</p>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      </div>
-    </section>
-    `;
-  };
-
-  const generateTestimonialsSection = () => {
-    const testimonials = content?.sections?.testimonials || content?.testimonials || [
-      { name: "יוסי כהן", role: "לקוח מרוצה", content: `שירות מעולה ומקצועי מ${businessName}! ממליץ בחום על השירותים.` },
-      { name: "רחל לוי", role: "לקוחה קבועה", content: "התמחות גבוהה וזמינות מלאה. בדיוק מה שחיפשתי." },
-      { name: "דוד אברהם", role: "בעל עסק", content: "עזרו לי להגשים את החלום שלי. תודה רבה!" }
-    ];
-
-    const testimonialsTitle = content?.testimonialsTitle || `מה אומרים על ${businessName}`;
-
-    return `
-    <section class="section-content bg-black/80 backdrop-blur-lg py-20 relative">
-      <div class="container mx-auto px-4">
-        <div class="max-w-6xl mx-auto">
-          <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-black text-white animate-slide-up">${testimonialsTitle}</h2>
-          </div>
-          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            ${testimonials.map((testimonial: any, index: number) => `
-              <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 animate-slide-up" style="animation-delay: ${index * 0.2}s">
-                <div class="flex gap-1 mb-4">
-                  ${Array(5).fill(0).map(() => `
-                    <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
-                      <path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/>
-                    </svg>
-                  `).join('')}
-                </div>
-                <p class="text-white mb-6 leading-relaxed">"${testimonial.content}"</p>
-                <div class="flex items-center gap-3">
-                  <div class="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
-                    ${testimonial.name.charAt(0)}
+          
+          <div class="grid md:grid-cols-2 gap-6">
+            ${(content?.sections?.whatWeGive?.services || [
+              { title: "שירות מותאם אישית", description: "פתרונות מותאמים בדיוק לצרכים הייחודיים שלכם" },
+              { title: "איכות ללא פשרות", description: "רמת שירות גבוהה ועקבית בכל שלב מהתהליך" },
+              { title: "ליווי מלא", description: "תמיכה צמודה לאורך כל התהליך מההתחלה ועד הסוף" },
+              { title: "תוצאות מוכחות", description: "הישגים קונקרטיים ומדידים שאתם יכולים לראות" }
+            ]).map((service: any, index: number) => `
+              <div class="${getCardClass()} p-6 animate-slide-up animate-delay-${index + 1}">
+                <div class="flex items-start gap-4 mb-4">
+                  <div class="icon-${formData.heroStyle || '3d'} w-8 h-8 flex items-center justify-center">
+                    <i class="ri-check-line text-green-400 text-xl"></i>
                   </div>
                   <div>
-                    <div class="font-semibold text-white">${testimonial.name}</div>
-                    <div class="text-sm text-gray-400">${testimonial.role}</div>
+                    <h3 class="${getTypographyClass()} text-lg font-bold text-white mb-2">
+                      ${service.title}
+                    </h3>
+                    <p class="typography-body text-gray-300 leading-relaxed text-sm">
+                      ${service.description}
+                    </p>
                   </div>
                 </div>
               </div>
             `).join('')}
           </div>
         </div>
-      </div>
-    </section>
-    `;
-  };
+      </section>
 
-  const generateFAQSection = () => {
-    const faq = content?.sections?.faq || content?.faq || [
-      { question: "איך אפשר ליצור קשר?", answer: `ניתן ליצור קשר עם ${businessName} דרך הטלפון או האימייל המופיעים באתר.` },
-      { question: "מה שעות הפעילות?", answer: "אנחנו זמינים 24/7 לשירותכם." },
-      { question: "האם יש אחריות על השירות?", answer: "כן, אנו נותנים אחריות מלאה על כל השירותים שלנו." },
-      { question: `מה מייחד את ${businessName}?`, answer: `אנו מתמחים ב${businessType} ומציעים שירות מקצועי ואמין ברמה הגבוהה ביותר.` }
-    ];
-
-    const faqTitle = content?.faqTitle || 'שאלות נפוצות';
-
-    return `
-    <section class="section-content bg-black/80 backdrop-blur-lg py-20 relative">
-      <div class="container mx-auto px-4">
-        <div class="max-w-4xl mx-auto">
-          <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-black text-white animate-slide-up">${faqTitle}</h2>
+      <!-- Process Section -->
+      <section class="py-16 px-4 ${getBackgroundClass()}">
+        <div class="container mx-auto max-w-6xl">
+          <div class="text-center mb-12 animate-slide-up">
+            <h2 class="${getTypographyClass()} text-4xl md:text-5xl font-black mb-6 text-white">
+              <i class="ri-laptop-line text-blue-400 text-3xl ml-3"></i>
+              תהליך העבודה שלנו
+            </h2>
+            <p class="typography-body text-lg text-gray-300 max-w-3xl mx-auto">
+              תהליך מובנה ומקצועי שמבטיח תוצאות מעולות
+            </p>
           </div>
-          <div class="space-y-4">
-            ${faq.map((faqItem: any, index: number) => `
-              <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 animate-slide-up" style="animation-delay: ${index * 0.1}s">
-                <h3 class="text-lg font-bold text-white mb-3">${faqItem.question}</h3>
-                <p class="text-gray-300 leading-relaxed">${faqItem.answer}</p>
+          
+          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            ${[
+              { step: 1, title: "ניתוח צרכים", desc: "בדיקה מעמיקה של הדרישות והמטרות שלכם", icon: "ri-target-line" },
+              { step: 2, title: "תכנון אסטרטגי", desc: "עיצוב תוכנית עבודה מותאמת אישית", icon: "ri-lightbulb-line" },
+              { step: 3, title: "ביצוע מקצועי", desc: "יישום הפתרון ברמה הגבוהה ביותר", icon: "ri-settings-line" },
+              { step: 4, title: "מעקב ותמיכה", desc: "ליווי מתמשך ושיפורים נוספים", icon: "ri-rocket-line" }
+            ].map((process, index) => `
+              <div class="${getCardClass()} text-center p-6 animate-scale-in animate-delay-${index + 1}">
+                <div class="relative mb-6">
+                  <div class="icon-${formData.heroStyle || '3d'} mx-auto w-12 h-12 flex items-center justify-center">
+                    <i class="${process.icon} text-blue-400 text-xl"></i>
+                  </div>
+                  <div class="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center text-black font-bold text-xs">
+                    ${process.step}
+                  </div>
+                </div>
+                <h3 class="${getTypographyClass()} text-lg font-bold mb-3 text-white">
+                  ${process.title}
+                </h3>
+                <p class="typography-body text-gray-300 leading-relaxed text-sm">
+                  ${process.desc}
+                </p>
               </div>
             `).join('')}
           </div>
         </div>
-      </div>
-    </section>
-    `;
-  };
+      </section>
 
-  const generateContactSection = () => {
-    const contactTitle = content?.contactTitle || 'מוכנים להתחיל?';
-    const contactSubtitle = content?.contactSubtitle || `בואו ניצור יחד משהו מרהיב עם ${businessName}`;
-    const primaryCta = content?.primaryCta || 'צור קשר עכשיו';
-    const secondaryCta = content?.secondaryCta || 'קבל הצעת מחיר';
+      <!-- Testimonials Section -->
+      <section class="py-16 px-4 ${getBackgroundClass()}">
+        <div class="container mx-auto max-w-6xl">
+          <div class="text-center mb-12 animate-slide-up">
+            <h2 class="${getTypographyClass()} text-4xl md:text-5xl font-black mb-6 text-white">
+              מה הלקוחות שלנו אומרים
+            </h2>
+            <p class="typography-body text-lg text-gray-300 max-w-3xl mx-auto">
+              עדויות אמיתיות מלקוחות מרוצים
+            </p>
+          </div>
+          
+          <div class="grid md:grid-cols-3 gap-6">
+            ${(content?.sections?.testimonials || [
+              { name: "דני כהן", role: "מנהל עסק", content: `השירות של ${businessName} פשוט מעולה! הצוות המקצועי והיחס האישי עשו את כל ההבדל.` },
+              { name: "שרה לוי", role: "יזמת", content: `עבדנו עם ${businessName} על מספר פרויקטים והתוצאות תמיד מעולות. מקצועיות ברמה אחרת!` },
+              { name: "מיכל רוזן", role: "בעלת חנות", content: "הליווי והתמיכה שקיבלתי היו פשוט מדהימים. השירות החרג מכל הציפיות!" }
+            ]).map((testimonial: any, index: number) => `
+              <div class="${getCardClass()} p-6 animate-scale-in animate-delay-${index + 1}">
+                <div class="flex mb-4">
+                  ${Array(5).fill(0).map(() => '<i class="ri-star-fill text-yellow-400 text-sm"></i>').join('')}
+                </div>
+                
+                <i class="ri-chat-quote-line text-blue-400 text-xl mb-3 block"></i>
+                
+                <p class="typography-body leading-relaxed text-white mb-4 italic text-sm">
+                  "${testimonial.content}"
+                </p>
+                
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+                    <i class="ri-user-line text-white text-lg"></i>
+                  </div>
+                  <div>
+                    <p class="${getTypographyClass()} font-bold text-white text-sm">
+                      ${testimonial.name}
+                    </p>
+                    ${testimonial.role ? `
+                      <p class="typography-body text-xs text-gray-400">
+                        ${testimonial.role}
+                      </p>
+                    ` : ''}
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </section>
 
-    const contactPhone = formData?.contactInfo?.split('\n')?.[0]?.replace('טלפון: ', '') || '050-1234567';
-    const contactEmail = formData?.contactInfo?.split('\n')?.[1]?.replace('אימייל: ', '') || 'info@business.co.il';
+      <!-- FAQ Section -->
+      <section class="py-16 px-4 ${getBackgroundClass()}">
+        <div class="container mx-auto max-w-6xl">
+          <div class="text-center mb-12 animate-slide-up">
+            <h2 class="${getTypographyClass()} text-4xl md:text-5xl font-black mb-6 text-white">
+              שאלות נפוצות
+            </h2>
+            <p class="typography-body text-lg text-gray-300 max-w-3xl mx-auto">
+              תשובות לשאלות הנפוצות ביותר
+            </p>
+          </div>
+          
+          <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            ${[
+              { question: "כמה זמן לוקח התהליך?", answer: "התהליך נע בין שבוע לחודש, תלוי במורכבות הפרויקט והדרישות הספציפיות שלכם." },
+              { question: "איך הגישה שלכם שונה?", answer: "אנחנו מתמחים בפתרונות מותאמים אישית ובליווי צמוד לאורך כל התהליך." },
+              { question: "מה כלול במחיר?", answer: "המחיר כולל את כל השירותים הבסיסיים, ליווי מלא ותמיכה לאחר הפרויקט." },
+              { question: "איך מתחילים?", answer: "פשוט צרו קשר איתנו לייעוץ ראשוני חינמי ובחינת האפשרויות המתאימות לכם." }
+            ].map((faq, index) => `
+              <div class="${getCardClass()} p-6 animate-slide-up animate-delay-${index + 1}">
+                <h3 class="${getTypographyClass()} text-lg font-bold mb-3 text-white">
+                  ${faq.question}
+                </h3>
+                <p class="typography-body text-gray-300 leading-relaxed text-sm">
+                  ${faq.answer}
+                </p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </section>
 
-    return `
-    <section id="contact" class="section-content bg-black/80 backdrop-blur-lg py-20 relative">
-      <div class="container mx-auto px-4">
-        <div class="max-w-6xl mx-auto text-center">
+      <!-- Enhanced CTA Section -->
+      <section class="py-16 px-4 ${getBackgroundClass()} relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
+        
+        <div class="container mx-auto max-w-6xl text-center relative z-10">
           <div class="max-w-4xl mx-auto">
-            <h2 class="text-4xl md:text-5xl font-black text-white mb-8 animate-slide-up">
-              ${contactTitle}
+            <h2 class="${getTypographyClass()} text-4xl md:text-5xl font-black mb-8 text-white animate-slide-up">
+              ${content?.contactTitle || 'מוכנים להתחיל?'}
             </h2>
             
-            <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 mb-8 animate-slide-up delay-100">
-              <p class="text-xl text-white leading-relaxed">
-                ${contactSubtitle}
+            <div class="${getCardClass()} p-6 mb-8 animate-slide-up animate-delay-1">
+              <p class="typography-body text-lg md:text-xl text-white leading-relaxed">
+                בואו ניצור יחד משהו מדהים שיקדם את העסק שלכם
               </p>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-8 animate-slide-up delay-200">
-              <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 flex items-center justify-center gap-3">
-                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                </svg>
-                <span class="text-white font-medium">${contactPhone}</span>
+            <div class="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto mb-8 animate-slide-up animate-delay-2">
+              <div class="${getCardClass()} p-4">
+                <div class="flex items-center gap-3 justify-center">
+                  <i class="ri-phone-line text-blue-400 text-lg"></i>
+                  <span class="typography-body text-white font-medium">050-1234567</span>
+                </div>
               </div>
-              <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 flex items-center justify-center gap-3">
-                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                </svg>
-                <span class="text-white font-medium">${contactEmail}</span>
+              <div class="${getCardClass()} p-4">
+                <div class="flex items-center gap-3 justify-center">
+                  <i class="ri-mail-line text-blue-400 text-lg"></i>
+                  <span class="typography-body text-white font-medium">info@business.co.il</span>
+                </div>
               </div>
             </div>
 
-            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center animate-slide-up delay-300">
-              <button class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
-                ${primaryCta}
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8 animate-slide-up animate-delay-3">
+              <button class="btn-base ${getButtonClass()}">
+                <i class="ri-arrow-left-line text-lg"></i>
+                צור קשר עכשיו
               </button>
-              <button class="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-300 transform hover:scale-105">
-                ${secondaryCta}
+              <button class="btn-base ${getButtonClass()}">
+                <i class="ri-arrow-left-line text-lg"></i>
+                קבל הצעת מחיר
               </button>
+            </div>
+
+            <!-- Enhanced Trust Badges -->
+            <div class="grid md:grid-cols-3 gap-4 max-w-3xl mx-auto animate-slide-up animate-delay-4">
+              ${[
+                { icon: 'ri-shield-check-line', title: 'מוגן ומאובטח', desc: 'ביטחון מלא' },
+                { icon: 'ri-time-line', title: 'מענה מהיר', desc: 'תוך 24 שעות' },
+                { icon: 'ri-heart-line', title: 'ללא התחייבות', desc: 'ייעוץ חינם' }
+              ].map((badge, index) => `
+                <div class="${getCardClass()} p-4 text-center">
+                  <div class="icon-${formData.heroStyle || '3d'} mx-auto mb-2 w-8 h-8 flex items-center justify-center">
+                    <i class="${badge.icon} text-blue-400 text-lg"></i>
+                  </div>
+                  <h3 class="${getTypographyClass()} font-semibold text-white mb-1 text-sm">
+                    ${badge.title}
+                  </h3>
+                  <p class="typography-body text-gray-300 text-xs">
+                    ${badge.desc}
+                  </p>
+                </div>
+              `).join('')}
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
     `;
   };
 
-  // Footer - Match FullScreenPreview footer exactly
-  const generateFooter = () => {
-    const contactPhone = formData?.contactInfo?.split('\n')?.[0]?.replace('טלפון: ', '') || '050-1234567';
-    const contactEmail = formData?.contactInfo?.split('\n')?.[1]?.replace('אימייל: ', '') || 'info@business.co.il';
-
+  // Get all the CSS from PreviewStyles.tsx (this needs to be included for proper styling)
+  const getAllStyles = () => {
     return `
-    <footer class="bg-black/50 backdrop-blur-md py-16 text-center">
-      <div class="container mx-auto px-4">
-        <div class="max-w-4xl mx-auto">
-          <h3 class="text-2xl font-bold text-white mb-4">
-            ${businessName}
-          </h3>
-          <p class="text-gray-400 mb-8">
-            © 2024 כל הזכויות שמורות. ${businessType} מקצועית ואמינה.
-          </p>
-          <div class="flex justify-center gap-8 text-gray-400">
-            <span>טלפון: ${contactPhone}</span>
-            <span>אימייל: ${contactEmail}</span>
-          </div>
-        </div>
-      </div>
-    </footer>
+      <style>
+        /* Base styles */
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          line-height: 1.6;
+          color: #ffffff;
+          direction: rtl;
+        }
+
+        .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 1rem;
+        }
+
+        /* Typography Classes */
+        .typography-tech {
+          font-family: 'Inter', sans-serif;
+          font-weight: 600;
+          letter-spacing: -0.02em;
+          text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .typography-modern {
+          font-family: 'Inter', sans-serif;
+          font-weight: 700;
+          letter-spacing: -0.03em;
+        }
+
+        .typography-luxury {
+          font-family: 'Playfair Display', serif;
+          font-weight: 700;
+          letter-spacing: 0.02em;
+        }
+
+        .typography-liquid {
+          font-family: 'Inter', sans-serif;
+          font-weight: 600;
+          letter-spacing: -0.01em;
+        }
+
+        .typography-cinematic {
+          font-family: 'Inter', sans-serif;
+          font-weight: 700;
+          letter-spacing: -0.02em;
+        }
+
+        .typography-body {
+          font-family: 'Inter', sans-serif;
+          font-weight: 400;
+          line-height: 1.7;
+        }
+
+        /* 3D Style */
+        .style-3d {
+          background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .bg-3d {
+          background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+          position: relative;
+        }
+
+        .card-3d {
+          background: linear-gradient(145deg, #1e293b, #334155);
+          border: 1px solid rgba(148, 163, 184, 0.2);
+          border-radius: 16px;
+          box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(148, 163, 184, 0.1);
+          backdrop-filter: blur(8px);
+          transition: all 0.3s ease;
+        }
+
+        .card-3d:hover {
+          transform: translateY(-2px);
+          box-shadow: 
+            0 12px 48px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(148, 163, 184, 0.2);
+        }
+
+        .btn-3d {
+          background: linear-gradient(145deg, #3b82f6, #1d4ed8);
+          border: none;
+          border-radius: 12px;
+          color: white;
+          padding: 12px 24px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-3d:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+        }
+
+        .icon-3d {
+          background: linear-gradient(145deg, #374151, #4b5563);
+          border-radius: 12px;
+          border: 1px solid rgba(156, 163, 175, 0.2);
+        }
+
+        /* Geometric Style */
+        .style-geometric {
+          background: linear-gradient(45deg, #111827 0%, #1f2937 25%, #374151 50%, #1f2937 75%, #111827 100%);
+          background-size: 400% 400%;
+          animation: geometricShift 20s ease-in-out infinite;
+          position: relative;
+          overflow: hidden;
+        }
+
+        @keyframes geometricShift {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+
+        .bg-geometric {
+          background: linear-gradient(135deg, #1f2937 0%, #374151 50%, #4b5563 100%);
+          position: relative;
+        }
+
+        .card-geometric {
+          background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+          border: 2px solid transparent;
+          border-radius: 8px;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .card-geometric::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          padding: 2px;
+          background: linear-gradient(45deg, #06b6d4, #3b82f6, #8b5cf6, #06b6d4);
+          border-radius: inherit;
+          mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          mask-composite: xor;
+          -webkit-mask-composite: xor;
+        }
+
+        .btn-geometric {
+          background: linear-gradient(45deg, #06b6d4, #3b82f6);
+          border: none;
+          border-radius: 8px;
+          color: white;
+          padding: 12px 24px;
+          font-weight: 600;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .btn-geometric::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+          transition: left 0.5s;
+        }
+
+        .btn-geometric:hover::before {
+          left: 100%;
+        }
+
+        .icon-geometric {
+          background: linear-gradient(45deg, #374151, #4b5563);
+          border-radius: 8px;
+          border: 1px solid #06b6d4;
+        }
+
+        /* Glass Style */
+        .style-glass {
+          background: radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.3) 0%, transparent 50%),
+                      radial-gradient(circle at 40% 80%, rgba(6, 182, 212, 0.2) 0%, transparent 50%),
+                      linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .bg-liquid-glass {
+          background: linear-gradient(135deg, 
+            rgba(15, 23, 42, 0.9) 0%,
+            rgba(30, 41, 59, 0.8) 25%,
+            rgba(51, 65, 85, 0.7) 50%,
+            rgba(30, 41, 59, 0.8) 75%,
+            rgba(15, 23, 42, 0.9) 100%
+          );
+          backdrop-filter: blur(20px);
+          position: relative;
+        }
+
+        .bg-liquid-glass-alt {
+          background: linear-gradient(135deg, 
+            rgba(30, 41, 59, 0.9) 0%,
+            rgba(51, 65, 85, 0.8) 50%,
+            rgba(71, 85, 105, 0.7) 100%
+          );
+          backdrop-filter: blur(16px);
+          position: relative;
+        }
+
+        .bg-liquid-glass-final {
+          background: radial-gradient(circle at center, 
+            rgba(59, 130, 246, 0.2) 0%,
+            rgba(139, 92, 246, 0.1) 30%,
+            rgba(15, 23, 42, 0.9) 70%
+          );
+          backdrop-filter: blur(24px);
+          position: relative;
+        }
+
+        .card-liquid-glass {
+          background: linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.1) 0%,
+            rgba(255, 255, 255, 0.05) 100%
+          );
+          backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 20px;
+          box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .liquid-orb {
+          position: absolute;
+          border-radius: 50%;
+          background: radial-gradient(circle, 
+            rgba(59, 130, 246, 0.3) 0%,
+            rgba(139, 92, 246, 0.2) 50%,
+            transparent 100%
+          );
+          animation: liquidFloat 15s ease-in-out infinite;
+        }
+
+        .liquid-orb-1 {
+          width: 300px;
+          height: 300px;
+          top: -150px;
+          left: -100px;
+          animation-delay: 0s;
+        }
+
+        .liquid-orb-2 {
+          width: 200px;
+          height: 200px;
+          top: 50%;
+          right: -100px;
+          animation-delay: -5s;
+        }
+
+        .liquid-orb-3 {
+          width: 150px;
+          height: 150px;
+          bottom: -75px;
+          left: 30%;
+          animation-delay: -10s;
+        }
+
+        @keyframes liquidFloat {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(30px, -20px) scale(1.1); }
+          66% { transform: translate(-20px, 30px) scale(0.9); }
+        }
+
+        .floating-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 50px;
+          padding: 0.75rem 1.5rem;
+          animation: floatingBadge 3s ease-in-out infinite;
+        }
+
+        @keyframes floatingBadge {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+
+        .liquid-glow {
+          text-shadow: 
+            0 0 20px rgba(59, 130, 246, 0.5),
+            0 0 40px rgba(139, 92, 246, 0.3),
+            0 0 60px rgba(6, 182, 212, 0.2);
+        }
+
+        .liquid-text-glow {
+          text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .liquid-glass-panel {
+          background: linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.1) 0%,
+            rgba(255, 255, 255, 0.05) 100%
+          );
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 24px;
+        }
+
+        .liquid-morph-card {
+          background: linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.1) 0%,
+            rgba(255, 255, 255, 0.05) 100%
+          );
+          backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 20px;
+          padding: 2rem;
+          position: relative;
+          overflow: hidden;
+          transition: all 0.3s ease;
+        }
+
+        .liquid-morph-card:hover {
+          transform: translateY(-5px);
+          background: linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.15) 0%,
+            rgba(255, 255, 255, 0.08) 100%
+          );
+        }
+
+        .liquid-icon-orb {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: radial-gradient(circle, 
+            rgba(59, 130, 246, 0.3) 0%,
+            rgba(139, 92, 246, 0.2) 100%
+          );
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 1.5rem;
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-liquid-glass {
+          background: linear-gradient(135deg, 
+            rgba(59, 130, 246, 0.8) 0%,
+            rgba(139, 92, 246, 0.6) 100%
+          );
+          backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 50px;
+          color: white;
+          padding: 12px 28px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .btn-liquid-glass:hover {
+          transform: translateY(-2px);
+          background: linear-gradient(135deg, 
+            rgba(59, 130, 246, 0.9) 0%,
+            rgba(139, 92, 246, 0.7) 100%
+          );
+          box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Metal Style */
+        .style-metal {
+          background: linear-gradient(135deg, #1c1c1c 0%, #2d2d2d 25%, #404040 50%, #2d2d2d 75%, #1c1c1c 100%);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .bg-metal {
+          background: linear-gradient(135deg, #2d2d2d 0%, #404040 50%, #525252 100%);
+          position: relative;
+        }
+
+        .card-metal {
+          background: linear-gradient(145deg, #404040, #525252);
+          border: 1px solid #666666;
+          border-radius: 12px;
+          box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+          position: relative;
+        }
+
+        .card-metal::before {
+          content: '';
+          position: absolute;
+          inset: 1px;
+          background: linear-gradient(145deg, #4a4a4a, #383838);
+          border-radius: 11px;
+          z-index: -1;
+        }
+
+        .btn-metal {
+          background: linear-gradient(145deg, #666666, #404040);
+          border: 1px solid #808080;
+          border-radius: 8px;
+          color: white;
+          padding: 12px 24px;
+          font-weight: 600;
+          cursor: pointer;
+          position: relative;
+          box-shadow: 
+            0 4px 16px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-metal:hover {
+          background: linear-gradient(145deg, #707070, #4a4a4a);
+          transform: translateY(-1px);
+        }
+
+        .icon-metal {
+          background: linear-gradient(145deg, #525252, #404040);
+          border-radius: 8px;
+          border: 1px solid #666666;
+        }
+
+        /* Image Style */
+        .style-image {
+          background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%, #0a0a0a 100%);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .bg-image-depth {
+          background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #3a3a3a 100%);
+          position: relative;
+        }
+
+        .bg-image-depth-alt {
+          background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 50%, #4a4a4a 100%);
+          position: relative;
+        }
+
+        .bg-image-depth-finale {
+          background: radial-gradient(circle at center, 
+            rgba(59, 130, 246, 0.1) 0%,
+            rgba(139, 92, 246, 0.05) 30%,
+            rgba(10, 10, 10, 0.95) 70%
+          );
+          position: relative;
+        }
+
+        .card-image-depth {
+          background: linear-gradient(145deg, #2a2a2a, #3a3a3a);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 16px;
+          box-shadow: 
+            0 12px 40px rgba(0, 0, 0, 0.6),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .cinematic-glow {
+          text-shadow: 
+            0 0 30px rgba(59, 130, 246, 0.4),
+            0 0 60px rgba(139, 92, 246, 0.2),
+            0 0 90px rgba(6, 182, 212, 0.1);
+        }
+
+        .cinematic-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: rgba(0, 0, 0, 0.5);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 50px;
+          padding: 0.75rem 1.5rem;
+        }
+
+        .cinematic-panel {
+          background: linear-gradient(135deg, 
+            rgba(0, 0, 0, 0.3) 0%,
+            rgba(255, 255, 255, 0.05) 100%
+          );
+          backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 20px;
+          padding: 2rem;
+        }
+
+        .btn-image-depth {
+          background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 12px;
+          color: white;
+          padding: 12px 28px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-image-depth:hover {
+          transform: translateY(-2px);
+          background: linear-gradient(145deg, #4a4a4a, #3a3a3a);
+          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Button Base */
+        .btn-base {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 12px 24px;
+          border: none;
+          border-radius: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          text-decoration: none;
+          font-family: inherit;
+          font-size: 1rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+          from { opacity: 0; transform: scale(0.9); }
+          to { opacity: 1; transform: scale(1); }
+        }
+
+        .animate-fade-in { animation: fadeIn 0.6s ease-out; }
+        .animate-slide-up { animation: slideUp 0.6s ease-out; }
+        .animate-scale-in { animation: scaleIn 0.6s ease-out; }
+
+        .animate-delay-1 { animation-delay: 0.1s; }
+        .animate-delay-2 { animation-delay: 0.2s; }
+        .animate-delay-3 { animation-delay: 0.3s; }
+        .animate-delay-4 { animation-delay: 0.4s; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+          .container { padding: 0 1rem; }
+          .grid { grid-template-columns: 1fr; }
+          .md\\:grid-cols-2 { grid-template-columns: 1fr; }
+          .md\\:grid-cols-3 { grid-template-columns: 1fr; }
+          .lg\\:grid-cols-4 { grid-template-columns: repeat(2, 1fr); }
+          .text-4xl, .text-5xl { font-size: 2rem; }
+          .text-6xl, .text-7xl, .text-8xl { font-size: 2.5rem; }
+        }
+
+        /* Dock Styles */
+        .dock {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          background: rgba(0, 0, 0, 0.8);
+          backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 24px;
+          padding: 1rem 1.5rem;
+        }
+
+        .dock-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.5rem;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .dock-item:hover {
+          transform: translateY(-4px);
+        }
+
+        .dock-icon {
+          width: 48px;
+          height: 48px;
+          border-radius: 12px;
+          background: linear-gradient(145deg, #374151, #4b5563);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          transition: all 0.3s ease;
+        }
+
+        .dock-item:hover .dock-icon {
+          background: linear-gradient(145deg, #3b82f6, #1d4ed8);
+          box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+        }
+
+        .dock-label {
+          font-size: 0.75rem;
+          color: white;
+          font-weight: 500;
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+        
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-3 { margin-bottom: 0.75rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mb-12 { margin-bottom: 3rem; }
+        .mb-16 { margin-bottom: 4rem; }
+
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .p-10 { padding: 2.5rem; }
+
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+        .py-20 { padding-top: 5rem; padding-bottom: 5rem; }
+
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .gap-8 { gap: 2rem; }
+
+        .grid { display: grid; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .fixed { position: fixed; }
+
+        .z-10 { z-index: 10; }
+        .z-50 { z-index: 50; }
+
+        .overflow-hidden { overflow: hidden; }
+
+        .rounded-full { border-radius: 9999px; }
+
+        .text-white { color: #ffffff; }
+        .text-gray-300 { color: #d1d5db; }
+        .text-gray-400 { color: #9ca3af; }
+        .text-blue-200 { color: #bfdbfe; }
+        .text-blue-300 { color: #93c5fd; }
+        .text-blue-400 { color: #60a5fa; }
+        .text-green-400 { color: #4ade80; }
+        .text-yellow-400 { color: #facc15; }
+
+        .text-xs { font-size: 0.75rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .text-4xl { font-size: 2.25rem; }
+        .text-5xl { font-size: 3rem; }
+        .text-6xl { font-size: 3.75rem; }
+        .text-7xl { font-size: 4.5rem; }
+        .text-8xl { font-size: 6rem; }
+
+        .font-bold { font-weight: 700; }
+        .font-black { font-weight: 900; }
+        .font-semibold { font-weight: 600; }
+        .font-medium { font-weight: 500; }
+
+        .leading-relaxed { line-height: 1.625; }
+
+        .max-w-2xl { max-width: 42rem; }
+        .max-w-3xl { max-width: 48rem; }
+        .max-w-4xl { max-width: 56rem; }
+        .max-w-6xl { max-width: 72rem; }
+
+        .mx-auto { margin-left: auto; margin-right: auto; }
+
+        .w-8 { width: 2rem; }
+        .w-10 { width: 2.5rem; }
+        .w-12 { width: 3rem; }
+        .h-8 { height: 2rem; }
+        .h-10 { height: 2.5rem; }
+        .h-12 { height: 3rem; }
+
+        .bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-stops)); }
+        .from-blue-500 { --tw-gradient-from: #3b82f6; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(59, 130, 246, 0)); }
+        .to-purple-500 { --tw-gradient-to: #8b5cf6; }
+
+        .italic { font-style: italic; }
+
+        /* Grid responsive classes */
+        @media (min-width: 768px) {
+          .md\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .md\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+          .md\\:text-xl { font-size: 1.25rem; }
+          .md\\:text-2xl { font-size: 1.5rem; }
+          .md\\:text-5xl { font-size: 3rem; }
+          .md\\:text-7xl { font-size: 4.5rem; }
+          .md\\:text-8xl { font-size: 6rem; }
+        }
+
+        @media (min-width: 1024px) {
+          .lg\\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        }
+
+        /* Responsive flex */
+        @media (min-width: 640px) {
+          .sm\\:flex-row { flex-direction: row; }
+        }
+      </style>
     `;
   };
 
-  // Return complete HTML with ALL styles and functionality
-  return `<!DOCTYPE html>
-<html lang="he" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${businessName} - ${businessType}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
-    <style>
-        ${getCompleteCSS()}
-    </style>
-</head>
-<body class="bg-black text-white font-sans antialiased">
-    ${generateCompleteHTML()}
-    
-    <script>
-        ${getCompleteJavaScript()}
-    </script>
-</body>
-</html>`;
-};
-
-// Complete CSS that matches PreviewStyles exactly
-const getCompleteCSS = () => {
+  // Generate the complete HTML
   return `
-    /* Base Reset and Typography */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-      background: #000;
-      color: #fff;
-      overflow-x: hidden;
-      line-height: 1.6;
-    }
-
-    /* LIQUID GLASS STYLES - EXACTLY MATCH HEROSECTION */
-    .liquid-glass-hero {
-      background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.15) 0%, rgba(0, 0, 0, 0.9) 70%);
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .liquid-background {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-    }
-
-    .liquid-orb {
-      position: absolute;
-      border-radius: 50%;
-      backdrop-filter: blur(16px);
-      animation: liquidFloat 12s ease-in-out infinite;
-    }
-
-    .liquid-orb-hero-1 {
-      width: 18rem;
-      height: 18rem;
-      top: 10%;
-      left: 10%;
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, rgba(59, 130, 246, 0.1) 100%);
-      animation-delay: 0s;
-    }
-
-    .liquid-orb-hero-2 {
-      width: 12rem;
-      height: 12rem;
-      top: 60%;
-      right: 20%;
-      background: linear-gradient(135deg, rgba(147, 51, 234, 0.3) 0%, rgba(147, 51, 234, 0.1) 100%);
-      animation-delay: -4s;
-    }
-
-    .liquid-orb-hero-3 {
-      width: 9rem;
-      height: 9rem;
-      bottom: 20%;
-      left: 30%;
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.3) 0%, rgba(34, 197, 94, 0.1) 100%);
-      animation-delay: -8s;
-    }
-
-    .liquid-orb-hero-4 {
-      width: 6rem;
-      height: 6rem;
-      top: 30%;
-      right: 40%;
-      background: linear-gradient(135deg, rgba(236, 72, 153, 0.3) 0%, rgba(236, 72, 153, 0.1) 100%);
-      animation-delay: -6s;
-    }
-
-    .liquid-waves {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-    }
-
-    .liquid-wave {
-      position: absolute;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent 40%, rgba(59, 130, 246, 0.1) 50%, transparent 60%);
-      animation: liquidWave 20s linear infinite;
-    }
-
-    .liquid-wave-1 { animation-delay: 0s; }
-    .liquid-wave-2 { animation-delay: -7s; }
-    .liquid-wave-3 { animation-delay: -14s; }
-
-    .liquid-hero-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: center;
-      min-height: 100vh;
-      width: 100%;
-      max-width: 72rem;
-      margin: 0 auto;
-      padding: 0 1rem;
-    }
-
-    .liquid-content-flow {
-      text-align: center;
-    }
-
-    .liquid-status-orb {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(34, 197, 94, 0.1);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(34, 197, 94, 0.2);
-      border-radius: 9999px;
-      padding: 0.5rem 1rem;
-      margin-bottom: 2rem;
-      position: relative;
-    }
-
-    .liquid-pulse {
-      position: absolute;
-      left: 0.5rem;
-      width: 0.5rem;
-      height: 0.5rem;
-      background: #22c55e;
-      border-radius: 50%;
-      animation: liquidPulse 2s ease-in-out infinite;
-    }
-
-    .liquid-title-glow {
-      text-shadow: 0 0 20px rgba(59, 130, 246, 0.5), 0 0 40px rgba(59, 130, 246, 0.3);
-    }
-
-    .liquid-subtitle-flow {
-      margin-bottom: 3rem;
-    }
-
-    .liquid-text-orb {
-      background: rgba(59, 130, 246, 0.1);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(59, 130, 246, 0.2);
-      border-radius: 1.5rem;
-      padding: 2rem;
-    }
-
-    .liquid-text-glow {
-      text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
-    }
-
-    .liquid-actions-flow {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-bottom: 4rem;
-    }
-
-    .liquid-features-constellation {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .liquid-feature-orb {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .liquid-feature-glow {
-      width: 3rem;
-      height: 3rem;
-      background: rgba(59, 130, 246, 0.1);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(59, 130, 246, 0.2);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .liquid-visual-flow {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .liquid-showcase-orb {
-      position: relative;
-      width: 20rem;
-      height: 20rem;
-    }
-
-    .liquid-showcase-rings {
-      position: absolute;
-      inset: 0;
-    }
-
-    .liquid-ring {
-      position: absolute;
-      border: 1px solid;
-      border-radius: 50%;
-      animation: liquidSpin 20s linear infinite;
-    }
-
-    .liquid-ring-1 {
-      inset: 0;
-      border-color: rgba(59, 130, 246, 0.3);
-      animation-duration: 20s;
-    }
-
-    .liquid-ring-2 {
-      inset: 20%;
-      border-color: rgba(147, 51, 234, 0.3);
-      animation-duration: 15s;
-      animation-direction: reverse;
-    }
-
-    .liquid-ring-3 {
-      inset: 40%;
-      border-color: rgba(34, 197, 94, 0.3);
-      animation-duration: 25s;
-    }
-
-    .liquid-center-orb {
-      position: absolute;
-      inset: 35%;
-      background: rgba(59, 130, 246, 0.2);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .liquid-stats-bubbles {
-      position: absolute;
-      inset: 0;
-    }
-
-    .liquid-stat-bubble {
-      position: absolute;
-      background: rgba(59, 130, 246, 0.1);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(59, 130, 246, 0.2);
-      border-radius: 1rem;
-      padding: 1rem;
-      text-align: center;
-    }
-
-    .liquid-bubble-top-left { top: 0; left: 0; }
-    .liquid-bubble-top-right { top: 0; right: 0; }
-    .liquid-bubble-bottom-left { bottom: 0; left: 0; }
-    .liquid-bubble-bottom-right { bottom: 0; right: 0; }
-
-    .liquid-stat-glow {
-      text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
-    }
-
-    /* BUTTON STYLES */
-    .btn-base {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: 600;
-      padding: 1rem 2rem;
-      border-radius: 1rem;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      border: none;
-      text-decoration: none;
-    }
-
-    .btn-liquid-glass {
-      background: rgba(59, 130, 246, 0.1);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(59, 130, 246, 0.2);
-      color: white;
-      text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
-    }
-
-    .btn-liquid-glass:hover {
-      background: rgba(59, 130, 246, 0.2);
-      transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
-    }
-
-    .btn-geometric {
-      background: linear-gradient(135deg, #9333ea 0%, #3b82f6 100%);
-      color: white;
-      clip-path: polygon(0% 0%, 90% 0%, 100% 100%, 10% 100%);
-    }
-
-    .btn-geometric:hover {
-      transform: scale(1.05);
-      box-shadow: 0 10px 25px rgba(147, 51, 234, 0.3);
-    }
-
-    .btn-metal {
-      background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
-      color: white;
-      border: 1px solid #6b7280;
-    }
-
-    .btn-metal:hover {
-      transform: scale(1.05);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #3b82f6 0%, #9333ea 100%);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
-      transform: scale(1.05);
-      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-    }
-
-    /* GEOMETRIC STYLES */
-    .geometric-hero {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .geometric-shape {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.1);
-      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-      animation: geometricFloat 8s ease-in-out infinite;
-    }
-
-    .geometric-shape:nth-child(1) {
-      width: 12rem;
-      height: 12rem;
-      top: 10%;
-      left: 10%;
-      animation-delay: 0s;
-    }
-
-    .geometric-shape:nth-child(2) {
-      width: 8rem;
-      height: 8rem;
-      top: 50%;
-      right: 10%;
-      animation-delay: -3s;
-    }
-
-    .geometric-shape:nth-child(3) {
-      width: 6rem;
-      height: 6rem;
-      bottom: 10%;
-      left: 30%;
-      animation-delay: -6s;
-    }
-
-    .geometric-card {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 1rem;
-      padding: 1.5rem;
-    }
-
-    /* METAL STYLES */
-    .metal-card {
-      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-      border: 1px solid #f59e0b;
-      border-radius: 1rem;
-    }
-
-    .metal-text {
-      background: linear-gradient(135deg, #000 0%, #374151 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* DEFAULT 3D STYLES */
-    .hero-3d {
-      background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.15) 0%, rgba(0, 0, 0, 0.9) 70%);
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .floating-element {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      animation: defaultFloat 6s ease-in-out infinite;
-    }
-
-    .floating-element:nth-child(1) {
-      width: 6rem;
-      height: 6rem;
-      top: 20%;
-      left: 20%;
-      animation-delay: 0s;
-    }
-
-    .floating-element:nth-child(2) {
-      width: 4rem;
-      height: 4rem;
-      top: 60%;
-      right: 30%;
-      animation-delay: -2s;
-    }
-
-    .floating-element:nth-child(3) {
-      width: 5rem;
-      height: 5rem;
-      bottom: 30%;
-      left: 40%;
-      animation-delay: -4s;
-    }
-
-    /* GLASS CARD STYLES */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 1rem;
-    }
-
-    .icon-glass {
-      width: 3rem;
-      height: 3rem;
-      background: rgba(59, 130, 246, 0.1);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(59, 130, 246, 0.2);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* TYPOGRAPHY */
-    .typography-liquid {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    }
-
-    .typography-modern {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      font-weight: 900;
-    }
-
-    .typography-luxury {
-      font-family: 'Georgia', serif;
-    }
-
-    .typography-hero {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      font-weight: 900;
-    }
-
-    .typography-body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    }
-
-    /* ANIMATIONS */
-    @keyframes liquidFloat {
-      0%, 100% { transform: translateY(0px) translateX(0px) scale(1); }
-      25% { transform: translateY(-20px) translateX(10px) scale(1.05); }
-      50% { transform: translateY(10px) translateX(-15px) scale(0.95); }
-      75% { transform: translateY(-10px) translateX(5px) scale(1.02); }
-    }
-
-    @keyframes liquidWave {
-      0% { transform: translateX(-100%) translateY(-100%) rotate(0deg); }
-      100% { transform: translateX(100%) translateY(100%) rotate(360deg); }
-    }
-
-    @keyframes liquidPulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.2); }
-    }
-
-    @keyframes liquidSpin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes geometricFloat {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(180deg); }
-    }
-
-    @keyframes defaultFloat {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-20px); }
-    }
-
-    @keyframes slide-up {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes scale-in {
-      from {
-        opacity: 0;
-        transform: scale(0.9);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    .animate-slide-up { animation: slide-up 0.8s ease-out forwards; }
-    .animate-scale-in { animation: scale-in 0.8s ease-out forwards; }
-    .animate-delay-1 { animation-delay: 0.2s; }
-    .animate-delay-2 { animation-delay: 0.4s; }
-    .animate-delay-3 { animation-delay: 0.6s; }
-    .animate-delay-4 { animation-delay: 0.8s; }
-
-    /* CONTAINER STYLES */
-    .container-hero {
-      max-width: 72rem;
-      margin: 0 auto;
-      padding: 0 1rem;
-      width: 100%;
-    }
-
-    .section-hero {
-      min-height: 100vh;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .section-content {
-      position: relative;
-    }
-
-    /* RESPONSIVE DESIGN */
-    @media (max-width: 1024px) {
-      .liquid-hero-grid {
-        grid-template-columns: 1fr;
-        text-align: center;
-      }
-      .liquid-visual-flow {
-        display: none;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .text-7xl, .text-9xl { font-size: 3rem; }
-      .text-6xl, .text-8xl { font-size: 2.5rem; }
-      .text-5xl { font-size: 2rem; }
-      .text-4xl { font-size: 1.75rem; }
-      .text-3xl { font-size: 1.5rem; }
-      .text-2xl { font-size: 1.25rem; }
-      .text-xl { font-size: 1.125rem; }
-      
-      .liquid-actions-flow {
-        flex-direction: column;
-      }
-      
-      .liquid-features-constellation {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-
-    /* UTILITY CLASSES */
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-    .text-center { text-align: center; }
-    .flex { display: flex; }
-    .items-center { align-items: center; }
-    .justify-center { justify-content: center; }
-    .justify-between { justify-content: space-between; }
-    .gap-1 { gap: 0.25rem; }
-    .gap-2 { gap: 0.5rem; }
-    .gap-3 { gap: 0.75rem; }
-    .gap-4 { gap: 1rem; }
-    .gap-6 { gap: 1.5rem; }
-    .gap-8 { gap: 2rem; }
-    .grid { display: grid; }
-    .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
-    .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
-    .hidden { display: none; }
-    .block { display: block; }
-    .relative { position: relative; }
-    .absolute { position: absolute; }
-    .sticky { position: sticky; }
-    .top-0 { top: 0; }
-    .z-10 { z-index: 10; }
-    .z-50 { z-index: 50; }
-    .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
-    .w-4 { width: 1rem; }
-    .h-4 { height: 1rem; }
-    .w-5 { width: 1.25rem; }
-    .h-5 { height: 1.25rem; }
-    .w-8 { width: 2rem; }
-    .h-8 { height: 2rem; }
-    .w-12 { width: 3rem; }
-    .h-12 { height: 3rem; }
-    .h-16 { height: 4rem; }
-    .min-h-screen { min-height: 100vh; }
-    .max-w-2xl { max-width: 42rem; }
-    .max-w-3xl { max-width: 48rem; }
-    .max-w-4xl { max-width: 56rem; }
-    .max-w-5xl { max-width: 64rem; }
-    .max-w-6xl { max-width: 72rem; }
-    .mx-auto { margin-left: auto; margin-right: auto; }
-    .mb-2 { margin-bottom: 0.5rem; }
-    .mb-3 { margin-bottom: 0.75rem; }
-    .mb-4 { margin-bottom: 1rem; }
-    .mb-6 { margin-bottom: 1.5rem; }
-    .mb-8 { margin-bottom: 2rem; }
-    .mb-12 { margin-bottom: 3rem; }
-    .mb-16 { margin-bottom: 4rem; }
-    .p-2 { padding: 0.5rem; }
-    .p-4 { padding: 1rem; }
-    .p-6 { padding: 1.5rem; }
-    .p-8 { padding: 2rem; }
-    .px-4 { padding-left: 1rem; padding-right: 1rem; }
-    .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
-    .px-8 { padding-left: 2rem; padding-right: 2rem; }
-    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
-    .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
-    .py-20 { padding-top: 5rem; padding-bottom: 5rem; }
-    .rounded-full { border-radius: 9999px; }
-    .rounded-2xl { border-radius: 1rem; }
-    .border { border-width: 1px; }
-    .border-b { border-bottom-width: 1px; }
-    .font-medium { font-weight: 500; }
-    .font-semibold { font-weight: 600; }
-    .font-bold { font-weight: 700; }
-    .font-black { font-weight: 900; }
-    .text-xs { font-size: 0.75rem; }
-    .text-sm { font-size: 0.875rem; }
-    .text-lg { font-size: 1.125rem; }
-    .text-white { color: #fff; }
-    .text-gray-300 { color: #d1d5db; }
-    .text-gray-400 { color: #9ca3af; }
-    .text-gray-700 { color: #374151; }
-    .text-gray-800 { color: #1f2937; }
-    .text-blue-200 { color: #dbeafe; }
-    .text-blue-300 { color: #93c5fd; }
-    .text-blue-400 { color: #60a5fa; }
-    .text-green-400 { color: #4ade80; }
-    .text-yellow-400 { color: #facc15; }
-    .text-yellow-600 { color: #ca8a04; }
-    .leading-relaxed { line-height: 1.625; }
-    .bg-black { background-color: #000; }
-    .bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-stops)); }
-    .bg-gradient-to-br { background-image: linear-gradient(to bottom right, var(--tw-gradient-stops)); }
-    .from-blue-600 { --tw-gradient-from: #2563eb; --tw-gradient-to: rgba(37, 99, 235, 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
-    .to-purple-600 { --tw-gradient-to: #9333ea; }
-    .from-blue-700 { --tw-gradient-from: #1d4ed8; }
-    .to-purple-700 { --tw-gradient-to: #7c3aed; }
-    .backdrop-blur-md { backdrop-filter: blur(12px); }
-    .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-    .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-    .transition-colors { transition-property: color, background-color, border-color; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
-    .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 300ms; }
-    .duration-300 { transition-duration: 300ms; }
-    .transform { transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); }
-    .hover\\:scale-105:hover { --tw-scale-x: 1.05; --tw-scale-y: 1.05; transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); }
-    .hover\\:text-blue-400:hover { color: #60a5fa; }
-    .hover\\:from-blue-700:hover { --tw-gradient-from: #1d4ed8; }
-    .hover\\:to-purple-700:hover { --tw-gradient-to: #7c3aed; }
-    .hover\\:bg-white\\/20:hover { background-color: rgba(255, 255, 255, 0.2); }
-    .hover\\:shadow-xl:hover { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-    .cursor-pointer { cursor: pointer; }
-    .fill-current { fill: currentColor; }
-    .overflow-hidden { overflow: hidden; }
-    .space-y-4 > :not([hidden]) ~ :not([hidden]) { --tw-space-y-reverse: 0; margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse))); margin-bottom: calc(1rem * var(--tw-space-y-reverse)); }
-    .space-x-8 > :not([hidden]) ~ :not([hidden]) { --tw-space-x-reverse: 0; margin-right: calc(2rem * var(--tw-space-x-reverse)); margin-left: calc(2rem * calc(1 - var(--tw-space-x-reverse))); }
-    .space-x-reverse > :not([hidden]) ~ :not([hidden]) { --tw-space-x-reverse: 1; }
-    .flex-col { flex-direction: column; }
-    .flex-wrap { flex-wrap: wrap; }
-
-    @media (min-width: 640px) {
-      .sm\\:flex-row { flex-direction: row; }
-    }
-
-    @media (min-width: 768px) {
-      .md\\:flex { display: flex; }
-      .md\\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
-      .md\\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
-      .md\\:text-2xl { font-size: 1.5rem; }
-      .md\\:text-4xl { font-size: 2.25rem; }
-      .md\\:text-5xl { font-size: 3rem; }
-      .md\\:text-8xl { font-size: 6rem; }
-      .md\\:text-9xl { font-size: 8rem; }
-    }
-
-    @media (min-width: 1024px) {
-      .lg\\:block { display: block; }
-      .lg\\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
-      .lg\\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
-      .lg\\:text-right { text-align: right; }
-      .lg\\:justify-start { justify-content: flex-start; }
-    }
-  `;
-};
-
-// Complete JavaScript functionality
-const getCompleteJavaScript = () => {
-  return `
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-
-    // Add scroll-based animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-
-    // Observe all animated elements
-    document.querySelectorAll('.animate-slide-up, .animate-scale-in').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'all 0.6s ease-out';
-        observer.observe(el);
-    });
-
-    // Button hover effects
-    document.querySelectorAll('button').forEach(button => {
-        button.addEventListener('mouseenter', function() {
-            this.style.transform = 'scale(1.05)';
-        });
-        button.addEventListener('mouseleave', function() {
-            this.style.transform = 'scale(1)';
-        });
-    });
-
-    // Mobile menu functionality (if needed)
-    const mobileMenuToggle = document.querySelector('[data-mobile-menu-toggle]');
-    const mobileMenu = document.querySelector('[data-mobile-menu]');
-    
-    if (mobileMenuToggle && mobileMenu) {
-        mobileMenuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-    }
-
-    // Parallax scrolling effect for hero background
-    window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-        const hero = document.querySelector('.section-hero');
-        if (hero) {
-            hero.style.transform = \`translateY(\${scrolled * 0.5}px)\`;
-        }
-    });
-
-    // Add loading animation
-    window.addEventListener('load', () => {
-        document.body.classList.add('loaded');
+    <!DOCTYPE html>
+    <html lang="he" dir="rtl">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${businessName} - ${businessType}</title>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+      <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
+      ${getAllStyles()}
+    </head>
+    <body>
+      <div class="w-full h-full ${getStyleClass()}" style="overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; position: relative;">
         
-        // Trigger animations on load
-        setTimeout(() => {
-            document.querySelectorAll('.animate-slide-up, .animate-scale-in').forEach(el => {
-                el.style.opacity = '1';
-                el.style.transform = 'translateY(0) scale(1)';
-            });
-        }, 100);
-    });
+        <!-- Hero Section -->
+        <section class="hero-section min-h-screen flex items-center justify-center px-4 py-16 relative overflow-hidden ${getStyleClass()}">
+          ${heroImageUrl ? `
+            <div class="absolute inset-0 z-0">
+              <img src="${heroImageUrl}" alt="Hero Background" class="w-full h-full object-cover opacity-30" />
+              <div class="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60"></div>
+            </div>
+          ` : ''}
+          
+          <div class="container mx-auto max-w-6xl text-center relative z-10">
+            <h1 class="${getTypographyClass()} text-5xl md:text-7xl font-black mb-8 text-white animate-fade-in">
+              ${content?.hero?.title || `ברוכים הבאים ל${businessName}`}
+            </h1>
+            <p class="typography-body text-xl md:text-2xl mb-12 text-gray-300 max-w-4xl mx-auto leading-relaxed animate-fade-in">
+              ${content?.hero?.subtitle || `השירות המקצועי ביותר בתחום ${businessType} - כאן בשבילכם 24/7`}
+            </p>
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in">
+              <button class="btn-base ${getButtonClass()}">
+                <i class="ri-arrow-left-line text-lg"></i>
+                צור קשר עכשיו
+              </button>
+              <button class="btn-base ${getButtonClass()}">
+                <i class="ri-phone-line text-lg"></i>
+                התקשר: 050-1234567
+              </button>
+            </div>
+          </div>
+        </section>
 
-    // Enhanced liquid glass interactions
-    document.querySelectorAll('.liquid-feature-orb').forEach(orb => {
-        orb.addEventListener('mouseenter', function() {
-            this.querySelector('.liquid-feature-glow').style.transform = 'scale(1.2)';
-            this.querySelector('.liquid-feature-glow').style.boxShadow = '0 0 20px rgba(59, 130, 246, 0.4)';
-        });
-        
-        orb.addEventListener('mouseleave', function() {
-            this.querySelector('.liquid-feature-glow').style.transform = 'scale(1)';
-            this.querySelector('.liquid-feature-glow').style.boxShadow = 'none';
-        });
-    });
+        <!-- Navigation -->
+        ${generateNavigationHTML()}
 
-    // Dynamic liquid orb movement based on mouse
-    document.addEventListener('mousemove', (e) => {
-        const orbs = document.querySelectorAll('.liquid-orb');
-        const mouseX = e.clientX / window.innerWidth;
-        const mouseY = e.clientY / window.innerHeight;
-        
-        orbs.forEach((orb, index) => {
-            const speed = (index + 1) * 0.5;
-            const x = (mouseX - 0.5) * speed * 20;
-            const y = (mouseY - 0.5) * speed * 20;
-            orb.style.transform = \`translate(\${x}px, \${y}px)\`;
-        });
-    });
+        <!-- Content Sections -->
+        ${generateContentSectionsHTML()}
+
+        <!-- Footer Section -->
+        <footer style="background: rgba(0,0,0,0.5); backdrop-filter: blur(16px); padding: 4rem 0; text-align: center;">
+          <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+              <h3 class="text-2xl font-bold text-white mb-4">
+                ${businessName}
+              </h3>
+              <p class="text-gray-400 mb-8">
+                © 2024 כל הזכויות שמורות. בניית אתרים מקצועית ואמינה.
+              </p>
+              <div class="flex justify-center gap-8 text-gray-400">
+                <span>טלפון: 050-1234567</span>
+                <span>אימייל: info@business.co.il</span>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </body>
+    </html>
   `;
 };
