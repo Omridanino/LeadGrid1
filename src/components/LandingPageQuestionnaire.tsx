@@ -108,6 +108,22 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
     }
   };
 
+  // פונקציה לקבלת שם קצר של השלב למובייל
+  const getStepShortName = (step: number) => {
+    switch (step) {
+      case 1:
+        return "פרטי עסק";
+      case 2:
+        return "מטרות";
+      case 3:
+        return "עיצוב";
+      case 4:
+        return "אלמנטים";
+      default:
+        return `שלב ${step}`;
+    }
+  };
+
   const backgroundPattern = "data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236366f1' fill-opacity='0.4'%3E%3Ccircle cx='7' cy='7' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E";
 
   return (
@@ -188,10 +204,11 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
                         >
                           {step < currentStep ? '✓' : step}
                         </div>
-                        <div className={`text-xs mt-2 font-semibold transition-all duration-300 ${
+                        <div className={`text-xs mt-2 font-semibold transition-all duration-300 text-center ${
                           step === currentStep ? 'text-blue-600' : step < currentStep ? 'text-green-600' : 'text-gray-400'
                         }`}>
-                          שלב {step}
+                          <div className="hidden md:block">שלב {step}</div>
+                          <div className="md:hidden">{getStepShortName(step)}</div>
                         </div>
                         {step < currentStep && (
                           <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-ping"></div>
