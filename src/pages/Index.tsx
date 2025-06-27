@@ -6,7 +6,6 @@ import ModernFeaturesSection from "@/components/ModernFeaturesSection";
 import BenefitsSection from "@/components/BenefitsSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import FAQSection from "@/components/FAQSection";
-import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import LandingPageQuestionnaire from "@/components/LandingPageQuestionnaire";
 
@@ -33,7 +32,6 @@ const Index = () => {
       <BenefitsSection />
       <TestimonialsSection />
       <FAQSection />
-      <ContactSection />
       <Footer />
       
       {/* Questionnaire Modal */}
