@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Zap, ArrowLeft, Play, Star, Shield, Clock, Award, ChevronDown } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
@@ -39,7 +38,7 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
   return (
     <section 
       ref={heroRef}
-      className="relative min-h-screen overflow-hidden flex items-center justify-center bg-black"
+      className="relative min-h-screen overflow-hidden flex items-center justify-center bg-black pt-24"
     >
       {/* Mouse-following Spotlight Effect */}
       <div 
