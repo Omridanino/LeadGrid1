@@ -1,4 +1,9 @@
 "use client";
+/**
+ * Part of this file is based on code from 21st.dev (jatin-yadav05), licensed under the MIT License.
+ * Copyright (c) 2024 21st.dev
+ */
+
 import { useState, useEffect, useRef } from "react";
 import { ArrowRight, Link, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
