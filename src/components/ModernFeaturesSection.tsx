@@ -3,41 +3,108 @@ import { motion } from "framer-motion";
 import { Zap, Target, TrendingUp, Shield, Cpu, Rocket } from "lucide-react";
 
 const ModernFeaturesSection = () => {
+  // Liquid Glass Icon Component
+  const LiquidGlassIcon = ({ IconComponent, gradient }: { IconComponent: any, gradient: string }) => (
+    <div className="relative group">
+      <div 
+        className={`w-16 h-16 rounded-xl flex items-center justify-center relative overflow-hidden`}
+        style={{
+          background: `linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.25) 0%,
+            rgba(255, 255, 255, 0.1) 25%,
+            rgba(255, 255, 255, 0.05) 50%,
+            rgba(255, 255, 255, 0.1) 75%,
+            rgba(255, 255, 255, 0.25) 100%)`,
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          boxShadow: `
+            inset 0 1px 0 rgba(255, 255, 255, 0.3),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+            0 10px 30px rgba(0, 0, 0, 0.3),
+            0 0 20px rgba(107, 115, 255, 0.2)
+          `,
+        }}
+      >
+        {/* Reflection effect */}
+        <div 
+          className="absolute inset-0 rounded-xl"
+          style={{
+            background: `linear-gradient(135deg, 
+              rgba(255, 255, 255, 0.4) 0%,
+              transparent 30%,
+              transparent 70%,
+              rgba(255, 255, 255, 0.1) 100%)`,
+          }}
+        />
+        
+        {/* Animated shine effect */}
+        <div 
+          className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{
+            background: `linear-gradient(45deg, 
+              transparent 30%,
+              rgba(255, 255, 255, 0.3) 50%,
+              transparent 70%)`,
+            transform: 'translateX(-100%)',
+            animation: 'shine 2s ease-in-out infinite',
+          }}
+        />
+        
+        <IconComponent 
+          className="w-8 h-8 text-white relative z-10"
+          style={{
+            filter: 'drop-shadow(0 0 10px rgba(107, 115, 255, 0.5))',
+          }}
+        />
+        
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/20 to-transparent" />
+      </div>
+      
+      <style jsx>{`
+        @keyframes shine {
+          0% { transform: translateX(-100%); }
+          50% { transform: translateX(100%); }
+          100% { transform: translateX(100%); }
+        }
+      `}</style>
+    </div>
+  );
+
   const features = [
     {
       icon: Cpu,
       title: "בינה מלאכותית מתקדמת",
-      description: "מערכת AI שמנתחת התנהגות משתמשים ומייעלת המרות באופן אוטומטי",
+      description: "אלגוריתמים חכמים לאופטימיזציה אוטומטית של ביצועים והמרות",
       gradient: "from-blue-500 to-purple-600",
     },
     {
       icon: Target,
-      title: "טרגוט מדויק",
-      description: "זיהוי וסיווג לקוחות פוטנציאליים עם דיוק של 94% ומיקוד מושלם",
+      title: "טיקטיקס שיווקי מדויק",
+      description: "ניתוח התנהגות משתמשים וזיהוי הזדמנויות המרה מיטביות",
       gradient: "from-purple-500 to-pink-600",
     },
     {
       icon: TrendingUp,
       title: "אופטימיזציה רציפה",
-      description: "שיפור ביצועים 24/7 מבוסס נתונים ומכונות למידה מתקדמות",
+      description: "שיפור ביצועים מתמשך מבוסס נתונים ולמידת מכונה",
       gradient: "from-pink-500 to-red-600",
     },
     {
       icon: Shield,
-      title: "אבטחה מתקדמת",
-      description: "הגנה אנטרפרייז עם הצפנה צבאית ונטור איומים בזמן אמת",
+      title: "אבטחה ברמה אנטרפרייז",
+      description: "הגנה מקיפה עם פרוטוקולי אבטחה מתקדמים ושמירת נתונים",
       gradient: "from-green-500 to-teal-600",
     },
     {
       icon: Zap,
-      title: "מהירות חסרת תקדים",
-      description: "זמני טעינה של מילישניות וזמן תגובה מיידי לכל פעולה",
+      title: "ביצועים מעולים",
+      description: "זמני טעינה מהירים ותגובתיות מיידית בכל מכשיר",
       gradient: "from-yellow-500 to-orange-600",
     },
     {
       icon: Rocket,
-      title: "סקילביליות אינסופית",
-      description: "מערכת שגדלה איתכם מ-1,000 ל-10 מיליון משתמשים ללא פשרות",
+      title: "סקילביליות מתקדמת",
+      description: "פתרון שגדל עם העסק מ-1K ל-10M משתמשים",
       gradient: "from-indigo-500 to-blue-600",
     },
   ];
@@ -67,9 +134,9 @@ const ModernFeaturesSection = () => {
               letterSpacing: '-0.02em'
             }}
           >
-            טכנולוגיה 
+            פתרונות טכנולוגיים
             <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
-              {" "}מהעתיד
+              {" "}מתקדמים
             </span>
           </motion.h2>
           <motion.p 
@@ -79,8 +146,8 @@ const ModernFeaturesSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            מערכת נחיתה מבוססת AI עם יכולות שלא קיימות בשוק - 
-            כל תכונה מעוצבת לדומינציה דיגיטלית מוחלטת
+            פלטפורמה מבוססת בינה מלאכותית עם יכולות ייחודיות 
+            המותאמות לעסקים המחפשים מצוינות דיגיטלית
           </motion.p>
         </motion.div>
 
@@ -116,18 +183,9 @@ const ModernFeaturesSection = () => {
                   }}
                 />
 
-                {/* Icon */}
-                <div 
-                  className={`w-16 h-16 rounded-xl mb-6 flex items-center justify-center bg-gradient-to-br ${feature.gradient} relative`}
-                  style={{
-                    boxShadow: `
-                      0 0 30px rgba(107, 115, 255, 0.3),
-                      inset 0 1px 0 rgba(255, 255, 255, 0.2)
-                    `,
-                  }}
-                >
-                  <feature.icon className="w-8 h-8 text-white" />
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/20 to-transparent" />
+                {/* Liquid Glass Icon */}
+                <div className="mb-6">
+                  <LiquidGlassIcon IconComponent={feature.icon} gradient={feature.gradient} />
                 </div>
 
                 {/* Content */}
@@ -175,8 +233,8 @@ const ModernFeaturesSection = () => {
           >
             <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
             <span className="relative z-10 flex items-center gap-3">
-              <Rocket className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
-              התחבר לעתיד עכשיו
+              <LiquidGlassIcon IconComponent={Rocket} gradient="from-white to-white" />
+              קבל גישה מתקדמת
             </span>
           </motion.button>
         </motion.div>

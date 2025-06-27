@@ -11,10 +11,52 @@ interface HeaderProps {
 const Header = ({ onStartQuestionnaire }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Liquid Glass Icon Component
+  const LiquidGlassIcon = ({ IconComponent, size = "w-6 h-6" }: { IconComponent: any, size?: string }) => (
+    <div className={`relative group ${size}`}>
+      <div 
+        className="w-full h-full rounded-lg flex items-center justify-center relative overflow-hidden"
+        style={{
+          background: `linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.25) 0%,
+            rgba(255, 255, 255, 0.1) 25%,
+            rgba(255, 255, 255, 0.05) 50%,
+            rgba(255, 255, 255, 0.1) 75%,
+            rgba(255, 255, 255, 0.25) 100%)`,
+          backdropFilter: 'blur(15px)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          boxShadow: `
+            inset 0 1px 0 rgba(255, 255, 255, 0.3),
+            0 4px 15px rgba(0, 0, 0, 0.2),
+            0 0 10px rgba(107, 115, 255, 0.1)
+          `,
+        }}
+      >
+        <div 
+          className="absolute inset-0 rounded-lg"
+          style={{
+            background: `linear-gradient(135deg, 
+              rgba(255, 255, 255, 0.3) 0%,
+              transparent 30%,
+              transparent 70%,
+              rgba(255, 255, 255, 0.1) 100%)`,
+          }}
+        />
+        
+        <IconComponent 
+          className="w-4 h-4 text-white relative z-10"
+          style={{
+            filter: 'drop-shadow(0 0 6px rgba(107, 115, 255, 0.4))',
+          }}
+        />
+      </div>
+    </div>
+  );
+
   const navItems = [
-    { href: "#features", label: "תכונות שלנו" },
-    { href: "#testimonials", label: "המלצות לקוחות" },
-    { href: "#faq", label: "שאלות נפוצות" },
+    { href: "#features", label: "פתרונות" },  
+    { href: "#testimonials", label: "לקוחות" },
+    { href: "#faq", label: "תמיכה" },
     { href: "#contact", label: "צור קשר" },
   ];
 
@@ -36,34 +78,17 @@ const Header = ({ onStartQuestionnaire }: HeaderProps) => {
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Logo */}
+          {/* Logo with Liquid Glass */}
           <motion.div 
             className="flex items-center space-x-2 space-x-reverse"
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
           >
-            <div 
-              className="w-10 h-10 rounded-xl flex items-center justify-center"
-              style={{
-                background: `linear-gradient(135deg, 
-                  #6B73FF 0%, 
-                  #9C40FF 50%, 
-                  #FF6B9D 100%)`,
-                boxShadow: `
-                  0 0 20px rgba(107, 115, 255, 0.4),
-                  inset 0 1px 0 rgba(255, 255, 255, 0.2)
-                `,
-              }}
-            >
-              <Zap 
-                className="w-6 h-6 text-white" 
-                style={{
-                  filter: 'drop-shadow(0 0 8px rgba(107, 115, 255, 0.8))'
-                }}
-              />
+            <div className="w-10 h-10">
+              <LiquidGlassIcon IconComponent={Zap} size="w-10 h-10" />
             </div>
             <h1 className="text-2xl font-bold text-white tracking-tight">
-              LEADGRID
+              LEADPRO
             </h1>
           </motion.div>
 
@@ -111,8 +136,8 @@ const Header = ({ onStartQuestionnaire }: HeaderProps) => {
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-800" />
               <span className="relative z-10 flex items-center gap-2">
-                <Zap className="w-4 h-4" />
-                התחילו עכשיו
+                <LiquidGlassIcon IconComponent={Zap} size="w-4 h-4" />
+                התחל היום
               </span>
             </motion.button>
           </motion.div>
@@ -132,7 +157,7 @@ const Header = ({ onStartQuestionnaire }: HeaderProps) => {
                   exit={{ rotate: 90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <X className="w-6 h-6" />
+                  <LiquidGlassIcon IconComponent={X} />
                 </motion.div>
               ) : (
                 <motion.div
@@ -142,7 +167,7 @@ const Header = ({ onStartQuestionnaire }: HeaderProps) => {
                   exit={{ rotate: -90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Menu className="w-6 h-6" />
+                  <LiquidGlassIcon IconComponent={Menu} />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -200,8 +225,8 @@ const Header = ({ onStartQuestionnaire }: HeaderProps) => {
                   whileTap={{ scale: 0.95 }}
                 >
                   <span className="flex items-center justify-center gap-2">
-                    <Zap className="w-4 h-4" />
-                    התחילו עכשיו
+                    <LiquidGlassIcon IconComponent={Zap} size="w-4 h-4" />
+                    התחל היום
                   </span>
                 </motion.button>
               </div>

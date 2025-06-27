@@ -37,13 +37,13 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
     };
   }, []);
 
-  // Timeline data for landing page creation process
+  // Timeline data with Liquid Glass icons and professional titles
   const timelineData = [
     {
       id: 1,
-      title: "אפיון צרכים",
+      title: "ניתוח ואפיון מקצועי",
       date: "שלב 1",
-      content: "נאסוף את כל המידע הנדרש על העסק, היעדים והקהל היעד שלכם כדי ליצור דף נחיתה מותאם אישית.",
+      content: "מיפוי מעמיק של הצרכים העסקיים שלכם וזיהוי ההזדמנויות הדיגיטליות המתאימות ביותר.",
       category: "Planning",
       icon: User,
       relatedIds: [2],
@@ -52,9 +52,9 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
     },
     {
       id: 2,
-      title: "עיצוב ובניית התוכן",
+      title: "פיתוח תוכן אסטרטגי",
       date: "שלב 2",
-      content: "ניצור עיצוב מהפנט עם תוכן שמוכר - כותרות חדות, תיאורים משכנעים וקריאות לפעולה שמביאות תוצאות.",
+      content: "יצירת תוכן ממוקד המרות עם הודעות שיווקיות חדות המניעות פעולה מיידית.",
       category: "Design",
       icon: FileText,
       relatedIds: [1, 3],
@@ -63,9 +63,9 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
     },
     {
       id: 3,
-      title: "אופטימיזציה",
+      title: "אופטימיזציה טכנית מתקדמת",
       date: "שלב 3",
-      content: "נוודא שהדף מהיר, מותאם לנייד ומוכן לקידום בגוגל. כל פיקסל עובד עבורכם.",
+      content: "שיפור ביצועים והתאמה מושלמת לכל המכשירים עם טכנולוגיות חדשניות.",
       category: "Development",
       icon: Code,
       relatedIds: [2, 4],
@@ -74,9 +74,9 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
     },
     {
       id: 4,
-      title: "מעקב ואנליטיקס",
+      title: "מדידה ואנליטיקס מתקדמים",
       date: "שלב 4",
-      content: "נתקין מערכות מעקב מתקדמות שיעזרו לכם להבין מה עובד ואיך לשפר את התוצאות.",
+      content: "התקנת מערכות מעקב חכמות למדידה מדויקת של ביצועים ו-ROI.",
       category: "Analytics",
       icon: Calendar,
       relatedIds: [3, 5],
@@ -85,9 +85,9 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
     },
     {
       id: 5,
-      title: "השקה ותמיכה",
+      title: "השקה ותמיכה מתמשכת",
       date: "שלב 5",
-      content: "נשיק את הדף ונוודא שהכל עובד מושלם. נישאר איתכם לתמיכה מתמשכת.",
+      content: "השקה מקצועית עם תמיכה טכנית מלאה וניטור מתמשך לביצועים מיטביים.",
       category: "Launch",
       icon: Award,
       relatedIds: [4],
@@ -95,6 +95,71 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
       energy: 60,
     },
   ];
+
+  // Liquid Glass Icon Component
+  const LiquidGlassIcon = ({ IconComponent, className = "" }: { IconComponent: any, className?: string }) => (
+    <div className={`relative group ${className}`}>
+      <div 
+        className="w-full h-full rounded-xl flex items-center justify-center relative overflow-hidden"
+        style={{
+          background: `linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.25) 0%,
+            rgba(255, 255, 255, 0.1) 25%,
+            rgba(255, 255, 255, 0.05) 50%,
+            rgba(255, 255, 255, 0.1) 75%,
+            rgba(255, 255, 255, 0.25) 100%)`,
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          boxShadow: `
+            inset 0 1px 0 rgba(255, 255, 255, 0.3),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+            0 10px 30px rgba(0, 0, 0, 0.3),
+            0 0 20px rgba(107, 115, 255, 0.2)
+          `,
+        }}
+      >
+        {/* Reflection effect */}
+        <div 
+          className="absolute inset-0 rounded-xl"
+          style={{
+            background: `linear-gradient(135deg, 
+              rgba(255, 255, 255, 0.4) 0%,
+              transparent 30%,
+              transparent 70%,
+              rgba(255, 255, 255, 0.1) 100%)`,
+          }}
+        />
+        
+        {/* Animated shine effect */}
+        <div 
+          className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{
+            background: `linear-gradient(45deg, 
+              transparent 30%,
+              rgba(255, 255, 255, 0.3) 50%,
+              transparent 70%)`,
+            transform: 'translateX(-100%)',
+            animation: 'shine 2s ease-in-out infinite',
+          }}
+        />
+        
+        <IconComponent 
+          className="relative z-10 text-white"
+          style={{
+            filter: 'drop-shadow(0 0 10px rgba(107, 115, 255, 0.5))',
+          }}
+        />
+      </div>
+      
+      <style jsx>{`
+        @keyframes shine {
+          0% { transform: translateX(-100%); }
+          50% { transform: translateX(100%); }
+          100% { transform: translateX(100%); }
+        }
+      `}</style>
+    </div>
+  );
 
   return (
     <section 
@@ -127,7 +192,6 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
           }}
         />
         
-        {/* Interactive Gradient Following Mouse */}
         <div 
           className="absolute inset-0 transition-all duration-1000 ease-out opacity-20"
           style={{
@@ -175,9 +239,9 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
         <div className="grid lg:grid-cols-2 gap-16 items-center max-w-7xl mx-auto">
           {/* Left Content */}
           <div className="space-y-10">
-            {/* Headline */}
+            {/* Updated Professional Headline */}
             <motion.h1 
-              className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-none text-white"
+              className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-none text-white"
               style={{ 
                 textShadow: `
                   0 0 20px rgba(255, 255, 255, 0.2),
@@ -189,18 +253,18 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, delay: 0.3 }}
             >
-              השתלטות דיגיטלית
+              פלטפורמת נחיתה
               <br />
               <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
-                מוחלטת עם AI מרוכז
+                מבוססת בינה מלאכותית
               </span>
               <br />
               <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
-                וטכנולוגיה מתקדמת
+                לעסקים מתקדמים
               </span>
             </motion.h1>
 
-            {/* Description */}
+            {/* Updated Professional Description */}
             <motion.div 
               className="backdrop-blur-xl border border-white/20 p-8 rounded-2xl shadow-2xl relative overflow-hidden"
               style={{
@@ -218,15 +282,15 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
             >
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
               <p className="text-xl md:text-2xl text-gray-200 leading-relaxed">
-                מערכת נחיתה AI מבוססת ביצועים
+                טכנולוגיה מתקדמת לבניית דפי נחיתה
                 <br />
-                עם אוטומציה מלאה שמנתחת,
+                עם אופטימיזציה אוטומטית
                 <br />
-                אופטימיזית ומזרימה לקוחות 24/7
+                וניתוח ביצועים בזמן אמת
               </p>
             </motion.div>
 
-            {/* Action Buttons */}
+            {/* Action Buttons with Liquid Glass Icons */}
             <motion.div 
               className="flex flex-col sm:flex-row gap-6"
               initial={{ opacity: 0, y: 30 }}
@@ -253,13 +317,8 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 <span className="relative z-10 flex items-center gap-3">
-                  <Zap 
-                    className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300"
-                    style={{
-                      filter: 'drop-shadow(0 0 8px rgba(107, 115, 255, 0.8))'
-                    }}
-                  />
-                  נתחיל עכשיו
+                  <LiquidGlassIcon IconComponent={Zap} className="w-6 h-6" />
+                  התחל עכשיו
                 </span>
               </motion.button>
               
@@ -288,8 +347,8 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-800" />
                 <span className="relative z-10 flex items-center gap-3">
-                  <Play className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300" />
-                  איך זה עובד?
+                  <LiquidGlassIcon IconComponent={Play} className="w-6 h-6" />
+                  צפה בהדגמה
                 </span>
               </motion.button>
             </motion.div>
@@ -312,13 +371,13 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
         </div>
       </div>
 
-      {/* Scroll Indicator */}
+      {/* Scroll Indicator with Liquid Glass */}
       <motion.div 
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/60"
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
-        <ChevronDown className="w-8 h-8" />
+        <LiquidGlassIcon IconComponent={ChevronDown} className="w-12 h-12" />
       </motion.div>
     </section>
   );
