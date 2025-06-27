@@ -177,7 +177,7 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
           <div className="space-y-10">
             {/* Headline */}
             <motion.h1 
-              className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-none text-white"
+              className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-none text-white"
               style={{ 
                 textShadow: `
                   0 0 20px rgba(255, 255, 255, 0.2),
@@ -189,10 +189,14 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, delay: 0.3 }}
             >
-              השתלטות דיגיטלית מוחלטת
+              השתלטות דיגיטלית
               <br />
               <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
-                AI מרוכז, טכנולוגיה מתקדמת
+                מוחלטת עם AI מרוכז
+              </span>
+              <br />
+              <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
+                וטכנולוגיה מתקדמת
               </span>
             </motion.h1>
 
@@ -214,9 +218,11 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
             >
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
               <p className="text-xl md:text-2xl text-gray-200 leading-relaxed">
-                מערכת נחיתה AI מבוססת ביצועים עם אוטומציה מלאה
+                מערכת נחיתה AI מבוססת ביצועים
                 <br />
-                שמנתחת, אופטימיזית ומזרימה לקוחות 24/7
+                עם אוטומציה מלאה שמנתחת,
+                <br />
+                אופטימיזית ומזרימה לקוחות 24/7
               </p>
             </motion.div>
 
@@ -313,7 +319,7 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
         transition={{ duration: 2, repeat: Infinity }}
       >
         <ChevronDown className="w-8 h-8" />
-      </motion.div>
+      </div>
     </section>
   );
 };
