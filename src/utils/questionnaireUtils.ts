@@ -21,9 +21,9 @@ export const initialFormData: FormData = {
   mainGoal: "",
   keyFeatures: "",
   contactInfo: "",
-  heroStyle: "gradient",
-  designStyle: "3d", // Default to 3D
-  navigationStyle: "traditional", // Default to traditional
+  heroStyle: "fluid-morphing",
+  designStyle: "fluid-blobs", // Default to new fluid blobs design
+  navigationStyle: "floating", // Default to floating navigation
   selectedElements: []
 };
 
@@ -34,7 +34,7 @@ export const getStepTitle = (step: number): string => {
     case 2:
       return "יעדים ותכונות";
     case 3:
-      return "סגנון עיצוב";
+      return "סגנון עיצוב חדש";
     case 4:
       return "בחירת אלמנטים";
     default:
