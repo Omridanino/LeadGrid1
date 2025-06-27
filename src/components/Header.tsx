@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Zap, Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface HeaderProps {
   onStartQuestionnaire: () => void;
@@ -34,104 +35,199 @@ const Header = ({ onStartQuestionnaire }: HeaderProps) => {
   ];
 
   return (
-    <header 
+    <motion.header 
       className={`fixed top-0 w-full z-50 transition-all duration-500 ${
         isScrolled 
-          ? 'backdrop-blur-lg bg-white/80 border-b border-gray-200/50 shadow-lg' 
+          ? 'backdrop-blur-xl bg-black/80 border-b border-white/10 shadow-2xl' 
           : 'bg-transparent'
       }`}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.8 }}
     >
       <div className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
-          {/* לוגו מינימליסטי */}
-          <div className="flex items-center space-x-reverse space-x-3 group cursor-pointer">
-            <div 
-              className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110"
+          {/* Premium Logo */}
+          <motion.div 
+            className="flex items-center space-x-reverse space-x-3 group cursor-pointer"
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.div 
+              className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-2xl relative overflow-hidden"
+              style={{
+                background: `linear-gradient(135deg, 
+                  rgba(14, 165, 233, 0.8), 
+                  rgba(16, 185, 129, 0.8))`,
+                boxShadow: `
+                  0 0 20px rgba(14, 165, 233, 0.4),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.2)
+                `,
+              }}
+              whileHover={{ rotateY: 180 }}
+              transition={{ duration: 0.6 }}
             >
-              <Zap className="w-6 h-6 text-white group-hover:rotate-12 transition-transform duration-300" />
-            </div>
+              <Zap className="w-7 h-7 text-white" />
+            </motion.div>
             <div>
-              <h1 className="text-xl md:text-2xl font-black bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent group-hover:from-amber-600 group-hover:to-orange-700 transition-all duration-300">
+              <motion.h1 
+                className="text-2xl md:text-3xl font-black text-white"
+                style={{
+                  textShadow: '0 0 10px rgba(14, 165, 233, 0.3)',
+                }}
+              >
                 LeadGrid
-              </h1>
-              <p className="text-xs text-gray-500 font-medium">דור חדש של דפי נחיתה</p>
+              </motion.h1>
+              <p className="text-xs text-gray-400 font-medium">דור חדש של דפי נחיתה</p>
             </div>
-          </div>
+          </motion.div>
           
-          {/* תפריט דסקטופ */}
+          {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-reverse space-x-8">
             {navItems.map((item, index) => (
-              <a 
+              <motion.a 
                 key={index}
                 href={item.href} 
-                className="text-gray-600 hover:text-amber-600 transition-all duration-300 relative group font-medium"
+                className="text-gray-300 hover:text-white transition-all duration-300 relative group font-medium text-lg"
+                whileHover={{ y: -2 }}
+                transition={{ duration: 0.2 }}
               >
                 {item.label}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-amber-500 to-orange-600 group-hover:w-full transition-all duration-300" />
-              </a>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400 group-hover:w-full transition-all duration-300" />
+              </motion.a>
             ))}
           </nav>
 
-          {/* כפתורי פעולה */}
+          {/* Desktop CTA Button */}
           <div className="hidden lg:flex items-center space-x-reverse space-x-4">
-            <Button 
+            <motion.button
               onClick={handleQuestionnaireClick}
-              className="relative group px-6 py-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl overflow-hidden"
+              className="relative group px-8 py-4 font-bold rounded-2xl transition-all duration-300 text-white shadow-2xl overflow-hidden"
+              style={{
+                background: `linear-gradient(135deg, 
+                  rgba(14, 165, 233, 0.8), 
+                  rgba(16, 185, 129, 0.8))`,
+                boxShadow: `
+                  0 0 20px rgba(14, 165, 233, 0.4),
+                  0 8px 32px rgba(0, 0, 0, 0.3),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.2)
+                `,
+              }}
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-500" />
-              <span className="relative z-10 flex items-center gap-2">
-                <Zap className="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+              <span className="relative z-10 flex items-center gap-2 text-lg">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                >
+                  <Zap className="w-5 h-5" />
+                </motion.div>
                 התחילו עכשיו
               </span>
-            </Button>
+            </motion.button>
           </div>
 
-          {/* כפתור המבורגר למובייל */}
-          <button
+          {/* Mobile Menu Button */}
+          <motion.button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden w-10 h-10 rounded-xl backdrop-blur-md border border-gray-200/50 flex items-center justify-center hover:border-amber-400/50 transition-all duration-300"
+            className="lg:hidden w-12 h-12 rounded-2xl backdrop-blur-xl border border-white/20 flex items-center justify-center hover:border-white/40 transition-all duration-300 shadow-xl"
+            style={{
+              background: `linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1), 
+                rgba(255, 255, 255, 0.05))`,
+              boxShadow: `
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 8px 25px rgba(0, 0, 0, 0.3)
+              `,
+            }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            {isMobileMenuOpen ? (
-              <X className="w-5 h-5 text-gray-600" />
-            ) : (
-              <Menu className="w-5 h-5 text-gray-600" />
-            )}
-          </button>
+            <AnimatePresence mode="wait">
+              {isMobileMenuOpen ? (
+                <motion.div
+                  key="close"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <X className="w-6 h-6 text-white" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="menu"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Menu className="w-6 h-6 text-white" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.button>
         </div>
       </div>
 
-      {/* תפריט מובייל */}
-      <div 
-        className={`lg:hidden absolute top-full left-0 w-full backdrop-blur-lg bg-white/90 border-b border-gray-200/50 transform transition-all duration-500 ${
-          isMobileMenuOpen 
-            ? 'translate-y-0 opacity-100' 
-            : '-translate-y-full opacity-0 pointer-events-none'
-        }`}
-      >
-        <div className="container mx-auto px-6 py-6">
-          <nav className="flex flex-col space-y-4 mb-6">
-            {navItems.map((item, index) => (
-              <a 
-                key={index}
-                href={item.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-gray-600 hover:text-amber-600 transition-colors duration-300 font-medium py-2 border-b border-gray-200 hover:border-amber-400/30"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
-          
-          <Button 
-            onClick={handleQuestionnaireClick}
-            className="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold py-3 rounded-xl transition-all duration-300 shadow-lg"
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div 
+            className="lg:hidden absolute top-full left-0 w-full backdrop-blur-xl bg-black/90 border-b border-white/10 shadow-2xl"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
           >
-            <Zap className="w-4 h-4 ml-2" />
-            התחילו עכשיו
-          </Button>
-        </div>
-      </div>
-    </header>
+            <div className="container mx-auto px-6 py-8">
+              <nav className="flex flex-col space-y-6 mb-8">
+                {navItems.map((item, index) => (
+                  <motion.a 
+                    key={index}
+                    href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-gray-300 hover:text-white transition-colors duration-300 font-medium text-lg py-3 border-b border-white/10 hover:border-white/30"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                  >
+                    {item.label}
+                  </motion.a>
+                ))}
+              </nav>
+              
+              <motion.button
+                onClick={handleQuestionnaireClick}
+                className="w-full font-bold py-4 rounded-2xl transition-all duration-300 shadow-2xl text-white relative overflow-hidden group"
+                style={{
+                  background: `linear-gradient(135deg, 
+                    rgba(14, 165, 233, 0.8), 
+                    rgba(16, 185, 129, 0.8))`,
+                  boxShadow: `
+                    0 0 20px rgba(14, 165, 233, 0.4),
+                    0 8px 32px rgba(0, 0, 0, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2)
+                  `,
+                }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.4 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-active:translate-x-full transition-transform duration-500" />
+                <span className="relative z-10 flex items-center justify-center gap-2 text-lg">
+                  <Zap className="w-5 h-5" />
+                  התחילו עכשיו
+                </span>
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 };
 
