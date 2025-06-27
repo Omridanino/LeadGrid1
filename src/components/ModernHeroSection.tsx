@@ -99,13 +99,13 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
   return (
     <section 
       ref={heroRef}
-      className="relative min-h-screen overflow-hidden flex items-center justify-center bg-black pt-24"
+      className="relative min-h-screen overflow-hidden flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 pt-24"
     >
       {/* Mouse-following Spotlight Effect */}
       <div 
-        className="fixed pointer-events-none z-10 w-96 h-96 rounded-full opacity-20 transition-all duration-300 ease-out"
+        className="fixed pointer-events-none z-10 w-96 h-96 rounded-full opacity-10 transition-all duration-300 ease-out"
         style={{
-          background: 'radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 40%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.05) 40%, transparent 70%)',
           left: `${mousePosition.x * 100}%`,
           top: `${mousePosition.y * 100}%`,
           transform: 'translate(-50%, -50%)',
@@ -113,58 +113,58 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
         }}
       />
 
-      {/* Glassmorphism Background */}
+      {/* Minimalist Background */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Glassmorphism Grid */}
+        {/* Subtle Grid Pattern */}
         <div 
-          className="absolute inset-0 opacity-30"
+          className="absolute inset-0 opacity-20"
           style={{
             backgroundImage: `
-              radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-              radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
-              radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.06) 0%, transparent 50%)
+              radial-gradient(circle at 20% 20%, rgba(0, 0, 0, 0.05) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.03) 0%, transparent 50%),
+              radial-gradient(circle at 40% 40%, rgba(0, 0, 0, 0.02) 0%, transparent 50%)
             `,
           }}
         />
         
         {/* Interactive Gradient Following Mouse */}
         <div 
-          className="absolute inset-0 transition-all duration-1000 ease-out opacity-20"
+          className="absolute inset-0 transition-all duration-1000 ease-out opacity-10"
           style={{
             background: `radial-gradient(600px circle at ${mousePosition.x * 100}% ${mousePosition.y * 100}%, 
-              rgba(255, 255, 255, 0.1) 0%, 
-              rgba(255, 255, 255, 0.05) 40%, 
+              rgba(0, 0, 0, 0.08) 0%, 
+              rgba(0, 0, 0, 0.02) 40%, 
               transparent 70%)`
           }}
         />
 
-        {/* Floating Glass Orbs */}
-        {[...Array(6)].map((_, i) => (
+        {/* Floating Minimalist Elements */}
+        {[...Array(4)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute backdrop-blur-md border border-white/10 rounded-full"
+            className="absolute backdrop-blur-sm border border-gray-200 rounded-full"
             style={{
-              width: `${40 + i * 15}px`,
-              height: `${40 + i * 15}px`,
-              left: `${15 + (i % 3) * 30}%`,
-              top: `${20 + Math.floor(i / 3) * 40}%`,
+              width: `${30 + i * 10}px`,
+              height: `${30 + i * 10}px`,
+              left: `${20 + (i % 2) * 40}%`,
+              top: `${30 + Math.floor(i / 2) * 30}%`,
               background: `linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.1), 
-                rgba(255, 255, 255, 0.05))`,
+                rgba(255, 255, 255, 0.8), 
+                rgba(255, 255, 255, 0.4))`,
               boxShadow: `
-                inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                0 8px 32px rgba(0, 0, 0, 0.3)
+                0 4px 16px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8)
               `,
             }}
             animate={{
-              y: [0, -15, 0],
-              scale: [1, 1.05, 1],
+              y: [0, -10, 0],
+              scale: [1, 1.02, 1],
             }}
             transition={{
-              duration: 6 + i * 1.5,
+              duration: 4 + i * 1,
               repeat: Infinity,
               ease: "easeInOut",
-              delay: i * 0.8,
+              delay: i * 0.5,
             }}
           />
         ))}
@@ -175,13 +175,13 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
         <div className="grid lg:grid-cols-2 gap-16 items-center max-w-7xl mx-auto">
           {/* Left Content */}
           <div className="space-y-10">
-            {/* Headline */}
+            {/* New Attractive Headline */}
             <motion.h1 
-              className="text-3xl md:text-4xl lg:text-5xl font-black leading-none text-white"
+              className="text-4xl md:text-5xl lg:text-6xl font-black leading-none text-gray-900"
               style={{ 
                 textShadow: `
-                  0 0 20px rgba(255, 255, 255, 0.2),
-                  0 0 40px rgba(255, 255, 255, 0.1)
+                  0 2px 4px rgba(0, 0, 0, 0.1),
+                  0 8px 16px rgba(0, 0, 0, 0.05)
                 `,
                 letterSpacing: '-0.02em'
               }}
@@ -189,38 +189,35 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, delay: 0.3 }}
             >
-              גלו איך יוצרים דפי נחיתה מהפנטים שמושכים
+              נגיע ביחד למיליון
               <br />
-              <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
-                לקוחות כמו מגנט
+              <span className="bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent">
+                הלקוחות הבאים שלכם
               </span>
             </motion.h1>
 
             {/* Description */}
             <motion.div 
-              className="backdrop-blur-xl border border-white/20 p-8 rounded-2xl shadow-2xl relative overflow-hidden"
+              className="backdrop-blur-xl border border-gray-300 p-8 rounded-2xl shadow-lg relative overflow-hidden bg-white/80"
               style={{
-                background: `linear-gradient(135deg, 
-                  rgba(255, 255, 255, 0.1), 
-                  rgba(255, 255, 255, 0.05))`,
                 boxShadow: `
-                  inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                  0 20px 40px rgba(0, 0, 0, 0.4)
+                  0 10px 25px rgba(0, 0, 0, 0.1),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.8)
                 `,
               }}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.6 }}
             >
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-              <p className="text-xl md:text-2xl text-gray-200 leading-relaxed">
-                עם עיצוב מקצועי, תוכן שמוכר ואנליטיקס שחושפים
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
+              <p className="text-xl md:text-2xl text-gray-700 leading-relaxed">
+                דפי נחיתה שמושכים לקוחות, מגדילים מכירות
                 <br />
-                כל הזדמנות לגדילה והצלחה בעסק שלכם
+                ומביאים תוצאות אמיתיות לעסק שלכם
               </p>
             </motion.div>
 
-            {/* Action Buttons */}
+            {/* Aesthetic Action Buttons with Effects */}
             <motion.div 
               className="flex flex-col sm:flex-row gap-6"
               initial={{ opacity: 0, y: 30 }}
@@ -229,21 +226,19 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
             >
               <motion.button
                 onClick={onStartQuestionnaire}
-                className="relative group px-10 py-5 rounded-xl font-bold text-xl text-black overflow-hidden shadow-2xl"
+                className="relative group px-10 py-5 rounded-xl font-bold text-xl text-white overflow-hidden shadow-lg transition-all duration-300 transform hover:scale-105"
                 style={{
-                  background: `linear-gradient(135deg, 
-                    rgba(255, 255, 255, 0.9), 
-                    rgba(255, 255, 255, 0.8))`,
+                  background: `linear-gradient(135deg, #1f2937, #374151, #1f2937)`,
                   boxShadow: `
-                    0 0 20px rgba(255, 255, 255, 0.3),
-                    0 15px 35px rgba(0, 0, 0, 0.3),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.4)
+                    0 8px 25px rgba(0, 0, 0, 0.2),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1)
                   `,
                 }}
-                whileHover={{ scale: 1.05, y: -3 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-800/0 via-white/10 to-gray-800/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <span className="relative z-10 flex items-center gap-3">
                   <Zap className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
                   בואו נתחיל לבנות יחד
@@ -251,20 +246,18 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
               </motion.button>
               
               <motion.button 
-                className="backdrop-blur-xl border border-white/30 px-10 py-5 rounded-xl font-bold text-xl text-white hover:border-white/50 transition-all duration-300 shadow-xl group"
+                className="relative group backdrop-blur-xl border-2 border-gray-400 px-10 py-5 rounded-xl font-bold text-xl text-gray-800 hover:border-gray-600 transition-all duration-300 shadow-md bg-white/60 hover:bg-white/80"
                 style={{
-                  background: `linear-gradient(135deg, 
-                    rgba(255, 255, 255, 0.1), 
-                    rgba(255, 255, 255, 0.05))`,
                   boxShadow: `
-                    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                    0 12px 30px rgba(0, 0, 0, 0.3)
+                    0 4px 15px rgba(0, 0, 0, 0.1),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.8)
                   `,
                 }}
-                whileHover={{ scale: 1.05, y: -3 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <span className="flex items-center gap-3">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                <span className="relative z-10 flex items-center gap-3">
                   <Play className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300" />
                   איך זה עובד?
                 </span>
@@ -277,11 +270,11 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
             <div className="relative w-full h-[600px] rounded-2xl overflow-hidden">
               <Spotlight
                 className="-top-40 left-0 md:left-60 md:-top-20"
-                fill="white"
+                fill="rgba(0, 0, 0, 0.1)"
               />
               
-              <div className="w-full h-full bg-black/50 backdrop-blur-sm border border-white/20 rounded-2xl relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+              <div className="w-full h-full bg-white/30 backdrop-blur-sm border border-gray-300 rounded-2xl relative overflow-hidden shadow-lg">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
                 <RadialOrbitalTimeline timelineData={timelineData} />
               </div>
             </div>
@@ -291,7 +284,7 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
 
       {/* Scroll Indicator */}
       <motion.div 
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/60"
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-gray-600"
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
