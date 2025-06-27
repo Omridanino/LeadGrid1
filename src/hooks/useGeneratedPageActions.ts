@@ -50,7 +50,13 @@ export const useGeneratedPageActions = ({
   const handleSaveDesign = () => {
     // יצירת HTML שזהה בדיוק לתצוגה באמצעות אותה פונקציה
     const heroUrl = getHeroImageUrl(content, heroImage, formData);
-    const updatedHtmlContent = generateHtmlFile(content, currentColors, formData, heroUrl);
+    const contentWithState = {
+      ...content,
+      currentColors,
+      formData,
+      heroImage: heroUrl
+    };
+    const updatedHtmlContent = generateHtmlFile(contentWithState);
     
     // שמירת ה-HTML המעודכן להורדה
     localStorage.setItem('latestHtmlContent', updatedHtmlContent);
@@ -109,7 +115,13 @@ export const useGeneratedPageActions = ({
     } else {
       // גיבוי - יצירת HTML מחדש אם לא קיים בזיכרון
       const heroUrl = getHeroImageUrl(content, heroImage, formData);
-      htmlContent = generateHtmlFile(content, currentColors, formData, heroUrl);
+      const contentWithState = {
+        ...content,
+        currentColors,
+        formData,
+        heroImage: heroUrl
+      };
+      htmlContent = generateHtmlFile(contentWithState);
     }
     
     const blob = new Blob([htmlContent], { type: 'text/html' });
@@ -161,7 +173,13 @@ export const useGeneratedPageActions = ({
     }
     
     const heroUrl = getHeroImageUrl(content, heroImage, formData);
-    return generateHtmlFile(content, currentColors, formData, heroUrl);
+    const contentWithState = {
+      ...content,
+      currentColors,
+      formData,
+      heroImage: heroUrl
+    };
+    return generateHtmlFile(contentWithState);
   };
 
   return {
