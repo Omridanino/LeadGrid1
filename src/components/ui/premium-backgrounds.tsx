@@ -1,7 +1,16 @@
 
 import React, { useRef, useEffect, useMemo } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas, useFrame, useThree, extend } from '@react-three/fiber';
 import * as THREE from 'three';
+
+// Extend Three.js with custom shader material
+class CustomShaderMaterial extends THREE.ShaderMaterial {
+  constructor(props: any) {
+    super(props);
+  }
+}
+
+extend({ CustomShaderMaterial });
 
 // Dynamic Gradients with Particle Effects
 export const DynamicGradients = () => {
@@ -26,7 +35,7 @@ export const DynamicGradients = () => {
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
       
-      <style jsx>{`
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) scale(1); opacity: 0.6; }
           50% { transform: translateY(-20px) scale(1.2); opacity: 1; }
@@ -77,7 +86,7 @@ export const AdvancedSparkles = () => {
         />
       ))}
       
-      <style jsx>{`
+      <style>{`
         @keyframes sparkle {
           0%, 100% { 
             opacity: 0; 
@@ -134,15 +143,21 @@ const GeometricShader = {
 
 function GeometricMesh() {
   const meshRef = useRef<THREE.Mesh>(null);
-  const materialRef = useRef<THREE.ShaderMaterial>(null);
 
-  const uniforms = useMemo(() => ({
-    time: { value: 0 }
-  }), []);
+  const material = useMemo(() => {
+    return new THREE.ShaderMaterial({
+      uniforms: {
+        time: { value: 0 }
+      },
+      vertexShader: GeometricShader.vertex,
+      fragmentShader: GeometricShader.fragment,
+      transparent: true
+    });
+  }, []);
 
   useFrame((state) => {
-    if (materialRef.current) {
-      materialRef.current.uniforms.time.value = state.clock.elapsedTime;
+    if (material) {
+      material.uniforms.time.value = state.clock.elapsedTime;
     }
     if (meshRef.current) {
       meshRef.current.rotation.y = state.clock.elapsedTime * 0.2;
@@ -151,15 +166,8 @@ function GeometricMesh() {
   });
 
   return (
-    <mesh ref={meshRef}>
+    <mesh ref={meshRef} material={material}>
       <boxGeometry args={[2, 2, 2]} />
-      <shaderMaterial
-        ref={materialRef}
-        uniforms={uniforms}
-        vertexShader={GeometricShader.vertex}
-        fragmentShader={GeometricShader.fragment}
-        transparent
-      />
     </mesh>
   );
 }
@@ -217,7 +225,7 @@ export const AnimatedPaths = () => {
         ))}
       </svg>
       
-      <style jsx>{`
+      <style>{`
         @keyframes pathFlow {
           0%, 100% { 
             stroke-dasharray: 0 1000;
@@ -277,7 +285,7 @@ export const Premium3D = () => {
         ))}
       </div>
       
-      <style jsx>{`
+      <style>{`
         @keyframes orbit {
           0% { 
             transform: rotate(0deg) translateX(50px) rotate(0deg); 
