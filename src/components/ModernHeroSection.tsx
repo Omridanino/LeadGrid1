@@ -41,6 +41,18 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
       ref={heroRef}
       className="relative min-h-screen overflow-hidden flex items-center justify-center bg-black"
     >
+      {/* Mouse-following Spotlight Effect */}
+      <div 
+        className="fixed pointer-events-none z-10 w-96 h-96 rounded-full opacity-20 transition-all duration-300 ease-out"
+        style={{
+          background: 'radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 40%, transparent 70%)',
+          left: `${mousePosition.x * 100}%`,
+          top: `${mousePosition.y * 100}%`,
+          transform: 'translate(-50%, -50%)',
+          filter: 'blur(40px)'
+        }}
+      />
+
       {/* Glassmorphism Background */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Glassmorphism Grid */}
@@ -103,35 +115,9 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
         <div className="grid lg:grid-cols-2 gap-16 items-center max-w-7xl mx-auto">
           {/* Left Content */}
           <div className="space-y-10">
-            {/* Premium Status Badge */}
-            <motion.div 
-              className="inline-flex items-center gap-3 backdrop-blur-xl border border-white/20 px-6 py-3 rounded-full shadow-2xl"
-              style={{
-                background: `linear-gradient(135deg, 
-                  rgba(255, 255, 255, 0.1), 
-                  rgba(255, 255, 255, 0.05))`,
-                boxShadow: `
-                  inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                  0 8px 32px rgba(0, 0, 0, 0.4)
-                `,
-              }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              whileHover={{ scale: 1.05, y: -2 }}
-            >
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-              >
-                <Star className="w-5 h-5 text-white" />
-              </motion.div>
-              <span className="text-white font-semibold">פלטפורמה מתקדמת לדור הבא</span>
-            </motion.div>
-
-            {/* Headline */}
+            {/* Headline - Made smaller */}
             <motion.h1 
-              className="text-5xl md:text-7xl lg:text-8xl font-black leading-none text-white"
+              className="text-4xl md:text-5xl lg:text-6xl font-black leading-none text-white"
               style={{ 
                 textShadow: `
                   0 0 20px rgba(255, 255, 255, 0.2),
@@ -143,10 +129,10 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, delay: 0.3 }}
             >
-              יוצרים דפי נחיתה
+              גלו איך יוצרים דפי נחיתה מהפנטים שמושכים
               <br />
               <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
-                שמכניסים כסף
+                לקוחות כמו מגנט
               </span>
             </motion.h1>
 
@@ -168,9 +154,9 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
             >
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
               <p className="text-xl md:text-2xl text-gray-200 leading-relaxed">
-                גלו איך יוצרים דפי נחיתה מהפנטים שמושכים לקוחות כמו מגנט,
+                עם עיצוב מקצועי, תוכן שמוכר ואנליטיקס שחושפים
                 <br />
-                עם עיצוב מקצועי, תוכן שמוכר ואנליטיקס שחושף כל הזדמנות
+                כל הזדמנות לגדילה והצלחה בעסק שלכם
               </p>
             </motion.div>
 
@@ -225,7 +211,7 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
               </motion.button>
             </motion.div>
 
-            {/* Feature Cards */}
+            {/* Feature Cards with Liquid Glass Style Icons */}
             <motion.div 
               className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8"
               initial={{ opacity: 0, y: 40 }}
@@ -268,12 +254,27 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
                     className="absolute top-0 left-0 w-full h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                     style={{ background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent)' }}
                   />
-                  <feature.icon 
-                    className="w-10 h-10 mb-4 mx-auto group-hover:scale-110 transition-all duration-300 text-white" 
-                    style={{ 
-                      filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.3))'
-                    }} 
-                  />
+                  <div className="relative w-12 h-12 mb-4 mx-auto group-hover:scale-110 transition-all duration-300">
+                    {/* Liquid Glass Icon Background */}
+                    <div 
+                      className="absolute inset-0 rounded-xl backdrop-blur-md border border-white/30"
+                      style={{
+                        background: `linear-gradient(135deg, 
+                          rgba(255, 255, 255, 0.2), 
+                          rgba(255, 255, 255, 0.1))`,
+                        boxShadow: `
+                          inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                          0 4px 12px rgba(0, 0, 0, 0.2)
+                        `,
+                      }}
+                    />
+                    <feature.icon 
+                      className="w-6 h-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white" 
+                      style={{ 
+                        filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.4))'
+                      }} 
+                    />
+                  </div>
                   <h3 className="text-lg font-bold mb-2 text-white">
                     {feature.title}
                   </h3>
