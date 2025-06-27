@@ -1,3 +1,4 @@
+
 "use client";
 /**
  * Part of this file is based on code from 21st.dev (jatin-yadav05), licensed under the MIT License.
@@ -172,8 +173,20 @@ export default function RadialOrbitalTimeline({
             transform: `translate(${centerOffset.x}px, ${centerOffset.y}px)`,
           }}
         >
-          {/* Center circle with matte black-white gradient */}
-          <div className="absolute w-20 h-20 rounded-full bg-gradient-to-br from-gray-800 via-gray-600 to-gray-300 animate-pulse flex items-center justify-center z-10">
+          {/* Center circle with gradient matching the button */}
+          <div 
+            className="absolute w-20 h-20 rounded-full animate-pulse flex items-center justify-center z-10"
+            style={{
+              background: `linear-gradient(135deg, 
+                #6B73FF 0%, 
+                #9C40FF 50%, 
+                #FF6B9D 100%)`,
+              boxShadow: `
+                0 0 30px rgba(107, 115, 255, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2)
+              `,
+            }}
+          >
             <div className="absolute w-24 h-24 rounded-full border border-white/20 animate-ping opacity-70"></div>
             <div
               className="absolute w-28 h-28 rounded-full border border-white/10 animate-ping opacity-50"
@@ -182,8 +195,17 @@ export default function RadialOrbitalTimeline({
             <div className="w-10 h-10 rounded-full bg-white/80 backdrop-blur-md"></div>
           </div>
 
-          {/* Orbital path */}
-          <div className="absolute w-96 h-96 rounded-full border border-white/10"></div>
+          {/* Orbital path with gradient glow */}
+          <div 
+            className="absolute w-96 h-96 rounded-full border"
+            style={{
+              borderColor: 'rgba(107, 115, 255, 0.3)',
+              boxShadow: `
+                inset 0 0 20px rgba(107, 115, 255, 0.1),
+                0 0 40px rgba(107, 115, 255, 0.1)
+              `,
+            }}
+          ></div>
 
           {timelineData.map((item, index) => {
             const position = calculateNodePosition(index, timelineData.length);
@@ -202,7 +224,7 @@ export default function RadialOrbitalTimeline({
               <div
                 key={item.id}
                 ref={(el) => (nodeRefs.current[item.id] = el)}
-                className="absolute transition-all duration-700 cursor-pointer"
+                className="absolute transition-all duration-700 cursor-pointer group"
                 style={nodeStyle}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -214,7 +236,7 @@ export default function RadialOrbitalTimeline({
                     isPulsing ? "animate-pulse duration-1000" : ""
                   }`}
                   style={{
-                    background: `radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%)`,
+                    background: `radial-gradient(circle, rgba(107,115,255,0.3) 0%, rgba(156,64,255,0.2) 50%, rgba(255,107,157,0.1) 100%)`,
                     width: `${item.energy * 0.6 + 50}px`,
                     height: `${item.energy * 0.6 + 50}px`,
                     left: `-${(item.energy * 0.6 + 50 - 48) / 2}px`,
@@ -225,24 +247,57 @@ export default function RadialOrbitalTimeline({
                 <div
                   className={`
                   w-12 h-12 rounded-full flex items-center justify-center
-                  ${
-                    isExpanded
-                      ? "bg-white text-black"
-                      : isRelated
-                      ? "bg-white/50 text-black"
-                      : "bg-black text-white"
-                  }
+                  transition-all duration-300 transform
+                  ${isExpanded ? "scale-150" : "group-hover:scale-110"}
                   border-2 
                   ${
                     isExpanded
-                      ? "border-white shadow-lg shadow-white/30"
+                      ? "text-white shadow-lg shadow-purple-500/30"
                       : isRelated
-                      ? "border-white animate-pulse"
-                      : "border-white/40"
+                      ? "text-white animate-pulse"
+                      : "text-white group-hover:text-white"
                   }
-                  transition-all duration-300 transform
-                  ${isExpanded ? "scale-150" : ""}
                 `}
+                  style={{
+                    background: isExpanded 
+                      ? `linear-gradient(135deg, #6B73FF 0%, #9C40FF 50%, #FF6B9D 100%)`
+                      : isRelated
+                      ? `linear-gradient(135deg, rgba(107,115,255,0.8) 0%, rgba(156,64,255,0.8) 50%, rgba(255,107,157,0.8) 100%)`
+                      : "rgba(0, 0, 0, 0.8)",
+                    borderColor: isExpanded || isRelated 
+                      ? "rgba(255, 255, 255, 0.8)"
+                      : "rgba(255, 255, 255, 0.4)",
+                    boxShadow: isExpanded 
+                      ? `
+                        0 0 30px rgba(107, 115, 255, 0.4),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2)
+                      `
+                      : "none",
+                    ...(isExpanded || isRelated ? {} : {
+                      ':hover': {
+                        background: `linear-gradient(135deg, #6B73FF 0%, #9C40FF 50%, #FF6B9D 100%)`,
+                        boxShadow: `
+                          0 0 20px rgba(107, 115, 255, 0.3),
+                          inset 0 1px 0 rgba(255, 255, 255, 0.2)
+                        `,
+                      }
+                    })
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isExpanded && !isRelated) {
+                      e.currentTarget.style.background = `linear-gradient(135deg, #6B73FF 0%, #9C40FF 50%, #FF6B9D 100%)`;
+                      e.currentTarget.style.boxShadow = `
+                        0 0 20px rgba(107, 115, 255, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2)
+                      `;
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isExpanded && !isRelated) {
+                      e.currentTarget.style.background = "rgba(0, 0, 0, 0.8)";
+                      e.currentTarget.style.boxShadow = "none";
+                    }
+                  }}
                 >
                   <Icon size={18} />
                 </div>
@@ -252,7 +307,7 @@ export default function RadialOrbitalTimeline({
                   absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap
                   text-xs font-semibold tracking-wider
                   transition-all duration-300
-                  ${isExpanded ? "text-white scale-125" : "text-white/70"}
+                  ${isExpanded ? "text-white scale-125" : "text-white/70 group-hover:text-white"}
                 `}
                 >
                   {item.title}
@@ -295,8 +350,11 @@ export default function RadialOrbitalTimeline({
                         </div>
                         <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
-                            style={{ width: `${item.energy}%` }}
+                            className="h-full"
+                            style={{ 
+                              width: `${item.energy}%`,
+                              background: `linear-gradient(135deg, #6B73FF 0%, #9C40FF 50%, #FF6B9D 100%)`
+                            }}
                           ></div>
                         </div>
                       </div>
