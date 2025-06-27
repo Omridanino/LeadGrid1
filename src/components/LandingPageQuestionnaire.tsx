@@ -112,8 +112,8 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
+      <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto relative">
+        <DialogHeader className="pb-4">
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <Sparkles className="w-6 h-6 text-purple-500" />
             יוצר דף נחיתה מותאם אישית
