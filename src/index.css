@@ -88,9 +88,51 @@
   background: rgba(0, 0, 0, 0.5);
 }
 
-/* RTL support */
+/* RTL support with mobile center alignment */
 [dir="rtl"] {
   direction: rtl;
+}
+
+/* Mobile-first center alignment */
+@media (max-width: 768px) {
+  [dir="rtl"] {
+    direction: ltr;
+    text-align: center;
+  }
+  
+  /* Override specific RTL elements for mobile */
+  .container {
+    text-align: center;
+  }
+  
+  /* Center all text content on mobile */
+  h1, h2, h3, h4, h5, h6 {
+    text-align: center !important;
+  }
+  
+  p {
+    text-align: center !important;
+  }
+  
+  /* Center buttons and forms */
+  .flex {
+    justify-content: center !important;
+  }
+  
+  /* Center navigation items */
+  nav {
+    text-align: center !important;
+  }
+  
+  /* Center card content */
+  .card {
+    text-align: center !important;
+  }
+  
+  /* Center dialog content */
+  .dialog-content {
+    text-align: center !important;
+  }
 }
 
 /* Responsive design improvements */
@@ -98,6 +140,7 @@
   .container {
     padding-left: 1rem;
     padding-right: 1rem;
+    text-align: center;
   }
 }
 
