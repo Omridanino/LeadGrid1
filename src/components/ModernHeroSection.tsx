@@ -319,7 +319,7 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
         transition={{ duration: 2, repeat: Infinity }}
       >
         <ChevronDown className="w-8 h-8" />
-      </div>
+      </motion.div>
     </section>
   );
 };
