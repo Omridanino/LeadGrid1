@@ -15,14 +15,6 @@ interface HeroSectionProps {
 }
 
 export const HeroSection = ({ content, currentColors, formData, heroImage }: HeroSectionProps) => {
-  // Apply color scheme to the component
-  useEffect(() => {
-    const root = document.documentElement;
-    Object.entries(currentColors).forEach(([key, value]) => {
-      root.style.setProperty(`--color-${key}`, value);
-    });
-  }, [currentColors]);
-
   const renderCTAButton = (isPrimary = true) => {
     const buttonText = isPrimary ? (content?.cta || 'בואו נתחיל לעבוד יחד') : 'למד עוד';
     
@@ -95,7 +87,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     return (
       <section 
         className="relative overflow-hidden min-h-screen flex items-center justify-center"
-        style={{ backgroundColor: currentColors.heroBackground || currentColors.background }}
+        style={{ backgroundColor: currentColors.heroBackground }}
       >
         <DynamicGradients />
         <div className="container mx-auto px-4 relative z-10">
@@ -110,7 +102,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     return (
       <section 
         className="relative overflow-hidden min-h-screen flex items-center justify-center"
-        style={{ backgroundColor: currentColors.heroBackground || currentColors.background }}
+        style={{ backgroundColor: currentColors.heroBackground }}
       >
         <AdvancedSparkles />
         <div className="container mx-auto px-4 relative z-10">
@@ -125,7 +117,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     return (
       <section 
         className="relative overflow-hidden min-h-screen flex items-center justify-center"
-        style={{ backgroundColor: currentColors.heroBackground || currentColors.background }}
+        style={{ backgroundColor: currentColors.heroBackground }}
       >
         <AnimatedPaths />
         <div className="container mx-auto px-4 relative z-10">
@@ -140,7 +132,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     return (
       <section 
         className="relative overflow-hidden min-h-screen flex items-center justify-center"
-        style={{ backgroundColor: currentColors.heroBackground || currentColors.background }}
+        style={{ backgroundColor: currentColors.heroBackground }}
       >
         <FluidBlob />
         <div className="container mx-auto px-4 relative z-10">
@@ -155,7 +147,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     return (
       <section 
         className="relative overflow-hidden min-h-screen flex items-center justify-center"
-        style={{ backgroundColor: currentColors.heroBackground || currentColors.background }}
+        style={{ backgroundColor: currentColors.heroBackground }}
       >
         <Premium3D />
         <div className="container mx-auto px-4 relative z-10">
@@ -169,7 +161,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
   return (
     <section 
       className="relative overflow-hidden min-h-screen flex items-center justify-center"
-      style={{ backgroundColor: currentColors.heroBackground || currentColors.background }}
+      style={{ backgroundColor: currentColors.heroBackground }}
     >
       <DynamicGradients />
       <div className="container mx-auto px-4 relative z-10">

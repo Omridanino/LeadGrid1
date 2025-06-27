@@ -44,7 +44,7 @@ const ColorEditor = ({ onColorChange }: ColorEditorProps) => {
     contactTextColor: "#d1d5db"
   });
 
-  // Apply colors immediately when changed
+  // Apply colors immediately when changed - without notifications
   useEffect(() => {
     onColorChange(colors);
     
@@ -53,10 +53,6 @@ const ColorEditor = ({ onColorChange }: ColorEditorProps) => {
     Object.entries(colors).forEach(([key, value]) => {
       root.style.setProperty(`--color-${key}`, value);
     });
-    
-    // Apply to body for immediate background change
-    document.body.style.backgroundColor = colors.background;
-    document.body.style.color = colors.text;
     
   }, [colors, onColorChange]);
 
@@ -229,7 +225,7 @@ const ColorEditor = ({ onColorChange }: ColorEditorProps) => {
 
         <div className="bg-gradient-to-r from-purple-900/30 to-pink-900/30 p-3 rounded-xl">
           <p className="text-purple-100 text-sm text-center">
-            💡 שינויים מוחלים מיידית על הדף
+            ✨ כל השינויים מוחלים בזמן אמת
           </p>
         </div>
       </CardContent>
