@@ -18,54 +18,54 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
   const getStyleClasses = () => {
     if (!formData || !formData.heroStyle) {
       return {
-        background: 'bg-3d',
-        card: 'card-3d',
-        button: 'btn-3d',
-        icon: 'icon-3d',
-        typography: 'typography-modern'
+        background: 'bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900',
+        card: 'bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl',
+        button: 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600',
+        icon: 'bg-gradient-to-r from-purple-500 to-pink-500 rounded-full',
+        typography: 'font-bold'
       };
     }
     
     switch (formData.heroStyle) {
       case 'geometric':
         return {
-          background: 'bg-geometric',
-          card: 'card-geometric',
-          button: 'btn-geometric',
-          icon: 'icon-geometric',
-          typography: 'typography-modern'
+          background: 'bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900',
+          card: 'bg-white/10 backdrop-blur-lg border border-blue-300/30 rounded-lg',
+          button: 'bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600',
+          icon: 'bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg',
+          typography: 'font-bold'
         };
       case 'glass':
         return {
-          background: 'bg-liquid-glass',
-          card: 'card-liquid-glass',
-          button: 'btn-liquid-glass',
-          icon: 'icon-liquid-glass',
-          typography: 'typography-liquid'
+          background: 'bg-gradient-to-br from-gray-900 via-teal-900 to-gray-900',
+          card: 'bg-white/5 backdrop-blur-xl border border-teal-300/20 rounded-2xl',
+          button: 'bg-gradient-to-r from-teal-400 to-cyan-400 hover:from-teal-500 hover:to-cyan-500',
+          icon: 'bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full',
+          typography: 'font-light'
         };
       case 'metal':
         return {
-          background: 'bg-metal',
-          card: 'card-metal',
-          button: 'btn-metal',
-          icon: 'icon-metal',
-          typography: 'typography-luxury'
+          background: 'bg-gradient-to-br from-gray-900 via-yellow-900 to-gray-900',
+          card: 'bg-gradient-to-br from-yellow-900/20 to-orange-900/20 backdrop-blur-lg border border-yellow-300/30 rounded-lg',
+          button: 'bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600',
+          icon: 'bg-gradient-to-r from-yellow-500 to-orange-500 rounded-lg',
+          typography: 'font-bold'
         };
       case 'image':
         return {
-          background: 'bg-image-depth',
-          card: 'card-image-depth',
-          button: 'btn-image-depth',
-          icon: 'icon-image-depth',
-          typography: 'typography-cinematic'
+          background: 'bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900',
+          card: 'bg-black/40 backdrop-blur-lg border border-purple-300/30 rounded-xl',
+          button: 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600',
+          icon: 'bg-gradient-to-r from-purple-500 to-pink-500 rounded-full',
+          typography: 'font-bold'
         };
       default:
         return {
-          background: 'bg-3d',
-          card: 'card-3d',
-          button: 'btn-3d',
-          icon: 'icon-3d',
-          typography: 'typography-modern'
+          background: 'bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900',
+          card: 'bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl',
+          button: 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600',
+          icon: 'bg-gradient-to-r from-purple-500 to-pink-500 rounded-full',
+          typography: 'font-bold'
         };
     }
   };
@@ -82,43 +82,108 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
     };
   };
 
-  // Use selectedElements from formData if available, or show all sections if content exists
+  // בדיקת הסקשנים שיש להציג - תיקון הבעיה כאן
   const elementsToShow = selectedElements && selectedElements.length > 0 
     ? selectedElements 
-    : content ? Object.keys(content).filter(key => key !== 'businessInfo' && key !== 'headline' && key !== 'subheadline' && key !== 'cta')
-    : [];
+    : formData?.selectedElements || [];
 
+  console.log("Elements to show FINAL:", elementsToShow);
+
+  // אם אין תוכן אבל יש אלמנטים שנבחרו, ניצור תוכן בסיסי
+  const getDefaultContent = () => {
+    const businessName = formData?.businessName || "העסק שלי";
+    const businessType = formData?.businessType || "שירותים עסקיים";
+    
+    return {
+      services: {
+        title: "השירותים שלנו",
+        subtitle: `הפתרונות המקצועיים של ${businessName}`,
+        items: [
+          { title: "שירות ראשון", description: "תיאור שירות ראשון מקצועי ואמין", icon: "⭐" },
+          { title: "שירות שני", description: "תיאור שירות שני איכותי ומותאם אישית", icon: "🚀" },
+          { title: "שירות שלישי", description: "תיאור שירות שלישי מתקדם ויעיל", icon: "💎" }
+        ]
+      },
+      about: {
+        title: "אודותינו",
+        description: `${businessName} מתמחה ב${businessType} ומספק שירות מעולה`,
+        highlights: ["ניסיון רב שנים", "מקצועיות ברמה גבוהה", "שירות אישי"],
+        whyChooseUs: "אנחנו מספקים שירות מקצועי עם יחס אישי לכל לקוח"
+      },
+      testimonials: {
+        title: "מה הלקוחות אומרים",
+        subtitle: "ההמלצות שלנו מדברות בעד עצמן",
+        items: [
+          { name: "יוסי כהן", role: "לקוח מרוצה", text: "שירות מעולה ומקצועי!", rating: 5 },
+          { name: "רחל לוי", role: "לקוחה קבועה", text: "ממליצה בחום על השירות", rating: 5 }
+        ]
+      },
+      contact: {
+        title: "צרו קשר",
+        subtitle: "מוכנים להתחיל? בואו נדבר!",
+        cta: "צרו קשר עכשיו"
+      },
+      features: {
+        title: "המאפיינים שלנו",
+        subtitle: "מה מייחד אותנו מהשאר",
+        items: [
+          { title: "איכות גבוהה", description: "שירות ברמה מקצועית גבוהה", icon: "✅" },
+          { title: "מהירות", description: "מענה מהיר ויעיל", icon: "⚡" }
+        ]
+      },
+      faq: {
+        title: "שאלות נפוצות",
+        subtitle: "התשובות לשאלות הנפוצות ביותר",
+        items: [
+          { question: "איך אתם עובדים?", answer: "אנחנו עובדים בצורה מקצועית ומסודרת" },
+          { question: "כמה זמן לוקח?", answer: "זמני העבודה משתנים לפי הפרויקט" }
+        ]
+      },
+      process: {
+        title: "התהליך שלנו",
+        subtitle: "איך אנחנו עובדים איתכם",
+        steps: [
+          { title: "היכרות", description: "נפגשים ומכירים את הצרכים שלכם", icon: "🤝" },
+          { title: "תכנון", description: "מכינים תכנית עבודה מפורטת", icon: "📋" },
+          { title: "ביצוע", description: "מבצעים את העבודה בצורה מקצועית", icon: "⚡" },
+          { title: "מסירה", description: "מוסרים את התוצר הסופי", icon: "🎯" }
+        ]
+      },
+      gallery: {
+        title: "גלריה",
+        subtitle: "דוגמאות מעבודותינו",
+        description: "כאן תוכלו לראות דוגמאות מעבודות שביצענו"
+      }
+    };
+  };
+
+  const finalContent = content || getDefaultContent();
+
+  console.log("Final content:", finalContent);
   console.log("Elements to show:", elementsToShow);
 
-  // If no content, don't render anything
-  if (!content) {
-    return (
-      <div className="w-full flex items-center justify-center py-20">
-        <div className="text-center text-white">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
-          <p className="text-lg">טוען תוכן...</p>
-        </div>
-      </div>
-    );
+  // If no elements selected, don't show anything
+  if (!elementsToShow || elementsToShow.length === 0) {
+    return null;
   }
 
   return (
     <div className="w-full">
       {/* Services Section */}
-      {elementsToShow.includes('services') && content?.services && (
-        <section className={`section-standard ${styleClasses.background}`} style={getSectionStyle()}>
+      {elementsToShow.includes('services') && (
+        <section className={`${styleClasses.background} py-20`}>
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto text-center">
               <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-white ${styleClasses.typography}`}>
-                {content.services.title}
+                {finalContent.services?.title || "השירותים שלנו"}
               </h2>
               <p className="text-xl text-gray-300 mb-16 max-w-3xl mx-auto leading-relaxed">
-                {content.services.subtitle}
+                {finalContent.services?.subtitle || "הפתרונות המקצועיים שלנו"}
               </p>
               <div className="grid md:grid-cols-3 gap-8">
-                {content.services.items?.map((service: any, index: number) => (
+                {finalContent.services?.items?.map((service: any, index: number) => (
                   <div key={index} className={`${styleClasses.card} p-8 text-center hover:scale-105 transition-all duration-300`}>
-                    <div className={`${styleClasses.icon} w-16 h-16 mx-auto mb-6 flex items-center justify-center`}>
+                    <div className={`${styleClasses.icon} w-16 h-16 mx-auto mb-6 flex items-center justify-center text-white`}>
                       <span className="text-2xl">{service.icon}</span>
                     </div>
                     <h3 className={`text-2xl font-bold mb-4 text-white ${styleClasses.typography}`}>
@@ -136,23 +201,23 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
       )}
 
       {/* About Section */}
-      {elementsToShow.includes('about') && content?.about && (
-        <section className={`section-standard ${styleClasses.background}`} style={getSectionStyle()}>
+      {elementsToShow.includes('about') && (
+        <section className={`${styleClasses.background} py-20`}>
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="grid lg:grid-cols-2 gap-12 items-center">
                 <div>
                   <h2 className={`text-4xl md:text-6xl font-bold mb-6 text-white ${styleClasses.typography}`}>
-                    {content.about.title}
+                    {finalContent.about?.title || "אודותינו"}
                   </h2>
                   <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                    {content.about.description}
+                    {finalContent.about?.description || "אנחנו מספקים שירות מקצועי ואמין"}
                   </p>
                   <div className="space-y-4">
-                    {content.about.highlights?.map((highlight: string, index: number) => (
+                    {finalContent.about?.highlights?.map((highlight: string, index: number) => (
                       <div key={index} className="flex items-center gap-3">
-                        <div className={`${styleClasses.icon} w-8 h-8 flex items-center justify-center`}>
-                          <span className="text-white">✓</span>
+                        <div className={`${styleClasses.icon} w-8 h-8 flex items-center justify-center text-white`}>
+                          <span>✓</span>
                         </div>
                         <span className="text-gray-300">{highlight}</span>
                       </div>
@@ -161,25 +226,15 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                 </div>
                 <div className={`${styleClasses.card} p-8`}>
                   <div className="text-center">
-                    <div className={`${styleClasses.icon} w-20 h-20 mx-auto mb-6 flex items-center justify-center`}>
+                    <div className={`${styleClasses.icon} w-20 h-20 mx-auto mb-6 flex items-center justify-center text-white`}>
                       <span className="text-3xl">🏆</span>
                     </div>
                     <h3 className={`text-2xl font-bold mb-4 text-white ${styleClasses.typography}`}>
                       למה לבחור בנו?
                     </h3>
                     <p className="text-gray-300 leading-relaxed">
-                      {content.about.whyChooseUs}
+                      {finalContent.about?.whyChooseUs || "אנחנו מספקים שירות מקצועי עם יחס אישי"}
                     </p>
-                    {content.about.vision && (
-                      <div className="mt-6 pt-6 border-t border-gray-600">
-                        <h4 className={`text-lg font-bold mb-2 text-white ${styleClasses.typography}`}>
-                          החזון שלנו
-                        </h4>
-                        <p className="text-gray-400 text-sm leading-relaxed">
-                          {content.about.vision}
-                        </p>
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
@@ -188,85 +243,19 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
         </section>
       )}
 
-      {/* Features Section */}
-      {elementsToShow.includes('features') && content?.features && (
-        <section className={`section-standard ${styleClasses.background}`} style={getSectionStyle()}>
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto text-center">
-              <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-white ${styleClasses.typography}`}>
-                {content.features.title}
-              </h2>
-              <p className="text-xl text-gray-300 mb-16 max-w-3xl mx-auto leading-relaxed">
-                {content.features.subtitle}
-              </p>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {content.features.items?.map((feature: any, index: number) => (
-                  <div key={index} className={`${styleClasses.card} p-6 text-center hover:scale-105 transition-all duration-300`}>
-                    <div className={`${styleClasses.icon} w-14 h-14 mx-auto mb-4 flex items-center justify-center`}>
-                      <span className="text-xl">{feature.icon}</span>
-                    </div>
-                    <h3 className={`text-xl font-bold mb-3 text-white ${styleClasses.typography}`}>
-                      {feature.title}
-                    </h3>
-                    <p className="text-gray-300">
-                      {feature.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Benefits Section */}
-      {elementsToShow.includes('benefits') && content?.benefits && (
-        <section className={`section-standard ${styleClasses.background}`} style={getSectionStyle()}>
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto text-center">
-              <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-white ${styleClasses.typography}`}>
-                {content.benefits.title}
-              </h2>
-              <p className="text-xl text-gray-300 mb-16 max-w-3xl mx-auto leading-relaxed">
-                {content.benefits.subtitle}
-              </p>
-              <div className="grid md:grid-cols-2 gap-8">
-                {content.benefits.items?.map((benefit: any, index: number) => (
-                  <div key={index} className={`${styleClasses.card} p-8 text-right`}>
-                    <div className="flex items-start gap-4">
-                      <div className={`${styleClasses.icon} w-12 h-12 flex-shrink-0 flex items-center justify-center`}>
-                        <span className="text-lg">{benefit.icon}</span>
-                      </div>
-                      <div>
-                        <h3 className={`text-2xl font-bold mb-3 text-white ${styleClasses.typography}`}>
-                          {benefit.title}
-                        </h3>
-                        <p className="text-gray-300 leading-relaxed">
-                          {benefit.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* Testimonials Section */}
-      {elementsToShow.includes('testimonials') && content?.testimonials && (
-        <section className={`section-standard ${styleClasses.background}`} style={getSectionStyle()}>
+      {elementsToShow.includes('testimonials') && (
+        <section className={`${styleClasses.background} py-20`}>
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto text-center">
               <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-white ${styleClasses.typography}`}>
-                {content.testimonials.title}
+                {finalContent.testimonials?.title || "מה הלקוחות אומרים"}
               </h2>
               <p className="text-xl text-gray-300 mb-16 max-w-3xl mx-auto leading-relaxed">
-                {content.testimonials.subtitle}
+                {finalContent.testimonials?.subtitle || "ההמלצות שלנו מדברות בעד עצמן"}
               </p>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {content.testimonials.items?.map((testimonial: any, index: number) => (
+                {finalContent.testimonials?.items?.map((testimonial: any, index: number) => (
                   <div key={index} className={`${styleClasses.card} p-6 text-center`}>
                     <div className="mb-4">
                       <span className="text-3xl text-yellow-400">
@@ -276,7 +265,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                     <p className="text-gray-300 mb-6 leading-relaxed text-lg">
                       "{testimonial.text}"
                     </p>
-                    <div className={`${styleClasses.icon} w-12 h-12 mx-auto mb-3 flex items-center justify-center`}>
+                    <div className={`${styleClasses.icon} w-12 h-12 mx-auto mb-3 flex items-center justify-center text-white`}>
                       <span className="text-lg">👤</span>
                     </div>
                     <h4 className={`font-bold text-white ${styleClasses.typography}`}>
@@ -293,24 +282,71 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
         </section>
       )}
 
+      {/* Contact Section */}
+      {elementsToShow.includes('contact') && (
+        <section className={`${styleClasses.background} py-20`}>
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-16">
+                <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-white ${styleClasses.typography}`}>
+                  {finalContent.contact?.title || "צרו קשר"}
+                </h2>
+                <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                  {finalContent.contact?.subtitle || "מוכנים להתחיל? בואו נדבר!"}
+                </p>
+              </div>
+              <div className="grid lg:grid-cols-2 gap-12">
+                <div className={`${styleClasses.card} p-8`}>
+                  <h3 className={`text-2xl font-bold mb-6 text-white ${styleClasses.typography}`}>
+                    פרטי יצירת קשר
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-4">
+                      <div className={`${styleClasses.icon} w-10 h-10 flex items-center justify-center text-white`}>
+                        <span>📞</span>
+                      </div>
+                      <span className="text-gray-300">050-1234567</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className={`${styleClasses.icon} w-10 h-10 flex items-center justify-center text-white`}>
+                        <span>✉️</span>
+                      </div>
+                      <span className="text-gray-300">info@business.co.il</span>
+                    </div>
+                  </div>
+                </div>
+                <div className={`${styleClasses.card} p-8`}>
+                  <h3 className={`text-2xl font-bold mb-6 text-white ${styleClasses.typography}`}>
+                    בואו נתחיל
+                  </h3>
+                  <button className={`${styleClasses.button} w-full p-4 text-center text-white font-bold rounded-lg transition-all duration-300`}>
+                    {finalContent.contact?.cta || "צרו קשר עכשיו"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Process Section */}
-      {elementsToShow.includes('process') && content?.process && (
-        <section className={`section-standard ${styleClasses.background}`} style={getSectionStyle()}>
+      {elementsToShow.includes('process') && (
+        <section className={`${styleClasses.background} py-20`}>
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto text-center">
               <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-white ${styleClasses.typography}`}>
-                {content.process.title}
+                {finalContent.process?.title || "התהליך שלנו"}
               </h2>
               <p className="text-xl text-gray-300 mb-16 max-w-3xl mx-auto leading-relaxed">
-                {content.process.subtitle}
+                {finalContent.process?.subtitle || "איך אנחנו עובדים איתכם"}
               </p>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {content.process.steps?.map((step: any, index: number) => (
+                {finalContent.process?.steps?.map((step: any, index: number) => (
                   <div key={index} className={`${styleClasses.card} p-6 text-center relative`}>
                     <div className="absolute -top-4 right-4 w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
                       {index + 1}
                     </div>
-                    <div className={`${styleClasses.icon} w-16 h-16 mx-auto mb-6 flex items-center justify-center`}>
+                    <div className={`${styleClasses.icon} w-16 h-16 mx-auto mb-6 flex items-center justify-center text-white`}>
                       <span className="text-2xl">{step.icon}</span>
                     </div>
                     <h3 className={`text-xl font-bold mb-3 text-white ${styleClasses.typography}`}>
@@ -328,20 +364,20 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
       )}
 
       {/* FAQ Section */}
-      {elementsToShow.includes('faq') && content?.faq && (
-        <section className={`section-standard ${styleClasses.background}`} style={getSectionStyle()}>
+      {elementsToShow.includes('faq') && (
+        <section className={`${styleClasses.background} py-20`}>
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-16">
                 <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-white ${styleClasses.typography}`}>
-                  {content.faq.title}
+                  {finalContent.faq?.title || "שאלות נפוצות"}
                 </h2>
                 <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
-                  {content.faq.subtitle}
+                  {finalContent.faq?.subtitle || "התשובות לשאלות הנפוצות ביותר"}
                 </p>
               </div>
               <div className="space-y-6">
-                {content.faq.items?.map((faq: any, index: number) => (
+                {finalContent.faq?.items?.map((faq: any, index: number) => (
                   <div key={index} className={`${styleClasses.card} p-6`}>
                     <h3 className={`text-xl font-bold mb-3 text-white ${styleClasses.typography}`}>
                       {faq.question}
@@ -358,25 +394,25 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
       )}
 
       {/* Gallery Section */}
-      {elementsToShow.includes('gallery') && content?.gallery && (
-        <section className={`section-standard ${styleClasses.background}`} style={getSectionStyle()}>
+      {elementsToShow.includes('gallery') && (
+        <section className={`${styleClasses.background} py-20`}>
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto text-center">
               <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-white ${styleClasses.typography}`}>
-                {content.gallery.title}
+                {finalContent.gallery?.title || "גלריה"}
               </h2>
               <p className="text-xl text-gray-300 mb-16 max-w-3xl mx-auto leading-relaxed">
-                {content.gallery.subtitle}
+                {finalContent.gallery?.subtitle || "דוגמאות מעבודותינו"}
               </p>
               <div className={`${styleClasses.card} p-8`}>
-                <div className={`${styleClasses.icon} w-20 h-20 mx-auto mb-6 flex items-center justify-center`}>
+                <div className={`${styleClasses.icon} w-20 h-20 mx-auto mb-6 flex items-center justify-center text-white`}>
                   <span className="text-4xl">🖼️</span>
                 </div>
                 <h3 className={`text-2xl font-bold mb-4 text-white ${styleClasses.typography}`}>
                   גלריית עבודות
                 </h3>
                 <p className="text-gray-300 leading-relaxed">
-                  {content.gallery.description || "בקרוב תוכלו לראות כאן דוגמאות מעבודות שביצענו"}
+                  {finalContent.gallery?.description || "כאן תוכלו לראות דוגמאות מעבודות שביצענו"}
                 </p>
               </div>
             </div>
@@ -384,58 +420,31 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
         </section>
       )}
 
-      {/* Contact Section */}
-      {elementsToShow.includes('contact') && content?.contact && (
-        <section className={`section-standard ${styleClasses.background}`} style={getSectionStyle()}>
+      {/* Features Section */}
+      {elementsToShow.includes('features') && (
+        <section className={`${styleClasses.background} py-20`}>
           <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
-                <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-white ${styleClasses.typography}`}>
-                  {content.contact.title}
-                </h2>
-                <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                  {content.contact.subtitle}
-                </p>
-              </div>
-              <div className="grid lg:grid-cols-2 gap-12">
-                <div className={`${styleClasses.card} p-8`}>
-                  <h3 className={`text-2xl font-bold mb-6 text-white ${styleClasses.typography}`}>
-                    פרטי יצירת קשר
-                  </h3>
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-4">
-                      <div className={`${styleClasses.icon} w-10 h-10 flex items-center justify-center`}>
-                        <span>📞</span>
-                      </div>
-                      <span className="text-gray-300">050-1234567</span>
+            <div className="max-w-6xl mx-auto text-center">
+              <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-white ${styleClasses.typography}`}>
+                {finalContent.features?.title || "המאפיינים שלנו"}
+              </h2>
+              <p className="text-xl text-gray-300 mb-16 max-w-3xl mx-auto leading-relaxed">
+                {finalContent.features?.subtitle || "מה מייחד אותנו מהשאר"}
+              </p>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {finalContent.features?.items?.map((feature: any, index: number) => (
+                  <div key={index} className={`${styleClasses.card} p-6 text-center hover:scale-105 transition-all duration-300`}>
+                    <div className={`${styleClasses.icon} w-14 h-14 mx-auto mb-4 flex items-center justify-center text-white`}>
+                      <span className="text-xl">{feature.icon}</span>
                     </div>
-                    <div className="flex items-center gap-4">
-                      <div className={`${styleClasses.icon} w-10 h-10 flex items-center justify-center`}>
-                        <span>✉️</span>
-                      </div>
-                      <span className="text-gray-300">info@business.co.il</span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className={`${styleClasses.icon} w-10 h-10 flex items-center justify-center`}>
-                        <span>📍</span>
-                      </div>
-                      <span className="text-gray-300">תל אביב, ישראל</span>
-                    </div>
+                    <h3 className={`text-xl font-bold mb-3 text-white ${styleClasses.typography}`}>
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-300">
+                      {feature.description}
+                    </p>
                   </div>
-                </div>
-                <div className={`${styleClasses.card} p-8`}>
-                  <h3 className={`text-2xl font-bold mb-6 text-white ${styleClasses.typography}`}>
-                    בואו נתחיל
-                  </h3>
-                  <div className="space-y-4">
-                    <button className={`${styleClasses.button} w-full p-4 text-center text-white font-bold rounded-lg transition-all duration-300`}>
-                      {content.contact.cta}
-                    </button>
-                    <button className={`${styleClasses.button} w-full p-4 text-center text-white font-bold rounded-lg transition-all duration-300`}>
-                      שלחו WhatsApp
-                    </button>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
