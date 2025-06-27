@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect } from 'react';
 
 // Optimized Dynamic Gradients - reduced particle count for better performance
