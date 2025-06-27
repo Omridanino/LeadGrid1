@@ -108,6 +108,11 @@ void main() {
 `;
 
 class CustomShaderMaterial extends THREE.ShaderMaterial {
+  declare uniforms: {
+    time: { value: number };
+    resolution: { value: THREE.Vector4 };
+  };
+
   constructor() {
     super({
       uniforms: {
