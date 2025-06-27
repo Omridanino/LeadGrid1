@@ -1,40 +1,24 @@
 
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, Zap, MessageCircle, Calendar, Rocket } from "lucide-react";
+import { Mail, MapPin, MessageCircle, Camera } from "lucide-react";
 
 const ContactSection = () => {
   const contactMethods = [
     {
-      icon: Phone,
-      title: "שיחת ייעוץ מיידית",
-      description: "דברו איתנו עכשיו וקבלו תשובות לכל השאלות",
-      action: "התקשרו: 03-1234567",
-      gradient: "from-green-500 to-teal-600",
+      icon: Camera,
+      title: "צ'אט ישיר עם מומחה",
+      description: "דברו עם הצוות שלנו בזמן אמת וקבלו תשובות מיידיות",
+      action: "פתחו צ'אט",
+      gradient: "from-purple-500 to-pink-600",
       delay: 0.1
     },
     {
-      icon: Mail,
+      icon: Camera,
       title: "מייל מהיר ואישי",
-      description: "כתבו לנו ותקבלו תשובה תוך פחות מ-2 שעות",
+      description: "כתבו לנו ותקבלו תשובה מהירה ומפורטת",
       action: "info@leadgrid.co.il",
       gradient: "from-blue-500 to-cyan-600",
       delay: 0.2
-    },
-    {
-      icon: MessageCircle,
-      title: "צ'אט ישיר עם מומחה",
-      description: "דיברו עם הצוות שלנו בזמן אמת",
-      action: "פתחו צ'אט",
-      gradient: "from-purple-500 to-pink-600",
-      delay: 0.3
-    },
-    {
-      icon: Calendar,
-      title: "קבעו פגישת ייעוץ",
-      description: "דמו אישי של המערכת והתאמה מושלמת לצרכים שלכם",
-      action: "קביעת פגישה",
-      gradient: "from-orange-500 to-red-600",
-      delay: 0.4
     }
   ];
 
@@ -76,14 +60,14 @@ const ContactSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            הזמן לחולל שינוי זה עכשיו. הצוות שלנו מחכה לעזור לכם
+            מוכנים לראות איך LEADGRID יכול לעזור לעסק שלכם?
             <br />
-            להגיע לשיא הפוטנציאל הדיגיטלי שלכם
+            בואו נדבר ונבין יחד מה הפתרון הכי מתאים לכם
           </motion.p>
         </motion.div>
 
         {/* Contact Methods Grid */}
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
+        <div className="grid md:grid-cols-2 gap-8 mb-16 max-w-4xl mx-auto">
           {contactMethods.map((method, index) => (
             <motion.div
               key={index}
@@ -190,10 +174,10 @@ const ContactSection = () => {
               מוכנים לשינוי?
             </h3>
             <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-              בואו נדבר על איך LEADGRID יכול לשנות את העסק שלכם.
+              בואו נדבר על איך LEADGRID יכול לשפר את התוצאות של העסק שלכם.
               <br />
               <span className="text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text font-semibold">
-                התקשרו עכשיו וקבלו ייעוץ חינם + דמו אישי של המערכת
+                התחילו עם שיחת ייעוץ חינמית
               </span>
             </p>
             
@@ -216,7 +200,7 @@ const ContactSection = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 <span className="relative z-10 flex items-center gap-3">
-                  <Rocket className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
+                  <Camera className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
                   בואו נתחיל עכשיו
                 </span>
               </motion.button>
@@ -227,8 +211,8 @@ const ContactSection = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <span className="flex items-center gap-3">
-                  <Phone className="w-5 h-5" />
-                  03-1234567
+                  <Mail className="w-5 h-5" />
+                  שלחו מייל
                 </span>
               </motion.button>
             </div>
@@ -243,7 +227,7 @@ const ContactSection = () => {
             >
               <div className="flex items-center justify-center gap-2 text-gray-400">
                 <MapPin className="w-5 h-5" />
-                <span>תל אביב, ישראל | זמינים 24/7</span>
+                <span>תל אביב, ישראל | זמינים בשעות העבודה</span>
               </div>
             </motion.div>
           </motion.div>

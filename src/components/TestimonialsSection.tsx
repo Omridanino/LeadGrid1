@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { Star, Quote, Zap, TrendingUp, Users } from "lucide-react";
+import { Star, Quote, Zap, TrendingUp, Users, Camera } from "lucide-react";
 
 const TestimonialsSection = () => {
   const testimonials = [
@@ -8,36 +8,36 @@ const TestimonialsSection = () => {
       name: "דן כהן",
       role: "מנכ'ל, TechFlow",
       company: "סטארטאפ B2B",
-      content: "LEADGRID שינה לי את החיים. מ-2% המרות ל-12% תוך חודש. זה לא נורמלי כמה זה עובד טוב. הAI שלהם פשוט מטורף.",
+      content: "אחרי שבועיים עם LEADGRID ראיתי שיפור משמעותי בהמרות. המערכת באמת עוזרת לזהות את הלקוחות הפוטנציאליים הטובים יותר.",
       rating: 5,
-      results: "+500% המרות",
+      results: "שיפור בהמרות",
       gradient: "from-blue-500 to-cyan-600"
     },
     {
       name: "שרה לוי",
       role: "מנהלת שיווק",
       company: "E-commerce Enterprise",
-      content: "התחלתי עם ספקות, אבל התוצאות מדברות בעד עצמן. 1.2 מיליון שקל הכנסות נוספות ב-3 חודשים. זו השקעה שמשתלמת פי 20.",
+      content: "התחלתי עם ספקות, אבל התוצאות מדברות בעד עצמן. המערכת חסכה לי הרבה זמן בניתוח נתונים ועזרה לי להבין טוב יותר את הלקוחות.",
       rating: 5,
-      results: "₪1.2M הכנסות",
+      results: "חסכון בזמן",
       gradient: "from-purple-500 to-pink-600"
     },
     {
       name: "מיכאל אברמוב",
       role: "מייסד",
       company: "Digital Agency",
-      content: "עבדתי עם עשרות פלטפורמות. LEADGRID זה המקום שבו הטכנולוגיה פוגשת קסם. הלקוחות שלי מתפעלים מהתוצאות שהם מקבלים.",
-      rating: 5,
-      results: "עשרות לקוחות מרוצים",
+      content: "כלי מקצועי שעוזר לי להציג ללקוחות שלי תוצאות ברורות ומדידות. הממשק נוח לעבודה והתמיכה מהירה ואמינה.",
+      rating: 4,
+      results: "תוצאות מדידות",
       gradient: "from-green-500 to-teal-600"
     },
     {
       name: "נועה ברקוביץ'",
       role: "יזמת דיגיטלית",
       company: "SaaS Startup",
-      content: "הגעתי למיליון המשתמשים הראשון הודות לLEADGRID. הפלטפורמה פשוט יודעת להביא את הלקוחות הנכונים בזמן הנכון. גאונות טכנולוגית.",
-      rating: 5,
-      results: "1M משתמשים",
+      content: "המערכת עזרה לי להבין איך להגיע טוב יותר לקהל שלי. יש עוד מה לשפר אבל בהחלט רואה התקדמות בביצועים של הקמפיינים.",
+      rating: 4,
+      results: "שיפור בקמפיינים",
       gradient: "from-orange-500 to-red-600"
     }
   ];
@@ -68,9 +68,9 @@ const TestimonialsSection = () => {
               letterSpacing: '-0.02em'
             }}
           >
-            סיפורי 
+            מה אומרים 
             <span className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent">
-              {" "}הצלחה
+              {" "}הלקוחות
             </span>
           </motion.h2>
           <motion.p 
@@ -80,9 +80,9 @@ const TestimonialsSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            לקוחות אמיתיים, תוצאות אמיתיות, טרנספורמציה אמיתית
+            חוות דעת אמיתיות מלקוחות שעובדים איתנו
             <br />
-            כשטכנולוגיה פוגשת חזון עסקי - קסם קורה
+            ורואים שיפור מדיד בתוצאות העסקיות שלהם
           </motion.p>
         </motion.div>
 
@@ -166,7 +166,7 @@ const TestimonialsSection = () => {
                       boxShadow: '0 0 20px rgba(107, 115, 255, 0.3)'
                     }}
                   >
-                    <Users className="w-6 h-6 text-white" />
+                    <Camera className="w-6 h-6 text-white" />
                   </div>
                   <div>
                     <div className="font-bold text-white text-lg group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 group-hover:bg-clip-text transition-all duration-300">
@@ -200,10 +200,10 @@ const TestimonialsSection = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
         >
           {[
-            { icon: TrendingUp, number: "2,847", label: "לקוחות מרוצים", color: "from-green-400 to-emerald-600" },
-            { icon: Zap, number: "94%", label: "שיעור הצלחה", color: "from-blue-400 to-cyan-600" },
-            { icon: Users, number: "5.2M", label: "המרות חודשיות", color: "from-purple-400 to-pink-600" },
-            { icon: Star, number: "4.9", label: "דירוג ממוצע", color: "from-yellow-400 to-orange-600" }
+            { icon: TrendingUp, number: "120+", label: "לקוחות פעילים", color: "from-green-400 to-emerald-600" },
+            { icon: Zap, number: "87%", label: "שיעור שביעות רצון", color: "from-blue-400 to-cyan-600" },
+            { icon: Users, number: "2.5K", label: "לידים חודשיים", color: "from-purple-400 to-pink-600" },
+            { icon: Star, number: "4.3", label: "דירוג ממוצע", color: "from-yellow-400 to-orange-600" }
           ].map((stat, index) => (
             <motion.div
               key={index}
