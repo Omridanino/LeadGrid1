@@ -111,96 +111,89 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => {
-      console.log("Dialog onOpenChange:", open);
-      if (!open) {
-        onClose();
-      }
-    }}>
-      <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-4xl w-[95vw] max-h-[95vh] overflow-y-auto p-0 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-[100]">
-        <div className="p-6">
-          <DialogHeader className="pb-4">
-            <DialogTitle className="text-2xl font-bold flex items-center gap-2">
-              <Sparkles className="w-6 h-6 text-purple-500" />
-              יוצר דף נחיתה מותאם אישית
-            </DialogTitle>
-            <DialogDescription className="text-gray-400">
-              בואו ניצור עבורכם דף נחיתה מדהים שיהפוך מבקרים ללקוחות
-            </DialogDescription>
-          </DialogHeader>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-4xl w-[95vw] max-h-[90vh] overflow-y-auto bg-gray-900 border-gray-700 text-white">
+        <DialogHeader className="pb-4">
+          <DialogTitle className="text-2xl font-bold flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-purple-500" />
+            יוצר דף נחיתה מותאם אישית
+          </DialogTitle>
+          <DialogDescription className="text-gray-400">
+            בואו ניצור עבורכם דף נחיתה מדהים שיהפוך מבקרים ללקוחות
+          </DialogDescription>
+        </DialogHeader>
 
-          <div className="space-y-6">
-            {/* Progress indicator */}
-            <div className="flex justify-between items-center">
-              <div className="flex space-x-2 space-x-reverse">
-                {[1, 2, 3, 4].map((step) => (
-                  <div
-                    key={step}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
-                      step === currentStep
-                        ? 'bg-purple-600 text-white'
-                        : step < currentStep
-                        ? 'bg-green-600 text-white'
-                        : 'bg-gray-600 text-gray-300'
-                    }`}
-                  >
-                    {step}
-                  </div>
-                ))}
-              </div>
-              <span className="text-sm text-gray-400">שלב {currentStep} מתוך 4</span>
+        <div className="space-y-6">
+          {/* Progress indicator */}
+          <div className="flex justify-between items-center">
+            <div className="flex space-x-2 space-x-reverse">
+              {[1, 2, 3, 4].map((step) => (
+                <div
+                  key={step}
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
+                    step === currentStep
+                      ? 'bg-purple-600 text-white'
+                      : step < currentStep
+                      ? 'bg-green-600 text-white'
+                      : 'bg-gray-600 text-gray-300'
+                  }`}
+                >
+                  {step}
+                </div>
+              ))}
             </div>
+            <span className="text-sm text-gray-400">שלב {currentStep} מתוך 4</span>
+          </div>
 
-            {/* Step content */}
-            <Card className="bg-gray-800 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-lg">
-                  {getStepTitle(currentStep)}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {renderCurrentStep()}
-              </CardContent>
-            </Card>
+          {/* Step content */}
+          <Card className="bg-gray-800 border-gray-700">
+            <CardHeader>
+              <CardTitle className="text-lg">
+                {getStepTitle(currentStep)}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {renderCurrentStep()}
+            </CardContent>
+          </Card>
 
-            {/* Navigation buttons */}
-            <div className="flex justify-between">
+          {/* Navigation buttons */}
+          <div className="flex justify-between">
+            <Button
+              onClick={prevStep}
+              disabled={currentStep === 1}
+              variant="outline"
+              className="border-gray-600 text-gray-300 hover:bg-gray-700"
+            >
+              קודם
+            </Button>
+
+            <div className="flex gap-3">
               <Button
-                onClick={prevStep}
-                disabled={currentStep === 1}
-                variant="outline"
-                className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                onClick={handlePreviewPage}
+                className="bg-blue-600 hover:bg-blue-700"
               >
-                קודם
+                <Eye className="w-4 h-4 ml-2" />
+                צפה ועדכן דף
               </Button>
 
-              <div className="flex gap-3">
+              {currentStep < 4 ? (
                 <Button
-                  onClick={handlePreviewPage}
-                  className="bg-blue-600 hover:bg-blue-700"
+                  onClick={nextStep}
+                  className="bg-purple-600 hover:bg-purple-700"
                 >
-                  <Eye className="w-4 h-4 ml-2" />
-                  צפה ועדכן דף
+                  הבא
+                  <ArrowRight className="w-4 h-4 mr-2" />
                 </Button>
-
-                {currentStep < 4 ? (
-                  <Button
-                    onClick={nextStep}
-                    className="bg-purple-600 hover:bg-purple-700"
-                  >
-                    הבא
-                    <ArrowRight className="w-4 h-4 mr-2" />
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={handleSubmit}
-                    className="bg-green-600 hover:bg-green-700"
-                  >
-                    <Download className="w-4 h-4 ml-2" />
-                    סיים וצור דף
-                  </Button>
-                )}
-              </div>
+              ) : (
+                <Button
+                  onClick={handleSubmit}
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  <Download className="w-4 h-4 ml-2" />
+                  סיים וצור דף
+                </Button>
+              )}
             </div>
           </div>
         </div>
