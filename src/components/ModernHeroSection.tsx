@@ -1,9 +1,11 @@
+
 import { Button } from "@/components/ui/button";
-import { Zap, ArrowLeft, Play, Star, Shield, Clock, Award, ChevronDown } from "lucide-react";
+import { Zap, ArrowLeft, Play, Star, Shield, Clock, Award, ChevronDown, Calendar, Code, FileText, User } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { SplineScene } from "@/components/ui/splite";
 import { Spotlight } from "@/components/ui/spotlight";
+import RadialOrbitalTimeline from "@/components/ui/radial-orbital-timeline";
 
 interface ModernHeroSectionProps {
   onStartQuestionnaire: () => void;
@@ -34,6 +36,65 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
       }
     };
   }, []);
+
+  // Timeline data for landing page creation process
+  const timelineData = [
+    {
+      id: 1,
+      title: "אפיון צרכים",
+      date: "שלב 1",
+      content: "נאסוף את כל המידע הנדרש על העסק, היעדים והקהל היעד שלכם כדי ליצור דף נחיתה מותאם אישית.",
+      category: "Planning",
+      icon: User,
+      relatedIds: [2],
+      status: "completed" as const,
+      energy: 100,
+    },
+    {
+      id: 2,
+      title: "עיצוב ובניית התוכן",
+      date: "שלב 2",
+      content: "ניצור עיצוב מהפנט עם תוכן שמוכר - כותרות חדות, תיאורים משכנעים וקריאות לפעולה שמביאות תוצאות.",
+      category: "Design",
+      icon: FileText,
+      relatedIds: [1, 3],
+      status: "completed" as const,
+      energy: 95,
+    },
+    {
+      id: 3,
+      title: "אופטימיזציה",
+      date: "שלב 3",
+      content: "נוודא שהדף מהיר, מותאם לנייד ומוכן לקידום בגוגל. כל פיקסל עובד עבורכם.",
+      category: "Development",
+      icon: Code,
+      relatedIds: [2, 4],
+      status: "in-progress" as const,
+      energy: 85,
+    },
+    {
+      id: 4,
+      title: "מעקב ואנליטיקס",
+      date: "שלב 4",
+      content: "נתקין מערכות מעקב מתקדמות שיעזרו לכם להבין מה עובד ואיך לשפר את התוצאות.",
+      category: "Analytics",
+      icon: Calendar,
+      relatedIds: [3, 5],
+      status: "pending" as const,
+      energy: 70,
+    },
+    {
+      id: 5,
+      title: "השקה ותמיכה",
+      date: "שלב 5",
+      content: "נשיק את הדף ונוודא שהכל עובד מושלם. נישאר איתכם לתמיכה מתמשכת.",
+      category: "Launch",
+      icon: Award,
+      relatedIds: [4],
+      status: "pending" as const,
+      energy: 60,
+    },
+  ];
 
   return (
     <section 
@@ -114,9 +175,9 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
         <div className="grid lg:grid-cols-2 gap-16 items-center max-w-7xl mx-auto">
           {/* Left Content */}
           <div className="space-y-10">
-            {/* Headline - Made smaller */}
+            {/* Headline */}
             <motion.h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-black leading-none text-white"
+              className="text-3xl md:text-4xl lg:text-5xl font-black leading-none text-white"
               style={{ 
                 textShadow: `
                   0 0 20px rgba(255, 255, 255, 0.2),
@@ -209,83 +270,9 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
                 </span>
               </motion.button>
             </motion.div>
-
-            {/* Feature Cards with Liquid Glass Style Icons */}
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 1.2 }}
-            >
-              {[
-                { 
-                  icon: Shield, 
-                  title: 'אמינות מוחלטת', 
-                  desc: 'טכנולוגיה מתקדמת ובטוחה',
-                },
-                { 
-                  icon: Clock, 
-                  title: 'מהירות ברק', 
-                  desc: 'תוצאות תוך דקות ספורות',
-                },
-                { 
-                  icon: Award, 
-                  title: 'איכות פרימיום', 
-                  desc: 'עיצוב ברמה מקצועית עליונה',
-                }
-              ].map((feature, i) => (
-                <motion.div 
-                  key={i}
-                  className="backdrop-blur-xl border border-white/20 p-6 rounded-xl hover:border-white/40 transition-all duration-500 group shadow-xl relative overflow-hidden"
-                  style={{
-                    background: `linear-gradient(135deg, 
-                      rgba(255, 255, 255, 0.1), 
-                      rgba(255, 255, 255, 0.05))`,
-                    boxShadow: `
-                      inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                      0 8px 25px rgba(0, 0, 0, 0.3)
-                    `,
-                  }}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  <div 
-                    className="absolute top-0 left-0 w-full h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                    style={{ background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent)' }}
-                  />
-                  <div className="relative w-12 h-12 mb-4 mx-auto group-hover:scale-110 transition-all duration-300">
-                    {/* Liquid Glass Icon Background */}
-                    <div 
-                      className="absolute inset-0 rounded-xl backdrop-blur-md border border-white/30"
-                      style={{
-                        background: `linear-gradient(135deg, 
-                          rgba(255, 255, 255, 0.2), 
-                          rgba(255, 255, 255, 0.1))`,
-                        boxShadow: `
-                          inset 0 1px 0 rgba(255, 255, 255, 0.3),
-                          0 4px 12px rgba(0, 0, 0, 0.2)
-                        `,
-                      }}
-                    />
-                    <feature.icon 
-                      className="w-6 h-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white" 
-                      style={{ 
-                        filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.4))'
-                      }} 
-                    />
-                  </div>
-                  <h3 className="text-lg font-bold mb-2 text-white">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-300 leading-relaxed text-sm">
-                    {feature.desc}
-                  </p>
-                </motion.div>
-              ))}
-            </motion.div>
           </div>
 
-          {/* Right Content - 3D Spline Scene */}
+          {/* Right Content - Orbital Timeline */}
           <div className="relative">
             <div className="relative w-full h-[600px] rounded-2xl overflow-hidden">
               <Spotlight
@@ -295,10 +282,7 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
               
               <div className="w-full h-full bg-black/50 backdrop-blur-sm border border-white/20 rounded-2xl relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
-                <SplineScene 
-                  scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                  className="w-full h-full"
-                />
+                <RadialOrbitalTimeline timelineData={timelineData} />
               </div>
             </div>
           </div>
