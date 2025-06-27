@@ -1,6 +1,6 @@
-
 import { motion } from "framer-motion";
 import { Star, Quote, Zap, TrendingUp, Users, User } from "lucide-react";
+import GlassBadge from "./ui/glass-badge";
 
 const TestimonialsSection = () => {
   // Liquid Glass Icon Component
@@ -77,7 +77,7 @@ const TestimonialsSection = () => {
       name: "דן כהן",
       role: "מנכ'ל ומייסד",
       company: "TechFlow Solutions",
-      content: "תוך שבועיים עם הפלטפורמה ראיתי שיפור משמעותי במדדי ההמרה. המערכת מספקת תובנות עסקיות ברורות ומסייעת לזהות הזדמנויות חדשות בצורה מדויקת.",
+      content: "תוך שבועיים ראיתי שיפור משמעותי במדדי ההמרה. המערכת מספקת תובנות עסקיות ברורות ומסייעת לזהות הזדמנויות בצורה מדויקת.",
       rating: 5,
       results: "שיפור מדיד בהמרות",
       gradient: "from-blue-500 to-cyan-600"
@@ -86,7 +86,7 @@ const TestimonialsSection = () => {
       name: "שרה לוי",
       role: "סמנכ'לית שיווק",
       company: "E-commerce Enterprise",
-      content: "הכלי חסך לי זמן רב בניתוח נתונים ומספק המלצות אסטרטגיות מבוססות נתונים. התוצאות הן מדידות וברורות, והתמיכה המקצועית מצוינת.",
+      content: "הכלי חסך זמן רב בניתוח נתונים ומספק המלצות אסטרטגיות מבוססות נתונים. התוצאות מדידות והתמיכה מצוינת.",
       rating: 5,
       results: "יעילות תפעולית מוגברת",
       gradient: "from-purple-500 to-pink-600"
@@ -95,7 +95,7 @@ const TestimonialsSection = () => {
       name: "מיכאל אברמוב",
       role: "מייסד ובעלים",
       company: "Digital Marketing Agency",
-      content: "פלטפורמה מקצועית המאפשרת לי להציג ללקוחות תוצאות ברורות ומדידות. הממשק אינטואיטיביווי והתמיכה הטכנית מהירה ואמינה.",
+      content: "פלטפורמה מקצועית המאפשרת להציג ללקוחות תוצאות ברורות ומדידות. הממשק אינטואיטיבי והתמיכה הטכנית מהירה.",
       rating: 4,
       results: "דוחות מקצועיים ומדידים",
       gradient: "from-green-500 to-teal-600"
@@ -104,7 +104,7 @@ const TestimonialsSection = () => {
       name: "נועה ברקוביץ'",
       role: "יזמת דיגיטלית",
       company: "SaaS Innovation Hub",
-      content: "המערכת סייעה לי להבין טוב יותר את קהל היעד שלי ולשפר את האסטרטגיה השיווקית. הביצועים השתפרו בצורה ניכרת והתהליכים התייעלו משמעותית.",
+      content: "המערכת סייעה להבין טוב יותר את קהל היעד ולשפר את האסטרטגיה השיווקית. הביצועים השתפרו והתהליכים התייעלו משמעותית.",
       rating: 4,
       results: "אופטימיזציה אסטרטגית",
       gradient: "from-orange-500 to-red-600"
@@ -197,19 +197,14 @@ const TestimonialsSection = () => {
                   className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700 bg-gradient-to-br ${testimonial.gradient}`}
                 />
 
-                {/* Quote Icon */}
+                {/* Quote Icon and Results Badge */}
                 <div className="flex justify-between items-start mb-6">
                   <Quote 
                     className="w-8 h-8 text-gray-500 group-hover:text-white transition-colors duration-300" 
                   />
-                  <div 
-                    className={`px-4 py-2 rounded-full text-sm font-bold text-white bg-gradient-to-r ${testimonial.gradient}`}
-                    style={{
-                      boxShadow: '0 0 20px rgba(107, 115, 255, 0.3)'
-                    }}
-                  >
+                  <GlassBadge variant="info" size="sm">
                     {testimonial.results}
-                  </div>
+                  </GlassBadge>
                 </div>
 
                 {/* Stars */}
@@ -262,10 +257,10 @@ const TestimonialsSection = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
         >
           {[
-            { icon: TrendingUp, number: "120+", label: "לקוחות פעילים", color: "from-green-400 to-emerald-600" },
-            { icon: Zap, number: "87%", label: "שיעור שביעות רצון", color: "from-blue-400 to-cyan-600" },
-            { icon: Users, number: "2.5K", label: "לידים חודשיים", color: "from-purple-400 to-pink-600" },
-            { icon: Star, number: "4.3", label: "דירוג ממוצע", color: "from-yellow-400 to-orange-600" }
+            { icon: TrendingUp, number: "120+", label: "לקוחות פעילים", color: "success" },
+            { icon: Zap, number: "96%", label: "שביעות רצון", color: "info" },
+            { icon: Users, number: "2.5K", label: "לידים חודשיים", color: "primary" },
+            { icon: Star, number: "4.8", label: "דירוג ממוצע", color: "warning" }
           ].map((stat, index) => (
             <motion.div
               key={index}
@@ -289,11 +284,11 @@ const TestimonialsSection = () => {
                 }}
               >
                 <div className="mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <LiquidGlassIcon IconComponent={stat.icon} gradient={stat.color} />
+                  <LiquidGlassIcon IconComponent={stat.icon} gradient={`from-${stat.color === 'success' ? 'green' : stat.color === 'info' ? 'blue' : stat.color === 'warning' ? 'yellow' : 'purple'}-400 to-${stat.color === 'success' ? 'emerald' : stat.color === 'info' ? 'cyan' : stat.color === 'warning' ? 'orange' : 'pink'}-600`} />
                 </div>
-                <div className="text-3xl font-black text-white mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 group-hover:bg-clip-text transition-all duration-300">
+                <GlassBadge variant={stat.color as any} size="lg" className="mb-2">
                   {stat.number}
-                </div>
+                </GlassBadge>
                 <div className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
                   {stat.label}
                 </div>

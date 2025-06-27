@@ -1,6 +1,7 @@
-
 import { motion } from "framer-motion";
 import { TrendingUp, Users, Zap, Target, Cpu, Rocket } from "lucide-react";
+import GlassBadge from "./ui/glass-badge";
+import GlassButton from "./ui/glass-button";
 
 const BenefitsSection = () => {
   // Liquid Glass Icon Component
@@ -75,43 +76,43 @@ const BenefitsSection = () => {
   const benefits = [
     {
       icon: TrendingUp,
-      title: "עלייה מדידה בהמרות של 400%",
-      description: "שיפור דרמטי בשיעורי ההמרה תוך 30 יום הראשונים על בסיס נתונים מוכחים",
+      title: "שיפור המרות של 400%",
+      description: "עלייה דרמטית בשיעורי ההמרה תוך 30 יום על בסיס נתונים מוכחים ומדידים",
       stats: "+400%",
       color: "from-green-400 to-emerald-600"
     },
     {
       icon: Users,
-      title: "גישה למיליון לקוחות פוטנציאליים",
-      description: "מערכת זיהוי וטרגוט אוטומטית המגיעה למיליוני לקוחות פוטנציאליים מדי חודש",
+      title: "גישה למיליון לקוחות",
+      description: "מערכת זיהוי אוטומטית המגיעה למיליוני לקוחות פוטנציאליים מדי חודש",
       stats: "1M+",
       color: "from-blue-400 to-cyan-600"
     },
     {
       icon: Zap,
-      title: "זמן תגובה מהיר של 0.3 שניות",
-      description: "מהירות עיבוד וטעינה המובילה בשוק הישראלי והאזורי עם תקן גלובלי",
+      title: "זמן תגובה של 0.3 שניות",
+      description: "מהירות עיבוד מובילה בשוק עם ביצועים גלובליים מתקדמים",
       stats: "0.3s",
       color: "from-yellow-400 to-orange-600"
     },
     {
       icon: Target,
-      title: "דיוק טרגוט מתקדם של 96%",
-      description: "מיקוד מדויק לקהל היעד הנכון עם טכנולוגיית בינה מלאכותית מתקדמת",
+      title: "דיוק טרגוט של 96%",
+      description: "מיקוד מדויק לקהל היעד עם טכנולוגיית בינה מלאכותית מתקדמת",
       stats: "96%",
       color: "from-purple-400 to-pink-600"
     },
     {
       icon: Cpu,
-      title: "למידה וייעול אוטונומיים",
-      description: "מערכת בינה מלאכותית הלומדת ומתייעלת בצורה עצמאית ורציפה",
+      title: "למידה אוטונומית 24/7",
+      description: "מערכת AI הלומדת ומתייעלת בצורה עצמאית ורציפה",
       stats: "24/7",
       color: "from-indigo-400 to-blue-600"
     },
     {
       icon: Rocket,
-      title: "החזר השקעה מוכח של 1,200%",
-      description: "החזר השקעה מדיד ומוכח הגורם לשינוי משמעותי בתוצאות העסקיות",
+      title: "ROI מוכח של 1,200%",
+      description: "החזר השקעה מדיד הגורם לשינוי משמעותי בתוצאות העסקיות",
       stats: "1,200%",
       color: "from-red-400 to-pink-600"
     }
@@ -156,7 +157,7 @@ const BenefitsSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            נתונים מוכחים ואמיתיים מלקוחות שחווים טרנספורמציה דיגיטלית משמעותית
+            נתונים מוכחים מלקוחות החווים טרנספורמציה דיגיטלית
             <br className="hidden sm:block" />
             עם תוצאות עסקיות מדידות וברורות
           </motion.p>
@@ -204,16 +205,11 @@ const BenefitsSection = () => {
                   className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700 bg-gradient-to-br ${benefit.color}`}
                 />
 
-                {/* Stats Display */}
+                {/* Stats Display with GlassBadge */}
                 <div className="text-center sm:text-right mb-4">
-                  <div 
-                    className={`inline-block px-3 sm:px-4 py-2 rounded-full text-sm font-bold bg-gradient-to-r ${benefit.color} text-white`}
-                    style={{
-                      boxShadow: '0 0 20px rgba(107, 115, 255, 0.3)'
-                    }}
-                  >
+                  <GlassBadge variant="primary" size="sm">
                     {benefit.stats}
-                  </div>
+                  </GlassBadge>
                 </div>
 
                 {/* Icon */}
@@ -265,34 +261,19 @@ const BenefitsSection = () => {
               מוכנים לשיפור ביצועים?
             </h3>
             <p className="text-lg sm:text-xl text-gray-300 mb-4 sm:mb-6">
-              הצטרפו לעסקים המובילים החווים צמיחה משמעותית ומדידה
+              הצטרפו לעסקים המובילים החווים צמיחה מדידה
             </p>
-            <motion.button
-              className="px-8 sm:px-10 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg text-white overflow-hidden relative group w-full sm:w-auto"
-              style={{
-                background: `linear-gradient(135deg, 
-                  #6B73FF 0%, 
-                  #9C40FF 50%, 
-                  #FF6B9D 100%)`,
-                boxShadow: `
-                  0 0 30px rgba(107, 115, 255, 0.4),
-                  0 15px 35px rgba(0, 0, 0, 0.3),
-                  inset 0 1px 0 rgba(255, 255, 255, 0.2)
-                `,
-              }}
-              whileHover={{ scale: 1.05, y: -3 }}
-              whileTap={{ scale: 0.95 }}
+            <GlassButton 
+              variant="primary" 
+              size="lg"
               onClick={() => {
                 const heroSection = document.getElementById('hero');
                 heroSection?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-              <span className="relative z-10 flex items-center justify-center gap-3">
-                <LiquidGlassIcon IconComponent={Rocket} gradient="from-white to-white" />
-                התחל היום
-              </span>
-            </motion.button>
+              <LiquidGlassIcon IconComponent={Rocket} gradient="from-white to-white" />
+              התחל היום
+            </GlassButton>
           </motion.div>
         </motion.div>
       </div>

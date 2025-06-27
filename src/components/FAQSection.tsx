@@ -1,7 +1,7 @@
-
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus, Zap, Shield, Cpu, Target, User, Clock } from "lucide-react";
+import GlassButton from "./ui/glass-button";
 
 const FAQSection = () => {
   const [openItems, setOpenItems] = useState<number[]>([]);
@@ -86,38 +86,38 @@ const FAQSection = () => {
   const faqs = [
     {
       icon: Clock,
-      question: "כמה זמן נדרש לראות תוצאות מדידות?",
-      answer: "לקוחותינו מתחילים לראות שיפורים ראשונים תוך 7-14 יום. התוצאות המשמעותיות והמלאות מגיעות תוך 30-60 יום, כאשר המערכת לומדת ומתייעלת על פי נתוני הקהל והתנהגות המשתמשים.",
+      question: "כמה זמן נדרש לתוצאות מדידות?",
+      answer: "לקוחותינו מתחילים לראות שיפורים תוך 7-14 יום. התוצאות המשמעותיות מגיעות תוך 30-60 יום, כאשר המערכת לומדת ומתייעלת על פי נתוני הקהל.",
       gradient: "from-blue-500 to-cyan-600"
     },
     {
       icon: Shield,
-      question: "מה רמת האבטחה והגנת המידע?",
-      answer: "אנו מיישמים הצפנה ברמה בנקאית (256-bit SSL) ועומדים בתקני אבטחה בינלאומיים. כל הנתונים מאוחסנים בשרתים מאובטחים בישראל ואנו עומדים בדרישות GDPR ותקנות הגנת הפרטיות הישראליות.",
+      question: "רמת האבטחה והגנת המידע?",
+      answer: "הצפנה ברמה בנקאית (256-bit SSL) ותקני אבטחה בינלאומיים. נתונים מאוחסנים בשרתים מאובטחים בישראל ועומדים בתקנות GDPR.",
       gradient: "from-green-500 to-teal-600"
     },
     {
       icon: Cpu,
-      question: "איך פועלת טכנולוגיית הבינה המלאכותית?",
-      answer: "המערכת מנתחת התנהגות משתמשים, מזהה דפוסים ומגמות, ומספקת תובנות אסטרטגיות מבוססות נתונים. האלגוריתמים שלנו מתייעלים באופן אוטומטי ומציעים המלצות לשיפור ביצועים מתמשך.",
+      question: "איך פועלת הבינה המלאכותית?",
+      answer: "המערכת מנתחת התנהגות משתמשים, מזהה דפוסים ומספקת תובנות אסטרטגיות. האלגוריתמים מתייעלים אוטומטית ומציעים המלצות לשיפור ביצועים.",
       gradient: "from-purple-500 to-pink-600"
     },
     {
       icon: Target,
-      question: "מה ההבדל מפלטפורמות דומות בשוק?",
-      answer: "הפלטפורמה שלנו מתמחה בנתוני השוק הישראלי ומספקת ממשק בעברית עם תמיכה מקומית. אנו מציעים אלגוריתמים מותאמים לקהל הישראלי עם דוחות מקצועיים ותובנות עסקיות ממוקדות.",
+      question: "ההבדל מפלטפורמות דומות?",
+      answer: "התמחות בשוק הישראלי עם ממשק בעברית ותמיכה מקומית. אלגוריתמים מותאמים לקהל הישראלי עם דוחות מקצועיים ותובנות עסקיות ממוקדות.",
       gradient: "from-orange-500 to-red-600"
     },
     {
       icon: Zap,
-      question: "מה המחיר ומהו החזר ההשקעה הצפוי?",
-      answer: "המחיר מותאם לגודל העסק ולהיקף השימוש. רוב הלקוחות רואים החזר השקעה חיובי תוך 3-6 חודשים. נשמח לבנות עבורכם הצעה מותאמת אישית לפי הצרכים העסקיים שלכם.",
+      question: "המחיר והחזר ההשקעה?",
+      answer: "מחיר מותאם לגודל העסק. רוב הלקוחות רואים החזר השקעה חיובי תוך 3-6 חודשים. נשמח לבנות הצעה מותאמת אישית לצרכים שלכם.",
       gradient: "from-indigo-500 to-blue-600"
     },
     {
       icon: User,
-      question: "איך מתקיימת התמיכה הטכנית והמקצועית?",
-      answer: "אנו מספקים תמיכה מקצועית בשפה העברית בשעות העסק, עם צוות מומחים זמין לכל שאלה טכנית או עסקית. כולל אימון התארגנות, הדרכות מקצועיות וליווי מתמשך להצלחה מיטבית.",
+      question: "התמיכה הטכנית והמקצועית?",
+      answer: "תמיכה מקצועית בעברית בשעות העסק עם צוות מומחים. כולל אימון, הדרכות מקצועיות וליווי מתמשך להצלחה מיטבית.",
       gradient: "from-yellow-500 to-orange-600"
     }
   ];
@@ -272,33 +272,15 @@ const FAQSection = () => {
             whileHover={{ scale: 1.02, y: -5 }}
           >
             <h3 className="text-3xl font-bold text-white mb-4">
-              יש לכם שאלות נוספות?
+              יש שאלות נוספות?
             </h3>
             <p className="text-xl text-gray-300 mb-6 max-w-md">
-              הצוות המקצועי שלנו זמין לכל שאלה או הבהרה נוספת
+              הצוות המקצועי זמין לכל שאלה או הבהרה
             </p>
-            <motion.button
-              className="px-10 py-4 rounded-xl font-bold text-lg text-white overflow-hidden relative group"
-              style={{
-                background: `linear-gradient(135deg, 
-                  #6B73FF 0%, 
-                  #9C40FF 50%, 
-                  #FF6B9D 100%)`,
-                boxShadow: `
-                  0 0 30px rgba(107, 115, 255, 0.4),
-                  0 15px 35px rgba(0, 0, 0, 0.3),
-                  inset 0 1px 0 rgba(255, 255, 255, 0.2)
-                `,
-              }}
-              whileHover={{ scale: 1.05, y: -3 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-              <span className="relative z-10 flex items-center gap-3">
-                <LiquidGlassIcon IconComponent={User} gradient="from-white to-white" />
-                יצירת קשר מקצועי
-              </span>
-            </motion.button>
+            <GlassButton variant="primary" size="lg">
+              <LiquidGlassIcon IconComponent={User} gradient="from-white to-white" />
+              יצירת קשר מקצועי
+            </GlassButton>
           </motion.div>
         </motion.div>
       </div>
