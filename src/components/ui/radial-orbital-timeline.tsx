@@ -1,4 +1,3 @@
-
 "use client";
 /**
  * Part of this file is based on code from 21st.dev (jatin-yadav05), licensed under the MIT License.
@@ -232,19 +231,6 @@ export default function RadialOrbitalTimeline({
                 }}
               >
                 <div
-                  className={`absolute rounded-full -inset-1 ${
-                    isPulsing ? "animate-pulse duration-1000" : ""
-                  }`}
-                  style={{
-                    background: `radial-gradient(circle, rgba(107,115,255,0.3) 0%, rgba(156,64,255,0.2) 50%, rgba(255,107,157,0.1) 100%)`,
-                    width: `${item.energy * 0.6 + 50}px`,
-                    height: `${item.energy * 0.6 + 50}px`,
-                    left: `-${(item.energy * 0.6 + 50 - 48) / 2}px`,
-                    top: `-${(item.energy * 0.6 + 50 - 48) / 2}px`,
-                  }}
-                ></div>
-
-                <div
                   className={`
                   w-12 h-12 rounded-full flex items-center justify-center
                   transition-all duration-300 transform
@@ -273,15 +259,6 @@ export default function RadialOrbitalTimeline({
                         inset 0 1px 0 rgba(255, 255, 255, 0.2)
                       `
                       : "none",
-                    ...(isExpanded || isRelated ? {} : {
-                      ':hover': {
-                        background: `linear-gradient(135deg, #6B73FF 0%, #9C40FF 50%, #FF6B9D 100%)`,
-                        boxShadow: `
-                          0 0 20px rgba(107, 115, 255, 0.3),
-                          inset 0 1px 0 rgba(255, 255, 255, 0.2)
-                        `,
-                      }
-                    })
                   }}
                   onMouseEnter={(e) => {
                     if (!isExpanded && !isRelated) {
