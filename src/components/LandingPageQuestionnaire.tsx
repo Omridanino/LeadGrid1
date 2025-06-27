@@ -111,13 +111,27 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[95vw] max-w-4xl max-h-[90vh] overflow-y-auto bg-gray-900 border-gray-700 text-white fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
+      <DialogContent className="w-[95vw] max-w-4xl max-h-[90vh] overflow-y-auto border-gray-700/50 text-white fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
+        style={{
+          background: `linear-gradient(135deg, 
+            rgba(0, 0, 0, 0.95), 
+            rgba(15, 23, 42, 0.9))`,
+          backdropFilter: 'blur(20px)',
+          boxShadow: `
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            0 25px 50px rgba(0, 0, 0, 0.8),
+            0 0 0 1px rgba(255, 255, 255, 0.05)
+          `,
+        }}
+      >
         <DialogHeader className="pb-4">
           <DialogTitle className="text-2xl font-bold flex items-center gap-2 text-white">
-            <Sparkles className="w-6 h-6 text-purple-500" />
+            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-600 flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-white" />
+            </div>
             יוצר דף נחיתה מותאם אישית
           </DialogTitle>
-          <DialogDescription className="text-gray-400">
+          <DialogDescription className="text-gray-300">
             בואו ניצור עבורכם דף נחיתה מדהים שיהפוך מבקרים ללקוחות
           </DialogDescription>
         </DialogHeader>
@@ -129,12 +143,12 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
               {[1, 2, 3, 4].map((step) => (
                 <div
                   key={step}
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 ${
                     step === currentStep
-                      ? 'bg-purple-600 text-white'
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg'
                       : step < currentStep
-                      ? 'bg-green-600 text-white'
-                      : 'bg-gray-600 text-gray-300'
+                      ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white'
+                      : 'bg-gray-700/50 text-gray-400'
                   }`}
                 >
                   {step}
@@ -145,9 +159,21 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
           </div>
 
           {/* Step content */}
-          <Card className="bg-gray-800 border-gray-700">
+          <Card className="border-gray-700/50 shadow-2xl"
+            style={{
+              background: `linear-gradient(135deg, 
+                rgba(15, 23, 42, 0.8), 
+                rgba(30, 41, 59, 0.6))`,
+              backdropFilter: 'blur(10px)',
+              boxShadow: `
+                inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                0 15px 35px rgba(0, 0, 0, 0.3)
+              `,
+            }}
+          >
             <CardHeader>
-              <CardTitle className="text-lg text-white">
+              <CardTitle className="text-lg text-white flex items-center gap-2">
+                <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"></div>
                 {getStepTitle(currentStep)}
               </CardTitle>
             </CardHeader>
@@ -162,7 +188,11 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
               onClick={prevStep}
               disabled={currentStep === 1}
               variant="outline"
-              className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white"
+              className="border-gray-600/50 text-gray-300 hover:bg-gray-700/50 hover:text-white disabled:opacity-50 backdrop-blur-sm"
+              style={{
+                background: 'rgba(15, 23, 42, 0.3)',
+                backdropFilter: 'blur(10px)'
+              }}
             >
               קודם
             </Button>
@@ -170,7 +200,16 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
             <div className="flex gap-3">
               <Button
                 onClick={handlePreviewPage}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                className="text-white shadow-lg transition-all duration-300 hover:scale-105"
+                style={{
+                  background: `linear-gradient(135deg, 
+                    #3B82F6 0%, 
+                    #1D4ED8 100%)`,
+                  boxShadow: `
+                    0 0 20px rgba(59, 130, 246, 0.3),
+                    0 8px 25px rgba(0, 0, 0, 0.2)
+                  `
+                }}
               >
                 <Eye className="w-4 h-4 ml-2" />
                 צפה ועדכן דף
@@ -179,7 +218,16 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
               {currentStep < 4 ? (
                 <Button
                   onClick={nextStep}
-                  className="bg-purple-600 hover:bg-purple-700 text-white"
+                  className="text-white shadow-lg transition-all duration-300 hover:scale-105"
+                  style={{
+                    background: `linear-gradient(135deg, 
+                      #8B5CF6 0%, 
+                      #7C3AED 100%)`,
+                    boxShadow: `
+                      0 0 20px rgba(139, 92, 246, 0.3),
+                      0 8px 25px rgba(0, 0, 0, 0.2)
+                    `
+                  }}
                 >
                   הבא
                   <ArrowRight className="w-4 h-4 mr-2" />
@@ -187,7 +235,16 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
               ) : (
                 <Button
                   onClick={handleSubmit}
-                  className="bg-green-600 hover:bg-green-700 text-white"
+                  className="text-white shadow-lg transition-all duration-300 hover:scale-105"
+                  style={{
+                    background: `linear-gradient(135deg, 
+                      #10B981 0%, 
+                      #059669 100%)`,
+                    boxShadow: `
+                      0 0 20px rgba(16, 185, 129, 0.3),
+                      0 8px 25px rgba(0, 0, 0, 0.2)
+                    `
+                  }}
                 >
                   <Download className="w-4 h-4 ml-2" />
                   סיים וצור דף

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, MessageCircle, Send, Bot, User, Sparkles } from "lucide-react";
+import { X, MessageCircle, Send, Bot, User, Sparkles } from "lucide-react";
 
 interface ChatMessage {
   type: "bot" | "user";
@@ -111,11 +111,14 @@ const ChatWidget = () => {
     <>
       <div className="fixed bottom-4 sm:bottom-6 left-4 sm:left-6 z-50" data-chat-widget>
         <Button
-          onClick={() => setIsChatOpen(!isChatOpen)}
+          onClick={() => {
+            console.log("Chat button clicked, opening chat:", !isChatOpen);
+            setIsChatOpen(!isChatOpen);
+          }}
           className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-300 group"
         >
           {isChatOpen ? (
-            <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:scale-110" />
+            <X className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:scale-110" />
           ) : (
             <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:scale-110" />
           )}
