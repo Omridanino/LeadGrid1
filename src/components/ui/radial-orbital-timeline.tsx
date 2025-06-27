@@ -1,4 +1,3 @@
-
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { ArrowRight, Link, Zap } from "lucide-react";
@@ -168,8 +167,8 @@ export default function RadialOrbitalTimeline({
             transform: `translate(${centerOffset.x}px, ${centerOffset.y}px)`,
           }}
         >
-          {/* Center circle with new gradient colors */}
-          <div className="absolute w-20 h-20 rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 animate-pulse flex items-center justify-center z-10">
+          {/* Center circle with matte black-white gradient */}
+          <div className="absolute w-20 h-20 rounded-full bg-gradient-to-br from-gray-800 via-gray-600 to-gray-300 animate-pulse flex items-center justify-center z-10">
             <div className="absolute w-24 h-24 rounded-full border border-white/20 animate-ping opacity-70"></div>
             <div
               className="absolute w-28 h-28 rounded-full border border-white/10 animate-ping opacity-50"
