@@ -1,222 +1,249 @@
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { ChevronLeft, ChevronRight, Star, Quote, TrendingUp } from "lucide-react";
+import { motion } from "framer-motion";
+import { Star, Quote, Zap, TrendingUp, Users } from "lucide-react";
 
 const TestimonialsSection = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
   const testimonials = [
     {
-      name: "דנה כהן",
+      name: "דן כהן",
+      role: "מנכ'ל, TechFlow",
+      company: "סטארטאפ B2B",
+      content: "LEADGRID שינה לי את החיים. מ-2% המרות ל-12% תוך חודש. זה לא נורמלי כמה זה עובד טוב. הAI שלהם פשוט מטורף.",
+      rating: 5,
+      results: "+500% המרות",
+      gradient: "from-blue-500 to-cyan-600"
+    },
+    {
+      name: "שרה לוי",
       role: "מנהלת שיווק",
-      company: "חברת טכנולוגיה מתקדמת",
-      content: "LeadGrid פשוט הפך את העסק שלי! תוך שבוע יצרתי דף נחיתה שהגדיל את ההמרות ב-340%. הכלים החכמים והעיצוב המקצועי עזרו לי להגיע ללקוחות שלא חלמתי עליהם.",
+      company: "E-commerce Enterprise",
+      content: "התחלתי עם ספקות, אבל התוצאות מדברות בעד עצמן. 1.2 מיליון שקל הכנסות נוספות ב-3 חודשים. זו השקעה שמשתלמת פי 20.",
       rating: 5,
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b647?w=100&h=100&fit=crop&crop=face",
-      revenue: "₪47,000",
-      metric: "הכנסה חודשית"
+      results: "₪1.2M הכנסות",
+      gradient: "from-purple-500 to-pink-600"
     },
     {
-      name: "אמיר לוי", 
-      role: "בעל סטודיו עיצוב",
-      company: "עיצוב ואמנות בע״מ",
-      content: "בתור מעצב מקצועי, אני מאוד בררן. LeadGrid הצליח להפתיע אותי עם תבניות מדהימות וגמישות שלא ראיתי בשום מקום. הלקוחות שלי פשוט מתפעלים מהדפים שאני יוצר עבורהם.",
+      name: "מיכאל אברמוב",
+      role: "מייסד",
+      company: "Digital Agency",
+      content: "עבדתי עם עשרות פלטפורמות. LEADGRID זה המקום שבו הטכנולוגיה פוגשת קסם. הלקוחות שלי מתפעלים מהתוצאות שהם מקבלים.",
       rating: 5,
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
-      revenue: "85%",
-      metric: "עלייה בלקוחות"
+      results: "עשרות לקוחות מרוצים",
+      gradient: "from-green-500 to-teal-600"
     },
     {
-      name: "רחל אברהם",
-      role: "יועצת עסקית",
-      company: "ייעוץ אסטרטגי",
-      content: "לפני LeadGrid בזבזתי אלפי שקלים על מפתחים ועדיין לא קיבלתי מה שרציתי. עכשיו אני יוצרת דפי נחיתה מקצועיים בעצמי תוך דקות ומחסכת זמן וכסף בטירוף.",
+      name: "נועה ברקוביץ'",
+      role: "יזמת דיגיטלית",
+      company: "SaaS Startup",
+      content: "הגעתי למיליון המשתמשים הראשון הודות לLEADGRID. הפלטפורמה פשוט יודעת להביא את הלקוחות הנכונים בזמן הנכון. גאונות טכנולוגית.",
       rating: 5,
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
-      revenue: "₪25,000",
-      metric: "חיסכון שנתי"
-    },
-    {
-      name: "יוסי כהן",
-      role: "מנכ״ל",
-      company: "חברת ייעוץ עסקי",
-      content: "התוצאות מדברות בעד עצמן - פי 5 יותר לידים תוך חודש! הדפים נטענים מהר, נראים מדהימים ומובילים להמרות גבוהות. זה בדיוק מה שחיפשתי כל השנים.",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
-      revenue: "500%",
-      metric: "עלייה בלידים"
-    },
-    {
-      name: "מיכל רוזן",
-      role: "מנהלת פרויקטים",
-      company: "חברת פינטק",
-      content: "הממשק של LeadGrid כל כך אינטואיטיבי שגם הצוות הלא-טכני שלנו יכול ליצור דפים מרהיבים. זה שינה לחלוטין את איך שאנחנו עובדים עם דפי נחיתה בחברה.",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face",
-      revenue: "90%",
-      metric: "חיסכון בזמן"
-    },
-    {
-      name: "עידן שמואלי",
-      role: "מפתח ואנטרפרנר",
-      company: "סטארטאפ טכנולוגי",
-      content: "כמפתח, אני מעריך את איכות הקוד שLeadGrid מייצר. זה נקי, מהיר, ומותאם לSEO. זה חוסך לי שעות עבודה ונותן תוצאות שפשוט מטורפות.",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face",
-      revenue: "₪65K",
-      metric: "הכנסה חודשית"
+      results: "1M משתמשים",
+      gradient: "from-orange-500 to-red-600"
     }
   ];
 
-  const itemsPerPage = 3;
-  const totalPages = Math.ceil(testimonials.length / itemsPerPage);
-
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex + itemsPerPage >= testimonials.length ? 0 : prevIndex + itemsPerPage
-    );
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === 0 ? Math.max(0, testimonials.length - itemsPerPage) : Math.max(0, prevIndex - itemsPerPage)
-    );
-  };
-
-  const currentTestimonials = testimonials.slice(currentIndex, currentIndex + itemsPerPage);
-
   return (
-    <section id="testimonials" className="py-24 bg-gradient-to-b from-gray-900 via-black to-gray-900 relative overflow-hidden">
+    <section id="testimonials" className="py-24 bg-black relative overflow-hidden">
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-purple-600/5" />
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
-      
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-20">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600/20 to-purple-600/20 px-6 py-3 rounded-full border border-blue-500/20 mb-6">
-            <Quote className="w-5 h-5 text-blue-400" />
-            <span className="text-blue-300 font-medium">מה הלקוחות שלנו אומרים</span>
-          </div>
-          <h2 className="text-5xl md:text-6xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              סיפורי הצלחה
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5" />
+        <div className="absolute top-1/4 left-1/6 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/6 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-3/4 left-1/2 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Section Header */}
+        <motion.div
+          className="text-center mb-20"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.h2 
+            className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6"
+            style={{
+              textShadow: '0 0 30px rgba(255, 255, 255, 0.2)',
+              letterSpacing: '-0.02em'
+            }}
+          >
+            סיפורי 
+            <span className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent">
+              {" "}הצלחה
             </span>
+          </motion.h2>
+          <motion.p 
+            className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            לקוחות אמיתיים, תוצאות אמיתיות, טרנספורמציה אמיתית
             <br />
-            <span className="text-white">שמדברים בעד עצמם</span>
-          </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            אלפי עסקים כבר משתמשים ב-LeadGrid ומגדילים את הרווחים שלהם פי כמה
-          </p>
-        </div>
+            כשטכנולוגיה פוגשת חזון עסקי - קסם קורה
+          </motion.p>
+        </motion.div>
 
-        <div className="relative">
-          {/* Navigation */}
-          <div className="flex justify-center items-center gap-8 mb-12">
-            <Button
-              onClick={prevSlide}
-              variant="outline"
-              size="icon"
-              className="w-12 h-12 rounded-full border-2 border-blue-500/30 hover:border-blue-400 hover:bg-blue-500/10 transition-all duration-300 group"
-              disabled={currentIndex === 0}
+        {/* Testimonials Grid */}
+        <div className="grid md:grid-cols-2 gap-8 mb-16">
+          {testimonials.map((testimonial, index) => (
+            <motion.div
+              key={index}
+              className="group relative"
+              initial={{ opacity: 0, y: 50, rotateX: -15 }}
+              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+              viewport={{ once: true }}
+              transition={{ 
+                duration: 0.8, 
+                delay: index * 0.2,
+                type: "spring",
+                stiffness: 100
+              }}
+              whileHover={{ 
+                y: -10, 
+                scale: 1.02,
+                rotateX: 2,
+                rotateY: 2
+              }}
+              style={{ perspective: "1000px" }}
             >
-              <ChevronRight className="w-6 h-6 text-blue-400 group-hover:text-blue-300" />
-            </Button>
-            
-            {/* Enhanced Pagination */}
-            <div className="flex gap-4">
-              {Array.from({ length: totalPages }).map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index * itemsPerPage)}
-                  className={`transition-all duration-300 ${
-                    Math.floor(currentIndex / itemsPerPage) === index
-                      ? 'w-12 h-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full'
-                      : 'w-4 h-4 bg-gray-600 hover:bg-gray-500 rounded-full'
-                  }`}
+              <div 
+                className="relative p-8 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden h-full"
+                style={{
+                  background: `linear-gradient(135deg, 
+                    rgba(255, 255, 255, 0.08), 
+                    rgba(255, 255, 255, 0.02))`,
+                  boxShadow: `
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                    0 25px 50px rgba(0, 0, 0, 0.4),
+                    0 0 0 1px rgba(255, 255, 255, 0.05)
+                  `,
+                  transformStyle: "preserve-3d"
+                }}
+              >
+                {/* Gradient Overlay */}
+                <div 
+                  className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700 bg-gradient-to-br ${testimonial.gradient}`}
                 />
-              ))}
-            </div>
-            
-            <Button
-              onClick={nextSlide}
-              variant="outline"
-              size="icon"
-              className="w-12 h-12 rounded-full border-2 border-blue-500/30 hover:border-blue-400 hover:bg-blue-500/10 transition-all duration-300 group"
-              disabled={currentIndex + itemsPerPage >= testimonials.length}
-            >
-              <ChevronLeft className="w-6 h-6 text-blue-400 group-hover:text-blue-300" />
-            </Button>
-          </div>
 
-          {/* Testimonials Grid */}
-          <div className="grid md:grid-cols-3 gap-8 transition-all duration-500">
-            {currentTestimonials.map((testimonial, index) => (
-              <Card key={currentIndex + index} className="bg-gradient-to-br from-gray-800/80 to-gray-900/80 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-500 group relative overflow-hidden backdrop-blur-sm">
-                {/* Card glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                {/* Quote Icon */}
+                <div className="flex justify-between items-start mb-6">
+                  <Quote 
+                    className="w-8 h-8 text-gray-500 group-hover:text-white transition-colors duration-300" 
+                  />
+                  <div 
+                    className={`px-4 py-2 rounded-full text-sm font-bold text-white bg-gradient-to-r ${testimonial.gradient}`}
+                    style={{
+                      boxShadow: '0 0 20px rgba(107, 115, 255, 0.3)'
+                    }}
+                  >
+                    {testimonial.results}
+                  </div>
+                </div>
+
+                {/* Stars */}
+                <div className="flex mb-6">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star 
+                      key={i} 
+                      className="w-5 h-5 text-yellow-400 fill-current" 
+                    />
+                  ))}
+                </div>
+
+                {/* Content */}
+                <blockquote className="text-lg text-gray-300 mb-8 leading-relaxed group-hover:text-white transition-colors duration-300">
+                  "{testimonial.content}"
+                </blockquote>
+
+                {/* Author Info */}
+                <div className="flex items-center">
+                  <div 
+                    className={`w-12 h-12 rounded-full bg-gradient-to-br ${testimonial.gradient} flex items-center justify-center mr-4`}
+                    style={{
+                      boxShadow: '0 0 20px rgba(107, 115, 255, 0.3)'
+                    }}
+                  >
+                    <Users className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-white text-lg group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 group-hover:bg-clip-text transition-all duration-300">
+                      {testimonial.name}
+                    </div>
+                    <div className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                      {testimonial.role}
+                    </div>
+                    <div className="text-sm text-gray-500 group-hover:text-gray-400 transition-colors duration-300">
+                      {testimonial.company}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3D Border Effect */}
+                <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-white/20 transition-all duration-300" />
                 
-                <CardContent className="p-8 relative z-10">
-                  {/* Header */}
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="flex items-center gap-4">
-                      <div className="relative">
-                        <img
-                          src={testimonial.image}
-                          alt={testimonial.name}
-                          className="w-16 h-16 rounded-full object-cover border-2 border-blue-400/30 group-hover:border-blue-400 transition-all duration-300"
-                        />
-                        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-gray-800 flex items-center justify-center">
-                          <div className="w-2 h-2 bg-white rounded-full"></div>
-                        </div>
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-white text-lg group-hover:text-blue-300 transition-colors duration-300">{testimonial.name}</h4>
-                        <p className="text-blue-400 font-medium text-sm">{testimonial.role}</p>
-                        <p className="text-gray-400 text-xs">{testimonial.company}</p>
-                      </div>
-                    </div>
-                    
-                    {/* Rating */}
-                    <div className="flex gap-1">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      ))}
-                    </div>
-                  </div>
-                  
-                  {/* Quote */}
-                  <div className="mb-6">
-                    <Quote className="w-8 h-8 text-blue-400/30 mb-3" />
-                    <p className="text-gray-300 leading-relaxed text-sm group-hover:text-white transition-colors duration-300 italic">
-                      "{testimonial.content}"
-                    </p>
-                  </div>
-                  
-                  {/* Metrics */}
-                  <div className="bg-gradient-to-r from-blue-900/30 to-purple-900/30 p-4 rounded-xl border border-blue-600/20">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="text-2xl font-bold text-white mb-1">{testimonial.revenue}</div>
-                        <div className="text-blue-300 text-xs">{testimonial.metric}</div>
-                      </div>
-                      <TrendingUp className="w-8 h-8 text-green-400" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {/* Bottom CTA */}
-          <div className="text-center mt-16">
-            <p className="text-gray-400 mb-6">רוצה להצטרף אליהם?</p>
-            <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-              התחל עכשיו בחינם
-            </Button>
-          </div>
+                {/* Glow Effect */}
+                <div className="absolute -inset-1 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 blur-lg bg-gradient-to-r from-blue-400 to-purple-400" />
+              </div>
+            </motion.div>
+          ))}
         </div>
+
+        {/* Stats Section */}
+        <motion.div
+          className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          {[
+            { icon: TrendingUp, number: "2,847", label: "לקוחות מרוצים", color: "from-green-400 to-emerald-600" },
+            { icon: Zap, number: "94%", label: "שיעור הצלחה", color: "from-blue-400 to-cyan-600" },
+            { icon: Users, number: "5.2M", label: "המרות חודשיות", color: "from-purple-400 to-pink-600" },
+            { icon: Star, number: "4.9", label: "דירוג ממוצע", color: "from-yellow-400 to-orange-600" }
+          ].map((stat, index) => (
+            <motion.div
+              key={index}
+              className="group"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              whileHover={{ scale: 1.05, y: -5 }}
+            >
+              <div 
+                className="p-6 rounded-xl backdrop-blur-xl border border-white/10"
+                style={{
+                  background: `linear-gradient(135deg, 
+                    rgba(255, 255, 255, 0.05), 
+                    rgba(255, 255, 255, 0.02))`,
+                  boxShadow: `
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                    0 15px 30px rgba(0, 0, 0, 0.3)
+                  `,
+                }}
+              >
+                <div 
+                  className={`w-12 h-12 rounded-lg bg-gradient-to-br ${stat.color} flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
+                  style={{
+                    boxShadow: '0 0 20px rgba(107, 115, 255, 0.3)'
+                  }}
+                >
+                  <stat.icon className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-3xl font-black text-white mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 group-hover:bg-clip-text transition-all duration-300">
+                  {stat.number}
+                </div>
+                <div className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+                  {stat.label}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

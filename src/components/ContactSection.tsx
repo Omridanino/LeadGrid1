@@ -1,130 +1,253 @@
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { motion } from "framer-motion";
+import { Phone, Mail, MapPin, Zap, MessageCircle, Calendar, Rocket } from "lucide-react";
 
 const ContactSection = () => {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission
-  };
+  const contactMethods = [
+    {
+      icon: Phone,
+      title: "שיחת ייעוץ מיידית",
+      description: "דברו איתנו עכשיו וקבלו תשובות לכל השאלות",
+      action: "התקשרו: 03-1234567",
+      gradient: "from-green-500 to-teal-600",
+      delay: 0.1
+    },
+    {
+      icon: Mail,
+      title: "מייל מהיר ואישי",
+      description: "כתבו לנו ותקבלו תשובה תוך פחות מ-2 שעות",
+      action: "info@leadgrid.co.il",
+      gradient: "from-blue-500 to-cyan-600",
+      delay: 0.2
+    },
+    {
+      icon: MessageCircle,
+      title: "צ'אט ישיר עם מומחה",
+      description: "דיברו עם הצוות שלנו בזמן אמת",
+      action: "פתחו צ'אט",
+      gradient: "from-purple-500 to-pink-600",
+      delay: 0.3
+    },
+    {
+      icon: Calendar,
+      title: "קבעו פגישת ייעוץ",
+      description: "דמו אישי של המערכת והתאמה מושלמת לצרכים שלכם",
+      action: "קביעת פגישה",
+      gradient: "from-orange-500 to-red-600",
+      delay: 0.4
+    }
+  ];
 
   return (
-    <section id="contact" className="py-20 px-4 bg-gradient-to-b from-gray-900 to-black">
-      <div className="container mx-auto">
-        <div className="text-center mb-16">
-          <h3 className="text-4xl font-bold mb-6 text-white">צור קשר</h3>
-          <p className="text-xl text-gray-300">יש שאלות? אנחנו כאן לעזור לך 24/7</p>
-        </div>
-        
-        <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-          {/* Contact Form */}
-          <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-700">
-            <CardContent className="p-8">
-              <h4 className="text-2xl font-semibold mb-6 text-white">שלח לנו הודעה</h4>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-2 text-gray-300">שם מלא</label>
-                    <Input 
-                      type="text" 
-                      placeholder="השם שלך"
-                      className="bg-gray-700 border-gray-600 text-white"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2 text-gray-300">אימייל</label>
-                    <Input 
-                      type="email" 
-                      placeholder="example@email.com"
-                      className="bg-gray-700 border-gray-600 text-white"
-                      required
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-gray-300">נושא</label>
-                  <Input 
-                    type="text" 
-                    placeholder="איך נוכל לעזור?"
-                    className="bg-gray-700 border-gray-600 text-white"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-gray-300">הודעה</label>
-                  <Textarea 
-                    placeholder="ספר לנו על הפרויקט שלך..."
-                    rows={5}
-                    className="bg-gray-700 border-gray-600 text-white"
-                    required
-                  />
-                </div>
-                <Button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg py-3">
-                  <Send className="w-5 h-5 ml-2" />
-                  שלח הודעה
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
+    <section id="contact" className="py-24 bg-black relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5" />
+        <div className="absolute top-1/4 left-1/6 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/6 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-3/4 left-1/2 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
+      </div>
 
-          {/* Contact Info */}
-          <div className="space-y-8">
-            <Card className="bg-gradient-to-br from-blue-900/30 to-purple-900/30 border-blue-600/20">
-              <CardContent className="p-6">
-                <div className="flex items-center space-x-reverse space-x-4">
-                  <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
-                    <Mail className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h5 className="font-semibold text-white">אימייל</h5>
-                    <p className="text-gray-300">support@leadgrid.co.il</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Section Header */}
+        <motion.div
+          className="text-center mb-20"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.h2 
+            className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6"
+            style={{
+              textShadow: '0 0 30px rgba(255, 255, 255, 0.2)',
+              letterSpacing: '-0.02em'
+            }}
+          >
+            בואו 
+            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              {" "}נתחיל
+            </span>
+          </motion.h2>
+          <motion.p 
+            className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            הזמן לחולל שינוי זה עכשיו. הצוות שלנו מחכה לעזור לכם
+            <br />
+            להגיע לשיא הפוטנציאל הדיגיטלי שלכם
+          </motion.p>
+        </motion.div>
 
-            <Card className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 border-purple-600/20">
-              <CardContent className="p-6">
-                <div className="flex items-center space-x-reverse space-x-4">
-                  <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center">
-                    <Phone className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h5 className="font-semibold text-white">טלפון</h5>
-                    <p className="text-gray-300">03-1234567</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+        {/* Contact Methods Grid */}
+        <div className="grid md:grid-cols-2 gap-8 mb-16">
+          {contactMethods.map((method, index) => (
+            <motion.div
+              key={index}
+              className="group relative"
+              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ 
+                duration: 0.6, 
+                delay: method.delay,
+                type: "spring",
+                stiffness: 100
+              }}
+              whileHover={{ 
+                y: -10, 
+                scale: 1.02,
+                rotateX: 5,
+                rotateY: 5
+              }}
+              style={{ perspective: "1000px" }}
+            >
+              <div 
+                className="relative p-8 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden h-full cursor-pointer"
+                style={{
+                  background: `linear-gradient(135deg, 
+                    rgba(255, 255, 255, 0.08), 
+                    rgba(255, 255, 255, 0.02))`,
+                  boxShadow: `
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                    0 25px 50px rgba(0, 0, 0, 0.4),
+                    0 0 0 1px rgba(255, 255, 255, 0.05)
+                  `,
+                  transformStyle: "preserve-3d"
+                }}
+              >
+                {/* Gradient Overlay */}
+                <div 
+                  className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700 bg-gradient-to-br ${method.gradient}`}
+                />
 
-            <Card className="bg-gradient-to-br from-cyan-900/30 to-blue-900/30 border-cyan-600/20">
-              <CardContent className="p-6">
-                <div className="flex items-center space-x-reverse space-x-4">
-                  <div className="w-12 h-12 bg-cyan-600 rounded-lg flex items-center justify-center">
-                    <MapPin className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h5 className="font-semibold text-white">כתובת</h5>
-                    <p className="text-gray-300">תל אביב, ישראל</p>
-                  </div>
+                {/* Icon */}
+                <div 
+                  className={`w-16 h-16 rounded-xl mb-6 flex items-center justify-center bg-gradient-to-br ${method.gradient} group-hover:scale-110 transition-transform duration-300`}
+                  style={{
+                    boxShadow: `
+                      0 0 30px rgba(107, 115, 255, 0.4),
+                      inset 0 1px 0 rgba(255, 255, 255, 0.2)
+                    `,
+                  }}
+                >
+                  <method.icon className="w-8 h-8 text-white" />
                 </div>
-              </CardContent>
-            </Card>
 
-            <div className="bg-gradient-to-r from-green-900/30 to-blue-900/30 p-6 rounded-xl border border-green-600/20">
-              <h5 className="font-semibold text-white mb-3">זמני פעילות</h5>
-              <div className="space-y-2 text-gray-300">
-                <p>ראשון - חמישי: 8:00 - 20:00</p>
-                <p>שישי: 8:00 - 14:00</p>
-                <p>שבת: סגור</p>
+                {/* Content */}
+                <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 group-hover:bg-clip-text transition-all duration-300">
+                  {method.title}
+                </h3>
+                
+                <p className="text-gray-400 text-lg leading-relaxed mb-6 group-hover:text-gray-300 transition-colors duration-300">
+                  {method.description}
+                </p>
+
+                <div 
+                  className={`inline-block px-6 py-3 rounded-xl font-semibold text-white bg-gradient-to-r ${method.gradient} group-hover:scale-105 transition-transform duration-300`}
+                  style={{
+                    boxShadow: '0 0 20px rgba(107, 115, 255, 0.3)'
+                  }}
+                >
+                  {method.action}
+                </div>
+
+                {/* 3D Effect Border */}
+                <div className="absolute inset-0 rounded-2xl border border-transparent group-hover:border-white/20 transition-all duration-300" />
+                
+                {/* Glow Effects */}
+                <div className="absolute -inset-1 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 blur-lg bg-gradient-to-r from-blue-400 to-purple-400" />
               </div>
-            </div>
-          </div>
+            </motion.div>
+          ))}
         </div>
+
+        {/* Main CTA */}
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+        >
+          <motion.div
+            className="inline-block p-12 rounded-3xl backdrop-blur-xl border border-white/20 max-w-2xl"
+            style={{
+              background: `linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1), 
+                rgba(255, 255, 255, 0.05))`,
+              boxShadow: `
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 30px 60px rgba(0, 0, 0, 0.5)
+              `,
+            }}
+            whileHover={{ scale: 1.02, y: -10 }}
+          >
+            <h3 className="text-4xl font-black text-white mb-6">
+              מוכנים לשינוי?
+            </h3>
+            <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+              בואו נדבר על איך LEADGRID יכול לשנות את העסק שלכם.
+              <br />
+              <span className="text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text font-semibold">
+                התקשרו עכשיו וקבלו ייעוץ חינם + דמו אישי של המערכת
+              </span>
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <motion.button
+                className="px-12 py-5 rounded-xl font-bold text-xl text-white overflow-hidden relative group"
+                style={{
+                  background: `linear-gradient(135deg, 
+                    #6B73FF 0%, 
+                    #9C40FF 50%, 
+                    #FF6B9D 100%)`,
+                  boxShadow: `
+                    0 0 30px rgba(107, 115, 255, 0.4),
+                    0 15px 35px rgba(0, 0, 0, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2)
+                  `,
+                }}
+                whileHover={{ scale: 1.05, y: -3 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                <span className="relative z-10 flex items-center gap-3">
+                  <Rocket className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
+                  בואו נתחיל עכשיו
+                </span>
+              </motion.button>
+
+              <motion.button
+                className="px-10 py-5 rounded-xl font-bold text-xl text-white border-2 border-white/20 backdrop-blur-xl hover:bg-white/10 transition-all duration-300"
+                whileHover={{ scale: 1.05, y: -3 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span className="flex items-center gap-3">
+                  <Phone className="w-5 h-5" />
+                  03-1234567
+                </span>
+              </motion.button>
+            </div>
+
+            {/* Office Info */}
+            <motion.div
+              className="mt-8 pt-8 border-t border-white/10"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+            >
+              <div className="flex items-center justify-center gap-2 text-gray-400">
+                <MapPin className="w-5 h-5" />
+                <span>תל אביב, ישראל | זמינים 24/7</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

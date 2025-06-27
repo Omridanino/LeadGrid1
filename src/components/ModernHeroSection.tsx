@@ -189,10 +189,10 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, delay: 0.3 }}
             >
-              גלו איך יוצרים דפי נחיתה מהפנטים שמושכים
+              השתלטות דיגיטלית מוחלטת
               <br />
               <span className="bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
-                לקוחות כמו מגנט
+                AI מרוכז, טכנולוגיה מתקדמת
               </span>
             </motion.h1>
 
@@ -214,9 +214,9 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
             >
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
               <p className="text-xl md:text-2xl text-gray-200 leading-relaxed">
-                עם עיצוב מקצועי, תוכן שמוכר ואנליטיקס שחושפים
+                מערכת נחיתה AI מבוססת ביצועים עם אוטומציה מלאה
                 <br />
-                כל הזדמנות לגדילה והצלחה בעסק שלכם
+                שמנתחת, אופטימיזית ומזרימה לקוחות 24/7
               </p>
             </motion.div>
 
@@ -247,7 +247,12 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 <span className="relative z-10 flex items-center gap-3">
-                  <Zap className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
+                  <Zap 
+                    className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300"
+                    style={{
+                      filter: 'drop-shadow(0 0 8px rgba(107, 115, 255, 0.8))'
+                    }}
+                  />
                   נתחיל עכשיו
                 </span>
               </motion.button>
@@ -266,7 +271,13 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
                     0 12px 30px rgba(0, 0, 0, 0.3)
                   `,
                 }}
-                whileHover={{ scale: 1.05, y: -3 }}
+                whileHover={{ 
+                  scale: 1.05, 
+                  y: -3,
+                  background: `linear-gradient(135deg, 
+                    rgba(255, 255, 255, 0.15), 
+                    rgba(255, 255, 255, 0.08))`,
+                }}
                 whileTap={{ scale: 0.95 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-800" />
