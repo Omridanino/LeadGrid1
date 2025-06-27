@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Zap, ArrowLeft, Play, Star, Shield, Clock, Award, ChevronDown } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { SplineScene } from "@/components/ui/splite";
 import { Spotlight } from "@/components/ui/spotlight";
 
 interface ModernHeroSectionProps {
@@ -285,7 +284,7 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
             </motion.div>
           </div>
 
-          {/* Right Content - 3D Spline Scene */}
+          {/* Right Content - AI Robot */}
           <div className="relative">
             <div className="relative w-full h-[600px] rounded-2xl overflow-hidden">
               <Spotlight
@@ -295,10 +294,54 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
               
               <div className="w-full h-full bg-black/50 backdrop-blur-sm border border-white/20 rounded-2xl relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
-                <SplineScene 
-                  scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                  className="w-full h-full"
-                />
+                
+                {/* AI Robot Image */}
+                <motion.div 
+                  className="w-full h-full flex items-center justify-center relative"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 1.5, delay: 0.5 }}
+                >
+                  <motion.img
+                    src="/lovable-uploads/058c3afe-63fd-41ea-971c-bcd6b4dfaa54.png"
+                    alt="AI Robot - The Future of Landing Pages"
+                    className="w-full h-full object-contain"
+                    style={{
+                      filter: 'drop-shadow(0 0 30px rgba(255, 255, 255, 0.3))',
+                    }}
+                    animate={{
+                      y: [0, -10, 0],
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  />
+                  
+                  {/* Floating particles around robot */}
+                  {[...Array(8)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-2 h-2 bg-white rounded-full opacity-60"
+                      style={{
+                        left: `${20 + Math.random() * 60}%`,
+                        top: `${20 + Math.random() * 60}%`,
+                      }}
+                      animate={{
+                        y: [0, -20, 0],
+                        x: [0, Math.random() * 20 - 10, 0],
+                        opacity: [0.6, 1, 0.6],
+                      }}
+                      transition={{
+                        duration: 3 + Math.random() * 2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: Math.random() * 2,
+                      }}
+                    />
+                  ))}
+                </motion.div>
               </div>
             </div>
           </div>
