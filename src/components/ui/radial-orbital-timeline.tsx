@@ -1,3 +1,4 @@
+
 "use client";
 /**
  * Part of this file is based on code from 21st.dev (jatin-yadav05), licensed under the MIT License.
@@ -9,6 +10,7 @@ import { ArrowRight, Link, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface TimelineItem {
   id: number;
@@ -44,6 +46,7 @@ export default function RadialOrbitalTimeline({
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<Record<number, HTMLDivElement | null>>({});
+  const isMobile = useIsMobile();
 
   const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === containerRef.current || e.target === orbitRef.current) {
@@ -118,7 +121,8 @@ export default function RadialOrbitalTimeline({
 
   const calculateNodePosition = (index: number, total: number) => {
     const angle = ((index / total) * 360 + rotationAngle) % 360;
-    const radius = 200;
+    // Responsive radius - smaller for mobile
+    const radius = isMobile ? 120 : 200;
     const radian = (angle * Math.PI) / 180;
 
     const x = radius * Math.cos(radian) + centerOffset.x;
@@ -172,9 +176,9 @@ export default function RadialOrbitalTimeline({
             transform: `translate(${centerOffset.x}px, ${centerOffset.y}px)`,
           }}
         >
-          {/* Center circle with gradient matching the button */}
+          {/* Center circle with gradient matching the button - responsive sizing */}
           <div 
-            className="absolute w-20 h-20 rounded-full animate-pulse flex items-center justify-center z-10"
+            className={`absolute ${isMobile ? 'w-12 h-12' : 'w-20 h-20'} rounded-full animate-pulse flex items-center justify-center z-10`}
             style={{
               background: `linear-gradient(135deg, 
                 #6B73FF 0%, 
@@ -186,17 +190,17 @@ export default function RadialOrbitalTimeline({
               `,
             }}
           >
-            <div className="absolute w-24 h-24 rounded-full border border-white/20 animate-ping opacity-70"></div>
+            <div className={`absolute ${isMobile ? 'w-16 h-16' : 'w-24 h-24'} rounded-full border border-white/20 animate-ping opacity-70`}></div>
             <div
-              className="absolute w-28 h-28 rounded-full border border-white/10 animate-ping opacity-50"
+              className={`absolute ${isMobile ? 'w-20 h-20' : 'w-28 h-28'} rounded-full border border-white/10 animate-ping opacity-50`}
               style={{ animationDelay: "0.5s" }}
             ></div>
-            <div className="w-10 h-10 rounded-full bg-white/80 backdrop-blur-md"></div>
+            <div className={`${isMobile ? 'w-6 h-6' : 'w-10 h-10'} rounded-full bg-white/80 backdrop-blur-md`}></div>
           </div>
 
-          {/* Orbital path with gradient glow */}
+          {/* Orbital path with gradient glow - responsive sizing */}
           <div 
-            className="absolute w-96 h-96 rounded-full border"
+            className={`absolute ${isMobile ? 'w-60 h-60' : 'w-96 h-96'} rounded-full border`}
             style={{
               borderColor: 'rgba(107, 115, 255, 0.3)',
               boxShadow: `
@@ -232,7 +236,7 @@ export default function RadialOrbitalTimeline({
               >
                 <div
                   className={`
-                  w-12 h-12 rounded-full flex items-center justify-center
+                  ${isMobile ? 'w-8 h-8' : 'w-12 h-12'} rounded-full flex items-center justify-center
                   transition-all duration-300 transform
                   ${isExpanded ? "scale-150" : "group-hover:scale-110"}
                   border-2 
@@ -276,22 +280,22 @@ export default function RadialOrbitalTimeline({
                     }
                   }}
                 >
-                  <Icon size={18} />
+                  <Icon size={isMobile ? 12 : 18} />
                 </div>
 
                 <div
                   className={`
-                  absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap
-                  text-xs font-semibold tracking-wider
+                  absolute ${isMobile ? 'top-10' : 'top-14'} left-1/2 -translate-x-1/2 whitespace-nowrap
+                  ${isMobile ? 'text-xs' : 'text-xs'} font-semibold tracking-wider
                   transition-all duration-300
                   ${isExpanded ? "text-white scale-125" : "text-white/70 group-hover:text-white"}
                 `}
                 >
-                  {item.title}
+                  {isMobile ? item.date : item.title}
                 </div>
 
                 {isExpanded && (
-                  <Card className="absolute top-24 left-1/2 -translate-x-1/2 w-64 bg-black/90 backdrop-blur-lg border-white/30 shadow-xl shadow-white/10 overflow-visible">
+                  <Card className={`absolute ${isMobile ? 'top-16 w-72 -left-36' : 'top-24 w-64 left-1/2 -translate-x-1/2'} bg-black/90 backdrop-blur-lg border-white/30 shadow-xl shadow-white/10 overflow-visible`}>
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-white/50"></div>
                     <CardHeader className="pb-2">
                       <div className="flex justify-between items-center">
@@ -310,11 +314,11 @@ export default function RadialOrbitalTimeline({
                           {item.date}
                         </span>
                       </div>
-                      <CardTitle className="text-sm mt-2">
+                      <CardTitle className={`${isMobile ? 'text-sm' : 'text-sm'} mt-2`}>
                         {item.title}
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="text-xs text-white/80">
+                    <CardContent className={`${isMobile ? 'text-xs' : 'text-xs'} text-white/80`}>
                       <p>{item.content}</p>
 
                       <div className="mt-4 pt-3 border-t border-white/10">
