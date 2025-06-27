@@ -36,7 +36,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     if (formData.heroStyle === 'glass') {
       return (
         <button className={`btn-base btn-liquid-glass animate-slide-up ${isPrimary ? 'animate-delay-3' : 'animate-delay-4'}`}>
-          <i className="ri-arrow-left-line text-lg"></i>
+          <img src="https://cdn.iconscout.com/3d-pack/left-arrow/thumb-400-2.png" alt="arrow" style={{width: '20px', height: '20px'}} />
           {buttonText}
         </button>
       );
@@ -87,7 +87,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               {/* Floating Status Badge */}
               <div className="liquid-status-orb animate-slide-up">
                 <div className="liquid-pulse"></div>
-                <i className="ri-wifi-line text-green-400 text-lg"></i>
+                <img src="https://cdn.iconscout.com/3d-pack/online/thumb-400-2.png" alt="online" style={{width: '20px', height: '20px'}} />
                 <span className="typography-liquid text-white font-semibold">זמין עכשיו</span>
               </div>
 
@@ -114,13 +114,13 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               {/* Floating Features Orbs */}
               <div className="liquid-features-constellation animate-scale-in animate-delay-4">
                 {[
-                  { icon: 'ri-flashlight-line', title: 'מהירות נוזלית' },
-                  { icon: 'ri-shield-check-line', title: 'אמינות זורמת' },
-                  { icon: 'ri-infinity-line', title: 'זמינות תמידית' }
+                  { icon: 'https://cdn.iconscout.com/3d-pack/lightning/thumb-400-2.png', title: 'מהירות נוזלית' },
+                  { icon: 'https://cdn.iconscout.com/3d-pack/shield/thumb-400-2.png', title: 'אמינות זורמת' },
+                  { icon: 'https://cdn.iconscout.com/3d-pack/infinity/thumb-400-2.png', title: 'זמינות תמידית' }
                 ].map((feature, index) => (
                   <div key={index} className="liquid-feature-orb">
                     <div className="liquid-feature-glow">
-                      <i className={`${feature.icon} text-blue-300 text-xl`}></i>
+                      <img src={feature.icon} alt={feature.title} style={{width: '24px', height: '24px'}} />
                     </div>
                     <span className="typography-liquid text-white text-sm font-medium liquid-text-glow">
                       {feature.title}
@@ -139,7 +139,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   <div className="liquid-ring liquid-ring-3"></div>
                 </div>
                 <div className="liquid-center-orb">
-                  <i className="ri-atom-line text-blue-300 text-5xl"></i>
+                  <img src="https://cdn.iconscout.com/3d-pack/atom/thumb-400-2.png" alt="core" style={{width: '80px', height: '80px'}} />
                 </div>
               </div>
               
