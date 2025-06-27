@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/components/ColorEditor";
 import { FluidBlob } from "@/components/ui/fluid-blob";
-import { DynamicGradients, AdvancedSparkles, GeometricShapes, AnimatedPaths, Premium3D } from "@/components/ui/premium-backgrounds";
+import { DynamicGradients, AdvancedSparkles, AnimatedPaths, Premium3D } from "@/components/ui/premium-backgrounds";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { ArrowLeft, Play, CheckCircle, Star, Zap, Award, Shield, Clock } from "lucide-react";
 
