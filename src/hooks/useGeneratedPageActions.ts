@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { ColorScheme } from "@/components/ColorEditor";
@@ -41,10 +40,6 @@ export const useGeneratedPageActions = ({
 
   const handleColorChange = (newColors: ColorScheme) => {
     setIsSaved(false);
-    toast({
-      title: "🎨 צבעים עודכנו!",
-      description: "הצבעים החדשים הוחלו על הדף",
-    });
   };
 
   const handleSaveDesign = () => {

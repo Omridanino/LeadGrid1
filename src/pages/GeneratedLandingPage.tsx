@@ -105,7 +105,7 @@ const GeneratedLandingPage = () => {
                 isSaved={state.isSaved}
                 onColorChange={(newColors) => {
                   state.setCurrentColors(newColors);
-                  actions.handleColorChange(newColors);
+                  // REMOVED: Color change notification - no more toast
                 }}
                 onDesignEdit={actions.handleDesignEdit}
                 onWordPressIntegration={actions.handleWordPressIntegration}
