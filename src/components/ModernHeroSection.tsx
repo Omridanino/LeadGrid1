@@ -96,7 +96,7 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
     },
   ];
 
-  // Liquid Glass Icon Component
+  // Updated Liquid Glass Icon Component to match other sections
   const LiquidGlassIcon = ({ IconComponent, className = "" }: { IconComponent: any, className?: string }) => (
     <div className={`relative group ${className}`}>
       <div 
@@ -148,6 +148,8 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
             filter: 'drop-shadow(0 0 10px rgba(107, 115, 255, 0.5))',
           }}
         />
+        
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/20 to-transparent" />
       </div>
       
       <style>{`
