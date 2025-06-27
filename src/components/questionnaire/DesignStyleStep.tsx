@@ -13,17 +13,18 @@ interface DesignStyleStepProps {
 }
 
 export const DesignStyleStep = ({ formData, updateFormData }: DesignStyleStepProps) => {
-  // Set default values if not set
   const currentDesignStyle = formData.designStyle || 'dynamic-gradients';
   const currentHeroStyle = formData.heroStyle || 'gradient-waves';
   const currentNavigationStyle = formData.navigationStyle || 'floating';
 
-  // Update defaults if not set
   if (!formData.designStyle) {
     updateFormData('designStyle', 'dynamic-gradients');
   }
   if (!formData.heroStyle) {
     updateFormData('heroStyle', 'gradient-waves');
+  }
+  if (!formData.navigationStyle) {
+    updateFormData('navigationStyle', 'floating');
   }
 
   return (
@@ -31,35 +32,35 @@ export const DesignStyleStep = ({ formData, updateFormData }: DesignStyleStepPro
       <div>
         <Label htmlFor="designStyle" className="text-white font-semibold">סגנון העיצוב החדש שלנו *</Label>
         <Select onValueChange={(value) => updateFormData('designStyle', value)} value={currentDesignStyle}>
-          <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+          <SelectTrigger className="bg-gray-700 border-gray-600 text-white hover:bg-gray-600 focus:border-purple-500 focus:ring-purple-500">
             <SelectValue placeholder="בחר סגנון עיצוב" />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="dynamic-gradients">
+          <SelectContent className="bg-gray-800 border-gray-600 z-50">
+            <SelectItem value="dynamic-gradients" className="text-white hover:bg-gray-700 cursor-pointer focus:bg-gray-700">
               <div className="flex items-center gap-2">
                 <Star className="w-4 h-4" />
                 גרדיאנטים דינמיים (Dynamic Gradients)
               </div>
             </SelectItem>
-            <SelectItem value="sparkles-effects">
+            <SelectItem value="sparkles-effects" className="text-white hover:bg-gray-700 cursor-pointer focus:bg-gray-700">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
                 אפקטי נוצץ (Sparkles Effects)
               </div>
             </SelectItem>
-            <SelectItem value="animated-paths">
+            <SelectItem value="animated-paths" className="text-white hover:bg-gray-700 cursor-pointer focus:bg-gray-700">
               <div className="flex items-center gap-2">
                 <Navigation className="w-4 h-4" />
                 נתיבים מונפשים (Animated Paths)
               </div>
             </SelectItem>
-            <SelectItem value="fluid-blobs">
+            <SelectItem value="fluid-blobs" className="text-white hover:bg-gray-700 cursor-pointer focus:bg-gray-700">
               <div className="flex items-center gap-2">
                 <Waves className="w-4 h-4" />
                 בועות נוזל זורמות (Fluid Blobs)
               </div>
             </SelectItem>
-            <SelectItem value="spline-3d">
+            <SelectItem value="spline-3d" className="text-white hover:bg-gray-700 cursor-pointer focus:bg-gray-700">
               <div className="flex items-center gap-2">
                 <Zap className="w-4 h-4" />
                 סצנות תלת מימד (Spline 3D)
@@ -79,35 +80,35 @@ export const DesignStyleStep = ({ formData, updateFormData }: DesignStyleStepPro
       <div>
         <Label htmlFor="heroStyle" className="text-white font-semibold">איך תרצו שיוצג הדף בחלק העליון?</Label>
         <Select onValueChange={(value) => updateFormData('heroStyle', value)} value={currentHeroStyle}>
-          <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+          <SelectTrigger className="bg-gray-700 border-gray-600 text-white hover:bg-gray-600 focus:border-purple-500 focus:ring-purple-500">
             <SelectValue placeholder="בחר סגנון הצגה" />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="gradient-waves">
+          <SelectContent className="bg-gray-800 border-gray-600 z-50">
+            <SelectItem value="gradient-waves" className="text-white hover:bg-gray-700 cursor-pointer focus:bg-gray-700">
               <div className="flex items-center gap-2">
                 <Star className="w-4 h-4" />
                 גלי גרדיאנטים
               </div>
             </SelectItem>
-            <SelectItem value="particle-burst">
+            <SelectItem value="particle-burst" className="text-white hover:bg-gray-700 cursor-pointer focus:bg-gray-700">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
                 פיצוץ חלקיקים
               </div>
             </SelectItem>
-            <SelectItem value="animated-vectors">
+            <SelectItem value="animated-vectors" className="text-white hover:bg-gray-700 cursor-pointer focus:bg-gray-700">
               <div className="flex items-center gap-2">
                 <Navigation className="w-4 h-4" />
                 וקטורים מונפשים
               </div>
             </SelectItem>
-            <SelectItem value="fluid-morphing">
+            <SelectItem value="fluid-morphing" className="text-white hover:bg-gray-700 cursor-pointer focus:bg-gray-700">
               <div className="flex items-center gap-2">
                 <Waves className="w-4 h-4" />
                 בועות נוזל מתמרפות
               </div>
             </SelectItem>
-            <SelectItem value="floating-3d">
+            <SelectItem value="floating-3d" className="text-white hover:bg-gray-700 cursor-pointer focus:bg-gray-700">
               <div className="flex items-center gap-2">
                 <Zap className="w-4 h-4" />
                 אובייקטים תלת מימד מרחפים
@@ -127,17 +128,17 @@ export const DesignStyleStep = ({ formData, updateFormData }: DesignStyleStepPro
       <div>
         <Label htmlFor="navigationStyle" className="text-white font-semibold">סגנון הניווט</Label>
         <Select onValueChange={(value) => updateFormData('navigationStyle', value)} value={currentNavigationStyle}>
-          <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+          <SelectTrigger className="bg-gray-700 border-gray-600 text-white hover:bg-gray-600 focus:border-purple-500 focus:ring-purple-500">
             <SelectValue placeholder="בחר סגנון ניווט" />
           </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="floating">
+          <SelectContent className="bg-gray-800 border-gray-600 z-50">
+            <SelectItem value="floating" className="text-white hover:bg-gray-700 cursor-pointer focus:bg-gray-700">
               <div className="flex items-center gap-2">
                 <Menu className="w-4 h-4" />
                 ניווט מרחף
               </div>
             </SelectItem>
-            <SelectItem value="glassmorphism">
+            <SelectItem value="glassmorphism" className="text-white hover:bg-gray-700 cursor-pointer focus:bg-gray-700">
               <div className="flex items-center gap-2">
                 <Navigation className="w-4 h-4" />
                 זכוכית מטושטשת

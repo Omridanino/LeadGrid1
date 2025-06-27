@@ -26,7 +26,7 @@ export const BusinessInfoStep = ({ formData, updateFormData }: BusinessInfoStepP
           id="businessName"
           value={formData.businessName}
           onChange={(e) => updateFormData('businessName', e.target.value)}
-          className="bg-gray-700 border-gray-600 text-white"
+          className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
           placeholder="לדוגמה: קפה דלוקס"
         />
       </div>
@@ -34,10 +34,10 @@ export const BusinessInfoStep = ({ formData, updateFormData }: BusinessInfoStepP
       <div>
         <Label htmlFor="businessType" className="text-white font-semibold">סוג העסק / המקצוע *</Label>
         <Select onValueChange={(value) => updateFormData('businessType', value)} value={formData.businessType}>
-          <SelectTrigger className="bg-gray-700 border-gray-600 text-white hover:bg-gray-600">
+          <SelectTrigger className="bg-gray-700 border-gray-600 text-white hover:bg-gray-600 focus:border-purple-500 focus:ring-purple-500">
             <SelectValue placeholder="בחר מקצוע..." />
           </SelectTrigger>
-          <SelectContent className="bg-gray-800 border-gray-600 max-h-60 overflow-y-auto">
+          <SelectContent className="bg-gray-800 border-gray-600 max-h-60 overflow-y-auto z-50">
             {professions.map((profession) => (
               <SelectItem
                 key={profession.value}
@@ -58,7 +58,7 @@ export const BusinessInfoStep = ({ formData, updateFormData }: BusinessInfoStepP
           id="businessAdvantages"
           value={formData.businessAdvantages}
           onChange={(e) => updateFormData('businessAdvantages', e.target.value)}
-          className="bg-gray-700 border-gray-600 text-white"
+          className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
           placeholder="למשל: 
 1. שירות מהיר ואמין תוך 24 שעות
 2. צוות מנוסה עם 10+ שנות ניסיון
@@ -74,7 +74,7 @@ export const BusinessInfoStep = ({ formData, updateFormData }: BusinessInfoStepP
           id="targetAudience"
           value={formData.targetAudience}
           onChange={(e) => updateFormData('targetAudience', e.target.value)}
-          className="bg-gray-700 border-gray-600 text-white"
+          className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
           placeholder="תאר את קהל היעד שלך (גיל, תחומי עניין, צרכים...)"
           rows={3}
         />

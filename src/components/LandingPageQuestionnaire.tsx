@@ -21,7 +21,6 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
   const navigate = useNavigate();
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(1);
-  const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState<FormData>(initialFormData);
 
   console.log("LandingPageQuestionnaire render - isOpen:", isOpen, "currentStep:", currentStep);
@@ -98,7 +97,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
     console.log("renderCurrentStep called for step:", currentStep);
     switch (currentStep) {
       case 1:
-        return <BusinessInfoStep formData={formData} updateFormData={updateFormData} open={open} setOpen={setOpen} />;
+        return <BusinessInfoStep formData={formData} updateFormData={updateFormData} open={false} setOpen={() => {}} />;
       case 2:
         return <GoalsAndFeaturesStep formData={formData} updateFormData={updateFormData} />;
       case 3:
@@ -112,9 +111,9 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-[95vw] max-w-4xl max-h-[90vh] overflow-y-auto bg-gray-900 border-gray-700 text-white fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
         <DialogHeader className="pb-4">
-          <DialogTitle className="text-2xl font-bold flex items-center gap-2">
+          <DialogTitle className="text-2xl font-bold flex items-center gap-2 text-white">
             <Sparkles className="w-6 h-6 text-purple-500" />
             יוצר דף נחיתה מותאם אישית
           </DialogTitle>
@@ -146,9 +145,9 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
           </div>
 
           {/* Step content */}
-          <Card>
+          <Card className="bg-gray-800 border-gray-700">
             <CardHeader>
-              <CardTitle className="text-lg">
+              <CardTitle className="text-lg text-white">
                 {getStepTitle(currentStep)}
               </CardTitle>
             </CardHeader>
@@ -163,6 +162,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
               onClick={prevStep}
               disabled={currentStep === 1}
               variant="outline"
+              className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white"
             >
               קודם
             </Button>
@@ -170,7 +170,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
             <div className="flex gap-3">
               <Button
                 onClick={handlePreviewPage}
-                className="bg-blue-600 hover:bg-blue-700"
+                className="bg-blue-600 hover:bg-blue-700 text-white"
               >
                 <Eye className="w-4 h-4 ml-2" />
                 צפה ועדכן דף
@@ -179,7 +179,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
               {currentStep < 4 ? (
                 <Button
                   onClick={nextStep}
-                  className="bg-purple-600 hover:bg-purple-700"
+                  className="bg-purple-600 hover:bg-purple-700 text-white"
                 >
                   הבא
                   <ArrowRight className="w-4 h-4 mr-2" />
@@ -187,7 +187,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
               ) : (
                 <Button
                   onClick={handleSubmit}
-                  className="bg-green-600 hover:bg-green-700"
+                  className="bg-green-600 hover:bg-green-700 text-white"
                 >
                   <Download className="w-4 h-4 ml-2" />
                   סיים וצור דף

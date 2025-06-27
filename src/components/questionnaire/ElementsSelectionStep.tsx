@@ -13,7 +13,6 @@ interface ElementsSelectionStepProps {
 }
 
 export const ElementsSelectionStep = ({ formData, updateFormData }: ElementsSelectionStepProps) => {
-  // Auto-select recommended elements on component mount
   useEffect(() => {
     const recommendedElements = elementOptions
       .filter(element => element.recommended)
@@ -56,17 +55,17 @@ export const ElementsSelectionStep = ({ formData, updateFormData }: ElementsSele
           {recommendedElements.map((element) => (
             <div 
               key={element.id}
-              className={`flex items-start space-x-3 space-x-reverse p-4 rounded-lg border cursor-pointer transition-all ${
+              className={`flex items-start space-x-3 space-x-reverse p-4 rounded-lg border cursor-pointer transition-all hover:scale-[1.02] ${
                 formData.selectedElements.includes(element.id)
-                  ? 'border-green-500 bg-green-900/20'
-                  : 'border-gray-600 bg-gray-800/50 hover:border-gray-500'
+                  ? 'border-green-500 bg-green-900/20 shadow-green-500/20 shadow-lg'
+                  : 'border-gray-600 bg-gray-800/50 hover:border-gray-500 hover:bg-gray-700/50'
               }`}
               onClick={() => handleElementToggle(element.id)}
             >
               <Checkbox
                 checked={formData.selectedElements.includes(element.id)}
                 onChange={() => {}}
-                className="mt-1"
+                className="mt-1 data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600"
               />
               <div className="flex-1">
                 <div className="flex items-center gap-2">
@@ -88,17 +87,17 @@ export const ElementsSelectionStep = ({ formData, updateFormData }: ElementsSele
           {additionalElements.map((element) => (
             <div 
               key={element.id}
-              className={`flex items-start space-x-3 space-x-reverse p-4 rounded-lg border cursor-pointer transition-all ${
+              className={`flex items-start space-x-3 space-x-reverse p-4 rounded-lg border cursor-pointer transition-all hover:scale-[1.02] ${
                 formData.selectedElements.includes(element.id)
-                  ? 'border-purple-500 bg-purple-900/20'
-                  : 'border-gray-600 bg-gray-800/50 hover:border-gray-500'
+                  ? 'border-purple-500 bg-purple-900/20 shadow-purple-500/20 shadow-lg'
+                  : 'border-gray-600 bg-gray-800/50 hover:border-gray-500 hover:bg-gray-700/50'
               }`}
               onClick={() => handleElementToggle(element.id)}
             >
               <Checkbox
                 checked={formData.selectedElements.includes(element.id)}
                 onChange={() => {}}
-                className="mt-1"
+                className="mt-1 data-[state=checked]:bg-purple-600 data-[state=checked]:border-purple-600"
               />
               <div className="flex-1">
                 <h4 className="text-white font-medium">{element.label}</h4>
@@ -109,7 +108,7 @@ export const ElementsSelectionStep = ({ formData, updateFormData }: ElementsSele
         </div>
       </div>
       
-      <div className="text-center p-4 bg-gray-800 rounded-lg">
+      <div className="text-center p-4 bg-gray-800 rounded-lg border border-gray-700">
         <p className="text-gray-300">
           נבחרו {formData.selectedElements.length} אלמנטים
         </p>
