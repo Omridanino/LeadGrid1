@@ -15,6 +15,7 @@ interface ColorScheme {
   accent: string;
   background: string;
   text: string;
+  heroBackground?: string;
   headlineColor?: string;
   subheadlineColor?: string;
   featuresColor?: string;
@@ -31,6 +32,7 @@ const ColorEditor = ({ onColorChange }: ColorEditorProps) => {
     secondary: "#8b5cf6", 
     accent: "#06b6d4",
     background: "#000000",
+    heroBackground: "#000000",
     text: "#ffffff",
     headlineColor: "#ffffff",
     subheadlineColor: "#e0f2fe",
@@ -64,7 +66,7 @@ const ColorEditor = ({ onColorChange }: ColorEditorProps) => {
       icon: <Sparkles className="w-4 h-4" />,
       colors: { 
         primary: "#3b82f6", secondary: "#1e40af", accent: "#06b6d4", 
-        background: "#000000", text: "#ffffff",
+        background: "#000000", heroBackground: "#000000", text: "#ffffff",
         headlineColor: "#ffffff", subheadlineColor: "#e0f2fe", 
         featuresColor: "#ffffff", featuresTextColor: "#e5e7eb",
         aboutColor: "#ffffff", aboutTextColor: "#d1d5db", 
@@ -76,7 +78,7 @@ const ColorEditor = ({ onColorChange }: ColorEditorProps) => {
       icon: <Zap className="w-4 h-4" />,
       colors: { 
         primary: "#1f2937", secondary: "#374151", accent: "#6b7280", 
-        background: "#ffffff", text: "#000000",
+        background: "#ffffff", heroBackground: "#ffffff", text: "#000000",
         headlineColor: "#000000", subheadlineColor: "#374151", 
         featuresColor: "#1f2937", featuresTextColor: "#374151",
         aboutColor: "#1f2937", aboutTextColor: "#4b5563", 
@@ -88,7 +90,7 @@ const ColorEditor = ({ onColorChange }: ColorEditorProps) => {
       icon: <Palette className="w-4 h-4" />,
       colors: { 
         primary: "#3b82f6", secondary: "#1e40af", accent: "#06b6d4", 
-        background: "#0f172a", text: "#ffffff",
+        background: "#0f172a", heroBackground: "#0f172a", text: "#ffffff",
         headlineColor: "#ffffff", subheadlineColor: "#dbeafe", 
         featuresColor: "#3b82f6", featuresTextColor: "#e5e7eb",
         aboutColor: "#3b82f6", aboutTextColor: "#d1d5db", 
@@ -100,7 +102,7 @@ const ColorEditor = ({ onColorChange }: ColorEditorProps) => {
       icon: <Sparkles className="w-4 h-4" />,
       colors: { 
         primary: "#8b5cf6", secondary: "#7c3aed", accent: "#a855f7", 
-        background: "#1a0b2e", text: "#ffffff",
+        background: "#1a0b2e", heroBackground: "#1a0b2e", text: "#ffffff",
         headlineColor: "#ffffff", subheadlineColor: "#f3e8ff", 
         featuresColor: "#8b5cf6", featuresTextColor: "#e5e7eb",
         aboutColor: "#8b5cf6", aboutTextColor: "#d1d5db", 
@@ -120,6 +122,7 @@ const ColorEditor = ({ onColorChange }: ColorEditorProps) => {
 
   const colorLabels = {
     background: 'רקע עיקרי',
+    heroBackground: 'רקע הירו סקשן',
     text: 'טקסט עיקרי',
     primary: 'צבע כפתורים',
     secondary: 'צבע משני', 
@@ -183,7 +186,7 @@ const ColorEditor = ({ onColorChange }: ColorEditorProps) => {
         <div className="space-y-4">
           <h4 className="text-white font-bold">צבעים עיקריים</h4>
           <div className="grid grid-cols-1 gap-3">
-            {['background', 'text', 'primary', 'secondary', 'accent'].map((key) => (
+            {['background', 'heroBackground', 'text', 'primary', 'secondary', 'accent'].map((key) => (
               <div key={key} className="flex items-center gap-3 p-3 bg-black/30 rounded-lg">
                 <input
                   type="color"

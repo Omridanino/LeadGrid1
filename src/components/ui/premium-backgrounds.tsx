@@ -7,12 +7,12 @@ export const DynamicGradients = () => {
     <div className="absolute inset-0 w-full h-full overflow-hidden">
       {/* Enhanced gradient layers */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900" />
-      <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/30 via-purple-600/40 to-pink-600/30 animate-pulse" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/30 via-purple-600/40 to-pink-600/30" />
       <div className="absolute inset-0 bg-gradient-to-bl from-cyan-500/20 via-transparent to-violet-500/20" />
       
-      {/* Optimized particle system - reduced from 150 to 60 */}
+      {/* Optimized particle system - reduced from 150 to 40 */}
       <div className="absolute inset-0">
-        {[...Array(60)].map((_, i) => (
+        {[...Array(40)].map((_, i) => (
           <div
             key={i}
             className="absolute rounded-full opacity-70"
@@ -33,7 +33,7 @@ export const DynamicGradients = () => {
 
       {/* Enhanced geometric patterns */}
       <div className="absolute inset-0 opacity-20">
-        {[...Array(8)].map((_, i) => (
+        {[...Array(6)].map((_, i) => (
           <div
             key={`geo-${i}`}
             className="absolute rounded-full border border-blue-400/30"
@@ -69,7 +69,7 @@ export const DynamicGradients = () => {
   );
 };
 
-// Enhanced Interactive Sparkles - reduced particle count
+// Fixed Sparkles - stable background, no flickering
 export const AdvancedSparkles = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = React.useState({ x: 50, y: 50 });
@@ -91,50 +91,53 @@ export const AdvancedSparkles = () => {
 
   return (
     <div ref={containerRef} className="absolute inset-0 w-full h-full overflow-hidden bg-black">
-      {/* Interactive gradient that follows mouse */}
+      {/* Stable gradient background - no flickering */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900" />
+      
+      {/* Interactive gradient that follows mouse - smooth transition */}
       <div 
-        className="absolute inset-0 transition-all duration-500"
+        className="absolute inset-0 transition-all duration-1000 ease-out"
         style={{
           background: `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%, 
-            rgba(59, 130, 246, 0.5) 0%, 
-            rgba(168, 85, 247, 0.4) 25%, 
-            rgba(236, 72, 153, 0.3) 50%, 
+            rgba(59, 130, 246, 0.3) 0%, 
+            rgba(168, 85, 247, 0.2) 25%, 
+            rgba(236, 72, 153, 0.15) 50%, 
             transparent 70%)`
         }} 
       />
       
-      {/* Reduced sparkles from 200 to 80 */}
-      {[...Array(80)].map((_, i) => (
+      {/* Reduced sparkles from 200 to 50 */}
+      {[...Array(50)].map((_, i) => (
         <div
           key={i}
           className="absolute rounded-full"
           style={{
-            width: Math.random() * 4 + 2 + 'px',
-            height: Math.random() * 4 + 2 + 'px',
+            width: Math.random() * 3 + 1 + 'px',
+            height: Math.random() * 3 + 1 + 'px',
             left: Math.random() * 100 + '%',
             top: Math.random() * 100 + '%',
             background: `radial-gradient(circle, 
               ${['#ffffff', '#3b82f6', '#8b5cf6', '#ec4899'][Math.floor(Math.random() * 4)]}, 
               transparent)`,
-            animation: `sparkle ${2 + Math.random() * 3}s ease-in-out infinite ${Math.random() * 2}s`,
+            animation: `sparkle ${3 + Math.random() * 2}s ease-in-out infinite ${Math.random() * 2}s`,
             filter: 'blur(0.5px)',
           }}
         />
       ))}
 
-      {/* Enhanced floating orbs - reduced from 15 to 8 */}
-      {[...Array(8)].map((_, i) => (
+      {/* Floating orbs - reduced from 15 to 6 */}
+      {[...Array(6)].map((_, i) => (
         <div
           key={`orb-${i}`}
-          className="absolute rounded-full opacity-60"
+          className="absolute rounded-full opacity-40"
           style={{
-            width: Math.random() * 80 + 40 + 'px',
-            height: Math.random() * 80 + 40 + 'px',
+            width: Math.random() * 60 + 30 + 'px',
+            height: Math.random() * 60 + 30 + 'px',
             left: Math.random() * 100 + '%',
             top: Math.random() * 100 + '%',
             background: `conic-gradient(from ${Math.random() * 360}deg, 
               #3b82f6, #8b5cf6, #ec4899, #06b6d4, #3b82f6)`,
-            animation: `orbFloat ${6 + Math.random() * 6}s ease-in-out infinite ${Math.random() * 3}s`,
+            animation: `orbFloat ${8 + Math.random() * 4}s ease-in-out infinite ${Math.random() * 3}s`,
             filter: 'blur(1px)',
           }}
         />
@@ -148,18 +151,18 @@ export const AdvancedSparkles = () => {
           }
           50% { 
             opacity: 1; 
-            transform: scale(1.5) rotate(180deg); 
-            box-shadow: 0 0 20px currentColor;
+            transform: scale(1.2) rotate(180deg); 
+            box-shadow: 0 0 15px currentColor;
           }
         }
         @keyframes orbFloat {
           0%, 100% { 
             transform: translateY(0px) translateX(0px) scale(1); 
-            opacity: 0.6; 
+            opacity: 0.4; 
           }
           50% { 
-            transform: translateY(-30px) translateX(20px) scale(1.1); 
-            opacity: 0.8; 
+            transform: translateY(-20px) translateX(15px) scale(1.05); 
+            opacity: 0.6; 
           }
         }
       `}</style>
@@ -167,27 +170,27 @@ export const AdvancedSparkles = () => {
   );
 };
 
-// Completely redesigned Animated Paths - elegant and smooth
+// Completely redesigned Animated Paths - elegant and modern
 export const AnimatedPaths = () => {
   return (
-    <div className="absolute inset-0 w-full h-full overflow-hidden bg-gradient-to-br from-slate-50 to-gray-100 dark:from-gray-950 dark:to-black">
+    <div className="absolute inset-0 w-full h-full overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900">
       <svg
         className="absolute inset-0 w-full h-full"
         viewBox="0 0 1200 800"
         preserveAspectRatio="xMidYMid slice"
       >
         <defs>
-          <linearGradient id="pathGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="modernPath1" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="rgba(59, 130, 246, 0.8)" />
             <stop offset="50%" stopColor="rgba(168, 85, 247, 0.6)" />
             <stop offset="100%" stopColor="rgba(236, 72, 153, 0.4)" />
           </linearGradient>
-          <linearGradient id="pathGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id="modernPath2" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="rgba(34, 211, 238, 0.7)" />
             <stop offset="100%" stopColor="rgba(59, 130, 246, 0.5)" />
           </linearGradient>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+          <filter id="modernGlow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
             <feMerge> 
               <feMergeNode in="coloredBlur"/>
               <feMergeNode in="SourceGraphic"/>
@@ -195,62 +198,62 @@ export const AnimatedPaths = () => {
           </filter>
         </defs>
         
-        {/* Elegant curved paths - reduced from 12 to 6 */}
-        {[...Array(6)].map((_, i) => {
-          const baseY = 150 + i * 100;
-          const amplitude = 60 + Math.sin(i) * 30;
+        {/* Modern flowing paths */}
+        {[...Array(8)].map((_, i) => {
+          const baseY = 100 + i * 80;
+          const amplitude = 80 + Math.sin(i) * 40;
           
           return (
             <path
               key={i}
-              d={`M0,${baseY} Q300,${baseY - amplitude} 600,${baseY} T1200,${baseY + amplitude * 0.3}`}
-              stroke={i % 2 === 0 ? "url(#pathGradient1)" : "url(#pathGradient2)"}
-              strokeWidth={3 - i * 0.3}
+              d={`M-100,${baseY} Q300,${baseY - amplitude} 600,${baseY} T1300,${baseY + amplitude * 0.5}`}
+              stroke={i % 2 === 0 ? "url(#modernPath1)" : "url(#modernPath2)"}
+              strokeWidth={4 - i * 0.3}
               fill="none"
-              opacity={0.7 - i * 0.08}
-              filter="url(#glow)"
+              opacity={0.8 - i * 0.08}
+              filter="url(#modernGlow)"
               style={{
-                animation: `pathFlow ${10 + i * 2}s ease-in-out infinite`,
-                animationDelay: `${i * 0.5}s`
+                animation: `modernFlow ${12 + i * 2}s ease-in-out infinite`,
+                animationDelay: `${i * 0.8}s`
               }}
             />
           );
         })}
 
-        {/* Elegant floating dots - reduced count */}
-        {[...Array(12)].map((_, i) => (
+        {/* Modern floating particles */}
+        {[...Array(20)].map((_, i) => (
           <circle
-            key={`dot-${i}`}
-            cx={100 + i * 100}
-            cy={200 + Math.sin(i) * 80}
-            r={2 + Math.sin(i) * 1}
-            fill="url(#pathGradient1)"
-            opacity={0.6}
+            key={`particle-${i}`}
+            cx={50 + i * 60}
+            cy={150 + Math.sin(i) * 100}
+            r={3 + Math.sin(i) * 2}
+            fill="url(#modernPath1)"
+            opacity={0.7}
             style={{
-              animation: `dotFloat ${4 + i}s ease-in-out infinite ${i * 0.3}s`
+              animation: `particleFloat ${6 + i}s ease-in-out infinite ${i * 0.5}s`
             }}
           />
         ))}
       </svg>
       
       <style>{`
-        @keyframes pathFlow {
+        @keyframes modernFlow {
           0%, 100% { 
-            stroke-dasharray: 0 1000;
-            opacity: 0.4;
+            stroke-dasharray: 0 2000;
+            opacity: 0.5;
           }
           50% { 
-            stroke-dasharray: 200 1000;
-            opacity: 0.8;
+            stroke-dasharray: 400 2000;
+            opacity: 0.9;
           }
         }
-        @keyframes dotFloat {
+        @keyframes particleFloat {
           0%, 100% { 
             transform: translateY(0px) scale(1);
-            opacity: 0.6;
+            opacity: 0.7;
           }
           50% { 
-            transform: translateY(-20px) scale(1.2);
+            transform: translateY(-30px) scale(1.3);
             opacity: 1;
           }
         }
@@ -259,21 +262,21 @@ export const AnimatedPaths = () => {
   );
 };
 
-// Enhanced Multi-colored Fluid Blobs - multiple blobs as requested
+// Multiple Fluid Blobs - 5 different colored blobs
 export const FluidBlob = () => {
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden bg-black">
-      {/* Multiple fluid blobs in different colors */}
+      {/* Multiple fluid blobs in different colors and sizes */}
       {[
-        { color: ['#3b82f6', '#1e40af'], size: 400, x: '10%', y: '20%' },
-        { color: ['#8b5cf6', '#7c3aed'], size: 350, x: '60%', y: '10%' },
-        { color: ['#ec4899', '#db2777'], size: 300, x: '20%', y: '60%' },
-        { color: ['#06b6d4', '#0891b2'], size: 250, x: '70%', y: '70%' },
-        { color: ['#10b981', '#059669'], size: 200, x: '45%', y: '40%' }
+        { color: ['#3b82f6', '#1e40af'], size: 350, x: '15%', y: '25%', delay: 0 },
+        { color: ['#8b5cf6', '#7c3aed'], size: 280, x: '65%', y: '15%', delay: 1.5 },
+        { color: ['#ec4899', '#db2777'], size: 250, x: '25%', y: '65%', delay: 3 },
+        { color: ['#06b6d4', '#0891b2'], size: 220, x: '75%', y: '70%', delay: 4.5 },
+        { color: ['#10b981', '#059669'], size: 180, x: '50%', y: '45%', delay: 6 }
       ].map((blob, i) => (
         <div
           key={i}
-          className="absolute rounded-full opacity-70"
+          className="absolute rounded-full opacity-60"
           style={{
             width: `${blob.size}px`,
             height: `${blob.size}px`,
@@ -281,8 +284,27 @@ export const FluidBlob = () => {
             top: blob.y,
             background: `conic-gradient(from ${i * 72}deg, 
               ${blob.color[0]}, ${blob.color[1]}, ${blob.color[0]})`,
-            animation: `fluidBlob ${12 + i * 3}s ease-in-out infinite ${i * 1.5}s`,
-            filter: `blur(${1 + i * 0.5}px)`,
+            animation: `fluidBlob ${15 + i * 3}s ease-in-out infinite ${blob.delay}s`,
+            filter: `blur(${1 + i * 0.3}px)`,
+          }}
+        />
+      ))}
+
+      {/* Additional smaller blobs for depth */}
+      {[...Array(3)].map((_, i) => (
+        <div
+          key={`small-${i}`}
+          className="absolute rounded-full opacity-40"
+          style={{
+            width: `${80 + i * 20}px`,
+            height: `${80 + i * 20}px`,
+            left: `${30 + i * 20}%`,
+            top: `${20 + i * 25}%`,
+            background: `radial-gradient(circle, 
+              ${['#f59e0b', '#ef4444', '#8b5cf6'][i]}, 
+              ${['#d97706', '#dc2626', '#7c3aed'][i]})`,
+            animation: `smallBlob ${10 + i * 2}s ease-in-out infinite ${i * 2}s`,
+            filter: 'blur(2px)',
           }}
         />
       ))}
@@ -297,12 +319,22 @@ export const FluidBlob = () => {
             border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
           }
           33% { 
-            transform: scale(1.1) rotate(120deg) translateY(-15px);
+            transform: scale(1.1) rotate(120deg) translateY(-20px);
             border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
           }
           66% { 
-            transform: scale(0.9) rotate(240deg) translateY(10px);
+            transform: scale(0.9) rotate(240deg) translateY(15px);
             border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%;
+          }
+        }
+        @keyframes smallBlob {
+          0%, 100% { 
+            transform: scale(1) rotate(0deg);
+            opacity: 0.4;
+          }
+          50% { 
+            transform: scale(1.2) rotate(180deg);
+            opacity: 0.6;
           }
         }
       `}</style>
@@ -342,7 +374,7 @@ export const Premium3D = () => {
       
       {/* Enhanced particle orbit system */}
       <div className="absolute inset-0">
-        {[...Array(24)].map((_, i) => (
+        {[...Array(16)].map((_, i) => (
           <div
             key={`particle-${i}`}
             className="absolute w-1 h-1 bg-white rounded-full opacity-60"
@@ -350,8 +382,8 @@ export const Premium3D = () => {
               left: '50%',
               top: '50%',
               animation: `orbit3D ${10 + Math.random() * 10}s linear infinite`,
-              animationDelay: `${i * 0.4}s`,
-              transform: `rotate(${i * 15}deg) translateX(${80 + i * 6}px) rotate(-${i * 15}deg)`,
+              animationDelay: `${i * 0.6}s`,
+              transform: `rotate(${i * 22.5}deg) translateX(${80 + i * 6}px) rotate(-${i * 22.5}deg)`,
             }}
           />
         ))}
