@@ -9,8 +9,10 @@ interface BusinessInfoStepProps {
   formData: {
     businessName: string;
     businessType: string;
-    targetAudience: string;
-    businessAdvantages: string;
+    businessStory: string;
+    businessFoundation: string;
+    businessValues: string;
+    businessVision: string;
   };
   updateFormData: (field: string, value: string) => void;
   open: boolean;
@@ -21,21 +23,22 @@ export const BusinessInfoStep = ({ formData, updateFormData }: BusinessInfoStepP
   return (
     <div className="space-y-6">
       <div>
-        <Label htmlFor="businessName" className="text-white font-semibold">שם העסק *</Label>
+        <Label htmlFor="businessName" className="text-white font-semibold">שם העסק המלא *</Label>
         <Input
           id="businessName"
           value={formData.businessName}
           onChange={(e) => updateFormData('businessName', e.target.value)}
           className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
-          placeholder="לדוגמה: קפה דלוקס"
+          placeholder="לדוגמה: קפה דלוקס - בית קפה בוטיק"
         />
+        <p className="text-sm text-gray-400 mt-1">השם המלא כפי שמופיע ללקוחות</p>
       </div>
       
       <div>
-        <Label htmlFor="businessType" className="text-white font-semibold">סוג העסק / המקצוע *</Label>
+        <Label htmlFor="businessType" className="text-white font-semibold">סוג העסק / התמחות מקצועית *</Label>
         <Select onValueChange={(value) => updateFormData('businessType', value)} value={formData.businessType}>
           <SelectTrigger className="bg-gray-700 border-gray-600 text-white hover:bg-gray-600 focus:border-purple-500 focus:ring-purple-500">
-            <SelectValue placeholder="בחר מקצוע..." />
+            <SelectValue placeholder="בחר את התחום המקצועי שלך..." />
           </SelectTrigger>
           <SelectContent className="bg-gray-800 border-gray-600 max-h-60 overflow-y-auto z-50">
             {professions.map((profession) => (
@@ -49,33 +52,54 @@ export const BusinessInfoStep = ({ formData, updateFormData }: BusinessInfoStepP
             ))}
           </SelectContent>
         </Select>
-        <p className="text-sm text-gray-400 mt-1">בחר את המקצוע שלך מהרשימה</p>
       </div>
 
       <div>
-        <Label htmlFor="businessAdvantages" className="text-white font-semibold">3 היתרונות המרכזיים של העסק שלך *</Label>
+        <Label htmlFor="businessStory" className="text-white font-semibold">ספר את הסיפור של העסק שלך *</Label>
         <Textarea
-          id="businessAdvantages"
-          value={formData.businessAdvantages}
-          onChange={(e) => updateFormData('businessAdvantages', e.target.value)}
+          id="businessStory"
+          value={formData.businessStory}
+          onChange={(e) => updateFormData('businessStory', e.target.value)}
           className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
-          placeholder="למשל: 
-1. שירות מהיר ואמין תוך 24 שעות
-2. צוות מנוסה עם 10+ שנות ניסיון
-3. מחירים תחרותיים עם אחריות מלאה"
+          placeholder="איך התחיל העסק? מה הביא אותך להקים אותו? מה השראת אותך? מה החלום או החזון שהוביל אותך? ספר בפירוט על המסע, האתגרים, וההישגים שלך עד היום..."
+          rows={5}
+        />
+        <p className="text-sm text-gray-400 mt-1">הסיפור האישי שלך חשוב ליצירת חיבור עם הלקוחות</p>
+      </div>
+
+      <div>
+        <Label htmlFor="businessFoundation" className="text-white font-semibold">מה הבסיס המקצועי והניסיון שלך?</Label>
+        <Textarea
+          id="businessFoundation"
+          value={formData.businessFoundation}
+          onChange={(e) => updateFormData('businessFoundation', e.target.value)}
+          className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
+          placeholder="כמה שנות ניסיון יש לך? איזה השכלה או הכשרה עברת? איזה פרויקטים מרכזיים עשית? איזה הישגים יש לך? איזה הסמכות או הכרה קיבלת?"
           rows={4}
         />
-        <p className="text-sm text-gray-400 mt-1">רשום 3 יתרונות ספציפיים שמבדילים אותך מהמתחרים</p>
       </div>
 
       <div>
-        <Label htmlFor="targetAudience" className="text-white font-semibold">קהל היעד</Label>
+        <Label htmlFor="businessValues" className="text-white font-semibold">מה הערכים המרכזיים של העסק שלך? *</Label>
         <Textarea
-          id="targetAudience"
-          value={formData.targetAudience}
-          onChange={(e) => updateFormData('targetAudience', e.target.value)}
+          id="businessValues"
+          value={formData.businessValues}
+          onChange={(e) => updateFormData('businessValues', e.target.value)}
           className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
-          placeholder="תאר את קהל היעד שלך (גיל, תחומי עניין, צרכים...)"
+          placeholder="מה חשוב לך בעבודה? איך אתה מתייחס ללקוחות? מה הערכים שמנחים אותך בכל החלטה עסקית? למשל: אמינות, איכות, יחס אישי, חדשנות, קיימות..."
+          rows={4}
+        />
+        <p className="text-sm text-gray-400 mt-1">הערכים שלך יעזרו ללקוחות להזדהות איתך</p>
+      </div>
+
+      <div>
+        <Label htmlFor="businessVision" className="text-white font-semibold">מה החזון ומטרות העתיד של העסק?</Label>
+        <Textarea
+          id="businessVision"
+          value={formData.businessVision}
+          onChange={(e) => updateFormData('businessVision', e.target.value)}
+          className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
+          placeholder="לאן אתה רוצה להגיע? מה המטרות שלך לשנה הקרובה? איך אתה רואה את העסק בעוד 5 שנים? איזה השפעה אתה רוצה להשאיר בתחום שלך?"
           rows={3}
         />
       </div>

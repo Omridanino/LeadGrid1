@@ -1,9 +1,15 @@
-
 export interface FormData {
   businessName: string;
   businessType: string;
+  businessStory: string;
+  businessFoundation: string;
+  businessValues: string;
+  businessVision: string;
+  mainServices: string;
+  uniqueAdvantages: string;
+  competitionDifference: string;
   targetAudience: string;
-  businessAdvantages: string;
+  clientProblems: string;
   mainGoal: string;
   keyFeatures: string;
   contactInfo: string;
@@ -15,8 +21,15 @@ export interface FormData {
 export const initialFormData: FormData = {
   businessName: "",
   businessType: "",
+  businessStory: "",
+  businessFoundation: "",
+  businessValues: "",
+  businessVision: "",
+  mainServices: "",
+  uniqueAdvantages: "",
+  competitionDifference: "",
   targetAudience: "",
-  businessAdvantages: "",
+  clientProblems: "",
   mainGoal: "",
   keyFeatures: "",
   contactInfo: "",
@@ -28,9 +41,9 @@ export const initialFormData: FormData = {
 export const getStepTitle = (step: number): string => {
   switch (step) {
     case 1:
-      return "פרטי העסק";
+      return "פרטי העסק והסיפור שלו";
     case 2:
-      return "יעדים ותכונות";
+      return "שירותים, יתרונות וקהל יעד";
     case 3:
       return "סגנון עיצוב טכנולוגי מתקדם";
     case 4:
@@ -41,7 +54,16 @@ export const getStepTitle = (step: number): string => {
 };
 
 export const validateRequiredFields = (formData: FormData): boolean => {
-  return !!(formData.businessName && formData.businessType);
+  return !!(
+    formData.businessName && 
+    formData.businessType && 
+    formData.businessStory &&
+    formData.businessValues &&
+    formData.mainServices &&
+    formData.uniqueAdvantages &&
+    formData.competitionDifference &&
+    formData.targetAudience
+  );
 };
 
 // Enhanced design style validation and mapping

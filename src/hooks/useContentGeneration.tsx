@@ -7,9 +7,14 @@ export const useContentGeneration = (formData: any) => {
   const generateCreativeContent = useCallback(() => {
     const businessName = formData.businessName || "העסק שלי";
     const businessType = formData.businessType || "שירותים עסקיים";
+    const businessStory = formData.businessStory || "";
+    const businessValues = formData.businessValues || "";
+    const mainServices = formData.mainServices || "";
+    const uniqueAdvantages = formData.uniqueAdvantages || "";
+    const competitionDifference = formData.competitionDifference || "";
     const targetAudience = formData.targetAudience || "לקוחות פוטנציאליים";
+    const clientProblems = formData.clientProblems || "";
     const mainGoal = formData.mainGoal || "הגדלת מכירות";
-    const keyFeatures = formData.keyFeatures || "שירות מקצועי, מהירות, אמינות";
     const isTechy3D = formData.designStyle === '3d';
 
     // Enhanced tech backgrounds with more sophisticated gradients
@@ -26,71 +31,21 @@ export const useContentGeneration = (formData: any) => {
       'linear-gradient(135deg, #fad0c4 0%, #ffd1ff 100%)'
     ];
 
-    // Generate domain-specific content with actual content
-    const generateDomainSpecificContent = (businessType: string) => {
-      const lowerBusinessType = businessType.toLowerCase();
-      
-      if (lowerBusinessType.includes('אדריכל') || lowerBusinessType.includes('עיצוב') || lowerBusinessType.includes('בניה')) {
-        return {
-          emotionalSection: {
-            title: "החלום שלכם הופך למציאות",
-            content: "כל פרויקט מתחיל בחלום. אנחנו כאן כדי להפוך את החלום שלכם למבנה מרהיב שישרת אתכם לשנים רבות."
-          },
-          whyUs: {
-            title: "למה בדיוק אנחנו?",
-            reasons: [
-              { title: "תכנון חדשני ומתקדם", description: "שימוש בטכנולוגיות המתקדמות ביותר בתכנון תלת מימדי" },
-              { title: "צוות מקצועי ומנוסה", description: "אדריכלים ומהנדסים עם עשרות שנות ניסיון מוכח" },
-              { title: "ליווי מלא לאורך הפרויקט", description: "מהרעיון הראשוני ועד למסירת המפתחות - אנחנו איתכם" },
-              { title: "עמידה בלוחות זמנים", description: "מחויבות מלאה ללוחות הזמנים שנקבעו מראש" }
-            ]
-          },
-          whatWeGive: {
-            title: "מה אתם מקבלים מאיתנו",
-            services: [
-              { title: "תכנון אדריכלי מלא", description: "כולל תוכניות מפורטות ותלת מימד מרהיבות" },
-              { title: "ייעוץ הנדסי מקצועי", description: "בדיקות יציבות ובטיחות מלאות על פי התקנים" },
-              { title: "ליווי רגולטורי", description: "טיפול בכל הרישיונות והאישורים הנדרשים" },
-              { title: "פיקוח על הביצוע", description: "מעקב צמוד אחר איכות הביצוע בשטח" }
-            ]
-          }
-        };
-      } else if (lowerBusinessType.includes('רפואה') || lowerBusinessType.includes('בריאות') || lowerBusinessType.includes('דוקטור')) {
-        return {
-          emotionalSection: {
-            title: "הבריאות שלכם - השליחות שלנו",
-            content: "כל מטופל הוא עולם שלם. אנחנו כאן כדי לדאוג לבריאותכם ולרפואתכם ברמה הגבוהה ביותר."
-          },
-          whyUs: {
-            title: "למה כדאי לבחור בנו לבריאות שלכם?",
-            reasons: [
-              { title: "צוות רפואי מומחה", description: "רופאים מומחים עם הכשרה מתקדמת ומוכרת בינלאומית" },
-              { title: "ציוד רפואי מתקדם", description: "טכנולוגיה רפואית חדישה ומדויקת ברמה עולמית" },
-              { title: "זמינות מלאה", description: "שירות רפואי זמין 24/7 למקרי חירום ולכל צורך" },
-              { title: "טיפול אישי ומסור", description: "יחס אישי וחם לכל מטופל - אתם לא רק מספר" }
-            ]
-          },
-          whatWeGive: {
-            title: "השירותים הרפואיים שלנו",
-            services: [
-              { title: "בדיקות מקיפות", description: "אבחון מדויק עם ציוד מתקדם ושיטות עדכניות" },
-              { title: "טיפולים מתקדמים", description: "טכנולוגיות טיפול חדישות המוכרות עולמית" },
-              { title: "מעקב רפואי", description: "ליווי רפואי מתמשך ומקצועי לאורך זמן" },
-              { title: "ייעוץ מקצועי", description: "הדרכה והסברים מפורטים בשפה ברורה" }
-            ]
-          }
-        };
-      }
-      
-      // Default content for other business types
+    // Generate rich content based on the detailed form data
+    const generateRichContent = () => {
       return {
         emotionalSection: {
-          title: "השירות שמשנה את המשחק",
-          content: `בעולם שמתפתח במהירות, ${businessName} כאן כדי לספק לכם את השירות המקצועי והאמין ביותר בתחום ${businessType}.`
+          title: businessStory ? "הסיפור שלנו" : "החלום שהופך למציאות",
+          content: businessStory || `${businessName} מציע שירותי ${businessType} ברמה הגבוהה ביותר עבור ${targetAudience}.`
         },
         whyUs: {
-          title: "למה כדאי לבחור דווקא בנו?",
-          reasons: [
+          title: "למה בדיוק אנחנו?",
+          reasons: uniqueAdvantages ? [
+            { title: "הייחודיות שלנו", description: uniqueAdvantages.substring(0, 100) + "..." },
+            { title: "מה מבדיל אותנו", description: competitionDifference.substring(0, 100) + "..." },
+            { title: "הערכים שלנו", description: businessValues.substring(0, 100) + "..." },
+            { title: "הניסיון שלנו", description: formData.businessFoundation?.substring(0, 100) + "..." || "ניסיון עשיר ומוכח בתחום" }
+          ] : [
             { title: "שירות מקצועי ברמה הגבוהה", description: "צוות מנוסה עם מומחיות מוכחת ושנות ניסיון רבות" },
             { title: "זמינות ומהירות בשירות", description: "מענה מהיר ויעיל לכל פנייה תוך זמן קצר" },
             { title: "יחס אישי ומסור", description: "טיפול אישי בכל לקוח ופרויקט - אתם חשובים לנו" },
@@ -98,8 +53,13 @@ export const useContentGeneration = (formData: any) => {
           ]
         },
         whatWeGive: {
-          title: "מה אתם מקבלים מאיתנו",
-          services: [
+          title: "השירותים המקצועיים שלנו",
+          services: mainServices ? [
+            { title: "השירותים שלנו", description: mainServices.substring(0, 150) + "..." },
+            { title: "הפתרונות שלנו", description: clientProblems ? `אנחנו פותרים: ${clientProblems.substring(0, 120)}...` : "פתרונות מותאמים אישית לכל לקוח" },
+            { title: "התוצאות שלנו", description: "תוצאות מוכחות ומדידות שאתם יכולים לראות ולהרגיש" },
+            { title: "הליווי שלנו", description: "תמיכה מלאה לאורך כל התהליך מההתחלה ועד הסוף" }
+          ] : [
             { title: "שירות מותאם אישית", description: "פתרונות מותאמים בדיוק לצרכים הייחודיים שלכם" },
             { title: "איכות ללא פשרות", description: "רמת שירות גבוהה ועקבית בכל שלב מהתהליך" },
             { title: "ליווי מלא", description: "תמיכה צמודה לאורך כל התהליך מההתחלה ועד הסוף" },
@@ -109,37 +69,54 @@ export const useContentGeneration = (formData: any) => {
       };
     };
 
-    const domainContent = generateDomainSpecificContent(businessType);
+    const richContent = generateRichContent();
+
+    // Create compelling headlines based on the story and values
+    const createHeadline = () => {
+      if (businessStory && businessStory.length > 50) {
+        return `${businessName} - ${businessStory.split('.')[0].substring(0, 60)}...`;
+      }
+      return `${businessName} - ${businessType} מקצועי ואמין`;
+    };
+
+    const createSubheadline = () => {
+      if (uniqueAdvantages && targetAudience) {
+        return `${uniqueAdvantages.split('.')[0].substring(0, 80)}... מתמחים בשירות ${targetAudience}`;
+      }
+      return `מספקים שירותי ${businessType} ברמה הגבוהה ביותר עבור ${targetAudience}`;
+    };
 
     return {
       techBackground: isTechy3D ? techBackgrounds[0] : null,
       
-      headline: `${businessName} - ${domainContent.emotionalSection.title.split(' ').slice(0, 4).join(' ')}`,
-      subheadline: `מספקים שירותי ${businessType} ברמה הגבוהה ביותר עבור ${targetAudience}. המומחיות והניסיון שלנו מבטיחים תוצאות מעולות.`,
-      cta: mainGoal === "יצירת לידים" ? "קבלו הצעת מחיר" : 
-           mainGoal === "הגדלת מכירות" ? "התחילו עכשיו" :
-           mainGoal === "בניית מודעות למותג" ? "גלו עוד" : "צרו קשר",
+      headline: createHeadline(),
+      subheadline: createSubheadline(),
+      cta: mainGoal === "leads" ? "קבלו הצעת מחיר חינם" : 
+           mainGoal === "sales" ? "התחילו עכשיו" :
+           mainGoal === "booking" ? "קבעו תור עכשיו" :
+           mainGoal === "contact" ? "צרו קשר לייעוץ חינם" :
+           mainGoal === "awareness" ? "גלו עוד עלינו" : "התחילו איתנו היום",
       
       sections: {
-        emotionalSection: domainContent.emotionalSection,
-        whyUs: domainContent.whyUs,
-        whatWeGive: domainContent.whatWeGive,
+        emotionalSection: richContent.emotionalSection,
+        whyUs: richContent.whyUs,
+        whatWeGive: richContent.whatWeGive,
         
         testimonials: [
           {
             name: "דני כהן",
-            role: "מנהל עסק",
-            content: `השירות של ${businessName} פשוט מעולה! הצוות המקצועי והיחס האישי עשו את כל ההבדל.`
+            role: targetAudience.split(',')[0] || "לקוח מרוצה",
+            content: `השירות של ${businessName} פשוט מעולה! ${uniqueAdvantages ? uniqueAdvantages.split('.')[0] : 'הצוות המקצועי והיחס האישי עשו את כל ההבדל'}.`
           },
           {
             name: "שרה לוי", 
             role: "יזמת",
-            content: `עבדנו עם ${businessName} על מספר פרויקטים והתוצאות תמיד מעולות. מקצועיות ברמה אחרת!`
+            content: `עבדנו עם ${businessName} על מספר פרויקטים והתוצאות תמיד מעולות. ${competitionDifference ? competitionDifference.split('.')[0] : 'מקצועיות ברמה אחרת'}!`
           },
           {
             name: "מיכל רוזן",
-            role: "בעלת חנות",
-            content: `הליווי והתמיכה שקיבלתי היו פשוט מדהימים. השירות החרג מכל הציפיות!`
+            role: "בעלת עסק",
+            content: `${businessValues ? businessValues.split('.')[0] : 'הליווי והתמיכה שקיבלתי היו פשוט מדהימים'}. השירות החרג מכל הציפיות!`
           }
         ],
         
@@ -149,7 +126,9 @@ export const useContentGeneration = (formData: any) => {
         }
       },
 
-      contactTitle: "בואו נתחיל לעבוד יחד"
+      contactTitle: formData.businessVision ? 
+        `בואו נגשים יחד את ${formData.businessVision.split('.')[0].toLowerCase()}` : 
+        "בואו נתחיל לעבוד יחד"
     };
   }, [formData]);
 
