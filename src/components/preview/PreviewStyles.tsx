@@ -1,3 +1,4 @@
+
 import { AdvancedPreviewStyles } from './AdvancedPreviewStyles';
 
 export const PreviewStyles = () => (
@@ -702,110 +703,6 @@ export const PreviewStyles = () => (
         animation: geometricFlow 8s ease infinite;
       }
 
-      .card-geometric {
-        background: linear-gradient(135deg, rgba(233, 69, 96, 0.2) 0%, rgba(78, 205, 196, 0.2) 100%);
-        border: 2px solid;
-        border-image: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24) 1;
-        clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
-        box-shadow: var(--shadow-geometric);
-        transition: all 0.3s ease;
-      }
-
-      .card-geometric:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.5), var(--shadow-geometric);
-      }
-
-      .btn-geometric {
-        background: var(--gradient-geometric);
-        background-size: 200% 200%;
-        color: white;
-        font-weight: bold;
-        clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
-        animation: geometricFlow 4s ease infinite;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-      }
-
-      .btn-geometric:hover {
-        animation-duration: 2s;
-        transform: translateY(-3px) scale(1.05);
-      }
-
-      /* === METAL STYLE === */
-      .style-metal {
-        background: var(--gradient-metal);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .style-metal::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: 
-          radial-gradient(circle at 30% 30%, rgba(244, 228, 188, 0.1) 0%, transparent 50%),
-          radial-gradient(circle at 70% 70%, rgba(201, 170, 124, 0.1) 0%, transparent 50%);
-      }
-
-      .bg-metal {
-        background: linear-gradient(135deg, #2c1810 0%, #8b7355 25%, #c9aa7c 50%, #f4e4bc 75%, #8b7355 100%);
-        background-size: 200% 200%;
-        animation: metalFlow 8s ease infinite;
-      }
-
-      .card-metal {
-        background: linear-gradient(135deg, #c9aa7c 0%, #f4e4bc 25%, #c9aa7c 50%, #8b7355 75%, #f4e4bc 100%);
-        background-size: 200% 200%;
-        border-radius: 1.5rem;
-        box-shadow: var(--shadow-metal);
-        position: relative;
-        overflow: hidden;
-        animation: metalFlow 12s ease infinite;
-      }
-
-      .card-metal::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, rgba(244, 228, 188, 0.8), transparent);
-      }
-
-      .card-metal:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 40px rgba(139, 115, 85, 0.6), inset 0 1px 0 rgba(244, 228, 188, 0.5);
-        animation-duration: 6s;
-      }
-
-      .btn-metal {
-        background: var(--gradient-metal);
-        background-size: 200% 200%;
-        color: #2d1810;
-        font-weight: bold;
-        box-shadow: var(--shadow-metal);
-        animation: metalFlow 8s ease infinite;
-      }
-
-      .btn-metal:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 16px 32px rgba(139, 115, 85, 0.5);
-        animation-duration: 4s;
-      }
-
-      .text-metal {
-        background: var(--gradient-metal);
-        background-size: 200% 200%;
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: metalFlow 8s ease infinite;
-      }
-
       /* Professional Button System */
       .btn-base {
         position: relative;
@@ -1064,3 +961,76 @@ export const PreviewStyles = () => (
         
         .grid-professional {
           grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+        
+        .section-hero {
+          min-height: 80vh;
+          padding: 2rem 0;
+        }
+        
+        .section-standard {
+          padding: 4rem 0;
+        }
+        
+        .btn-base {
+          padding: 0.875rem 1.5rem;
+          font-size: 0.9rem;
+        }
+        
+        .typography-hero {
+          font-size: 2.5rem;
+        }
+
+        .liquid-hero-grid {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+
+        .liquid-features-constellation {
+          justify-content: center;
+        }
+
+        .liquid-actions-flow {
+          justify-content: center;
+          flex-direction: column;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .grid-professional {
+          gap: 1.5rem;
+        }
+        
+        .card-3d,
+        .card-glass,
+        .card-metal,
+        .card-geometric,
+        .card-image,
+        .card-liquid-glass {
+          padding: 1.5rem;
+        }
+        
+        .btn-base {
+          padding: 0.75rem 1.25rem;
+          font-size: 0.875rem;
+        }
+      }
+
+      /* Accessibility */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+
+      /* Focus States */
+      .btn-base:focus-visible {
+        outline: 2px solid rgba(59, 130, 246, 0.6);
+        outline-offset: 2px;
+      }
+    `}</style>
+  </>
+);
