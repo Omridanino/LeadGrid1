@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Sparkles, ArrowRight, Eye, Download } from "lucide-react";
 import { BusinessInfoStep } from "./questionnaire/BusinessInfoStep";
@@ -24,7 +24,10 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState<FormData>(initialFormData);
 
+  console.log("LandingPageQuestionnaire render - isOpen:", isOpen, "currentStep:", currentStep);
+
   const handleSubmit = () => {
+    console.log("handleSubmit called with formData:", formData);
     if (!validateRequiredFields(formData)) {
       toast({
         title: "⚠️ שדות חסרים",
@@ -47,6 +50,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
   };
 
   const handlePreviewPage = () => {
+    console.log("handlePreviewPage called");
     if (!validateRequiredFields(formData)) {
       toast({
         title: "⚠️ שדות חסרים", 
@@ -69,6 +73,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
   };
 
   const updateFormData = (field: string, value: string | string[]) => {
+    console.log("updateFormData called:", field, value);
     setFormData(prev => ({
       ...prev,
       [field]: value
@@ -76,18 +81,21 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
   };
 
   const nextStep = () => {
+    console.log("nextStep called, current step:", currentStep);
     if (currentStep < 4) {
       setCurrentStep(currentStep + 1);
     }
   };
 
   const prevStep = () => {
+    console.log("prevStep called, current step:", currentStep);
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
     }
   };
 
   const renderCurrentStep = () => {
+    console.log("renderCurrentStep called for step:", currentStep);
     switch (currentStep) {
       case 1:
         return <BusinessInfoStep formData={formData} updateFormData={updateFormData} open={open} setOpen={setOpen} />;
@@ -110,6 +118,9 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
             <Sparkles className="w-6 h-6 text-purple-500" />
             יוצר דף נחיתה מותאם אישית
           </DialogTitle>
+          <DialogDescription className="text-gray-400">
+            בואו ניצור עבורכם דף נחיתה מדהים שיהפוך מבקרים ללקוחות
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6">

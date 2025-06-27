@@ -7,6 +7,11 @@ interface HeaderProps {
 }
 
 const Header = ({ onStartQuestionnaire }: HeaderProps) => {
+  const handleQuestionnaireClick = () => {
+    console.log("Header: onStartQuestionnaire clicked");
+    onStartQuestionnaire();
+  };
+
   return (
     <header className="bg-gray-900/80 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-40">
       <div className="container mx-auto px-4 py-4">
@@ -26,7 +31,7 @@ const Header = ({ onStartQuestionnaire }: HeaderProps) => {
             <a href="#contact" className="text-gray-300 hover:text-blue-400 transition-colors">צור קשר</a>
           </nav>
           <Button 
-            onClick={onStartQuestionnaire}
+            onClick={handleQuestionnaireClick}
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2 rounded-xl"
           >
             התחל עכשיו

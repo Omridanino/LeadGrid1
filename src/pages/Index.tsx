@@ -13,10 +13,22 @@ import LandingPageQuestionnaire from "@/components/LandingPageQuestionnaire";
 const Index = () => {
   const [isQuestionnaireOpen, setIsQuestionnaireOpen] = useState(false);
 
+  const handleOpenQuestionnaire = () => {
+    console.log("Index: Opening questionnaire");
+    setIsQuestionnaireOpen(true);
+  };
+
+  const handleCloseQuestionnaire = () => {
+    console.log("Index: Closing questionnaire");
+    setIsQuestionnaireOpen(false);
+  };
+
+  console.log("Index render - isQuestionnaireOpen:", isQuestionnaireOpen);
+
   return (
     <div className="min-h-screen bg-black text-white" dir="rtl">
-      <Header onStartQuestionnaire={() => setIsQuestionnaireOpen(true)} />
-      <HeroSection onStartQuestionnaire={() => setIsQuestionnaireOpen(true)} />
+      <Header onStartQuestionnaire={handleOpenQuestionnaire} />
+      <HeroSection onStartQuestionnaire={handleOpenQuestionnaire} />
       <FeaturesSection />
       <BenefitsSection />
       <TestimonialsSection />
@@ -27,7 +39,7 @@ const Index = () => {
       {/* Questionnaire Modal */}
       <LandingPageQuestionnaire 
         isOpen={isQuestionnaireOpen} 
-        onClose={() => setIsQuestionnaireOpen(false)} 
+        onClose={handleCloseQuestionnaire} 
       />
     </div>
   );
