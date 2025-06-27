@@ -94,6 +94,13 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
     }
   };
 
+  const handleDialogChange = (open: boolean) => {
+    console.log("Dialog state change:", open);
+    if (!open) {
+      onClose();
+    }
+  };
+
   const renderCurrentStep = () => {
     console.log("renderCurrentStep called for step:", currentStep);
     switch (currentStep) {
@@ -111,7 +118,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleDialogChange}>
       <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto relative">
         <DialogHeader className="pb-4">
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
