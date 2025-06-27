@@ -112,7 +112,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-4xl w-[95vw] max-h-[90vh] overflow-y-auto bg-gray-900 border-gray-700 text-white">
+      <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="pb-4">
           <DialogTitle className="text-2xl font-bold flex items-center gap-2">
             <Sparkles className="w-6 h-6 text-purple-500" />
@@ -146,7 +146,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
           </div>
 
           {/* Step content */}
-          <Card className="bg-gray-800 border-gray-700">
+          <Card>
             <CardHeader>
               <CardTitle className="text-lg">
                 {getStepTitle(currentStep)}
@@ -163,7 +163,6 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
               onClick={prevStep}
               disabled={currentStep === 1}
               variant="outline"
-              className="border-gray-600 text-gray-300 hover:bg-gray-700"
             >
               קודם
             </Button>
