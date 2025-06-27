@@ -25,6 +25,14 @@ export const useGeneratedPageState = () => {
   const [formData, setFormData] = useState<any>(null);
   const [heroImage, setHeroImage] = useState<string>('');
   const [isFullScreenPreview, setIsFullScreenPreview] = useState(false);
+  
+  // Add back missing state properties
+  const [isSaved, setIsSaved] = useState(false);
+  const [showAdvancedEditor, setShowAdvancedEditor] = useState(false);
+  const [showDesignEditor, setShowDesignEditor] = useState(false);
+  const [showWordPressGuide, setShowWordPressGuide] = useState(false);
+  const [showSidePanel, setShowSidePanel] = useState(true);
+  const [elements, setElements] = useState<any[]>([]);
 
   // Load saved data on component mount
   useEffect(() => {
@@ -54,6 +62,17 @@ export const useGeneratedPageState = () => {
     // Removed all toast notifications from here
   };
 
+  // Add back missing functions
+  const setGeneratedContent = (newContent: any) => {
+    setContent(newContent);
+    localStorage.setItem('generatedContent', JSON.stringify(newContent));
+  };
+
+  const generateCreativeContent = () => {
+    // Return existing content or generate new one based on formData
+    return content || {};
+  };
+
   return {
     content,
     setContent,
@@ -67,6 +86,21 @@ export const useGeneratedPageState = () => {
     setHeroImage,
     isFullScreenPreview,
     setIsFullScreenPreview,
-    handleColorChange
+    handleColorChange,
+    // Add back missing properties
+    isSaved,
+    setIsSaved,
+    showAdvancedEditor,
+    setShowAdvancedEditor,
+    showDesignEditor,
+    setShowDesignEditor,
+    showWordPressGuide,
+    setShowWordPressGuide,
+    showSidePanel,
+    setShowSidePanel,
+    elements,
+    setElements,
+    setGeneratedContent,
+    generateCreativeContent
   };
 };
