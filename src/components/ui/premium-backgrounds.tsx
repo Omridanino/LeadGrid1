@@ -342,20 +342,19 @@ export const AnimatedPaths = () => {
   );
 };
 
-// Enhanced Multiple Fluid Blobs - 5 different colored blobs
+// Enhanced Multiple Fluid Blobs - 4 main blobs with different colors
 export const FluidBlob = () => {
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden">
       {/* Base gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-purple-950 to-indigo-950" />
       
-      {/* 5 Fluid blobs in different colors and sizes */}
+      {/* 4 Main Fluid blobs in different colors and sizes */}
       {[
-        { color: ['#3b82f6', '#1e40af'], size: 380, x: '10%', y: '20%', delay: 0 },
-        { color: ['#8b5cf6', '#7c3aed'], size: 320, x: '70%', y: '10%', delay: 2 },
-        { color: ['#ec4899', '#db2777'], size: 280, x: '20%', y: '70%', delay: 4 },
-        { color: ['#06b6d4', '#0891b2'], size: 240, x: '80%', y: '75%', delay: 6 },
-        { color: ['#10b981', '#059669'], size: 200, x: '50%', y: '50%', delay: 8 }
+        { color: ['#3b82f6', '#1e40af'], size: 350, x: '15%', y: '20%', delay: 0 },
+        { color: ['#8b5cf6', '#7c3aed'], size: 280, x: '75%', y: '15%', delay: 2 },
+        { color: ['#ec4899', '#db2777'], size: 320, x: '20%', y: '70%', delay: 4 },
+        { color: ['#06b6d4', '#0891b2'], size: 240, x: '80%', y: '75%', delay: 6 }
       ].map((blob, i) => (
         <div
           key={i}
@@ -365,7 +364,7 @@ export const FluidBlob = () => {
             height: `${blob.size}px`,
             left: blob.x,
             top: blob.y,
-            background: `conic-gradient(from ${i * 72}deg, 
+            background: `conic-gradient(from ${i * 90}deg, 
               ${blob.color[0]}, ${blob.color[1]}, ${blob.color[0]})`,
             animation: `multiBlob ${18 + i * 3}s ease-in-out infinite ${blob.delay}s`,
             filter: `blur(${1.5 + i * 0.5}px)`,
@@ -374,18 +373,18 @@ export const FluidBlob = () => {
       ))}
 
       {/* Additional smaller accent blobs */}
-      {[...Array(4)].map((_, i) => (
+      {[...Array(3)].map((_, i) => (
         <div
           key={`accent-${i}`}
           className="absolute rounded-full opacity-50"
           style={{
-            width: `${60 + i * 15}px`,
-            height: `${60 + i * 15}px`,
-            left: `${25 + i * 20}%`,
-            top: `${30 + i * 15}%`,
+            width: `${80 + i * 20}px`,
+            height: `${80 + i * 20}px`,
+            left: `${30 + i * 20}%`,
+            top: `${40 + i * 10}%`,
             background: `radial-gradient(circle, 
-              ${['#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'][i]}, 
-              ${['#d97706', '#dc2626', '#7c3aed', '#0891b2'][i]})`,
+              ${['#f59e0b', '#ef4444', '#10b981'][i]}, 
+              ${['#d97706', '#dc2626', '#059669'][i]})`,
             animation: `accentBlob ${12 + i * 2}s ease-in-out infinite ${i * 1.5}s`,
             filter: 'blur(2px)',
           }}

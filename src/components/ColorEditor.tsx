@@ -44,7 +44,7 @@ const ColorEditor = ({ onColorChange }: ColorEditorProps) => {
     contactTextColor: "#d1d5db"
   });
 
-  // Apply colors immediately when changed - without notifications
+  // Apply colors immediately when changed - no notifications
   useEffect(() => {
     onColorChange(colors);
     
@@ -140,7 +140,7 @@ const ColorEditor = ({ onColorChange }: ColorEditorProps) => {
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
             <Palette className="w-4 h-4 text-white" />
           </div>
-          עורך צבעים - עובד בזמן אמת
+          עורך צבעים
         </CardTitle>
         <p className="text-purple-200 text-sm">שינויים מוחלים מיידית</p>
       </CardHeader>
