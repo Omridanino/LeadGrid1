@@ -229,15 +229,17 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
             >
               <motion.button
                 onClick={onStartQuestionnaire}
-                className="relative group px-10 py-5 rounded-xl font-bold text-xl text-black overflow-hidden shadow-2xl"
+                className="relative group px-10 py-5 rounded-xl font-bold text-xl overflow-hidden shadow-2xl"
                 style={{
                   background: `linear-gradient(135deg, 
-                    rgba(255, 255, 255, 0.9), 
-                    rgba(255, 255, 255, 0.8))`,
+                    #6B73FF 0%, 
+                    #9C40FF 50%, 
+                    #FF6B9D 100%)`,
+                  color: 'white',
                   boxShadow: `
-                    0 0 20px rgba(255, 255, 255, 0.3),
+                    0 0 20px rgba(107, 115, 255, 0.4),
                     0 15px 35px rgba(0, 0, 0, 0.3),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.4)
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2)
                   `,
                 }}
                 whileHover={{ scale: 1.05, y: -3 }}
@@ -246,16 +248,19 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
                 <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 <span className="relative z-10 flex items-center gap-3">
                   <Zap className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
-                  בואו נתחיל לבנות יחד
+                  נתחיל עכשיו
                 </span>
               </motion.button>
               
               <motion.button 
-                className="backdrop-blur-xl border border-white/30 px-10 py-5 rounded-xl font-bold text-xl text-white hover:border-white/50 transition-all duration-300 shadow-xl group"
+                className="relative group px-10 py-5 rounded-xl font-bold text-xl overflow-hidden shadow-xl"
                 style={{
                   background: `linear-gradient(135deg, 
                     rgba(255, 255, 255, 0.1), 
                     rgba(255, 255, 255, 0.05))`,
+                  color: 'white',
+                  border: '2px solid rgba(255, 255, 255, 0.2)',
+                  backdropFilter: 'blur(20px)',
                   boxShadow: `
                     inset 0 1px 0 rgba(255, 255, 255, 0.2),
                     0 12px 30px rgba(0, 0, 0, 0.3)
@@ -264,7 +269,8 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
                 whileHover={{ scale: 1.05, y: -3 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <span className="flex items-center gap-3">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-800" />
+                <span className="relative z-10 flex items-center gap-3">
                   <Play className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300" />
                   איך זה עובד?
                 </span>
