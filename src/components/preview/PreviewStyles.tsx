@@ -122,6 +122,132 @@ export const PreviewStyles = () => (
         letter-spacing: -0.005em;
       }
 
+      /* === GEOMETRIC STYLE === */
+      .bg-geometric {
+        background: var(--gradient-geometric);
+        background-size: 400% 400%;
+        animation: geometricFlow 15s ease infinite;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card-geometric {
+        background: rgba(255, 107, 107, 0.1);
+        backdrop-filter: blur(20px);
+        border: 2px solid rgba(255, 107, 107, 0.3);
+        border-radius: 1rem;
+        box-shadow: var(--shadow-geometric);
+        clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card-geometric::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(255, 107, 107, 0.1) 0%, rgba(78, 205, 196, 0.1) 50%, rgba(69, 183, 209, 0.1) 100%);
+        animation: geometricFlow 8s ease infinite;
+        z-index: -1;
+      }
+
+      .card-geometric:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(255, 107, 107, 0.3), 0 8px 32px rgba(78, 205, 196, 0.2);
+        border-color: rgba(255, 107, 107, 0.5);
+      }
+
+      .btn-geometric {
+        background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+        color: white;
+        border: 2px solid rgba(255, 107, 107, 0.5);
+        box-shadow: var(--shadow-geometric);
+        clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+        transition: all 0.3s ease;
+      }
+
+      .btn-geometric:hover {
+        background: linear-gradient(135deg, #4ecdc4 0%, #ff6b6b 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(255, 107, 107, 0.4);
+      }
+
+      .icon-geometric {
+        background: var(--gradient-geometric);
+        background-size: 200% 200%;
+        animation: geometricFlow 6s ease infinite;
+        clip-path: polygon(20% 0%, 100% 0%, 80% 100%, 0% 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* === METAL STYLE === */
+      .bg-metal {
+        background: var(--gradient-metal);
+        background-size: 300% 300%;
+        animation: metalFlow 12s ease infinite;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card-metal {
+        background: rgba(139, 115, 85, 0.2);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(244, 228, 188, 0.3);
+        border-radius: 1rem;
+        box-shadow: var(--shadow-metal);
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .card-metal::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, rgba(244, 228, 188, 0.6), transparent);
+      }
+
+      .card-metal:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px rgba(139, 115, 85, 0.5), inset 0 2px 0 rgba(244, 228, 188, 0.4);
+      }
+
+      .btn-metal {
+        background: linear-gradient(135deg, rgba(244, 228, 188, 0.9) 0%, rgba(139, 115, 85, 0.8) 100%);
+        color: rgba(44, 24, 16, 0.9);
+        border: 1px solid rgba(244, 228, 188, 0.5);
+        box-shadow: var(--shadow-metal);
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+
+      .btn-metal:hover {
+        background: linear-gradient(135deg, rgba(244, 228, 188, 1) 0%, rgba(139, 115, 85, 0.9) 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 15px 30px rgba(139, 115, 85, 0.6);
+      }
+
+      .icon-metal {
+        background: var(--gradient-metal);
+        background-size: 200% 200%;
+        animation: metalFlow 8s ease infinite;
+        border: 1px solid rgba(244, 228, 188, 0.4);
+        box-shadow: var(--shadow-metal);
+        color: rgba(244, 228, 188, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
       /* === LIQUID GLASS STYLE === */
       .style-glass, .bg-liquid-glass {
         background: var(--gradient-liquid-glass);
@@ -557,6 +683,10 @@ export const PreviewStyles = () => (
         border: 1px solid rgba(255,255,255,0.2);
         border-radius: 1rem;
         box-shadow: var(--shadow-liquid-glass);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       /* === IMAGE DEPTH STYLE === */
@@ -614,6 +744,10 @@ export const PreviewStyles = () => (
         border-radius: 1rem;
         box-shadow: var(--shadow-image-depth);
         transform: perspective(300px) rotateX(5deg);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .cinematic-glow {
@@ -673,34 +807,14 @@ export const PreviewStyles = () => (
         box-shadow: 0 20px 40px rgba(59, 130, 246, 0.4);
       }
 
-      /* === GEOMETRIC STYLE === */
-      .style-geometric {
-        background: linear-gradient(45deg, #1a1a2e 0%, #16213e 25%, #0f0f23 50%, #e94560 75%, #0f0f23 100%);
-        background-size: 400% 400%;
-        animation: geometricFlow 15s ease infinite;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .style-geometric::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-image: 
-          linear-gradient(30deg, rgba(255, 107, 107, 0.1) 12%, transparent 12.5%, transparent 87%, rgba(255, 107, 107, 0.1) 87.5%),
-          linear-gradient(150deg, rgba(78, 205, 196, 0.1) 12%, transparent 12.5%, transparent 87%, rgba(78, 205, 196, 0.1) 87.5%),
-          linear-gradient(90deg, rgba(69, 183, 209, 0.1) 12%, transparent 12.5%, transparent 87%, rgba(69, 183, 209, 0.1) 87.5%);
-        background-size: 80px 80px;
-        animation: geometricMove 30s linear infinite;
-      }
-
-      .bg-geometric {
-        background: linear-gradient(135deg, #e94560 0%, #ff6b6b 25%, #4ecdc4 50%, #45b7d1 75%, #f9ca24 100%);
-        background-size: 300% 300%;
-        animation: geometricFlow 8s ease infinite;
+      .icon-3d {
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        box-shadow: var(--shadow-3d);
+        transform: perspective(500px) rotateX(10deg);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       /* Professional Button System */
@@ -778,40 +892,6 @@ export const PreviewStyles = () => (
 
       .icon-premium:hover {
         transform: translateY(-4px) scale(1.1);
-      }
-
-      .icon-3d {
-        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-        box-shadow: var(--shadow-3d);
-        transform: perspective(500px) rotateX(10deg);
-      }
-
-      .icon-geometric {
-        background: var(--gradient-geometric);
-        background-size: 200% 200%;
-        animation: geometricFlow 6s ease infinite;
-        clip-path: polygon(20% 0%, 100% 0%, 80% 100%, 0% 100%);
-      }
-
-      .icon-glass {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: var(--shadow-liquid-glass);
-      }
-
-      .icon-metal {
-        background: var(--gradient-metal);
-        background-size: 200% 200%;
-        animation: metalFlow 8s ease infinite;
-        box-shadow: var(--shadow-metal);
-      }
-
-      .icon-image {
-        background: rgba(59, 130, 246, 0.8);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(59, 130, 246, 0.5);
-        box-shadow: var(--shadow-image-depth);
       }
 
       /* Animations */
