@@ -113,9 +113,9 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[90vw] max-w-2xl max-h-[85vh] overflow-y-auto border-0 p-0 bg-transparent shadow-none">
+      <DialogContent className="w-[95vw] max-w-5xl max-h-[95vh] overflow-y-auto border-0 p-0 bg-transparent shadow-none">
         <div 
-          className="relative bg-gradient-to-br from-white via-blue-50/30 to-purple-50/20 rounded-2xl shadow-xl overflow-hidden backdrop-blur-xl border border-white/20"
+          className="relative bg-gradient-to-br from-white via-blue-50/30 to-purple-50/20 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-xl border border-white/20"
           style={{
             background: `linear-gradient(135deg, 
               rgba(255, 255, 255, 0.95) 0%,
@@ -125,15 +125,16 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
               rgba(255, 255, 255, 0.95) 100%)`,
             backdropFilter: 'blur(20px)',
             boxShadow: `
-              0 20px 40px rgba(0, 0, 0, 0.1),
-              0 8px 16px rgba(59, 130, 246, 0.06),
-              0 4px 8px rgba(147, 51, 234, 0.04),
-              0 0 0 1px rgba(255, 255, 255, 0.1)
+              0 32px 64px rgba(0, 0, 0, 0.12),
+              0 16px 32px rgba(59, 130, 246, 0.08),
+              0 8px 16px rgba(147, 51, 234, 0.06),
+              0 0 0 1px rgba(255, 255, 255, 0.1),
+              inset 0 1px 0 rgba(255, 255, 255, 0.8)
             `,
           }}
         >
           {/* Animated background pattern */}
-          <div className="absolute inset-0 opacity-[0.02]">
+          <div className="absolute inset-0 opacity-[0.03]">
             <div 
               className="absolute inset-0"
               style={{ backgroundImage: `url("${backgroundPattern}")` }}
@@ -141,122 +142,128 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
           </div>
 
           {/* Gradient overlay bars */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+          <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-pulse"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-blue-500 to-purple-600 opacity-60"></div>
 
-          <div className="relative p-3 md:p-4">
-            <DialogHeader className="pb-3 text-center">
-              <div className="flex flex-col md:flex-row items-center justify-center gap-2 mb-3">
+          <div className="relative p-6 md:p-8">
+            <DialogHeader className="pb-8 text-center">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-6">
                 <div className="relative">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3">
-                    <Sparkles className="w-5 h-5 text-white" />
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-3xl flex items-center justify-center shadow-xl transform rotate-3 hover:rotate-6 transition-transform duration-300">
+                    <Sparkles className="w-8 h-8 text-white animate-pulse" />
                   </div>
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
+                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce shadow-lg"></div>
+                  <div className="absolute -bottom-1 -left-1 w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full animate-pulse"></div>
                 </div>
                 <div className="text-center md:text-right">
-                  <DialogTitle className="text-lg md:text-xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
+                  <DialogTitle className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
                     יוצר דף נחיתה מותאם אישית
                   </DialogTitle>
-                  <DialogDescription className="text-gray-600 text-xs md:text-sm mt-1 font-medium">
+                  <DialogDescription className="text-gray-600 text-base md:text-lg mt-2 font-medium">
                     בינה מלאכותית מתקדמת ליצירת דפי נחיתה מקצועיים ✨
                   </DialogDescription>
                 </div>
               </div>
               
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 rounded-full px-3 py-1.5 border border-blue-200/50 shadow-sm">
-                <Target className="w-3 h-3 text-blue-600" />
-                <span className="text-xs font-semibold text-blue-700">תהליך מהיר של 4 שלבים 🚀</span>
+              <div className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 rounded-full px-6 py-3 border-2 border-blue-200/50 shadow-lg backdrop-blur-sm hover:shadow-xl transition-all duration-300">
+                <Target className="w-5 h-5 text-blue-600 animate-pulse" />
+                <span className="text-sm font-semibold text-blue-700">תהליך מהיר של 4 שלבים 🚀</span>
               </div>
             </DialogHeader>
 
-            <div className="space-y-4">
-              {/* Progress indicator */}
-              <div className="bg-gradient-to-r from-gray-50/80 via-blue-50/60 to-purple-50/80 rounded-xl p-3 backdrop-blur-sm border border-white/30 shadow-sm">
+            <div className="space-y-8">
+              {/* Enhanced Progress indicator */}
+              <div className="bg-gradient-to-r from-gray-50/80 via-blue-50/60 to-purple-50/80 rounded-3xl p-6 backdrop-blur-sm border-2 border-white/30 shadow-lg">
                 <div className="flex justify-between items-center">
-                  <div className="flex space-x-2 space-x-reverse">
+                  <div className="flex space-x-4 space-x-reverse">
                     {[1, 2, 3, 4].map((step) => (
                       <div key={step} className="flex flex-col items-center relative">
                         <div
-                          className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold transition-all duration-300 shadow-md ${
+                          className={`w-14 h-14 rounded-3xl flex items-center justify-center text-sm font-bold transition-all duration-500 transform shadow-lg ${
                             step === currentStep
-                              ? 'bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 text-white shadow-lg scale-105'
+                              ? 'bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 text-white shadow-2xl scale-110 rotate-3 animate-pulse'
                               : step < currentStep
-                              ? 'bg-gradient-to-br from-green-500 to-emerald-600 text-white'
-                              : 'bg-gradient-to-br from-white to-gray-50 text-gray-400 border border-gray-200'
+                              ? 'bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-xl scale-105'
+                              : 'bg-gradient-to-br from-white to-gray-50 text-gray-400 border-2 border-gray-200 shadow-md hover:shadow-lg hover:scale-105'
                           }`}
                         >
                           {step < currentStep ? '✓' : step}
                         </div>
-                        <div className={`text-xs mt-1 font-medium transition-all duration-300 ${
+                        <div className={`text-xs mt-3 font-semibold transition-all duration-300 ${
                           step === currentStep ? 'text-blue-600' : step < currentStep ? 'text-green-600' : 'text-gray-400'
                         }`}>
                           שלב {step}
                         </div>
+                        {step < currentStep && (
+                          <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-ping"></div>
+                        )}
                       </div>
                     ))}
                   </div>
-                  <div className="text-left bg-gradient-to-br from-white/80 to-blue-50/60 rounded-lg p-2 shadow-sm border border-white/40">
-                    <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{currentStep}</span>
-                    <span className="text-gray-500 text-sm"> / 4</span>
+                  <div className="text-left bg-gradient-to-br from-white/80 to-blue-50/60 rounded-2xl p-4 shadow-lg backdrop-blur-sm border border-white/40">
+                    <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{currentStep}</span>
+                    <span className="text-gray-500 text-xl"> / 4</span>
+                    <div className="text-sm text-gray-600 mt-1 font-medium">שלבים הושלמו</div>
                   </div>
                 </div>
               </div>
 
-              {/* Step content */}
-              <Card className="border-0 shadow-lg bg-gradient-to-br from-white/90 via-blue-50/30 to-purple-50/20 backdrop-blur-xl overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500"></div>
-                <CardHeader className="bg-gradient-to-r from-gray-50/60 via-blue-50/40 to-purple-50/30 border-b border-white/30 pb-2">
-                  <CardTitle className="text-base md:text-lg text-gray-900 flex items-center gap-2">
-                    <div className="w-6 h-6 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-lg flex items-center justify-center shadow-md">
-                      <Zap className="w-3 h-3 text-white" />
+              {/* Enhanced Step content */}
+              <Card className="border-0 shadow-2xl bg-gradient-to-br from-white/90 via-blue-50/30 to-purple-50/20 backdrop-blur-xl overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 animate-pulse"></div>
+                <CardHeader className="bg-gradient-to-r from-gray-50/60 via-blue-50/40 to-purple-50/30 border-b-2 border-white/30 backdrop-blur-sm">
+                  <CardTitle className="text-2xl md:text-3xl text-gray-900 flex items-center gap-4">
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3 hover:rotate-6 transition-transform">
+                      <Zap className="w-5 h-5 text-white" />
                     </div>
                     <span className="bg-gradient-to-r from-gray-900 to-blue-800 bg-clip-text text-transparent">
                       {getStepTitle(currentStep)}
                     </span>
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-3 md:p-4">
+                <CardContent className="p-6 md:p-8">
                   {renderCurrentStep()}
                 </CardContent>
               </Card>
 
-              {/* Navigation buttons */}
-              <div className="flex flex-col md:flex-row justify-between items-center gap-2 pt-2 bg-gradient-to-r from-white/60 via-blue-50/40 to-purple-50/30 rounded-lg p-3 border border-white/30 shadow-sm">
+              {/* Enhanced Navigation buttons */}
+              <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-6 bg-gradient-to-r from-white/60 via-blue-50/40 to-purple-50/30 rounded-2xl p-6 backdrop-blur-sm border border-white/30 shadow-lg">
                 <Button
                   onClick={prevStep}
                   disabled={currentStep === 1}
                   variant="outline"
-                  size="sm"
-                  className="w-full md:w-auto border border-gray-300 text-gray-700 hover:bg-gradient-to-r hover:from-gray-50 hover:to-blue-50 disabled:opacity-50 rounded-lg px-4 font-medium shadow-sm"
+                  size="lg"
+                  className="w-full md:w-auto border-2 border-gray-300 text-gray-700 hover:bg-gradient-to-r hover:from-gray-50 hover:to-blue-50 disabled:opacity-50 rounded-2xl px-8 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 backdrop-blur-sm"
                 >
                   ← קודם
                 </Button>
 
-                <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
+                <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
                   <Button
                     onClick={handlePreviewPage}
-                    size="sm"
-                    className="w-full md:w-auto bg-gradient-to-r from-blue-500 via-blue-600 to-purple-600 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white shadow-md rounded-lg px-4 font-medium"
+                    size="lg"
+                    className="w-full md:w-auto bg-gradient-to-r from-blue-500 via-blue-600 to-purple-600 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 rounded-2xl px-8 font-semibold backdrop-blur-sm"
                   >
-                    <Eye className="w-4 h-4 ml-2" />
+                    <Eye className="w-5 h-5 ml-2" />
                     צפה ועדכן דף
                   </Button>
 
                   {currentStep < 4 ? (
                     <Button
                       onClick={nextStep}
-                      size="sm"
-                      className="w-full md:w-auto bg-gradient-to-r from-purple-500 via-purple-600 to-pink-600 hover:from-purple-600 hover:via-pink-600 hover:to-rose-600 text-white shadow-md rounded-lg px-4 font-medium"
+                      size="lg"
+                      className="w-full md:w-auto bg-gradient-to-r from-purple-500 via-purple-600 to-pink-600 hover:from-purple-600 hover:via-pink-600 hover:to-rose-600 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 rounded-2xl px-8 font-semibold backdrop-blur-sm"
                     >
                       הבא →
-                      <ArrowRight className="w-4 h-4 mr-2" />
+                      <ArrowRight className="w-5 h-5 mr-2" />
                     </Button>
                   ) : (
                     <Button
                       onClick={handleSubmit}
-                      size="sm"
-                      className="w-full md:w-auto bg-gradient-to-r from-green-500 via-emerald-600 to-teal-600 hover:from-green-600 hover:via-emerald-700 hover:to-teal-700 text-white shadow-md rounded-lg px-4 font-medium"
+                      size="lg"
+                      className="w-full md:w-auto bg-gradient-to-r from-green-500 via-emerald-600 to-teal-600 hover:from-green-600 hover:via-emerald-700 hover:to-teal-700 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 rounded-2xl px-8 font-semibold backdrop-blur-sm animate-pulse"
                     >
-                      <Download className="w-4 h-4 ml-2" />
+                      <Download className="w-5 h-5 ml-2" />
                       סיים וצור דף 🎉
                     </Button>
                   )}
