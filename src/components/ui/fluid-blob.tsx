@@ -1,6 +1,6 @@
 
 import React, { useRef, useMemo } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas, useFrame, useThree, extend } from '@react-three/fiber';
 import * as THREE from 'three';
 
 const vertexShader = `
@@ -107,45 +107,62 @@ void main() {
 }
 `;
 
+class CustomShaderMaterial extends THREE.ShaderMaterial {
+  constructor() {
+    super({
+      uniforms: {
+        time: { value: 0 },
+        resolution: { value: new THREE.Vector4() }
+      },
+      vertexShader,
+      fragmentShader
+    });
+  }
+}
+
+extend({ CustomShaderMaterial });
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      customShaderMaterial: any;
+    }
+  }
+}
+
 function LavaLampShader() {
-  const meshRef = useRef();
+  const meshRef = useRef<THREE.Mesh>(null);
+  const materialRef = useRef<CustomShaderMaterial>(null);
   const { size } = useThree();
-  
-  const uniforms = useMemo(() => ({
-    time: { value: 0 },
-    resolution: { value: new THREE.Vector4() }
-  }), []);
 
   React.useEffect(() => {
-    const { width, height } = size;
-    const imageAspect = 1;
-    let a1, a2;
-    
-    if (height / width > imageAspect) {
-      a1 = (width / height) * imageAspect;
-      a2 = 1;
-    } else {
-      a1 = 1;
-      a2 = (height / width) / imageAspect;
+    if (materialRef.current) {
+      const { width, height } = size;
+      const imageAspect = 1;
+      let a1, a2;
+      
+      if (height / width > imageAspect) {
+        a1 = (width / height) * imageAspect;
+        a2 = 1;
+      } else {
+        a1 = 1;
+        a2 = (height / width) / imageAspect;
+      }
+      
+      materialRef.current.uniforms.resolution.value.set(width, height, a1, a2);
     }
-    
-    uniforms.resolution.value.set(width, height, a1, a2);
-  }, [size, uniforms]);
+  }, [size]);
 
   useFrame((state) => {
-    if (meshRef.current) {
-      uniforms.time.value = state.clock.elapsedTime;
+    if (materialRef.current) {
+      materialRef.current.uniforms.time.value = state.clock.elapsedTime;
     }
   });
 
   return (
     <mesh ref={meshRef}>
       <planeGeometry args={[5, 5]} />
-      <shaderMaterial
-        uniforms={uniforms}
-        vertexShader={vertexShader}
-        fragmentShader={fragmentShader}
-      />
+      <customShaderMaterial ref={materialRef} />
     </mesh>
   );
 }
