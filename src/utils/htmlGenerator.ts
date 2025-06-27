@@ -1,71 +1,64 @@
-
 import { ColorScheme } from "@/components/ColorEditor";
 
-interface ContentWithState {
-  headline?: string;
-  subheadline?: string;
-  cta?: string;
-  valueProposition?: string;
-  services?: Array<{
-    title: string;
-    description: string;
-    icon: string;
-  }>;
-  process?: Array<{
-    title: string;
-    description: string;
-    step: number;
-  }>;
-  testimonials?: Array<{
-    name: string;
-    text: string;
-    role: string;
-    rating: number;
-  }>;
-  faq?: Array<{
-    question: string;
-    answer: string;
-  }>;
-  currentColors: ColorScheme;
-  formData: any;
-  heroImage?: string;
-}
-
-export const generateHtmlFile = (contentWithState: ContentWithState): string => {
-  const { currentColors, formData, heroImage } = contentWithState;
-  const content = contentWithState;
+export const generateHtmlFile = (content: any, colors: ColorScheme, formData: any, heroImageUrl: string): string => {
+  const businessName = formData?.businessName || 'העסק שלי';
+  const businessType = formData?.businessType || 'שירותים עסקיים';
   
-  const getBusinessImage = (businessType: string) => {
-    const businessImages = {
-      'עורך דין': 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1920&h=1080&fit=crop',
-      'רופא': 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=1920&h=1080&fit=crop',
-      'מעצב גרפי': 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=1920&h=1080&fit=crop',
-      'יועץ עסקי': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1920&h=1080&fit=crop',
-      'מורה פרטי': 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1920&h=1080&fit=crop',
-      'מאמן כושר': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1920&h=1080&fit=crop',
-      'צלם': 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=1920&h=1080&fit=crop',
-      'נהג': 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1920&h=1080&fit=crop',
-      'מספר': 'https://images.unsplash.com/photo-1562004760-aceed7bb0fe3?w=1920&h=1080&fit=crop',
-      'default': 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=1080&fit=crop'
-    };
-    return businessImages[businessType as keyof typeof businessImages] || businessImages.default;
+  // Helper function to render buttons based on hero style
+  const renderButton = (text: string, heroStyle: string) => {
+    const baseClass = `btn-base ${getButtonClass(heroStyle)}`;
+    const iconHtml = heroStyle === 'glass' ? 
+      '<i class="ri-arrow-left-line text-lg"></i>' : 
+      '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>';
+    
+    return `<button class="${baseClass}">${iconHtml}${text}</button>`;
   };
 
-  const selectedElements = formData?.selectedElements || [];
-  const businessImage = heroImage || getBusinessImage(formData?.businessType || 'default');
-  
-  const getStyleClass = () => {
-    switch (formData?.heroStyle) {
-      case 'geometric': return 'style-geometric';
-      case 'glass': return 'style-glass';
-      case 'metal': return 'style-metal';
-      case 'image': return 'style-image';
-      default: return 'style-3d';
+  const getButtonClass = (heroStyle: string) => {
+    switch (heroStyle) {
+      case 'geometric': return 'btn-geometric';
+      case 'glass': return 'btn-liquid-glass';
+      case 'metal': return 'btn-metal';
+      case 'image': return 'btn-image-depth';
+      default: return 'btn-3d';
     }
   };
 
+  const getCardClass = (heroStyle: string) => {
+    switch (heroStyle) {
+      case 'geometric': return 'card-geometric';
+      case 'glass': return 'card-liquid-glass';
+      case 'metal': return 'card-metal';
+      case 'image': return 'card-image-depth';
+      default: return 'card-3d';
+    }
+  };
+
+  const getBackgroundClass = (heroStyle: string) => {
+    switch (heroStyle) {
+      case 'geometric': return 'bg-geometric';
+      case 'glass': return 'bg-liquid-glass';
+      case 'metal': return 'bg-metal';
+      case 'image': return 'bg-image-depth';
+      default: return 'bg-3d';
+    }
+  };
+
+  const getTypographyClass = (heroStyle: string) => {
+    switch (heroStyle) {
+      case 'geometric': return 'typography-modern';
+      case 'glass': return 'typography-liquid';
+      case 'metal': return 'typography-luxury';
+      case 'image': return 'typography-cinematic';
+      default: return 'typography-tech';
+    }
+  };
+
+  // Generate hero section based on style
   const generateHeroSection = () => {
-    if (formData?.heroStyle === 'glass') {
+    const heroStyle = formData.heroStyle;
+    
+    if (heroStyle === 'glass') {
       return `
         <section class="liquid-glass-hero section-hero">
           <div class="liquid-background">
@@ -91,26 +84,20 @@ export const generateHtmlFile = (contentWithState: ContentWithState): string => 
                 </div>
 
                 <h1 class="typography-liquid text-7xl md:text-9xl mb-8 animate-slide-up animate-delay-1 liquid-title-glow">
-                  ${content?.headline || formData?.businessName || 'העסק שלי'}
+                  ${content?.headline || businessName}
                 </h1>
 
                 <div class="liquid-subtitle-flow mb-12 animate-slide-up animate-delay-2">
                   <div class="liquid-text-orb">
                     <p class="typography-liquid text-xl md:text-2xl text-white leading-relaxed liquid-text-glow">
-                      ${content?.subheadline || `חוויה נוזלית ייחודית ל${formData?.targetAudience || 'לקוחות'}`}
+                      ${content?.subheadline || `חוויה נוזלית ייחודית ל${formData.targetAudience}`}
                     </p>
                   </div>
                 </div>
 
                 <div class="liquid-actions-flow mb-16">
-                  <button class="btn-base btn-liquid-glass animate-slide-up animate-delay-3">
-                    <i class="ri-arrow-left-line text-lg"></i>
-                    ${content?.cta || 'בואו נתחיל לעבוד יחד'}
-                  </button>
-                  <button class="btn-base btn-liquid-glass animate-slide-up animate-delay-4">
-                    <i class="ri-arrow-left-line text-lg"></i>
-                    למד עוד
-                  </button>
+                  ${renderButton(content?.cta || 'בואו נתחיל לעבוד יחד', heroStyle)}
+                  ${renderButton('למד עוד', heroStyle)}
                 </div>
 
                 <div class="liquid-features-constellation animate-scale-in animate-delay-4">
@@ -180,147 +167,10 @@ export const generateHtmlFile = (contentWithState: ContentWithState): string => 
       `;
     }
 
-    if (formData?.heroStyle === 'geometric') {
+    // Image style hero remains unchanged
+    if (heroStyle === 'image') {
       return `
-        <section class="geometric-hero section-hero">
-          <div class="geometric-shape"></div>
-          <div class="geometric-shape"></div>
-          <div class="geometric-shape"></div>
-          
-          <div class="container-hero relative z-10">
-            <div class="text-center">
-              <div class="flex items-center justify-center gap-4 mb-8 animate-slide-up">
-                <div class="glass-card px-4 py-2">
-                  <div class="flex items-center gap-2">
-                    <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
-                    <span class="text-sm font-medium text-white">דירוג 5 כוכבים</span>
-                  </div>
-                </div>
-                <div class="glass-card px-4 py-2">
-                  <div class="flex items-center gap-2">
-                    <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    <span class="text-sm font-medium text-white">מומחה מוסמך</span>
-                  </div>
-                </div>
-              </div>
-
-              <h1 class="typography-modern text-6xl md:text-8xl text-white mb-8 animate-slide-up animate-delay-1">
-                ${content?.headline || formData?.businessName || 'העסק שלי'}
-              </h1>
-
-              <div class="typography-body text-xl md:text-2xl mb-12 max-w-4xl mx-auto text-gray-300 animate-slide-up animate-delay-2">
-                ${content?.subheadline || `השירותים המקצועיים ביותר ל${formData?.targetAudience || 'לקוחות'}`}
-              </div>
-
-              <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
-                <button class="btn-base btn-geometric animate-slide-up animate-delay-3">
-                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="m15 18-6-6 6-6"/>
-                  </svg>
-                  ${content?.cta || 'בואו נתחיל לעבוד יחד'}
-                </button>
-                <button class="btn-base btn-geometric animate-slide-up animate-delay-4">
-                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="m15 18-6-6 6-6"/>
-                  </svg>
-                  למד עוד
-                </button>
-              </div>
-
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto animate-scale-in animate-delay-4">
-                <div class="geometric-card text-center">
-                  <div class="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">500+</div>
-                  <div class="typography-body text-gray-300 text-sm">לקוחות מרוצים</div>
-                </div>
-                <div class="geometric-card text-center">
-                  <div class="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">98%</div>
-                  <div class="typography-body text-gray-300 text-sm">שביעות רצון</div>
-                </div>
-                <div class="geometric-card text-center">
-                  <div class="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">10+</div>
-                  <div class="typography-body text-gray-300 text-sm">שנות ניסיון</div>
-                </div>
-                <div class="geometric-card text-center">
-                  <div class="typography-modern text-3xl md:text-4xl font-bold text-white mb-2">24/7</div>
-                  <div class="typography-body text-gray-300 text-sm">זמינות</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      `;
-    }
-
-    if (formData?.heroStyle === 'metal') {
-      return `
-        <section class="section-hero bg-gradient-to-br from-gray-900 via-gray-800 to-black relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-br from-yellow-900/20 via-transparent to-yellow-800/20"></div>
-          
-          <div class="container-hero relative z-10">
-            <div class="text-center">
-              <div class="inline-flex items-center gap-2 metal-card px-6 py-3 rounded-full mb-8 animate-slide-up">
-                <svg class="w-5 h-5 text-yellow-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M6 9l6 6 6-6"/>
-                </svg>
-                <span class="typography-luxury text-gray-800 font-semibold">פרימיום</span>
-              </div>
-
-              <h1 class="typography-luxury text-7xl md:text-9xl metal-text mb-8 animate-slide-up animate-delay-1">
-                ${content?.headline || formData?.businessName || 'העסק שלי'}
-              </h1>
-
-              <div class="metal-card p-8 max-w-5xl mx-auto mb-12 animate-slide-up animate-delay-2">
-                <p class="typography-luxury text-xl md:text-2xl text-gray-800 leading-relaxed">
-                  ${content?.subheadline || `השירותים המקצועיים ביותר ל${formData?.targetAudience || 'לקוחות'}`}
-                </p>
-              </div>
-
-              <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
-                <button class="btn-base btn-metal animate-slide-up animate-delay-3">
-                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="m15 18-6-6 6-6"/>
-                  </svg>
-                  ${content?.cta || 'בואו נתחיל לעבוד יחד'}
-                </button>
-                <button class="btn-base btn-metal animate-slide-up animate-delay-4">
-                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="m15 18-6-6 6-6"/>
-                  </svg>
-                  למד עוד
-                </button>
-              </div>
-
-              <div class="grid md:grid-cols-4 gap-6 max-w-4xl mx-auto animate-scale-in animate-delay-4">
-                <div class="metal-card p-6 text-center">
-                  <div class="typography-luxury text-3xl font-bold text-gray-800 mb-2">500+</div>
-                  <div class="typography-body text-gray-700 text-sm">לקוחות VIP</div>
-                </div>
-                <div class="metal-card p-6 text-center">
-                  <div class="typography-luxury text-3xl font-bold text-gray-800 mb-2">98%</div>
-                  <div class="typography-body text-gray-700 text-sm">שביעות רצון</div>
-                </div>
-                <div class="metal-card p-6 text-center">
-                  <div class="typography-luxury text-3xl font-bold text-gray-800 mb-2">10+</div>
-                  <div class="typography-body text-gray-700 text-sm">שנות מצוינות</div>
-                </div>
-                <div class="metal-card p-6 text-center">
-                  <div class="typography-luxury text-3xl font-bold text-gray-800 mb-2">24/7</div>
-                  <div class="typography-body text-gray-700 text-sm">שירות פרמיום</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      `;
-    }
-
-    if (formData?.heroStyle === 'image') {
-      return `
-        <section class="section-hero relative overflow-hidden" style="background-image: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.7) 100%), url(${businessImage}); background-size: cover; background-position: center; background-attachment: fixed;">
+        <section class="section-hero relative overflow-hidden" style="background-image: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.7) 100%), url(${heroImageUrl}); background-size: cover; background-position: center; background-attachment: fixed;">
           <div class="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-transparent to-purple-900/30"></div>
           
           <div class="container-hero relative z-10">
@@ -328,36 +178,24 @@ export const generateHtmlFile = (contentWithState: ContentWithState): string => 
               <div class="text-center lg:text-right">
                 <div class="glass-card p-2 inline-block rounded-full mb-6 animate-slide-up">
                   <div class="flex items-center gap-2 px-4 py-2">
-                    <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
+                    <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/></svg>
                     <span class="text-sm font-medium text-white">מומלץ בחום</span>
                   </div>
                 </div>
 
                 <h1 class="typography-hero text-6xl md:text-8xl mb-8 animate-slide-up animate-delay-1">
-                  ${content?.headline || formData?.businessName || 'העסק שלי'}
+                  ${content?.headline || businessName}
                 </h1>
 
                 <div class="glass-card p-6 mb-8 animate-slide-up animate-delay-2">
                   <p class="typography-body text-xl text-white leading-relaxed">
-                    ${content?.subheadline || `השירותים המקצועיים ביותר ל${formData?.targetAudience || 'לקוחות'}`}
+                    ${content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
                   </p>
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-slide-up animate-delay-3">
-                  <button class="btn-base btn-primary animate-slide-up animate-delay-3">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path d="m15 18-6-6 6-6"/>
-                    </svg>
-                    ${content?.cta || 'בואו נתחיל לעבוד יחד'}
-                  </button>
-                  <button class="btn-base btn-primary animate-slide-up animate-delay-4">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path d="m15 18-6-6 6-6"/>
-                    </svg>
-                    למד עוד
-                  </button>
+                  ${renderButton(content?.cta || 'בואו נתחיל לעבוד יחד', heroStyle)}
+                  ${renderButton('למד עוד', heroStyle)}
                 </div>
               </div>
 
@@ -366,34 +204,25 @@ export const generateHtmlFile = (contentWithState: ContentWithState): string => 
                   <div class="grid grid-cols-2 gap-4">
                     <div class="text-center p-4">
                       <div class="icon-glass mx-auto mb-3 text-blue-400">
-                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                          <path d="M6 9l6 6 6-6"/>
-                        </svg>
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                       </div>
                       <h3 class="typography-body text-white font-medium text-sm">איכות מובטחת</h3>
                     </div>
                     <div class="text-center p-4">
                       <div class="icon-glass mx-auto mb-3 text-blue-400">
-                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                          <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                       </div>
                       <h3 class="typography-body text-white font-medium text-sm">אמינות מוחלטת</h3>
                     </div>
                     <div class="text-center p-4">
                       <div class="icon-glass mx-auto mb-3 text-blue-400">
-                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                        </svg>
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                       </div>
                       <h3 class="typography-body text-white font-medium text-sm">ביצוע מהיר</h3>
                     </div>
                     <div class="text-center p-4">
                       <div class="icon-glass mx-auto mb-3 text-blue-400">
-                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                          <circle cx="12" cy="12" r="10"/>
-                          <polyline points="12,6 12,12 16,14"/>
-                        </svg>
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                       </div>
                       <h3 class="typography-body text-white font-medium text-sm">זמינות תמידית</h3>
                     </div>
@@ -406,7 +235,7 @@ export const generateHtmlFile = (contentWithState: ContentWithState): string => 
       `;
     }
 
-    // Default 3D Style
+    // Default hero styles (geometric, metal, 3d)
     return `
       <section class="hero-3d section-hero">
         <div class="floating-element"></div>
@@ -418,45 +247,31 @@ export const generateHtmlFile = (contentWithState: ContentWithState): string => 
             <div class="flex items-center justify-center gap-6 mb-8 animate-slide-up">
               <div class="glass-card px-4 py-2">
                 <div class="flex items-center gap-2">
-                  <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                  </svg>
+                  <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"/></svg>
                   <span class="text-sm font-medium text-white">דירוג 5 כוכבים</span>
                 </div>
               </div>
               <div class="glass-card px-4 py-2">
                 <div class="flex items-center gap-2">
-                  <svg class="w-4 h-4 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                  </svg>
+                  <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                   <span class="text-sm font-medium text-white">מומחה מוסמך</span>
                 </div>
               </div>
             </div>
 
-            <h1 class="typography-hero text-7xl md:text-9xl mb-8 animate-slide-up animate-delay-1">
-              ${content?.headline || formData?.businessName || 'העסק שלי'}
+            <h1 class="${getTypographyClass(heroStyle)} text-7xl md:text-9xl mb-8 animate-slide-up animate-delay-1">
+              ${content?.headline || businessName}
             </h1>
 
             <div class="glass-card p-8 max-w-5xl mx-auto mb-12 animate-slide-up animate-delay-2">
               <p class="typography-body text-xl md:text-2xl text-white leading-relaxed">
-                ${content?.subheadline || `השירותים המקצועיים ביותר ל${formData?.targetAudience || 'לקוחות'}`}
+                ${content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
               </p>
             </div>
 
             <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
-              <button class="btn-base btn-primary animate-slide-up animate-delay-3">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="m15 18-6-6 6-6"/>
-                </svg>
-                ${content?.cta || 'בואו נתחיל לעבוד יחד'}
-              </button>
-              <button class="btn-base btn-primary animate-slide-up animate-delay-4">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="m15 18-6-6 6-6"/>
-                </svg>
-                למד עוד
-              </button>
+              ${renderButton(content?.cta || 'בואו נתחיל לעבוד יחד', heroStyle)}
+              ${renderButton('למד עוד', heroStyle)}
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto animate-scale-in animate-delay-4">
@@ -483,1073 +298,762 @@ export const generateHtmlFile = (contentWithState: ContentWithState): string => 
     `;
   };
 
-  const generateValuePropositionSection = () => {
-    if (!selectedElements.includes('valueProposition')) return '';
+  // Generate content sections based on style
+  const generateContentSections = () => {
+    const heroStyle = formData.heroStyle;
     
-    return `
-      <section class="section-padding bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-        <div class="container mx-auto px-4">
-          <div class="text-center mb-16">
-            <h2 class="typography-modern text-4xl md:text-6xl text-white mb-6 animate-slide-up">
-              ${content?.valueProposition || 'הערך הייחודי שלנו'}
-            </h2>
-            <div class="glass-card p-6 max-w-4xl mx-auto animate-slide-up animate-delay-1">
-              <p class="typography-body text-xl text-gray-300 leading-relaxed">
-                כל פרויקט שמתחיל איתנו הוא מסע לקראת הצלחה מרשימה. אנחנו מחויבים לתת לכם ערך אמיתי שישרת אתכם לשנים רבות.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-    `;
-  };
-
-  const generateServicesSection = () => {
-    if (!selectedElements.includes('services')) return '';
-    
-    const defaultServices = [
-      { title: 'ייעוץ מקצועי', description: 'הדרכות מקצועיות מותאמות אישית לצרכים שלכם', icon: 'ri-lightbulb-line' },
-      { title: 'ביצוע מהיר', description: 'מוכן לפעול בזמן קצר ולהגיע לתוצאות מרשימות', icon: 'ri-rocket-line' },
-      { title: 'תמיכה מתמשכת', description: 'ליווי מקצועי וטכני לאורך כל הדרך', icon: 'ri-customer-service-line' }
-    ];
-
-    const services = content?.services || defaultServices;
-    
-    return `
-      <section class="section-padding bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-        <div class="container mx-auto px-4">
-          <div class="text-center mb-16">
-            <h2 class="typography-modern text-4xl md:text-6xl text-white mb-6 animate-slide-up">
-              השירותים שלנו
-            </h2>
-            <div class="glass-card p-6 max-w-4xl mx-auto animate-slide-up animate-delay-1">
-              <p class="typography-body text-xl text-gray-300 leading-relaxed">
-                פתרונות מקצועיים ומותאמים אישית שיעזרו לכם להגיע למטרות שלכם
-              </p>
-            </div>
-          </div>
+    if (heroStyle === 'glass') {
+      return `
+        <!-- Liquid Glass Value Proposition -->
+        <section class="py-20 px-4 bg-liquid-glass relative overflow-hidden">
+          <div class="liquid-orb liquid-orb-1"></div>
+          <div class="liquid-orb liquid-orb-2"></div>
+          <div class="liquid-orb liquid-orb-3"></div>
           
-          <div class="grid md:grid-cols-3 gap-8 animate-scale-in animate-delay-2">
-            ${services.map((service, index) => `
-              <div class="glass-card p-8 text-center hover-3d">
-                <div class="text-6xl mb-6 text-blue-400">
-                  <i class="${service.icon}"></i>
-                </div>
-                <h3 class="typography-modern text-2xl font-bold text-white mb-4">${service.title}</h3>
-                <p class="typography-body text-gray-300 leading-relaxed">${service.description}</p>
+          <div class="container mx-auto max-w-6xl relative z-10">
+            <div class="text-center mb-16">
+              <div class="floating-badge mb-8">
+                <i class="ri-star-fill text-yellow-400 text-xl"></i>
+                <span class="typography-liquid text-white font-semibold">הצעת הערך הייחודית</span>
               </div>
-            `).join('')}
-          </div>
-        </div>
-      </section>
-    `;
-  };
-
-  const generateProcessSection = () => {
-    if (!selectedElements.includes('process')) return '';
-    
-    const defaultProcess = [
-      { title: 'ייעוץ ותכנון', description: 'אפיון מדויק של הצרכים והמטרות', step: 1 },
-      { title: 'ביצוע מקצועי', description: 'יישום מדויק לפי התכנית שנקבעה', step: 2 },
-      { title: 'מסירה ותמיכה', description: 'הקפדה על איכות ומתן תמיכה מתמשכת', step: 3 }
-    ];
-
-    const process = content?.process || defaultProcess;
-    
-    return `
-      <section class="section-padding bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-        <div class="container mx-auto px-4">
-          <div class="text-center mb-16">
-            <h2 class="typography-modern text-4xl md:text-6xl text-white mb-6 animate-slide-up">
-              תהליך העבודה שלנו
-            </h2>
-            <div class="glass-card p-6 max-w-4xl mx-auto animate-slide-up animate-delay-1">
-              <p class="typography-body text-xl text-gray-300 leading-relaxed">
-                תהליך מקצועי ומובנה שמבטיח תוצאות מעולות
-              </p>
-            </div>
-          </div>
-          
-          <div class="grid md:grid-cols-3 gap-8 animate-scale-in animate-delay-2">
-            ${process.map((step, index) => `
-              <div class="glass-card p-8 text-center hover-3d">
-                <div class="text-4xl font-bold text-blue-400 mb-4">${step.step}</div>
-                <h3 class="typography-modern text-2xl font-bold text-white mb-4">${step.title}</h3>
-                <p class="typography-body text-gray-300 leading-relaxed">${step.description}</p>
+              <h2 class="typography-liquid text-5xl md:text-7xl font-black mb-8 text-white liquid-glow">
+                ${content?.sections?.emotionalSection?.title || "חוויה נוזלית מדהימה"}
+              </h2>
+              <div class="liquid-glass-panel p-10 max-w-4xl mx-auto">
+                <p class="typography-liquid text-xl md:text-2xl leading-relaxed text-white liquid-text-glow">
+                  ${content?.sections?.emotionalSection?.content || `בעולם הטכנולוגיה המתקדמת, ${businessName} מציע לכם חוויה נוזלית ייחודה שמשלבת חדשנות עם אלגנטיות.`}
+                </p>
               </div>
-            `).join('')}
-          </div>
-        </div>
-      </section>
-    `;
-  };
-
-  const generateTestimonialsSection = () => {
-    if (!selectedElements.includes('testimonials')) return '';
-    
-    const defaultTestimonials = [
-      { name: 'מיכל כהן', text: 'שירות מקצועי ברמה גבוהה מאוד. המלצה חמה!', role: 'לקוחה מרוצה', rating: 5 },
-      { name: 'דוד לוי', text: 'עבודה מהירה ויעילה, בדיוק מה שחיפשתי', role: 'לקוח מרוצה', rating: 5 },
-      { name: 'רחל אברהם', text: 'תודה על השירות המעולה והתמיכה המקצועית', role: 'לקוחה מרוצה', rating: 5 }
-    ];
-
-    const testimonials = content?.testimonials || defaultTestimonials;
-    
-    return `
-      <section class="section-padding bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-        <div class="container mx-auto px-4">
-          <div class="text-center mb-16">
-            <h2 class="typography-modern text-4xl md:text-6xl text-white mb-6 animate-slide-up">
-              מה אומרים עלינו
-            </h2>
-            <div class="glass-card p-6 max-w-4xl mx-auto animate-slide-up animate-delay-1">
-              <p class="typography-body text-xl text-gray-300 leading-relaxed">
-                עדויות מלקוחות מרוצים שחוו את השירות המקצועי שלנו
-              </p>
             </div>
           </div>
+        </section>
+
+        <!-- Liquid Glass Why Choose Us -->
+        <section class="py-20 px-4 bg-liquid-glass-alt relative overflow-hidden">
+          <div class="liquid-wave"></div>
           
-          <div class="grid md:grid-cols-3 gap-8 animate-scale-in animate-delay-2">
-            ${testimonials.map((testimonial, index) => `
-              <div class="glass-card p-8 hover-3d">
-                <div class="flex mb-4">
-                  ${Array.from({length: testimonial.rating}, () => '⭐').join('')}
+          <div class="container mx-auto max-w-6xl relative z-10">
+            <div class="text-center mb-16">
+              <h2 class="typography-liquid text-5xl md:text-7xl font-black mb-8 text-white liquid-glow">למה לבחור בנו?</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+              <div class="liquid-morph-card group">
+                <div class="liquid-icon-orb">
+                  <i class="ri-diamond-line text-blue-300 text-2xl"></i>
                 </div>
-                <p class="typography-body text-gray-300 leading-relaxed mb-6">"${testimonial.text}"</p>
-                <div class="flex items-center">
-                  <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
-                    ${testimonial.name.charAt(0)}
+                <h3 class="typography-liquid text-2xl font-bold mb-4 text-white liquid-text-glow">טכנולוגיה נוזלית מתקדמת</h3>
+                <p class="typography-liquid text-blue-200 leading-relaxed">פתרונות חדשניים המשלבים זרימה טבעית עם יעילות מקסימלית</p>
+              </div>
+              <div class="liquid-morph-card group">
+                <div class="liquid-icon-orb">
+                  <i class="ri-diamond-line text-blue-300 text-2xl"></i>
+                </div>
+                <h3 class="typography-liquid text-2xl font-bold mb-4 text-white liquid-text-glow">חוויית משתמש זורמת</h3>
+                <p class="typography-liquid text-blue-200 leading-relaxed">אינטראקציה חלקה ואינטואיטיבית שמתאימה לכל צורך</p>
+              </div>
+              <div class="liquid-morph-card group">
+                <div class="liquid-icon-orb">
+                  <i class="ri-diamond-line text-blue-300 text-2xl"></i>
+                </div>
+                <h3 class="typography-liquid text-2xl font-bold mb-4 text-white liquid-text-glow">גמישות מוחלטת</h3>
+                <p class="typography-liquid text-blue-200 leading-relaxed">התאמה דינמית לכל דרישה ושינוי בזמן אמת</p>
+              </div>
+              <div class="liquid-morph-card group">
+                <div class="liquid-icon-orb">
+                  <i class="ri-diamond-line text-blue-300 text-2xl"></i>
+                </div>
+                <h3 class="typography-liquid text-2xl font-bold mb-4 text-white liquid-text-glow">איכות שקופה ונקייה</h3>
+                <p class="typography-liquid text-blue-200 leading-relaxed">שירות ברור וישיר ללא הפתעות או עמימות</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Liquid Glass CTA -->
+        <section class="py-20 px-4 bg-liquid-glass-final relative overflow-hidden">
+          <div class="liquid-immersion-bg"></div>
+          
+          <div class="container mx-auto max-w-6xl text-center relative z-10">
+            <div class="liquid-cta-orb">
+              <h2 class="typography-liquid text-5xl md:text-7xl font-black mb-12 text-white liquid-glow">
+                ${content?.contactTitle || 'צאו למסע נוזלי'}
+              </h2>
+              
+              <div class="liquid-immersion-panel p-10 mb-12">
+                <p class="typography-liquid text-2xl text-white leading-relaxed liquid-text-glow">
+                  בואו ניצור יחד חוויה נוזלית שתשנה את האופן שבו אתם חושבים על השירות
+                </p>
+              </div>
+
+              <div class="liquid-contact-flow mb-12">
+                <div class="liquid-contact-orb">
+                  <i class="ri-phone-line text-blue-300 text-xl"></i>
+                  <span class="typography-liquid text-white font-medium">050-1234567</span>
+                </div>
+                <div class="liquid-contact-orb">
+                  <i class="ri-mail-line text-blue-300 text-xl"></i>
+                  <span class="typography-liquid text-white font-medium">info@business.co.il</span>
+                </div>
+              </div>
+
+              <div class="liquid-action-flow">
+                ${renderButton('התחילו את הזרימה', heroStyle)}
+                ${renderButton('גלו את החוויה', heroStyle)}
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    if (heroStyle === 'image') {
+      return `
+        <!-- Image Style Value Proposition -->
+        <section class="py-20 px-4 bg-image-depth relative overflow-hidden">
+          <div class="cinematic-overlay"></div>
+          <div class="depth-layers">
+            <div class="depth-layer depth-layer-1"></div>
+            <div class="depth-layer depth-layer-2"></div>
+            <div class="depth-layer depth-layer-3"></div>
+          </div>
+          
+          <div class="container mx-auto max-w-6xl relative z-10">
+            <div class="cinematic-grid">
+              <div class="cinematic-content">
+                <div class="cinematic-badge">
+                  <i class="ri-movie-line text-yellow-400 text-xl"></i>
+                  <span class="typography-cinematic text-white font-semibold">הצגת הערך</span>
+                </div>
+                <h2 class="typography-cinematic text-5xl md:text-7xl font-black mb-8 text-white cinematic-glow">
+                  ${content?.sections?.emotionalSection?.title || "חוויה קולנועית מרהיבה"}
+                </h2>
+                <div class="cinematic-panel">
+                  <p class="typography-cinematic text-xl leading-relaxed text-white">
+                    ${content?.sections?.emotionalSection?.content || `${businessName} מביא לכם חוויה קולנועית עמוקה שמשלבת אסתטיקה מרהיבה עם תוכן איכותי.`}
+                  </p>
+                </div>
+              </div>
+              <div class="cinematic-visual">
+                <div class="depth-showcase">
+                  <div class="showcase-frame"></div>
+                  <div class="showcase-content">
+                    <i class="ri-cube-line text-blue-400 text-6xl"></i>
                   </div>
-                  <div>
-                    <h4 class="typography-modern font-bold text-white">${testimonial.name}</h4>
-                    <p class="typography-body text-gray-400 text-sm">${testimonial.role}</p>
-                  </div>
                 </div>
               </div>
-            `).join('')}
-          </div>
-        </div>
-      </section>
-    `;
-  };
-
-  const generateFAQSection = () => {
-    if (!selectedElements.includes('faq')) return '';
-    
-    const defaultFAQ = [
-      { question: 'כמה זמן לוקח הפרויקט?', answer: 'זמן הביצוע תלוי בהיקף הפרויקט, בדרך כלל בין שבוע לחודש' },
-      { question: 'האם יש תמיכה לאחר המסירה?', answer: 'כן, אנו מספקים תמיכה מלאה ומתמשכת לכל הלקוחות' },
-      { question: 'מה כלול במחיר?', answer: 'המחיר כולל את כל שלבי הפרויקט כולל תמיכה ראשונית' }
-    ];
-
-    const faq = content?.faq || defaultFAQ;
-    
-    return `
-      <section class="section-padding bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-        <div class="container mx-auto px-4">
-          <div class="text-center mb-16">
-            <h2 class="typography-modern text-4xl md:text-6xl text-white mb-6 animate-slide-up">
-              שאלות נפוצות
-            </h2>
-            <div class="glass-card p-6 max-w-4xl mx-auto animate-slide-up animate-delay-1">
-              <p class="typography-body text-xl text-gray-300 leading-relaxed">
-                תשובות לשאלות הנפוצות ביותר מלקוחותינו
-              </p>
             </div>
           </div>
+        </section>
+
+        <!-- Image Style CTA -->
+        <section class="py-20 px-4 bg-image-depth-finale relative overflow-hidden">
+          <div class="epic-backdrop"></div>
           
-          <div class="max-w-4xl mx-auto space-y-6 animate-scale-in animate-delay-2">
-            ${faq.map((item, index) => `
-              <div class="glass-card p-6 hover-3d">
-                <h3 class="typography-modern text-xl font-bold text-white mb-4">${item.question}</h3>
-                <p class="typography-body text-gray-300 leading-relaxed">${item.answer}</p>
+          <div class="container mx-auto max-w-6xl text-center relative z-10">
+            <div class="epic-stage">
+              <h2 class="typography-cinematic text-6xl md:text-8xl font-black mb-12 text-white cinematic-glow epic-title">
+                ${content?.contactTitle || 'הגיע הזמן לפעולה'}
+              </h2>
+              
+              <div class="epic-panel">
+                <p class="typography-cinematic text-2xl text-white leading-relaxed cinematic-glow">
+                  בואו ניצור יחד פרויקט קולנועי שישאיר את כולם ללא מילים
+                </p>
               </div>
-            `).join('')}
-          </div>
-        </div>
-      </section>
-    `;
-  };
 
-  const generateCTASection = () => {
-    if (!selectedElements.includes('cta')) return '';
-    
-    return `
-      <section class="section-padding bg-gradient-to-br from-blue-900 via-purple-900 to-black">
-        <div class="container mx-auto px-4 text-center">
-          <div class="glass-card p-12 max-w-4xl mx-auto animate-scale-in">
-            <h2 class="typography-modern text-4xl md:text-6xl text-white mb-6">
-              מוכנים להתחיל?
-            </h2>
-            <p class="typography-body text-xl text-gray-300 leading-relaxed mb-8">
-              בואו נתחיל לעבוד יחד ונגיע לתוצאות מרשימות
-            </p>
-            <div class="flex flex-col sm:flex-row gap-6 justify-center">
-              <button class="btn-base btn-primary text-lg px-8 py-4">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="m15 18-6-6 6-6"/>
-                </svg>
-                ${content?.cta || 'בואו נתחיל לעבוד יחד'}
-              </button>
-              <button class="btn-base btn-secondary text-lg px-8 py-4">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                </svg>
-                צור קשר עכשיו
-              </button>
+              <div class="epic-contacts">
+                <div class="contact-frame-3d">
+                  <i class="ri-phone-line text-blue-400 text-2xl"></i>
+                  <span class="typography-cinematic text-white font-bold text-lg">050-1234567</span>
+                </div>
+                <div class="contact-frame-3d">
+                  <i class="ri-mail-line text-blue-400 text-2xl"></i>
+                  <span class="typography-cinematic text-white font-bold text-lg">info@business.co.il</span>
+                </div>
+              </div>
+
+              <div class="epic-actions">
+                ${renderButton('התחילו את הפרויקט', heroStyle)}
+                ${renderButton('גלו את האפשרויות', heroStyle)}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    `;
-  };
+        </section>
+      `;
+    }
 
-  const generateNavigation = () => {
+    // Default content sections for other styles
     return `
-      <nav class="navigation-modern">
-        <div class="container mx-auto px-4">
-          <div class="flex items-center justify-between py-4">
-            <div class="typography-modern text-2xl font-bold text-white">
-              ${formData?.businessName || 'העסק שלי'}
-            </div>
-            <div class="hidden md:flex items-center gap-8">
-              ${selectedElements.includes('services') ? '<a href="#services" class="typography-body text-white hover:text-blue-400 transition-colors">שירותים</a>' : ''}
-              ${selectedElements.includes('process') ? '<a href="#process" class="typography-body text-white hover:text-blue-400 transition-colors">תהליך</a>' : ''}
-              ${selectedElements.includes('testimonials') ? '<a href="#testimonials" class="typography-body text-white hover:text-blue-400 transition-colors">המלצות</a>' : ''}
-              ${selectedElements.includes('faq') ? '<a href="#faq" class="typography-body text-white hover:text-blue-400 transition-colors">שאלות</a>' : ''}
-              <button class="btn-base btn-primary">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                </svg>
-                צור קשר
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
-    `;
-  };
-
-  const generateFooter = () => {
-    return `
-      <footer class="section-padding bg-black">
-        <div class="container mx-auto px-4">
+      <!-- Value Proposition Section -->
+      <section class="py-16 px-4 ${getBackgroundClass(heroStyle)}">
+        <div class="container mx-auto max-w-6xl">
           <div class="text-center">
-            <h3 class="typography-modern text-2xl font-bold text-white mb-4">
-              ${formData?.businessName || 'העסק שלי'}
-            </h3>
-            <p class="typography-body text-gray-400 mb-8">
-              © 2024 כל הזכויות שמורות. בניית אתרים מקצועית ואמינה.
-            </p>
-            <div class="flex justify-center gap-8 text-gray-400">
-              <span>טלפון: 050-1234567</span>
-              <span>אימייל: info@business.co.il</span>
+            <h2 class="${getTypographyClass(heroStyle)} text-4xl md:text-5xl font-black mb-8 text-white animate-slide-up">
+              ${content?.sections?.emotionalSection?.title || "השירות שמשנה את המשחק"}
+            </h2>
+            <div class="${getCardClass(heroStyle)} p-8 animate-slide-up animate-delay-1">
+              <p class="typography-body text-lg md:text-xl leading-relaxed text-white">
+                ${content?.sections?.emotionalSection?.content || `בעולם שמתפתח במהירות, ${businessName} כאן כדי לספק לכם את השירות המקצועי והאמין ביותר בתחום ${businessType}.`}
+              </p>
             </div>
           </div>
         </div>
-      </footer>
+      </section>
+
+      <!-- Enhanced CTA Section -->
+      <section class="py-16 px-4 ${getBackgroundClass(heroStyle)} relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/20"></div>
+        
+        <div class="container mx-auto max-w-6xl text-center relative z-10">
+          <div class="max-w-4xl mx-auto">
+            <h2 class="${getTypographyClass(heroStyle)} text-4xl md:text-5xl font-black mb-8 text-white animate-slide-up">
+              ${content?.contactTitle || 'מוכנים להתחיל?'}
+            </h2>
+            
+            <div class="${getCardClass(heroStyle)} p-6 mb-8 animate-slide-up animate-delay-1">
+              <p class="typography-body text-lg md:text-xl text-white leading-relaxed">
+                בואו ניצור יחד משהו מרהיב שיקדם את העסק שלכם
+              </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto mb-8 animate-slide-up animate-delay-2">
+              <div class="${getCardClass(heroStyle)} p-4">
+                <div class="flex items-center gap-3 justify-center">
+                  <i class="ri-phone-line text-blue-400 text-lg"></i>
+                  <span class="typography-body text-white font-medium">050-1234567</span>
+                </div>
+              </div>
+              <div class="${getCardClass(heroStyle)} p-4">
+                <div class="flex items-center gap-3 justify-center">
+                  <i class="ri-mail-line text-blue-400 text-lg"></i>
+                  <span class="typography-body text-white font-medium">info@business.co.il</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8 animate-slide-up animate-delay-3">
+              ${renderButton('צור קשר עכשיו', heroStyle)}
+              ${renderButton('קבל הצעת מחיר', heroStyle)}
+            </div>
+          </div>
+        </div>
+      </section>
     `;
   };
 
-  // Generate the complete HTML
+  return `<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${businessName} - ${businessType}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        /* All existing styles plus liquid glass and image depth styles */
+        ${getAllStyles()}
+    </style>
+</head>
+<body class="bg-black text-white font-sans">
+    ${generateHeroSection()}
+    ${generateContentSections()}
+</body>
+</html>`;
+};
+
+const getAllStyles = () => {
   return `
-    <!DOCTYPE html>
-    <html lang="he" dir="rtl">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>${formData?.businessName || 'העסק שלי'} - ${content?.headline || 'דף נחיתה מקצועי'}</title>
-      <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
-      <style>
-        /* Base Styles */
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-        
-        body {
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          line-height: 1.6;
-          color: #333;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          direction: rtl;
-        }
-        
-        /* Container */
-        .container {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 20px;
-        }
-        
-        .container-hero {
-          max-width: 1400px;
-          margin: 0 auto;
-          padding: 0 20px;
-        }
-        
-        /* Section Padding */
-        .section-padding {
-          padding: 80px 0;
-        }
-        
-        .section-hero {
-          min-height: 100vh;
-          display: flex;
-          align-items: center;
-          position: relative;
-          overflow: hidden;
-        }
-        
-        /* Typography */
-        .typography-hero {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          font-weight: 900;
-          line-height: 1.1;
-          text-align: center;
-        }
-        
-        .typography-modern {
-          font-weight: 700;
-          line-height: 1.2;
-        }
-        
-        .typography-body {
-          font-weight: 400;
-          line-height: 1.6;
-        }
-        
-        .typography-luxury {
-          font-family: 'Times New Roman', serif;
-          font-weight: 700;
-        }
-        
-        .typography-liquid {
-          font-weight: 600;
-          text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-        }
-        
-        /* Glass Card */
-        .glass-card {
-          background: rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(16px);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          border-radius: 16px;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-        
-        /* Buttons */
-        .btn-base {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          padding: 16px 32px;
-          border: none;
-          border-radius: 12px;
-          font-size: 16px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          text-decoration: none;
-        }
-        
-        .btn-primary {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
-          box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
-        }
-        
-        .btn-primary:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
-        }
-        
-        .btn-secondary {
-          background: rgba(255, 255, 255, 0.1);
-          color: white;
-          border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .btn-secondary:hover {
-          background: rgba(255, 255, 255, 0.2);
-          transform: translateY(-2px);
-        }
-        
-        /* Geometric Style */
-        .geometric-hero {
-          background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-          position: relative;
-        }
-        
-        .geometric-shape {
-          position: absolute;
-          background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
-          border-radius: 20px;
-          animation: float 6s ease-in-out infinite;
-        }
-        
-        .geometric-shape:nth-child(1) {
-          top: 10%;
-          left: 10%;
-          width: 100px;
-          height: 100px;
-          animation-delay: 0s;
-        }
-        
-        .geometric-shape:nth-child(2) {
-          top: 60%;
-          right: 10%;
-          width: 150px;
-          height: 150px;
-          animation-delay: 2s;
-        }
-        
-        .geometric-shape:nth-child(3) {
-          bottom: 20%;
-          left: 50%;
-          width: 80px;
-          height: 80px;
-          animation-delay: 4s;
-        }
-        
-        .geometric-card {
-          background: rgba(59, 130, 246, 0.1);
-          border: 1px solid rgba(59, 130, 246, 0.2);
-          border-radius: 12px;
-          padding: 24px;
-          backdrop-filter: blur(10px);
-        }
-        
-        .btn-geometric {
-          background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-          color: white;
-          position: relative;
-          overflow: hidden;
-        }
-        
-        .btn-geometric::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-          transition: left 0.5s;
-        }
-        
-        .btn-geometric:hover::before {
-          left: 100%;
-        }
-        
-        /* Liquid Glass Style */
-        .liquid-glass-hero {
-          background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-          position: relative;
-          overflow: hidden;
-        }
-        
-        .liquid-background {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          overflow: hidden;
-        }
-        
-        .liquid-orb {
-          position: absolute;
-          border-radius: 50%;
-          background: radial-gradient(circle at 30% 30%, rgba(59, 130, 246, 0.3), rgba(147, 51, 234, 0.1));
-          filter: blur(40px);
-          animation: liquidFloat 8s ease-in-out infinite;
-        }
-        
-        .liquid-orb-hero-1 {
-          top: 10%;
-          left: 10%;
-          width: 300px;
-          height: 300px;
-          animation-delay: 0s;
-        }
-        
-        .liquid-orb-hero-2 {
-          top: 60%;
-          right: 10%;
-          width: 400px;
-          height: 400px;
-          animation-delay: 2s;
-        }
-        
-        .liquid-orb-hero-3 {
-          bottom: 10%;
-          left: 50%;
-          width: 250px;
-          height: 250px;
-          animation-delay: 4s;
-        }
-        
-        .liquid-orb-hero-4 {
-          top: 30%;
-          left: 70%;
-          width: 200px;
-          height: 200px;
-          animation-delay: 6s;
-        }
-        
-        .liquid-waves {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          height: 200px;
-          overflow: hidden;
-        }
-        
-        .liquid-wave {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 200%;
-          height: 100px;
-          background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
-          border-radius: 50%;
-          animation: wave 6s ease-in-out infinite;
-        }
-        
-        .liquid-wave-1 {
-          animation-delay: 0s;
-        }
-        
-        .liquid-wave-2 {
-          animation-delay: 2s;
-          opacity: 0.7;
-        }
-        
-        .liquid-wave-3 {
-          animation-delay: 4s;
-          opacity: 0.5;
-        }
-        
-        .liquid-hero-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 80px;
-          align-items: center;
-          min-height: 100vh;
-          padding: 80px 0;
-        }
-        
-        .liquid-content-flow {
-          position: relative;
-        }
-        
-        .liquid-status-orb {
-          display: inline-flex;
-          align-items: center;
-          gap: 12px;
-          background: rgba(59, 130, 246, 0.1);
-          border: 1px solid rgba(59, 130, 246, 0.3);
-          border-radius: 50px;
-          padding: 12px 24px;
-          margin-bottom: 32px;
-          position: relative;
-          overflow: hidden;
-        }
-        
-        .liquid-pulse {
-          position: absolute;
-          top: 50%;
-          left: 20px;
-          width: 8px;
-          height: 8px;
-          background: #10b981;
-          border-radius: 50%;
-          animation: pulse 2s ease-in-out infinite;
-        }
-        
-        .liquid-title-glow {
-          text-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
-        }
-        
-        .liquid-subtitle-flow {
-          position: relative;
-        }
-        
-        .liquid-text-orb {
-          background: rgba(59, 130, 246, 0.05);
-          border: 1px solid rgba(59, 130, 246, 0.1);
-          border-radius: 24px;
-          padding: 24px;
-          backdrop-filter: blur(10px);
-        }
-        
-        .liquid-text-glow {
-          text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
-        }
-        
-        .liquid-actions-flow {
-          display: flex;
-          gap: 16px;
-          flex-wrap: wrap;
-        }
-        
-        .btn-liquid-glass {
-          background: rgba(59, 130, 246, 0.1);
-          border: 1px solid rgba(59, 130, 246, 0.3);
-          color: white;
-          backdrop-filter: blur(16px);
-          position: relative;
-          overflow: hidden;
-        }
-        
-        .btn-liquid-glass::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), transparent);
-          transition: left 0.5s;
-        }
-        
-        .btn-liquid-glass:hover::before {
-          left: 100%;
-        }
-        
-        .liquid-features-constellation {
-          display: flex;
-          gap: 24px;
-          flex-wrap: wrap;
-          margin-top: 40px;
-        }
-        
-        .liquid-feature-orb {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          background: rgba(59, 130, 246, 0.05);
-          border: 1px solid rgba(59, 130, 246, 0.1);
-          border-radius: 50px;
-          padding: 12px 20px;
-          backdrop-filter: blur(10px);
-        }
-        
-        .liquid-feature-glow {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 32px;
-          height: 32px;
-          background: rgba(59, 130, 246, 0.1);
-          border-radius: 50%;
-        }
-        
-        .liquid-visual-flow {
-          position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          height: 600px;
-        }
-        
-        .liquid-showcase-orb {
-          position: relative;
-          width: 300px;
-          height: 300px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        
-        .liquid-showcase-rings {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-        }
-        
-        .liquid-ring {
-          position: absolute;
-          border: 1px solid rgba(59, 130, 246, 0.3);
-          border-radius: 50%;
-          animation: rotate 10s linear infinite;
-        }
-        
-        .liquid-ring-1 {
-          width: 100%;
-          height: 100%;
-          top: 0;
-          left: 0;
-          animation-delay: 0s;
-        }
-        
-        .liquid-ring-2 {
-          width: 80%;
-          height: 80%;
-          top: 10%;
-          left: 10%;
-          animation-delay: 2s;
-          animation-direction: reverse;
-        }
-        
-        .liquid-ring-3 {
-          width: 60%;
-          height: 60%;
-          top: 20%;
-          left: 20%;
-          animation-delay: 4s;
-        }
-        
-        .liquid-center-orb {
-          position: relative;
-          width: 120px;
-          height: 120px;
-          background: rgba(59, 130, 246, 0.1);
-          border: 1px solid rgba(59, 130, 246, 0.3);
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          backdrop-filter: blur(16px);
-          z-index: 10;
-        }
-        
-        .liquid-stats-bubbles {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-        }
-        
-        .liquid-stat-bubble {
-          position: absolute;
-          width: 120px;
-          height: 80px;
-        }
-        
-        .liquid-bubble-top-left {
-          top: 0;
-          left: 0;
-        }
-        
-        .liquid-bubble-top-right {
-          top: 0;
-          right: 0;
-        }
-        
-        .liquid-bubble-bottom-left {
-          bottom: 0;
-          left: 0;
-        }
-        
-        .liquid-bubble-bottom-right {
-          bottom: 0;
-          right: 0;
-        }
-        
-        .liquid-stat-glow {
-          background: rgba(59, 130, 246, 0.1);
-          border: 1px solid rgba(59, 130, 246, 0.2);
-          border-radius: 16px;
-          padding: 16px;
-          text-align: center;
-          backdrop-filter: blur(10px);
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-        }
-        
-        /* Metal Style */
-        .metal-card {
-          background: linear-gradient(135deg, #d4af37 0%, #ffd700 50%, #b8860b 100%);
-          border: 1px solid rgba(212, 175, 55, 0.3);
-          border-radius: 12px;
-          box-shadow: 0 8px 32px rgba(212, 175, 55, 0.2);
-        }
-        
-        .metal-text {
-          background: linear-gradient(135deg, #d4af37 0%, #ffd700 50%, #b8860b 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-        
-        .btn-metal {
-          background: linear-gradient(135deg, #d4af37 0%, #ffd700 50%, #b8860b 100%);
-          color: #1a1a1a;
-          font-weight: 700;
-          box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
-        }
-        
-        .btn-metal:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);
-        }
-        
-        /* 3D Style */
-        .hero-3d {
-          background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-          position: relative;
-        }
-        
-        .floating-element {
-          position: absolute;
-          width: 100px;
-          height: 100px;
-          background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
-          border-radius: 20px;
-          animation: float 6s ease-in-out infinite;
-        }
-        
-        .floating-element:nth-child(1) {
-          top: 20%;
-          left: 10%;
-          animation-delay: 0s;
-        }
-        
-        .floating-element:nth-child(2) {
-          top: 60%;
-          right: 10%;
-          animation-delay: 2s;
-        }
-        
-        .floating-element:nth-child(3) {
-          bottom: 20%;
-          left: 50%;
-          animation-delay: 4s;
-        }
-        
-        /* Navigation */
-        .navigation-modern {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          background: rgba(0, 0, 0, 0.9);
-          backdrop-filter: blur(16px);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-          z-index: 1000;
-        }
-        
-        .navigation-modern a {
-          text-decoration: none;
-          transition: color 0.3s ease;
-        }
-        
-        /* Hover Effects */
-        .hover-3d {
-          transition: transform 0.3s ease;
-        }
-        
-        .hover-3d:hover {
-          transform: perspective(1000px) rotateY(5deg) rotateX(5deg) translateZ(20px);
-        }
-        
-        .icon-glass {
-          background: rgba(59, 130, 246, 0.1);
-          border: 1px solid rgba(59, 130, 246, 0.2);
-          border-radius: 50%;
-          width: 48px;
-          height: 48px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          backdrop-filter: blur(10px);
-        }
-        
-        /* Animations */
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        
-        @keyframes liquidFloat {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          25% { transform: translate(20px, -10px) scale(1.1); }
-          50% { transform: translate(-10px, -20px) scale(0.9); }
-          75% { transform: translate(-20px, 10px) scale(1.1); }
-        }
-        
-        @keyframes wave {
-          0%, 100% { transform: translateX(-50%) translateY(0); }
-          50% { transform: translateX(-50%) translateY(-10px); }
-        }
-        
-        @keyframes rotate {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        
-        @keyframes pulse {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(1.2); }
-        }
-        
-        .animate-slide-up {
-          animation: slideUp 0.8s ease-out forwards;
-        }
-        
-        .animate-delay-1 { animation-delay: 0.2s; }
-        .animate-delay-2 { animation-delay: 0.4s; }
-        .animate-delay-3 { animation-delay: 0.6s; }
-        .animate-delay-4 { animation-delay: 0.8s; }
-        
-        .animate-scale-in {
-          animation: scaleIn 0.8s ease-out forwards;
-        }
-        
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        @keyframes scaleIn {
-          from {
-            opacity: 0;
-            transform: scale(0.9);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-          .section-hero {
-            min-height: 80vh;
-            padding: 40px 0;
-          }
-          
-          .liquid-hero-grid {
-            grid-template-columns: 1fr;
-            gap: 40px;
-            text-align: center;
-          }
-          
-          .typography-hero {
-            font-size: 2.5rem;
-          }
-          
-          .typography-modern {
-            font-size: 2rem;
-          }
-          
-          .liquid-visual-flow {
-            height: 400px;
-          }
-          
-          .liquid-showcase-orb {
-            width: 200px;
-            height: 200px;
-          }
-          
-          .liquid-center-orb {
-            width: 80px;
-            height: 80px;
-          }
-          
-          .liquid-actions-flow {
-            flex-direction: column;
-            align-items: center;
-          }
-          
-          .btn-base {
-            width: 100%;
-            max-width: 300px;
-            justify-content: center;
-          }
-          
-          .grid {
-            grid-template-columns: 1fr;
-            gap: 20px;
-          }
-          
-          .md\\:grid-cols-3 {
-            grid-template-columns: 1fr;
-          }
-          
-          .md\\:grid-cols-4 {
-            grid-template-columns: repeat(2, 1fr);
-          }
-          
-          .navigation-modern .hidden {
-            display: none;
-          }
-        }
-        
-        @media (max-width: 480px) {
-          .typography-hero {
-            font-size: 2rem;
-          }
-          
-          .section-padding {
-            padding: 40px 0;
-          }
-          
-          .glass-card {
-            padding: 20px;
-          }
-          
-          .btn-base {
-            padding: 12px 24px;
-            font-size: 14px;
-          }
-        }
-      </style>
-    </head>
-    <body class="${getStyleClass()}">
-      ${generateNavigation()}
-      ${generateHeroSection()}
-      ${generateValuePropositionSection()}
-      ${generateServicesSection()}
-      ${generateProcessSection()}
-      ${generateTestimonialsSection()}
-      ${generateFAQSection()}
-      ${generateCTASection()}
-      ${generateFooter()}
+    /* Base Styles */
+    .section-hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container-hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      width: 100%;
+    }
+
+    /* Typography Classes */
+    .typography-hero { font-family: 'Arial', sans-serif; font-weight: 900; line-height: 1.1; }
+    .typography-modern { font-family: 'Helvetica', sans-serif; font-weight: 700; }
+    .typography-luxury { font-family: 'Georgia', serif; font-weight: 600; }
+    .typography-liquid { font-family: 'Arial', sans-serif; font-weight: 800; }
+    .typography-cinematic { font-family: 'Times', serif; font-weight: 700; }
+    .typography-tech { font-family: 'Arial', sans-serif; font-weight: 700; }
+    .typography-body { font-family: 'Arial', sans-serif; font-weight: 400; }
+
+    /* Button Styles */
+    .btn-base {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3); }
+
+    .btn-3d { 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+      color: white; 
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      transform: perspective(1px) translateZ(0);
+    }
+    .btn-3d:hover { 
+      transform: translateY(-3px); 
+      box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4); 
+    }
+
+    .btn-geometric {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      clip-path: polygon(0% 0%, 90% 0%, 100% 100%, 10% 100%);
+      padding: 1rem 2.5rem;
+    }
+    .btn-geometric:hover { 
+      transform: translateX(-5px); 
+      box-shadow: 5px 5px 15px rgba(102, 126, 234, 0.3); 
+    }
+
+    .btn-metal {
+      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+      color: #1a1a1a;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 4px 15px rgba(255,215,0,0.3);
+      border: 1px solid #b8860b;
+    }
+    .btn-metal:hover { 
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 8px 25px rgba(255,215,0,0.4); 
+      transform: translateY(-2px); 
+    }
+
+    .btn-liquid-glass {
+      background: rgba(59, 130, 246, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      color: white;
+      box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
+    }
+    .btn-liquid-glass:hover {
+      background: rgba(59, 130, 246, 0.2);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 45px rgba(59, 130, 246, 0.2);
+    }
+
+    .btn-image-depth {
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    .btn-image-depth:hover {
+      background: rgba(0, 0, 0, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Card Styles */
+    .card-3d, .card-geometric, .card-metal, .card-liquid-glass, .card-image-depth {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+    }
+
+    /* Background Styles */
+    .bg-3d, .bg-geometric, .bg-metal, .bg-liquid-glass, .bg-image-depth {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    /* Liquid Glass Specific Styles */
+    .liquid-glass-hero {
+      background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.15) 0%, rgba(0, 0, 0, 0.9) 70%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .liquid-background {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .liquid-orb {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(59, 130, 246, 0.3), rgba(29, 78, 216, 0.1));
+      filter: blur(1px);
+      animation: liquidFloat 20s ease-in-out infinite;
+    }
+
+    .liquid-orb-hero-1 { width: 300px; height: 300px; top: 10%; left: 10%; animation-delay: 0s; }
+    .liquid-orb-hero-2 { width: 200px; height: 200px; top: 60%; right: 20%; animation-delay: 5s; }
+    .liquid-orb-hero-3 { width: 150px; height: 150px; bottom: 20%; left: 30%; animation-delay: 10s; }
+    .liquid-orb-hero-4 { width: 250px; height: 250px; top: 30%; right: 10%; animation-delay: 15s; }
+
+    @keyframes liquidFloat {
+      0%, 100% { transform: translateY(0px) translateX(0px) scale(1); }
+      25% { transform: translateY(-20px) translateX(10px) scale(1.05); }
+      50% { transform: translateY(10px) translateX(-15px) scale(0.95); }
+      75% { transform: translateY(-10px) translateX(5px) scale(1.02); }
+    }
+
+    .liquid-waves {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .liquid-wave {
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+      animation: liquidWave 15s linear infinite;
+    }
+
+    .liquid-wave-1 { animation-delay: 0s; }
+    .liquid-wave-2 { animation-delay: 5s; }
+    .liquid-wave-3 { animation-delay: 10s; }
+
+    @keyframes liquidWave {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(0deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(360deg); }
+    }
+
+    .liquid-hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .liquid-status-orb {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(34, 197, 94, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: 50px;
+      padding: 0.5rem 1rem;
+      position: relative;
+    }
+
+    .liquid-pulse {
+      position: absolute;
+      left: 0.5rem;
+      width: 8px;
+      height: 8px;
+      background: #22c55e;
+      border-radius: 50%;
+      animation: liquidPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes liquidPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.2); }
+    }
+
+    .liquid-title-glow {
+      text-shadow: 0 0 20px rgba(59, 130, 246, 0.5), 0 0 40px rgba(59, 130, 246, 0.3);
+    }
+
+    .liquid-subtitle-flow {
+      position: relative;
+    }
+
+    .liquid-text-orb {
+      background: rgba(59, 130, 246, 0.1);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 2rem;
+      padding: 2rem;
+    }
+
+    .liquid-text-glow {
+      text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    }
+
+    .liquid-actions-flow {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .liquid-features-constellation {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .liquid-feature-orb {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      text-align: center;
+    }
+
+    .liquid-feature-glow {
+      width: 3rem;
+      height: 3rem;
+      background: rgba(59, 130, 246, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .liquid-visual-flow {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .liquid-showcase-orb {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .liquid-showcase-rings {
+      position: absolute;
+      inset: 0;
+    }
+
+    .liquid-ring {
+      position: absolute;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 50%;
+      animation: liquidRotate 20s linear infinite;
+    }
+
+    .liquid-ring-1 { inset: 0; animation-duration: 20s; }
+    .liquid-ring-2 { inset: 20%; animation-duration: 15s; animation-direction: reverse; }
+    .liquid-ring-3 { inset: 40%; animation-duration: 10s; }
+
+    @keyframes liquidRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .liquid-center-orb {
+      background: rgba(59, 130, 246, 0.2);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .liquid-stats-bubbles {
+      position: absolute;
+      inset: 0;
+    }
+
+    .liquid-stat-bubble {
+      position: absolute;
+      background: rgba(59, 130, 246, 0.1);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 1rem;
+      padding: 1rem;
+      text-align: center;
+      animation: liquidFloat 8s ease-in-out infinite;
+    }
+
+    .liquid-bubble-top-left { top: 0; left: 0; animation-delay: 0s; }
+    .liquid-bubble-top-right { top: 0; right: 0; animation-delay: 2s; }
+    .liquid-bubble-bottom-left { bottom: 0; left: 0; animation-delay: 4s; }
+    .liquid-bubble-bottom-right { bottom: 0; right: 0; animation-delay: 6s; }
+
+    /* Image Depth Styles */
+    .bg-image-depth, .bg-image-depth-alt, .bg-image-depth-finale {
+      background: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(30,30,30,0.8) 50%, rgba(0,0,0,0.9) 100%);
+      position: relative;
+    }
+
+    .cinematic-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 70%);
+    }
+
+    .depth-layers {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .depth-layer {
+      position: absolute;
+      background: linear-gradient(45deg, transparent, rgba(100,100,100,0.1), transparent);
+      animation: depthMove 20s linear infinite;
+    }
+
+    .depth-layer-1 { width: 100%; height: 100%; animation-delay: 0s; }
+    .depth-layer-2 { width: 120%; height: 120%; animation-delay: 7s; }
+    .depth-layer-3 { width: 80%; height: 80%; animation-delay: 14s; }
+
+    @keyframes depthMove {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(0deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(180deg); }
+    }
+
+    .cinematic-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      min-height: 80vh;
+    }
+
+    .cinematic-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50px;
+      padding: 0.5rem 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .cinematic-glow {
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.1);
+    }
+
+    .cinematic-panel {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+
+    .depth-showcase {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin: 0 auto;
+    }
+
+    .showcase-frame {
+      position: absolute;
+      inset: 0;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      transform: perspective(1000px) rotateY(15deg) rotateX(10deg);
+    }
+
+    .showcase-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: perspective(1000px) rotateY(15deg) rotateX(10deg) translateZ(50px);
+    }
+
+    /* Animation Classes */
+    .animate-slide-up {
+      animation: slideUp 0.8s ease-out forwards;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .animate-scale-in {
+      animation: scaleIn 0.8s ease-out forwards;
+      opacity: 0;
+      transform: scale(0.9);
+    }
+
+    .animate-delay-1 { animation-delay: 0.2s; }
+    .animate-delay-2 { animation-delay: 0.4s; }
+    .animate-delay-3 { animation-delay: 0.6s; }
+    .animate-delay-4 { animation-delay: 0.8s; }
+
+    @keyframes slideUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes scaleIn {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .liquid-hero-grid,
+      .cinematic-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+      }
       
-      <script>
-        // Smooth scroll for navigation links
-        document.addEventListener('DOMContentLoaded', function() {
-          const links = document.querySelectorAll('a[href^="#"]');
-          links.forEach(link => {
-            link.addEventListener('click', function(e) {
-              e.preventDefault();
-              const target = document.querySelector(this.getAttribute('href'));
-              if (target) {
-                target.scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'start'
-                });
-              }
-            });
-          });
-          
-          // Add scroll effect to navigation
-          const nav = document.querySelector('.navigation-modern');
-          window.addEventListener('scroll', function() {
-            if (window.scrollY > 100) {
-              nav.style.background = 'rgba(0, 0, 0, 0.95)';
-            } else {
-              nav.style.background = 'rgba(0, 0, 0, 0.9)';
-            }
-          });
-        });
-      </script>
-    </body>
-    </html>
+      .liquid-features-constellation {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .section-hero {
+        min-height: auto;
+        padding: 4rem 0;
+      }
+      
+      .typography-liquid,
+      .typography-cinematic {
+        font-size: 3rem !important;
+      }
+      
+      .liquid-actions-flow {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
   `;
 };

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/components/ColorEditor";
@@ -35,8 +36,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     
     if (formData.heroStyle === 'glass') {
       return (
-        <button className={`btn-base btn-liquid-glass animate-slide-up ${isPrimary ? 'animate-delay-3' : 'animate-delay-4'}`}>
-          <i className="ri-arrow-left-line text-lg"></i>
+        <button className={`btn-base btn-glassmorphism animate-slide-up ${isPrimary ? 'animate-delay-3' : 'animate-delay-4'}`}>
+          <ArrowLeft className="w-5 h-5" />
           {buttonText}
         </button>
       );
@@ -64,101 +65,80 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     );
   };
 
-  // COMPLETELY REDESIGNED LIQUID GLASS HERO - Fluid and Dynamic
+  // TRUE GLASSMORPHISM HERO - Apple-style Glass UI
   if (formData.heroStyle === 'glass') {
     return (
-      <section className="liquid-glass-hero section-hero">
-        <div className="liquid-background">
-          <div className="liquid-orb liquid-orb-hero-1"></div>
-          <div className="liquid-orb liquid-orb-hero-2"></div>
-          <div className="liquid-orb liquid-orb-hero-3"></div>
-          <div className="liquid-orb liquid-orb-hero-4"></div>
-        </div>
-        
-        <div className="liquid-waves">
-          <div className="liquid-wave liquid-wave-1"></div>
-          <div className="liquid-wave liquid-wave-2"></div>
-          <div className="liquid-wave liquid-wave-3"></div>
+      <section className="glassmorphism-hero section-hero">
+        {/* Gradient Background */}
+        <div className="glassmorphism-background">
+          <div className="glass-gradient-orb glass-orb-1"></div>
+          <div className="glass-gradient-orb glass-orb-2"></div>
+          <div className="glass-gradient-orb glass-orb-3"></div>
         </div>
         
         <div className="container-hero relative z-10">
-          <div className="liquid-hero-grid">
-            <div className="liquid-content-flow">
-              {/* Floating Status Badge */}
-              <div className="liquid-status-orb animate-slide-up">
-                <div className="liquid-pulse"></div>
-                <i className="ri-wifi-line text-green-400 text-lg"></i>
-                <span className="typography-liquid text-white font-semibold">זמין עכשיו</span>
-              </div>
+          {/* Top Glass Panel - Status */}
+          <div className="glass-status-panel animate-slide-up">
+            <div className="glass-status-indicator">
+              <div className="glass-pulse-dot"></div>
+              <span className="typography-modern text-sm font-medium text-white">זמין עכשיו</span>
+            </div>
+          </div>
 
-              {/* Liquid Hero Title */}
-              <h1 className="typography-liquid text-7xl md:text-9xl mb-8 animate-slide-up animate-delay-1 liquid-title-glow">
-                {content?.headline || formData.businessName}
-              </h1>
-
-              {/* Flowing Subtitle Container */}
-              <div className="liquid-subtitle-flow mb-12 animate-slide-up animate-delay-2">
-                <div className="liquid-text-orb">
-                  <p className="typography-liquid text-xl md:text-2xl text-white leading-relaxed liquid-text-glow">
-                    {content?.subheadline || `חוויה נוזלית ייחודית ל${formData.targetAudience}`}
+          <div className="glassmorphism-grid">
+            <div className="glassmorphism-content">
+              {/* Main Glass Panel with Content */}
+              <div className="glass-main-panel animate-slide-up animate-delay-1">
+                <h1 className="typography-modern text-6xl md:text-8xl font-bold text-white mb-6 glass-text-glow">
+                  {content?.headline || formData.businessName}
+                </h1>
+                
+                <div className="glass-subtitle-panel mb-8">
+                  <p className="typography-body text-xl text-white/90 leading-relaxed">
+                    {content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
                   </p>
                 </div>
-              </div>
 
-              {/* Liquid Action Buttons */}
-              <div className="liquid-actions-flow mb-16">
-                {renderCTAButton(true)}
-                {renderCTAButton(false)}
-              </div>
+                {/* Glass Action Buttons */}
+                <div className="glass-actions-panel mb-12">
+                  {renderCTAButton(true)}
+                  {renderCTAButton(false)}
+                </div>
 
-              {/* Floating Features Orbs */}
-              <div className="liquid-features-constellation animate-scale-in animate-delay-4">
-                {[
-                  { icon: 'ri-flashlight-line', title: 'מהירות נוזלית' },
-                  { icon: 'ri-shield-check-line', title: 'אמינות זורמת' },
-                  { icon: 'ri-infinity-line', title: 'זמינות תמידית' }
-                ].map((feature, index) => (
-                  <div key={index} className="liquid-feature-orb">
-                    <div className="liquid-feature-glow">
-                      <i className={`${feature.icon} text-blue-300 text-xl`}></i>
+                {/* Glass Feature Cards */}
+                <div className="glass-features-grid">
+                  {[
+                    { icon: <Zap className="w-6 h-6" />, title: 'ביצוע מהיר', desc: 'תוצאות מיידיות' },
+                    { icon: <Shield className="w-6 h-6" />, title: 'אמינות מלאה', desc: 'שירות מהימן' },
+                    { icon: <Award className="w-6 h-6" />, title: 'איכות מובטחת', desc: 'מקצועיות ברמה הגבוהה' }
+                  ].map((feature, index) => (
+                    <div key={index} className="glass-feature-card animate-scale-in" style={{animationDelay: `${1.2 + index * 0.2}s`}}>
+                      <div className="glass-icon-wrapper">
+                        {feature.icon}
+                      </div>
+                      <h3 className="typography-modern font-semibold text-white mb-1">{feature.title}</h3>
+                      <p className="typography-body text-sm text-white/70">{feature.desc}</p>
                     </div>
-                    <span className="typography-liquid text-white text-sm font-medium liquid-text-glow">
-                      {feature.title}
-                    </span>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Liquid Visual Showcase */}
-            <div className="liquid-visual-flow animate-scale-in animate-delay-3">
-              <div className="liquid-showcase-orb">
-                <div className="liquid-showcase-rings">
-                  <div className="liquid-ring liquid-ring-1"></div>
-                  <div className="liquid-ring liquid-ring-2"></div>
-                  <div className="liquid-ring liquid-ring-3"></div>
-                </div>
-                <div className="liquid-center-orb">
-                  <i className="ri-atom-line text-blue-300 text-5xl"></i>
-                </div>
-              </div>
-              
-              {/* Floating Stats Bubbles */}
-              <div className="liquid-stats-bubbles">
+            {/* Floating Glass Stats */}
+            <div className="glassmorphism-stats animate-scale-in animate-delay-3">
+              <div className="glass-stats-grid">
                 {[
-                  { number: '500+', label: 'זרימות מוצלחות', position: 'top-left' },
-                  { number: '99%', label: 'שביעות רצון', position: 'top-right' },
-                  { number: '24/7', label: 'זרימה רציפה', position: 'bottom-left' },
-                  { number: '10+', label: 'שנות זרימה', position: 'bottom-right' }
+                  { number: '500+', label: 'לקוחות מרוצים' },
+                  { number: '98%', label: 'שביעות רצון' },
+                  { number: '10+', label: 'שנות ניסיון' },
+                  { number: '24/7', label: 'זמינות מלאה' }
                 ].map((stat, index) => (
-                  <div key={index} className={`liquid-stat-bubble liquid-bubble-${stat.position}`}>
-                    <div className="liquid-stat-glow">
-                      <div className="typography-liquid text-2xl font-bold text-white liquid-text-glow">
-                        {stat.number}
-                      </div>
-                      <div className="typography-liquid text-xs text-blue-200">
-                        {stat.label}
-                      </div>
+                  <div key={index} className="glass-stat-card">
+                    <div className="typography-modern text-3xl font-bold text-white glass-text-glow">
+                      {stat.number}
+                    </div>
+                    <div className="typography-body text-sm text-white/80">
+                      {stat.label}
                     </div>
                   </div>
                 ))}
@@ -292,70 +272,112 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     );
   }
 
-  // Image with 3D Effects Style - Enhanced
+  // CINEMATIC 3D HERO - True 3D depth and layering
   if (formData.heroStyle === 'image') {
     const imageUrl = heroImage || getBusinessImage(formData.businessType);
     
     return (
-      <section 
-        className="section-hero relative overflow-hidden"
-        style={{
-          backgroundImage: `linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.7) 100%), url(${imageUrl})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed'
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/30 via-transparent to-purple-900/30"></div>
+      <section className="cinematic-3d-hero section-hero">
+        {/* 3D Background Layers */}
+        <div className="cinematic-bg-layer-1" style={{backgroundImage: `url(${imageUrl})`}}></div>
+        <div className="cinematic-bg-layer-2"></div>
+        <div className="cinematic-bg-layer-3"></div>
         
-        <div className="container-hero relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="text-center lg:text-right">
-              {/* Image Hero Content */}
-              <div className="glass-card p-2 inline-block rounded-full mb-6 animate-slide-up">
-                <div className="flex items-center gap-2 px-4 py-2">
-                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                  <span className="text-sm font-medium text-white">מומלץ בחום</span>
+        {/* Floating 3D Elements */}
+        <div className="cinematic-3d-elements">
+          <div className="floating-3d-cube floating-cube-1"></div>
+          <div className="floating-3d-cube floating-cube-2"></div>
+          <div className="floating-3d-sphere floating-sphere-1"></div>
+          <div className="floating-3d-sphere floating-sphere-2"></div>
+        </div>
+
+        {/* Depth Layers with Parallax */}
+        <div className="cinematic-depth-layers">
+          <div className="depth-layer depth-layer-back"></div>
+          <div className="depth-layer depth-layer-mid"></div>
+          <div className="depth-layer depth-layer-front"></div>
+        </div>
+        
+        <div className="container-hero relative z-20">
+          <div className="cinematic-3d-grid">
+            <div className="cinematic-content-panel">
+              {/* 3D Status Badge */}
+              <div className="cinematic-3d-badge animate-slide-up">
+                <div className="badge-3d-inner">
+                  <Star className="w-5 h-5 text-amber-400" />
+                  <span className="typography-cinematic text-white font-semibold">מומלץ בחום</span>
                 </div>
               </div>
 
-              <h1 className="typography-hero text-6xl md:text-8xl mb-8 animate-slide-up animate-delay-1">
+              {/* Cinematic Title with 3D Text */}
+              <h1 className="cinematic-3d-title animate-slide-up animate-delay-1">
                 {content?.headline || formData.businessName}
               </h1>
 
-              <div className="glass-card p-6 mb-8 animate-slide-up animate-delay-2">
-                <p className="typography-body text-xl text-white leading-relaxed">
+              {/* 3D Content Panel */}
+              <div className="cinematic-content-3d-panel animate-slide-up animate-delay-2">
+                <p className="typography-cinematic text-xl text-white leading-relaxed">
                   {content?.subheadline || `השירותים המקצועיים ביותר ל${formData.targetAudience}`}
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-slide-up animate-delay-3">
+              {/* 3D Action Buttons */}
+              <div className="cinematic-3d-actions animate-slide-up animate-delay-3">
                 {renderCTAButton(true)}
                 {renderCTAButton(false)}
               </div>
             </div>
 
-            <div className="hidden lg:block animate-scale-in animate-delay-4">
-              <div className="glass-card p-8">
-                <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { icon: <Award className="w-8 h-8" />, title: 'איכות מובטחת' },
-                    { icon: <Shield className="w-8 h-8" />, title: 'אמינות מוחלטת' },
-                    { icon: <Zap className="w-8 h-8" />, title: 'ביצוע מהיר' },
-                    { icon: <Clock className="w-8 h-8" />, title: 'זמינות תמידית' }
-                  ].map((item, index) => (
-                    <div key={index} className="text-center p-4">
-                      <div className="icon-glass mx-auto mb-3 text-blue-400">
-                        {item.icon}
-                      </div>
-                      <h3 className="typography-body text-white font-medium text-sm">
-                        {item.title}
-                      </h3>
-                    </div>
-                  ))}
+            {/* 3D Statistics Cube */}
+            <div className="cinematic-3d-stats-cube animate-scale-in animate-delay-4">
+              <div className="stats-cube-face stats-face-1">
+                <div className="stat-3d-item">
+                  <div className="typography-cinematic text-4xl font-bold text-amber-400">500+</div>
+                  <div className="typography-body text-white text-sm">לקוחות מרוצים</div>
+                </div>
+              </div>
+              <div className="stats-cube-face stats-face-2">
+                <div className="stat-3d-item">
+                  <div className="typography-cinematic text-4xl font-bold text-amber-400">98%</div>
+                  <div className="typography-body text-white text-sm">שביעות רצון</div>
+                </div>
+              </div>
+              <div className="stats-cube-face stats-face-3">
+                <div className="stat-3d-item">
+                  <div className="typography-cinematic text-4xl font-bold text-amber-400">10+</div>
+                  <div className="typography-body text-white text-sm">שנות ניסיון</div>
+                </div>
+              </div>
+              <div className="stats-cube-face stats-face-4">
+                <div className="stat-3d-item">
+                  <div className="typography-cinematic text-4xl font-bold text-amber-400">24/7</div>
+                  <div className="typography-body text-white text-sm">זמינות מלאה</div>
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* 3D Feature Pyramids */}
+          <div className="cinematic-3d-features animate-scale-in animate-delay-5">
+            {[
+              { icon: <Award className="w-8 h-8" />, title: 'איכות מובטחת' },
+              { icon: <Shield className="w-8 h-8" />, title: 'אמינות מוחלטת' },
+              { icon: <Zap className="w-8 h-8" />, title: 'ביצוع מהיר' },
+              { icon: <Clock className="w-8 h-8" />, title: 'זמינות תמידית' }
+            ].map((item, index) => (
+              <div key={index} className="feature-3d-pyramid">
+                <div className="pyramid-top">
+                  <div className="pyramid-icon text-amber-400">
+                    {item.icon}
+                  </div>
+                </div>
+                <div className="pyramid-base">
+                  <h3 className="typography-cinematic text-white font-medium text-sm">
+                    {item.title}
+                  </h3>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
