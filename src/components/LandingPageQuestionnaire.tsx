@@ -113,7 +113,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[90vw] max-w-3xl max-h-[85vh] overflow-y-auto border-0 p-0 bg-transparent shadow-none">
+      <DialogContent className="w-[90vw] max-w-2xl max-h-[85vh] overflow-y-auto border-0 p-0 bg-transparent shadow-none">
         <div 
           className="relative bg-gradient-to-br from-white via-blue-50/30 to-purple-50/20 rounded-2xl shadow-xl overflow-hidden backdrop-blur-xl border border-white/20"
           style={{
@@ -143,40 +143,40 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
           {/* Gradient overlay bars */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
 
-          <div className="relative p-4 md:p-6">
-            <DialogHeader className="pb-4 text-center">
-              <div className="flex flex-col md:flex-row items-center justify-center gap-3 mb-4">
+          <div className="relative p-3 md:p-4">
+            <DialogHeader className="pb-3 text-center">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-2 mb-3">
                 <div className="relative">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3">
-                    <Sparkles className="w-6 h-6 text-white" />
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3">
+                    <Sparkles className="w-5 h-5 text-white" />
                   </div>
-                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
                 </div>
                 <div className="text-center md:text-right">
-                  <DialogTitle className="text-xl md:text-2xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
+                  <DialogTitle className="text-lg md:text-xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
                     יוצר דף נחיתה מותאם אישית
                   </DialogTitle>
-                  <DialogDescription className="text-gray-600 text-sm md:text-base mt-1 font-medium">
+                  <DialogDescription className="text-gray-600 text-xs md:text-sm mt-1 font-medium">
                     בינה מלאכותית מתקדמת ליצירת דפי נחיתה מקצועיים ✨
                   </DialogDescription>
                 </div>
               </div>
               
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 rounded-full px-4 py-2 border border-blue-200/50 shadow-sm">
-                <Target className="w-4 h-4 text-blue-600" />
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 rounded-full px-3 py-1.5 border border-blue-200/50 shadow-sm">
+                <Target className="w-3 h-3 text-blue-600" />
                 <span className="text-xs font-semibold text-blue-700">תהליך מהיר של 4 שלבים 🚀</span>
               </div>
             </DialogHeader>
 
-            <div className="space-y-6">
+            <div className="space-y-4">
               {/* Progress indicator */}
-              <div className="bg-gradient-to-r from-gray-50/80 via-blue-50/60 to-purple-50/80 rounded-2xl p-4 backdrop-blur-sm border border-white/30 shadow-sm">
+              <div className="bg-gradient-to-r from-gray-50/80 via-blue-50/60 to-purple-50/80 rounded-xl p-3 backdrop-blur-sm border border-white/30 shadow-sm">
                 <div className="flex justify-between items-center">
-                  <div className="flex space-x-3 space-x-reverse">
+                  <div className="flex space-x-2 space-x-reverse">
                     {[1, 2, 3, 4].map((step) => (
                       <div key={step} className="flex flex-col items-center relative">
                         <div
-                          className={`w-10 h-10 rounded-2xl flex items-center justify-center text-sm font-bold transition-all duration-300 shadow-md ${
+                          className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold transition-all duration-300 shadow-md ${
                             step === currentStep
                               ? 'bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 text-white shadow-lg scale-105'
                               : step < currentStep
@@ -186,7 +186,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
                         >
                           {step < currentStep ? '✓' : step}
                         </div>
-                        <div className={`text-xs mt-2 font-medium transition-all duration-300 ${
+                        <div className={`text-xs mt-1 font-medium transition-all duration-300 ${
                           step === currentStep ? 'text-blue-600' : step < currentStep ? 'text-green-600' : 'text-gray-400'
                         }`}>
                           שלב {step}
@@ -194,49 +194,48 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
                       </div>
                     ))}
                   </div>
-                  <div className="text-left bg-gradient-to-br from-white/80 to-blue-50/60 rounded-xl p-3 shadow-sm border border-white/40">
-                    <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{currentStep}</span>
-                    <span className="text-gray-500 text-lg"> / 4</span>
-                    <div className="text-xs text-gray-600 mt-1">שלבים הושלמו</div>
+                  <div className="text-left bg-gradient-to-br from-white/80 to-blue-50/60 rounded-lg p-2 shadow-sm border border-white/40">
+                    <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{currentStep}</span>
+                    <span className="text-gray-500 text-sm"> / 4</span>
                   </div>
                 </div>
               </div>
 
               {/* Step content */}
               <Card className="border-0 shadow-lg bg-gradient-to-br from-white/90 via-blue-50/30 to-purple-50/20 backdrop-blur-xl overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500"></div>
-                <CardHeader className="bg-gradient-to-r from-gray-50/60 via-blue-50/40 to-purple-50/30 border-b border-white/30 pb-3">
-                  <CardTitle className="text-lg md:text-xl text-gray-900 flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-xl flex items-center justify-center shadow-md">
-                      <Zap className="w-4 h-4 text-white" />
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500"></div>
+                <CardHeader className="bg-gradient-to-r from-gray-50/60 via-blue-50/40 to-purple-50/30 border-b border-white/30 pb-2">
+                  <CardTitle className="text-base md:text-lg text-gray-900 flex items-center gap-2">
+                    <div className="w-6 h-6 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-lg flex items-center justify-center shadow-md">
+                      <Zap className="w-3 h-3 text-white" />
                     </div>
                     <span className="bg-gradient-to-r from-gray-900 to-blue-800 bg-clip-text text-transparent">
                       {getStepTitle(currentStep)}
                     </span>
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-4 md:p-6">
+                <CardContent className="p-3 md:p-4">
                   {renderCurrentStep()}
                 </CardContent>
               </Card>
 
               {/* Navigation buttons */}
-              <div className="flex flex-col md:flex-row justify-between items-center gap-3 pt-4 bg-gradient-to-r from-white/60 via-blue-50/40 to-purple-50/30 rounded-xl p-4 border border-white/30 shadow-sm">
+              <div className="flex flex-col md:flex-row justify-between items-center gap-2 pt-2 bg-gradient-to-r from-white/60 via-blue-50/40 to-purple-50/30 rounded-lg p-3 border border-white/30 shadow-sm">
                 <Button
                   onClick={prevStep}
                   disabled={currentStep === 1}
                   variant="outline"
                   size="sm"
-                  className="w-full md:w-auto border border-gray-300 text-gray-700 hover:bg-gradient-to-r hover:from-gray-50 hover:to-blue-50 disabled:opacity-50 rounded-xl px-6 font-medium shadow-sm"
+                  className="w-full md:w-auto border border-gray-300 text-gray-700 hover:bg-gradient-to-r hover:from-gray-50 hover:to-blue-50 disabled:opacity-50 rounded-lg px-4 font-medium shadow-sm"
                 >
                   ← קודם
                 </Button>
 
-                <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+                <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
                   <Button
                     onClick={handlePreviewPage}
                     size="sm"
-                    className="w-full md:w-auto bg-gradient-to-r from-blue-500 via-blue-600 to-purple-600 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white shadow-md rounded-xl px-6 font-medium"
+                    className="w-full md:w-auto bg-gradient-to-r from-blue-500 via-blue-600 to-purple-600 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white shadow-md rounded-lg px-4 font-medium"
                   >
                     <Eye className="w-4 h-4 ml-2" />
                     צפה ועדכן דף
@@ -246,7 +245,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
                     <Button
                       onClick={nextStep}
                       size="sm"
-                      className="w-full md:w-auto bg-gradient-to-r from-purple-500 via-purple-600 to-pink-600 hover:from-purple-600 hover:via-pink-600 hover:to-rose-600 text-white shadow-md rounded-xl px-6 font-medium"
+                      className="w-full md:w-auto bg-gradient-to-r from-purple-500 via-purple-600 to-pink-600 hover:from-purple-600 hover:via-pink-600 hover:to-rose-600 text-white shadow-md rounded-lg px-4 font-medium"
                     >
                       הבא →
                       <ArrowRight className="w-4 h-4 mr-2" />
@@ -255,7 +254,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
                     <Button
                       onClick={handleSubmit}
                       size="sm"
-                      className="w-full md:w-auto bg-gradient-to-r from-green-500 via-emerald-600 to-teal-600 hover:from-green-600 hover:via-emerald-700 hover:to-teal-700 text-white shadow-md rounded-xl px-6 font-medium"
+                      className="w-full md:w-auto bg-gradient-to-r from-green-500 via-emerald-600 to-teal-600 hover:from-green-600 hover:via-emerald-700 hover:to-teal-700 text-white shadow-md rounded-lg px-4 font-medium"
                     >
                       <Download className="w-4 h-4 ml-2" />
                       סיים וצור דף 🎉

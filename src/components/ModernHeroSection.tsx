@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Zap, FileText } from "lucide-react";
 
@@ -9,7 +10,7 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
   return (
     <section className="py-20 px-4" dir="rtl">
       <div className="container mx-auto text-center">
-        <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 leading-tight">
+        <h1 className="text-7xl md:text-8xl lg:text-9xl font-bold mb-6 leading-tight">
           <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-[length:200%_auto] animate-[gradient_3s_ease-in-out_infinite] bg-clip-text text-transparent">
             המהפכה הדיגיטלית
             <br />
