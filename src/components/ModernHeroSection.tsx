@@ -177,7 +177,7 @@ const ModernHeroSection = ({ onStartQuestionnaire }: ModernHeroSectionProps) => 
           <div className="space-y-10">
             {/* Headline */}
             <motion.h1 
-              className="text-3xl md:text-4xl lg:text-5xl font-black leading-none text-white"
+              className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-none text-white"
               style={{ 
                 textShadow: `
                   0 0 20px rgba(255, 255, 255, 0.2),
