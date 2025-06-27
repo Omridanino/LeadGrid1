@@ -109,34 +109,34 @@ const ChatWidget = () => {
 
   return (
     <>
-      <div className="fixed bottom-6 left-6 z-50">
+      <div className="fixed bottom-4 sm:bottom-6 left-4 sm:left-6 z-50" data-chat-widget>
         <Button
           onClick={() => setIsChatOpen(!isChatOpen)}
-          className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-300 group"
+          className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-300 group"
         >
           {isChatOpen ? (
-            <ArrowLeft className="w-6 h-6 transition-transform group-hover:scale-110" />
+            <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:scale-110" />
           ) : (
-            <MessageCircle className="w-6 h-6 transition-transform group-hover:scale-110" />
+            <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:scale-110" />
           )}
         </Button>
         {!isChatOpen && (
-          <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-green-400 to-green-500 rounded-full flex items-center justify-center animate-pulse">
+          <div className="absolute -top-2 -right-2 w-5 h-5 sm:w-6 sm:h-6 bg-gradient-to-r from-green-400 to-green-500 rounded-full flex items-center justify-center animate-pulse">
             <span className="text-white text-xs font-bold">AI</span>
           </div>
         )}
       </div>
 
       {isChatOpen && (
-        <div className="fixed bottom-24 left-6 w-96 h-[600px] bg-gray-800 rounded-2xl shadow-2xl border border-gray-600 z-50 flex flex-col overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 rounded-t-2xl">
+        <div className="fixed bottom-16 sm:bottom-24 left-4 sm:left-6 w-[calc(100vw-2rem)] sm:w-96 h-[70vh] sm:h-[600px] bg-gray-800 rounded-2xl shadow-2xl border border-gray-600 z-50 flex flex-col overflow-hidden">
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 sm:p-4 rounded-t-2xl">
             <div className="flex items-center">
-              <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center ml-3">
-                <Bot className="w-6 h-6" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-full flex items-center justify-center ml-3">
+                <Bot className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <div>
-                <h4 className="font-semibold text-lg">LeadGrid AI</h4>
-                <p className="text-sm text-blue-100 flex items-center">
+                <h4 className="font-semibold text-base sm:text-lg">LeadGrid AI</h4>
+                <p className="text-xs sm:text-sm text-blue-100 flex items-center">
                   <div className="w-2 h-2 bg-green-400 rounded-full ml-1 animate-pulse"></div>
                   מומחה לדפי נחיתה
                 </p>
@@ -144,22 +144,22 @@ const ChatWidget = () => {
             </div>
           </div>
           
-          <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-900" dir="rtl">
+          <div className="flex-1 p-3 sm:p-4 overflow-y-auto space-y-3 sm:space-y-4 bg-gray-900" dir="rtl">
             {chatHistory.map((msg, index) => (
               <div key={index} className={`flex ${msg.type === 'user' ? 'justify-start' : 'justify-end'}`}>
                 <div className={`max-w-[85%] ${msg.type === 'bot' 
                   ? 'bg-gradient-to-r from-blue-600/20 to-purple-600/20 text-blue-100 rounded-2xl rounded-br-md border border-blue-500/30' 
                   : 'bg-gray-700 text-gray-100 rounded-2xl rounded-bl-md'
-                } p-4 shadow-lg backdrop-blur-sm`}>
-                  <div className="flex items-start gap-3">
+                } p-3 sm:p-4 shadow-lg backdrop-blur-sm`}>
+                  <div className="flex items-start gap-2 sm:gap-3">
                     {msg.type === 'bot' && (
-                      <Sparkles className="w-4 h-4 text-blue-400 mt-1 flex-shrink-0" />
+                      <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-blue-400 mt-1 flex-shrink-0" />
                     )}
                     {msg.type === 'user' && (
-                      <User className="w-4 h-4 text-gray-400 mt-1 flex-shrink-0" />
+                      <User className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 mt-1 flex-shrink-0" />
                     )}
                     <div className="flex-1">
-                      <p className="text-sm leading-relaxed whitespace-pre-line">{msg.message}</p>
+                      <p className="text-xs sm:text-sm leading-relaxed whitespace-pre-line">{msg.message}</p>
                       <span className="text-xs opacity-60 mt-2 block">
                         {formatTime(msg.timestamp)}
                       </span>
@@ -171,9 +171,9 @@ const ChatWidget = () => {
             
             {isTyping && (
               <div className="flex justify-end">
-                <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 text-blue-100 rounded-2xl rounded-br-md p-4 max-w-[85%] border border-blue-500/30">
-                  <div className="flex items-center gap-3">
-                    <Bot className="w-4 h-4 text-blue-400" />
+                <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 text-blue-100 rounded-2xl rounded-br-md p-3 sm:p-4 max-w-[85%] border border-blue-500/30">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <Bot className="w-3 h-3 sm:w-4 sm:h-4 text-blue-400" />
                     <div className="flex gap-1">
                       <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
                       <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
@@ -185,23 +185,23 @@ const ChatWidget = () => {
             )}
           </div>
           
-          <form onSubmit={handleChatSubmit} className="p-4 border-t border-gray-700 bg-gray-800 rounded-b-2xl">
-            <div className="flex gap-3">
+          <form onSubmit={handleChatSubmit} className="p-3 sm:p-4 border-t border-gray-700 bg-gray-800 rounded-b-2xl">
+            <div className="flex gap-2 sm:gap-3">
               <Input
                 value={chatMessage}
                 onChange={(e) => setChatMessage(e.target.value)}
                 placeholder="שאל אותי כל שאלה..."
-                className="flex-1 bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 rounded-xl"
+                className="flex-1 bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 rounded-xl text-sm sm:text-base"
                 dir="rtl"
                 disabled={isTyping}
               />
               <Button 
                 type="submit" 
                 size="sm" 
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-4 rounded-xl"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-3 sm:px-4 rounded-xl"
                 disabled={isTyping || !chatMessage.trim()}
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-3 h-3 sm:w-4 sm:h-4" />
               </Button>
             </div>
           </form>

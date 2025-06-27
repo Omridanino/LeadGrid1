@@ -59,17 +59,17 @@ const BenefitsSection = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
         <motion.div
-          className="text-center mb-20"
+          className="text-center mb-16 sm:mb-20"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
           <motion.h2 
-            className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 sm:mb-6 px-4"
             style={{
               textShadow: '0 0 30px rgba(255, 255, 255, 0.2)',
               letterSpacing: '-0.02em'
@@ -81,20 +81,20 @@ const BenefitsSection = () => {
             </span>
           </motion.h2>
           <motion.p 
-            className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
+            className="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed px-4"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             נתונים אמיתיים מלקוחות שכבר חוו את הטרנספורמציה הדיגיטלית
-            <br />
+            <br className="hidden sm:block" />
             וזוכים בתוצאות שמדברות בעד עצמן
           </motion.p>
         </motion.div>
 
         {/* Benefits Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16 px-4 sm:px-0">
           {benefits.map((benefit, index) => (
             <motion.div
               key={index}
@@ -117,7 +117,7 @@ const BenefitsSection = () => {
               style={{ perspective: "1000px" }}
             >
               <div 
-                className="relative p-8 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden h-full"
+                className="relative p-6 sm:p-8 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden h-full"
                 style={{
                   background: `linear-gradient(135deg, 
                     rgba(255, 255, 255, 0.08), 
@@ -136,9 +136,9 @@ const BenefitsSection = () => {
                 />
 
                 {/* Stats Display */}
-                <div className="text-right mb-4">
+                <div className="text-center sm:text-right mb-4">
                   <div 
-                    className={`inline-block px-4 py-2 rounded-full text-sm font-bold bg-gradient-to-r ${benefit.color} text-white`}
+                    className={`inline-block px-3 sm:px-4 py-2 rounded-full text-sm font-bold bg-gradient-to-r ${benefit.color} text-white`}
                     style={{
                       boxShadow: '0 0 20px rgba(107, 115, 255, 0.3)'
                     }}
@@ -148,25 +148,27 @@ const BenefitsSection = () => {
                 </div>
 
                 {/* Icon */}
-                <div 
-                  className={`w-16 h-16 rounded-xl mb-6 flex items-center justify-center bg-gradient-to-br ${benefit.color} relative group-hover:scale-110 transition-transform duration-300`}
-                  style={{
-                    boxShadow: `
-                      0 0 30px rgba(107, 115, 255, 0.4),
-                      inset 0 1px 0 rgba(255, 255, 255, 0.2)
-                    `,
-                  }}
-                >
-                  <benefit.icon className="w-8 h-8 text-white" />
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/20 to-transparent" />
+                <div className="flex justify-center sm:justify-start mb-4 sm:mb-6">
+                  <div 
+                    className={`w-12 sm:w-16 h-12 sm:h-16 rounded-xl flex items-center justify-center bg-gradient-to-br ${benefit.color} relative group-hover:scale-110 transition-transform duration-300`}
+                    style={{
+                      boxShadow: `
+                        0 0 30px rgba(107, 115, 255, 0.4),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2)
+                      `,
+                    }}
+                  >
+                    <benefit.icon className="w-6 sm:w-8 h-6 sm:h-8 text-white" />
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/20 to-transparent" />
+                  </div>
                 </div>
 
                 {/* Content */}
-                <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 group-hover:bg-clip-text transition-all duration-300">
+                <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 group-hover:bg-clip-text transition-all duration-300 text-center sm:text-right">
                   {benefit.title}
                 </h3>
                 
-                <p className="text-gray-400 text-lg leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
+                <p className="text-gray-400 text-base sm:text-lg leading-relaxed group-hover:text-gray-300 transition-colors duration-300 text-center sm:text-right">
                   {benefit.description}
                 </p>
 
@@ -182,14 +184,14 @@ const BenefitsSection = () => {
 
         {/* Call to Action */}
         <motion.div
-          className="text-center"
+          className="text-center px-4"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
           <motion.div
-            className="inline-block p-8 rounded-2xl backdrop-blur-xl border border-white/20"
+            className="inline-block p-6 sm:p-8 rounded-2xl backdrop-blur-xl border border-white/20 max-w-lg mx-auto"
             style={{
               background: `linear-gradient(135deg, 
                 rgba(255, 255, 255, 0.1), 
@@ -201,14 +203,14 @@ const BenefitsSection = () => {
             }}
             whileHover={{ scale: 1.02, y: -5 }}
           >
-            <h3 className="text-3xl font-bold text-white mb-4">
+            <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4">
               מוכנים לשינוי?
             </h3>
-            <p className="text-xl text-gray-300 mb-6 max-w-md">
+            <p className="text-lg sm:text-xl text-gray-300 mb-4 sm:mb-6">
               הצטרפו לאלפי עסקים שכבר חווים את המהפכה הדיגיטלית
             </p>
             <motion.button
-              className="px-10 py-4 rounded-xl font-bold text-lg text-white overflow-hidden relative group"
+              className="px-8 sm:px-10 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg text-white overflow-hidden relative group w-full sm:w-auto"
               style={{
                 background: `linear-gradient(135deg, 
                   #6B73FF 0%, 
@@ -222,10 +224,14 @@ const BenefitsSection = () => {
               }}
               whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                const heroSection = document.getElementById('hero');
+                heroSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-              <span className="relative z-10 flex items-center gap-3">
-                <Rocket className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
+              <span className="relative z-10 flex items-center justify-center gap-3">
+                <Rocket className="w-4 sm:w-5 h-4 sm:h-5 group-hover:rotate-12 transition-transform duration-300" />
                 בואו נתחיל
               </span>
             </motion.button>
