@@ -1,8 +1,8 @@
 
 import { useState } from "react";
 import Header from "@/components/Header";
-import HeroSection from "@/components/HeroSection";
-import FeaturesSection from "@/components/FeaturesSection";
+import ModernHeroSection from "@/components/ModernHeroSection";
+import ModernFeaturesSection from "@/components/ModernFeaturesSection";
 import BenefitsSection from "@/components/BenefitsSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import FAQSection from "@/components/FAQSection";
@@ -28,8 +28,8 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-black text-white" dir="rtl">
       <Header onStartQuestionnaire={handleOpenQuestionnaire} />
-      <HeroSection onStartQuestionnaire={handleOpenQuestionnaire} />
-      <FeaturesSection />
+      <ModernHeroSection onStartQuestionnaire={handleOpenQuestionnaire} />
+      <ModernFeaturesSection />
       <BenefitsSection />
       <TestimonialsSection />
       <FAQSection />

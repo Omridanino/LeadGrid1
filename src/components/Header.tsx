@@ -1,40 +1,135 @@
 
 import { Button } from "@/components/ui/button";
-import { Zap } from "lucide-react";
+import { Zap, Menu, X } from "lucide-react";
+import { useState, useEffect } from "react";
 
 interface HeaderProps {
   onStartQuestionnaire: () => void;
 }
 
 const Header = ({ onStartQuestionnaire }: HeaderProps) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const handleQuestionnaireClick = () => {
     console.log("Header: onStartQuestionnaire clicked");
     onStartQuestionnaire();
+    setIsMobileMenuOpen(false);
   };
 
+  const navItems = [
+    { href: "#features", label: "התכונות שלנו" },
+    { href: "#testimonials", label: "המלצות לקוחות" },
+    { href: "#faq", label: "שאלות נפוצות" },
+    { href: "#contact", label: "צרו קשר" }
+  ];
+
   return (
-    <header className="bg-gray-900/80 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-40">
-      <div className="container mx-auto px-4 py-4">
+    <header 
+      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+        isScrolled 
+          ? 'backdrop-blur-2xl bg-slate-950/80 border-b border-white/10 shadow-2xl' 
+          : 'bg-transparent'
+      }`}
+      style={{ transform: 'translateZ(100px)' }}
+    >
+      <div className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-reverse space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-              <Zap className="w-5 h-5 text-white" />
+          {/* לוגו מתקדם */}
+          <div className="flex items-center space-x-reverse space-x-3 group cursor-pointer">
+            <div 
+              className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110"
+              style={{ transform: 'translateZ(20px)' }}
+            >
+              <Zap className="w-7 h-7 text-white group-hover:rotate-12 transition-transform duration-300" />
             </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              LeadGrid
-            </h1>
+            <div>
+              <h1 className="text-2xl md:text-3xl font-black bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent group-hover:from-blue-400 group-hover:to-purple-400 transition-all duration-300">
+                LeadGrid
+              </h1>
+              <p className="text-xs text-gray-400 font-medium">דור חדש של דפי נחיתה</p>
+            </div>
           </div>
-          <nav className="hidden md:flex space-x-reverse space-x-8">
-            <a href="#features" className="text-gray-300 hover:text-blue-400 transition-colors">יתרונות</a>
-            <a href="#testimonials" className="text-gray-300 hover:text-blue-400 transition-colors">המלצות</a>
-            <a href="#faq" className="text-gray-300 hover:text-blue-400 transition-colors">שאלות נפוצות</a>
-            <a href="#contact" className="text-gray-300 hover:text-blue-400 transition-colors">צור קשר</a>
+          
+          {/* תפריט דסקטופ */}
+          <nav className="hidden lg:flex items-center space-x-reverse space-x-8">
+            {navItems.map((item, index) => (
+              <a 
+                key={index}
+                href={item.href} 
+                className="text-gray-300 hover:text-blue-400 transition-all duration-300 relative group font-medium text-lg"
+              >
+                {item.label}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 group-hover:w-full transition-all duration-300" />
+              </a>
+            ))}
           </nav>
+
+          {/* כפתורי פעולה */}
+          <div className="hidden lg:flex items-center space-x-reverse space-x-4">
+            <Button 
+              onClick={handleQuestionnaireClick}
+              className="relative group px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-500" />
+              <span className="relative z-10 flex items-center gap-2">
+                <Zap className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
+                התחילו עכשיו
+              </span>
+            </Button>
+          </div>
+
+          {/* כפתור המבורגר למובייל */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="lg:hidden w-10 h-10 rounded-xl backdrop-blur-md border border-white/20 flex items-center justify-center hover:border-blue-400/50 transition-all duration-300"
+          >
+            {isMobileMenuOpen ? (
+              <X className="w-6 h-6 text-white" />
+            ) : (
+              <Menu className="w-6 h-6 text-white" />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* תפריט מובייל */}
+      <div 
+        className={`lg:hidden absolute top-full left-0 w-full backdrop-blur-2xl bg-slate-950/95 border-b border-white/10 transform transition-all duration-500 ${
+          isMobileMenuOpen 
+            ? 'translate-y-0 opacity-100' 
+            : '-translate-y-full opacity-0 pointer-events-none'
+        }`}
+      >
+        <div className="container mx-auto px-6 py-6">
+          <nav className="flex flex-col space-y-4 mb-6">
+            {navItems.map((item, index) => (
+              <a 
+                key={index}
+                href={item.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-gray-300 hover:text-blue-400 transition-colors duration-300 font-medium text-lg py-2 border-b border-gray-800 hover:border-blue-400/30"
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+          
           <Button 
             onClick={handleQuestionnaireClick}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2 rounded-xl"
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 rounded-xl transition-all duration-300 shadow-lg"
           >
-            התחל עכשיו
+            <Zap className="w-5 h-5 ml-2" />
+            התחילו עכשיו
           </Button>
         </div>
       </div>
