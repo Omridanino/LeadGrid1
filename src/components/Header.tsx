@@ -37,23 +37,21 @@ const Header = ({ onStartQuestionnaire }: HeaderProps) => {
     <header 
       className={`fixed top-0 w-full z-50 transition-all duration-500 ${
         isScrolled 
-          ? 'backdrop-blur-2xl bg-slate-950/80 border-b border-white/10 shadow-2xl' 
+          ? 'backdrop-blur-2xl bg-black/80 border-b border-white/10 shadow-xl' 
           : 'bg-transparent'
       }`}
-      style={{ transform: 'translateZ(100px)' }}
     >
       <div className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
-          {/* לוגו מתקדם */}
+          {/* לוגו מינימליסטי */}
           <div className="flex items-center space-x-reverse space-x-3 group cursor-pointer">
             <div 
-              className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-110"
-              style={{ transform: 'translateZ(20px)' }}
+              className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110"
             >
-              <Zap className="w-7 h-7 text-white group-hover:rotate-12 transition-transform duration-300" />
+              <Zap className="w-6 h-6 text-white group-hover:rotate-12 transition-transform duration-300" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-black bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent group-hover:from-blue-400 group-hover:to-purple-400 transition-all duration-300">
+              <h1 className="text-xl md:text-2xl font-black bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent group-hover:from-blue-400 group-hover:to-indigo-400 transition-all duration-300">
                 LeadGrid
               </h1>
               <p className="text-xs text-gray-400 font-medium">דור חדש של דפי נחיתה</p>
@@ -66,10 +64,10 @@ const Header = ({ onStartQuestionnaire }: HeaderProps) => {
               <a 
                 key={index}
                 href={item.href} 
-                className="text-gray-300 hover:text-blue-400 transition-all duration-300 relative group font-medium text-lg"
+                className="text-gray-300 hover:text-blue-400 transition-all duration-300 relative group font-medium"
               >
                 {item.label}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 group-hover:w-full transition-all duration-300" />
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-indigo-400 group-hover:w-full transition-all duration-300" />
               </a>
             ))}
           </nav>
@@ -78,11 +76,11 @@ const Header = ({ onStartQuestionnaire }: HeaderProps) => {
           <div className="hidden lg:flex items-center space-x-reverse space-x-4">
             <Button 
               onClick={handleQuestionnaireClick}
-              className="relative group px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl overflow-hidden"
+              className="relative group px-6 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-500" />
               <span className="relative z-10 flex items-center gap-2">
-                <Zap className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
+                <Zap className="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" />
                 התחילו עכשיו
               </span>
             </Button>
@@ -94,9 +92,9 @@ const Header = ({ onStartQuestionnaire }: HeaderProps) => {
             className="lg:hidden w-10 h-10 rounded-xl backdrop-blur-md border border-white/20 flex items-center justify-center hover:border-blue-400/50 transition-all duration-300"
           >
             {isMobileMenuOpen ? (
-              <X className="w-6 h-6 text-white" />
+              <X className="w-5 h-5 text-white" />
             ) : (
-              <Menu className="w-6 h-6 text-white" />
+              <Menu className="w-5 h-5 text-white" />
             )}
           </button>
         </div>
@@ -104,7 +102,7 @@ const Header = ({ onStartQuestionnaire }: HeaderProps) => {
 
       {/* תפריט מובייל */}
       <div 
-        className={`lg:hidden absolute top-full left-0 w-full backdrop-blur-2xl bg-slate-950/95 border-b border-white/10 transform transition-all duration-500 ${
+        className={`lg:hidden absolute top-full left-0 w-full backdrop-blur-2xl bg-black/95 border-b border-white/10 transform transition-all duration-500 ${
           isMobileMenuOpen 
             ? 'translate-y-0 opacity-100' 
             : '-translate-y-full opacity-0 pointer-events-none'
@@ -117,7 +115,7 @@ const Header = ({ onStartQuestionnaire }: HeaderProps) => {
                 key={index}
                 href={item.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-gray-300 hover:text-blue-400 transition-colors duration-300 font-medium text-lg py-2 border-b border-gray-800 hover:border-blue-400/30"
+                className="text-gray-300 hover:text-blue-400 transition-colors duration-300 font-medium py-2 border-b border-gray-800 hover:border-blue-400/30"
               >
                 {item.label}
               </a>
@@ -126,9 +124,9 @@ const Header = ({ onStartQuestionnaire }: HeaderProps) => {
           
           <Button 
             onClick={handleQuestionnaireClick}
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 rounded-xl transition-all duration-300 shadow-lg"
+            className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-3 rounded-xl transition-all duration-300 shadow-lg"
           >
-            <Zap className="w-5 h-5 ml-2" />
+            <Zap className="w-4 h-4 ml-2" />
             התחילו עכשיו
           </Button>
         </div>
