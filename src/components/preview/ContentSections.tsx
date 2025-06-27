@@ -9,6 +9,11 @@ interface ContentSectionsProps {
 }
 
 export const ContentSections = ({ content, currentColors, formData, selectedElements }: ContentSectionsProps) => {
+  // Debug: בואו נראה מה יש בנתונים
+  console.log("ContentSections - formData:", formData);
+  console.log("ContentSections - selectedElements:", selectedElements);
+  console.log("ContentSections - content:", content);
+
   // Helper function to get style classes based on hero style
   const getStyleClasses = () => {
     if (!formData || !formData.heroStyle) {
@@ -77,21 +82,92 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
     };
   };
 
+  // Generate default content if none exists
+  const getDefaultContent = () => {
+    const businessName = formData?.businessName || 'העסק שלי';
+    const businessType = formData?.businessType || 'שירותים עסקיים';
+    
+    return {
+      services: {
+        title: 'השירותים שלנו',
+        subtitle: 'מקצועיות ברמה הגבוהה ביותר',
+        items: [
+          { title: 'שירות מקצועי', description: 'אנחנו מספקים שירות מקצועי ואמין', icon: '⭐' },
+          { title: 'יחס אישי', description: 'כל לקוח מקבל יחס אישי ומסור', icon: '❤️' },
+          { title: 'תוצאות מוכחות', description: 'הישגים קונקרטיים ומדידים', icon: '🏆' }
+        ]
+      },
+      about: {
+        title: 'הסיפור שלנו',
+        description: `${businessName} מתמחה ב${businessType} ומספק שירות ברמה הגבוהה ביותר.`,
+        highlights: ['ניסיון עשיר', 'מקצועיות גבוהה', 'יחס אישי', 'מחירים הוגנים'],
+        whyChooseUs: 'ניסיון עשיר, מקצועיות ויחס אישי לכל לקוח'
+      },
+      features: {
+        title: 'מה מייחד אותנו',
+        subtitle: 'היתרונות שלנו שיעשו לכם את ההבדל',
+        items: [
+          { title: 'איכות מעולה', description: 'רמה גבוהה של שירות', icon: '⚡' },
+          { title: 'מהירות', description: 'מענה מהיר ויעיל', icon: '🚀' },
+          { title: 'אמינות', description: 'שירות אמין ומוכח', icon: '✅' }
+        ]
+      },
+      benefits: {
+        title: 'היתרונות שתקבלו',
+        subtitle: 'כל מה שאתם צריכים כדי להצליח',
+        items: [
+          { title: 'חיסכון בזמן', description: 'נעזור לכם לחסוך זמן יקר', icon: '⏰' },
+          { title: 'חיסכון בכסף', description: 'פתרונות חסכוניים ויעילים', icon: '💰' }
+        ]
+      },
+      testimonials: {
+        title: 'מה הלקוחות אומרים',
+        subtitle: 'ההמלצות שיספרו לכם הכל',
+        items: [
+          { name: 'יוסי כהן', text: 'שירות מעולה ומקצועי', role: 'לקוח מרוצה' },
+          { name: 'שרה לוי', text: 'ממליצה בחום!', role: 'לקוחה מרוצה' }
+        ]
+      },
+      faq: {
+        title: 'שאלות נפוצות',
+        subtitle: 'התשובות לכל מה שרציתם לדעת',
+        items: [
+          { question: 'כמה זמן לוקח השירות?', answer: 'זה תלוי בסוג השירות, נעזור לכם בהתאמה אישית' },
+          { question: 'מה כלול במחיר?', answer: 'המחיר כולל את כל השירותים הבסיסיים' }
+        ]
+      },
+      contact: {
+        title: 'בואו נתחיל',
+        subtitle: 'מוכנים לקחת את העסק שלכם לשלב הבא?'
+      }
+    };
+  };
+
+  // Use provided content or default content
+  const displayContent = content || getDefaultContent();
+
+  // אם אין selectedElements, נציג את כל הסקשנים
+  const elementsToShow = selectedElements && selectedElements.length > 0 
+    ? selectedElements 
+    : ['services', 'about', 'features', 'benefits', 'testimonials', 'faq', 'contact'];
+
+  console.log("Elements to show:", elementsToShow);
+
   return (
     <div className="w-full">
       {/* Services Section */}
-      {selectedElements.includes('services') && content?.services && (
+      {elementsToShow.includes('services') && displayContent?.services && (
         <section className={`section-standard ${styleClasses.background}`} style={getSectionStyle()}>
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto text-center">
               <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-white ${styleClasses.typography}`}>
-                {content.services.title || 'השירותים שלנו'}
+                {displayContent.services.title || 'השירותים שלנו'}
               </h2>
               <p className="text-xl text-gray-300 mb-16 max-w-3xl mx-auto leading-relaxed">
-                {content.services.subtitle || 'מקצועיות ברמה הגבוהה ביותר'}
+                {displayContent.services.subtitle || 'מקצועיות ברמה הגבוהה ביותר'}
               </p>
               <div className="grid md:grid-cols-3 gap-8">
-                {content.services.items?.map((service: any, index: number) => (
+                {displayContent.services.items?.map((service: any, index: number) => (
                   <div key={index} className={`${styleClasses.card} p-8 text-center hover:scale-105 transition-all duration-300`}>
                     <div className={`${styleClasses.icon} w-16 h-16 mx-auto mb-6`}>
                       <span className="text-2xl">{service.icon || '⭐'}</span>
@@ -111,20 +187,20 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
       )}
 
       {/* About Section */}
-      {selectedElements.includes('about') && content?.about && (
+      {elementsToShow.includes('about') && displayContent?.about && (
         <section className={`section-standard ${styleClasses.background}`} style={getSectionStyle()}>
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="grid lg:grid-cols-2 gap-12 items-center">
                 <div>
                   <h2 className={`text-4xl md:text-6xl font-bold mb-6 text-white ${styleClasses.typography}`}>
-                    {content.about.title || 'הסיפור שלנו'}
+                    {displayContent.about.title || 'הסיפור שלנו'}
                   </h2>
                   <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                    {content.about.description}
+                    {displayContent.about.description}
                   </p>
                   <div className="space-y-4">
-                    {content.about.highlights?.map((highlight: string, index: number) => (
+                    {displayContent.about.highlights?.map((highlight: string, index: number) => (
                       <div key={index} className="flex items-center gap-3">
                         <div className={`${styleClasses.icon} w-8 h-8 flex items-center justify-center`}>
                           <span className="text-white">✓</span>
@@ -143,7 +219,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                       למה לבחור בנו?
                     </h3>
                     <p className="text-gray-300 leading-relaxed">
-                      {content.about.whyChooseUs || 'ניסיון עשיר, מקצועיות ויחס אישי לכל לקוח'}
+                      {displayContent.about.whyChooseUs || 'ניסיון עשיר, מקצועיות ויחס אישי לכל לקוח'}
                     </p>
                   </div>
                 </div>
@@ -154,18 +230,18 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
       )}
 
       {/* Features Section */}
-      {selectedElements.includes('features') && content?.features && (
+      {elementsToShow.includes('features') && displayContent?.features && (
         <section className={`section-standard ${styleClasses.background}`} style={getSectionStyle()}>
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto text-center">
               <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-white ${styleClasses.typography}`}>
-                {content.features.title || 'מה מייחד אותנו'}
+                {displayContent.features.title || 'מה מייחד אותנו'}
               </h2>
               <p className="text-xl text-gray-300 mb-16 max-w-3xl mx-auto leading-relaxed">
-                {content.features.subtitle || 'היתרונות שלנו שיעשו לכם את ההבדל'}
+                {displayContent.features.subtitle || 'היתרונות שלנו שיעשו לכם את ההבדל'}
               </p>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {content.features.items?.map((feature: any, index: number) => (
+                {displayContent.features.items?.map((feature: any, index: number) => (
                   <div key={index} className={`${styleClasses.card} p-6 text-center`}>
                     <div className={`${styleClasses.icon} w-14 h-14 mx-auto mb-4`}>
                       <span className="text-xl">{feature.icon || '⚡'}</span>
@@ -185,18 +261,18 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
       )}
 
       {/* Benefits Section */}
-      {selectedElements.includes('benefits') && content?.benefits && (
+      {elementsToShow.includes('benefits') && displayContent?.benefits && (
         <section className={`section-standard ${styleClasses.background}`} style={getSectionStyle()}>
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto text-center">
               <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-white ${styleClasses.typography}`}>
-                {content.benefits.title || 'היתרונות שתקבלו'}
+                {displayContent.benefits.title || 'היתרונות שתקבלו'}
               </h2>
               <p className="text-xl text-gray-300 mb-16 max-w-3xl mx-auto leading-relaxed">
-                {content.benefits.subtitle || 'כל מה שאתם צריכים כדי להצליח'}
+                {displayContent.benefits.subtitle || 'כל מה שאתם צריכים כדי להצליח'}
               </p>
               <div className="grid md:grid-cols-2 gap-8">
-                {content.benefits.items?.map((benefit: any, index: number) => (
+                {displayContent.benefits.items?.map((benefit: any, index: number) => (
                   <div key={index} className={`${styleClasses.card} p-8 text-right`}>
                     <div className="flex items-start gap-4">
                       <div className={`${styleClasses.icon} w-12 h-12 flex-shrink-0`}>
@@ -220,18 +296,18 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
       )}
 
       {/* Testimonials Section */}
-      {selectedElements.includes('testimonials') && content?.testimonials && (
+      {elementsToShow.includes('testimonials') && displayContent?.testimonials && (
         <section className={`section-standard ${styleClasses.background}`} style={getSectionStyle()}>
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto text-center">
               <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-white ${styleClasses.typography}`}>
-                {content.testimonials.title || 'מה הלקוחות אומרים'}
+                {displayContent.testimonials.title || 'מה הלקוחות אומרים'}
               </h2>
               <p className="text-xl text-gray-300 mb-16 max-w-3xl mx-auto leading-relaxed">
-                {content.testimonials.subtitle || 'ההמלצות שיספרו לכם הכל'}
+                {displayContent.testimonials.subtitle || 'ההמלצות שיספרו לכם הכל'}
               </p>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {content.testimonials.items?.map((testimonial: any, index: number) => (
+                {displayContent.testimonials.items?.map((testimonial: any, index: number) => (
                   <div key={index} className={`${styleClasses.card} p-6 text-center`}>
                     <div className="mb-4">
                       <span className="text-3xl text-yellow-400">⭐⭐⭐⭐⭐</span>
@@ -257,20 +333,20 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
       )}
 
       {/* FAQ Section */}
-      {selectedElements.includes('faq') && content?.faq && (
+      {elementsToShow.includes('faq') && displayContent?.faq && (
         <section className={`section-standard ${styleClasses.background}`} style={getSectionStyle()}>
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-16">
                 <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-white ${styleClasses.typography}`}>
-                  {content.faq.title || 'שאלות נפוצות'}
+                  {displayContent.faq.title || 'שאלות נפוצות'}
                 </h2>
                 <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
-                  {content.faq.subtitle || 'התשובות לכל מה שרציתם לדעת'}
+                  {displayContent.faq.subtitle || 'התשובות לכל מה שרציתם לדעת'}
                 </p>
               </div>
               <div className="space-y-6">
-                {content.faq.items?.map((faq: any, index: number) => (
+                {displayContent.faq.items?.map((faq: any, index: number) => (
                   <div key={index} className={`${styleClasses.card} p-6`}>
                     <h3 className={`text-xl font-bold mb-3 text-white ${styleClasses.typography}`}>
                       {faq.question}
@@ -287,16 +363,16 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
       )}
 
       {/* Contact Section */}
-      {selectedElements.includes('contact') && content?.contact && (
+      {elementsToShow.includes('contact') && displayContent?.contact && (
         <section className={`section-standard ${styleClasses.background}`} style={getSectionStyle()}>
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-16">
                 <h2 className={`text-4xl md:text-6xl font-bold mb-4 text-white ${styleClasses.typography}`}>
-                  {content.contact.title || 'בואו נתחיל'}
+                  {displayContent.contact.title || 'בואו נתחיל'}
                 </h2>
                 <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                  {content.contact.subtitle || 'מוכנים לקחת את העסק שלכם לשלב הבא?'}
+                  {displayContent.contact.subtitle || 'מוכנים לקחת את העסק שלכם לשלב הבא?'}
                 </p>
               </div>
               <div className="grid lg:grid-cols-2 gap-12">
