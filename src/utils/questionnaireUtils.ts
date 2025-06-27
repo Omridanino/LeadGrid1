@@ -21,8 +21,8 @@ export const initialFormData: FormData = {
   mainGoal: "",
   keyFeatures: "",
   contactInfo: "",
-  heroStyle: "fluid-morphing",
-  designStyle: "fluid-blobs", // Default to new fluid blobs design
+  heroStyle: "gradient-waves", // Default to gradient waves - safer option
+  designStyle: "dynamic-gradients", // Default to dynamic gradients - safer option
   navigationStyle: "floating", // Default to floating navigation
   selectedElements: []
 };

@@ -1,6 +1,6 @@
 
-import React, { useRef, useMemo } from 'react';
-import { Canvas, useFrame, useThree, extend } from '@react-three/fiber';
+import React, { useRef, useEffect } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
 const vertexShader = `
@@ -107,40 +107,12 @@ void main() {
 }
 `;
 
-class CustomShaderMaterial extends THREE.ShaderMaterial {
-  declare uniforms: {
-    time: { value: number };
-    resolution: { value: THREE.Vector4 };
-  };
-
-  constructor() {
-    super({
-      uniforms: {
-        time: { value: 0 },
-        resolution: { value: new THREE.Vector4() }
-      },
-      vertexShader,
-      fragmentShader
-    });
-  }
-}
-
-extend({ CustomShaderMaterial });
-
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      customShaderMaterial: any;
-    }
-  }
-}
-
 function LavaLampShader() {
   const meshRef = useRef<THREE.Mesh>(null);
-  const materialRef = useRef<CustomShaderMaterial>(null);
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
   const { size } = useThree();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (materialRef.current) {
       const { width, height } = size;
       const imageAspect = 1;
@@ -154,12 +126,14 @@ function LavaLampShader() {
         a2 = (height / width) / imageAspect;
       }
       
-      materialRef.current.uniforms.resolution.value.set(width, height, a1, a2);
+      if (materialRef.current.uniforms) {
+        materialRef.current.uniforms.resolution.value.set(width, height, a1, a2);
+      }
     }
   }, [size]);
 
   useFrame((state) => {
-    if (materialRef.current) {
+    if (materialRef.current && materialRef.current.uniforms) {
       materialRef.current.uniforms.time.value = state.clock.elapsedTime;
     }
   });
@@ -167,7 +141,15 @@ function LavaLampShader() {
   return (
     <mesh ref={meshRef}>
       <planeGeometry args={[5, 5]} />
-      <customShaderMaterial ref={materialRef} />
+      <shaderMaterial
+        ref={materialRef}
+        uniforms={{
+          time: { value: 0 },
+          resolution: { value: new THREE.Vector4() }
+        }}
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
+      />
     </mesh>
   );
 }
@@ -187,9 +169,12 @@ export const LavaLamp = () => {
         }}
         orthographic
         gl={{ antialias: true }}
+        onCreated={({ gl }) => {
+          gl.setClearColor('#000000');
+        }}
       >
         <LavaLampShader />
       </Canvas>
     </div>
   );
-}
+};
