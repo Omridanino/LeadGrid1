@@ -14,6 +14,21 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
   console.log("ContentSections - formData:", formData);
   console.log("ContentSections - selectedElements:", selectedElements);
 
+  // Generate rich content
+  const richContent = generateRichContent(formData);
+  const finalContent = content || richContent;
+
+  // Get elements to show
+  const elementsToShow = selectedElements && selectedElements.length > 0 
+    ? selectedElements 
+    : formData?.selectedElements || [];
+
+  console.log("Elements to show FINAL:", elementsToShow);
+
+  // If no elements selected, show all elements for demo
+  const defaultElements = ['services', 'about', 'testimonials', 'process', 'faq', 'features', 'gallery', 'contact'];
+  const finalElementsToShow = elementsToShow.length > 0 ? elementsToShow : defaultElements;
+
   // Helper function to get style classes based on hero style
   const getStyleClasses = () => {
     if (!formData || !formData.heroStyle) {
@@ -76,22 +91,6 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
 
   const styleClasses = getStyleClasses();
 
-  // Generate rich content
-  const richContent = generateRichContent(formData);
-  const finalContent = content || richContent;
-
-  // Get elements to show
-  const elementsToShow = selectedElements && selectedElements.length > 0 
-    ? selectedElements 
-    : formData?.selectedElements || [];
-
-  console.log("Elements to show FINAL:", elementsToShow);
-
-  // If no elements selected, don't show anything
-  if (!elementsToShow || elementsToShow.length === 0) {
-    return null;
-  }
-
   const StyledCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
     <div className={`${styleClasses.card} ${className} p-10 m-4`}>
       {/* Glass reflection effect for applicable styles */}
@@ -117,7 +116,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
   return (
     <div className="w-full">
       {/* Services Section */}
-      {elementsToShow.includes('services') && (
+      {finalElementsToShow.includes('services') && (
         <StyleAwareSection heroStyle={formData?.heroStyle || 'default'} sectionType="standard">
           <div className="container mx-auto px-6">
             <div className="max-w-7xl mx-auto text-center">
@@ -130,9 +129,9 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               </p>
               <div className="grid md:grid-cols-3 gap-10">
                 {finalContent.services?.items?.map((service: any, index: number) => (
-                  <StyledCard key={index} className="text-center hover:scale-110 transition-all duration-500 min-h-[500px] flex flex-col">
+                  <StyledCard key={index} className="text-center hover:scale-110 transition-all duration-500 min-h-[400px] flex flex-col">
                     <div className={`${styleClasses.icon} w-24 h-24 mx-auto mb-8 flex items-center justify-center text-white text-4xl`}>
-                      {service.icon}
+                      <span className="text-5xl">{service.icon}</span>
                     </div>
                     <h3 className={`text-3xl mb-6 text-white ${styleClasses.typography}`}>
                       {service.title}
@@ -159,7 +158,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
       )}
 
       {/* About Section */}
-      {elementsToShow.includes('about') && (
+      {finalElementsToShow.includes('about') && (
         <StyleAwareSection heroStyle={formData?.heroStyle || 'default'} sectionType="alternate">
           <div className="container mx-auto px-6">
             <div className="max-w-7xl mx-auto">
@@ -178,7 +177,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                       {finalContent.about.values.map((value: any, index: number) => (
                         <div key={index} className="flex items-start gap-6">
                           <div className={`${styleClasses.icon} w-16 h-16 flex items-center justify-center text-white text-2xl`}>
-                            {value.icon}
+                            <span className="text-3xl">{value.icon}</span>
                           </div>
                           <div>
                             <h4 className={`text-2xl mb-3 text-white ${styleClasses.typography}`}>
@@ -224,7 +223,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
       )}
 
       {/* Testimonials Section */}
-      {elementsToShow.includes('testimonials') && (
+      {finalElementsToShow.includes('testimonials') && (
         <StyleAwareSection heroStyle={formData?.heroStyle || 'default'} sectionType="standard">
           <div className="container mx-auto px-6">
             <div className="max-w-7xl mx-auto text-center">
@@ -237,22 +236,22 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               </p>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {finalContent.testimonials?.items?.map((testimonial: any, index: number) => (
-                  <StyledCard key={index} className="text-center h-full flex flex-col min-h-[600px]">
+                  <StyledCard key={index} className="text-center h-full flex flex-col min-h-[500px]">
                     <div className="mb-6">
-                      <span className="text-5xl text-yellow-400">
+                      <div className="text-5xl mb-4">
                         {'⭐'.repeat(testimonial.rating || 5)}
-                      </span>
+                      </div>
                     </div>
-                    <p className="text-gray-200 mb-8 leading-relaxed text-xl flex-grow">
+                    <p className="text-gray-200 mb-8 leading-relaxed text-xl flex-grow font-medium">
                       "{testimonial.text}"
                     </p>
                     {testimonial.project && (
                       <div className="mb-6 p-4 bg-white/10 rounded-xl">
-                        <div className="text-gray-300 mb-2">פרויקט:</div>
+                        <div className="text-gray-300 mb-2 font-semibold">פרויקט:</div>
                         <div className="text-white font-semibold text-lg">{testimonial.project}</div>
                         {testimonial.result && (
                           <>
-                            <div className="text-gray-300 mb-2 mt-3">תוצאה:</div>
+                            <div className="text-gray-300 mb-2 mt-3 font-semibold">תוצאה:</div>
                             <div className="text-green-400 font-semibold text-lg">{testimonial.result}</div>
                           </>
                         )}
@@ -260,12 +259,12 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                     )}
                     <div className="mt-auto">
                       <div className={`${styleClasses.icon} w-16 h-16 mx-auto mb-4 flex items-center justify-center text-white`}>
-                        <span className="text-2xl">👤</span>
+                        <span className="text-3xl">👤</span>
                       </div>
-                      <h4 className={`text-white text-xl ${styleClasses.typography}`}>
+                      <h4 className={`text-white text-xl ${styleClasses.typography} mb-2`}>
                         {testimonial.name}
                       </h4>
-                      <p className="text-gray-300">
+                      <p className="text-gray-300 font-medium">
                         {testimonial.role}
                       </p>
                       {testimonial.company && (
@@ -283,7 +282,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
       )}
 
       {/* Process Section */}
-      {elementsToShow.includes('process') && (
+      {finalElementsToShow.includes('process') && (
         <StyleAwareSection heroStyle={formData?.heroStyle || 'default'} sectionType="alternate">
           <div className="container mx-auto px-6">
             <div className="max-w-7xl mx-auto text-center">
@@ -296,12 +295,12 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               </p>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
                 {finalContent.process?.steps?.map((step: any, index: number) => (
-                  <StyledCard key={index} className="text-center relative h-full flex flex-col min-h-[450px]">
-                    <div className={`absolute -top-6 right-6 w-12 h-12 ${styleClasses.button} rounded-full flex items-center justify-center text-white font-bold text-xl`}>
+                  <StyledCard key={index} className="text-center relative h-full flex flex-col min-h-[350px]">
+                    <div className={`absolute -top-6 right-6 w-12 h-12 ${styleClasses.button} rounded-full flex items-center justify-center text-white font-bold text-xl shadow-2xl`}>
                       {step.number}
                     </div>
                     <div className={`${styleClasses.icon} w-20 h-20 mx-auto mb-8 flex items-center justify-center text-white text-3xl`}>
-                      {step.icon}
+                      <span className="text-4xl">{step.icon}</span>
                     </div>
                     <h3 className={`text-2xl font-bold mb-4 text-white ${styleClasses.typography}`}>
                       {step.title}
@@ -311,7 +310,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                     </p>
                     {step.duration && (
                       <div className="mt-auto">
-                        <div className="text-gray-300 mb-2">משך זמן:</div>
+                        <div className="text-gray-300 mb-2 font-semibold">משך זמן:</div>
                         <div className="text-white font-semibold text-lg">{step.duration}</div>
                       </div>
                     )}
@@ -324,7 +323,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
       )}
 
       {/* FAQ Section */}
-      {elementsToShow.includes('faq') && (
+      {finalElementsToShow.includes('faq') && (
         <StyleAwareSection heroStyle={formData?.heroStyle || 'default'} sectionType="standard">
           <div className="container mx-auto px-6">
             <div className="max-w-5xl mx-auto">
@@ -339,16 +338,16 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               </div>
               <div className="space-y-8">
                 {finalContent.faq?.items?.map((faq: any, index: number) => (
-                  <StyledCard key={index} className="min-h-[200px]">
+                  <StyledCard key={index} className="min-h-[150px]">
                     <h3 className={`text-2xl font-bold mb-6 text-white ${styleClasses.typography}`}>
-                      {faq.question}
+                      ❓ {faq.question}
                     </h3>
                     <p className="text-gray-200 leading-relaxed mb-4 text-lg">
                       {faq.answer}
                     </p>
                     {faq.category && (
-                      <div className="inline-block px-4 py-2 bg-white/15 rounded-full text-gray-300">
-                        {faq.category}
+                      <div className="inline-block px-4 py-2 bg-white/15 rounded-full text-gray-300 font-medium">
+                        🏷️ {faq.category}
                       </div>
                     )}
                   </StyledCard>
@@ -360,7 +359,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
       )}
 
       {/* Features Section */}
-      {elementsToShow.includes('features') && (
+      {finalElementsToShow.includes('features') && (
         <StyleAwareSection heroStyle={formData?.heroStyle || 'default'} sectionType="alternate">
           <div className="container mx-auto px-6">
             <div className="max-w-7xl mx-auto text-center">
@@ -373,9 +372,9 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               </p>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
                 {finalContent.features?.items?.map((feature: any, index: number) => (
-                  <StyledCard key={index} className="text-center hover:scale-110 transition-all duration-500 h-full flex flex-col min-h-[450px]">
+                  <StyledCard key={index} className="text-center hover:scale-110 transition-all duration-500 h-full flex flex-col min-h-[350px]">
                     <div className={`${styleClasses.icon} w-20 h-20 mx-auto mb-8 flex items-center justify-center text-white text-3xl`}>
-                      {feature.icon}
+                      <span className="text-4xl">{feature.icon}</span>
                     </div>
                     <h3 className={`text-2xl font-bold mb-6 text-white ${styleClasses.typography}`}>
                       {feature.title}
@@ -402,7 +401,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
       )}
 
       {/* Gallery Section */}
-      {elementsToShow.includes('gallery') && (
+      {finalElementsToShow.includes('gallery') && (
         <StyleAwareSection heroStyle={formData?.heroStyle || 'default'} sectionType="final">
           <div className="container mx-auto px-6">
             <div className="max-w-7xl mx-auto text-center">
@@ -413,9 +412,9 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               <p className="text-2xl text-gray-200 mb-12 max-w-4xl mx-auto leading-relaxed">
                 {finalContent.gallery?.subtitle}
               </p>
-              <StyledCard className="mb-12 min-h-[400px] flex flex-col justify-center">
+              <StyledCard className="mb-12 min-h-[300px] flex flex-col justify-center">
                 <div className={`${styleClasses.icon} w-32 h-32 mx-auto mb-10 flex items-center justify-center text-white text-5xl`}>
-                  🖼️
+                  <span className="text-6xl">🖼️</span>
                 </div>
                 <h3 className={`text-4xl font-bold mb-8 text-white ${styleClasses.typography}`}>
                   פורטפוליו מרשים של עבודות
@@ -426,8 +425,8 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                 {finalContent.gallery?.categories && (
                   <div className="flex flex-wrap justify-center gap-6">
                     {finalContent.gallery.categories.map((category: string, index: number) => (
-                      <div key={index} className="px-6 py-3 bg-white/15 rounded-full text-gray-200 text-lg">
-                        {category}
+                      <div key={index} className="px-6 py-3 bg-white/15 rounded-full text-gray-200 text-lg font-medium">
+                        📂 {category}
                       </div>
                     ))}
                   </div>
@@ -439,7 +438,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
       )}
     
     {/* Contact Section */}
-    {elementsToShow.includes('contact') && (
+    {finalElementsToShow.includes('contact') && (
       <StyleAwareSection heroStyle={formData?.heroStyle || 'default'} sectionType="final">
         <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto">
@@ -456,28 +455,28 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               </p>
             </div>
             <div className="grid lg:grid-cols-2 gap-16">
-              <StyledCard className="min-h-[500px]">
+              <StyledCard className="min-h-[400px]">
                 <h3 className={`text-3xl mb-8 text-white ${styleClasses.typography}`}>
-                  דרכי יצירת קשר
+                  📞 דרכי יצירת קשר
                 </h3>
                 <div className="space-y-8">
                   {finalContent.contact?.contactMethods?.map((method: any, index: number) => (
                     <div key={index} className="flex items-start gap-6">
                       <div className={`${styleClasses.icon} w-16 h-16 flex items-center justify-center text-white text-2xl`}>
-                        {method.icon}
+                        <span className="text-3xl">{method.icon}</span>
                       </div>
                       <div>
                         <div className="text-white font-semibold mb-2 text-xl">{method.type}</div>
-                        <div className="text-gray-200 mb-2 text-lg">{method.value}</div>
+                        <div className="text-gray-200 mb-2 text-lg font-medium">{method.value}</div>
                         <div className="text-gray-300">{method.description}</div>
                       </div>
                     </div>
                   ))}
                 </div>
               </StyledCard>
-              <StyledCard className="min-h-[500px]">
+              <StyledCard className="min-h-[400px]">
                 <h3 className={`text-3xl mb-8 text-white ${styleClasses.typography}`}>
-                  {finalContent.contact?.cta?.primary || "התחילו עכשיו"}
+                  🚀 {finalContent.contact?.cta?.primary || "התחילו עכשיו"}
                 </h3>
                 <p className="text-gray-200 mb-8 leading-relaxed text-lg">
                   {finalContent.contact?.cta?.secondary}
@@ -493,7 +492,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                   </div>
                 )}
                 <button className={`${styleClasses.button} w-full p-6 text-center text-xl transition-all duration-300 hover:shadow-2xl`}>
-                  צרו קשר עכשיו
+                  📧 צרו קשר עכשיו
                 </button>
               </StyledCard>
             </div>
