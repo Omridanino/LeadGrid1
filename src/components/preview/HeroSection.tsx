@@ -12,53 +12,26 @@ import { HeroFuturistic } from '../ui/hero-futuristic';
 import ScrollExpandMedia from '../ui/scroll-expansion-hero';
 import { BackgroundPaths } from '../ui/background-paths';
 import { HeroScroll } from '../ui/container-scroll-animation';
+import { ColorScheme } from '@/components/ColorEditor';
 
 interface HeroSectionProps {
-  answers: {
-    businessName?: string;
-    businessType?: string;
-    targetAudience?: string;
-    mainGoal?: string;
-    description?: string;
-    tagline?: string;
-    services?: string[];
-    location?: string;
-    experience?: string;
-    specialization?: string;
-    portfolio?: string;
-    contact?: string;
-  };
-  textColor?: string;
-  borderColor?: string;
-  buttonStyle?: string;
-  backgroundColor?: string;
-  backgroundImage?: string;
-  primaryColor?: string;
-  accentColor?: string;
-  fontSize?: string;
-  buttonSize?: string;
-  isRTL?: boolean;
-  showBadge?: boolean;
-  badgeText?: string;
+  content: any;
+  currentColors: ColorScheme;
+  formData: any;
+  heroImage: string;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({ 
-  answers, 
-  textColor = '#000000', 
-  borderColor = '#e5e7eb', 
-  buttonStyle = 'default', 
-  backgroundColor = '#ffffff', 
-  backgroundImage, 
-  primaryColor = '#3b82f6', 
-  accentColor = '#10b981', 
-  fontSize = 'text-base', 
-  buttonSize = 'default',
-  isRTL = false,
-  showBadge = true,
-  badgeText = 'New'
+  content,
+  currentColors,
+  formData,
+  heroImage
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [currentDesign, setCurrentDesign] = useState('modern');
+
+  // Extract answers from formData for backward compatibility
+  const answers = formData || {};
 
   useEffect(() => {
     setIsVisible(true);
@@ -94,44 +67,40 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   };
 
   const renderHeroByDesignStyle = () => {
-    const heroProps = {
-      title: answers.businessName || 'Your Business',
-      subtitle: answers.tagline || 'Your vision, our expertise',
-      onButtonClick: () => console.log('Hero button clicked'),
-      onBookCallClick: () => console.log('Book call clicked'),
-      style: { color: textColor }
-    };
+    const textColor = currentColors?.text || '#000000';
+    const borderColor = currentColors?.border || '#e5e7eb';
+    const backgroundColor = currentColors?.background || '#ffffff';
+    const primaryColor = currentColors?.primary || '#3b82f6';
+    const accentColor = currentColors?.accent || '#10b981';
 
     switch (currentDesign) {
       case 'modern':
         return (
           <div className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ backgroundColor }}>
-            {backgroundImage && (
+            {heroImage && (
               <div 
                 className="absolute inset-0 bg-cover bg-center opacity-20"
-                style={{ backgroundImage: `url(${backgroundImage})` }}
+                style={{ backgroundImage: `url(${heroImage})` }}
               />
             )}
             <div className="relative z-10 text-center max-w-6xl mx-auto px-6">
-              {showBadge && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6 }}
-                  className="mb-8"
-                >
-                  <Badge variant="secondary" className="px-4 py-2 text-sm font-medium">
-                    {getBusinessIcon()}
-                    <span className="ml-2">{badgeText}</span>
-                  </Badge>
-                </motion.div>
-              )}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="mb-8"
+              >
+                <Badge variant="secondary" className="px-4 py-2 text-sm font-medium">
+                  {getBusinessIcon()}
+                  <span className="ml-2">New</span>
+                </Badge>
+              </motion.div>
               
               <motion.h1
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className={`text-5xl md:text-7xl font-bold mb-6 ${fontSize}`}
+                className="text-5xl md:text-7xl font-bold mb-6"
                 style={{ color: textColor }}
               >
                 {answers.businessName || 'Your Business'}
@@ -141,7 +110,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className={`text-xl md:text-2xl mb-8 opacity-80 ${fontSize}`}
+                className="text-xl md:text-2xl mb-8 opacity-80"
                 style={{ color: textColor }}
               >
                 {answers.tagline || 'Your vision, our expertise'}
@@ -154,7 +123,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 className="flex flex-col sm:flex-row gap-4 justify-center items-center"
               >
                 <Button 
-                  size={buttonSize as any}
                   className="px-8 py-3 text-lg font-semibold"
                   style={{ backgroundColor: primaryColor, borderColor }}
                 >
@@ -163,7 +131,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 </Button>
                 <Button 
                   variant="outline" 
-                  size={buttonSize as any}
                   className="px-8 py-3 text-lg"
                   style={{ borderColor, color: textColor }}
                 >
@@ -184,7 +151,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               <p className={`text-lg md:text-xl mb-12 opacity-70 ${fontSize}`} style={{ color: textColor }}>
                 {answers.tagline || 'Less is more'}
               </p>
-              <Button variant="ghost" size={buttonSize as any} className="text-lg px-8 py-3 border-b-2" style={{ borderColor }}>
+              <Button variant="ghost" size={'default' as any} className="text-lg px-8 py-3 border-b-2" style={{ borderColor }}>
                 Explore
               </Button>
             </div>
@@ -206,7 +173,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               <p className={`text-2xl md:text-3xl mb-12 text-white/80 ${fontSize}`}>
                 {answers.tagline || 'Make a statement'}
               </p>
-              <Button size={buttonSize as any} className="px-12 py-4 text-xl font-bold bg-yellow-400 text-black hover:bg-yellow-300">
+              <Button size={'default' as any} className="px-12 py-4 text-xl font-bold bg-yellow-400 text-black hover:bg-yellow-300">
                 TAKE ACTION
               </Button>
             </div>
@@ -226,7 +193,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               <p className={`text-xl md:text-2xl mb-12 text-gray-600 italic ${fontSize}`}>
                 {answers.tagline || 'Timeless sophistication'}
               </p>
-              <Button variant="outline" size={buttonSize as any} className="px-8 py-3 text-lg border-2 border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white">
+              <Button variant="outline" size={'default' as any} className="px-8 py-3 text-lg border-2 border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white">
                 Discover More
               </Button>
             </div>
@@ -250,7 +217,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               <p className={`text-2xl md:text-3xl mb-12 text-white/90 ${fontSize}`}>
                 {answers.tagline || 'Unleash your imagination'}
               </p>
-              <Button size={buttonSize as any} className="px-10 py-4 text-xl font-bold bg-white text-purple-600 hover:bg-gray-100">
+              <Button size={'default' as any} className="px-10 py-4 text-xl font-bold bg-white text-purple-600 hover:bg-gray-100">
                 Get Creative
               </Button>
             </div>
@@ -270,7 +237,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               <p className={`text-xl md:text-2xl mb-12 font-mono ${fontSize}`}>
                 {answers.tagline || '// Building the future'}
               </p>
-              <Button size={buttonSize as any} className="px-8 py-3 text-lg font-mono bg-green-400 text-black hover:bg-green-300">
+              <Button size={'default' as any} className="px-8 py-3 text-lg font-mono bg-green-400 text-black hover:bg-green-300">
                 {'> execute_command'}
               </Button>
             </div>
@@ -293,7 +260,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               <p className={`text-2xl md:text-3xl mb-12 text-white/90 ${fontSize}`}>
                 {answers.tagline || 'Colors of innovation'}
               </p>
-              <Button size={buttonSize as any} className="px-10 py-4 text-xl font-bold bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white/30">
+              <Button size={'default' as any} className="px-10 py-4 text-xl font-bold bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white/30">
                 Explore Colors
               </Button>
             </div>
@@ -311,7 +278,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 <p className={`text-xl md:text-2xl mb-12 text-white/80 ${fontSize}`}>
                   {answers.tagline || 'Transparent excellence'}
                 </p>
-                <Button size={buttonSize as any} className="px-8 py-3 text-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white/30">
+                <Button size={'default' as any} className="px-8 py-3 text-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white/30">
                   See Through
                 </Button>
               </CardContent>
@@ -352,7 +319,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Button size={buttonSize as any} className="px-10 py-4 text-xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+                <Button size={'default' as any} className="px-10 py-4 text-xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 text-white">
                   Animate Now
                 </Button>
               </motion.div>
@@ -373,7 +340,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               <p className={`text-xl md:text-2xl mb-12 text-gray-300 ${fontSize}`}>
                 {answers.tagline || 'Excellence redefined'}
               </p>
-              <Button size={buttonSize as any} className="px-8 py-3 text-lg bg-gradient-to-r from-gold-400 to-yellow-600 text-black font-bold hover:from-gold-300 hover:to-yellow-500">
+              <Button size={'default' as any} className="px-8 py-3 text-lg bg-gradient-to-r from-gold-400 to-yellow-600 text-black font-bold hover:from-gold-300 hover:to-yellow-500">
                 Experience Premium
               </Button>
             </div>
@@ -387,7 +354,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               title={answers.businessName || 'Your Business'}
               subtitle1={answers.tagline || 'Your vision'}
               subtitle2="our expertise"
-              onButtonClick={() => console.log('3D Tech button clicked')}
             />
           </div>
         );
@@ -470,13 +436,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         return (
           <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor }}>
             <div className="text-center max-w-4xl mx-auto px-6">
-              <h1 className={`text-5xl md:text-7xl font-bold mb-8 ${fontSize}`} style={{ color: textColor }}>
+              <h1 className="text-5xl md:text-7xl font-bold mb-8" style={{ color: textColor }}>
                 {answers.businessName || 'Your Business'}
               </h1>
-              <p className={`text-xl md:text-2xl mb-12 opacity-80 ${fontSize}`} style={{ color: textColor }}>
+              <p className="text-xl md:text-2xl mb-12 opacity-80" style={{ color: textColor }}>
                 {answers.tagline || 'Your vision, our expertise'}
               </p>
-              <Button size={buttonSize as any} style={{ backgroundColor: primaryColor }}>
+              <Button style={{ backgroundColor: primaryColor }}>
                 Get Started
               </Button>
             </div>
