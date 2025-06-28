@@ -1,7 +1,7 @@
 
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Sparkles, Zap } from "lucide-react";
+import { Sparkles, Zap, Wand2, Palette, Camera, Gem } from "lucide-react";
 
 interface DesignStyleStepProps {
   formData: {
@@ -12,11 +12,11 @@ interface DesignStyleStepProps {
 }
 
 export const DesignStyleStep = ({ formData, updateFormData }: DesignStyleStepProps) => {
-  const currentDesignStyle = formData.designStyle || 'basic';
+  const currentDesignStyle = formData.designStyle || 'hero-section-modern';
   const currentNavigationStyle = formData.navigationStyle || 'floating';
 
   if (!formData.designStyle) {
-    updateFormData('designStyle', 'basic');
+    updateFormData('designStyle', 'hero-section-modern');
   }
   if (!formData.navigationStyle) {
     updateFormData('navigationStyle', 'floating');
@@ -25,23 +25,60 @@ export const DesignStyleStep = ({ formData, updateFormData }: DesignStyleStepPro
   return (
     <div className="space-y-8">
       <div className="bg-gradient-to-br from-purple-900/20 to-blue-900/20 p-6 rounded-2xl border border-purple-500/20">
-        <Label htmlFor="designStyle" className="text-white font-bold text-lg mb-4 block">בחר את סגנון העיצוב *</Label>
+        <Label htmlFor="designStyle" className="text-white font-bold text-lg mb-4 block">בחר את סגנון העיצוב הבסיסי *</Label>
         <Select onValueChange={(value) => updateFormData('designStyle', value)} value={currentDesignStyle}>
           <SelectTrigger className="bg-gray-800/80 border-purple-500/30 text-white hover:bg-gray-700/80 focus:border-purple-400 focus:ring-purple-400 h-14 text-lg backdrop-blur-sm">
             <SelectValue placeholder="בחר סגנון עיצוב" />
           </SelectTrigger>
           <SelectContent className="bg-gray-900/95 border-purple-500/30 backdrop-blur-xl z-[9999]">
-            <SelectItem value="basic" className="text-white hover:bg-purple-700/50 cursor-pointer focus:bg-purple-700/50 p-4">
+            <SelectItem value="hero-section-modern" className="text-white hover:bg-purple-700/50 cursor-pointer focus:bg-purple-700/50 p-4">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
                   <Sparkles className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <div className="font-semibold">עיצוב בסיסי ויפה</div>
-                  <div className="text-sm text-gray-300">עיצוב נקי וקלאסי עם אפקטים בסיסיים</div>
+                  <div className="font-semibold">עיצוב מודרני מתקדם</div>
+                  <div className="text-sm text-gray-300">עיצוב נקי עם אנימציות מתקדמות וטיפוגרפיה יפה</div>
                 </div>
               </div>
             </SelectItem>
+            
+            <SelectItem value="hero-section-animated" className="text-white hover:bg-purple-700/50 cursor-pointer focus:bg-purple-700/50 p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                  <Wand2 className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <div className="font-semibold">עיצוב עם אנימציות מתקדמות</div>
+                  <div className="text-sm text-gray-300">אפקטי Typewriter ואנימציות מרהיבות עם AnimatedGroup</div>
+                </div>
+              </div>
+            </SelectItem>
+
+            <SelectItem value="hero-section-typewriter" className="text-white hover:bg-purple-700/50 cursor-pointer focus:bg-purple-700/50 p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
+                  <Palette className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <div className="font-semibold">עיצוב עם אפקט כתיבה</div>
+                  <div className="text-sm text-gray-300">טקסט דינמי עם אפקט מכונת כתיבה מתקדם</div>
+                </div>
+              </div>
+            </SelectItem>
+
+            <SelectItem value="hero-section-rotating" className="text-white hover:bg-purple-700/50 cursor-pointer focus:bg-purple-700/50 p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 to-violet-500 flex items-center justify-center">
+                  <Camera className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <div className="font-semibold">עיצוב עם טקסט מתחלף</div>
+                  <div className="text-sm text-gray-300">כותרות דינמיות עם אפקט החלפת טקסט חלק</div>
+                </div>
+              </div>
+            </SelectItem>
+
             <SelectItem value="3d-tech" className="text-white hover:bg-purple-700/50 cursor-pointer focus:bg-purple-700/50 p-4">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 flex items-center justify-center">
@@ -53,10 +90,26 @@ export const DesignStyleStep = ({ formData, updateFormData }: DesignStyleStepPro
                 </div>
               </div>
             </SelectItem>
+
+            <SelectItem value="basic" className="text-white hover:bg-purple-700/50 cursor-pointer focus:bg-purple-700/50 p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-gray-500 to-slate-500 flex items-center justify-center">
+                  <Gem className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <div className="font-semibold">עיצוב בסיסי ויפה</div>
+                  <div className="text-sm text-gray-300">עיצוב נקי וקלאסי עם אפקטים בסיסיים</div>
+                </div>
+              </div>
+            </SelectItem>
           </SelectContent>
         </Select>
         <div className="mt-4 p-4 bg-black/30 rounded-xl border border-purple-500/20">
           <p className="text-sm text-purple-200 leading-relaxed">
+            {currentDesignStyle === 'hero-section-modern' && "עיצוב מודרני עם אנימציות חלקות וטיפוגרפיה מתקדמת - מתאים לעסקים מקצועיים"}
+            {currentDesignStyle === 'hero-section-animated' && "עיצוב עם אנימציות מתקדמות וקבוצות אנימציה - מושלם לעסקים יצירתיים"}
+            {currentDesignStyle === 'hero-section-typewriter' && "עיצוב עם אפקט מכונת כתיבה דינמי - מתאים לעסקים טכנולוגיים"}
+            {currentDesignStyle === 'hero-section-rotating' && "עיצוב עם טקסט מתחלף וחלק - מושלם לעסקים רב-תחומיים"}
             {currentDesignStyle === 'basic' && "עיצוב נקי וקלאסי עם אפקטים בסיסיים - מתאים לכל סוג עסק ולכל קהל"}
             {currentDesignStyle === '3d-tech' && "עיצוב טכנולוגי מתקדם עם אפקטים תלת-מימדיים מרשימים - מושלם לעסקים חדשניים ומתקדמים"}
           </p>
