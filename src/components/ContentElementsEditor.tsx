@@ -57,6 +57,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     buttons.push({
       text: "כפתור חדש",
       variant: "primary",
+      style: "black-on-white",
       visible: true
     });
     setLocalContent({
@@ -83,6 +84,63 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
       ...localContent,
       buttons
     });
+  };
+
+  const addTextElement = () => {
+    const elements = [...(localContent.elements || [])];
+    elements.push({
+      type: "text",
+      content: "טקסט חדש",
+      id: Date.now().toString()
+    });
+    setLocalContent({
+      ...localContent,
+      elements
+    });
+  };
+
+  const addImageElement = () => {
+    const elements = [...(localContent.elements || [])];
+    elements.push({
+      type: "image",
+      src: "",
+      alt: "תמונה חדשה",
+      id: Date.now().toString()
+    });
+    setLocalContent({
+      ...localContent,
+      elements
+    });
+  };
+
+  const addTagElement = () => {
+    const elements = [...(localContent.elements || [])];
+    elements.push({
+      type: "tag",
+      content: "תג חדש",
+      id: Date.now().toString()
+    });
+    setLocalContent({
+      ...localContent,
+      elements
+    });
+  };
+
+  const getButtonStyleClasses = (style: string) => {
+    switch (style) {
+      case "black-on-white":
+        return "bg-white text-black border border-black hover:bg-gray-100";
+      case "white-on-black":
+        return "bg-black text-white border border-white hover:bg-gray-800";
+      case "gradient-gold-black":
+        return "bg-gradient-to-r from-yellow-400 to-black text-white border-0 hover:from-yellow-500 hover:to-gray-900";
+      case "gradient-gold-white":
+        return "bg-gradient-to-r from-yellow-400 to-white text-black border-0 hover:from-yellow-500 hover:to-gray-100";
+      case "gradient-purple-tech":
+        return "bg-gradient-to-r from-purple-600 to-white text-white border-0 hover:from-purple-700 hover:to-gray-100";
+      default:
+        return "bg-blue-600 text-white hover:bg-blue-700";
+    }
   };
 
   return (
@@ -207,21 +265,32 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
                       </Button>
                     </div>
                   </div>
+                  
                   <Input
                     value={button.text || ''}
                     onChange={(e) => handleButtonChange(index, 'text', e.target.value)}
                     placeholder="טקסט הכפתור"
                     className="bg-gray-600 border-gray-500 text-white text-right mb-2"
                   />
+                  
                   <select
-                    value={button.variant || 'primary'}
-                    onChange={(e) => handleButtonChange(index, 'variant', e.target.value)}
-                    className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded"
+                    value={button.style || 'black-on-white'}
+                    onChange={(e) => handleButtonChange(index, 'style', e.target.value)}
+                    className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded mb-2"
                   >
-                    <option value="primary">ראשי</option>
-                    <option value="secondary">משני</option>
-                    <option value="outline">מסגרת</option>
+                    <option value="black-on-white">שחור על לבן</option>
+                    <option value="white-on-black">לבן על שחור</option>
+                    <option value="gradient-gold-black">גרדיאנט זהב-שחור</option>
+                    <option value="gradient-gold-white">גרדיאנט זהב-לבן</option>
+                    <option value="gradient-purple-tech">גרדיאנט סגול טכנולוגי</option>
                   </select>
+
+                  {/* Button Preview */}
+                  <div className="mt-2">
+                    <button className={`px-4 py-2 rounded text-sm ${getButtonStyleClasses(button.style || 'black-on-white')}`}>
+                      {button.text || 'תצוגה מקדימה'}
+                    </button>
+                  </div>
                 </div>
               ))}
               
@@ -235,7 +304,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
             </CardContent>
           </Card>
 
-          {/* Elements Management - Now integrated into content */}
+          {/* Elements Management */}
           <Separator className="bg-gray-600" />
 
           <Card className="bg-gray-800 border-gray-700">
@@ -248,38 +317,66 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-2">
                 <Button 
-                  variant="outline" 
-                  className="border-gray-600 text-gray-200 bg-gray-700 hover:bg-gray-600 hover:text-white"
+                  onClick={addImageElement}
+                  className="bg-purple-600 hover:bg-purple-700 text-white"
                 >
                   <ImageIcon className="w-4 h-4 ml-1" />
                   הוסף תמונה
                 </Button>
                 <Button 
-                  variant="outline" 
-                  className="border-gray-600 text-gray-200 bg-gray-700 hover:bg-gray-600 hover:text-white"
+                  onClick={addTextElement}
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
                 >
                   <Type className="w-4 h-4 ml-1" />
                   הוסף טקסט
                 </Button>
                 <Button 
-                  variant="outline" 
-                  className="border-gray-600 text-gray-200 bg-gray-700 hover:bg-gray-600 hover:text-white"
+                  className="bg-orange-600 hover:bg-orange-700 text-white"
                 >
                   <Palette className="w-4 h-4 ml-1" />
                   הוסף רקע
                 </Button>
                 <Button 
-                  variant="outline" 
-                  className="border-gray-600 text-gray-200 bg-gray-700 hover:bg-gray-600 hover:text-white"
+                  onClick={addTagElement}
+                  className="bg-green-600 hover:bg-green-700 text-white"
                 >
                   <Tag className="w-4 h-4 ml-1" />
                   הוסף תג
                 </Button>
               </div>
               
-              <div className="text-center text-gray-400 text-sm">
-                אלמנטים נוספים יתווספו בעתיד
-              </div>
+              {/* Show current elements */}
+              {(localContent.elements || []).length > 0 && (
+                <div className="mt-4">
+                  <h4 className="text-white text-sm mb-2">אלמנטים נוכחיים:</h4>
+                  <div className="space-y-2">
+                    {(localContent.elements || []).map((element: any, index: number) => (
+                      <div key={element.id || index} className="bg-gray-700 p-2 rounded flex items-center justify-between">
+                        <span className="text-white text-xs">
+                          {element.type === 'text' ? '📝 טקסט' : 
+                           element.type === 'image' ? '🖼️ תמונה' : 
+                           element.type === 'tag' ? '🏷️ תג' : element.type}
+                        </span>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => {
+                            const elements = [...(localContent.elements || [])];
+                            elements.splice(index, 1);
+                            setLocalContent({
+                              ...localContent,
+                              elements
+                            });
+                          }}
+                          className="h-6 w-6 p-0 text-red-400 hover:text-red-300"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
