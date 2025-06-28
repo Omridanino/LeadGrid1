@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { HeroWithMockup } from "@/components/ui/hero-with-mockup";
 import { BeamsBackground } from "@/components/ui/beams-background";
-import { Hero } from "@/components/ui/gradient-hero";
-import { Hero as AnimatedHero } from "@/components/ui/animated-hero";
+import { GradientHero } from "@/components/ui/gradient-hero";
+import { AnimatedHero } from "@/components/ui/animated-hero";
 import { HeroGeometric } from "@/components/ui/shape-landing-hero";
 
 interface HeroSectionProps {
