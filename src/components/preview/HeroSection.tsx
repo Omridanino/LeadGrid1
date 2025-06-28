@@ -1,353 +1,412 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ColorScheme } from "@/components/ColorEditor";
-import { SplineScene } from "@/components/ui/splite";
-import { Spotlight } from "@/components/ui/spotlight";
-import { ChromeGrid } from "@/components/ui/chrome-grid";
-import { AuroraHero } from "@/components/ui/futurastic-hero-section";
-import { LavaLamp } from "@/components/ui/fluid-blob";
-import { Scene } from "@/components/ui/rubik-s-cube";
+import { Badge } from "@/components/ui/badge";
 import { HeroWithMockup } from "@/components/ui/hero-with-mockup";
 import { BeamsBackground } from "@/components/ui/beams-background";
-import { GradientHero } from "@/components/ui/gradient-hero";
-import { AnimatedHero } from "@/components/ui/animated-hero";
+import { Hero } from "@/components/ui/gradient-hero";
+import { Hero as AnimatedHero } from "@/components/ui/animated-hero";
 import { HeroGeometric } from "@/components/ui/shape-landing-hero";
-import { ArrowLeft, Play, Shield, Zap, Award, Star } from "lucide-react";
 
 interface HeroSectionProps {
   content: any;
-  currentColors: ColorScheme;
+  currentColors: any;
   formData: any;
   heroImage: string;
 }
 
+const heroDesigns = [
+  'heroWithMockup',
+  'beamsBackground', 
+  'gradientHero',
+  'animatedHero',
+  'heroGeometric'
+];
+
 export const HeroSection = ({ content, currentColors, formData, heroImage }: HeroSectionProps) => {
-  const designStyle = formData?.designStyle || 'basic';
+  const [selectedDesign, setSelectedDesign] = useState<string>('');
 
-  // Basic Design Style - Random selection from 5 different designs
-  if (designStyle === 'basic') {
-    const [selectedBasicDesign, setSelectedBasicDesign] = useState(0);
+  useEffect(() => {
+    // Generate random design only once when component mounts
+    const randomIndex = Math.floor(Math.random() * heroDesigns.length);
+    setSelectedDesign(heroDesigns[randomIndex]);
+  }, []);
 
-    useEffect(() => {
-      // Randomly select one of the 5 basic designs
-      setSelectedBasicDesign(Math.floor(Math.random() * 5));
-    }, []);
-
-    // Design 1: Enhanced Mockup Hero
-    if (selectedBasicDesign === 0) {
-      return (
-        <HeroWithMockup
-          title={content?.headline || formData?.businessName || 'העסק שלכם'}
-          description={content?.subheadline || `פתרונות מקצועיים ל${formData?.targetAudience || 'הלקוחות שלכם'}`}
-          primaryCta={{
-            text: content?.cta || 'בואו נתחיל',
-            onClick: () => {}
-          }}
-          secondaryCta={{
-            text: 'למד עוד',
-            onClick: () => {}
-          }}
-        />
-      );
-    }
-
-    // Design 2: Beams Background
-    if (selectedBasicDesign === 1) {
-      return (
-        <BeamsBackground
-          title={content?.headline || formData?.businessName || 'חלומות דיגיטליים'}
-          description={content?.subheadline || 'שם המחשבות מקבלות צורה והתודעה זורמת כמו כספית נוזלית'}
-          primaryCta={{
-            text: content?.cta || 'היכנסו לזרימה',
-            onClick: () => {}
-          }}
-          secondaryCta={{
-            text: 'חקרו עוד',
-            onClick: () => {}
-          }}
-        />
-      );
-    }
-
-    // Design 3: Gradient Hero with Lamp Effect
-    if (selectedBasicDesign === 2) {
-      return (
-        <GradientHero
-          title={content?.headline || formData?.businessName || 'העתיד כאן עכשיו'}
-          subtitle={content?.subheadline || 'חוויה דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש'}
-          primaryCta={{
-            text: content?.cta || 'התחילו היום',
-            onClick: () => {}
-          }}
-          secondaryCta={{
-            text: 'גלו עוד',
-            onClick: () => {}
-          }}
-        />
-      );
-    }
-
-    // Design 4: Animated Text Hero
-    if (selectedBasicDesign === 3) {
-      return (
-        <AnimatedHero
-          title={content?.headline || formData?.businessName || 'זה משהו'}
-          subtitle={content?.subheadline || `ניהול עסק קטן היום כבר מספיק קשה. הימנעו מסיבוכים נוספים על ידי נטישת שיטות מסחר מיושנות ומייגעות. המטרה שלנו היא לפשט את המסחר של עסקים קטנים ובינוניים.`}
-          primaryCta={{
-            text: content?.cta || 'הירשמו כאן',
-            onClick: () => {}
-          }}
-          secondaryCta={{
-            text: 'הצגת המוצר',
-            onClick: () => {}
-          }}
-        />
-      );
-    }
-
-    // Design 5: Geometric Shapes Hero (already exists)
-    if (selectedBasicDesign === 4) {
-      return (
-        <HeroGeometric
-          badge="עיצוב מתקדם"
-          title1={content?.headline || formData?.businessName || 'העלו את החזון הדיגיטלי'}
-          title2="יצירת אתרים יוצאי דופן"
-        />
-      );
-    }
-  }
-
-  // 3D Tech Design Style - Random selection from 5 different designs
-  if (designStyle === '3d-tech') {
-    const [selectedDesign, setSelectedDesign] = useState(0);
-
-    useEffect(() => {
-      // Randomly select one of the 5 3D designs
-      setSelectedDesign(Math.floor(Math.random() * 5));
-    }, []);
-
-    // Design 1: Spline 3D Scene
-    if (selectedDesign === 0) {
-      return (
-        <section className="relative overflow-hidden min-h-screen bg-black/[0.96]">
-          <Spotlight
-            className="-top-40 left-0 md:left-60 md:-top-20"
-            fill="white"
-          />
-          
-          <div className="flex h-screen">
-            <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
-              <div className="max-w-2xl">
-                <div className="inline-flex items-center gap-2 backdrop-blur-md border px-4 py-2 rounded-full mb-6 text-neutral-300 border-neutral-600">
-                  <Zap className="w-4 h-4 text-blue-400" />
-                  <span className="text-sm">טכנולוגיה תלת-מימדית</span>
-                </div>
-                
-                <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mb-6">
-                  {content?.headline || formData?.businessName || 'חוויה תלת-מימדית'}
-                </h1>
-                
-                <p className="text-neutral-300 text-lg leading-relaxed mb-8 max-w-lg">
-                  {content?.subheadline || `הביאו את העסק שלכם למימד חדש עם טכנולוגיות מתקדמות ועיצוב חדשני`}
-                </p>
-                
-                <div className="flex gap-4">
-                  <button className="bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition">
-                    {content?.cta || 'התחילו עכשיו'}
-                  </button>
-                  <button className="border border-neutral-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition">
-                    גלו עוד
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex-1 relative">
-              <SplineScene 
-                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                className="w-full h-full"
-              />
-            </div>
-          </div>
-        </section>
-      );
-    }
-
-    if (selectedDesign === 1) {
-      return (
-        <div className="h-screen w-screen relative">
-          <ChromeGrid />
-          <div className="absolute z-10 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 pointer-events-none flex flex-col justify-center items-center text-center">
-            <div className="inline-flex items-center gap-2 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full mb-6 text-white/70">
-              <Shield className="w-4 h-4" />
-              <span className="text-sm">מתכת אינטראקטיבית</span>
-            </div>
-            
-            <h1 className="text-5xl md:text-7xl font-light mb-4 tracking-widest text-white whitespace-nowrap">
-              {content?.headline || formData?.businessName || 'עוצמה דיגיטלית'}
-            </h1>
-            
-            <p className="text-sm md:text-lg text-white/70 font-mono tracking-wide mb-8 max-w-2xl">
-              {content?.subheadline || 'מתכת שמגיבה למגע - טכנולוגיה שמשנה את הכללים'}
-            </p>
-            
-            <div className="flex gap-4 pointer-events-auto">
-              <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition transform hover:scale-105">
-                {content?.cta || 'חווה את החוויה'}
-              </button>
-              <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
-                למד עוד
-              </button>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    if (selectedDesign === 2) {
-      return (
-        <section className="relative grid min-h-screen place-content-center overflow-hidden bg-gray-950 px-4 py-24 text-gray-200">
-          <div className="absolute inset-0" style={{
-            background: `radial-gradient(125% 125% at 50% 0%, #020617 50%, #13FFAA)`
-          }} />
-          
-          <div className="relative z-10 flex flex-col items-center text-center">
-            <span className="mb-6 inline-block rounded-full bg-gray-600/50 px-4 py-2 text-sm border border-gray-500/30">
-              <Award className="w-4 h-4 inline mr-2" />
-              טכנולוגיה חדשנית
-            </span>
-            
-            <h1 className="max-w-4xl bg-gradient-to-br from-white to-gray-400 bg-clip-text text-center text-4xl md:text-7xl font-medium leading-tight text-transparent mb-6">
-              {content?.headline || formData?.businessName || 'העתיד כאן עכשיו'}
-            </h1>
-            
-            <p className="my-6 max-w-2xl text-center text-lg leading-relaxed text-gray-300">
-              {content?.subheadline || 'חוויה דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש עם טכנולוגיות מהפכניות'}
-            </p>
-            
-            <button
-              className="group relative flex w-fit items-center gap-2 rounded-full bg-gray-950/10 px-6 py-3 text-gray-50 transition-colors hover:bg-gray-950/50 border border-gray-600/50 backdrop-blur-sm"
-              style={{
-                boxShadow: '0px 4px 24px rgba(19, 255, 170, 0.3)'
-              }}
-            >
-              {content?.cta || 'התחילו היום'}
-              <ArrowLeft className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
-            </button>
-          </div>
-
-          <div className="absolute inset-0 z-0">
-            {[...Array(100)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 3}s`,
-                  opacity: Math.random() * 0.5 + 0.2
-                }}
-              />
-            ))}
-          </div>
-        </section>
-      );
-    }
-
-    if (selectedDesign === 3) {
-      return (
-        <div className="h-screen w-screen flex flex-col justify-center items-center relative">
-          <LavaLamp />
-          <div className="absolute z-10 text-center">
-            <div className="inline-flex items-center gap-2 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full mb-6 text-white mix-blend-exclusion">
-              <Zap className="w-4 h-4" />
-              <span className="text-sm">זרימה דיגיטלית</span>
-            </div>
-            
-            <h1 className="text-6xl md:text-8xl font-bold tracking-tight mix-blend-exclusion text-white whitespace-nowrap mb-6">
-              {content?.headline || formData?.businessName || 'חלומות דיגיטליים'}
-            </h1>
-            
-            <p className="text-lg md:text-xl text-center text-white mix-blend-exclusion max-w-2xl leading-relaxed mb-8 px-4">
-              {content?.subheadline || 'שם המחשבות מקבלות צורה והתודעה זורמת כמו כספית נוזלית דרך מימדים אינסופיים'}
-            </p>
-            
-            <div className="flex gap-4 justify-center">
-              <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
-                {content?.cta || 'היכנסו לזרימה'}
-              </button>
-              <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
-                חקרו עוד
-              </button>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    if (selectedDesign === 4) {
-      return (
-        <div className="h-screen w-screen relative flex flex-col justify-center items-center">
-          <div className="absolute inset-0">
-            <Scene />
-          </div>
-          <div className="absolute z-10 text-center">
-            <div className="inline-flex items-center gap-2 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full mb-6 text-white mix-blend-difference">
-              <Award className="w-4 h-4" />
-              <span className="text-sm">פתרון המורכבות</span>
-            </div>
-            
-            <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight mix-blend-difference text-white">
-              {content?.headline || formData?.businessName || 'פתרון המורכבות'}
-            </h1>
-            
-            <p className="text-lg md:text-xl text-white mix-blend-exclusion max-w-2xl px-6 leading-relaxed mb-8">
-              {content?.subheadline || 'פיסה אחת בכל פעם - אנחנו פותרים את האתגרים המורכבים ביותר'}
-            </p>
-            
-            <div className="flex gap-4 justify-center">
-              <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
-                {content?.cta || 'פתרו איתנו'}
-              </button>
-              <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
-                גלו איך
-              </button>
-            </div>
-          </div>
-        </div>
-      );
-    }
-  }
-
-  // Fallback to basic design
-  return (
-    <section 
-      className="relative overflow-hidden min-h-screen flex items-center justify-center"
-      style={{ backgroundColor: currentColors.heroBackground }}
-    >
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center max-w-4xl mx-auto">
-          <h1 
-            className="text-5xl md:text-7xl font-bold mb-8"
-            style={{ color: currentColors.headlineColor }}
-          >
-            {content?.headline || formData?.businessName || 'העסק שלכם'}
-          </h1>
-          <p 
-            className="text-xl md:text-2xl mb-12"
-            style={{ color: currentColors.subheadlineColor }}
-          >
-            {content?.subheadline || 'פתרונות מקצועיים'}
-          </p>
-          <button 
-            className="px-8 py-4 rounded-xl font-semibold text-lg"
-            style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-          >
-            {content?.cta || 'בואו נתחיל'}
-          </button>
+  // Don't render until we have a selected design
+  if (!selectedDesign || !content || !formData) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center bg-gray-900 text-white">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+          <p className="text-lg">טוען את הדף שלך...</p>
         </div>
       </div>
-    </section>
-  );
+    );
+  }
+
+  // Apply colors to the container
+  const containerStyle = {
+    backgroundColor: currentColors?.heroBackground || '#000000',
+    color: currentColors?.headlineColor || '#ffffff',
+    minHeight: '100vh'
+  };
+
+  const titleStyle = {
+    color: currentColors?.headlineColor || '#ffffff'
+  };
+
+  const subtitleStyle = {
+    color: currentColors?.subheadlineColor || '#e0f2fe'
+  };
+
+  const badgeStyle = {
+    backgroundColor: currentColors?.badge || '#3b82f6',
+    color: '#ffffff'
+  };
+
+  const primaryButtonStyle = {
+    backgroundColor: currentColors?.primary || '#3b82f6',
+    color: '#ffffff',
+    border: 'none'
+  };
+
+  const secondaryButtonStyle = {
+    backgroundColor: 'transparent',
+    color: currentColors?.headlineColor || '#ffffff',
+    border: `2px solid ${currentColors?.primary || '#3b82f6'}`
+  };
+
+  // Common props for all hero components
+  const commonProps = {
+    title: content?.headline || formData?.businessName || 'ברוכים הבאים',
+    subtitle: content?.subheadline || `${formData?.businessType} מקצועי ואמין`,
+    badge: content?.badge || 'חדש',
+    primaryCta: content?.cta || 'בואו נתחיל',
+    secondaryCta: content?.secondaryCta || 'למד עוד'
+  };
+
+  console.log('HeroSection rendering with:', { selectedDesign, content, currentColors });
+
+  const renderHeroDesign = () => {
+    switch (selectedDesign) {
+      case 'heroWithMockup':
+        return (
+          <div style={containerStyle} className="min-h-screen">
+            <div className="container mx-auto px-4 py-20 text-center">
+              {/* Badge */}
+              {commonProps.badge && (
+                <div className="mb-6">
+                  <Badge style={badgeStyle} className="px-4 py-2 text-sm font-medium rounded-full">
+                    {commonProps.badge}
+                  </Badge>
+                </div>
+              )}
+
+              {/* Title */}
+              <h1 
+                style={titleStyle}
+                className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+              >
+                {commonProps.title}
+              </h1>
+
+              {/* Subtitle */}
+              {commonProps.subtitle && (
+                <p 
+                  style={subtitleStyle}
+                  className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed"
+                >
+                  {commonProps.subtitle}
+                </p>
+              )}
+
+              {/* Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                {commonProps.primaryCta && (
+                  <Button 
+                    size="lg" 
+                    style={primaryButtonStyle}
+                    className="px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    {commonProps.primaryCta}
+                  </Button>
+                )}
+                {commonProps.secondaryCta && (
+                  <Button 
+                    size="lg" 
+                    variant="outline"
+                    style={secondaryButtonStyle}
+                    className="px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    {commonProps.secondaryCta}
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'beamsBackground':
+        return (
+          <div style={containerStyle} className="min-h-screen relative overflow-hidden">
+            {/* Animated background beams effect */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/20 to-pink-900/20">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(29,78,216,0.15),transparent_50%)] animate-pulse"></div>
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_60%,rgba(147,51,234,0.15),transparent_50%)] animate-pulse [animation-delay:1s]"></div>
+            </div>
+            
+            <div className="relative z-10 container mx-auto px-4 py-20 text-center min-h-screen flex flex-col justify-center">
+              {/* Badge */}
+              {commonProps.badge && (
+                <div className="mb-6">
+                  <Badge style={badgeStyle} className="px-4 py-2 text-sm font-medium rounded-full">
+                    {commonProps.badge}
+                  </Badge>
+                </div>
+              )}
+
+              {/* Title */}
+              <h1 
+                style={titleStyle}
+                className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+              >
+                {commonProps.title}
+              </h1>
+
+              {/* Subtitle */}
+              {commonProps.subtitle && (
+                <p 
+                  style={subtitleStyle}
+                  className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed"
+                >
+                  {commonProps.subtitle}
+                </p>
+              )}
+
+              {/* Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                {commonProps.primaryCta && (
+                  <Button 
+                    size="lg" 
+                    style={primaryButtonStyle}
+                    className="px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    {commonProps.primaryCta}
+                  </Button>
+                )}
+                {commonProps.secondaryCta && (
+                  <Button 
+                    size="lg" 
+                    variant="outline"
+                    style={secondaryButtonStyle}
+                    className="px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    {commonProps.secondaryCta}
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'gradientHero':
+        return (
+          <div style={containerStyle} className="min-h-screen relative">
+            {/* Gradient background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-purple-600/10 to-pink-600/10"></div>
+            
+            <div className="relative z-10 container mx-auto px-4 py-20 text-center min-h-screen flex flex-col justify-center">
+              {/* Badge */}
+              {commonProps.badge && (
+                <div className="mb-6">
+                  <Badge style={badgeStyle} className="px-4 py-2 text-sm font-medium rounded-full">
+                    {commonProps.badge}
+                  </Badge>
+                </div>
+              )}
+
+              {/* Title */}
+              <h1 
+                style={titleStyle}
+                className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight bg-gradient-to-r from-white via-white to-gray-300 bg-clip-text text-transparent"
+              >
+                {commonProps.title}
+              </h1>
+
+              {/* Subtitle */}
+              {commonProps.subtitle && (
+                <p 
+                  style={subtitleStyle}
+                  className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed"
+                >
+                  {commonProps.subtitle}
+                </p>
+              )}
+
+              {/* Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                {commonProps.primaryCta && (
+                  <Button 
+                    size="lg" 
+                    style={primaryButtonStyle}
+                    className="px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    {commonProps.primaryCta}
+                  </Button>
+                )}
+                {commonProps.secondaryCta && (
+                  <Button 
+                    size="lg" 
+                    variant="outline"
+                    style={secondaryButtonStyle}
+                    className="px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    {commonProps.secondaryCta}
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'animatedHero':
+        return (
+          <div style={containerStyle} className="min-h-screen">
+            <div className="container mx-auto px-4 py-20 text-center min-h-screen flex flex-col justify-center">
+              {/* Badge */}
+              {commonProps.badge && (
+                <div className="mb-6">
+                  <Badge style={badgeStyle} className="px-4 py-2 text-sm font-medium rounded-full animate-pulse">
+                    {commonProps.badge}
+                  </Badge>
+                </div>
+              )}
+
+              {/* Title with animation */}
+              <h1 
+                style={titleStyle}
+                className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight animate-fade-in"
+              >
+                {commonProps.title}
+              </h1>
+
+              {/* Subtitle */}
+              {commonProps.subtitle && (
+                <p 
+                  style={subtitleStyle}
+                  className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-in [animation-delay:0.2s]"
+                >
+                  {commonProps.subtitle}
+                </p>
+              )}
+
+              {/* Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in [animation-delay:0.4s]">
+                {commonProps.primaryCta && (
+                  <Button 
+                    size="lg" 
+                    style={primaryButtonStyle}
+                    className="px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  >
+                    {commonProps.primaryCta}
+                  </Button>
+                )}
+                {commonProps.secondaryCta && (
+                  <Button 
+                    size="lg" 
+                    variant="outline"
+                    style={secondaryButtonStyle}
+                    className="px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  >
+                    {commonProps.secondaryCta}
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'heroGeometric':
+        return (
+          <div style={containerStyle} className="min-h-screen relative overflow-hidden">
+            {/* Geometric shapes background */}
+            <div className="absolute inset-0">
+              <div className="absolute top-20 left-10 w-32 h-32 bg-blue-500/10 rounded-full animate-pulse"></div>
+              <div className="absolute top-40 right-20 w-24 h-24 bg-purple-500/10 rounded-full animate-pulse [animation-delay:1s]"></div>
+              <div className="absolute bottom-20 left-20 w-40 h-40 bg-pink-500/10 rounded-full animate-pulse [animation-delay:2s]"></div>
+            </div>
+            
+            <div className="relative z-10 container mx-auto px-4 py-20 text-center min-h-screen flex flex-col justify-center">
+              {/* Badge */}
+              {commonProps.badge && (
+                <div className="mb-6">
+                  <Badge style={badgeStyle} className="px-4 py-2 text-sm font-medium rounded-full">
+                    {commonProps.badge}
+                  </Badge>
+                </div>
+              )}
+
+              {/* Title */}
+              <h1 
+                style={titleStyle}
+                className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+              >
+                {commonProps.title}
+              </h1>
+
+              {/* Subtitle */}
+              {commonProps.subtitle && (
+                <p 
+                  style={subtitleStyle}
+                  className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed"
+                >
+                  {commonProps.subtitle}
+                </p>
+              )}
+
+              {/* Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                {commonProps.primaryCta && (
+                  <Button 
+                    size="lg" 
+                    style={primaryButtonStyle}
+                    className="px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    {commonProps.primaryCta}
+                  </Button>
+                )}
+                {commonProps.secondaryCta && (
+                  <Button 
+                    size="lg" 
+                    variant="outline"
+                    style={secondaryButtonStyle}
+                    className="px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    {commonProps.secondaryCta}
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+
+      default:
+        return (
+          <div style={containerStyle} className="min-h-screen flex items-center justify-center">
+            <div className="text-center">
+              <h1 style={titleStyle} className="text-4xl font-bold mb-4">
+                {commonProps.title}
+              </h1>
+              {commonProps.subtitle && (
+                <p style={subtitleStyle} className="text-xl mb-8">
+                  {commonProps.subtitle}
+                </p>
+              )}
+            </div>
+          </div>
+        );
+    }
+  };
+
+  return renderHeroDesign();
 };
