@@ -72,8 +72,13 @@ const EmotionalSection = ({ formData, currentColors }: { formData: any; currentC
     const businessName = formData?.businessName || 'העסק שלנו';
     const businessType = formData?.businessType || 'עסק מקצועי';
     const targetAudience = formData?.targetAudience || 'לקוחות יקרים';
-    const businessValues = formData?.businessValues || ['איכות', 'מקצועיות'];
-    const mainGoals = formData?.mainGoals || ['שירות מעולה'];
+    // תיקון: וידוא שהמשתנה הוא מערך לפני שימוש ב-join
+    const businessValues = Array.isArray(formData?.businessValues) 
+      ? formData.businessValues 
+      : ['איכות', 'מקצועיות'];
+    const mainGoals = Array.isArray(formData?.mainGoals) 
+      ? formData.mainGoals 
+      : ['שירות מעולה'];
 
     // יצירת תוכן רגשי טבעי ואותנטי יותר
     const emotionalMessages = [
@@ -129,7 +134,10 @@ const ServicesSection = ({ formData, currentColors }: { formData: any; currentCo
   const generateServicesContent = () => {
     const businessName = formData?.businessName || 'העסק שלנו';
     const businessType = formData?.businessType || 'עסק מקצועי';
-    const mainServices = formData?.mainServices || ['שירות מקצועי', 'ייעוץ מומחה', 'תמיכה מלאה'];
+    // תיקון: וידוא שהמשתנה הוא מערך לפני שימוש ב-map
+    const mainServices = Array.isArray(formData?.mainServices) 
+      ? formData.mainServices 
+      : ['שירות מקצועי', 'ייעוץ מומחה', 'תמיכה מלאה'];
 
     return {
       title: `מה ${businessName} מציע לכם?`,
@@ -186,7 +194,9 @@ const ServicesSection = ({ formData, currentColors }: { formData: any; currentCo
 const WhyUsSection = ({ formData, currentColors }: { formData: any; currentColors: any }) => {
   const generateWhyUsContent = () => {
     const businessName = formData?.businessName || 'העסק שלנו';
-    const businessValues = formData?.businessValues || ['איכות', 'מקצועיות'];
+    const businessValues = Array.isArray(formData?.businessValues) 
+      ? formData.businessValues 
+      : ['איכות', 'מקצועיות'];
     const experience = formData?.experience || 'שנים רבות';
 
     return {
@@ -331,7 +341,9 @@ const AboutSection = ({ formData, currentColors }: { formData: any; currentColor
   const generateAboutContent = () => {
     const businessName = formData?.businessName || 'העסק שלנו';
     const businessType = formData?.businessType || 'עסק מקצועי';
-    const businessValues = formData?.businessValues || ['איכות', 'מקצועיות'];
+    const businessValues = Array.isArray(formData?.businessValues) 
+      ? formData.businessValues 
+      : ['איכות', 'מקצועיות'];
     const vision = formData?.vision || 'להיות הכתובת המובילה בתחום';
 
     return {
