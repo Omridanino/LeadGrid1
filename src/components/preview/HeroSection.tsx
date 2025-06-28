@@ -18,6 +18,9 @@ import { HorizonHeroSection } from "@/components/ui/horizon-hero-section";
 import { HeroParallax } from "@/components/ui/hero-parallax";
 import { ArrowLeft, Play, Shield, Zap, Award, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { HeroDesignAli } from "@/components/ui/hero-designali";
+import { HeroFuturistic } from "@/components/ui/hero-futuristic";
+import ScrollExpandMedia from "@/components/ui/scroll-expansion-hero";
 
 interface HeroSectionProps {
   content: any;
@@ -166,8 +169,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     const [selectedDesign, setSelectedDesign] = useState(0);
 
     useEffect(() => {
-      // Randomly select one of the 9 3D designs (increased from 7)
-      setSelectedDesign(Math.floor(Math.random() * 9));
+      // Randomly select one of the 12 3D designs (increased from 9)
+      setSelectedDesign(Math.floor(Math.random() * 12));
     }, []);
 
     // Design 1: Spline 3D Scene with custom styles
@@ -672,6 +675,112 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               </>
             )}
           </div>
+        </div>
+      );
+    }
+
+    // Design 9: Hero Design Ali with canvas effects
+    if (selectedDesign === 9) {
+      return (
+        <div className="relative w-screen h-screen overflow-hidden">
+          <HeroDesignAli
+            title={content?.headline || formData?.businessName || 'Your complete platform for the Design.'}
+            subtitle={content?.subheadline || 'Welcome to my creative playground! I\'m'}
+            typewriterStrings={["Graphic Design", "Branding", "Web Design", "Web Develop", "Marketing", "UI UX", "Social Media"]}
+            onStartClick={() => {}}
+            onBookCallClick={() => {}}
+          />
+          
+          {/* Buttons overlay */}
+          <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-30 flex gap-4 justify-center">
+            {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+              <button 
+                key={index}
+                className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+              >
+                {button.text}
+              </button>
+            )) || (
+              <>
+                <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
+                  {content?.cta || 'start creating'}
+                </button>
+                <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
+                  learn more
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // Design 10: Hero Futuristic with WebGPU effects
+    if (selectedDesign === 10) {
+      return (
+        <div className="relative w-screen h-screen overflow-hidden">
+          <HeroFuturistic
+            title={content?.headline || formData?.businessName || 'Build Your Dreams'}
+            subtitle={content?.subheadline || content?.description || 'AI-powered creativity for the next generation.'}
+            buttonText="explore more"
+            onButtonClick={() => {}}
+          />
+          
+          {/* Additional buttons if needed */}
+          <div className="absolute bottom-40 left-1/2 transform -translate-x-1/2 z-30 flex gap-4 justify-center">
+            {content?.buttons?.filter((btn: any) => btn.visible !== false).slice(1).map((button: any, index: number) => (
+              <button 
+                key={index}
+                className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+              >
+                {button.text}
+              </button>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // Design 11: Scroll Expansion Hero
+    if (selectedDesign === 11) {
+      return (
+        <div className="relative w-screen h-screen overflow-hidden">
+          <ScrollExpandMedia
+            mediaType="video"
+            title={content?.headline || formData?.businessName || 'Immersive Experience'}
+            date={content?.badge || 'Digital Journey'}
+            scrollToExpand="Scroll to Expand"
+            textBlend={true}
+          >
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-3xl font-bold mb-6 text-white">
+                {content?.subheadline || 'About This Experience'}
+              </h2>
+              <p className="text-lg mb-8 text-white/80">
+                {content?.description || 'This is a demonstration of interactive scroll-based expansion effects with immersive media content.'}
+              </p>
+              
+              <div className="flex gap-4 justify-center">
+                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                  <button 
+                    key={index}
+                    className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+                  >
+                    {button.text}
+                  </button>
+                )) || (
+                  <>
+                    <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
+                      {content?.cta || 'explore more'}
+                    </button>
+                    <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
+                      contact us
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          </ScrollExpandMedia>
         </div>
       );
     }
