@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -133,7 +132,28 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     });
   };
 
-  const getStyleClasses = (style: string) => {
+  // Fixed function for text styling - now returns text color classes only
+  const getTextStyleClasses = (style: string) => {
+    switch (style) {
+      case "black-text":
+        return "text-black";
+      case "white-text":
+        return "text-white";
+      case "gold-text":
+        return "text-yellow-400";
+      case "gradient-gold-text":
+        return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
+      case "gradient-purple-text":
+        return "bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent";
+      case "gradient-blue-text":
+        return "bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent";
+      default:
+        return "text-white";
+    }
+  };
+
+  // Keep button styles as they were (for buttons we want backgrounds)
+  const getButtonStyleClasses = (style: string) => {
     switch (style) {
       case "black-on-white":
         return "bg-white text-black border border-black";
@@ -150,7 +170,30 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     }
   };
 
-  const StyleSelector = ({ value, onChange, label }: { value: string, onChange: (value: string) => void, label: string }) => (
+  const TextStyleSelector = ({ value, onChange, label }: { value: string, onChange: (value: string) => void, label: string }) => (
+    <div className="space-y-2">
+      <Label className="text-white text-xs">{label}</Label>
+      <select
+        value={value || 'white-text'}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded text-xs"
+      >
+        <option value="white-text">לבן</option>
+        <option value="black-text">שחור</option>
+        <option value="gold-text">זהב</option>
+        <option value="gradient-gold-text">גרדיאנט זהב</option>
+        <option value="gradient-purple-text">גרדיאנט סגול</option>
+        <option value="gradient-blue-text">גרדיאנט כחול</option>
+      </select>
+      <div className="mt-1 bg-gray-800 p-2 rounded">
+        <div className={`text-sm ${getTextStyleClasses(value || 'white-text')}`}>
+          תצוגה מקדימה
+        </div>
+      </div>
+    </div>
+  );
+
+  const ButtonStyleSelector = ({ value, onChange, label }: { value: string, onChange: (value: string) => void, label: string }) => (
     <div className="space-y-2">
       <Label className="text-white text-xs">{label}</Label>
       <select
@@ -165,7 +208,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
         <option value="gradient-purple-tech">גרדיאנט סגול טכנולוגי</option>
       </select>
       <div className="mt-1">
-        <div className={`px-3 py-1 rounded text-xs ${getStyleClasses(value || 'black-on-white')}`}>
+        <div className={`px-3 py-1 rounded text-xs ${getButtonStyleClasses(value || 'black-on-white')}`}>
           תצוגה מקדימה
         </div>
       </div>
@@ -199,7 +242,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
                 placeholder="טקסט התג העליון"
                 className="bg-gray-700 border-gray-600 text-white text-right"
               />
-              <StyleSelector 
+              <ButtonStyleSelector 
                 value={localContent.badgeStyle} 
                 onChange={(value) => handleStyleChange('badge', value)} 
                 label="סגנון תג"
@@ -223,7 +266,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
                 className="bg-gray-700 border-gray-600 text-white text-right"
                 rows={2}
               />
-              <StyleSelector 
+              <TextStyleSelector 
                 value={localContent.headlineStyle} 
                 onChange={(value) => handleStyleChange('headline', value)} 
                 label="סגנון כותרת"
@@ -247,7 +290,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
                 className="bg-gray-700 border-gray-600 text-white text-right"
                 rows={3}
               />
-              <StyleSelector 
+              <TextStyleSelector 
                 value={localContent.subheadlineStyle} 
                 onChange={(value) => handleStyleChange('subheadline', value)} 
                 label="סגנון כותרת משנה"
@@ -312,7 +355,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
 
                   {/* Button Preview */}
                   <div className="mt-2">
-                    <button className={`px-4 py-2 rounded text-sm ${getStyleClasses(button.style || 'black-on-white')}`}>
+                    <button className={`px-4 py-2 rounded text-sm ${getButtonStyleClasses(button.style || 'black-on-white')}`}>
                       {button.text || 'תצוגה מקדימה'}
                     </button>
                   </div>

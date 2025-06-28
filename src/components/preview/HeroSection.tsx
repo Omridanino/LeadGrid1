@@ -25,8 +25,28 @@ interface HeroSectionProps {
 export const HeroSection = ({ content, currentColors, formData, heroImage }: HeroSectionProps) => {
   const designStyle = formData?.designStyle || 'basic';
 
-  // Helper function to get element style classes
-  const getStyleClasses = (elementStyle: string) => {
+  // Helper function to get text style classes
+  const getTextStyleClasses = (elementStyle: string) => {
+    switch (elementStyle) {
+      case "black-text":
+        return "text-black";
+      case "white-text":
+        return "text-white";
+      case "gold-text":
+        return "text-yellow-400";
+      case "gradient-gold-text":
+        return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
+      case "gradient-purple-text":
+        return "bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent";
+      case "gradient-blue-text":
+        return "bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent";
+      default:
+        return "text-white";
+    }
+  };
+
+  // Helper function to get button style classes (for buttons we keep backgrounds)
+  const getButtonStyleClasses = (elementStyle: string) => {
     switch (elementStyle) {
       case "black-on-white":
         return "bg-white text-black border border-black";
@@ -95,7 +115,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           title={content?.headline || formData?.businessName || 'העתיד כאן עכשיו'}
           subtitle={content?.subheadline || content?.description || 'חוויה דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש'}
           primaryCta={{
-            text: content?.buttons?.[0]?.text || content?.cta || 'התחילו היום',
+            text: content?.buttons?.[0]?.text || content?.cta || 'haledו היום',
             onClick: () => {}
           }}
           secondaryCta={{
@@ -159,17 +179,17 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
               <div className="max-w-2xl">
                 {content?.badge && (
-                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm ${getStyleClasses(content.badgeStyle || 'black-on-white')}`}>
+                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm ${getButtonStyleClasses(content.badgeStyle || 'black-on-white')}`}>
                     <Zap className="w-4 h-4" />
                     <span>{content.badge}</span>
                   </div>
                 )}
                 
-                <h1 className={`text-4xl md:text-6xl font-bold mb-6 ${!content.headlineStyle ? 'bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent' : getStyleClasses(content.headlineStyle)}`}>
-                  {content?.headline || formData?.businessName || 'חוויה תלת-מימדית'}
+                <h1 className={`text-4xl md:text-6xl font-bold mb-6 ${content.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'}`}>
+                  {content?.headline || formData?.businessName || 'expérience 3D'}
                 </h1>
                 
-                <p className={`text-lg leading-relaxed mb-8 max-w-lg ${!content.subheadlineStyle ? 'text-gray-300' : getStyleClasses(content.subheadlineStyle)}`}>
+                <p className={`text-lg leading-relaxed mb-8 max-w-lg ${content.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-gray-300'}`}>
                   {content?.subheadline || content?.description || `הביאו את העסק שלכם למימד חדש עם טכנולוגיות מתקדמות ועיצוב חדשני`}
                 </p>
                 
@@ -177,14 +197,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                     <button 
                       key={index}
-                      className={`px-6 py-3 rounded-lg font-semibold transition ${getStyleClasses(button.style || 'black-on-white')}`}
+                      className={`px-6 py-3 rounded-lg font-semibold transition ${getButtonStyleClasses(button.style || 'black-on-white')}`}
                     >
                       {button.text}
                     </button>
                   )) || (
                     <>
                       <button className="bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition">
-                        {content?.cta || 'התחילו עכשיו'}
+                        {content?.cta || 'haledו עכשיו'}
                       </button>
                       <button className="border border-neutral-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition">
                         גלו עוד
@@ -206,8 +226,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    
-    
     // Design 2: Chrome Grid with custom styles
     if (selectedDesign === 1) {
       return (
@@ -215,17 +233,17 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           <ChromeGrid />
           <div className="absolute z-10 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 pointer-events-none flex flex-col justify-center items-center text-center">
             {content?.badge && (
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm ${getStyleClasses(content.badgeStyle || 'white-on-black')}`}>
+              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
                 <Shield className="w-4 h-4" />
                 <span>{content.badge}</span>
               </div>
             )}
             
-            <h1 className={`text-5xl md:text-7xl font-light mb-4 tracking-widest whitespace-nowrap ${!content.headlineStyle ? 'text-white' : getStyleClasses(content.headlineStyle)}`}>
+            <h1 className={`text-5xl md:text-7xl font-light mb-4 tracking-widest whitespace-nowrap ${content.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'text-white'}`}>
               {content?.headline || formData?.businessName || 'עוצמה דיגיטלית'}
             </h1>
             
-            <p className={`text-sm md:text-lg font-mono tracking-wide mb-8 max-w-2xl ${!content.subheadlineStyle ? 'text-white/70' : getStyleClasses(content.subheadlineStyle)}`}>
+            <p className={`text-sm md:text-lg font-mono tracking-wide mb-8 max-w-2xl ${content.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-white/70'}`}>
               {content?.subheadline || 'מתכת שמגיבה למגע - טכנולוגיה שמשנה את הכללים'}
             </p>
             
@@ -233,7 +251,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                 <button 
                   key={index}
-                  className={`px-8 py-4 rounded-lg font-bold transition transform hover:scale-105 ${getStyleClasses(button.style || 'white-on-black')}`}
+                  className={`px-8 py-4 rounded-lg font-bold transition transform hover:scale-105 ${getButtonStyleClasses(button.style || 'white-on-black')}`}
                 >
                   {button.text}
                 </button>
@@ -265,17 +283,17 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           
           <div className="relative z-10 flex flex-col items-center text-center">
             {content?.badge && (
-              <div className={`mb-6 inline-block rounded-full px-4 py-2 text-sm ${getStyleClasses(content.badgeStyle || 'white-on-black')}`}>
+              <div className={`mb-6 inline-block rounded-full px-4 py-2 text-sm ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
                 <Award className="w-4 h-4 inline mr-2" />
                 {content.badge}
               </div>
             )}
             
-            <h1 className={`max-w-4xl text-center text-4xl md:text-7xl font-medium leading-tight mb-6 ${!content.headlineStyle ? 'bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent' : getStyleClasses(content.headlineStyle)}`}>
+            <h1 className={`max-w-4xl text-center text-4xl md:text-7xl font-medium leading-tight mb-6 ${content.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent'}`}>
               {content?.headline || formData?.businessName || 'העתיד כאן עכשיו'}
             </h1>
             
-            <p className={`my-6 max-w-2xl text-center text-lg leading-relaxed ${!content.subheadlineStyle ? 'text-gray-300' : getStyleClasses(content.subheadlineStyle)}`}>
+            <p className={`my-6 max-w-2xl text-center text-lg leading-relaxed ${content.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-gray-300'}`}>
               {content?.subheadline || 'חוויה דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש עם טכנולוגיות מהפכניות'}
             </p>
             
@@ -283,7 +301,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                 <button 
                   key={index}
-                  className={`group relative flex w-fit items-center gap-2 rounded-full px-6 py-3 transition-colors ${getStyleClasses(button.style || 'white-on-black')}`}
+                  className={`group relative flex w-fit items-center gap-2 rounded-full px-6 py-3 transition-colors ${getButtonStyleClasses(button.style || 'white-on-black')}`}
                 >
                   {button.text}
                   <ArrowLeft className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
@@ -295,7 +313,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                     boxShadow: '0px 4px 24px rgba(19, 255, 170, 0.3)'
                   }}
                 >
-                  {content?.cta || 'התחילו היום'}
+                  {content?.cta || 'haledו היום'}
                   <ArrowLeft className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
                 </button>
               )}
@@ -327,17 +345,17 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           <LavaLamp />
           <div className="absolute z-10 text-center">
             {content?.badge && (
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-exclusion ${getStyleClasses(content.badgeStyle || 'white-on-black')}`}>
+              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-exclusion ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
                 <Zap className="w-4 h-4" />
                 <span>{content.badge}</span>
               </div>
             )}
             
-            <h1 className={`text-6xl md:text-8xl font-bold tracking-tight whitespace-nowrap mb-6 ${!content.headlineStyle ? 'mix-blend-exclusion text-white' : `mix-blend-exclusion ${getStyleClasses(content.headlineStyle)}`}`}>
+            <h1 className={`text-6xl md:text-8xl font-bold tracking-tight whitespace-nowrap mb-6 ${content.headlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.headlineStyle)}` : 'mix-blend-exclusion text-white'}`}>
               {content?.headline || formData?.businessName || 'חלומות דיגיטליים'}
             </h1>
             
-            <p className={`text-lg md:text-xl text-center max-w-2xl leading-relaxed mb-8 px-4 ${!content.subheadlineStyle ? 'text-white mix-blend-exclusion' : `mix-blend-exclusion ${getStyleClasses(content.subheadlineStyle)}`}`}>
+            <p className={`text-lg md:text-xl text-center max-w-2xl leading-relaxed mb-8 px-4 ${content.subheadlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.subheadlineStyle)}` : 'text-white mix-blend-exclusion'}`}>
               {content?.subheadline || 'שם המחשבות מקבלות צורה והתודעה זורמת כמו כספית נוזלית דרך מימדים אינסופיים'}
             </p>
             
@@ -345,14 +363,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                 <button 
                   key={index}
-                  className={`px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion ${getStyleClasses(button.style || 'white-on-black')}`}
+                  className={`px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion ${getButtonStyleClasses(button.style || 'white-on-black')}`}
                 >
                   {button.text}
                 </button>
               )) || (
                 <>
                   <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
-                    {content?.cta || 'היכנסו לזרימה'}
+                    {content?.cta || 'haledו לזרימה'}
                   </button>
                   <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
                     חקרו עוד
@@ -373,17 +391,17 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           </div>
           <div className="absolute z-10 text-center">
             {content?.badge && (
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-difference ${getStyleClasses(content.badgeStyle || 'white-on-black')}`}>
+              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-difference ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
                 <Award className="w-4 h-4" />
                 <span>{content.badge}</span>
               </div>
             )}
             
-            <h1 className={`text-6xl md:text-8xl font-bold mb-6 tracking-tight ${!content.headlineStyle ? 'mix-blend-difference text-white' : `mix-blend-difference ${getStyleClasses(content.headlineStyle)}`}`}>
+            <h1 className={`text-6xl md:text-8xl font-bold mb-6 tracking-tight ${content.headlineStyle ? `mix-blend-difference ${getTextStyleClasses(content.headlineStyle)}` : 'mix-blend-difference text-white'}`}>
               {content?.headline || formData?.businessName || 'פתרון המורכבות'}
             </h1>
             
-            <p className={`text-lg md:text-xl max-w-2xl px-6 leading-relaxed mb-8 ${!content.subheadlineStyle ? 'text-white mix-blend-exclusion' : `mix-blend-exclusion ${getStyleClasses(content.subheadlineStyle)}`}`}>
+            <p className={`text-lg md:text-xl max-w-2xl px-6 leading-relaxed mb-8 ${content.subheadlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.subheadlineStyle)}` : 'text-white mix-blend-exclusion'}`}>
               {content?.subheadline || 'פיסה אחת בכל פעם - אנחנו פותרים את האתגרים המורכבים ביותר'}
             </p>
             
@@ -391,7 +409,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                 <button 
                   key={index}
-                  className={`px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion ${getStyleClasses(button.style || 'white-on-black')}`}
+                  className={`px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion ${getButtonStyleClasses(button.style || 'white-on-black')}`}
                 >
                   {button.text}
                 </button>
@@ -421,17 +439,17 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-4xl mx-auto">
           {content?.badge && (
-            <div className={`inline-block mb-6 px-4 py-2 rounded-full text-sm ${getStyleClasses(content.badgeStyle || 'black-on-white')}`}>
+            <div className={`inline-block mb-6 px-4 py-2 rounded-full text-sm ${getButtonStyleClasses(content.badgeStyle || 'black-on-white')}`}>
               {content.badge}
             </div>
           )}
           
-          <h1 className={`text-5xl md:text-7xl font-bold mb-8 ${!content.headlineStyle ? '' : getStyleClasses(content.headlineStyle)}`}
+          <h1 className={`text-5xl md:text-7xl font-bold mb-8 ${content.headlineStyle ? getTextStyleClasses(content.headlineStyle) : ''}`}
               style={!content.headlineStyle ? { color: currentColors.headlineColor } : {}}>
             {content?.headline || formData?.businessName || 'העסק שלכם'}
           </h1>
           
-          <p className={`text-xl md:text-2xl mb-12 ${!content.subheadlineStyle ? '' : getStyleClasses(content.subheadlineStyle)}`}
+          <p className={`text-xl md:text-2xl mb-12 ${content.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : ''}`}
              style={!content.subheadlineStyle ? { color: currentColors.subheadlineColor } : {}}>
             {content?.subheadline || content?.description || 'פתרונות מקצועיים'}
           </p>
@@ -440,7 +458,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
               <button 
                 key={index}
-                className={`px-8 py-4 rounded-xl font-semibold text-lg transition ${getStyleClasses(button.style || 'black-on-white')}`}
+                className={`px-8 py-4 rounded-xl font-semibold text-lg transition ${getButtonStyleClasses(button.style || 'black-on-white')}`}
               >
                 {button.text}
               </button>
