@@ -41,6 +41,13 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     });
   };
 
+  const handleStyleChange = (field: string, value: string) => {
+    setLocalContent({
+      ...localContent,
+      [`${field}Style`]: value
+    });
+  };
+
   const handleButtonChange = (index: number, field: string, value: string) => {
     const buttons = [...(localContent.buttons || [])];
     if (buttons[index]) {
@@ -126,6 +133,23 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     });
   };
 
+  const getStyleClasses = (style: string) => {
+    switch (style) {
+      case "black-on-white":
+        return "bg-white text-black border border-black";
+      case "white-on-black":
+        return "bg-black text-white border border-white";
+      case "gradient-gold-black":
+        return "bg-gradient-to-r from-yellow-400 to-black text-white border-0";
+      case "gradient-gold-white":
+        return "bg-gradient-to-r from-yellow-400 to-white text-black border-0";
+      case "gradient-purple-tech":
+        return "bg-gradient-to-r from-purple-600 to-blue-400 text-white border-0";
+      default:
+        return "bg-blue-600 text-white";
+    }
+  };
+
   const getButtonStyleClasses = (style: string) => {
     switch (style) {
       case "black-on-white":
@@ -137,11 +161,19 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
       case "gradient-gold-white":
         return "bg-gradient-to-r from-yellow-400 to-white text-black border-0 hover:from-yellow-500 hover:to-gray-100";
       case "gradient-purple-tech":
-        return "bg-gradient-to-r from-purple-600 to-white text-white border-0 hover:from-purple-700 hover:to-gray-100";
+        return "bg-gradient-to-r from-purple-600 to-blue-400 text-white border-0 hover:from-purple-700 hover:to-blue-500";
       default:
         return "bg-blue-600 text-white hover:bg-blue-700";
     }
   };
+
+  const styleOptions = [
+    { value: "black-on-white", label: "שחור על לבן" },
+    { value: "white-on-black", label: "לבן על שחור" },
+    { value: "gradient-gold-black", label: "גרדיאנט זהב-שחור" },
+    { value: "gradient-gold-white", label: "גרדיאנט זהב-לבן" },
+    { value: "gradient-purple-tech", label: "גרדיאנט סגול טכנולוגי" }
+  ];
 
   return (
     <div className="w-80 bg-gray-900 border-l border-gray-700 h-full overflow-y-auto">
@@ -170,6 +202,28 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
                 placeholder="טקסט התג העליון"
                 className="bg-gray-700 border-gray-600 text-white text-right"
               />
+              
+              <div className="flex items-center gap-2">
+                <Palette className="w-4 h-4 text-gray-400" />
+                <select
+                  value={localContent.badgeStyle || 'black-on-white'}
+                  onChange={(e) => handleStyleChange('badge', e.target.value)}
+                  className="flex-1 bg-gray-600 border border-gray-500 text-white text-right p-2 rounded text-sm"
+                >
+                  {styleOptions.map(option => (
+                    <option key={option.value} value={option.value}>{option.label}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Badge Preview */}
+              {localContent.badge && (
+                <div className="mt-2">
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStyleClasses(localContent.badgeStyle || 'black-on-white')}`}>
+                    {localContent.badge}
+                  </span>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -189,6 +243,28 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
                 className="bg-gray-700 border-gray-600 text-white text-right"
                 rows={2}
               />
+              
+              <div className="flex items-center gap-2">
+                <Palette className="w-4 h-4 text-gray-400" />
+                <select
+                  value={localContent.headlineStyle || 'white-on-black'}
+                  onChange={(e) => handleStyleChange('headline', e.target.value)}
+                  className="flex-1 bg-gray-600 border border-gray-500 text-white text-right p-2 rounded text-sm"
+                >
+                  {styleOptions.map(option => (
+                    <option key={option.value} value={option.value}>{option.label}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Headline Preview */}
+              {localContent.headline && (
+                <div className="mt-2">
+                  <h3 className={`text-lg font-bold ${getStyleClasses(localContent.headlineStyle || 'white-on-black').replace('border border-black', '').replace('border border-white', '')}`}>
+                    {localContent.headline}
+                  </h3>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -208,25 +284,28 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
                 className="bg-gray-700 border-gray-600 text-white text-right"
                 rows={3}
               />
-            </CardContent>
-          </Card>
+              
+              <div className="flex items-center gap-2">
+                <Palette className="w-4 h-4 text-gray-400" />
+                <select
+                  value={localContent.subheadlineStyle || 'white-on-black'}
+                  onChange={(e) => handleStyleChange('subheadline', e.target.value)}
+                  className="flex-1 bg-gray-600 border border-gray-500 text-white text-right p-2 rounded text-sm"
+                >
+                  {styleOptions.map(option => (
+                    <option key={option.value} value={option.value}>{option.label}</option>
+                  ))}
+                </select>
+              </div>
 
-          {/* Description Editor */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-white text-sm flex items-center gap-2">
-                <Edit3 className="w-4 h-4 text-purple-400" />
-                תיאור מפורט
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Textarea
-                value={localContent.description || ''}
-                onChange={(e) => handleTextChange('description', e.target.value)}
-                placeholder="תיאור מפורט נוסף"
-                className="bg-gray-700 border-gray-600 text-white text-right"
-                rows={4}
-              />
+              {/* Subheadline Preview */}
+              {localContent.subheadline && (
+                <div className="mt-2">
+                  <p className={`text-sm ${getStyleClasses(localContent.subheadlineStyle || 'white-on-black').replace('border border-black', '').replace('border border-white', '')}`}>
+                    {localContent.subheadline}
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -278,11 +357,9 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
                     onChange={(e) => handleButtonChange(index, 'style', e.target.value)}
                     className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded mb-2"
                   >
-                    <option value="black-on-white">שחור על לבן</option>
-                    <option value="white-on-black">לבן על שחור</option>
-                    <option value="gradient-gold-black">גרדיאנט זהב-שחור</option>
-                    <option value="gradient-gold-white">גרדיאנט זהב-לבן</option>
-                    <option value="gradient-purple-tech">גרדיאנט סגול טכנולוגי</option>
+                    {styleOptions.map(option => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
                   </select>
 
                   {/* Button Preview */}
