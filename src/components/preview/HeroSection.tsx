@@ -1,834 +1,500 @@
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { ColorScheme } from "@/components/ColorEditor";
-import { SplineScene } from "@/components/ui/splite";
-import { Spotlight } from "@/components/ui/spotlight";
-import { ChromeGrid } from "@/components/ui/chrome-grid";
-import { AuroraHero } from "@/components/ui/futurastic-hero-section";
-import { LavaLamp } from "@/components/ui/fluid-blob";
-import { Scene } from "@/components/ui/rubik-s-cube";
-import { HeroWithMockup } from "@/components/ui/hero-with-mockup";
-import { BeamsBackground } from "@/components/ui/beams-background";
-import { GradientHero } from "@/components/ui/gradient-hero";
-import { AnimatedHero } from "@/components/ui/animated-hero";
-import { HeroGeometric } from "@/components/ui/shape-landing-hero";
-import { InteractiveRobotSpline } from "@/components/ui/interactive-3d-robot";
-import { BackgroundCircles } from "@/components/ui/background-circles";
-import { HorizonHeroSection } from "@/components/ui/horizon-hero-section";
-import { HeroParallax } from "@/components/ui/hero-parallax";
-import { ArrowLeft, Play, Shield, Zap, Award, Star } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { HeroDesignAli } from "@/components/ui/hero-designali";
-import { HeroFuturistic } from "@/components/ui/hero-futuristic";
-import ScrollExpandMedia from "@/components/ui/scroll-expansion-hero";
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
+import { Card, CardContent } from '../ui/card';
+import { Sparkles, ArrowRight, Star, Zap, Heart, Trophy, Target, Rocket } from 'lucide-react';
+import { HorizonHeroSection } from '../ui/horizon-hero-section';
+import { HeroDesignAli } from '../ui/hero-designali';
+import { HeroFuturistic } from '../ui/hero-futuristic';
+import ScrollExpandMedia from '../ui/scroll-expansion-hero';
+import { BackgroundPaths } from '../ui/background-paths';
+import { HeroScroll } from '../ui/container-scroll-animation';
 
 interface HeroSectionProps {
-  content: any;
-  currentColors: ColorScheme;
-  formData: any;
-  heroImage: string;
+  answers: {
+    businessName?: string;
+    businessType?: string;
+    targetAudience?: string;
+    mainGoal?: string;
+    description?: string;
+    tagline?: string;
+    services?: string[];
+    location?: string;
+    experience?: string;
+    specialization?: string;
+    portfolio?: string;
+    contact?: string;
+  };
+  textColor?: string;
+  borderColor?: string;
+  buttonStyle?: string;
+  backgroundColor?: string;
+  backgroundImage?: string;
+  primaryColor?: string;
+  accentColor?: string;
+  fontSize?: string;
+  buttonSize?: string;
+  isRTL?: boolean;
+  showBadge?: boolean;
+  badgeText?: string;
 }
 
-export const HeroSection = ({ content, currentColors, formData, heroImage }: HeroSectionProps) => {
-  const designStyle = formData?.designStyle || 'basic';
+const HeroSection: React.FC<HeroSectionProps> = ({ 
+  answers, 
+  textColor = '#000000', 
+  borderColor = '#e5e7eb', 
+  buttonStyle = 'default', 
+  backgroundColor = '#ffffff', 
+  backgroundImage, 
+  primaryColor = '#3b82f6', 
+  accentColor = '#10b981', 
+  fontSize = 'text-base', 
+  buttonSize = 'default',
+  isRTL = false,
+  showBadge = true,
+  badgeText = 'New'
+}) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [currentDesign, setCurrentDesign] = useState('modern');
 
-  // Helper function to get text style classes
-  const getTextStyleClasses = (elementStyle: string) => {
-    switch (elementStyle) {
-      case "black-text":
-        return "text-black";
-      case "white-text":
-        return "text-white";
-      case "gold-text":
-        return "text-yellow-400";
-      case "gradient-gold-text":
-        return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
-      case "gradient-purple-text":
-        return "bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent";
-      case "gradient-blue-text":
-        return "bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent";
-      default:
-        return "text-white";
+  useEffect(() => {
+    setIsVisible(true);
+    // Randomly select design on component mount
+    const designs = [
+      'modern', 'minimal', 'bold', 'elegant', 'creative',
+      'tech', 'gradient', 'glassmorphism', 'animated', 'premium',
+      '3d-tech', '3d-designali', '3d-futuristic', '3d-scroll-expansion',
+      '3d-background-paths', '3d-container-scroll'
+    ];
+    setCurrentDesign(designs[Math.floor(Math.random() * designs.length)]);
+  }, []);
+
+  const getTypewriterStrings = () => {
+    const baseStrings = ["Innovation", "Excellence", "Quality", "Success"];
+    if (answers.services && answers.services.length > 0) {
+      return [...answers.services, ...baseStrings];
     }
+    if (answers.businessType) {
+      return [answers.businessType, ...baseStrings];
+    }
+    return baseStrings;
   };
 
-  // Helper function to get button style classes (for buttons we keep backgrounds)
-  const getButtonStyleClasses = (elementStyle: string) => {
-    switch (elementStyle) {
-      case "black-on-white":
-        return "bg-white text-black border border-black";
-      case "white-on-black":
-        return "bg-black text-white border border-white";
-      case "gradient-gold-black":
-        return "bg-gradient-to-r from-yellow-400 to-black text-white border-0";
-      case "gradient-gold-white":
-        return "bg-gradient-to-r from-yellow-400 to-white text-black border-0";
-      case "gradient-purple-tech":
-        return "bg-gradient-to-r from-purple-600 to-white text-white border-0";
-      default:
-        return "bg-blue-600 text-white";
-    }
+  const getBusinessIcon = () => {
+    const businessType = answers.businessType?.toLowerCase() || '';
+    if (businessType.includes('tech') || businessType.includes('software')) return <Zap className="w-6 h-6" />;
+    if (businessType.includes('design') || businessType.includes('creative')) return <Sparkles className="w-6 h-6" />;
+    if (businessType.includes('health') || businessType.includes('medical')) return <Heart className="w-6 h-6" />;
+    if (businessType.includes('education') || businessType.includes('training')) return <Trophy className="w-6 h-6" />;
+    if (businessType.includes('marketing') || businessType.includes('advertising')) return <Target className="w-6 h-6" />;
+    return <Rocket className="w-6 h-6" />;
   };
 
-  // Basic Design Style - Random selection from 5 different designs
-  if (designStyle === 'basic') {
-    const [selectedBasicDesign, setSelectedBasicDesign] = useState(0);
+  const renderHeroByDesignStyle = () => {
+    const heroProps = {
+      title: answers.businessName || 'Your Business',
+      subtitle: answers.tagline || 'Your vision, our expertise',
+      onButtonClick: () => console.log('Hero button clicked'),
+      onBookCallClick: () => console.log('Book call clicked'),
+      style: { color: textColor }
+    };
 
-    useEffect(() => {
-      // Randomly select one of the 5 basic designs
-      setSelectedBasicDesign(Math.floor(Math.random() * 5));
-    }, []);
-
-    // Design 1: Enhanced Mockup Hero
-    if (selectedBasicDesign === 0) {
-      return (
-        <HeroWithMockup
-          title={content?.headline || formData?.businessName || 'העסק שלכם'}
-          description={content?.subheadline || content?.description || `פתרונות מקצועיים ל${formData?.targetAudience || 'הלקוחות שלכם'}`}
-          primaryCta={{
-            text: content?.buttons?.[0]?.text || content?.cta || 'בואו נתחיל',
-            onClick: () => {}
-          }}
-          secondaryCta={{
-            text: content?.buttons?.[1]?.text || 'למד עוד',
-            onClick: () => {}
-          }}
-        />
-      );
-    }
-
-    // Design 2: Beams Background
-    if (selectedBasicDesign === 1) {
-      return (
-        <BeamsBackground
-          title={content?.headline || formData?.businessName || 'חלומות דיגיטליים'}
-          description={content?.subheadline || content?.description || 'שם המחשבות מקבלות צורה והתודעה זורמת כמו כספית נוזלית'}
-          primaryCta={{
-            text: content?.buttons?.[0]?.text || content?.cta || 'היכנסו לזרימה',
-            onClick: () => {}
-          }}
-          secondaryCta={{
-            text: content?.buttons?.[1]?.text || 'חקרו עוד',
-            onClick: () => {}
-          }}
-        />
-      );
-    }
-
-    // Design 3: Gradient Hero with Lamp Effect
-    if (selectedBasicDesign === 2) {
-      return (
-        <GradientHero
-          title={content?.headline || formData?.businessName || 'העתיד כאן עכשיו'}
-          subtitle={content?.subheadline || content?.description || 'חוויה דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש'}
-          primaryCta={{
-            text: content?.buttons?.[0]?.text || content?.cta || 'haledו היום',
-            onClick: () => {}
-          }}
-          secondaryCta={{
-            text: content?.buttons?.[1]?.text || 'גלו עוד',
-            onClick: () => {}
-          }}
-        />
-      );
-    }
-
-    // Design 4: Animated Text Hero
-    if (selectedBasicDesign === 3) {
-      return (
-        <AnimatedHero
-          title={content?.headline || formData?.businessName || 'זה משהו'}
-          subtitle={content?.subheadline || content?.description || `ניהול עסק קטן היום כבר מספיק קשה. הימנעו מסיבוכים נוספים על ידי נטישת שיטות מסחר מיושנות ומייגעות. המטרה שלנו היא לפשט את המסחר של עסקים קטנים ובינוניים.`}
-          primaryCta={{
-            text: content?.buttons?.[0]?.text || content?.cta || 'הירשמו כאן',
-            onClick: () => {}
-          }}
-          secondaryCta={{
-            text: content?.buttons?.[1]?.text || 'הצגת המוצר',
-            onClick: () => {}
-          }}
-        />
-      );
-    }
-
-    // Design 5: Geometric Shapes Hero
-    if (selectedBasicDesign === 4) {
-      return (
-        <HeroGeometric
-          badge={content?.badge || "עיצוב מתקדם"}
-          title1={content?.headline || formData?.businessName || 'העלו את החזון הדיגיטלי'}
-          title2={content?.subheadline || "יצירת אתרים יוצאי דופן"}
-        />
-      );
-    }
-  }
-
-  
-  // 3D Tech Design Style - עם סגנונות מותאמים אישית
-  if (designStyle === '3d-tech') {
-    const [selectedDesign, setSelectedDesign] = useState(0);
-
-    useEffect(() => {
-      // Randomly select one of the 12 3D designs (increased from 9)
-      setSelectedDesign(Math.floor(Math.random() * 12));
-    }, []);
-
-    // Design 1: Spline 3D Scene with custom styles
-    if (selectedDesign === 0) {
-      return (
-        <section className="relative overflow-hidden min-h-screen bg-black/[0.96]">
-          <Spotlight
-            className="-top-40 left-0 md:left-60 md:-top-20"
-            fill="white"
-          />
-          
-          <div className="flex h-screen">
-            <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
-              <div className="max-w-2xl">
-                {content?.badge && (
-                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm ${getButtonStyleClasses(content.badgeStyle || 'black-on-white')}`}>
-                    <Zap className="w-4 h-4" />
-                    <span>{content.badge}</span>
-                  </div>
-                )}
-                
-                <h1 className={`text-4xl md:text-6xl font-bold mb-6 ${content.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'}`}>
-                  {content?.headline || formData?.businessName || 'expérience 3D'}
-                </h1>
-                
-                <p className={`text-lg leading-relaxed mb-8 max-w-lg ${content.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-gray-300'}`}>
-                  {content?.subheadline || content?.description || `הביאו את העסק שלכם למימד חדש עם טכנולוגיות מתקדמות ועיצוב חדשני`}
-                </p>
-                
-                <div className="flex gap-4">
-                  {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                    <button 
-                      key={index}
-                      className={`px-6 py-3 rounded-lg font-semibold transition ${getButtonStyleClasses(button.style || 'black-on-white')}`}
-                    >
-                      {button.text}
-                    </button>
-                  )) || (
-                    <>
-                      <button className="bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition">
-                        {content?.cta || 'haledo now'}
-                      </button>
-                      <button className="border border-neutral-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition">
-                        go further
-                      </button>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex-1 relative">
-              <SplineScene 
-                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                className="w-full h-full"
+    switch (currentDesign) {
+      case 'modern':
+        return (
+          <div className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ backgroundColor }}>
+            {backgroundImage && (
+              <div 
+                className="absolute inset-0 bg-cover bg-center opacity-20"
+                style={{ backgroundImage: `url(${backgroundImage})` }}
               />
-            </div>
-          </div>
-        </section>
-      );
-    }
-
-    // Design 2: Chrome Grid with custom styles
-    if (selectedDesign === 1) {
-      return (
-        <div className="h-screen w-screen relative">
-          <ChromeGrid />
-          <div className="absolute z-10 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 pointer-events-none flex flex-col justify-center items-center text-center">
-            {content?.badge && (
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
-                <Shield className="w-4 h-4" />
-                <span>{content.badge}</span>
-              </div>
             )}
-            
-            <h1 className={`text-5xl md:text-7xl font-light mb-4 tracking-widest whitespace-nowrap ${content.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'text-white'}`}>
-              {content?.headline || formData?.businessName || 'courageous digital'}
-            </h1>
-            
-            <p className={`text-sm md:text-lg font-mono tracking-wide mb-8 max-w-2xl ${content.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-white/70'}`}>
-              {content?.subheadline || 'a technology that brings life to the touch - a new way of doing things'}
-            </p>
-            
-            <div className="flex gap-4 pointer-events-auto">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                <button 
-                  key={index}
-                  className={`px-8 py-4 rounded-lg font-bold transition transform hover:scale-105 ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+            <div className="relative z-10 text-center max-w-6xl mx-auto px-6">
+              {showBadge && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  className="mb-8"
                 >
-                  {button.text}
-                </button>
-              )) || (
-                <>
-                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition transform hover:scale-105">
-                    {content?.cta || 'come in'}
-                  </button>
-                  <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
-                    learn more
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    if (selectedDesign === 2) {
-      return (
-        <section className="relative grid min-h-screen place-content-center overflow-hidden bg-gray-950 px-4 py-24 text-gray-200">
-          <div className="absolute inset-0" style={{
-            background: `radial-gradient(125% 125% at 50% 0%, #020617 50%, #13FFAA)`
-          }} />
-          
-          <div className="relative z-10 flex flex-col items-center text-center">
-            {content?.badge && (
-              <div className={`mb-6 inline-block rounded-full px-4 py-2 text-sm ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
-                <Award className="w-4 h-4 inline mr-2" />
-                {content.badge}
-              </div>
-            )}
-            
-            <h1 className={`max-w-4xl text-center text-4xl md:text-7xl font-medium leading-tight mb-6 ${content.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent'}`}>
-              {content?.headline || formData?.businessName || 'the future is now'}
-            </h1>
-            
-            <p className={`my-6 max-w-2xl text-center text-lg leading-relaxed ${content.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-gray-300'}`}>
-              {content?.subheadline || 'a digital experience that brings your business to the future with cutting-edge technologies'}
-            </p>
-            
-            <div className="flex gap-4 justify-center flex-wrap">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                <button 
-                  key={index}
-                  className={`group relative flex w-fit items-center gap-2 rounded-full px-6 py-3 transition-colors ${getButtonStyleClasses(button.style || 'white-on-black')}`}
-                >
-                  {button.text}
-                  <ArrowLeft className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
-                </button>
-              )) || (
-                <button
-                  className="group relative flex w-fit items-center gap-2 rounded-full bg-gray-950/10 px-6 py-3 text-gray-50 transition-colors hover:bg-gray-950/50 border border-gray-600/50 backdrop-blur-sm"
-                  style={{
-                    boxShadow: '0px 4px 24px rgba(19, 255, 170, 0.3)'
-                  }}
-                >
-                  {content?.cta || 'come in'}
-                  <ArrowLeft className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
-                </button>
-              )}
-            </div>
-          </div>
-
-          
-          <div className="absolute inset-0 z-0">
-            {[...Array(100)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 3}s`,
-                  opacity: Math.random() * 0.5 + 0.2
-                }}
-              />
-            ))}
-          </div>
-        </section>
-      );
-    }
-
-    if (selectedDesign === 3) {
-      return (
-        <div className="h-screen w-screen flex flex-col justify-center items-center relative">
-          <LavaLamp />
-          <div className="absolute z-10 text-center">
-            {content?.badge && (
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-exclusion ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
-                <Zap className="w-4 h-4" />
-                <span>{content.badge}</span>
-              </div>
-            )}
-            
-            <h1 className={`text-6xl md:text-8xl font-bold tracking-tight whitespace-nowrap mb-6 ${content.headlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.headlineStyle)}` : 'mix-blend-exclusion text-white'}`}>
-              {content?.headline || formData?.businessName || 'dreams of the digital'}
-            </h1>
-            
-            <p className={`text-lg md:text-xl text-center max-w-2xl leading-relaxed mb-8 px-4 ${content.subheadlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.subheadlineStyle)}` : 'text-white mix-blend-exclusion'}`}>
-              {content?.subheadline || 'the computers receive a shape and the information flows like a coin of the realm'}
-            </p>
-            
-            <div className="flex gap-4 justify-center">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                <button 
-                  key={index}
-                  className={`px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion ${getButtonStyleClasses(button.style || 'white-on-black')}`}
-                >
-                  {button.text}
-                </button>
-              )) || (
-                <>
-                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
-                    {content?.cta || 'come in'}
-                  </button>
-                  <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
-                    explore more
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    if (selectedDesign === 4) {
-      return (
-        <div className="h-screen w-screen relative flex flex-col justify-center items-center">
-          <div className="absolute inset-0">
-            <Scene />
-          </div>
-          <div className="absolute z-10 text-center">
-            {content?.badge && (
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-difference ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
-                <Award className="w-4 h-4" />
-                <span>{content.badge}</span>
-              </div>
-            )}
-            
-            <h1 className={`text-6xl md:text-8xl font-bold mb-6 tracking-tight ${content.headlineStyle ? `mix-blend-difference ${getTextStyleClasses(content.headlineStyle)}` : 'mix-blend-difference text-white'}`}>
-              {content?.headline || formData?.businessName || 'solution for complex problems'}
-            </h1>
-            
-            <p className={`text-lg md:text-xl max-w-2xl px-6 leading-relaxed mb-8 ${content.subheadlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.subheadlineStyle)}` : 'text-white mix-blend-exclusion'}`}>
-              {content?.subheadline || 'one piece at a time - we solve the most complex problems'}
-            </p>
-            
-            <div className="flex gap-4 justify-center">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                <button 
-                  key={index}
-                  className={`px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion ${getButtonStyleClasses(button.style || 'white-on-black')}`}
-                >
-                  {button.text}
-                </button>
-              )) || (
-                <>
-                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
-                    {content?.cta || 'solve with us'}
-                  </button>
-                  <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
-                    learn how
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    // Design 5: Interactive 3D Robot Scene
-    if (selectedDesign === 5) {
-      const ROBOT_SCENE_URL = "https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode";
-      
-      return (
-        <div className="relative w-screen h-screen overflow-hidden">
-          <InteractiveRobotSpline
-            scene={ROBOT_SCENE_URL}
-            className="absolute inset-0 z-0" 
-          />
-
-          <div className="absolute inset-0 z-10 pt-20 md:pt-32 lg:pt-40 px-4 md:px-8 pointer-events-none">
-            <div className="text-center text-white drop-shadow-lg w-full max-w-2xl mx-auto">
-              {content?.badge && (
-                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-exclusion pointer-events-auto ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
-                  <Zap className="w-4 h-4" />
-                  <span>{content.badge}</span>
-                </div>
+                  <Badge variant="secondary" className="px-4 py-2 text-sm font-medium">
+                    {getBusinessIcon()}
+                    <span className="ml-2">{badgeText}</span>
+                  </Badge>
+                </motion.div>
               )}
               
-              <h1 className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-6 ${content.headlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.headlineStyle)}` : 'mix-blend-exclusion text-white'}`}>
-                {content?.headline || formData?.businessName || 'interactive 3D robot'}
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className={`text-5xl md:text-7xl font-bold mb-6 ${fontSize}`}
+                style={{ color: textColor }}
+              >
+                {answers.businessName || 'Your Business'}
+              </motion.h1>
+              
+              <motion.p
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className={`text-xl md:text-2xl mb-8 opacity-80 ${fontSize}`}
+                style={{ color: textColor }}
+              >
+                {answers.tagline || 'Your vision, our expertise'}
+              </motion.p>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+              >
+                <Button 
+                  size={buttonSize as any}
+                  className="px-8 py-3 text-lg font-semibold"
+                  style={{ backgroundColor: primaryColor, borderColor }}
+                >
+                  Get Started
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size={buttonSize as any}
+                  className="px-8 py-3 text-lg"
+                  style={{ borderColor, color: textColor }}
+                >
+                  Learn More
+                </Button>
+              </motion.div>
+            </div>
+          </div>
+        );
+
+      case 'minimal':
+        return (
+          <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor }}>
+            <div className="text-center max-w-4xl mx-auto px-6">
+              <h1 className={`text-6xl md:text-8xl font-light mb-8 ${fontSize}`} style={{ color: textColor }}>
+                {answers.businessName || 'Minimal'}
               </h1>
-              
-              <p className={`text-lg leading-relaxed mb-8 px-4 ${content.subheadlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.subheadlineStyle)}` : 'text-white mix-blend-exclusion'}`}>
-                {content?.subheadline || content?.description || 'an advanced interactive experience with 3D technology'}
+              <p className={`text-lg md:text-xl mb-12 opacity-70 ${fontSize}`} style={{ color: textColor }}>
+                {answers.tagline || 'Less is more'}
               </p>
-              
-              <div className="flex gap-4 justify-center pointer-events-auto">
-                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                  <button 
-                    key={index}
-                    className={`px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion ${getButtonStyleClasses(button.style || 'white-on-black')}`}
-                  >
-                    {button.text}
-                  </button>
-                )) || (
-                  <>
-                    <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
-                      {content?.cta || 'explore the robot'}
-                    </button>
-                    <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
-                      learn more
-                    </button>
-                  </>
-                )}
-              </div>
+              <Button variant="ghost" size={buttonSize as any} className="text-lg px-8 py-3 border-b-2" style={{ borderColor }}>
+                Explore
+              </Button>
             </div>
           </div>
-        </div>
-      );
-    }
+        );
 
-    // Design 6: Background Circles with Animated Grid
-    if (selectedDesign === 6) {
-      return (
-        <div className="relative w-screen h-screen overflow-hidden bg-black">
-          <BackgroundCircles
-            title={content?.headline || formData?.businessName || 'background circles'}
-            description={content?.subheadline || content?.description || 'advanced geometric design with animated grids'}
-            variant="primary"
-          />
-          
-          {/* Content overlay */}
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4">
-            {content?.badge && (
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm ${getButtonStyleClasses(content.badgeStyle || 'black-on-white')}`}>
-                <Award className="w-4 h-4" />
-                <span>{content.badge}</span>
-              </div>
-            )}
-            
-            <div className="flex gap-4 justify-center mt-8">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                <button 
-                  key={index}
-                  className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'black-on-white')}`}
-                >
-                  {button.text}
-                </button>
-              )) || (
-                <>
-                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
-                    {content?.cta || 'experience'}
-                  </button>
-                  <button className="border border-gray-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-gray-800 transition">
-                    learn more
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    // Design 7: Horizon Hero Section
-    if (selectedDesign === 7) {
-      return (
-        <div className="relative w-screen h-screen overflow-hidden">
-          <HorizonHeroSection
-            title={content?.headline || formData?.businessName || 'HORIZON'}
-            subtitle1={content?.subheadline || 'Where vision meets reality,'}
-            subtitle2={content?.description || 'we shape the future of tomorrow'}
-            className="absolute inset-0"
-          />
-          
-          {/* Content overlay for buttons */}
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4 pointer-events-none">
-            <div className="mt-96 flex gap-4 justify-center pointer-events-auto">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                <button 
-                  key={index}
-                  className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'white-on-black')}`}
-                >
-                  {button.text}
-                </button>
-              )) || (
-                <>
-                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
-                    {content?.cta || 'explore the horizon'}
-                  </button>
-                  <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
-                    learn more
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    // Design 8: Hero Parallax
-    if (selectedDesign === 8) {
-      // Default products for the parallax effect
-      const defaultProducts = [
-        {
-          title: "project 1",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 2", 
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 3",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 4",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1542744094-3a31f272c490?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 5",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1553484771-371a605b060b?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 6",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 7",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 8",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 9",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 10",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 11",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1571019613914-85e138f129cc?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 12",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 13",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1542744094-3a31f272c490?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 14",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1553484771-cc0d9b8c2b33?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 15",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop"
-        }
-      ];
-
-      return (
-        <div className="relative w-screen h-screen overflow-hidden">
-          <HeroParallax
-            products={defaultProducts}
-            title={content?.headline || formData?.businessName || 'the most advanced studio'}
-            subtitle={content?.subheadline || content?.description || 'we create beautiful products with the latest technologies and innovative ideas'}
-          />
-          
-          {/* Buttons overlay */}
-          <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-30 flex gap-4 justify-center">
-            {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-              <button 
-                key={index}
-                className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+      case 'bold':
+        return (
+          <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 to-blue-900">
+            <div className="text-center max-w-5xl mx-auto px-6">
+              <motion.h1
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 1, type: "spring" }}
+                className={`text-7xl md:text-9xl font-black mb-8 text-white ${fontSize}`}
               >
-                {button.text}
-              </button>
-            )) || (
-              <>
-                <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
-                  {content?.cta || 'explore the projects'}
-                </button>
-                <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
-                  contact us
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      );
-    }
-
-    // Design 9: Hero Design Ali with canvas effects
-    if (selectedDesign === 9) {
-      return (
-        <div className="relative w-screen h-screen overflow-hidden">
-          <HeroDesignAli
-            title={content?.headline || formData?.businessName || 'Your complete platform for the Design.'}
-            subtitle={content?.subheadline || 'Welcome to my creative playground! I\'m'}
-            typewriterStrings={["Graphic Design", "Branding", "Web Design", "Web Develop", "Marketing", "UI UX", "Social Media"]}
-            onStartClick={() => {}}
-            onBookCallClick={() => {}}
-          />
-          
-          {/* Buttons overlay */}
-          <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-30 flex gap-4 justify-center">
-            {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-              <button 
-                key={index}
-                className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'white-on-black')}`}
-              >
-                {button.text}
-              </button>
-            )) || (
-              <>
-                <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
-                  {content?.cta || 'start creating'}
-                </button>
-                <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
-                  learn more
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      );
-    }
-
-    // Design 10: Hero Futuristic with WebGPU effects
-    if (selectedDesign === 10) {
-      return (
-        <div className="relative w-screen h-screen overflow-hidden">
-          <HeroFuturistic
-            title={content?.headline || formData?.businessName || 'Build Your Dreams'}
-            subtitle={content?.subheadline || content?.description || 'AI-powered creativity for the next generation.'}
-            buttonText="explore more"
-            onButtonClick={() => {}}
-          />
-          
-          {/* Additional buttons if needed */}
-          <div className="absolute bottom-40 left-1/2 transform -translate-x-1/2 z-30 flex gap-4 justify-center">
-            {content?.buttons?.filter((btn: any) => btn.visible !== false).slice(1).map((button: any, index: number) => (
-              <button 
-                key={index}
-                className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'white-on-black')}`}
-              >
-                {button.text}
-              </button>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    // Design 11: Scroll Expansion Hero
-    if (selectedDesign === 11) {
-      return (
-        <div className="relative w-screen h-screen overflow-hidden">
-          <ScrollExpandMedia
-            mediaType="video"
-            title={content?.headline || formData?.businessName || 'Immersive Experience'}
-            date={content?.badge || 'Digital Journey'}
-            scrollToExpand="Scroll to Expand"
-            textBlend={true}
-          >
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-6 text-white">
-                {content?.subheadline || 'About This Experience'}
-              </h2>
-              <p className="text-lg mb-8 text-white/80">
-                {content?.description || 'This is a demonstration of interactive scroll-based expansion effects with immersive media content.'}
+                {answers.businessName || 'BOLD'}
+              </motion.h1>
+              <p className={`text-2xl md:text-3xl mb-12 text-white/80 ${fontSize}`}>
+                {answers.tagline || 'Make a statement'}
               </p>
-              
-              <div className="flex gap-4 justify-center">
-                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                  <button 
-                    key={index}
-                    className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'white-on-black')}`}
-                  >
-                    {button.text}
-                  </button>
-                )) || (
-                  <>
-                    <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
-                      {content?.cta || 'explore more'}
-                    </button>
-                    <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
-                      contact us
-                    </button>
-                  </>
-                )}
-              </div>
+              <Button size={buttonSize as any} className="px-12 py-4 text-xl font-bold bg-yellow-400 text-black hover:bg-yellow-300">
+                TAKE ACTION
+              </Button>
             </div>
-          </ScrollExpandMedia>
-        </div>
-      );
-    }
-  }
+          </div>
+        );
 
-  // Fallback to basic design with custom styles
+      case 'elegant':
+        return (
+          <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white">
+            <div className="text-center max-w-4xl mx-auto px-6">
+              <div className="mb-8">
+                <Star className="w-12 h-12 mx-auto text-gold-500 mb-4" style={{ color: accentColor }} />
+              </div>
+              <h1 className={`text-5xl md:text-7xl font-serif mb-8 text-gray-800 ${fontSize}`}>
+                {answers.businessName || 'Elegant'}
+              </h1>
+              <p className={`text-xl md:text-2xl mb-12 text-gray-600 italic ${fontSize}`}>
+                {answers.tagline || 'Timeless sophistication'}
+              </p>
+              <Button variant="outline" size={buttonSize as any} className="px-8 py-3 text-lg border-2 border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white">
+                Discover More
+              </Button>
+            </div>
+          </div>
+        );
+
+      case 'creative':
+        return (
+          <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500">
+            <div className="text-center max-w-5xl mx-auto px-6">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="mb-8"
+              >
+                <Sparkles className="w-16 h-16 mx-auto text-white" />
+              </motion.div>
+              <h1 className={`text-6xl md:text-8xl font-bold mb-8 text-white ${fontSize}`}>
+                {answers.businessName || 'Creative'}
+              </h1>
+              <p className={`text-2xl md:text-3xl mb-12 text-white/90 ${fontSize}`}>
+                {answers.tagline || 'Unleash your imagination'}
+              </p>
+              <Button size={buttonSize as any} className="px-10 py-4 text-xl font-bold bg-white text-purple-600 hover:bg-gray-100">
+                Get Creative
+              </Button>
+            </div>
+          </div>
+        );
+
+      case 'tech':
+        return (
+          <div className="min-h-screen flex items-center justify-center bg-black text-green-400">
+            <div className="text-center max-w-5xl mx-auto px-6">
+              <div className="mb-8 font-mono text-sm opacity-60">
+                {'> initializing_system...'}
+              </div>
+              <h1 className={`text-6xl md:text-8xl font-mono font-bold mb-8 ${fontSize}`}>
+                {answers.businessName || 'TECH_CO'}
+              </h1>
+              <p className={`text-xl md:text-2xl mb-12 font-mono ${fontSize}`}>
+                {answers.tagline || '// Building the future'}
+              </p>
+              <Button size={buttonSize as any} className="px-8 py-3 text-lg font-mono bg-green-400 text-black hover:bg-green-300">
+                {'> execute_command'}
+              </Button>
+            </div>
+          </div>
+        );
+
+      case 'gradient':
+        return (
+          <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600">
+            <div className="text-center max-w-5xl mx-auto px-6">
+              <motion.h1
+                initial={{ backgroundPosition: "0% 50%" }}
+                animate={{ backgroundPosition: "100% 50%" }}
+                transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
+                className={`text-6xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent ${fontSize}`}
+                style={{ backgroundSize: "200% 200%" }}
+              >
+                {answers.businessName || 'Gradient'}
+              </motion.h1>
+              <p className={`text-2xl md:text-3xl mb-12 text-white/90 ${fontSize}`}>
+                {answers.tagline || 'Colors of innovation'}
+              </p>
+              <Button size={buttonSize as any} className="px-10 py-4 text-xl font-bold bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white/30">
+                Explore Colors
+              </Button>
+            </div>
+          </div>
+        );
+
+      case 'glassmorphism':
+        return (
+          <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-400 to-purple-600">
+            <Card className="max-w-4xl mx-auto bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl">
+              <CardContent className="p-12 text-center">
+                <h1 className={`text-5xl md:text-7xl font-bold mb-8 text-white ${fontSize}`}>
+                  {answers.businessName || 'Glass'}
+                </h1>
+                <p className={`text-xl md:text-2xl mb-12 text-white/80 ${fontSize}`}>
+                  {answers.tagline || 'Transparent excellence'}
+                </p>
+                <Button size={buttonSize as any} className="px-8 py-3 text-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white/30">
+                  See Through
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        );
+
+      case 'animated':
+        return (
+          <div className="min-h-screen flex items-center justify-center bg-gray-900">
+            <div className="text-center max-w-5xl mx-auto px-6">
+              <motion.h1
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 2 }}
+                className={`text-6xl md:text-8xl font-bold mb-8 text-white ${fontSize}`}
+              >
+                {(answers.businessName || 'Animated').split('').map((char, index) => (
+                  <motion.span
+                    key={index}
+                    initial={{ y: -100, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: index * 0.1, type: "spring", stiffness: 100 }}
+                  >
+                    {char}
+                  </motion.span>
+                ))}
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1, duration: 0.8 }}
+                className={`text-2xl md:text-3xl mb-12 text-white/80 ${fontSize}`}
+              >
+                {answers.tagline || 'Motion in every pixel'}
+              </motion.p>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button size={buttonSize as any} className="px-10 py-4 text-xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+                  Animate Now
+                </Button>
+              </motion.div>
+            </div>
+          </div>
+        );
+
+      case 'premium':
+        return (
+          <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-900 to-black">
+            <div className="text-center max-w-4xl mx-auto px-6">
+              <div className="mb-8">
+                <Trophy className="w-16 h-16 mx-auto text-gold-400" style={{ color: accentColor }} />
+              </div>
+              <h1 className={`text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-gold-400 to-yellow-600 bg-clip-text text-transparent ${fontSize}`}>
+                {answers.businessName || 'Premium'}
+              </h1>
+              <p className={`text-xl md:text-2xl mb-12 text-gray-300 ${fontSize}`}>
+                {answers.tagline || 'Excellence redefined'}
+              </p>
+              <Button size={buttonSize as any} className="px-8 py-3 text-lg bg-gradient-to-r from-gold-400 to-yellow-600 text-black font-bold hover:from-gold-300 hover:to-yellow-500">
+                Experience Premium
+              </Button>
+            </div>
+          </div>
+        );
+
+      case '3d-tech':
+        return (
+          <div className="relative z-10">
+            <HorizonHeroSection
+              title={answers.businessName || 'Your Business'}
+              subtitle={answers.tagline || 'Your vision, our expertise'}
+              onButtonClick={() => console.log('3D Tech button clicked')}
+            />
+          </div>
+        );
+
+      case '3d-designali':
+        return (
+          <div className="relative z-10">
+            <HeroDesignAli
+              title={`Your complete platform for the ${answers.businessType || 'Business'}.`}
+              subtitle={`Welcome to my creative playground! I'm ${answers.businessName || 'Your Company'}`}
+              typewriterStrings={getTypewriterStrings()}
+              onStartClick={() => console.log('Start button clicked')}
+              onBookCallClick={() => console.log('Book call clicked')}
+            />
+          </div>
+        );
+
+      case '3d-futuristic':
+        return (
+          <div className="relative z-10">
+            <HeroFuturistic
+              title={answers.businessName || 'Build Your Dreams'}
+              subtitle={answers.tagline || 'AI-powered creativity for the next generation.'}
+              buttonText="Scroll to explore"
+              onButtonClick={() => console.log('Futuristic button clicked')}
+            />
+          </div>
+        );
+
+      case '3d-scroll-expansion':
+        return (
+          <div className="relative z-10">
+            <ScrollExpandMedia
+              mediaType="video"
+              mediaSrc="https://me7aitdbxq.ufs.sh/f/2wsMIGDMQRdYuZ5R8ahEEZ4aQK56LizRdfBSqeDMsmUIrJN1"
+              posterSrc="https://images.pexels.com/videos/5752729/space-earth-universe-cosmos-5752729.jpeg"
+              bgImageSrc="https://me7aitdbxq.ufs.sh/f/2wsMIGDMQRdYMNjMlBUYHaeYpxduXPVNwf8mnFA61L7rkcoS"
+              title={`${answers.businessName || 'Immersive'} Experience`}
+              date={answers.businessType || 'Digital Journey'}
+              scrollToExpand="Scroll to Expand"
+              textBlend={false}
+            >
+              <div className="max-w-4xl mx-auto relative z-20">
+                <h2 className="text-3xl font-bold mb-6 text-black dark:text-white">
+                  About {answers.businessName || 'Our Company'}
+                </h2>
+                <p className="text-lg mb-8 text-black dark:text-white">
+                  {answers.description || 'Experience the future of business with our innovative solutions.'}
+                </p>
+              </div>
+            </ScrollExpandMedia>
+          </div>
+        );
+
+      case '3d-background-paths':
+        return (
+          <div className="relative z-10">
+            <BackgroundPaths
+              title={answers.businessName || 'Background Paths'}
+              subtitle={answers.tagline || 'Dynamic animated backgrounds'}
+              buttonText="Discover Excellence"
+              onButtonClick={() => console.log('Background paths button clicked')}
+            />
+          </div>
+        );
+
+      case '3d-container-scroll':
+        return (
+          <div className="relative z-10">
+            <HeroScroll
+              title={`Unleash the power of ${answers.businessType || 'Innovation'}`}
+              subtitle={answers.businessName || 'Scroll Animations'}
+              imageSrc="https://images.unsplash.com/photo-1558655146-9f40138edfeb?q=80&w=1920&auto=format&fit=crop"
+              onButtonClick={() => console.log('Container scroll button clicked')}
+            />
+          </div>
+        );
+
+      default:
+        return (
+          <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor }}>
+            <div className="text-center max-w-4xl mx-auto px-6">
+              <h1 className={`text-5xl md:text-7xl font-bold mb-8 ${fontSize}`} style={{ color: textColor }}>
+                {answers.businessName || 'Your Business'}
+              </h1>
+              <p className={`text-xl md:text-2xl mb-12 opacity-80 ${fontSize}`} style={{ color: textColor }}>
+                {answers.tagline || 'Your vision, our expertise'}
+              </p>
+              <Button size={buttonSize as any} style={{ backgroundColor: primaryColor }}>
+                Get Started
+              </Button>
+            </div>
+          </div>
+        );
+    }
+  };
+
   return (
-    <section 
-      className="relative overflow-hidden min-h-screen flex items-center justify-center"
-      style={{ backgroundColor: currentColors.heroBackground }}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: isVisible ? 1 : 0 }}
+      transition={{ duration: 1 }}
+      className={`w-full ${isRTL ? 'rtl' : 'ltr'}`}
+      dir={isRTL ? 'rtl' : 'ltr'}
     >
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center max-w-4xl mx-auto">
-          {content?.badge && (
-            <div className={`inline-block mb-6 px-4 py-2 rounded-full text-sm ${getButtonStyleClasses(content.badgeStyle || 'black-on-white')}`}>
-              {content.badge}
-            </div>
-          )}
-          
-          <h1 className={`text-5xl md:text-7xl font-bold mb-8 ${content.headlineStyle ? getTextStyleClasses(content.headlineStyle) : ''}`}
-              style={!content.headlineStyle ? { color: currentColors.headlineColor } : {}}>
-            {content?.headline || formData?.businessName || 'the business'}
-          </h1>
-          
-          <p className={`text-xl md:text-2xl mb-12 ${content.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : ''}`}
-             style={!content.subheadlineStyle ? { color: currentColors.subheadlineColor } : {}}>
-            {content?.subheadline || content?.description || 'professional solutions'}
-          </p>
-          
-          <div className="flex gap-4 justify-center flex-wrap">
-            {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-              <button 
-                key={index}
-                className={`px-8 py-4 rounded-xl font-semibold text-lg transition ${getButtonStyleClasses(button.style || 'black-on-white')}`}
-              >
-                {button.text}
-              </button>
-            )) || (
-              <button 
-                className="px-8 py-4 rounded-xl font-semibold text-lg"
-                style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-              >
-                {content?.cta || 'let us start'}
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-    </section>
+      {renderHeroByDesignStyle()}
+    </motion.div>
   );
 };
+
+export default HeroSection;

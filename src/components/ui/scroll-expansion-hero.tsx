@@ -1,4 +1,3 @@
-
 'use client';
 
 import {
@@ -191,10 +190,10 @@ const ScrollExpandMedia = ({
             <div className='absolute inset-0 bg-black/10' />
           </motion.div>
 
-          <div className='container mx-auto flex flex-col items-center justify-start relative z-10'>
+          <div className='container mx-auto flex flex-col items-center justify-start relative z-20'>
             <div className='flex flex-col items-center justify-center w-full h-[100dvh] relative'>
               <div
-                className='absolute z-0 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-none rounded-2xl'
+                className='absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-none rounded-2xl'
                 style={{
                   width: `${mediaWidth}px`,
                   height: `${mediaHeight}px`,
@@ -247,7 +246,7 @@ const ScrollExpandMedia = ({
                   </div>
                 )}
 
-                <div className='flex flex-col items-center text-center relative z-10 mt-4 transition-none'>
+                <div className='flex flex-col items-center text-center relative z-30 mt-4 transition-none'>
                   {date && (
                     <p
                       className='text-2xl text-blue-200'
@@ -268,7 +267,7 @@ const ScrollExpandMedia = ({
               </div>
 
               <div
-                className={`flex items-center justify-center text-center gap-4 w-full relative z-10 transition-none flex-col ${
+                className={`flex items-center justify-center text-center gap-4 w-full relative z-30 transition-none flex-col ${
                   textBlend ? 'mix-blend-difference' : 'mix-blend-normal'
                 }`}
               >
@@ -288,7 +287,7 @@ const ScrollExpandMedia = ({
             </div>
 
             <motion.section
-              className='flex flex-col w-full px-8 py-10 md:px-16 lg:py-20'
+              className='flex flex-col w-full px-8 py-10 md:px-16 lg:py-20 relative z-40'
               initial={{ opacity: 0 }}
               animate={{ opacity: showContent ? 1 : 0 }}
               transition={{ duration: 0.7 }}
