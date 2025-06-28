@@ -327,11 +327,11 @@ export const HeroDesignAli = ({
   }, []);
 
   return (
-    <main className="overflow-hidden min-h-screen relative">
-      <section id="home" className="relative z-10">
+    <main className="overflow-hidden min-h-screen">
+      <section id="home" className="relative">
         <div className="absolute inset-0 max-md:hidden top-[400px] -z-10 h-[400px] w-full bg-transparent bg-[linear-gradient(to_right,#57534e_1px,transparent_1px),linear-gradient(to_bottom,#57534e_1px,transparent_1px)] bg-[size:3rem_3rem] opacity-20 [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)] dark:bg-[linear-gradient(to_right,#a8a29e_1px,transparent_1px),linear-gradient(to_bottom,#a8a29e_1px,transparent_1px)]"></div>
         
-        <div className="flex flex-col items-center justify-center px-6 text-center min-h-screen relative z-20">
+        <div className="flex flex-col items-center justify-center px-6 text-center min-h-screen">
           <div className="mb-6 mt-10 sm:justify-center md:mb-4 md:mt-40">
             <div className="relative flex items-center rounded-full border bg-popover px-3 py-1 text-xs text-primary/60">
               Introducing Dicons.
@@ -342,7 +342,7 @@ export const HeroDesignAli = ({
             </div>
           </div>
 
-          <div className="mx-auto max-w-5xl relative z-20">
+          <div className="mx-auto max-w-5xl">
             <div className="border-text-red-500 relative mx-auto h-full bg-background border py-12 p-6 [mask-image:radial-gradient(800rem_96rem_at_center,white,transparent)]">
               <h1 className="flex flex-col text-center text-5xl font-semibold leading-none tracking-tight md:flex-col md:text-8xl lg:flex-row lg:text-8xl">
                 <span>
@@ -372,7 +372,7 @@ export const HeroDesignAli = ({
               </span>.
             </p>
             
-            <div className="flex items-center justify-center gap-2 relative z-30">
+            <div className="flex items-center justify-center gap-2">
               <ShineBorder
                 borderWidth={3}
                 className="border cursor-pointer h-auto w-auto p-2 bg-white/5 backdrop-blur-md dark:bg-black/5"
@@ -397,7 +397,7 @@ export const HeroDesignAli = ({
         </div>
         
         <canvas
-          className="pointer-events-none absolute inset-0 mx-auto -z-10"
+          className="pointer-events-none absolute inset-0 mx-auto"
           id="canvas"
         />
       </section>

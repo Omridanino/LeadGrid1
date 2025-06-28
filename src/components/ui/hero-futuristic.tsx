@@ -91,7 +91,7 @@ export const HeroFuturistic = ({
 
   return (
     <div className="h-screen relative overflow-hidden bg-black">
-      <div className="h-screen uppercase items-center w-full absolute z-50 pointer-events-none px-10 flex justify-center flex-col">
+      <div className="h-screen uppercase items-center w-full absolute z-60 pointer-events-none px-10 flex justify-center flex-col">
         <div className="text-3xl md:text-5xl xl:text-6xl 2xl:text-7xl font-extrabold">
           <div className="flex space-x-2 lg:space-x-6 overflow-hidden text-white">
             {titleWords.map((word, index) => (
@@ -120,7 +120,7 @@ export const HeroFuturistic = ({
       </div>
 
       <button
-        className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-60 pointer-events-auto bg-white/10 backdrop-blur-sm border border-white/30 text-white px-6 py-3 rounded-lg hover:bg-white/20 transition-all duration-300 flex items-center gap-2"
+        className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-50 pointer-events-auto bg-white/10 backdrop-blur-sm border border-white/30 text-white px-6 py-3 rounded-lg hover:bg-white/20 transition-all duration-300 flex items-center gap-2"
         style={{ animationDelay: '2.2s' }}
         onClick={onButtonClick}
       >
@@ -135,7 +135,7 @@ export const HeroFuturistic = ({
 
       <Canvas
         flat
-        className="absolute inset-0 -z-10"
+        className="absolute inset-0"
       >
         <Scene />
       </Canvas>
