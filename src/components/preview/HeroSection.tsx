@@ -16,6 +16,10 @@ import { InteractiveRobotSpline } from "@/components/ui/interactive-3d-robot";
 import { BackgroundCircles } from "@/components/ui/background-circles";
 import { HorizonHeroSection } from "@/components/ui/horizon-hero-section";
 import { HeroParallax } from "@/components/ui/hero-parallax";
+import { HeroSectionClean } from "@/components/ui/hero-section-clean";
+import { HeroSectionModern } from "@/components/ui/hero-section-modern";
+import { HeroSectionLamp } from "@/components/ui/hero-section-lamp";
+import { HeroSectionRetro } from "@/components/ui/hero-section-retro";
 import { ArrowLeft, Play, Shield, Zap, Award, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { HeroDesignAli } from "@/components/ui/hero-designali";
@@ -70,17 +74,72 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     }
   };
 
-  // Basic Design Style - Random selection from 5 different designs
-  if (designStyle === 'basic') {
-    const [selectedBasicDesign, setSelectedBasicDesign] = useState(0);
+  // Handle Basic Design Style variations
+  if (designStyle === 'basic' || designStyle.startsWith('hero-section-')) {
+    const [selectedBasicDesign, setSelectedBasicDesign] = useState<string>('');
 
     useEffect(() => {
-      // Randomly select one of the 5 basic designs
-      setSelectedBasicDesign(Math.floor(Math.random() * 5));
-    }, []);
+      // Generate a truly random selection based on timestamp and random
+      const randomSeed = Date.now() + Math.random() * 1000;
+      const availableDesigns = [
+        'hero-section-clean',
+        'hero-section-minimal', 
+        'hero-section-classic',
+        'hero-section-elegant',
+        'hero-section-modern',
+        'hero-section-lamp',
+        'hero-section-retro'
+      ];
+      
+      const randomIndex = Math.floor(randomSeed % availableDesigns.length);
+      const selectedDesign = availableDesigns[randomIndex];
+      
+      console.log('Selected random design:', selectedDesign, 'from index:', randomIndex);
+      setSelectedBasicDesign(selectedDesign);
+    }, [formData?.businessName, formData?.businessType]); // Change when business data changes
 
-    // Design 1: Enhanced Mockup Hero
-    if (selectedBasicDesign === 0) {
+    // Return clean hero section
+    if (selectedBasicDesign === 'hero-section-clean') {
+      return (
+        <HeroSectionClean
+          formData={formData}
+          currentColors={currentColors}
+        />
+      );
+    }
+
+    // Return modern hero section  
+    if (selectedBasicDesign === 'hero-section-modern') {
+      return (
+        <HeroSectionModern
+          formData={formData}
+          currentColors={currentColors}
+        />
+      );
+    }
+
+    // Return lamp hero section
+    if (selectedBasicDesign === 'hero-section-lamp') {
+      return (
+        <HeroSectionLamp
+          formData={formData}
+          currentColors={currentColors}
+        />
+      );
+    }
+
+    // Return retro hero section
+    if (selectedBasicDesign === 'hero-section-retro') {
+      return (
+        <HeroSectionRetro
+          formData={formData}
+          currentColors={currentColors}
+        />
+      );
+    }
+
+    // Enhanced Mockup Hero (minimal)
+    if (selectedBasicDesign === 'hero-section-minimal') {
       return (
         <HeroWithMockup
           title={content?.headline || formData?.businessName || 'העסק שלכם'}
@@ -97,8 +156,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 2: Beams Background
-    if (selectedBasicDesign === 1) {
+    // Beams Background (classic)
+    if (selectedBasicDesign === 'hero-section-classic') {
       return (
         <BeamsBackground
           title={content?.headline || formData?.businessName || 'חלומות דיגיטליים'}
@@ -115,8 +174,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 3: Gradient Hero with Lamp Effect
-    if (selectedBasicDesign === 2) {
+    // Gradient Hero (elegant)
+    if (selectedBasicDesign === 'hero-section-elegant') {
       return (
         <GradientHero
           title={content?.headline || formData?.businessName || 'העתיד כאן עכשיו'}
@@ -133,34 +192,13 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 4: Animated Text Hero
-    if (selectedBasicDesign === 3) {
-      return (
-        <AnimatedHero
-          title={content?.headline || formData?.businessName || 'זה משהו'}
-          subtitle={content?.subheadline || content?.description || `ניהול עסק קטן היום כבר מספיק קשה. הימנעו מסיבוכים נוספים על ידי נטישת שיטות מסחר מיושנות ומייגעות. המטרה שלנו היא לפשט את המסחר של עסקים קטנים ובינוניים.`}
-          primaryCta={{
-            text: content?.buttons?.[0]?.text || content?.cta || 'הירשמו כאן',
-            onClick: () => {}
-          }}
-          secondaryCta={{
-            text: content?.buttons?.[1]?.text || 'הצגת המוצר',
-            onClick: () => {}
-          }}
-        />
-      );
-    }
-
-    // Design 5: Geometric Shapes Hero
-    if (selectedBasicDesign === 4) {
-      return (
-        <HeroGeometric
-          badge={content?.badge || "עיצוב מתקדם"}
-          title1={content?.headline || formData?.businessName || 'העלו את החזון הדיגיטלי'}
-          title2={content?.subheadline || "יצירת אתרים יוצאי דופן"}
-        />
-      );
-    }
+    // Default fallback - should not happen
+    return (
+      <HeroSectionClean
+        formData={formData}
+        currentColors={currentColors}
+      />
+    );
   }
 
   
@@ -458,7 +496,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               </h1>
               
               <p className={`text-lg leading-relaxed mb-8 px-4 ${content.subheadlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.subheadlineStyle)}` : 'text-white mix-blend-exclusion'}`}>
-                {content?.subheadline || content?.description || 'an advanced interactive experience with 3D technology'}
+                {content?.subheadline || 'an advanced interactive experience with 3D technology'}
               </p>
               
               <div className="flex gap-4 justify-center pointer-events-auto">
