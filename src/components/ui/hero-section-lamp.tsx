@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -7,14 +6,24 @@ import { Menu, X } from 'lucide-react'
 interface HeroSectionLampProps {
   formData: any;
   currentColors: any;
+  content: any;
 }
 
-export const HeroSectionLamp = ({ formData, currentColors }: HeroSectionLampProps) => {
+export const HeroSectionLamp = ({ formData, currentColors, content }: HeroSectionLampProps) => {
     const [menuState, setMenuState] = React.useState(false)
     
-    const businessName = formData?.businessName || "שם העסק"
-    const businessStory = formData?.businessStory || "בונים פתרונות בדרך הנכונה"
-    const mainServices = formData?.mainServices || "טכנולוגיה מתקדמת עם עיצוב מרהיב ותוכן איכותי שיקדם את העסק שלכם קדימה"
+    const businessName = content?.businessName || formData?.businessName || "שם העסק"
+    const businessStory = content?.businessStory || formData?.businessStory || "בונים פתרונות בדרך הנכונה"
+    const mainServices = content?.mainServices || formData?.mainServices || "טכנולוגיה מתקדמת עם עיצוב מרהיב ותוכן איכותי שיקדם את העסק שלכם קדימה"
+    const badge = content?.badge || formData?.businessName || "תג עליון"
+    const buttons = content?.buttons || [
+        { text: "התחל עכשיו", style: "black-on-white", visible: true },
+        { text: "למד עוד", style: "white-on-black", visible: true }
+    ]
+
+    // Get style classes
+    const getTextStyleClasses = content?.getTextStyleClasses || ((style: string) => "text-white")
+    const getButtonStyleClasses = content?.getButtonStyleClasses || ((style: string) => "bg-cyan-500 text-white")
     
     return (
         <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-slate-950 w-full rounded-md z-0" dir="rtl">
@@ -104,22 +113,35 @@ export const HeroSectionLamp = ({ formData, currentColors }: HeroSectionLampProp
                 <div className="absolute inset-auto z-40 h-44 w-full -translate-y-[12.5rem] bg-slate-950"></div>
             </div>
 
-            {/* Content */}
+            {/* Editable Content */}
             <div className="relative z-50 flex -translate-y-80 flex-col items-center px-5 text-center">
-                <h1 className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl">
+                {/* Editable Badge */}
+                {badge && (
+                    <div className={`inline-block px-4 py-2 rounded-full text-sm mb-6 ${getButtonStyleClasses(content?.badgeStyle || 'white-on-black')}`}>
+                        {badge}
+                    </div>
+                )}
+
+                {/* Editable Main Title */}
+                <h1 className={`mt-8 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight md:text-7xl ${getTextStyleClasses(content?.headlineStyle || 'gradient-blue-text') || 'bg-gradient-to-br from-slate-300 to-slate-500 text-transparent'}`}>
                     {businessStory}
                 </h1>
-                <p className="mt-8 max-w-2xl text-lg text-slate-400 leading-relaxed">
+
+                {/* Editable Subtitle */}
+                <p className={`mt-8 max-w-2xl text-lg leading-relaxed ${getTextStyleClasses(content?.subheadlineStyle || 'white-text')}`}>
                     {mainServices}
                 </p>
                 
+                {/* Editable Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-10">
-                    <Button size="lg" className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700">
-                        <span>התחל עכשיו</span>
-                    </Button>
-                    <Button variant="outline" size="lg" className="border-slate-600 text-slate-300 hover:bg-slate-800">
-                        <span>למד עוד</span>
-                    </Button>
+                    {buttons.filter((btn: any) => btn.visible).map((button: any, index: number) => (
+                        <button
+                            key={index}
+                            className={`px-6 py-3 rounded-lg text-lg font-medium transition-all duration-300 ${getButtonStyleClasses(button.style)}`}
+                        >
+                            {button.text}
+                        </button>
+                    ))}
                 </div>
             </div>
         </div>

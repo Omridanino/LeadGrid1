@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -7,14 +6,24 @@ import { Menu, X } from 'lucide-react'
 interface HeroSectionCleanProps {
   formData: any;
   currentColors: any;
+  content: any;
 }
 
-export const HeroSectionClean = ({ formData, currentColors }: HeroSectionCleanProps) => {
+export const HeroSectionClean = ({ formData, currentColors, content }: HeroSectionCleanProps) => {
     const [menuState, setMenuState] = React.useState(false)
     
-    const businessName = formData?.businessName || "שם העסק"
-    const businessStory = formData?.businessStory || "הסיפור שלנו מתחיל כאן"
-    const mainServices = formData?.mainServices || "השירותים המובילים שלנו"
+    const businessName = content?.businessName || formData?.businessName || "שם העסק"
+    const businessStory = content?.businessStory || formData?.businessStory || "הסיפור שלנו מתחיל כאן"
+    const mainServices = content?.mainServices || formData?.mainServices || "השירותים המובילים שלנו"
+    const badge = content?.badge || formData?.businessName || "תג עליון"
+    const buttons = content?.buttons || [
+      { text: "התחל עכשיו", style: "black-on-white", visible: true },
+      { text: "למד עוד", style: "white-on-black", visible: true }
+    ]
+
+    // Get style classes
+    const getTextStyleClasses = content?.getTextStyleClasses || ((style: string) => "text-gray-900")
+    const getButtonStyleClasses = content?.getButtonStyleClasses || ((style: string) => "bg-blue-600 text-white")
     
     return (
         <div className="min-h-screen bg-white text-gray-900" dir="rtl">
@@ -63,9 +72,7 @@ export const HeroSectionClean = ({ formData, currentColors }: HeroSectionCleanPr
                                 </div>
 
                                 <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit lg:border-l lg:pl-6">
-                                    <Button
-                                        variant="outline"
-                                        size="sm">
+                                    <Button variant="outline" size="sm">
                                         <span>התחבר</span>
                                     </Button>
                                     <Button size="sm">
@@ -89,20 +96,33 @@ export const HeroSectionClean = ({ formData, currentColors }: HeroSectionCleanPr
                 <section className="overflow-hidden bg-white">
                     <div className="relative mx-auto max-w-5xl px-6 py-28 lg:py-32">
                         <div className="relative z-10 mx-auto max-w-3xl text-center">
-                            <h1 className="text-balance text-4xl font-bold md:text-5xl lg:text-6xl text-gray-900 mb-6">
+                            {/* Editable Badge */}
+                            {badge && (
+                                <div className={`inline-block px-4 py-2 rounded-full text-sm mb-6 ${getButtonStyleClasses(content?.badgeStyle || 'black-on-white')}`}>
+                                    {badge}
+                                </div>
+                            )}
+
+                            {/* Editable Main Title */}
+                            <h1 className={`text-balance text-4xl font-bold md:text-5xl lg:text-6xl mb-6 ${getTextStyleClasses(content?.headlineStyle || 'black-text')}`}>
                                 {businessStory}
                             </h1>
-                            <p className="mx-auto my-8 max-w-2xl text-xl text-gray-600 leading-relaxed">
+
+                            {/* Editable Subtitle */}
+                            <p className={`mx-auto my-8 max-w-2xl text-xl leading-relaxed ${getTextStyleClasses(content?.subheadlineStyle || 'black-text')}`}>
                                 {mainServices}
                             </p>
 
+                            {/* Editable Buttons */}
                             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-10">
-                                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                                    <span>התחל עכשיו</span>
-                                </Button>
-                                <Button variant="outline" size="lg">
-                                    <span>למד עוד</span>
-                                </Button>
+                                {buttons.filter((btn: any) => btn.visible).map((button: any, index: number) => (
+                                    <button
+                                        key={index}
+                                        className={`px-6 py-3 rounded-lg text-lg font-medium transition-all duration-300 ${getButtonStyleClasses(button.style)}`}
+                                    >
+                                        {button.text}
+                                    </button>
+                                ))}
                             </div>
                         </div>
                     </div>
