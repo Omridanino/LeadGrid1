@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/components/ColorEditor";
@@ -24,41 +25,6 @@ interface HeroSectionProps {
 
 export const HeroSection = ({ content, currentColors, formData, heroImage }: HeroSectionProps) => {
   const designStyle = formData?.designStyle || 'basic';
-
-  // Function to get style classes based on style setting
-  const getElementStyleClasses = (style: string) => {
-    switch (style) {
-      case "black-on-white":
-        return "bg-white text-black border border-black";
-      case "white-on-black":
-        return "text-white";
-      case "gradient-gold-black":
-        return "bg-gradient-to-r from-yellow-400 to-black text-transparent bg-clip-text";
-      case "gradient-gold-white":
-        return "bg-gradient-to-r from-yellow-400 to-white text-transparent bg-clip-text";
-      case "gradient-purple-tech":
-        return "bg-gradient-to-r from-purple-600 to-blue-400 text-transparent bg-clip-text";
-      default:
-        return "text-white";
-    }
-  };
-
-  const getButtonStyleClasses = (style: string) => {
-    switch (style) {
-      case "black-on-white":
-        return "bg-white text-black border border-black hover:bg-gray-100";
-      case "white-on-black":
-        return "bg-black text-white border border-white hover:bg-gray-800";
-      case "gradient-gold-black":
-        return "bg-gradient-to-r from-yellow-400 to-black text-white border-0 hover:from-yellow-500 hover:to-gray-900";
-      case "gradient-gold-white":
-        return "bg-gradient-to-r from-yellow-400 to-white text-black border-0 hover:from-yellow-500 hover:to-gray-100";
-      case "gradient-purple-tech":
-        return "bg-gradient-to-r from-purple-600 to-blue-400 text-white border-0 hover:from-purple-700 hover:to-blue-500";
-      default:
-        return "bg-blue-600 text-white hover:bg-blue-700";
-    }
-  };
 
   // Basic Design Style - Random selection from 5 different designs
   if (designStyle === 'basic') {
@@ -372,7 +338,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     }
   }
 
-  // Fallback to basic design with custom styling
+  // Fallback to basic design
   return (
     <section 
       className="relative overflow-hidden min-h-screen flex items-center justify-center"
@@ -381,29 +347,21 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-4xl mx-auto">
           {content?.badge && (
-            <div className="mb-6">
-              <span className={`inline-block px-4 py-2 rounded-full text-sm font-semibold ${
-                content.badgeStyle ? getElementStyleClasses(content.badgeStyle) : 'bg-white text-black'
-              }`}>
-                {content.badge}
-              </span>
-            </div>
+            <Badge className="mb-6" style={{ backgroundColor: currentColors.accent }}>
+              {content.badge}
+            </Badge>
           )}
           
           <h1 
-            className={`text-5xl md:text-7xl font-bold mb-8 ${
-              content.headlineStyle ? getElementStyleClasses(content.headlineStyle).replace('border border-black', '').replace('border border-white', '') : ''
-            }`}
-            style={!content.headlineStyle ? { color: currentColors.headlineColor } : {}}
+            className="text-5xl md:text-7xl font-bold mb-8"
+            style={{ color: currentColors.headlineColor }}
           >
             {content?.headline || formData?.businessName || 'העסק שלכם'}
           </h1>
           
           <p 
-            className={`text-xl md:text-2xl mb-12 ${
-              content.subheadlineStyle ? getElementStyleClasses(content.subheadlineStyle).replace('border border-black', '').replace('border border-white', '') : ''
-            }`}
-            style={!content.subheadlineStyle ? { color: currentColors.subheadlineColor } : {}}
+            className="text-xl md:text-2xl mb-12"
+            style={{ color: currentColors.subheadlineColor }}
           >
             {content?.subheadline || content?.description || 'פתרונות מקצועיים'}
           </p>
@@ -412,12 +370,12 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
               <button 
                 key={index}
-                className={`px-8 py-4 rounded-xl font-semibold text-lg ${
-                  button.style ? getButtonStyleClasses(button.style) : 
-                  (button.variant === 'primary' || index === 0 ? 
-                    `bg-${currentColors.primary} text-white` : 
-                    `border-2 border-${currentColors.primary} text-${currentColors.primary} bg-transparent`)
-                }`}
+                className="px-8 py-4 rounded-xl font-semibold text-lg"
+                style={{ 
+                  backgroundColor: button.variant === 'primary' || index === 0 ? currentColors.primary : 'transparent',
+                  color: button.variant === 'primary' || index === 0 ? '#ffffff' : currentColors.primary,
+                  border: button.variant === 'outline' ? `2px solid ${currentColors.primary}` : 'none'
+                }}
               >
                 {button.text}
               </button>
