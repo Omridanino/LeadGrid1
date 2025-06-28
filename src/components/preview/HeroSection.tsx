@@ -12,6 +12,8 @@ import { BeamsBackground } from "@/components/ui/beams-background";
 import { GradientHero } from "@/components/ui/gradient-hero";
 import { AnimatedHero } from "@/components/ui/animated-hero";
 import { HeroGeometric } from "@/components/ui/shape-landing-hero";
+import { InteractiveRobotSpline } from "@/components/ui/interactive-3d-robot";
+import { BackgroundCircles } from "@/components/ui/background-circles";
 import { ArrowLeft, Play, Shield, Zap, Award, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -162,8 +164,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     const [selectedDesign, setSelectedDesign] = useState(0);
 
     useEffect(() => {
-      // Randomly select one of the 5 3D designs
-      setSelectedDesign(Math.floor(Math.random() * 5));
+      // Randomly select one of the 7 3D designs (increased from 5)
+      setSelectedDesign(Math.floor(Math.random() * 7));
     }, []);
 
     // Design 1: Spline 3D Scene with custom styles
@@ -271,9 +273,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // שאר העיצובים יישארו כמו שהם עם התוספות הנדרשות
-    
-    
     if (selectedDesign === 2) {
       return (
         <section className="relative grid min-h-screen place-content-center overflow-hidden bg-gray-950 px-4 py-24 text-gray-200">
@@ -420,6 +419,102 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   </button>
                   <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
                     גלו איך
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Design 5: Interactive 3D Robot Scene
+    if (selectedDesign === 5) {
+      const ROBOT_SCENE_URL = "https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode";
+      
+      return (
+        <div className="relative w-screen h-screen overflow-hidden">
+          <InteractiveRobotSpline
+            scene={ROBOT_SCENE_URL}
+            className="absolute inset-0 z-0" 
+          />
+
+          <div className="absolute inset-0 z-10 pt-20 md:pt-32 lg:pt-40 px-4 md:px-8 pointer-events-none">
+            <div className="text-center text-white drop-shadow-lg w-full max-w-2xl mx-auto">
+              {content?.badge && (
+                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-exclusion pointer-events-auto ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
+                  <Zap className="w-4 h-4" />
+                  <span>{content.badge}</span>
+                </div>
+              )}
+              
+              <h1 className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-6 ${content.headlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.headlineStyle)}` : 'mix-blend-exclusion text-white'}`}>
+                {content?.headline || formData?.businessName || 'רובוט אינטראקטיבי תלת מימדי'}
+              </h1>
+              
+              <p className={`text-lg leading-relaxed mb-8 px-4 ${content.subheadlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.subheadlineStyle)}` : 'text-white mix-blend-exclusion'}`}>
+                {content?.subheadline || content?.description || 'חוויה אינטראקטיבית מתקדמת עם טכנולוגיות תלת מימד מהפכניות'}
+              </p>
+              
+              <div className="flex gap-4 justify-center pointer-events-auto">
+                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                  <button 
+                    key={index}
+                    className={`px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+                  >
+                    {button.text}
+                  </button>
+                )) || (
+                  <>
+                    <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
+                      {content?.cta || 'חקרו את הרובוט'}
+                    </button>
+                    <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
+                      למד עוד
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Design 6: Background Circles with Animated Grid
+    if (selectedDesign === 6) {
+      return (
+        <div className="relative w-screen h-screen overflow-hidden bg-black">
+          <BackgroundCircles
+            title={content?.headline || formData?.businessName || 'עיגולי רקע'}
+            description={content?.subheadline || content?.description || 'עיצוב גיאומטרי מתקדם עם אנימציות דינמיות'}
+            variant="primary"
+          />
+          
+          {/* Content overlay */}
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4">
+            {content?.badge && (
+              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm ${getButtonStyleClasses(content.badgeStyle || 'black-on-white')}`}>
+                <Award className="w-4 h-4" />
+                <span>{content.badge}</span>
+              </div>
+            )}
+            
+            <div className="flex gap-4 justify-center mt-8">
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                <button 
+                  key={index}
+                  className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'black-on-white')}`}
+                >
+                  {button.text}
+                </button>
+              )) || (
+                <>
+                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
+                    {content?.cta || 'חוו את החוויה'}
+                  </button>
+                  <button className="border border-gray-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-gray-800 transition">
+                    גלו עוד
                   </button>
                 </>
               )}
