@@ -2,7 +2,7 @@
 import { ReactNode } from "react";
 import { ColorScheme } from "@/components/ColorEditor";
 import { StyleAwareSection } from "./StyleAwareSections";
-import { Handshake, Diamond, Award, Target, Users, Clock, Shield, Zap, Star } from "lucide-react";
+import { Handshake, Diamond, Award, Target, Users, Clock, Shield, Zap, Star, Mail, Phone, MapPin, Send } from "lucide-react";
 
 interface ContentSectionsProps {
   content: any;
@@ -33,18 +33,46 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
             </h2>
             <div className="text-xl md:text-2xl text-gray-200 leading-relaxed space-y-6">
               <p>
-                לא רק עוד {businessType} - ליצור אדריכלות שמאמת עושה את ההבדל. לא עוד עמק רגיל, אלא מקום שבו איכות 
-                ומקצועיות הם לא רק מילים יפות אלא דרך חיים. כל יום אנחנו קמים עם המחשבה: "להיות הכתובת המובילה בתחום" - זה 
-                מה שמניע אותנו להיות טובים יותר, לחדש, לשפר ולהתקדם.
+                לפני כמה שנים, כשהקמנו את {businessName}, החלום שלנו היה לא רק לספק עוד שירות ב{businessType}.
+                רצינו ליצור חוויה אמיתית שתשנה לכם את החיים. לא עוד חברה רגילה שמבטיחה ולא מקיימת - אלא מקום שבו
+                איכות ומקצועיות הם הבסיס לכל מה שאנחנו עושים.
               </p>
               <p>
-                החמימה שלנו היא לתת לכם חוויה שתזכרו, שירות שטופח עליו לאחרים, ותוצאות שיש לכם את החיים.
+                היום, אחרי מאות לקוחות מרוצים ופרויקטים מוצלחים, אנחנו עדיין מתרגשים מכל פרויקט חדש.
+                כי בשבילנו זה לא רק עבודה - זה התשוקה שלנו לעזור לכם להצליח.
               </p>
             </div>
             <div className="mt-12">
-              <button className="group bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-10 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center gap-3 mx-auto backdrop-blur-sm border border-white/20">
-                <Award className="w-5 h-5 text-yellow-400" />
-                גלו את כל השירותים 🚀
+              <button 
+                className="group relative font-bold text-white overflow-hidden backdrop-blur-xl border border-white/20 transition-all duration-300 px-10 py-4 rounded-full text-lg"
+                style={{
+                  background: `linear-gradient(135deg, 
+                    #6B73FF 0%, 
+                    #9C40FF 50%, 
+                    #FF6B9D 100%)`,
+                  boxShadow: `
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                    0 8px 25px rgba(0, 0, 0, 0.3),
+                    0 0 20px rgba(107, 115, 255, 0.2)
+                  `,
+                }}
+              >
+                <div 
+                  className="absolute inset-0"
+                  style={{
+                    background: `linear-gradient(135deg, 
+                      rgba(255, 255, 255, 0.2) 0%,
+                      transparent 30%,
+                      transparent 70%,
+                      rgba(255, 255, 255, 0.1) 100%)`,
+                    borderRadius: 'inherit'
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                <span className="relative z-10 flex items-center justify-center gap-2">
+                  <Award className="w-5 h-5 text-yellow-400" />
+                  בואו נכיר מקרוב 🚀
+                </span>
               </button>
             </div>
           </div>
@@ -59,7 +87,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               השירותים המקצועיים שלנו
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              אנחנו מספקים פתרונות מותאמים אישית ב{businessType} עם דגש על איכות, מקצועיות ושירות ללא פשרות
+              כל שירות שאנחנו מציעים נבנה מתוך ניסיון של שנים, עם התאמה מלאה לצרכים הייחודיים שלכם
             </p>
           </div>
           
@@ -80,11 +108,26 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-4">{service}</h3>
                   <p className="text-gray-300 leading-relaxed mb-6">
-                    פתרון מקצועי ומותאם אישית שיעזור לכם להשיג את המטרות שלכם בצורה היעילה ביותר
+                    פתרון מקצועי שנבנה במיוחד עבורכם, עם ליווי אישי לאורך כל הדרך עד להשגת התוצאות הטובות ביותר
                   </p>
-                  <button className="group bg-gradient-to-r from-purple-600/80 to-blue-600/80 hover:from-purple-600 hover:to-blue-600 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 flex items-center gap-2 mx-auto backdrop-blur-sm border border-white/20">
-                    <Handshake className="w-4 h-4 text-yellow-400" />
-                    בואו נתחיל
+                  <button 
+                    className="group relative font-bold text-white overflow-hidden backdrop-blur-xl border border-white/20 transition-all duration-300 px-6 py-3 rounded-full"
+                    style={{
+                      background: `linear-gradient(135deg, 
+                        rgba(107, 115, 255, 0.8) 0%, 
+                        rgba(156, 64, 255, 0.8) 50%, 
+                        rgba(255, 107, 157, 0.8) 100%)`,
+                      boxShadow: `
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                        0 8px 25px rgba(0, 0, 0, 0.3)
+                      `,
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                    <span className="relative z-10 flex items-center justify-center gap-2">
+                      <Handshake className="w-4 h-4 text-yellow-400" />
+                      בואו נתחיל
+                    </span>
                   </button>
                 </div>
               </div>
@@ -93,7 +136,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
         </div>
       </StyleAwareSection>
 
-      {/* Why Choose Us Section */}
+      {/* Why Choose Us Section - 6 Cards */}
       <StyleAwareSection heroStyle={formData.heroStyle || '3d'} sectionType="alternate">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
@@ -101,7 +144,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               למה לבחור דווקא בנו?
             </h2>
             <p className="text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
-              אנחנו לא סתם עוד חברה - אנחנו השותף שלכם לדרך להצלחה
+              אנחנו לא סתם עוד חברת {businessType} - אנחנו השותפים שלכם לצמיחה והצלחה
             </p>
           </div>
           
@@ -121,7 +164,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-6">יחס אישי ושירות מותאם</h3>
                 <p className="text-gray-300 leading-relaxed">
-                  אנחנו מאמינים שכל לקוח הוא עולם ומלואו. לכן אנחנו מתאימים את השירות והפתרונות בדיוק לצרכים שלכם.
+                  כל לקוח מקבל טיפול אישי מלא. אנחנו מכירים אתכם בשם, מבינים את הצרכים שלכם ובונים פתרונות בדיוק בשבילכם.
                 </p>
               </div>
             </div>
@@ -139,9 +182,9 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                 <div className="w-20 h-20 mx-auto mb-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
                   <Diamond className="w-10 h-10 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-6">איכות</h3>
+                <h3 className="text-2xl font-bold text-white mb-6">איכות ללא פשרות</h3>
                 <p className="text-gray-300 leading-relaxed">
-                  כל פרויקט מקבל את מלוא תשומת הלב שלנו. אנחנו לא מתפשרים על איכות ולא מותירים על תמצאותינו.
+                  אנחנו לא מתפשרים על איכות. כל פרויקט עובר בדיקות קפדניות ומקבל את מלוא תשומת הלב שלנו עד לתוצאה המושלמת.
                 </p>
               </div>
             </div>
@@ -161,7 +204,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-6">ניסיון מוכח ומקצועיות</h3>
                 <p className="text-gray-300 leading-relaxed">
-                  עם שנים רבות של עבודה מקצועית ומאות לקוחות מרוצים, אנחנו יודעים בדיוק איך לתת לכם את השירות הטוב ביותר.
+                  שנים של עבודה מקצועית, מאות לקוחות מרוצים ותוצאות מדברות בעד עצמן. אנחנו יודעים בדיוק איך לעזור לכם להצליח.
                 </p>
               </div>
             </div>
@@ -177,11 +220,11 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                 }}
               >
                 <div className="w-20 h-20 mx-auto mb-8 bg-gradient-to-br from-green-500 to-teal-500 rounded-full flex items-center justify-center">
-                  <Diamond className="w-10 h-10 text-white" />
+                  <Shield className="w-10 h-10 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-6">מחירים הוגנים ושקיפות מלאה</h3>
                 <p className="text-gray-300 leading-relaxed">
-                  אנו מאמינים בעבודה שקופה ובמחירים הוגנים. לא נפתיעים, לא הפתעות - רק שירות כנה ואמין.
+                  עבודה שקופה, מחירים הוגנים וללא הפתעות לא נעימות. אתם יודעים בדיוק מה אתם מקבלים ובכמה זה עולה.
                 </p>
               </div>
             </div>
@@ -197,20 +240,56 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                 }}
               >
                 <div className="w-20 h-20 mx-auto mb-8 bg-gradient-to-br from-red-500 to-pink-500 rounded-full flex items-center justify-center">
-                  <Handshake className="w-10 h-10 text-white" />
+                  <Clock className="w-10 h-10 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-6">תמיכה מתמשכת ואמינה</h3>
                 <p className="text-gray-300 leading-relaxed">
-                  אנחנו כאן בשבילכם גם אחרי שהפרויקט מסתיים. התמיכה והליווי שלנו נמשכים לאורך זמן.
+                  הקשר שלנו לא נגמר עם סיום הפרויקט. אנחנו כאן בשבילכם לאורך זמן, עם ליווי מקצועי ותמיכה מתמשכת.
+                </p>
+              </div>
+            </div>
+
+            <div className="group">
+              <div 
+                className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-2xl p-8 text-center hover:from-white/15 hover:to-white/10 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl h-full"
+                style={{
+                  boxShadow: `
+                    0 20px 60px rgba(0, 0, 0, 0.4),
+                    inset 0 2px 0 rgba(255, 255, 255, 0.3)
+                  `,
+                }}
+              >
+                <div className="w-20 h-20 mx-auto mb-8 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center">
+                  <Zap className="w-10 h-10 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-6">חדשנות וטכנולוגיה מתקדמת</h3>
+                <p className="text-gray-300 leading-relaxed">
+                  אנחנו תמיד בחזית הטכנולוגיה, מביאים לכם את הכלים והשיטות הכי מתקדמות שיש כדי להבטיח תוצאות מעולות.
                 </p>
               </div>
             </div>
           </div>
 
           <div className="text-center mt-16">
-            <button className="group bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white px-12 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center gap-3 mx-auto backdrop-blur-sm border border-white/20">
-              <Award className="w-5 h-5 text-yellow-400" />
-              הכירו אותנו יותר 🎯
+            <button 
+              className="group relative font-bold text-white overflow-hidden backdrop-blur-xl border border-white/20 transition-all duration-300 px-12 py-4 rounded-full text-lg"
+              style={{
+                background: `linear-gradient(135deg, 
+                  #10B981 0%, 
+                  #059669 50%, 
+                  #047857 100%)`,
+                boxShadow: `
+                  inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                  0 8px 25px rgba(0, 0, 0, 0.3),
+                  0 0 20px rgba(16, 185, 129, 0.2)
+                `,
+              }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                <Award className="w-5 h-5 text-yellow-400" />
+                הכירו אותנו יותר 🎯
+              </span>
             </button>
           </div>
         </div>
@@ -224,51 +303,68 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               מה הלקוחות שלנו אומרים
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              הביקורות הכנות שמראות איך אנחנו באמת עוזרים ללקוחות שלנו להגשים חלומות
+              הביקורות הכנות שמראות בדיוק איך אנחנו עוזרים ללקוחות שלנו להגשים חלומות ולהשיג הצלחות אמיתיות
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {[0, 1, 2].map((index) => {
-              const testimonial = content?.sections?.testimonials?.[index];
-              return (
-                <div key={index} className="group">
-                  <div 
-                    className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-2xl p-8 hover:from-white/15 hover:to-white/10 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl h-full"
-                    style={{
-                      boxShadow: `
-                        0 20px 60px rgba(0, 0, 0, 0.4),
-                        inset 0 2px 0 rgba(255, 255, 255, 0.3)
-                      `,
-                    }}
-                  >
-                    <div className="text-center mb-6">
-                      <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center">
-                        <Award className="w-8 h-8 text-white" />
-                      </div>
-                      <div className="text-yellow-400 text-2xl mb-4">★★★★★</div>
+            {[
+              { name: "דני כהן", role: "מנהל עסק", content: `העבודה עם ${businessName} הייתה פשוט מדהימה! צוות מקצועי, שירות אדיב ותוצאות שחרגו מכל הציפיות שלי. הם באמת הבינו מה אני צריך והביאו לי בדיוק את מה שחלמתי עליו` },
+              { name: "מיכל לוי", role: "יזמת", content: `אחרי שעבדתי עם כמה חברות אחרות, הגעתי ל${businessName} וכאן הבנתי מה זה שירות אמיתי. הם לא עזבו אותי עד שהכל היה מושלם, ואני ממליצה עליהם בחום!` },
+              { name: "יוסי פרידמן", role: "בעל עסק", content: `התוצאות שקיבלתי מהשקעה ב${businessName} עלו על כל הציפיות! הם לא רק עשו את העבודה - הם ליוו אותי כל הדרך והפכו להיות השותפים שלי להצלחה` }
+            ].map((testimonial, index) => (
+              <div key={index} className="group">
+                <div 
+                  className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-2xl p-8 hover:from-white/15 hover:to-white/10 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl h-full"
+                  style={{
+                    boxShadow: `
+                      0 20px 60px rgba(0, 0, 0, 0.4),
+                      inset 0 2px 0 rgba(255, 255, 255, 0.3)
+                    `,
+                  }}
+                >
+                  <div className="text-center mb-6">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center">
+                      <Award className="w-8 h-8 text-white" />
                     </div>
-                    <p className="text-gray-300 text-lg leading-relaxed mb-6 text-center italic">
-                      "{testimonial?.content || `השירות ב${businessName} פשוט מעולה! צוות מקצועי, שירות אדיב ותוצאות שחורגות מהציפיות. ממליץ בחום!`}"
-                    </p>
-                    <div className="text-center">
-                      <div className="font-bold text-white text-lg">
-                        {testimonial?.name || `לקוח מרוצה ${index + 1}`}
-                      </div>
-                      <div className="text-gray-400">
-                        {testimonial?.role || targetAudience}
-                      </div>
+                    <div className="text-yellow-400 text-2xl mb-4">★★★★★</div>
+                  </div>
+                  <p className="text-gray-300 text-lg leading-relaxed mb-6 text-center italic">
+                    "{testimonial.content}"
+                  </p>
+                  <div className="text-center">
+                    <div className="font-bold text-white text-lg">
+                      {testimonial.name}
+                    </div>
+                    <div className="text-gray-400">
+                      {testimonial.role}
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
 
           <div className="text-center mt-16">
-            <button className="group bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700 text-white px-10 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center gap-3 mx-auto backdrop-blur-sm border border-white/20">
-              <Diamond className="w-5 h-5 text-white" />
-              קבלו הצעת מחיר 💎
+            <button 
+              className="group relative font-bold text-white overflow-hidden backdrop-blur-xl border border-white/20 transition-all duration-300 px-10 py-4 rounded-full text-lg"
+              style={{
+                background: `linear-gradient(135deg, 
+                  #F59E0B 0%, 
+                  #D97706 50%, 
+                  #B45309 100%)`,
+                boxShadow: `
+                  inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                  0 8px 25px rgba(0, 0, 0, 0.3),
+                  0 0 20px rgba(245, 158, 11, 0.2)
+                `,
+              }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                <Diamond className="w-5 h-5 text-white" />
+                קבלו הצעת מחיר 💎
+              </span>
             </button>
           </div>
         </div>
@@ -284,20 +380,34 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               </h2>
               <div className="space-y-6 text-lg text-gray-200 leading-relaxed">
                 <p>
-                  {content?.sections?.about?.paragraph1 || 
-                    `אנחנו צוות מקצועי עם ניסיון של מעל 10 שנים בתחום ה${businessType}. התחלנו כחלום קטן ובנינו את עצמנו צעד אחר צעד, לקוח אחר לקוח, פרויקט אחר פרויקט.`
-                  }
+                  לא רק עוד אדריכל - ליצור אדריכלות שמאמת עושה את ההבדל. לא עוד עמק רגיל, אלא מקום שבו
+                  איכות ומקצועיות הם לא רק מילים יפות אלא דרך חיים. כל יום אנחנו קמים עם המחשבה: "להיות
+                  הכתובת המובילה בתחום" - זה מה שמניע אותנו להיות טובים יותר, לחדש, לשפר ולהתקדם.
                 </p>
                 <p>
-                  {content?.sections?.about?.paragraph2 || 
-                    `המטרה שלנו היא לספק שירות ברמה הגבוהה ביותר ולהיות השותף הימין שלכם בדרך להצלחה. אנחנו מאמינים שכל לקוח מגיע לקבל יחס אישי, פתרון מותאם ותוצאות שמדברות בעד עצמן.`
-                  }
+                  החמימה שלנו היא לתת לכם חוויה שתזכרו, שירות שטופח עליו לאחרים, ותוצאות שיש לכם את החיים.
                 </p>
               </div>
               <div className="mt-10">
-                <button className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-10 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center gap-3 backdrop-blur-sm border border-white/20">
-                  <Handshake className="w-5 h-5 text-yellow-400" />
-                  בואו נכיר מקרוב 🌟
+                <button 
+                  className="group relative font-bold text-white overflow-hidden backdrop-blur-xl border border-white/20 transition-all duration-300 px-10 py-4 rounded-full text-lg"
+                  style={{
+                    background: `linear-gradient(135deg, 
+                      #3B82F6 0%, 
+                      #8B5CF6 50%, 
+                      #A855F7 100%)`,
+                    boxShadow: `
+                      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                      0 8px 25px rgba(0, 0, 0, 0.3),
+                      0 0 20px rgba(59, 130, 246, 0.2)
+                    `,
+                  }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                  <span className="relative z-10 flex items-center justify-center gap-2">
+                    <Handshake className="w-5 h-5 text-yellow-400" />
+                    בואו נכיר מקרוב 🌟
+                  </span>
                 </button>
               </div>
             </div>
@@ -324,48 +434,103 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
         </div>
       </StyleAwareSection>
 
-      {/* Contact Section */}
+      {/* Contact Form Section */}
       <StyleAwareSection heroStyle={formData.heroStyle || '3d'} sectionType="final">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-4xl mx-auto">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 leading-tight">
-              {content?.contactTitle || "בואו נתחיל ביחד!"}
+              בואו נתחיל ביחד!
             </h2>
             <p className="text-xl md:text-2xl text-gray-200 mb-12 leading-relaxed">
-              מוכנים לקחת את העסק שלכם לשלב הבא? אנחנו כאן כדי לעזור לכם להגשים את המטרות שלכם.
-              צרו קשר עוד היום ונתחיל לבנות ביחד את הצלחתכם.
+              מוכנים לקחת את העסק שלכם לשלב הבא? השאירו פרטים ונחזור אליכם תוך 24 שעות
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <button className="group bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-12 py-5 rounded-full text-xl font-bold transition-all duration-300 transform hover:scale-110 hover:shadow-2xl flex items-center gap-4 backdrop-blur-sm border border-white/20">
-                <Award className="w-6 h-6 text-yellow-400" />
-                בואו נתחיל עכשיו! 🚀
-              </button>
-              
-              <button className="group bg-gradient-to-r from-white/20 to-white/10 hover:from-white/30 hover:to-white/20 text-white px-10 py-5 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center gap-3 backdrop-blur-sm border border-white/30">
-                <Diamond className="w-5 h-5 text-blue-400" />
-                עוד מידע
-              </button>
+            {/* Contact Form */}
+            <div className="max-w-2xl mx-auto mb-16">
+              <div 
+                className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-2xl p-8"
+                style={{
+                  boxShadow: `
+                    0 25px 70px rgba(0, 0, 0, 0.5),
+                    inset 0 2px 0 rgba(255, 255, 255, 0.3)
+                  `,
+                }}
+              >
+                <form className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="השם המלא שלכם"
+                        className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                      />
+                    </div>
+                    <div>
+                      <input
+                        type="tel"
+                        placeholder="מספר טלפון"
+                        className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      placeholder="כתובת אימייל"
+                      className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <textarea
+                      placeholder="ספרו לנו קצת על הפרויקט שלכם..."
+                      rows={4}
+                      className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all resize-none"
+                    ></textarea>
+                  </div>
+                  <button 
+                    type="submit"
+                    className="group relative font-bold text-white overflow-hidden backdrop-blur-xl border border-white/20 transition-all duration-300 px-12 py-4 rounded-full text-xl w-full"
+                    style={{
+                      background: `linear-gradient(135deg, 
+                        #6B73FF 0%, 
+                        #9C40FF 50%, 
+                        #FF6B9D 100%)`,
+                      boxShadow: `
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                        0 8px 25px rgba(0, 0, 0, 0.3),
+                        0 0 20px rgba(107, 115, 255, 0.2)
+                      `,
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                    <span className="relative z-10 flex items-center justify-center gap-3">
+                      <Send className="w-6 h-6 text-white" />
+                      שלחו את הפרטים ובואו נתחיל! 🚀
+                    </span>
+                  </button>
+                </form>
+              </div>
             </div>
             
-            <div className="mt-16 grid md:grid-cols-3 gap-8 text-center">
+            {/* Contact Info */}
+            <div className="grid md:grid-cols-3 gap-8 text-center">
               <div className="space-y-2">
                 <div className="w-12 h-12 mx-auto bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center mb-4">
-                  <Handshake className="w-6 h-6 text-white" />
+                  <Phone className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-lg font-semibold text-white">טלפון</h3>
                 <p className="text-gray-300">050-123-4567</p>
               </div>
               <div className="space-y-2">
                 <div className="w-12 h-12 mx-auto bg-gradient-to-br from-green-500 to-teal-500 rounded-full flex items-center justify-center mb-4">
-                  <Diamond className="w-6 h-6 text-white" />
+                  <Mail className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-lg font-semibold text-white">אימייל</h3>
                 <p className="text-gray-300">info@business.co.il</p>
               </div>
               <div className="space-y-2">
                 <div className="w-12 h-12 mx-auto bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mb-4">
-                  <Award className="w-6 h-6 text-white" />
+                  <MapPin className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-lg font-semibold text-white">כתובת</h3>
                 <p className="text-gray-300">תל אביב, ישראל</p>
