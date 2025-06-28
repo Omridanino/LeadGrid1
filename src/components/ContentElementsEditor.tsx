@@ -216,239 +216,234 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
   );
 
   return (
-    <div className="w-80 bg-gray-900 border-l border-gray-700 h-full overflow-y-auto">
-      <div className="p-4">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-white text-lg font-bold">עורך תוכן</h2>
-          <Button onClick={handleSave} size="sm" className="bg-green-600 hover:bg-green-700">
-            <Save className="w-4 h-4 ml-1" />
-            שמור
-          </Button>
-        </div>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between mb-4">
+        <Button onClick={handleSave} size="sm" className="bg-green-600 hover:bg-green-700 w-full">
+          <Save className="w-4 h-4 ml-1" />
+          שמור שינויים
+        </Button>
+      </div>
 
-        <div className="space-y-4">
-          {/* Badge/Tag Editor */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-white text-sm flex items-center gap-2">
-                <Tag className="w-4 h-4 text-yellow-400" />
-                תג עליון
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Input
-                value={localContent.badge || ''}
-                onChange={(e) => handleTextChange('badge', e.target.value)}
-                placeholder="טקסט התג העליון"
-                className="bg-gray-700 border-gray-600 text-white text-right"
-              />
-              <ButtonStyleSelector 
-                value={localContent.badgeStyle} 
-                onChange={(value) => handleStyleChange('badge', value)} 
-                label="סגנון תג"
-              />
-            </CardContent>
-          </Card>
+      {/* Badge/Tag Editor */}
+      <Card className="bg-gray-800 border-gray-700">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-white text-sm flex items-center gap-2">
+            <Tag className="w-4 h-4 text-yellow-400" />
+            תג עליון
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <Input
+            value={localContent.badge || ''}
+            onChange={(e) => handleTextChange('badge', e.target.value)}
+            placeholder="טקסט התג העליון"
+            className="bg-gray-700 border-gray-600 text-white text-right"
+          />
+          <ButtonStyleSelector 
+            value={localContent.badgeStyle} 
+            onChange={(value) => handleStyleChange('badge', value)} 
+            label="סגנון תג"
+          />
+        </CardContent>
+      </Card>
 
-          {/* Main Title Editor */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-white text-sm flex items-center gap-2">
-                <Type className="w-4 h-4 text-blue-400" />
-                כותרת ראשית
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Textarea
-                value={localContent.headline || formData?.businessName || ''}
-                onChange={(e) => handleTextChange('headline', e.target.value)}
-                placeholder="הכותרת הראשית של הדף"
-                className="bg-gray-700 border-gray-600 text-white text-right"
-                rows={2}
-              />
-              <TextStyleSelector 
-                value={localContent.headlineStyle} 
-                onChange={(value) => handleStyleChange('headline', value)} 
-                label="סגנון כותרת"
-              />
-            </CardContent>
-          </Card>
+      {/* Main Title Editor */}
+      <Card className="bg-gray-800 border-gray-700">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-white text-sm flex items-center gap-2">
+            <Type className="w-4 h-4 text-blue-400" />
+            כותרת ראשית
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <Textarea
+            value={localContent.headline || formData?.businessName || ''}
+            onChange={(e) => handleTextChange('headline', e.target.value)}
+            placeholder="הכותרת הראשית של הדף"
+            className="bg-gray-700 border-gray-600 text-white text-right"
+            rows={2}
+          />
+          <TextStyleSelector 
+            value={localContent.headlineStyle} 
+            onChange={(value) => handleStyleChange('headline', value)} 
+            label="סגנון כותרת"
+          />
+        </CardContent>
+      </Card>
 
-          {/* Subtitle Editor */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-white text-sm flex items-center gap-2">
-                <Type className="w-4 h-4 text-green-400" />
-                כותרת משנה
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Textarea
-                value={localContent.subheadline || ''}
-                onChange={(e) => handleTextChange('subheadline', e.target.value)}
-                placeholder="כותרת המשנה או התיאור"
-                className="bg-gray-700 border-gray-600 text-white text-right"
-                rows={3}
-              />
-              <TextStyleSelector 
-                value={localContent.subheadlineStyle} 
-                onChange={(value) => handleStyleChange('subheadline', value)} 
-                label="סגנון כותרת משנה"
-              />
-            </CardContent>
-          </Card>
+      {/* Subtitle Editor */}
+      <Card className="bg-gray-800 border-gray-700">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-white text-sm flex items-center gap-2">
+            <Type className="w-4 h-4 text-green-400" />
+            כותרת משנה
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          <Textarea
+            value={localContent.subheadline || ''}
+            onChange={(e) => handleTextChange('subheadline', e.target.value)}
+            placeholder="כותרת המשנה או התיאור"
+            className="bg-gray-700 border-gray-600 text-white text-right"
+            rows={3}
+          />
+          <TextStyleSelector 
+            value={localContent.subheadlineStyle} 
+            onChange={(value) => handleStyleChange('subheadline', value)} 
+            label="סגנון כותרת משנה"
+          />
+        </CardContent>
+      </Card>
 
-          {/* Buttons Editor */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-white text-sm flex items-center gap-2">
-                <MousePointer className="w-4 h-4 text-red-400" />
-                כפתורים
-                <Badge variant="secondary" className="mr-auto">
-                  {(localContent.buttons || []).length}
-                </Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {(localContent.buttons || []).map((button: any, index: number) => (
-                <div key={index} className="p-3 bg-gray-700 rounded-lg border border-gray-600">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-white text-sm font-medium">כפתור {index + 1}</span>
-                    <div className="flex gap-1">
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => toggleButtonVisibility(index)}
-                        className="h-6 w-6 p-0 text-gray-400 hover:text-white"
-                      >
-                        {button.visible ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => removeButton(index)}
-                        className="h-6 w-6 p-0 text-red-400 hover:text-red-300"
-                      >
-                        <Trash2 className="w-3 h-3" />
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  <Input
-                    value={button.text || ''}
-                    onChange={(e) => handleButtonChange(index, 'text', e.target.value)}
-                    placeholder="טקסט הכפתור"
-                    className="bg-gray-600 border-gray-500 text-white text-right mb-2"
-                  />
-                  
-                  <select
-                    value={button.style || 'black-on-white'}
-                    onChange={(e) => handleButtonChange(index, 'style', e.target.value)}
-                    className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded mb-2"
+      {/* Buttons Editor */}
+      <Card className="bg-gray-800 border-gray-700">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-white text-sm flex items-center gap-2">
+            <MousePointer className="w-4 h-4 text-red-400" />
+            כפתורים
+            <Badge variant="secondary" className="mr-auto">
+              {(localContent.buttons || []).length}
+            </Badge>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {(localContent.buttons || []).map((button: any, index: number) => (
+            <div key={index} className="p-3 bg-gray-700 rounded-lg border border-gray-600">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-white text-sm font-medium">כפתור {index + 1}</span>
+                <div className="flex gap-1">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => toggleButtonVisibility(index)}
+                    className="h-6 w-6 p-0 text-gray-400 hover:text-white"
                   >
-                    <option value="black-on-white">שחור על לבן</option>
-                    <option value="white-on-black">לבן על שחור</option>
-                    <option value="gradient-gold-black">גרדיאנט זהב-שחור</option>
-                    <option value="gradient-gold-white">גרדיאנט זהב-לבן</option>
-                    <option value="gradient-purple-tech">גרדיאנט סגול טכנולוגי</option>
-                  </select>
-
-                  {/* Button Preview */}
-                  <div className="mt-2">
-                    <button className={`px-4 py-2 rounded text-sm ${getButtonStyleClasses(button.style || 'black-on-white')}`}>
-                      {button.text || 'תצוגה מקדימה'}
-                    </button>
-                  </div>
+                    {button.visible ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => removeButton(index)}
+                    className="h-6 w-6 p-0 text-red-400 hover:text-red-300"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </Button>
                 </div>
-              ))}
-              
-              <Button
-                onClick={addButton}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-              >
-                <Plus className="w-4 h-4 ml-1" />
-                הוסף כפתור
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Elements Management */}
-          <Separator className="bg-gray-600" />
-
-          <Card className="bg-gray-800 border-gray-700">
-            <CardHeader>
-              <CardTitle className="text-white text-sm flex items-center gap-2">
-                <Plus className="w-4 h-4 text-cyan-400" />
-                הוספת אלמנטים
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-2">
-                <Button 
-                  onClick={addImageElement}
-                  className="bg-purple-600 hover:bg-purple-700 text-white"
-                >
-                  <ImageIcon className="w-4 h-4 ml-1" />
-                  הוסף תמונה
-                </Button>
-                <Button 
-                  onClick={addTextElement}
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
-                >
-                  <Type className="w-4 h-4 ml-1" />
-                  הוסף טקסט
-                </Button>
-                <Button 
-                  className="bg-orange-600 hover:bg-orange-700 text-white"
-                >
-                  <Palette className="w-4 h-4 ml-1" />
-                  הוסף רקע
-                </Button>
-                <Button 
-                  onClick={addTagElement}
-                  className="bg-green-600 hover:bg-green-700 text-white"
-                >
-                  <Tag className="w-4 h-4 ml-1" />
-                  הוסף תג
-                </Button>
               </div>
               
-              {/* Show current elements */}
-              {(localContent.elements || []).length > 0 && (
-                <div className="mt-4">
-                  <h4 className="text-white text-sm mb-2">אלמנטים נוכחיים:</h4>
-                  <div className="space-y-2">
-                    {(localContent.elements || []).map((element: any, index: number) => (
-                      <div key={element.id || index} className="bg-gray-700 p-2 rounded flex items-center justify-between">
-                        <span className="text-white text-xs">
-                          {element.type === 'text' ? '📝 טקסט' : 
-                           element.type === 'image' ? '🖼️ תמונה' : 
-                           element.type === 'tag' ? '🏷️ תג' : element.type}
-                        </span>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => {
-                            const elements = [...(localContent.elements || [])];
-                            elements.splice(index, 1);
-                            setLocalContent({
-                              ...localContent,
-                              elements
-                            });
-                          }}
-                          className="h-6 w-6 p-0 text-red-400 hover:text-red-300"
-                        >
-                          <Trash2 className="w-3 h-3" />
-                        </Button>
-                      </div>
-                    ))}
+              <Input
+                value={button.text || ''}
+                onChange={(e) => handleButtonChange(index, 'text', e.target.value)}
+                placeholder="טקסט הכפתור"
+                className="bg-gray-600 border-gray-500 text-white text-right mb-2"
+              />
+              
+              <select
+                value={button.style || 'black-on-white'}
+                onChange={(e) => handleButtonChange(index, 'style', e.target.value)}
+                className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded mb-2"
+              >
+                <option value="black-on-white">שחור על לבן</option>
+                <option value="white-on-black">לבן על שחור</option>
+                <option value="gradient-gold-black">גרדיאנט זהב-שחור</option>
+                <option value="gradient-gold-white">גרדיאנט זהב-לבן</option>
+                <option value="gradient-purple-tech">גרדיאנט סגול טכנולוגי</option>
+              </select>
+
+              {/* Button Preview */}
+              <div className="mt-2">
+                <button className={`px-4 py-2 rounded text-sm ${getButtonStyleClasses(button.style || 'black-on-white')}`}>
+                  {button.text || 'תצוגה מקדימה'}
+                </button>
+              </div>
+            </div>
+          ))}
+          
+          <Button
+            onClick={addButton}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            <Plus className="w-4 h-4 ml-1" />
+            הוסף כפתור
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Elements Management */}
+      <Separator className="bg-gray-600" />
+
+      <Card className="bg-gray-800 border-gray-700">
+        <CardHeader>
+          <CardTitle className="text-white text-sm flex items-center gap-2">
+            <Plus className="w-4 h-4 text-cyan-400" />
+            הוספת אלמנטים
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-2 gap-2">
+            <Button 
+              onClick={addImageElement}
+              className="bg-purple-600 hover:bg-purple-700 text-white"
+            >
+              <ImageIcon className="w-4 h-4 ml-1" />
+              הוסף תמונה
+            </Button>
+            <Button 
+              onClick={addTextElement}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              <Type className="w-4 h-4 ml-1" />
+              הוסף טקסט
+            </Button>
+            <Button 
+              className="bg-orange-600 hover:bg-orange-700 text-white"
+            >
+              <Palette className="w-4 h-4 ml-1" />
+              הוסף רקע
+            </Button>
+            <Button 
+              onClick={addTagElement}
+              className="bg-green-600 hover:bg-green-700 text-white"
+            >
+              <Tag className="w-4 h-4 ml-1" />
+              הוסף תג
+            </Button>
+          </div>
+          
+          {/* Show current elements */}
+          {(localContent.elements || []).length > 0 && (
+            <div className="mt-4">
+              <h4 className="text-white text-sm mb-2">אלמנטים נוכחיים:</h4>
+              <div className="space-y-2">
+                {(localContent.elements || []).map((element: any, index: number) => (
+                  <div key={element.id || index} className="bg-gray-700 p-2 rounded flex items-center justify-between">
+                    <span className="text-white text-xs">
+                      {element.type === 'text' ? '📝 טקסט' : 
+                       element.type === 'image' ? '🖼️ תמונה' : 
+                       element.type === 'tag' ? '🏷️ תג' : element.type}
+                    </span>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => {
+                        const elements = [...(localContent.elements || [])];
+                        elements.splice(index, 1);
+                        setLocalContent({
+                          ...localContent,
+                          elements
+                        });
+                      }}
+                      className="h-6 w-6 p-0 text-red-400 hover:text-red-300"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </Button>
                   </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };
