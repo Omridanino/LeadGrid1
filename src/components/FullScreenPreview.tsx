@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/components/ColorEditor";
 import { HeroSection } from "@/components/preview/HeroSection";
 import { NavigationSection } from "@/components/preview/NavigationSection";
-import { ContentSections } from "@/components/preview/ContentSections";
 import { PreviewStyles } from "@/components/preview/PreviewStyles";
 
 interface FullScreenPreviewProps {
@@ -19,8 +18,6 @@ interface FullScreenPreviewProps {
 
 const FullScreenPreview = ({ content, currentColors, formData, heroImage, isOpen, onClose }: FullScreenPreviewProps) => {
   if (!isOpen) return null;
-
-  const selectedElements = formData?.selectedElements || [];
 
   const getStyleClass = () => {
     switch (formData.heroStyle) {
@@ -48,7 +45,7 @@ const FullScreenPreview = ({ content, currentColors, formData, heroImage, isOpen
         <X className="w-5 h-5" />
       </Button>
 
-      {/* Full Screen Preview - Fully Scrollable */}
+      {/* Full Screen Preview - Only Hero Section */}
       <div 
         className={`w-full h-full ${getStyleClass()}`} 
         style={{ 
@@ -60,7 +57,7 @@ const FullScreenPreview = ({ content, currentColors, formData, heroImage, isOpen
       >
         <PreviewStyles />
 
-        {/* Hero Section */}
+        {/* Hero Section Only */}
         <HeroSection 
           content={content}
           currentColors={currentColors}
@@ -70,37 +67,6 @@ const FullScreenPreview = ({ content, currentColors, formData, heroImage, isOpen
 
         {/* Navigation */}
         <NavigationSection formData={formData} />
-
-        {/* Content Sections - All sections will be rendered */}
-        <ContentSections 
-          content={content}
-          currentColors={currentColors}
-          formData={formData}
-          selectedElements={selectedElements}
-        />
-
-        {/* Footer Section */}
-        <footer style={{ 
-          background: 'rgba(0,0,0,0.5)', 
-          backdropFilter: 'blur(16px)', 
-          padding: '4rem 0', 
-          textAlign: 'center' 
-        }}>
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <h3 className="text-2xl font-bold text-white mb-4">
-                {formData.businessName || 'העסק שלי'}
-              </h3>
-              <p className="text-gray-400 mb-8">
-                © 2024 כל הזכויות שמורות. בניית אתרים מקצועית ואמינה.
-              </p>
-              <div className="flex justify-center gap-8 text-gray-400">
-                <span>טלפון: 050-1234567</span>
-                <span>אימייל: info@business.co.il</span>
-              </div>
-            </div>
-          </div>
-        </footer>
       </div>
     </div>
   );
