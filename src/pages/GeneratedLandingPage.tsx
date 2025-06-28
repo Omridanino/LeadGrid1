@@ -39,8 +39,8 @@ const GeneratedLandingPage = () => {
 
   return (
     <div className="min-h-screen bg-black text-white relative" dir="rtl">
-      {/* Content Editor - Floating Overlay */}
-      <div className="fixed top-0 right-0 w-80 h-full bg-black/95 backdrop-blur-sm border-l border-gray-800 z-50 overflow-y-auto">
+      {/* Content Editor - Fixed Left Side */}
+      <div className="fixed top-0 left-0 w-80 h-full bg-black/95 backdrop-blur-sm border-r border-gray-800 z-50 overflow-y-auto">
         <ContentElementsEditor 
           content={state.content}
           onContentChange={state.setContent}
@@ -48,8 +48,8 @@ const GeneratedLandingPage = () => {
         />
       </div>
       
-      {/* Main Preview - Full Width */}
-      <div className="w-full min-h-screen">
+      {/* Main Preview - With Left Padding */}
+      <div className="w-full min-h-screen" style={{ paddingLeft: '320px' }}>
         <LandingPagePreview 
           content={state.content}
           currentColors={state.currentColors}
