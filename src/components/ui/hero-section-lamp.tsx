@@ -122,18 +122,6 @@ export const HeroSectionLamp = ({ formData, currentColors }: HeroSectionLampProp
                     </Button>
                 </div>
             </div>
-
-            {/* Companies Section */}
-            <section className="absolute bottom-0 w-full bg-slate-950/80 backdrop-blur py-8 z-20">
-                <div className="m-auto max-w-5xl px-6">
-                    <h2 className="text-center text-sm font-medium text-slate-400 mb-8">החברות המובילות בוטחות בנו</h2>
-                    <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-x-12 gap-y-8 sm:gap-x-16 sm:gap-y-12">
-                        {[1,2,3,4,5,6].map((i) => (
-                            <div key={i} className="h-6 w-24 bg-slate-600 rounded opacity-60"></div>
-                        ))}
-                    </div>
-                </div>
-            </section>
         </div>
     )
 }

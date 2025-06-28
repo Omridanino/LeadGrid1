@@ -169,24 +169,6 @@ export const HeroSectionModern = ({ formData, currentColors }: HeroSectionModern
                         </div>
                     </div>
                 </section>
-
-                <section className="bg-gray-50 dark:bg-gray-900 relative z-10 py-16">
-                    <div className="group relative m-auto max-w-5xl px-6">
-                        <div className="absolute inset-0 z-10 flex scale-95 items-center justify-center opacity-0 duration-500 group-hover:scale-100 group-hover:opacity-100">
-                            <a href="#" className="block text-sm duration-150 hover:opacity-75 flex items-center">
-                                <span>הכירו את הלקוחות שלנו</span>
-                                <ChevronRight className="mr-1 inline-block size-3" />
-                            </a>
-                        </div>
-                        <div className="group-hover:blur-sm mx-auto mt-12 grid max-w-2xl grid-cols-4 gap-x-12 gap-y-8 transition-all duration-500 group-hover:opacity-50 sm:gap-x-16 sm:gap-y-14">
-                            {[1,2,3,4,5,6,7,8].map((i) => (
-                                <div key={i} className="flex">
-                                    <div className="mx-auto h-5 w-24 bg-gray-300 dark:bg-gray-600 rounded opacity-60"></div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
             </main>
         </div>
     )

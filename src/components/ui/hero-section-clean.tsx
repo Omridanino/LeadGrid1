@@ -128,17 +128,6 @@ export const HeroSectionClean = ({ formData, currentColors }: HeroSectionCleanPr
                         </div>
                     </div>
                 </section>
-
-                <section className="bg-gray-50 relative z-10 py-16">
-                    <div className="m-auto max-w-5xl px-6">
-                        <h2 className="text-center text-lg font-medium text-gray-600 mb-12">החברות המובילות בוטחות בנו</h2>
-                        <div className="mx-auto mt-8 flex max-w-4xl flex-wrap items-center justify-center gap-x-12 gap-y-8 sm:gap-x-16 sm:gap-y-12">
-                            {[1,2,3,4,5,6].map((i) => (
-                                <div key={i} className="h-8 w-24 bg-gray-300 rounded opacity-60"></div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
             </main>
         </div>
     )
