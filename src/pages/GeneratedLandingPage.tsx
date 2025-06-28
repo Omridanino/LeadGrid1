@@ -2,19 +2,21 @@
 import GeneratedPageHeader from "@/components/GeneratedPageHeader";
 import LandingPagePreview from "@/components/LandingPagePreview";
 import FullScreenPreview from "@/components/FullScreenPreview";
-import OptionsPanel from "@/components/OptionsPanel";
 import { Button } from "@/components/ui/button";
-import { PanelRightClose, PanelRightOpen, Save, CheckCircle } from "lucide-react";
+import { Save, CheckCircle } from "lucide-react";
 import { useGeneratedPageState } from "@/hooks/useGeneratedPageState";
-import { useGeneratedPageActions } from "@/hooks/useGeneratedPageActions";
 import { useContentGeneration } from "@/hooks/useContentGeneration";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import { generateHtmlFile } from "@/utils/htmlGenerator";
+import { getHeroImageUrl } from "@/utils/heroImageUtils";
 
 const GeneratedLandingPage = () => {
   const [showFullScreenPreview, setShowFullScreenPreview] = useState(false);
   const state = useGeneratedPageState();
   const location = useLocation();
+  const { toast } = useToast();
   
   // Initialize content generation
   const { generateCreativeContent, setGeneratedContent } = useContentGeneration(state.formData);
@@ -37,22 +39,62 @@ const GeneratedLandingPage = () => {
       setGeneratedContent(newContent);
     }
   }, [state.formData, state.content, generateCreativeContent, setGeneratedContent]);
-  
-  const actions = useGeneratedPageActions({
-    isSaved: state.isSaved,
-    setIsSaved: state.setIsSaved,
-    setShowAdvancedEditor: state.setShowAdvancedEditor,
-    showAdvancedEditor: state.showAdvancedEditor,
-    setShowDesignEditor: state.setShowDesignEditor,
-    showDesignEditor: state.showDesignEditor,
-    setShowWordPressGuide: state.setShowWordPressGuide,
-    setGeneratedContent: state.setGeneratedContent,
-    generateCreativeContent: generateCreativeContent,
-    content: state.content,
-    currentColors: state.currentColors,
-    formData: state.formData,
-    heroImage: state.heroImage
-  });
+
+  const handleSaveDesign = () => {
+    // יצירת HTML שזהה בדיוק לתצוגה באמצעות אותה פונקציה
+    const heroUrl = getHeroImageUrl(state.content, state.heroImage, state.formData);
+    const updatedHtmlContent = generateHtmlFile(state.content, state.currentColors, state.formData, heroUrl);
+    
+    // שמירת ה-HTML המעודכן להורדה
+    localStorage.setItem('latestHtmlContent', updatedHtmlContent);
+    localStorage.setItem('latestFormData', JSON.stringify(state.formData));
+    localStorage.setItem('latestColors', JSON.stringify(state.currentColors));
+    localStorage.setItem('latestContent', JSON.stringify(state.content));
+    
+    state.setIsSaved(true);
+    toast({
+      title: "💾 העיצוב נשמר בהצלחה!",
+      description: "קוד HTML מעודכן נוצר - זהה 100% לתצוגה המקדימה",
+    });
+  };
+
+  const handleDownloadCode = () => {
+    if (!state.isSaved) {
+      toast({
+        title: "⚠️ יש לשמור קודם",
+        description: "אנא שמור את העיצוב לפני הורדת הקוד",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // שימוש ב-HTML המעודכן שנוצר בעת השמירה - זהה לחלוטין לתצוגה
+    const savedHtmlContent = localStorage.getItem('latestHtmlContent');
+    let htmlContent;
+    
+    if (savedHtmlContent) {
+      htmlContent = savedHtmlContent;
+    } else {
+      // גיבוי - יצירת HTML מחדש אם לא קיים בזיכרון
+      const heroUrl = getHeroImageUrl(state.content, state.heroImage, state.formData);
+      htmlContent = generateHtmlFile(state.content, state.currentColors, state.formData, heroUrl);
+    }
+    
+    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${state.formData.businessName?.replace(/\s+/g, '_') || 'landing_page'}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    toast({
+      title: "💻 קוד המקור הורד!",
+      description: "קובץ HTML מלא הורד בהצלחה - זהה לחלוטין לתצוגה המקדימה",
+    });
+  };
 
   // Convert PageElement[] to string[] for elements prop
   const elementsAsStrings = state.elements?.map(element => 
@@ -62,8 +104,8 @@ const GeneratedLandingPage = () => {
   return (
     <div className="min-h-screen bg-black text-white" dir="rtl">
       <GeneratedPageHeader 
-        onNavigateBack={actions.onNavigateBack}
-        onDownloadCode={actions.handleDownloadCode}
+        onNavigateBack={() => window.location.href = '/'}
+        onDownloadCode={handleDownloadCode}
         onPreviewFullScreen={() => setShowFullScreenPreview(true)}
       />
 
@@ -80,7 +122,7 @@ const GeneratedLandingPage = () => {
       {/* Save Button */}
       <div className="fixed top-20 right-4 z-50">
         <Button
-          onClick={actions.handleSaveDesign}
+          onClick={handleSaveDesign}
           className={`${state.isSaved ? 'bg-green-600 hover:bg-green-700' : 'bg-purple-600 hover:bg-purple-700'} rounded-full p-3`}
           size="sm"
         >
@@ -89,52 +131,15 @@ const GeneratedLandingPage = () => {
       </div>
 
       <main className="container mx-auto px-4 py-8">
-        <div className="flex gap-4 relative">
-          {/* Toggle Button */}
-          <Button
-            onClick={() => state.setShowSidePanel(!state.showSidePanel)}
-            className="fixed top-20 left-4 z-50 bg-purple-600 hover:bg-purple-700 rounded-full p-3"
-            size="sm"
-          >
-            {state.showSidePanel ? <PanelRightClose className="w-5 h-5" /> : <PanelRightOpen className="w-5 h-5" />}
-          </Button>
-
-          {/* Main Content */}
-          <div className={`transition-all duration-300 ${state.showSidePanel ? 'w-2/3' : 'w-full'}`}>
-            <LandingPagePreview 
-              content={state.content}
-              currentColors={state.currentColors}
-              formData={state.formData}
-              heroImage={state.heroImage}
-              elements={elementsAsStrings}
-            />
-          </div>
-
-          {/* Side Panel */}
-          {state.showSidePanel && (
-            <div className="w-1/3 transition-all duration-300">
-              <OptionsPanel 
-                showDesignEditor={state.showDesignEditor}
-                showWordPressGuide={state.showWordPressGuide}
-                showAdvancedEditor={state.showAdvancedEditor}
-                isSaved={state.isSaved}
-                onColorChange={(newColors) => {
-                  state.setCurrentColors(newColors);
-                }}
-                onDesignEdit={actions.handleDesignEdit}
-                onWordPressIntegration={actions.handleWordPressIntegration}
-                onAdvancedEdit={actions.handleAdvancedEdit}
-                onSave={actions.handleSaveDesign}
-                generateHtmlFile={actions.generateHtmlFile}
-                content={state.content}
-                onContentChange={state.setGeneratedContent}
-                formData={state.formData}
-                onFormDataChange={state.setFormData}
-                heroImage={state.heroImage}
-                onHeroImageChange={state.setHeroImage}
-              />
-            </div>
-          )}
+        <div className="w-full">
+          {/* Main Content - Full Width */}
+          <LandingPagePreview 
+            content={state.content}
+            currentColors={state.currentColors}
+            formData={state.formData}
+            heroImage={state.heroImage}
+            elements={elementsAsStrings}
+          />
         </div>
       </main>
     </div>
