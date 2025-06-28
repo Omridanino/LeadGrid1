@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -15,14 +16,12 @@ import { HeroScroll } from '../ui/container-scroll-animation';
 import { ColorScheme } from '@/components/ColorEditor';
 
 interface HeroSectionProps {
-  content: any;
   currentColors: ColorScheme;
   formData: any;
   heroImage: string;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({ 
-  content,
   currentColors,
   formData,
   heroImage
@@ -32,6 +31,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
   // Extract answers from formData for backward compatibility
   const answers = formData || {};
+
+  // Define isRTL based on Hebrew content detection
+  const isRTL = answers.businessName ? /[\u0590-\u05FF]/.test(answers.businessName) : false;
 
   useEffect(() => {
     setIsVisible(true);
@@ -68,7 +70,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
   const renderHeroByDesignStyle = () => {
     const textColor = currentColors?.text || '#000000';
-    const borderColor = currentColors?.border || '#e5e7eb';
+    const borderColor = currentColors?.primary || '#e5e7eb'; // Use primary as fallback for border
     const backgroundColor = currentColors?.background || '#ffffff';
     const primaryColor = currentColors?.primary || '#3b82f6';
     const accentColor = currentColors?.accent || '#10b981';
@@ -145,10 +147,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         return (
           <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor }}>
             <div className="text-center max-w-4xl mx-auto px-6">
-              <h1 className={`text-6xl md:text-8xl font-light mb-8 ${fontSize}`} style={{ color: textColor }}>
+              <h1 className="text-6xl md:text-8xl font-light mb-8" style={{ color: textColor }}>
                 {answers.businessName || 'Minimal'}
               </h1>
-              <p className={`text-lg md:text-xl mb-12 opacity-70 ${fontSize}`} style={{ color: textColor }}>
+              <p className="text-lg md:text-xl mb-12 opacity-70" style={{ color: textColor }}>
                 {answers.tagline || 'Less is more'}
               </p>
               <Button variant="ghost" size={'default' as any} className="text-lg px-8 py-3 border-b-2" style={{ borderColor }}>
@@ -166,11 +168,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 initial={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 1, type: "spring" }}
-                className={`text-7xl md:text-9xl font-black mb-8 text-white ${fontSize}`}
+                className="text-7xl md:text-9xl font-black mb-8 text-white"
               >
                 {answers.businessName || 'BOLD'}
               </motion.h1>
-              <p className={`text-2xl md:text-3xl mb-12 text-white/80 ${fontSize}`}>
+              <p className="text-2xl md:text-3xl mb-12 text-white/80">
                 {answers.tagline || 'Make a statement'}
               </p>
               <Button size={'default' as any} className="px-12 py-4 text-xl font-bold bg-yellow-400 text-black hover:bg-yellow-300">
@@ -187,10 +189,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               <div className="mb-8">
                 <Star className="w-12 h-12 mx-auto text-gold-500 mb-4" style={{ color: accentColor }} />
               </div>
-              <h1 className={`text-5xl md:text-7xl font-serif mb-8 text-gray-800 ${fontSize}`}>
+              <h1 className="text-5xl md:text-7xl font-serif mb-8 text-gray-800">
                 {answers.businessName || 'Elegant'}
               </h1>
-              <p className={`text-xl md:text-2xl mb-12 text-gray-600 italic ${fontSize}`}>
+              <p className="text-xl md:text-2xl mb-12 text-gray-600 italic">
                 {answers.tagline || 'Timeless sophistication'}
               </p>
               <Button variant="outline" size={'default' as any} className="px-8 py-3 text-lg border-2 border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white">
@@ -211,10 +213,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               >
                 <Sparkles className="w-16 h-16 mx-auto text-white" />
               </motion.div>
-              <h1 className={`text-6xl md:text-8xl font-bold mb-8 text-white ${fontSize}`}>
+              <h1 className="text-6xl md:text-8xl font-bold mb-8 text-white">
                 {answers.businessName || 'Creative'}
               </h1>
-              <p className={`text-2xl md:text-3xl mb-12 text-white/90 ${fontSize}`}>
+              <p className="text-2xl md:text-3xl mb-12 text-white/90">
                 {answers.tagline || 'Unleash your imagination'}
               </p>
               <Button size={'default' as any} className="px-10 py-4 text-xl font-bold bg-white text-purple-600 hover:bg-gray-100">
@@ -231,10 +233,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               <div className="mb-8 font-mono text-sm opacity-60">
                 {'> initializing_system...'}
               </div>
-              <h1 className={`text-6xl md:text-8xl font-mono font-bold mb-8 ${fontSize}`}>
+              <h1 className="text-6xl md:text-8xl font-mono font-bold mb-8">
                 {answers.businessName || 'TECH_CO'}
               </h1>
-              <p className={`text-xl md:text-2xl mb-12 font-mono ${fontSize}`}>
+              <p className="text-xl md:text-2xl mb-12 font-mono">
                 {answers.tagline || '// Building the future'}
               </p>
               <Button size={'default' as any} className="px-8 py-3 text-lg font-mono bg-green-400 text-black hover:bg-green-300">
@@ -252,12 +254,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 initial={{ backgroundPosition: "0% 50%" }}
                 animate={{ backgroundPosition: "100% 50%" }}
                 transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
-                className={`text-6xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent ${fontSize}`}
+                className="text-6xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent"
                 style={{ backgroundSize: "200% 200%" }}
               >
                 {answers.businessName || 'Gradient'}
               </motion.h1>
-              <p className={`text-2xl md:text-3xl mb-12 text-white/90 ${fontSize}`}>
+              <p className="text-2xl md:text-3xl mb-12 text-white/90">
                 {answers.tagline || 'Colors of innovation'}
               </p>
               <Button size={'default' as any} className="px-10 py-4 text-xl font-bold bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white/30">
@@ -272,10 +274,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-400 to-purple-600">
             <Card className="max-w-4xl mx-auto bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl">
               <CardContent className="p-12 text-center">
-                <h1 className={`text-5xl md:text-7xl font-bold mb-8 text-white ${fontSize}`}>
+                <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white">
                   {answers.businessName || 'Glass'}
                 </h1>
-                <p className={`text-xl md:text-2xl mb-12 text-white/80 ${fontSize}`}>
+                <p className="text-xl md:text-2xl mb-12 text-white/80">
                   {answers.tagline || 'Transparent excellence'}
                 </p>
                 <Button size={'default' as any} className="px-8 py-3 text-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white hover:bg-white/30">
@@ -294,7 +296,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 2 }}
-                className={`text-6xl md:text-8xl font-bold mb-8 text-white ${fontSize}`}
+                className="text-6xl md:text-8xl font-bold mb-8 text-white"
               >
                 {(answers.businessName || 'Animated').split('').map((char, index) => (
                   <motion.span
@@ -311,7 +313,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1, duration: 0.8 }}
-                className={`text-2xl md:text-3xl mb-12 text-white/80 ${fontSize}`}
+                className="text-2xl md:text-3xl mb-12 text-white/80"
               >
                 {answers.tagline || 'Motion in every pixel'}
               </motion.p>
@@ -334,10 +336,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               <div className="mb-8">
                 <Trophy className="w-16 h-16 mx-auto text-gold-400" style={{ color: accentColor }} />
               </div>
-              <h1 className={`text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-gold-400 to-yellow-600 bg-clip-text text-transparent ${fontSize}`}>
+              <h1 className="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-gold-400 to-yellow-600 bg-clip-text text-transparent">
                 {answers.businessName || 'Premium'}
               </h1>
-              <p className={`text-xl md:text-2xl mb-12 text-gray-300 ${fontSize}`}>
+              <p className="text-xl md:text-2xl mb-12 text-gray-300">
                 {answers.tagline || 'Excellence redefined'}
               </p>
               <Button size={'default' as any} className="px-8 py-3 text-lg bg-gradient-to-r from-gold-400 to-yellow-600 text-black font-bold hover:from-gold-300 hover:to-yellow-500">
