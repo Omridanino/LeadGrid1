@@ -1,4 +1,3 @@
-
 import { Canvas } from "@react-three/fiber";
 import { PerspectiveCamera } from "@react-three/drei";
 import { useThree, useFrame } from "@react-three/fiber";
@@ -47,8 +46,8 @@ const RubiksCubeModel = forwardRef<THREE.Group, RubiksCubeModelProps>((props, re
   const reusableQuaternion = useMemo(() => new Quaternion(), []);
   
   React.useImperativeHandle(ref, () => ({
-    ...(mainGroupRef.current || {}),
-    reset: resetCube
+    reset: resetCube,
+    current: mainGroupRef.current
   }));
 
   const initializeCubes = useCallback(() => {
