@@ -1,4 +1,3 @@
-
 export interface FormData {
   businessName: string;
   businessType: string;
@@ -34,7 +33,7 @@ export const initialFormData: FormData = {
   mainGoal: "",
   keyFeatures: "",
   contactInfo: "",
-  designStyle: "hero-section-modern",
+  designStyle: "dynamic-gradients", // Default to the enhanced dynamic gradients
   navigationStyle: "floating",
   selectedElements: []
 };
@@ -70,30 +69,27 @@ export const validateRequiredFields = (formData: FormData): boolean => {
 // Enhanced design style validation and mapping
 export const validateDesignStyle = (style: string): boolean => {
   const validStyles = [
-    'hero-section-modern',
-    'hero-section-animated', 
-    'hero-section-typewriter',
-    'hero-section-rotating',
-    'basic',
-    '3d-tech'
+    'dynamic-gradients',
+    'sparkles-effects', 
+    'animated-paths',
+    'fluid-blobs',
+    'spline-3d'
   ];
   return validStyles.includes(style);
 };
 
 export const getDesignStyleDescription = (style: string): string => {
   switch (style) {
-    case 'hero-section-modern':
-      return 'עיצוב מודרני מתקדם עם אנימציות חלקות וטיפוגרפיה יפה - מתאים לעסקים מקצועיים';
-    case 'hero-section-animated':
-      return 'עיצוב עם אנימציות מתקדמות וקבוצות אנימציה - מושלם לעסקים יצירתיים';
-    case 'hero-section-typewriter':
-      return 'עיצוב עם אפקט מכונת כתיבה דינמי - מתאים לעסקים טכנולוגיים';
-    case 'hero-section-rotating':
-      return 'עיצוב עם טקסט מתחלף וחלק - מושלם לעסקים רב-תחומיים';
-    case 'basic':
-      return 'עיצוב נקי וקלאסי עם אפקטים בסיסיים - מתאים לכל סוג עסק ולכל קהל';
-    case '3d-tech':
-      return 'עיצוב טכנולוגי מתקדם עם אפקטים תלת-מימדיים מרשימים - מושלם לעסקים חדשניים ומתקדמים';
+    case 'dynamic-gradients':
+      return 'גרדיאנטים דינמיים AI עם אפקטי חלקיקים מתקדמים - טכנולוגיה מהפנטת ברמה בינלאומית';
+    case 'sparkles-effects':
+      return 'מערכת חלקיקים אינטראקטיבית עם תגובה לעכבר - אפקטי נוצץ מרהיבים ומתקדמים';
+    case 'animated-paths':
+      return 'נתיבים מונפשים פרימיום עם עקומות SVG איכותיות - עיצוב מינימליסטי ואלגנטי';
+    case 'fluid-blobs':
+      return 'בועות נוזל מרובות צבעים עם אנימציה טבעית ואורגנית - מושלם לעסקים יצירתיים';
+    case 'spline-3d':
+      return 'סצנות תלת מימד מתקדמות עם תנועה מרשימה - ברמת Three.js ואמנות דיגיטלית';
     default:
       return 'עיצוב טכנולוגי מתקדם מותאם אישית';
   }

@@ -1,6 +1,7 @@
 
 import { useState } from "react";
-import { ModernHeroSection } from "@/components/ui/modern-hero-section";
+import Header from "@/components/Header";
+import ModernHeroSection from "@/components/ModernHeroSection";
 import ModernFeaturesSection from "@/components/ModernFeaturesSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import Footer from "@/components/Footer";
@@ -22,7 +23,8 @@ const Index = () => {
   console.log("Index render - isQuestionnaireOpen:", isQuestionnaireOpen);
 
   return (
-    <div className="min-h-screen bg-black text-white" dir="rtl">
+    <div className="min-h-screen bg-black text-white md:text-right text-center" dir="rtl">
+      <Header onStartQuestionnaire={handleOpenQuestionnaire} />
       <ModernHeroSection onStartQuestionnaire={handleOpenQuestionnaire} />
       <ModernFeaturesSection />
       <TestimonialsSection />
