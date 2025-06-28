@@ -38,27 +38,25 @@ const GeneratedLandingPage = () => {
   ).filter(Boolean) || [];
 
   return (
-    <div className="min-h-screen bg-black text-white" dir="rtl">
-      <div className="flex h-screen">
-        {/* Content Editor - Left Side */}
-        <div className="w-80 flex-shrink-0">
-          <ContentElementsEditor 
-            content={state.content}
-            onContentChange={state.setContent}
-            formData={state.formData}
-          />
-        </div>
-        
-        {/* Main Preview - Right Side */}
-        <div className="flex-1 overflow-y-auto">
-          <LandingPagePreview 
-            content={state.content}
-            currentColors={state.currentColors}
-            formData={state.formData}
-            heroImage={state.heroImage}
-            elements={elementsAsStrings}
-          />
-        </div>
+    <div className="min-h-screen bg-black text-white relative" dir="rtl">
+      {/* Content Editor - Floating Overlay */}
+      <div className="fixed top-0 right-0 w-80 h-full bg-black/95 backdrop-blur-sm border-l border-gray-800 z-50 overflow-y-auto">
+        <ContentElementsEditor 
+          content={state.content}
+          onContentChange={state.setContent}
+          formData={state.formData}
+        />
+      </div>
+      
+      {/* Main Preview - Full Width */}
+      <div className="w-full min-h-screen">
+        <LandingPagePreview 
+          content={state.content}
+          currentColors={state.currentColors}
+          formData={state.formData}
+          heroImage={state.heroImage}
+          elements={elementsAsStrings}
+        />
       </div>
     </div>
   );
