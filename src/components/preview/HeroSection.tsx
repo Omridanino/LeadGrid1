@@ -8,6 +8,11 @@ import { ChromeGrid } from "@/components/ui/chrome-grid";
 import { AuroraHero } from "@/components/ui/futurastic-hero-section";
 import { LavaLamp } from "@/components/ui/fluid-blob";
 import { Scene } from "@/components/ui/rubik-s-cube";
+import { HeroWithMockup } from "@/components/ui/hero-with-mockup";
+import { BeamsBackground } from "@/components/ui/beams-background";
+import { GradientHero } from "@/components/ui/gradient-hero";
+import { AnimatedHero } from "@/components/ui/animated-hero";
+import { HeroGeometric } from "@/components/ui/shape-landing-hero";
 import { ArrowLeft, Play, Shield, Zap, Award, Star } from "lucide-react";
 
 interface HeroSectionProps {
@@ -20,91 +25,97 @@ interface HeroSectionProps {
 export const HeroSection = ({ content, currentColors, formData, heroImage }: HeroSectionProps) => {
   const designStyle = formData?.designStyle || 'basic';
 
-  // Basic Design Style
+  // Basic Design Style - Random selection from 5 different designs
   if (designStyle === 'basic') {
-    return (
-      <section 
-        className="relative overflow-hidden min-h-screen flex items-center justify-center"
-        style={{ 
-          background: `linear-gradient(135deg, ${currentColors.heroBackground} 0%, rgba(0,0,0,0.8) 100%)` 
-        }}
-      >
-        {/* Simple gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/30 to-gray-900/40" />
-        
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            {/* Simple badge */}
-            <div 
-              className="inline-flex items-center gap-2 backdrop-blur-md border px-6 py-3 rounded-full mb-8 shadow-lg"
-              style={{
-                backgroundColor: `${currentColors.primary}20`,
-                borderColor: `${currentColors.primary}40`,
-                color: currentColors.text
-              }}
-            >
-              <Star className="w-5 h-5" style={{ color: currentColors.accent }} />
-              <span className="text-sm font-medium">עיצוב מקצועי וקלאסי</span>
-            </div>
+    const [selectedBasicDesign, setSelectedBasicDesign] = useState(0);
 
-            {/* Simple headline */}
-            <h1 
-              className="text-5xl md:text-7xl font-bold mb-8 leading-tight"
-              style={{ 
-                color: currentColors.headlineColor,
-                textShadow: '0 4px 20px rgba(0, 0, 0, 0.5)'
-              }}
-            >
-              {content?.headline || formData?.businessName || 'העסק שלכם'}
-            </h1>
+    useEffect(() => {
+      // Randomly select one of the 5 basic designs
+      setSelectedBasicDesign(Math.floor(Math.random() * 5));
+    }, []);
 
-            {/* Simple description */}
-            <div 
-              className="backdrop-blur-md border p-8 max-w-3xl mx-auto mb-12 rounded-2xl shadow-xl"
-              style={{
-                backgroundColor: `rgba(255, 255, 255, 0.1)`,
-                borderColor: `${currentColors.primary}30`,
-                color: currentColors.subheadlineColor
-              }}
-            >
-              <p className="text-xl md:text-2xl leading-relaxed">
-                {content?.subheadline || `פתרונות מקצועיים ל${formData?.targetAudience || 'הלקוחות שלכם'}`}
-              </p>
-            </div>
+    // Design 1: Enhanced Mockup Hero
+    if (selectedBasicDesign === 0) {
+      return (
+        <HeroWithMockup
+          title={content?.headline || formData?.businessName || 'העסק שלכם'}
+          description={content?.subheadline || `פתרונות מקצועיים ל${formData?.targetAudience || 'הלקוחות שלכם'}`}
+          primaryCta={{
+            text: content?.cta || 'בואו נתחיל',
+            onClick: () => {}
+          }}
+          secondaryCta={{
+            text: 'למד עוד',
+            onClick: () => {}
+          }}
+        />
+      );
+    }
 
-            {/* Simple buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <button 
-                className="px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
-                style={{
-                  backgroundColor: currentColors.primary,
-                  color: '#ffffff'
-                }}
-              >
-                <div className="flex items-center gap-2">
-                  <ArrowLeft className="w-5 h-5" />
-                  {content?.cta || 'בואו נתחיל'}
-                </div>
-              </button>
-              
-              <button 
-                className="backdrop-blur-md border-2 px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg"
-                style={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                  borderColor: currentColors.primary,
-                  color: currentColors.text
-                }}
-              >
-                <div className="flex items-center gap-2">
-                  <Play className="w-5 h-5" />
-                  למד עוד
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
+    // Design 2: Beams Background
+    if (selectedBasicDesign === 1) {
+      return (
+        <BeamsBackground
+          title={content?.headline || formData?.businessName || 'חלומות דיגיטליים'}
+          description={content?.subheadline || 'שם המחשבות מקבלות צורה והתודעה זורמת כמו כספית נוזלית'}
+          primaryCta={{
+            text: content?.cta || 'היכנסו לזרימה',
+            onClick: () => {}
+          }}
+          secondaryCta={{
+            text: 'חקרו עוד',
+            onClick: () => {}
+          }}
+        />
+      );
+    }
+
+    // Design 3: Gradient Hero with Lamp Effect
+    if (selectedBasicDesign === 2) {
+      return (
+        <GradientHero
+          title={content?.headline || formData?.businessName || 'העתיד כאן עכשיו'}
+          subtitle={content?.subheadline || 'חוויה דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש'}
+          primaryCta={{
+            text: content?.cta || 'התחילו היום',
+            onClick: () => {}
+          }}
+          secondaryCta={{
+            text: 'גלו עוד',
+            onClick: () => {}
+          }}
+        />
+      );
+    }
+
+    // Design 4: Animated Text Hero
+    if (selectedBasicDesign === 3) {
+      return (
+        <AnimatedHero
+          title={content?.headline || formData?.businessName || 'זה משהו'}
+          subtitle={content?.subheadline || `ניהול עסק קטן היום כבר מספיק קשה. הימנעו מסיבוכים נוספים על ידי נטישת שיטות מסחר מיושנות ומייגעות. המטרה שלנו היא לפשט את המסחר של עסקים קטנים ובינוניים.`}
+          primaryCta={{
+            text: content?.cta || 'הירשמו כאן',
+            onClick: () => {}
+          }}
+          secondaryCta={{
+            text: 'הצגת המוצר',
+            onClick: () => {}
+          }}
+        />
+      );
+    }
+
+    // Design 5: Geometric Shapes Hero (already exists)
+    if (selectedBasicDesign === 4) {
+      return (
+        <HeroGeometric
+          badge="עיצוב מתקדם"
+          title1={content?.headline || formData?.businessName || 'העלו את החזון הדיגיטלי'}
+          title2="יצירת אתרים יוצאי דופן"
+        />
+      );
+    }
   }
 
   // 3D Tech Design Style - Random selection from 5 different designs
@@ -126,7 +137,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           />
           
           <div className="flex h-screen">
-            {/* Left content */}
             <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
               <div className="max-w-2xl">
                 <div className="inline-flex items-center gap-2 backdrop-blur-md border px-4 py-2 rounded-full mb-6 text-neutral-300 border-neutral-600">
@@ -153,7 +163,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               </div>
             </div>
 
-            {/* Right 3D content */}
             <div className="flex-1 relative">
               <SplineScene 
                 scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
@@ -165,7 +174,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 2: Chrome Grid
     if (selectedDesign === 1) {
       return (
         <div className="h-screen w-screen relative">
@@ -197,11 +205,9 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 3: Aurora Hero (from your examples)
     if (selectedDesign === 2) {
       return (
         <section className="relative grid min-h-screen place-content-center overflow-hidden bg-gray-950 px-4 py-24 text-gray-200">
-          {/* Aurora background effect */}
           <div className="absolute inset-0" style={{
             background: `radial-gradient(125% 125% at 50% 0%, #020617 50%, #13FFAA)`
           }} />
@@ -231,7 +237,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             </button>
           </div>
 
-          {/* Stars background effect */}
           <div className="absolute inset-0 z-0">
             {[...Array(100)].map((_, i) => (
               <div
@@ -250,7 +255,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 4: Fluid Blob (Lava Lamp)
     if (selectedDesign === 3) {
       return (
         <div className="h-screen w-screen flex flex-col justify-center items-center relative">
@@ -282,7 +286,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 5: Rubik's Cube
     if (selectedDesign === 4) {
       return (
         <div className="h-screen w-screen relative flex flex-col justify-center items-center">
