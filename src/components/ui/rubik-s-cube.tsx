@@ -12,7 +12,12 @@ interface RubiksCubeModelProps {
   scale?: number;
 }
 
-const RubiksCubeModel = forwardRef<THREE.Group, RubiksCubeModelProps>((props, ref) => {
+interface RubiksCubeRef {
+  reset: () => void;
+  current: THREE.Group | null;
+}
+
+const RubiksCubeModel = forwardRef<RubiksCubeRef, RubiksCubeModelProps>((props, ref) => {
   const ANIMATION_DURATION = 1.2;
   const GAP = 0.01;
   const RADIUS = 0.075;
