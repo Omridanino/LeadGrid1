@@ -113,7 +113,7 @@ const Box = ({
                 metalness={1}
                 clearcoat={1}
                 clearcoatRoughness={0}
-                clearcoatNormalScale={1}
+                clearcoatNormalScale={new THREE.Vector2(1, 1)}
                 clearcoatNormalMap={null}
             />
         </mesh>
