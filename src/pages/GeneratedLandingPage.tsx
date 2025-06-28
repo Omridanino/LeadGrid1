@@ -39,7 +39,7 @@ const GeneratedLandingPage = () => {
 
   return (
     <div className="min-h-screen bg-black text-white flex" dir="rtl">
-      {/* Content and Elements Editor */}
+      {/* Content and Elements Editor - מוחזר לצד שמאל */}
       <ContentElementsEditor 
         content={state.content}
         onContentChange={state.setContent}

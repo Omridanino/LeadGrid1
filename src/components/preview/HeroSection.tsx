@@ -136,6 +136,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     }
   }
 
+  
   // 3D Tech Design Style - עם סגנונות מותאמים אישית
   if (designStyle === '3d-tech') {
     const [selectedDesign, setSelectedDesign] = useState(0);
@@ -205,6 +206,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
+    
+    
     // Design 2: Chrome Grid with custom styles
     if (selectedDesign === 1) {
       return (
@@ -251,7 +254,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     }
 
     // שאר העיצובים יישארו כמו שהם עם התוספות הנדרשות
-    // ... keep existing code (designs 2, 3, 4 with similar custom style implementations)
+    
     
     if (selectedDesign === 2) {
       return (
@@ -273,7 +276,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             </h1>
             
             <p className={`my-6 max-w-2xl text-center text-lg leading-relaxed ${!content.subheadlineStyle ? 'text-gray-300' : getStyleClasses(content.subheadlineStyle)}`}>
-              {content?.subheadline || 'érience דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש עם טכנולוגיות מהפכניות'}
+              {content?.subheadline || 'חוויה דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש עם טכנולוגיות מהפכניות'}
             </p>
             
             <div className="flex gap-4 justify-center flex-wrap">
@@ -299,7 +302,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             </div>
           </div>
 
-          {/* ... keep existing code (background animation dots) */}
+          
           <div className="absolute inset-0 z-0">
             {[...Array(100)].map((_, i) => (
               <div
