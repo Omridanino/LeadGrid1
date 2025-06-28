@@ -22,36 +22,35 @@ export const StyleAwareSection = ({ children, heroStyle, sectionType = 'standard
         return `${baseStyles} ${geometricStyles[sectionType] || geometricStyles.standard}`;
         
       case 'glass':
-        // Liquid Glass styling to match the hero
         const glassStyles = {
-          standard: 'bg-gradient-to-br from-purple-900/50 via-blue-900/30 to-indigo-900/50',
-          alternate: 'bg-gradient-to-br from-blue-900/50 via-cyan-900/30 to-purple-900/50',
-          final: 'bg-gradient-to-br from-indigo-900/50 via-purple-900/30 to-blue-900/50'
+          standard: 'liquid-glass-hero bg-gradient-to-br from-purple-900/50 via-blue-900/30 to-indigo-900/50',
+          alternate: 'liquid-glass-hero bg-gradient-to-br from-blue-900/50 via-cyan-900/30 to-purple-900/50',
+          final: 'liquid-glass-hero bg-gradient-to-br from-indigo-900/50 via-purple-900/30 to-blue-900/50'
         };
         return `${baseStyles} ${glassStyles[sectionType] || glassStyles.standard}`;
         
       case 'metal':
         const metalStyles = {
-          standard: 'bg-gradient-to-br from-gray-900 via-yellow-900 to-gray-900',
-          alternate: 'bg-gradient-to-br from-yellow-900 via-orange-900 to-gray-900',
-          final: 'bg-gradient-to-br from-orange-900 via-red-900 to-gray-900'
+          standard: 'bg-metal bg-gradient-to-br from-gray-900 via-yellow-900/50 to-gray-900',
+          alternate: 'bg-metal bg-gradient-to-br from-yellow-900/50 via-orange-900/50 to-gray-900',
+          final: 'bg-metal bg-gradient-to-br from-orange-900/50 via-red-900/50 to-gray-900'
         };
         return `${baseStyles} ${metalStyles[sectionType] || metalStyles.standard}`;
         
       case 'image':
         const imageStyles = {
-          standard: 'bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900',
-          alternate: 'bg-gradient-to-br from-purple-900 via-pink-900 to-gray-900',
-          final: 'bg-gradient-to-br from-pink-900 via-indigo-900 to-gray-900'
+          standard: 'bg-image-depth bg-gradient-to-br from-gray-900 via-purple-900/50 to-gray-900',
+          alternate: 'bg-image-depth bg-gradient-to-br from-purple-900/50 via-pink-900/50 to-gray-900',
+          final: 'bg-image-depth bg-gradient-to-br from-pink-900/50 via-indigo-900/50 to-gray-900'
         };
         return `${baseStyles} ${imageStyles[sectionType] || imageStyles.standard}`;
         
       default:
-        // 3D Hero style - match the advanced hero styling
+        // 3D Hero style - דיוק מוחלט לפי הסגנון המקורי
         const defaultStyles = {
-          standard: 'bg-gradient-to-br from-black via-gray-900 to-black',
-          alternate: 'bg-gradient-to-br from-gray-900 via-black to-gray-900',
-          final: 'bg-gradient-to-br from-black via-purple-900/30 to-black'
+          standard: 'style-3d bg-gradient-to-br from-black via-gray-900 to-black',
+          alternate: 'style-3d bg-gradient-to-br from-gray-900 via-black to-gray-900',
+          final: 'style-3d bg-gradient-to-br from-black via-purple-900/30 to-black'
         };
         return `${baseStyles} ${defaultStyles[sectionType] || defaultStyles.standard}`;
     }
@@ -65,14 +64,26 @@ export const StyleAwareSection = ({ children, heroStyle, sectionType = 'standard
             <div className="absolute top-10 left-10 w-32 h-32 bg-red-500/20 rounded-lg rotate-45 animate-pulse"></div>
             <div className="absolute bottom-20 right-20 w-24 h-24 bg-teal-500/20 rounded-full animate-bounce"></div>
             <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-blue-500/20 rounded-lg rotate-12"></div>
+            <div className="absolute top-20% right-30% w-20 h-20 bg-yellow-500/20 rounded-lg rotate-45"></div>
           </div>
         );
         
       case 'glass':
-        // Advanced Liquid Glass effects to match hero
         return (
-          <div className="absolute inset-0">
-            {/* Glassmorphism Grid Background */}
+          <div className="liquid-background">
+            {/* Liquid Glass Orbs */}
+            <div className="liquid-orb liquid-orb-1"></div>
+            <div className="liquid-orb liquid-orb-2"></div>
+            <div className="liquid-orb liquid-orb-3"></div>
+            
+            {/* Liquid Waves */}
+            <div className="liquid-waves">
+              <div className="liquid-wave liquid-wave-1"></div>
+              <div className="liquid-wave liquid-wave-2"></div>
+              <div className="liquid-wave liquid-wave-3"></div>
+            </div>
+            
+            {/* Additional Glass Effects */}
             <div 
               className="absolute inset-0 opacity-20"
               style={{
@@ -83,43 +94,6 @@ export const StyleAwareSection = ({ children, heroStyle, sectionType = 'standard
                 `,
               }}
             />
-            
-            {/* Floating Glass Orbs */}
-            <div className="absolute top-20 left-20 w-40 h-40 rounded-full opacity-30 backdrop-blur-md"
-                 style={{
-                   background: `linear-gradient(135deg, 
-                     rgba(255, 255, 255, 0.1), 
-                     rgba(255, 255, 255, 0.05))`,
-                   border: '1px solid rgba(255, 255, 255, 0.2)',
-                   boxShadow: `
-                     inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                     0 8px 32px rgba(0, 0, 0, 0.3)
-                   `,
-                 }}></div>
-            
-            <div className="absolute bottom-20 right-10 w-60 h-60 rounded-full opacity-20 backdrop-blur-lg"
-                 style={{
-                   background: `linear-gradient(135deg, 
-                     rgba(255, 255, 255, 0.08), 
-                     rgba(255, 255, 255, 0.03))`,
-                   border: '1px solid rgba(255, 255, 255, 0.1)',
-                   boxShadow: `
-                     inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                     0 12px 40px rgba(0, 0, 0, 0.4)
-                   `,
-                 }}></div>
-            
-            <div className="absolute top-1/2 right-1/3 w-32 h-32 rounded-full opacity-25 backdrop-blur-sm"
-                 style={{
-                   background: `linear-gradient(135deg, 
-                     rgba(107, 115, 255, 0.1), 
-                     rgba(156, 64, 255, 0.05))`,
-                   border: '1px solid rgba(255, 255, 255, 0.15)',
-                   boxShadow: `
-                     inset 0 1px 0 rgba(255, 255, 255, 0.15),
-                     0 10px 30px rgba(107, 115, 255, 0.2)
-                   `,
-                 }}></div>
           </div>
         );
         
@@ -130,6 +104,7 @@ export const StyleAwareSection = ({ children, heroStyle, sectionType = 'standard
               <div className="absolute top-10 right-10 w-2 h-20 bg-gradient-to-b from-yellow-400 to-transparent"></div>
               <div className="absolute bottom-10 left-10 w-20 h-2 bg-gradient-to-r from-orange-400 to-transparent"></div>
               <div className="absolute top-1/2 left-1/2 w-1 h-40 bg-gradient-to-b from-yellow-300 to-transparent rotate-45"></div>
+              <div className="absolute top-1/4 right-1/4 w-3 h-16 bg-gradient-to-b from-gold-400 to-transparent rotate-12"></div>
             </div>
           </div>
         );
@@ -142,15 +117,16 @@ export const StyleAwareSection = ({ children, heroStyle, sectionType = 'standard
               <div className="absolute top-20 left-1/4 w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
               <div className="absolute bottom-1/4 right-1/4 w-1 h-1 bg-pink-400 rounded-full animate-pulse"></div>
               <div className="absolute top-1/2 left-10 w-1 h-1 bg-indigo-400 rounded-full animate-pulse"></div>
+              <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-gold-400 rounded-full animate-pulse"></div>
             </div>
           </div>
         );
         
       default:
-        // Advanced 3D Hero effects to match the main hero
+        // 3D Hero effects - בדיוק כמו בהירו הראשי
         return (
           <div className="absolute inset-0">
-            {/* Glassmorphism Grid */}
+            {/* Glassmorphism Grid כמו בהירו */}
             <div 
               className="absolute inset-0 opacity-20"
               style={{
@@ -162,7 +138,7 @@ export const StyleAwareSection = ({ children, heroStyle, sectionType = 'standard
               }}
             />
             
-            {/* Floating Glass Orbs like in the hero */}
+            {/* Floating Glass Orbs בדיוק כמו בהירו */}
             <div className="absolute backdrop-blur-md border border-white/10 rounded-full w-16 h-16 top-20 left-1/4 opacity-30"
                  style={{
                    background: `linear-gradient(135deg, 

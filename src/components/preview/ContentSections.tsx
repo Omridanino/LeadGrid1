@@ -17,10 +17,10 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
   const getStyleClasses = () => {
     if (!formData || !formData.heroStyle) {
       return {
-        card: 'backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl relative overflow-hidden bg-gradient-to-br from-white/10 to-white/5',
-        button: 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 backdrop-blur-sm border border-white/20 rounded-xl shadow-xl',
-        icon: 'backdrop-blur-md border border-white/20 rounded-xl bg-gradient-to-br from-white/15 to-white/5 shadow-xl',
-        typography: 'font-black text-white',
+        card: 'card-3d backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl relative overflow-hidden bg-gradient-to-br from-white/10 to-white/5',
+        button: 'btn-3d bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 backdrop-blur-sm border border-white/20 rounded-xl shadow-xl',
+        icon: 'icon-3d backdrop-blur-md border border-white/20 rounded-xl bg-gradient-to-br from-white/15 to-white/5 shadow-xl',
+        typography: 'typography-hero font-black text-white',
         textShadow: 'drop-shadow(0 0 20px rgba(255,255,255,0.2))'
       };
     }
@@ -28,46 +28,46 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
     switch (formData.heroStyle) {
       case 'geometric':
         return {
-          card: 'backdrop-blur-lg border border-red-500/30 rounded-xl bg-gradient-to-br from-red-900/20 to-teal-900/20 shadow-2xl',
-          button: 'bg-gradient-to-r from-red-500 to-teal-500 hover:from-red-600 hover:to-teal-600 rounded-lg shadow-xl',
-          icon: 'bg-gradient-to-r from-red-500/20 to-teal-500/20 rounded-lg border border-red-500/30',
-          typography: 'font-bold text-white',
+          card: 'card-geometric backdrop-blur-lg border border-red-500/30 rounded-xl bg-gradient-to-br from-red-900/20 to-teal-900/20 shadow-2xl',
+          button: 'btn-geometric bg-gradient-to-r from-red-500 to-teal-500 hover:from-red-600 hover:to-teal-600 rounded-lg shadow-xl',
+          icon: 'icon-geometric bg-gradient-to-r from-red-500/20 to-teal-500/20 rounded-lg border border-red-500/30',
+          typography: 'typography-modern font-bold text-white',
           textShadow: 'drop-shadow(0 0 10px rgba(239,68,68,0.5))'
         };
         
       case 'glass':
         return {
-          card: 'backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl relative overflow-hidden bg-gradient-to-br from-white/10 to-white/5',
-          button: 'backdrop-blur-sm border border-white/20 rounded-xl shadow-xl bg-gradient-to-r from-purple-500/80 to-pink-500/80 hover:from-purple-600/90 hover:to-pink-600/90',
-          icon: 'backdrop-blur-md border border-white/20 rounded-xl bg-gradient-to-br from-white/15 to-white/5 shadow-xl',
-          typography: 'font-black text-white',
+          card: 'card-liquid-glass backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl relative overflow-hidden bg-gradient-to-br from-white/10 to-white/5',
+          button: 'btn-liquid-glass backdrop-blur-sm border border-white/20 rounded-xl shadow-xl bg-gradient-to-r from-purple-500/80 to-pink-500/80 hover:from-purple-600/90 hover:to-pink-600/90',
+          icon: 'icon-liquid-glass backdrop-blur-md border border-white/20 rounded-xl bg-gradient-to-br from-white/15 to-white/5 shadow-xl',
+          typography: 'typography-liquid font-black text-white',
           textShadow: 'drop-shadow(0 0 20px rgba(255,255,255,0.2))'
         };
         
       case 'metal':
         return {
-          card: 'backdrop-blur-lg border border-yellow-500/30 rounded-xl bg-gradient-to-br from-yellow-900/30 to-orange-900/30 shadow-2xl',
-          button: 'bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 rounded-lg shadow-xl',
-          icon: 'bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-lg border border-yellow-500/30',
-          typography: 'font-bold text-white',
+          card: 'card-metal backdrop-blur-lg border border-yellow-500/30 rounded-xl bg-gradient-to-br from-yellow-900/30 to-orange-900/30 shadow-2xl',
+          button: 'btn-metal bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 rounded-lg shadow-xl',
+          icon: 'icon-metal bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-lg border border-yellow-500/30',
+          typography: 'typography-tech font-bold text-white',
           textShadow: 'drop-shadow(0 0 10px rgba(251,191,36,0.5))'
         };
         
       case 'image':
         return {
-          card: 'backdrop-blur-lg border border-purple-500/30 rounded-xl bg-gradient-to-br from-purple-900/30 to-pink-900/30 shadow-2xl',
-          button: 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 rounded-lg shadow-xl',
-          icon: 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg border border-purple-500/30',
-          typography: 'font-bold text-white',
+          card: 'card-image-depth backdrop-blur-lg border border-purple-500/30 rounded-xl bg-gradient-to-br from-purple-900/30 to-pink-900/30 shadow-2xl',
+          button: 'btn-image-depth bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 rounded-lg shadow-xl',
+          icon: 'icon-image-depth bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg border border-purple-500/30',
+          typography: 'typography-cinematic font-bold text-white',
           textShadow: 'drop-shadow(0 0 10px rgba(147,51,234,0.5))'
         };
         
       default:
         return {
-          card: 'backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl relative overflow-hidden bg-gradient-to-br from-white/10 to-white/5',
-          button: 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 backdrop-blur-sm border border-white/20 rounded-xl shadow-xl',
-          icon: 'backdrop-blur-md border border-white/20 rounded-xl bg-gradient-to-br from-white/15 to-white/5 shadow-xl',
-          typography: 'font-black text-white',
+          card: 'card-3d backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl relative overflow-hidden bg-gradient-to-br from-white/10 to-white/5',
+          button: 'btn-3d bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 backdrop-blur-sm border border-white/20 rounded-xl shadow-xl',
+          icon: 'icon-3d backdrop-blur-md border border-white/20 rounded-xl bg-gradient-to-br from-white/15 to-white/5 shadow-xl',
+          typography: 'typography-hero font-black text-white',
           textShadow: 'drop-shadow(0 0 20px rgba(255,255,255,0.2))'
         };
     }
@@ -91,19 +91,21 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
     return null;
   }
 
-  const GlassCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-    <div className={`${styleClasses.card} ${className}`}>
-      {/* Glass reflection effect */}
-      <div 
-        className="absolute inset-0 rounded-2xl"
-        style={{
-          background: `linear-gradient(135deg, 
-            rgba(255, 255, 255, 0.4) 0%,
-            transparent 30%,
-            transparent 70%,
-            rgba(255, 255, 255, 0.1) 100%)`,
-        }}
-      />
+  const StyledCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
+    <div className={`${styleClasses.card} ${className} p-8`}>
+      {/* Glass reflection effect for applicable styles */}
+      {(formData?.heroStyle === 'glass' || !formData?.heroStyle) && (
+        <div 
+          className="absolute inset-0 rounded-2xl"
+          style={{
+            background: `linear-gradient(135deg, 
+              rgba(255, 255, 255, 0.4) 0%,
+              transparent 30%,
+              transparent 70%,
+              rgba(255, 255, 255, 0.1) 100%)`,
+          }}
+        />
+      )}
       {/* Content */}
       <div className="relative z-10">
         {children}
@@ -123,11 +125,11 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                 {finalContent.services?.title || "השירותים שלנו"}
               </h2>
               <p className="text-xl text-gray-300 mb-16 max-w-3xl mx-auto leading-relaxed">
-                {finalContent.services?.subtitle || "הפתרונות המקצועיים שלנו"}
+                {finalContent.services?.subtitle || "פתרונות מקצועיים המותאמים במיוחד עבורכם"}
               </p>
               <div className="grid md:grid-cols-3 gap-8">
                 {finalContent.services?.items?.map((service: any, index: number) => (
-                  <GlassCard key={index} className="p-8 text-center hover:scale-105 transition-all duration-300">
+                  <StyledCard key={index} className="text-center hover:scale-105 transition-all duration-300">
                     <div className={`${styleClasses.icon} w-16 h-16 mx-auto mb-6 flex items-center justify-center text-white text-2xl`}>
                       {service.icon}
                     </div>
@@ -147,7 +149,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                         ))}
                       </div>
                     )}
-                  </GlassCard>
+                  </StyledCard>
                 ))}
               </div>
             </div>
@@ -164,7 +166,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                 <div>
                   <h2 className={`text-4xl md:text-6xl mb-6 text-white ${styleClasses.typography}`}
                       style={{ textShadow: styleClasses.textShadow }}>
-                    {finalContent.about?.title || "אודותינו"}
+                    {finalContent.about?.title || "מי אנחנו"}
                   </h2>
                   <p className="text-xl text-gray-300 mb-8 leading-relaxed">
                     {finalContent.about?.description}
@@ -190,7 +192,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                     </div>
                   )}
                 </div>
-                <GlassCard className="p-8">
+                <StyledCard>
                   {finalContent.about?.team?.stats && (
                     <div className="text-center">
                       <h3 className={`text-2xl mb-6 text-white ${styleClasses.typography}`}>
@@ -213,7 +215,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                       </p>
                     </div>
                   )}
-                </GlassCard>
+                </StyledCard>
               </div>
             </div>
           </div>
@@ -234,7 +236,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               </p>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {finalContent.testimonials?.items?.map((testimonial: any, index: number) => (
-                  <GlassCard key={index} className="p-8 text-center h-full flex flex-col">
+                  <StyledCard key={index} className="text-center h-full flex flex-col">
                     <div className="mb-4">
                       <span className="text-3xl text-yellow-400">
                         {'⭐'.repeat(testimonial.rating || 5)}
@@ -271,7 +273,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                         </p>
                       )}
                     </div>
-                  </GlassCard>
+                  </StyledCard>
                 ))}
               </div>
             </div>
@@ -293,8 +295,8 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               </p>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {finalContent.process?.steps?.map((step: any, index: number) => (
-                  <GlassCard key={index} className="p-6 text-center relative h-full flex flex-col">
-                    <div className="absolute -top-4 right-4 w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                  <StyledCard key={index} className="text-center relative h-full flex flex-col">
+                    <div className={`absolute -top-4 right-4 w-8 h-8 ${styleClasses.button} rounded-full flex items-center justify-center text-white font-bold text-sm`}>
                       {step.number}
                     </div>
                     <div className={`${styleClasses.icon} w-16 h-16 mx-auto mb-6 flex items-center justify-center text-white text-2xl`}>
@@ -312,7 +314,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                         <div className="text-white font-semibold text-sm">{step.duration}</div>
                       </div>
                     )}
-                  </GlassCard>
+                  </StyledCard>
                 ))}
               </div>
             </div>
@@ -336,7 +338,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               </div>
               <div className="space-y-6">
                 {finalContent.faq?.items?.map((faq: any, index: number) => (
-                  <GlassCard key={index} className="p-8">
+                  <StyledCard key={index}>
                     <h3 className={`text-xl font-bold mb-4 text-white ${styleClasses.typography}`}>
                       {faq.question}
                     </h3>
@@ -348,7 +350,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                         {faq.category}
                       </div>
                     )}
-                  </GlassCard>
+                  </StyledCard>
                 ))}
               </div>
             </div>
@@ -370,7 +372,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               </p>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {finalContent.features?.items?.map((feature: any, index: number) => (
-                  <GlassCard key={index} className="p-6 text-center hover:scale-105 transition-all duration-300 h-full flex flex-col">
+                  <StyledCard key={index} className="text-center hover:scale-105 transition-all duration-300 h-full flex flex-col">
                     <div className={`${styleClasses.icon} w-16 h-16 mx-auto mb-6 flex items-center justify-center text-white text-2xl`}>
                       {feature.icon}
                     </div>
@@ -390,7 +392,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                         ))}
                       </div>
                     )}
-                  </GlassCard>
+                  </StyledCard>
                 ))}
               </div>
             </div>
@@ -410,7 +412,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
                 {finalContent.gallery?.subtitle}
               </p>
-              <GlassCard className="p-12 mb-8">
+              <StyledCard className="mb-8">
                 <div className={`${styleClasses.icon} w-24 h-24 mx-auto mb-8 flex items-center justify-center text-white text-4xl`}>
                   🖼️
                 </div>
@@ -429,7 +431,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                     ))}
                   </div>
                 )}
-              </GlassCard>
+              </StyledCard>
             </div>
           </div>
         </StyleAwareSection>
@@ -453,7 +455,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
               </p>
             </div>
             <div className="grid lg:grid-cols-2 gap-12">
-              <GlassCard className="p-8">
+              <StyledCard>
                 <h3 className={`text-2xl mb-6 text-white ${styleClasses.typography}`}>
                   פרטי יצירת קשר
                 </h3>
@@ -471,8 +473,8 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                     </div>
                   ))}
                 </div>
-              </GlassCard>
-              <GlassCard className="p-8">
+              </StyledCard>
+              <StyledCard>
                 <h3 className={`text-2xl mb-6 text-white ${styleClasses.typography}`}>
                   {finalContent.contact?.cta?.primary || "בואו נתחיל"}
                 </h3>
@@ -492,7 +494,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
                 <button className={`${styleClasses.button} w-full p-4 text-center text-white font-bold transition-all duration-300`}>
                   צרו קשר עכשיו
                 </button>
-              </GlassCard>
+              </StyledCard>
             </div>
           </div>
         </div>
