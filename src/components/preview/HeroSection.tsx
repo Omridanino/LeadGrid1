@@ -25,21 +25,21 @@ interface HeroSectionProps {
 export const HeroSection = ({ content, currentColors, formData, heroImage }: HeroSectionProps) => {
   const designStyle = formData?.designStyle || 'basic';
 
-  // Helper function to get element style
-  const getElementStyle = (elementStyle: string) => {
+  // Helper function to get element style classes
+  const getStyleClasses = (elementStyle: string) => {
     switch (elementStyle) {
       case "black-on-white":
-        return { backgroundColor: 'white', color: 'black', border: '1px solid black' };
+        return "bg-white text-black border border-black";
       case "white-on-black":
-        return { backgroundColor: 'black', color: 'white', border: '1px solid white' };
+        return "bg-black text-white border border-white";
       case "gradient-gold-black":
-        return { background: 'linear-gradient(to right, #fbbf24, #000000)', color: 'white', border: 'none' };
+        return "bg-gradient-to-r from-yellow-400 to-black text-white border-0";
       case "gradient-gold-white":
-        return { background: 'linear-gradient(to right, #fbbf24, #ffffff)', color: 'black', border: 'none' };
+        return "bg-gradient-to-r from-yellow-400 to-white text-black border-0";
       case "gradient-purple-tech":
-        return { background: 'linear-gradient(to right, #9333ea, #ffffff)', color: 'white', border: 'none' };
+        return "bg-gradient-to-r from-purple-600 to-white text-white border-0";
       default:
-        return {};
+        return "bg-blue-600 text-white";
     }
   };
 
@@ -136,7 +136,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     }
   }
 
-  // 3D Tech Design Style - Random selection from 5 different designs
+  // 3D Tech Design Style - עם סגנונות מותאמים אישית
   if (designStyle === '3d-tech') {
     const [selectedDesign, setSelectedDesign] = useState(0);
 
@@ -145,7 +145,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       setSelectedDesign(Math.floor(Math.random() * 5));
     }, []);
 
-    // Design 1: Spline 3D Scene
+    // Design 1: Spline 3D Scene with custom styles
     if (selectedDesign === 0) {
       return (
         <section className="relative overflow-hidden min-h-screen bg-black/[0.96]">
@@ -158,31 +158,17 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
               <div className="max-w-2xl">
                 {content?.badge && (
-                  <Badge 
-                    className="inline-flex items-center gap-2 backdrop-blur-md border px-4 py-2 rounded-full mb-6 text-neutral-300 border-neutral-600"
-                    style={getElementStyle(content.badgeStyle)}
-                  >
-                    <Zap className="w-4 h-4 text-blue-400" />
-                    <span className="text-sm">{content.badge}</span>
-                  </Badge>
+                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm ${getStyleClasses(content.badgeStyle || 'black-on-white')}`}>
+                    <Zap className="w-4 h-4" />
+                    <span>{content.badge}</span>
+                  </div>
                 )}
                 
-                <h1 
-                  className="text-4xl md:text-6xl font-bold mb-6"
-                  style={content.headlineStyle ? getElementStyle(content.headlineStyle) : {
-                    backgroundImage: 'linear-gradient(to bottom, #fafafa, #a3a3a3)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text'
-                  }}
-                >
+                <h1 className={`text-4xl md:text-6xl font-bold mb-6 ${!content.headlineStyle ? 'bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent' : getStyleClasses(content.headlineStyle)}`}>
                   {content?.headline || formData?.businessName || 'חוויה תלת-מימדית'}
                 </h1>
                 
-                <p 
-                  className="text-lg leading-relaxed mb-8 max-w-lg"
-                  style={content.subheadlineStyle ? getElementStyle(content.subheadlineStyle) : { color: '#d4d4d8' }}
-                >
+                <p className={`text-lg leading-relaxed mb-8 max-w-lg ${!content.subheadlineStyle ? 'text-gray-300' : getStyleClasses(content.subheadlineStyle)}`}>
                   {content?.subheadline || content?.description || `הביאו את העסק שלכם למימד חדש עם טכנולוגיות מתקדמות ועיצוב חדשני`}
                 </p>
                 
@@ -190,8 +176,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                     <button 
                       key={index}
-                      className="px-6 py-3 rounded-lg font-semibold transition"
-                      style={getElementStyle(button.style || 'black-on-white')}
+                      className={`px-6 py-3 rounded-lg font-semibold transition ${getStyleClasses(button.style || 'black-on-white')}`}
                     >
                       {button.text}
                     </button>
@@ -220,37 +205,54 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
+    // Design 2: Chrome Grid with custom styles
     if (selectedDesign === 1) {
       return (
         <div className="h-screen w-screen relative">
           <ChromeGrid />
           <div className="absolute z-10 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 pointer-events-none flex flex-col justify-center items-center text-center">
-            <div className="inline-flex items-center gap-2 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full mb-6 text-white/70">
-              <Shield className="w-4 h-4" />
-              <span className="text-sm">מתכת אינטראקטיבית</span>
-            </div>
+            {content?.badge && (
+              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm ${getStyleClasses(content.badgeStyle || 'white-on-black')}`}>
+                <Shield className="w-4 h-4" />
+                <span>{content.badge}</span>
+              </div>
+            )}
             
-            <h1 className="text-5xl md:text-7xl font-light mb-4 tracking-widest text-white whitespace-nowrap">
+            <h1 className={`text-5xl md:text-7xl font-light mb-4 tracking-widest whitespace-nowrap ${!content.headlineStyle ? 'text-white' : getStyleClasses(content.headlineStyle)}`}>
               {content?.headline || formData?.businessName || 'עוצמה דיגיטלית'}
             </h1>
             
-            <p className="text-sm md:text-lg text-white/70 font-mono tracking-wide mb-8 max-w-2xl">
+            <p className={`text-sm md:text-lg font-mono tracking-wide mb-8 max-w-2xl ${!content.subheadlineStyle ? 'text-white/70' : getStyleClasses(content.subheadlineStyle)}`}>
               {content?.subheadline || 'מתכת שמגיבה למגע - טכנולוגיה שמשנה את הכללים'}
             </p>
             
             <div className="flex gap-4 pointer-events-auto">
-              <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition transform hover:scale-105">
-                {content?.cta || 'חווה את החוויה'}
-              </button>
-              <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
-                למד עוד
-              </button>
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                <button 
+                  key={index}
+                  className={`px-8 py-4 rounded-lg font-bold transition transform hover:scale-105 ${getStyleClasses(button.style || 'white-on-black')}`}
+                >
+                  {button.text}
+                </button>
+              )) || (
+                <>
+                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition transform hover:scale-105">
+                    {content?.cta || 'חווה את החוויה'}
+                  </button>
+                  <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
+                    למד עוד
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
       );
     }
 
+    // שאר העיצובים יישארו כמו שהם עם התוספות הנדרשות
+    // ... keep existing code (designs 2, 3, 4 with similar custom style implementations)
+    
     if (selectedDesign === 2) {
       return (
         <section className="relative grid min-h-screen place-content-center overflow-hidden bg-gray-950 px-4 py-24 text-gray-200">
@@ -259,30 +261,45 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           }} />
           
           <div className="relative z-10 flex flex-col items-center text-center">
-            <span className="mb-6 inline-block rounded-full bg-gray-600/50 px-4 py-2 text-sm border border-gray-500/30">
-              <Award className="w-4 h-4 inline mr-2" />
-              טכנולוגיה חדשנית
-            </span>
+            {content?.badge && (
+              <div className={`mb-6 inline-block rounded-full px-4 py-2 text-sm ${getStyleClasses(content.badgeStyle || 'white-on-black')}`}>
+                <Award className="w-4 h-4 inline mr-2" />
+                {content.badge}
+              </div>
+            )}
             
-            <h1 className="max-w-4xl bg-gradient-to-br from-white to-gray-400 bg-clip-text text-center text-4xl md:text-7xl font-medium leading-tight text-transparent mb-6">
+            <h1 className={`max-w-4xl text-center text-4xl md:text-7xl font-medium leading-tight mb-6 ${!content.headlineStyle ? 'bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent' : getStyleClasses(content.headlineStyle)}`}>
               {content?.headline || formData?.businessName || 'העתיד כאן עכשיו'}
             </h1>
             
-            <p className="my-6 max-w-2xl text-center text-lg leading-relaxed text-gray-300">
-              {content?.subheadline || 'חוויה דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש עם טכנולוגיות מהפכניות'}
+            <p className={`my-6 max-w-2xl text-center text-lg leading-relaxed ${!content.subheadlineStyle ? 'text-gray-300' : getStyleClasses(content.subheadlineStyle)}`}>
+              {content?.subheadline || 'érience דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש עם טכנולוגיות מהפכניות'}
             </p>
             
-            <button
-              className="group relative flex w-fit items-center gap-2 rounded-full bg-gray-950/10 px-6 py-3 text-gray-50 transition-colors hover:bg-gray-950/50 border border-gray-600/50 backdrop-blur-sm"
-              style={{
-                boxShadow: '0px 4px 24px rgba(19, 255, 170, 0.3)'
-              }}
-            >
-              {content?.cta || 'התחילו היום'}
-              <ArrowLeft className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
-            </button>
+            <div className="flex gap-4 justify-center flex-wrap">
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                <button 
+                  key={index}
+                  className={`group relative flex w-fit items-center gap-2 rounded-full px-6 py-3 transition-colors ${getStyleClasses(button.style || 'white-on-black')}`}
+                >
+                  {button.text}
+                  <ArrowLeft className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
+                </button>
+              )) || (
+                <button
+                  className="group relative flex w-fit items-center gap-2 rounded-full bg-gray-950/10 px-6 py-3 text-gray-50 transition-colors hover:bg-gray-950/50 border border-gray-600/50 backdrop-blur-sm"
+                  style={{
+                    boxShadow: '0px 4px 24px rgba(19, 255, 170, 0.3)'
+                  }}
+                >
+                  {content?.cta || 'התחילו היום'}
+                  <ArrowLeft className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
+                </button>
+              )}
+            </div>
           </div>
 
+          {/* ... keep existing code (background animation dots) */}
           <div className="absolute inset-0 z-0">
             {[...Array(100)].map((_, i) => (
               <div
@@ -306,26 +323,39 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
         <div className="h-screen w-screen flex flex-col justify-center items-center relative">
           <LavaLamp />
           <div className="absolute z-10 text-center">
-            <div className="inline-flex items-center gap-2 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full mb-6 text-white mix-blend-exclusion">
-              <Zap className="w-4 h-4" />
-              <span className="text-sm">זרימה דיגיטלית</span>
-            </div>
+            {content?.badge && (
+              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-exclusion ${getStyleClasses(content.badgeStyle || 'white-on-black')}`}>
+                <Zap className="w-4 h-4" />
+                <span>{content.badge}</span>
+              </div>
+            )}
             
-            <h1 className="text-6xl md:text-8xl font-bold tracking-tight mix-blend-exclusion text-white whitespace-nowrap mb-6">
+            <h1 className={`text-6xl md:text-8xl font-bold tracking-tight whitespace-nowrap mb-6 ${!content.headlineStyle ? 'mix-blend-exclusion text-white' : `mix-blend-exclusion ${getStyleClasses(content.headlineStyle)}`}`}>
               {content?.headline || formData?.businessName || 'חלומות דיגיטליים'}
             </h1>
             
-            <p className="text-lg md:text-xl text-center text-white mix-blend-exclusion max-w-2xl leading-relaxed mb-8 px-4">
+            <p className={`text-lg md:text-xl text-center max-w-2xl leading-relaxed mb-8 px-4 ${!content.subheadlineStyle ? 'text-white mix-blend-exclusion' : `mix-blend-exclusion ${getStyleClasses(content.subheadlineStyle)}`}`}>
               {content?.subheadline || 'שם המחשבות מקבלות צורה והתודעה זורמת כמו כספית נוזלית דרך מימדים אינסופיים'}
             </p>
             
             <div className="flex gap-4 justify-center">
-              <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
-                {content?.cta || 'היכנסו לזרימה'}
-              </button>
-              <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
-                חקרו עוד
-              </button>
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                <button 
+                  key={index}
+                  className={`px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion ${getStyleClasses(button.style || 'white-on-black')}`}
+                >
+                  {button.text}
+                </button>
+              )) || (
+                <>
+                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
+                    {content?.cta || 'היכנסו לזרימה'}
+                  </button>
+                  <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
+                    חקרו עוד
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -339,26 +369,39 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             <Scene />
           </div>
           <div className="absolute z-10 text-center">
-            <div className="inline-flex items-center gap-2 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full mb-6 text-white mix-blend-difference">
-              <Award className="w-4 h-4" />
-              <span className="text-sm">פתרון המורכבות</span>
-            </div>
+            {content?.badge && (
+              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-difference ${getStyleClasses(content.badgeStyle || 'white-on-black')}`}>
+                <Award className="w-4 h-4" />
+                <span>{content.badge}</span>
+              </div>
+            )}
             
-            <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight mix-blend-difference text-white">
+            <h1 className={`text-6xl md:text-8xl font-bold mb-6 tracking-tight ${!content.headlineStyle ? 'mix-blend-difference text-white' : `mix-blend-difference ${getStyleClasses(content.headlineStyle)}`}`}>
               {content?.headline || formData?.businessName || 'פתרון המורכבות'}
             </h1>
             
-            <p className="text-lg md:text-xl text-white mix-blend-exclusion max-w-2xl px-6 leading-relaxed mb-8">
+            <p className={`text-lg md:text-xl max-w-2xl px-6 leading-relaxed mb-8 ${!content.subheadlineStyle ? 'text-white mix-blend-exclusion' : `mix-blend-exclusion ${getStyleClasses(content.subheadlineStyle)}`}`}>
               {content?.subheadline || 'פיסה אחת בכל פעם - אנחנו פותרים את האתגרים המורכבים ביותר'}
             </p>
             
             <div className="flex gap-4 justify-center">
-              <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
-                {content?.cta || 'פתרו איתנו'}
-              </button>
-              <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
-                גלו איך
-              </button>
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                <button 
+                  key={index}
+                  className={`px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion ${getStyleClasses(button.style || 'white-on-black')}`}
+                >
+                  {button.text}
+                </button>
+              )) || (
+                <>
+                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
+                    {content?.cta || 'פתרו איתנו'}
+                  </button>
+                  <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
+                    גלו איך
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -375,25 +418,18 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-4xl mx-auto">
           {content?.badge && (
-            <Badge 
-              className="mb-6" 
-              style={content.badgeStyle ? getElementStyle(content.badgeStyle) : { backgroundColor: currentColors.accent }}
-            >
+            <div className={`inline-block mb-6 px-4 py-2 rounded-full text-sm ${getStyleClasses(content.badgeStyle || 'black-on-white')}`}>
               {content.badge}
-            </Badge>
+            </div>
           )}
           
-          <h1 
-            className="text-5xl md:text-7xl font-bold mb-8"
-            style={content.headlineStyle ? getElementStyle(content.headlineStyle) : { color: currentColors.headlineColor }}
-          >
+          <h1 className={`text-5xl md:text-7xl font-bold mb-8 ${!content.headlineStyle ? '' : getStyleClasses(content.headlineStyle)}`}
+              style={!content.headlineStyle ? { color: currentColors.headlineColor } : {}}>
             {content?.headline || formData?.businessName || 'העסק שלכם'}
           </h1>
           
-          <p 
-            className="text-xl md:text-2xl mb-12"
-            style={content.subheadlineStyle ? getElementStyle(content.subheadlineStyle) : { color: currentColors.subheadlineColor }}
-          >
+          <p className={`text-xl md:text-2xl mb-12 ${!content.subheadlineStyle ? '' : getStyleClasses(content.subheadlineStyle)}`}
+             style={!content.subheadlineStyle ? { color: currentColors.subheadlineColor } : {}}>
             {content?.subheadline || content?.description || 'פתרונות מקצועיים'}
           </p>
           
@@ -401,8 +437,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
               <button 
                 key={index}
-                className="px-8 py-4 rounded-xl font-semibold text-lg"
-                style={getElementStyle(button.style || 'black-on-white')}
+                className={`px-8 py-4 rounded-xl font-semibold text-lg transition ${getStyleClasses(button.style || 'black-on-white')}`}
               >
                 {button.text}
               </button>
