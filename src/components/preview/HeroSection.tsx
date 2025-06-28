@@ -14,6 +14,8 @@ import { AnimatedHero } from "@/components/ui/animated-hero";
 import { HeroGeometric } from "@/components/ui/shape-landing-hero";
 import { InteractiveRobotSpline } from "@/components/ui/interactive-3d-robot";
 import { BackgroundCircles } from "@/components/ui/background-circles";
+import { HorizonHeroSection } from "@/components/ui/horizon-hero-section";
+import { HeroParallax } from "@/components/ui/hero-parallax";
 import { ArrowLeft, Play, Shield, Zap, Award, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -164,8 +166,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     const [selectedDesign, setSelectedDesign] = useState(0);
 
     useEffect(() => {
-      // Randomly select one of the 7 3D designs (increased from 5)
-      setSelectedDesign(Math.floor(Math.random() * 7));
+      // Randomly select one of the 9 3D designs (increased from 7)
+      setSelectedDesign(Math.floor(Math.random() * 9));
     }, []);
 
     // Design 1: Spline 3D Scene with custom styles
@@ -206,10 +208,10 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   )) || (
                     <>
                       <button className="bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition">
-                        {content?.cta || 'haledו עכשיו'}
+                        {content?.cta || 'haledo now'}
                       </button>
                       <button className="border border-neutral-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition">
-                        גלו עוד
+                        go further
                       </button>
                     </>
                   )}
@@ -242,11 +244,11 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             )}
             
             <h1 className={`text-5xl md:text-7xl font-light mb-4 tracking-widest whitespace-nowrap ${content.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'text-white'}`}>
-              {content?.headline || formData?.businessName || 'עוצמה דיגיטלית'}
+              {content?.headline || formData?.businessName || 'courageous digital'}
             </h1>
             
             <p className={`text-sm md:text-lg font-mono tracking-wide mb-8 max-w-2xl ${content.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-white/70'}`}>
-              {content?.subheadline || 'מתכת שמגיבה למגע - טכנולוגיה שמשנה את הכללים'}
+              {content?.subheadline || 'a technology that brings life to the touch - a new way of doing things'}
             </p>
             
             <div className="flex gap-4 pointer-events-auto">
@@ -260,10 +262,10 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               )) || (
                 <>
                   <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition transform hover:scale-105">
-                    {content?.cta || 'חווה את החוויה'}
+                    {content?.cta || 'come in'}
                   </button>
                   <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
-                    למד עוד
+                    learn more
                   </button>
                 </>
               )}
@@ -289,11 +291,11 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             )}
             
             <h1 className={`max-w-4xl text-center text-4xl md:text-7xl font-medium leading-tight mb-6 ${content.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent'}`}>
-              {content?.headline || formData?.businessName || 'העתיד כאן עכשיו'}
+              {content?.headline || formData?.businessName || 'the future is now'}
             </h1>
             
             <p className={`my-6 max-w-2xl text-center text-lg leading-relaxed ${content.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-gray-300'}`}>
-              {content?.subheadline || 'חוויה דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש עם טכנולוגיות מהפכניות'}
+              {content?.subheadline || 'a digital experience that brings your business to the future with cutting-edge technologies'}
             </p>
             
             <div className="flex gap-4 justify-center flex-wrap">
@@ -312,7 +314,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                     boxShadow: '0px 4px 24px rgba(19, 255, 170, 0.3)'
                   }}
                 >
-                  {content?.cta || 'haledו היום'}
+                  {content?.cta || 'come in'}
                   <ArrowLeft className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
                 </button>
               )}
@@ -351,11 +353,11 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             )}
             
             <h1 className={`text-6xl md:text-8xl font-bold tracking-tight whitespace-nowrap mb-6 ${content.headlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.headlineStyle)}` : 'mix-blend-exclusion text-white'}`}>
-              {content?.headline || formData?.businessName || 'חלומות דיגיטליים'}
+              {content?.headline || formData?.businessName || 'dreams of the digital'}
             </h1>
             
             <p className={`text-lg md:text-xl text-center max-w-2xl leading-relaxed mb-8 px-4 ${content.subheadlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.subheadlineStyle)}` : 'text-white mix-blend-exclusion'}`}>
-              {content?.subheadline || 'שם המחשבות מקבלות צורה והתודעה זורמת כמו כספית נוזלית דרך מימדים אינסופיים'}
+              {content?.subheadline || 'the computers receive a shape and the information flows like a coin of the realm'}
             </p>
             
             <div className="flex gap-4 justify-center">
@@ -369,10 +371,10 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               )) || (
                 <>
                   <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
-                    {content?.cta || 'haledו לזרימה'}
+                    {content?.cta || 'come in'}
                   </button>
                   <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
-                    חקרו עוד
+                    explore more
                   </button>
                 </>
               )}
@@ -397,11 +399,11 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             )}
             
             <h1 className={`text-6xl md:text-8xl font-bold mb-6 tracking-tight ${content.headlineStyle ? `mix-blend-difference ${getTextStyleClasses(content.headlineStyle)}` : 'mix-blend-difference text-white'}`}>
-              {content?.headline || formData?.businessName || 'פתרון המורכבות'}
+              {content?.headline || formData?.businessName || 'solution for complex problems'}
             </h1>
             
             <p className={`text-lg md:text-xl max-w-2xl px-6 leading-relaxed mb-8 ${content.subheadlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.subheadlineStyle)}` : 'text-white mix-blend-exclusion'}`}>
-              {content?.subheadline || 'פיסה אחת בכל פעם - אנחנו פותרים את האתגרים המורכבים ביותר'}
+              {content?.subheadline || 'one piece at a time - we solve the most complex problems'}
             </p>
             
             <div className="flex gap-4 justify-center">
@@ -415,10 +417,10 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               )) || (
                 <>
                   <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
-                    {content?.cta || 'פתרו איתנו'}
+                    {content?.cta || 'solve with us'}
                   </button>
                   <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
-                    גלו איך
+                    learn how
                   </button>
                 </>
               )}
@@ -449,11 +451,11 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               )}
               
               <h1 className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-6 ${content.headlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.headlineStyle)}` : 'mix-blend-exclusion text-white'}`}>
-                {content?.headline || formData?.businessName || 'רובוט אינטראקטיבי תלת מימדי'}
+                {content?.headline || formData?.businessName || 'interactive 3D robot'}
               </h1>
               
               <p className={`text-lg leading-relaxed mb-8 px-4 ${content.subheadlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.subheadlineStyle)}` : 'text-white mix-blend-exclusion'}`}>
-                {content?.subheadline || content?.description || 'חוויה אינטראקטיבית מתקדמת עם טכנולוגיות תלת מימד מהפכניות'}
+                {content?.subheadline || content?.description || 'an advanced interactive experience with 3D technology'}
               </p>
               
               <div className="flex gap-4 justify-center pointer-events-auto">
@@ -467,10 +469,10 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 )) || (
                   <>
                     <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
-                      {content?.cta || 'חקרו את הרובוט'}
+                      {content?.cta || 'explore the robot'}
                     </button>
                     <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
-                      למד עוד
+                      learn more
                     </button>
                   </>
                 )}
@@ -486,8 +488,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <div className="relative w-screen h-screen overflow-hidden bg-black">
           <BackgroundCircles
-            title={content?.headline || formData?.businessName || 'עיגולי רקע'}
-            description={content?.subheadline || content?.description || 'עיצוב גיאומטרי מתקדם עם אנימציות דינמיות'}
+            title={content?.headline || formData?.businessName || 'background circles'}
+            description={content?.subheadline || content?.description || 'advanced geometric design with animated grids'}
             variant="primary"
           />
           
@@ -511,14 +513,164 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               )) || (
                 <>
                   <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
-                    {content?.cta || 'חוו את החוויה'}
+                    {content?.cta || 'experience'}
                   </button>
                   <button className="border border-gray-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-gray-800 transition">
-                    גלו עוד
+                    learn more
                   </button>
                 </>
               )}
             </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Design 7: Horizon Hero Section
+    if (selectedDesign === 7) {
+      return (
+        <div className="relative w-screen h-screen overflow-hidden">
+          <HorizonHeroSection
+            title={content?.headline || formData?.businessName || 'HORIZON'}
+            subtitle1={content?.subheadline || 'Where vision meets reality,'}
+            subtitle2={content?.description || 'we shape the future of tomorrow'}
+            className="absolute inset-0"
+          />
+          
+          {/* Content overlay for buttons */}
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4 pointer-events-none">
+            <div className="mt-96 flex gap-4 justify-center pointer-events-auto">
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                <button 
+                  key={index}
+                  className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+                >
+                  {button.text}
+                </button>
+              )) || (
+                <>
+                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
+                    {content?.cta || 'explore the horizon'}
+                  </button>
+                  <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
+                    learn more
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Design 8: Hero Parallax
+    if (selectedDesign === 8) {
+      // Default products for the parallax effect
+      const defaultProducts = [
+        {
+          title: "project 1",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 2", 
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 3",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 4",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1542744094-3a31f272c490?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 5",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1553484771-371a605b060b?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 6",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 7",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 8",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 9",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 10",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 11",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1571019613914-85e138f129cc?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 12",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 13",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1542744094-3a31f272c490?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 14",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1553484771-cc0d9b8c2b33?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 15",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop"
+        }
+      ];
+
+      return (
+        <div className="relative w-screen h-screen overflow-hidden">
+          <HeroParallax
+            products={defaultProducts}
+            title={content?.headline || formData?.businessName || 'the most advanced studio'}
+            subtitle={content?.subheadline || content?.description || 'we create beautiful products with the latest technologies and innovative ideas'}
+          />
+          
+          {/* Buttons overlay */}
+          <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-30 flex gap-4 justify-center">
+            {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+              <button 
+                key={index}
+                className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+              >
+                {button.text}
+              </button>
+            )) || (
+              <>
+                <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
+                  {content?.cta || 'explore the projects'}
+                </button>
+                <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
+                  contact us
+                </button>
+              </>
+            )}
           </div>
         </div>
       );
@@ -541,12 +693,12 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           
           <h1 className={`text-5xl md:text-7xl font-bold mb-8 ${content.headlineStyle ? getTextStyleClasses(content.headlineStyle) : ''}`}
               style={!content.headlineStyle ? { color: currentColors.headlineColor } : {}}>
-            {content?.headline || formData?.businessName || 'העסק שלכם'}
+            {content?.headline || formData?.businessName || 'the business'}
           </h1>
           
           <p className={`text-xl md:text-2xl mb-12 ${content.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : ''}`}
              style={!content.subheadlineStyle ? { color: currentColors.subheadlineColor } : {}}>
-            {content?.subheadline || content?.description || 'פתרונות מקצועיים'}
+            {content?.subheadline || content?.description || 'professional solutions'}
           </p>
           
           <div className="flex gap-4 justify-center flex-wrap">
@@ -562,7 +714,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 className="px-8 py-4 rounded-xl font-semibold text-lg"
                 style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
               >
-                {content?.cta || 'בואו נתחיל'}
+                {content?.cta || 'let us start'}
               </button>
             )}
           </div>
