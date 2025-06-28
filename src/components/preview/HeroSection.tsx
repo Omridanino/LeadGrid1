@@ -385,7 +385,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="relative z-10">
             <HorizonHeroSection
               title={answers.businessName || 'Your Business'}
-              subtitle={answers.tagline || 'Your vision, our expertise'}
+              subtitle1={answers.tagline || 'Your vision'}
+              subtitle2="our expertise"
               onButtonClick={() => console.log('3D Tech button clicked')}
             />
           </div>
