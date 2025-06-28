@@ -14,6 +14,7 @@ import { GradientHero } from "@/components/ui/gradient-hero";
 import { AnimatedHero } from "@/components/ui/animated-hero";
 import { HeroGeometric } from "@/components/ui/shape-landing-hero";
 import { ArrowLeft, Play, Shield, Zap, Award, Star } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface HeroSectionProps {
   content: any;
@@ -39,13 +40,13 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <HeroWithMockup
           title={content?.headline || formData?.businessName || 'העסק שלכם'}
-          description={content?.subheadline || `פתרונות מקצועיים ל${formData?.targetAudience || 'הלקוחות שלכם'}`}
+          description={content?.subheadline || content?.description || `פתרונות מקצועיים ל${formData?.targetAudience || 'הלקוחות שלכם'}`}
           primaryCta={{
-            text: content?.cta || 'בואו נתחיל',
+            text: content?.buttons?.[0]?.text || content?.cta || 'בואו נתחיל',
             onClick: () => {}
           }}
           secondaryCta={{
-            text: 'למד עוד',
+            text: content?.buttons?.[1]?.text || 'למד עוד',
             onClick: () => {}
           }}
         />
@@ -57,13 +58,13 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <BeamsBackground
           title={content?.headline || formData?.businessName || 'חלומות דיגיטליים'}
-          description={content?.subheadline || 'שם המחשבות מקבלות צורה והתודעה זורמת כמו כספית נוזלית'}
+          description={content?.subheadline || content?.description || 'שם המחשבות מקבלות צורה והתודעה זורמת כמו כספית נוזלית'}
           primaryCta={{
-            text: content?.cta || 'היכנסו לזרימה',
+            text: content?.buttons?.[0]?.text || content?.cta || 'היכנסו לזרימה',
             onClick: () => {}
           }}
           secondaryCta={{
-            text: 'חקרו עוד',
+            text: content?.buttons?.[1]?.text || 'חקרו עוד',
             onClick: () => {}
           }}
         />
@@ -75,13 +76,13 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <GradientHero
           title={content?.headline || formData?.businessName || 'העתיד כאן עכשיו'}
-          subtitle={content?.subheadline || 'חוויה דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש'}
+          subtitle={content?.subheadline || content?.description || 'חוויה דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש'}
           primaryCta={{
-            text: content?.cta || 'התחילו היום',
+            text: content?.buttons?.[0]?.text || content?.cta || 'התחילו היום',
             onClick: () => {}
           }}
           secondaryCta={{
-            text: 'גלו עוד',
+            text: content?.buttons?.[1]?.text || 'גלו עוד',
             onClick: () => {}
           }}
         />
@@ -93,26 +94,26 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <AnimatedHero
           title={content?.headline || formData?.businessName || 'זה משהו'}
-          subtitle={content?.subheadline || `ניהול עסק קטן היום כבר מספיק קשה. הימנעו מסיבוכים נוספים על ידי נטישת שיטות מסחר מיושנות ומייגעות. המטרה שלנו היא לפשט את המסחר של עסקים קטנים ובינוניים.`}
+          subtitle={content?.subheadline || content?.description || `ניהול עסק קטן היום כבר מספיק קשה. הימנעו מסיבוכים נוספים על ידי נטישת שיטות מסחר מיושנות ומייגעות. המטרה שלנו היא לפשט את המסחר של עסקים קטנים ובינוניים.`}
           primaryCta={{
-            text: content?.cta || 'הירשמו כאן',
+            text: content?.buttons?.[0]?.text || content?.cta || 'הירשמו כאן',
             onClick: () => {}
           }}
           secondaryCta={{
-            text: 'הצגת המוצר',
+            text: content?.buttons?.[1]?.text || 'הצגת המוצר',
             onClick: () => {}
           }}
         />
       );
     }
 
-    // Design 5: Geometric Shapes Hero (already exists)
+    // Design 5: Geometric Shapes Hero
     if (selectedBasicDesign === 4) {
       return (
         <HeroGeometric
-          badge="עיצוב מתקדם"
+          badge={content?.badge || "עיצוב מתקדם"}
           title1={content?.headline || formData?.businessName || 'העלו את החזון הדיגיטלי'}
-          title2="יצירת אתרים יוצאי דופן"
+          title2={content?.subheadline || "יצירת אתרים יוצאי דופן"}
         />
       );
     }
@@ -139,26 +140,43 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           <div className="flex h-screen">
             <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
               <div className="max-w-2xl">
-                <div className="inline-flex items-center gap-2 backdrop-blur-md border px-4 py-2 rounded-full mb-6 text-neutral-300 border-neutral-600">
-                  <Zap className="w-4 h-4 text-blue-400" />
-                  <span className="text-sm">טכנולוגיה תלת-מימדית</span>
-                </div>
+                {content?.badge && (
+                  <Badge className="inline-flex items-center gap-2 backdrop-blur-md border px-4 py-2 rounded-full mb-6 text-neutral-300 border-neutral-600">
+                    <Zap className="w-4 h-4 text-blue-400" />
+                    <span className="text-sm">{content.badge}</span>
+                  </Badge>
+                )}
                 
                 <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mb-6">
                   {content?.headline || formData?.businessName || 'חוויה תלת-מימדית'}
                 </h1>
                 
                 <p className="text-neutral-300 text-lg leading-relaxed mb-8 max-w-lg">
-                  {content?.subheadline || `הביאו את העסק שלכם למימד חדש עם טכנולוגיות מתקדמות ועיצוב חדשני`}
+                  {content?.subheadline || content?.description || `הביאו את העסק שלכם למימד חדש עם טכנולוגיות מתקדמות ועיצוב חדשני`}
                 </p>
                 
                 <div className="flex gap-4">
-                  <button className="bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition">
-                    {content?.cta || 'התחילו עכשיו'}
-                  </button>
-                  <button className="border border-neutral-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition">
-                    גלו עוד
-                  </button>
+                  {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                    <button 
+                      key={index}
+                      className={`px-6 py-3 rounded-lg font-semibold transition ${
+                        button.variant === 'primary' || index === 0 
+                          ? 'bg-white text-black hover:bg-gray-200' 
+                          : 'border border-neutral-600 text-white hover:bg-neutral-800'
+                      }`}
+                    >
+                      {button.text}
+                    </button>
+                  )) || (
+                    <>
+                      <button className="bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition">
+                        {content?.cta || 'התחילו עכשיו'}
+                      </button>
+                      <button className="border border-neutral-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition">
+                        גלו עוד
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -328,24 +346,48 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     >
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-4xl mx-auto">
+          {content?.badge && (
+            <Badge className="mb-6" style={{ backgroundColor: currentColors.accent }}>
+              {content.badge}
+            </Badge>
+          )}
+          
           <h1 
             className="text-5xl md:text-7xl font-bold mb-8"
             style={{ color: currentColors.headlineColor }}
           >
             {content?.headline || formData?.businessName || 'העסק שלכם'}
           </h1>
+          
           <p 
             className="text-xl md:text-2xl mb-12"
             style={{ color: currentColors.subheadlineColor }}
           >
-            {content?.subheadline || 'פתרונות מקצועיים'}
+            {content?.subheadline || content?.description || 'פתרונות מקצועיים'}
           </p>
-          <button 
-            className="px-8 py-4 rounded-xl font-semibold text-lg"
-            style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-          >
-            {content?.cta || 'בואו נתחיל'}
-          </button>
+          
+          <div className="flex gap-4 justify-center flex-wrap">
+            {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+              <button 
+                key={index}
+                className="px-8 py-4 rounded-xl font-semibold text-lg"
+                style={{ 
+                  backgroundColor: button.variant === 'primary' || index === 0 ? currentColors.primary : 'transparent',
+                  color: button.variant === 'primary' || index === 0 ? '#ffffff' : currentColors.primary,
+                  border: button.variant === 'outline' ? `2px solid ${currentColors.primary}` : 'none'
+                }}
+              >
+                {button.text}
+              </button>
+            )) || (
+              <button 
+                className="px-8 py-4 rounded-xl font-semibold text-lg"
+                style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+              >
+                {content?.cta || 'בואו נתחיל'}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </section>
