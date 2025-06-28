@@ -1,9 +1,14 @@
 
 import React, { useRef } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import { TextureLoader, Shape, ExtrudeGeometry } from 'three';
+import { TextureLoader, Shape, ExtrudeGeometry, Vector3 } from 'three';
 
-const Box = ({ position, rotation }) => {
+interface BoxProps {
+  position: [number, number, number];
+  rotation: [number, number, number];
+}
+
+const Box: React.FC<BoxProps> = ({ position, rotation }) => {
     const shape = new Shape();
     const angleStep = Math.PI * 0.5;
     const radius = 1;
@@ -73,12 +78,12 @@ const AnimatedBoxes = () => {
     });
 
     const boxes = Array.from({ length: 50 }, (_, index) => ({
-        position: [(index - 25) * 0.75, 0, 0],
+        position: [(index - 25) * 0.75, 0, 0] as [number, number, number],
         rotation: [
             (index - 10) * 0.1,
             Math.PI / 2,
             0
-        ],
+        ] as [number, number, number],
         id: index
     }));
 
@@ -96,7 +101,7 @@ const AnimatedBoxes = () => {
 };
 
 export const Scene = () => {
-    const [cameraPosition, setCameraPosition] = React.useState([5, 5, 20]);
+    const [cameraPosition, setCameraPosition] = React.useState<[number, number, number]>([5, 5, 20]);
 
     return (
         <div className="w-full h-full z-0">
