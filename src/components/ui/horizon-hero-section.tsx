@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -413,22 +412,37 @@ export const HorizonHeroSection = ({
 
       window.removeEventListener('resize', handleResize);
 
-      // Dispose Three.js resources
+      // Dispose Three.js resources with proper type checking
       refs.stars.forEach(starField => {
         starField.geometry.dispose();
         if (starField.material) {
-          (starField.material as THREE.Material).dispose();
+          // Check if material is an array or single material
+          if (Array.isArray(starField.material)) {
+            starField.material.forEach(mat => mat.dispose());
+          } else {
+            starField.material.dispose();
+          }
         }
       });
 
       refs.mountains.forEach(mountain => {
         mountain.geometry.dispose();
-        mountain.material.dispose();
+        // Check if material is an array or single material
+        if (Array.isArray(mountain.material)) {
+          mountain.material.forEach(mat => mat.dispose());
+        } else {
+          mountain.material.dispose();
+        }
       });
 
       if (refs.nebula) {
         refs.nebula.geometry.dispose();
-        refs.nebula.material.dispose();
+        // Check if material is an array or single material
+        if (Array.isArray(refs.nebula.material)) {
+          refs.nebula.material.forEach(mat => mat.dispose());
+        } else {
+          refs.nebula.material.dispose();
+        }
       }
 
       if (refs.renderer) {
