@@ -1,7 +1,8 @@
+
 import { ReactNode } from "react";
 import { ColorScheme } from "@/components/ColorEditor";
 import { StyleAwareSection } from "./StyleAwareSections";
-import { Handshake, Diamond, Award } from "lucide-react";
+import { Handshake, Diamond, Award, Target, Users, Clock, Shield, Zap, Star } from "lucide-react";
 
 interface ContentSectionsProps {
   content: any;
@@ -21,7 +22,7 @@ export const ContentSections = ({ content, currentColors, formData, selectedElem
   return (
     <>
       {/* Smooth Gradient Transition from Hero */}
-      <div className="h-32 bg-gradient-to-b from-transparent via-black/50 to-black/80"></div>
+      <div className="h-32 bg-gradient-to-b from-transparent via-purple-900/30 via-blue-900/40 to-black/90"></div>
 
       {/* Emotional Paragraph Section */}
       <StyleAwareSection heroStyle={formData.heroStyle || '3d'} sectionType="alternate">
