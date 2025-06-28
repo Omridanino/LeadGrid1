@@ -1,6 +1,6 @@
 
 import { Canvas } from "@react-three/fiber";
-import { PerspectiveCamera, useHelper } from "@react-three/drei";
+import { PerspectiveCamera } from "@react-three/drei";
 import { useThree, useFrame } from "@react-three/fiber";
 import { SpotLight, useDepthBuffer } from '@react-three/drei';
 import * as THREE from 'three';
@@ -8,12 +8,17 @@ import React, { Suspense, useRef, useState, useEffect, forwardRef, useMemo, useC
 import { Vector3, Matrix4, Quaternion } from "three";
 import { RoundedBox } from "@react-three/drei";
 
-const RubiksCubeModel = forwardRef((props, ref) => {
+interface RubiksCubeModelProps {
+  position?: [number, number, number];
+  scale?: number;
+}
+
+const RubiksCubeModel = forwardRef<THREE.Group, RubiksCubeModelProps>((props, ref) => {
   const ANIMATION_DURATION = 1.2;
   const GAP = 0.01;
   const RADIUS = 0.075;
   
-  const mainGroupRef = useRef();
+  const mainGroupRef = useRef<THREE.Group>(null);
   const isAnimatingRef = useRef(false);
   const currentRotationRef = useRef(0);
   const lastMoveAxisRef = useRef(null);
@@ -42,7 +47,7 @@ const RubiksCubeModel = forwardRef((props, ref) => {
   const reusableQuaternion = useMemo(() => new Quaternion(), []);
   
   React.useImperativeHandle(ref, () => ({
-    ...mainGroupRef.current,
+    ...(mainGroupRef.current || {}),
     reset: resetCube
   }));
 
@@ -441,7 +446,7 @@ const RubiksCubeModel = forwardRef((props, ref) => {
     reflectivity: 0.5,
     iridescence: 0,
     iridescenceIOR: 0,
-    iridescenceThicknessRange: [100, 400],
+    iridescenceThicknessRange: [100, 400] as [number, number],
     envMapIntensity: 8
   }), []);
 
@@ -487,7 +492,7 @@ function CameraController() {
 }
 
 function EnhancedSpotlight(props) {
-  const light = useRef();
+  const light = useRef<THREE.SpotLight>(null);
   
   useEffect(() => {
     if (light.current) {
@@ -510,8 +515,7 @@ function EnhancedSpotlight(props) {
 function SceneContent() {
   const depthBuffer = useDepthBuffer({ 
     size: 2048,
-    frames: 1,
-    disableRenderLoop: true 
+    frames: 1
   });
   
   const [time, setTime] = useState(0);
