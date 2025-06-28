@@ -33,7 +33,7 @@ export const initialFormData: FormData = {
   mainGoal: "",
   keyFeatures: "",
   contactInfo: "",
-  designStyle: "dynamic-gradients", // Default to the enhanced dynamic gradients
+  designStyle: "basic",
   navigationStyle: "floating",
   selectedElements: []
 };
@@ -66,20 +66,49 @@ export const validateRequiredFields = (formData: FormData): boolean => {
   );
 };
 
+// Basic design style variations
+export const basicDesignVariations = [
+  'hero-section-clean',
+  'hero-section-minimal', 
+  'hero-section-classic',
+  'hero-section-elegant'
+];
+
+// Function to get a random basic design variation
+export const getRandomBasicVariation = (): string => {
+  const randomIndex = Math.floor(Math.random() * basicDesignVariations.length);
+  return basicDesignVariations[randomIndex];
+};
+
 // Enhanced design style validation and mapping
 export const validateDesignStyle = (style: string): boolean => {
   const validStyles = [
+    'basic',
+    '3d-tech',
     'dynamic-gradients',
     'sparkles-effects', 
     'animated-paths',
     'fluid-blobs',
-    'spline-3d'
+    'spline-3d',
+    ...basicDesignVariations
   ];
   return validStyles.includes(style);
 };
 
 export const getDesignStyleDescription = (style: string): string => {
   switch (style) {
+    case 'basic':
+      return 'עיצוב נקי וקלאסי עם אפקטים בסיסיים - מתאים לכל סוג עסק ולכל קהל יעד';
+    case '3d-tech':
+      return 'עיצוב טכנולוגי מתקדם עם אפקטים תלת-מימדיים מרשימים - מושלם לעסקים חדשניים ומתקדמים';
+    case 'hero-section-clean':
+      return 'עיצוב נקי ומינימליסטי עם אפקטי עומק עדינים';
+    case 'hero-section-minimal':
+      return 'עיצוב מינימליסטי וברור עם פוקוס על התוכן';
+    case 'hero-section-classic':
+      return 'עיצוב קלאסי ומקצועי עם מבנה מסורתי';
+    case 'hero-section-elegant':
+      return 'עיצוב אלגנטי ומתוחכם עם פרטים עדינים';
     case 'dynamic-gradients':
       return 'גרדיאנטים דינמיים AI עם אפקטי חלקיקים מתקדמים - טכנולוגיה מהפנטת ברמה בינלאומית';
     case 'sparkles-effects':

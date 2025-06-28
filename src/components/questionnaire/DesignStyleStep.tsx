@@ -2,6 +2,7 @@
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sparkles, Zap } from "lucide-react";
+import { getRandomBasicVariation, getDesignStyleDescription } from "@/utils/questionnaireUtils";
 
 interface DesignStyleStepProps {
   formData: {
@@ -22,11 +23,22 @@ export const DesignStyleStep = ({ formData, updateFormData }: DesignStyleStepPro
     updateFormData('navigationStyle', 'floating');
   }
 
+  const handleDesignStyleChange = (value: string) => {
+    if (value === 'basic') {
+      // When selecting basic, randomly choose a variation
+      const randomVariation = getRandomBasicVariation();
+      updateFormData('designStyle', randomVariation);
+      console.log('Selected random basic variation:', randomVariation);
+    } else {
+      updateFormData('designStyle', value);
+    }
+  };
+
   return (
     <div className="space-y-8">
       <div className="bg-gradient-to-br from-purple-900/20 to-blue-900/20 p-6 rounded-2xl border border-purple-500/20">
         <Label htmlFor="designStyle" className="text-white font-bold text-lg mb-4 block">בחר את סגנון העיצוב *</Label>
-        <Select onValueChange={(value) => updateFormData('designStyle', value)} value={currentDesignStyle}>
+        <Select onValueChange={handleDesignStyleChange} value={currentDesignStyle.startsWith('hero-section-') ? 'basic' : currentDesignStyle}>
           <SelectTrigger className="bg-gray-800/80 border-purple-500/30 text-white hover:bg-gray-700/80 focus:border-purple-400 focus:ring-purple-400 h-14 text-lg backdrop-blur-sm">
             <SelectValue placeholder="בחר סגנון עיצוב" />
           </SelectTrigger>
@@ -38,7 +50,7 @@ export const DesignStyleStep = ({ formData, updateFormData }: DesignStyleStepPro
                 </div>
                 <div>
                   <div className="font-semibold">עיצוב בסיסי ויפה</div>
-                  <div className="text-sm text-gray-300">עיצוב נקי וקלאסי עם אפקטים בסיסיים</div>
+                  <div className="text-sm text-gray-300">עיצוב נקי וקלאסי עם וריאציות אקראיות</div>
                 </div>
               </div>
             </SelectItem>
@@ -48,7 +60,7 @@ export const DesignStyleStep = ({ formData, updateFormData }: DesignStyleStepPro
                   <Zap className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <div className="font-semibold">עיצוב תלת-מימד טכנולוגי</div>
+                  <div className="font-semibold">עיצוב תלת-מימד טכנولוגי</div>
                   <div className="text-sm text-gray-300">עיצוב מתקדם עם אפקטים תלת-מימדיים מרשימים</div>
                 </div>
               </div>
@@ -57,8 +69,7 @@ export const DesignStyleStep = ({ formData, updateFormData }: DesignStyleStepPro
         </Select>
         <div className="mt-4 p-4 bg-black/30 rounded-xl border border-purple-500/20">
           <p className="text-sm text-purple-200 leading-relaxed">
-            {currentDesignStyle === 'basic' && "עיצוב נקי וקלאסי עם אפקטים בסיסיים - מתאים לכל סוג עסק ולכל קהל"}
-            {currentDesignStyle === '3d-tech' && "עיצוב טכנולוגי מתקדם עם אפקטים תלת-מימדיים מרשימים - מושלם לעסקים חדשניים ומתקדמים"}
+            {getDesignStyleDescription(currentDesignStyle)}
           </p>
         </div>
       </div>
