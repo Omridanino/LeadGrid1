@@ -1,4 +1,5 @@
 
+
 import { ReactNode } from "react";
 
 interface StyleAwareSectionProps {
@@ -46,14 +47,119 @@ export const StyleAwareSection = ({ children, heroStyle, sectionType = 'standard
         return `${baseStyles} ${imageStyles[sectionType] || imageStyles.standard}`;
         
       default:
-        // 3D Hero style
-        const defaultStyles = {
-          standard: 'style-3d-section bg-gradient-to-br from-black via-purple-900/30 to-gray-900',
-          alternate: 'style-3d-section bg-gradient-to-tr from-gray-900 via-black to-purple-900/30',
-          final: 'style-3d-section bg-gradient-to-bl from-purple-900/30 via-gray-900 to-black'
-        };
-        return `${baseStyles} ${defaultStyles[sectionType] || defaultStyles.standard}`;
+        // עיצוב תלת-ממדי מתקדם - זהה לכל הסקשנים
+        return `${baseStyles} style-3d-section bg-gradient-to-br from-black via-purple-900/30 to-gray-900`;
     }
+  };
+
+  const getAdvanced3DBackgroundEffects = () => {
+    // אפקטים תלת-ממדיים מתקדמים מותאמים לביצועים
+    return (
+      <div className="style-3d-bg absolute inset-0">
+        {/* רקע רדיאלי מרובה שכבות */}
+        <div 
+          className="absolute inset-0 opacity-30"
+          style={{
+            backgroundImage: `
+              radial-gradient(circle at 25% 25%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 75% 75%, rgba(59, 130, 246, 0.12) 0%, transparent 50%),
+              radial-gradient(circle at 50% 10%, rgba(236, 72, 153, 0.1) 0%, transparent 60%),
+              radial-gradient(circle at 90% 40%, rgba(34, 211, 238, 0.08) 0%, transparent 50%)
+            `,
+          }}
+        />
+        
+        {/* כדורים זכוכיתיים תלת-ממדיים מתקדמים */}
+        <div className="absolute backdrop-blur-2xl border border-white/25 rounded-full w-32 h-32 top-1/5 left-1/4 opacity-50"
+             style={{
+               background: `linear-gradient(135deg, 
+                 rgba(255, 255, 255, 0.2), 
+                 rgba(255, 255, 255, 0.05))`,
+               boxShadow: `
+                 inset 0 4px 0 rgba(255, 255, 255, 0.3),
+                 0 25px 80px rgba(168, 85, 247, 0.2),
+                 0 8px 32px rgba(0, 0, 0, 0.4)
+               `,
+               transform: 'translateZ(25px)',
+               animation: 'float3D 8s ease-in-out infinite'
+             }}></div>
+        
+        <div className="absolute backdrop-blur-2xl border border-white/20 rounded-full w-40 h-40 bottom-1/4 right-1/3 opacity-40"
+             style={{
+               background: `linear-gradient(135deg, 
+                 rgba(255, 255, 255, 0.18), 
+                 rgba(255, 255, 255, 0.04))`,
+               boxShadow: `
+                 inset 0 4px 0 rgba(255, 255, 255, 0.25),
+                 0 30px 90px rgba(59, 130, 246, 0.18),
+                 0 10px 40px rgba(0, 0, 0, 0.35)
+               `,
+               transform: 'translateZ(35px)',
+               animation: 'float3D 12s ease-in-out infinite reverse'
+             }}></div>
+        
+        <div className="absolute backdrop-blur-xl border border-white/15 rounded-full w-24 h-24 top-1/2 right-1/6 opacity-60"
+             style={{
+               background: `linear-gradient(135deg, 
+                 rgba(255, 255, 255, 0.22), 
+                 rgba(255, 255, 255, 0.06))`,
+               boxShadow: `
+                 inset 0 3px 0 rgba(255, 255, 255, 0.3),
+                 0 20px 60px rgba(236, 72, 153, 0.15),
+                 0 6px 24px rgba(0, 0, 0, 0.3)
+               `,
+               transform: 'translateZ(20px)',
+               animation: 'float3D 10s ease-in-out infinite 2s'
+             }}></div>
+
+        <div className="absolute backdrop-blur-xl border border-white/20 rounded-full w-28 h-28 top-3/4 left-1/6 opacity-45"
+             style={{
+               background: `linear-gradient(135deg, 
+                 rgba(255, 255, 255, 0.2), 
+                 rgba(255, 255, 255, 0.05))`,
+               boxShadow: `
+                 inset 0 3px 0 rgba(255, 255, 255, 0.28),
+                 0 22px 65px rgba(34, 211, 238, 0.16),
+                 0 7px 28px rgba(0, 0, 0, 0.32)
+               `,
+               transform: 'translateZ(30px)',
+               animation: 'float3D 14s ease-in-out infinite 4s'
+             }}></div>
+
+        {/* אלמנטים גיאומטריים מרחפים */}
+        <div className="absolute top-1/3 left-1/6 w-8 h-8 bg-gradient-to-br from-white/25 to-purple-500/15 transform rotate-45 opacity-35"
+             style={{
+               boxShadow: '0 12px 35px rgba(168, 85, 247, 0.2)',
+               animation: 'geometricFloat 6s ease-in-out infinite'
+             }}></div>
+        
+        <div className="absolute bottom-1/3 right-1/5 w-6 h-6 bg-gradient-to-br from-white/20 to-blue-500/15 rounded-full opacity-45"
+             style={{
+               boxShadow: '0 10px 30px rgba(59, 130, 246, 0.18)',
+               animation: 'geometricFloat 8s ease-in-out infinite 2s'
+             }}></div>
+
+        <div className="absolute top-2/3 left-1/4 w-5 h-5 bg-gradient-to-br from-white/22 to-pink-500/15 transform rotate-12 opacity-40"
+             style={{
+               boxShadow: '0 8px 25px rgba(236, 72, 153, 0.16)',
+               animation: 'geometricFloat 7s ease-in-out infinite 1s'
+             }}></div>
+
+        {/* קווי עומק ואור */}
+        <div className="absolute top-1/4 left-1/2 w-px h-20 bg-gradient-to-b from-white/25 to-transparent transform -rotate-12 opacity-25"></div>
+        <div className="absolute bottom-1/4 right-1/3 w-16 h-px bg-gradient-to-r from-white/20 to-transparent opacity-20"></div>
+        <div className="absolute top-2/3 left-1/4 w-px h-16 bg-gradient-to-b from-purple-400/30 to-transparent transform rotate-45 opacity-30"></div>
+        <div className="absolute top-1/3 right-1/4 w-12 h-px bg-gradient-to-r from-blue-400/25 to-transparent opacity-25"></div>
+
+        {/* חלקיקי אור נוספים */}
+        <div className="absolute top-1/6 right-1/3 w-2 h-2 bg-white/30 rounded-full opacity-60"
+             style={{ animation: 'sparkle 4s ease-in-out infinite' }}></div>
+        <div className="absolute bottom-1/6 left-1/4 w-1.5 h-1.5 bg-purple-400/40 rounded-full opacity-50"
+             style={{ animation: 'sparkle 5s ease-in-out infinite 1s' }}></div>
+        <div className="absolute top-1/2 left-1/8 w-1 h-1 bg-blue-400/35 rounded-full opacity-55"
+             style={{ animation: 'sparkle 6s ease-in-out infinite 2s' }}></div>
+      </div>
+    );
   };
 
   const getBackgroundEffects = () => {
@@ -169,98 +275,8 @@ export const StyleAwareSection = ({ children, heroStyle, sectionType = 'standard
         );
         
       default:
-        // Enhanced 3D Premium Effects - Hero Section Style
-        return (
-          <div className="style-3d-bg absolute inset-0">
-            {/* Premium Multi-Layer Grid Pattern */}
-            <div 
-              className="absolute inset-0 opacity-25"
-              style={{
-                backgroundImage: `
-                  radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.2) 0%, transparent 50%),
-                  radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
-                  radial-gradient(circle at 50% 10%, rgba(168, 85, 247, 0.1) 0%, transparent 60%),
-                  radial-gradient(circle at 10% 90%, rgba(59, 130, 246, 0.1) 0%, transparent 60%),
-                  radial-gradient(circle at 90% 40%, rgba(236, 72, 153, 0.08) 0%, transparent 50%)
-                `,
-              }}
-            />
-            
-            {/* Advanced Floating 3D Glass Orbs */}
-            <div className="absolute backdrop-blur-2xl border border-white/30 rounded-full w-24 h-24 top-1/5 left-1/4 opacity-60 animate-pulse"
-                 style={{
-                   background: `linear-gradient(135deg, 
-                     rgba(255, 255, 255, 0.25), 
-                     rgba(255, 255, 255, 0.08))`,
-                   boxShadow: `
-                     inset 0 3px 0 rgba(255, 255, 255, 0.4),
-                     0 20px 60px rgba(168, 85, 247, 0.3),
-                     0 5px 20px rgba(0, 0, 0, 0.5)
-                   `,
-                   transform: 'translateZ(20px)'
-                 }}></div>
-            
-            <div className="absolute backdrop-blur-2xl border border-white/25 rounded-full w-32 h-32 bottom-1/4 right-1/3 opacity-50 animate-bounce"
-                 style={{
-                   background: `linear-gradient(135deg, 
-                     rgba(255, 255, 255, 0.22), 
-                     rgba(255, 255, 255, 0.06))`,
-                   boxShadow: `
-                     inset 0 3px 0 rgba(255, 255, 255, 0.35),
-                     0 25px 70px rgba(59, 130, 246, 0.25),
-                     0 8px 30px rgba(0, 0, 0, 0.4)
-                   `,
-                   transform: 'translateZ(30px)',
-                   animationDuration: '3s'
-                 }}></div>
-            
-            <div className="absolute backdrop-blur-xl border border-white/20 rounded-full w-18 h-18 top-1/2 right-1/6 opacity-70 animate-pulse"
-                 style={{
-                   background: `linear-gradient(135deg, 
-                     rgba(255, 255, 255, 0.28), 
-                     rgba(255, 255, 255, 0.1))`,
-                   boxShadow: `
-                     inset 0 2px 0 rgba(255, 255, 255, 0.4),
-                     0 15px 45px rgba(236, 72, 153, 0.2),
-                     0 4px 15px rgba(0, 0, 0, 0.4)
-                   `,
-                   transform: 'translateZ(15px)',
-                   animationDelay: '1s'
-                 }}></div>
-
-            <div className="absolute backdrop-blur-xl border border-white/25 rounded-full w-20 h-20 top-3/4 left-1/6 opacity-55 animate-pulse"
-                 style={{
-                   background: `linear-gradient(135deg, 
-                     rgba(255, 255, 255, 0.23), 
-                     rgba(255, 255, 255, 0.07))`,
-                   boxShadow: `
-                     inset 0 2px 0 rgba(255, 255, 255, 0.35),
-                     0 18px 50px rgba(34, 211, 238, 0.2),
-                     0 6px 20px rgba(0, 0, 0, 0.45)
-                   `,
-                   transform: 'translateZ(25px)',
-                   animationDelay: '2s'
-                 }}></div>
-
-            {/* Premium Geometric Floating Elements */}
-            <div className="absolute top-1/3 left-1/6 w-6 h-6 bg-gradient-to-br from-white/30 to-purple-500/20 transform rotate-45 animate-pulse opacity-40"
-                 style={{
-                   boxShadow: '0 8px 25px rgba(168, 85, 247, 0.3)',
-                   animationDelay: '0.5s'
-                 }}></div>
-            
-            <div className="absolute bottom-1/3 right-1/5 w-4 h-4 bg-gradient-to-br from-white/25 to-blue-500/20 rounded-full animate-bounce opacity-50"
-                 style={{
-                   boxShadow: '0 6px 20px rgba(59, 130, 246, 0.25)',
-                   animationDelay: '1.5s'
-                 }}></div>
-
-            {/* Depth Lines and Rays */}
-            <div className="absolute top-1/4 left-1/2 w-px h-16 bg-gradient-to-b from-white/30 to-transparent transform -rotate-12 opacity-30"></div>
-            <div className="absolute bottom-1/4 right-1/3 w-12 h-px bg-gradient-to-r from-white/25 to-transparent opacity-25"></div>
-            <div className="absolute top-2/3 left-1/4 w-px h-12 bg-gradient-to-b from-purple-400/40 to-transparent transform rotate-45 opacity-35"></div>
-          </div>
-        );
+        // עיצוב תלת-ממדי מתקדם לכל הסקשנים
+        return getAdvanced3DBackgroundEffects();
     }
   };
 
@@ -273,3 +289,4 @@ export const StyleAwareSection = ({ children, heroStyle, sectionType = 'standard
     </section>
   );
 };
+
