@@ -1,6 +1,5 @@
 
 import LandingPagePreview from "@/components/LandingPagePreview";
-import HeroContentEditor from "@/components/HeroContentEditor";
 import { useGeneratedPageState } from "@/hooks/useGeneratedPageState";
 import { useContentGeneration } from "@/hooks/useContentGeneration";
 import { useState, useEffect } from "react";
@@ -38,17 +37,8 @@ const GeneratedLandingPage = () => {
   ).filter(Boolean) || [];
 
   return (
-    <div className="min-h-screen bg-black text-white flex" dir="rtl">
-      {/* Hero Content Editor */}
-      <HeroContentEditor
-        content={state.content}
-        onContentChange={state.setContent}
-        currentColors={state.currentColors}
-        onColorChange={state.handleColorChange}
-      />
-      
-      {/* Main Preview */}
-      <main className="flex-1">
+    <div className="min-h-screen bg-black text-white" dir="rtl">
+      <main className="w-full">
         <LandingPagePreview 
           content={state.content}
           currentColors={state.currentColors}
