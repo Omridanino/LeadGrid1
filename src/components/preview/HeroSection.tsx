@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/components/ColorEditor";
@@ -25,6 +24,24 @@ interface HeroSectionProps {
 
 export const HeroSection = ({ content, currentColors, formData, heroImage }: HeroSectionProps) => {
   const designStyle = formData?.designStyle || 'basic';
+
+  // Helper function to get element style
+  const getElementStyle = (elementStyle: string) => {
+    switch (elementStyle) {
+      case "black-on-white":
+        return { backgroundColor: 'white', color: 'black', border: '1px solid black' };
+      case "white-on-black":
+        return { backgroundColor: 'black', color: 'white', border: '1px solid white' };
+      case "gradient-gold-black":
+        return { background: 'linear-gradient(to right, #fbbf24, #000000)', color: 'white', border: 'none' };
+      case "gradient-gold-white":
+        return { background: 'linear-gradient(to right, #fbbf24, #ffffff)', color: 'black', border: 'none' };
+      case "gradient-purple-tech":
+        return { background: 'linear-gradient(to right, #9333ea, #ffffff)', color: 'white', border: 'none' };
+      default:
+        return {};
+    }
+  };
 
   // Basic Design Style - Random selection from 5 different designs
   if (designStyle === 'basic') {
@@ -141,17 +158,31 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
               <div className="max-w-2xl">
                 {content?.badge && (
-                  <Badge className="inline-flex items-center gap-2 backdrop-blur-md border px-4 py-2 rounded-full mb-6 text-neutral-300 border-neutral-600">
+                  <Badge 
+                    className="inline-flex items-center gap-2 backdrop-blur-md border px-4 py-2 rounded-full mb-6 text-neutral-300 border-neutral-600"
+                    style={getElementStyle(content.badgeStyle)}
+                  >
                     <Zap className="w-4 h-4 text-blue-400" />
                     <span className="text-sm">{content.badge}</span>
                   </Badge>
                 )}
                 
-                <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 mb-6">
+                <h1 
+                  className="text-4xl md:text-6xl font-bold mb-6"
+                  style={content.headlineStyle ? getElementStyle(content.headlineStyle) : {
+                    backgroundImage: 'linear-gradient(to bottom, #fafafa, #a3a3a3)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}
+                >
                   {content?.headline || formData?.businessName || 'חוויה תלת-מימדית'}
                 </h1>
                 
-                <p className="text-neutral-300 text-lg leading-relaxed mb-8 max-w-lg">
+                <p 
+                  className="text-lg leading-relaxed mb-8 max-w-lg"
+                  style={content.subheadlineStyle ? getElementStyle(content.subheadlineStyle) : { color: '#d4d4d8' }}
+                >
                   {content?.subheadline || content?.description || `הביאו את העסק שלכם למימד חדש עם טכנולוגיות מתקדמות ועיצוב חדשני`}
                 </p>
                 
@@ -159,11 +190,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                     <button 
                       key={index}
-                      className={`px-6 py-3 rounded-lg font-semibold transition ${
-                        button.variant === 'primary' || index === 0 
-                          ? 'bg-white text-black hover:bg-gray-200' 
-                          : 'border border-neutral-600 text-white hover:bg-neutral-800'
-                      }`}
+                      className="px-6 py-3 rounded-lg font-semibold transition"
+                      style={getElementStyle(button.style || 'black-on-white')}
                     >
                       {button.text}
                     </button>
@@ -338,7 +366,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     }
   }
 
-  // Fallback to basic design
+  // Fallback to basic design with custom styles
   return (
     <section 
       className="relative overflow-hidden min-h-screen flex items-center justify-center"
@@ -347,21 +375,24 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-4xl mx-auto">
           {content?.badge && (
-            <Badge className="mb-6" style={{ backgroundColor: currentColors.accent }}>
+            <Badge 
+              className="mb-6" 
+              style={content.badgeStyle ? getElementStyle(content.badgeStyle) : { backgroundColor: currentColors.accent }}
+            >
               {content.badge}
             </Badge>
           )}
           
           <h1 
             className="text-5xl md:text-7xl font-bold mb-8"
-            style={{ color: currentColors.headlineColor }}
+            style={content.headlineStyle ? getElementStyle(content.headlineStyle) : { color: currentColors.headlineColor }}
           >
             {content?.headline || formData?.businessName || 'העסק שלכם'}
           </h1>
           
           <p 
             className="text-xl md:text-2xl mb-12"
-            style={{ color: currentColors.subheadlineColor }}
+            style={content.subheadlineStyle ? getElementStyle(content.subheadlineStyle) : { color: currentColors.subheadlineColor }}
           >
             {content?.subheadline || content?.description || 'פתרונות מקצועיים'}
           </p>
@@ -371,11 +402,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               <button 
                 key={index}
                 className="px-8 py-4 rounded-xl font-semibold text-lg"
-                style={{ 
-                  backgroundColor: button.variant === 'primary' || index === 0 ? currentColors.primary : 'transparent',
-                  color: button.variant === 'primary' || index === 0 ? '#ffffff' : currentColors.primary,
-                  border: button.variant === 'outline' ? `2px solid ${currentColors.primary}` : 'none'
-                }}
+                style={getElementStyle(button.style || 'black-on-white')}
               >
                 {button.text}
               </button>

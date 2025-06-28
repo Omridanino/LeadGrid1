@@ -41,6 +41,13 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     });
   };
 
+  const handleStyleChange = (field: string, value: string) => {
+    setLocalContent({
+      ...localContent,
+      [`${field}Style`]: value
+    });
+  };
+
   const handleButtonChange = (index: number, field: string, value: string) => {
     const buttons = [...(localContent.buttons || [])];
     if (buttons[index]) {
@@ -126,22 +133,44 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     });
   };
 
-  const getButtonStyleClasses = (style: string) => {
+  const getStyleClasses = (style: string) => {
     switch (style) {
       case "black-on-white":
-        return "bg-white text-black border border-black hover:bg-gray-100";
+        return "bg-white text-black border border-black";
       case "white-on-black":
-        return "bg-black text-white border border-white hover:bg-gray-800";
+        return "bg-black text-white border border-white";
       case "gradient-gold-black":
-        return "bg-gradient-to-r from-yellow-400 to-black text-white border-0 hover:from-yellow-500 hover:to-gray-900";
+        return "bg-gradient-to-r from-yellow-400 to-black text-white border-0";
       case "gradient-gold-white":
-        return "bg-gradient-to-r from-yellow-400 to-white text-black border-0 hover:from-yellow-500 hover:to-gray-100";
+        return "bg-gradient-to-r from-yellow-400 to-white text-black border-0";
       case "gradient-purple-tech":
-        return "bg-gradient-to-r from-purple-600 to-white text-white border-0 hover:from-purple-700 hover:to-gray-100";
+        return "bg-gradient-to-r from-purple-600 to-white text-white border-0";
       default:
-        return "bg-blue-600 text-white hover:bg-blue-700";
+        return "bg-blue-600 text-white";
     }
   };
+
+  const StyleSelector = ({ value, onChange, label }: { value: string, onChange: (value: string) => void, label: string }) => (
+    <div className="space-y-2">
+      <Label className="text-white text-xs">{label}</Label>
+      <select
+        value={value || 'black-on-white'}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded text-xs"
+      >
+        <option value="black-on-white">שחור על לבן</option>
+        <option value="white-on-black">לבן על שחור</option>
+        <option value="gradient-gold-black">גרדיאנט זהב-שחור</option>
+        <option value="gradient-gold-white">גרדיאנט זהב-לבן</option>
+        <option value="gradient-purple-tech">גרדיאנט סגול טכנולוגי</option>
+      </select>
+      <div className="mt-1">
+        <div className={`px-3 py-1 rounded text-xs ${getStyleClasses(value || 'black-on-white')}`}>
+          תצוגה מקדימה
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="w-80 bg-gray-900 border-l border-gray-700 h-full overflow-y-auto">
@@ -170,6 +199,11 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
                 placeholder="טקסט התג העליון"
                 className="bg-gray-700 border-gray-600 text-white text-right"
               />
+              <StyleSelector 
+                value={localContent.badgeStyle} 
+                onChange={(value) => handleStyleChange('badge', value)} 
+                label="סגנון תג"
+              />
             </CardContent>
           </Card>
 
@@ -188,6 +222,11 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
                 placeholder="הכותרת הראשית של הדף"
                 className="bg-gray-700 border-gray-600 text-white text-right"
                 rows={2}
+              />
+              <StyleSelector 
+                value={localContent.headlineStyle} 
+                onChange={(value) => handleStyleChange('headline', value)} 
+                label="סגנון כותרת"
               />
             </CardContent>
           </Card>
@@ -208,24 +247,10 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
                 className="bg-gray-700 border-gray-600 text-white text-right"
                 rows={3}
               />
-            </CardContent>
-          </Card>
-
-          {/* Description Editor */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-white text-sm flex items-center gap-2">
-                <Edit3 className="w-4 h-4 text-purple-400" />
-                תיאור מפורט
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Textarea
-                value={localContent.description || ''}
-                onChange={(e) => handleTextChange('description', e.target.value)}
-                placeholder="תיאור מפורט נוסף"
-                className="bg-gray-700 border-gray-600 text-white text-right"
-                rows={4}
+              <StyleSelector 
+                value={localContent.subheadlineStyle} 
+                onChange={(value) => handleStyleChange('subheadline', value)} 
+                label="סגנון כותרת משנה"
               />
             </CardContent>
           </Card>
@@ -287,7 +312,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
 
                   {/* Button Preview */}
                   <div className="mt-2">
-                    <button className={`px-4 py-2 rounded text-sm ${getButtonStyleClasses(button.style || 'black-on-white')}`}>
+                    <button className={`px-4 py-2 rounded text-sm ${getStyleClasses(button.style || 'black-on-white')}`}>
                       {button.text || 'תצוגה מקדימה'}
                     </button>
                   </div>
