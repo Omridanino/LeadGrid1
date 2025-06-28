@@ -1,3 +1,4 @@
+
 export interface FormData {
   businessName: string;
   businessType: string;
@@ -71,7 +72,10 @@ export const basicDesignVariations = [
   'hero-section-clean',
   'hero-section-minimal', 
   'hero-section-classic',
-  'hero-section-elegant'
+  'hero-section-elegant',
+  'hero-section-modern',
+  'hero-section-lamp',
+  'hero-section-retro'
 ];
 
 // Function to get a random basic design variation
@@ -109,6 +113,12 @@ export const getDesignStyleDescription = (style: string): string => {
       return 'עיצוב קלאסי ומקצועי עם מבנה מסורתי';
     case 'hero-section-elegant':
       return 'עיצוב אלגנטי ומתוחכם עם פרטים עדינים';
+    case 'hero-section-modern':
+      return 'עיצוב מודרני עם אנימציות חלקות ואפקטי מעבר מתקדמים';
+    case 'hero-section-lamp':
+      return 'עיצוב דרמטי עם אפקטי תאורה מרהיבים ואווירה חזקה';
+    case 'hero-section-retro':
+      return 'עיצוב רטרו עם רשת גיאומטרית ואפקטי גרדיאנט צבעוניים';
     case 'dynamic-gradients':
       return 'גרדיאנטים דינמיים AI עם אפקטי חלקיקים מתקדמים - טכנולוגיה מהפנטת ברמה בינלאומית';
     case 'sparkles-effects':
