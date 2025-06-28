@@ -2,19 +2,58 @@
 import * as React from "react"
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Zap } from 'lucide-react'
 
 interface HeroSectionCleanProps {
   formData: any;
   currentColors: any;
+  content?: any;
 }
 
-export const HeroSectionClean = ({ formData, currentColors }: HeroSectionCleanProps) => {
+export const HeroSectionClean = ({ formData, currentColors, content }: HeroSectionCleanProps) => {
     const [menuState, setMenuState] = React.useState(false)
     
-    const businessName = formData?.businessName || "שם העסק"
-    const businessStory = formData?.businessStory || "הסיפור שלנו מתחיל כאן"
-    const mainServices = formData?.mainServices || "השירותים המובילים שלנו"
+    // Helper function to get text style classes
+    const getTextStyleClasses = (elementStyle: string) => {
+      switch (elementStyle) {
+        case "black-text":
+          return "text-black";
+        case "white-text":
+          return "text-white";
+        case "gold-text":
+          return "text-yellow-400";
+        case "gradient-gold-text":
+          return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
+        case "gradient-purple-text":
+          return "bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent";
+        case "gradient-blue-text":
+          return "bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent";
+        default:
+          return "text-gray-900";
+      }
+    };
+
+    // Helper function to get button style classes
+    const getButtonStyleClasses = (elementStyle: string) => {
+      switch (elementStyle) {
+        case "black-on-white":
+          return "bg-white text-black border border-black";
+        case "white-on-black":
+          return "bg-black text-white border border-white";
+        case "gradient-gold-black":
+          return "bg-gradient-to-r from-yellow-400 to-black text-white border-0";
+        case "gradient-gold-white":
+          return "bg-gradient-to-r from-yellow-400 to-white text-black border-0";
+        case "gradient-purple-tech":
+          return "bg-gradient-to-r from-purple-600 to-white text-white border-0";
+        default:
+          return "bg-blue-600 text-white";
+      }
+    };
+    
+    const businessName = content?.headline || formData?.businessName || "שם העסק"
+    const businessStory = content?.subheadline || formData?.businessStory || "הסיפור שלנו מתחיל כאן"
+    const mainServices = content?.description || formData?.mainServices || "השירותים המובילים שלנו"
     
     return (
         <div className="min-h-screen bg-white text-gray-900" dir="rtl">
@@ -27,9 +66,9 @@ export const HeroSectionClean = ({ formData, currentColors }: HeroSectionCleanPr
                             <div className="flex w-full justify-between lg:w-auto">
                                 <div className="flex items-center space-x-2 space-x-reverse">
                                     <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                                        <span className="text-white font-bold text-sm">{businessName.charAt(0)}</span>
+                                        <span className="text-white font-bold text-sm">{(formData?.businessName || businessName).charAt(0)}</span>
                                     </div>
-                                    <span className="font-semibold text-lg">{businessName}</span>
+                                    <span className="font-semibold text-lg">{formData?.businessName || businessName}</span>
                                 </div>
 
                                 <button
@@ -89,20 +128,39 @@ export const HeroSectionClean = ({ formData, currentColors }: HeroSectionCleanPr
                 <section className="overflow-hidden bg-white">
                     <div className="relative mx-auto max-w-5xl px-6 py-28 lg:py-32">
                         <div className="relative z-10 mx-auto max-w-3xl text-center">
-                            <h1 className="text-balance text-4xl font-bold md:text-5xl lg:text-6xl text-gray-900 mb-6">
+                            {content?.badge && (
+                                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm ${getButtonStyleClasses(content.badgeStyle || 'black-on-white')}`}>
+                                    <Zap className="w-4 h-4" />
+                                    <span>{content.badge}</span>
+                                </div>
+                            )}
+                            
+                            <h1 className={`text-balance text-4xl font-bold md:text-5xl lg:text-6xl mb-6 ${content?.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'text-gray-900'}`}>
                                 {businessStory}
                             </h1>
-                            <p className="mx-auto my-8 max-w-2xl text-xl text-gray-600 leading-relaxed">
+                            
+                            <p className={`mx-auto my-8 max-w-2xl text-xl leading-relaxed ${content?.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-gray-600'}`}>
                                 {mainServices}
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-10">
-                                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                                    <span>התחל עכשיו</span>
-                                </Button>
-                                <Button variant="outline" size="lg">
-                                    <span>למד עוד</span>
-                                </Button>
+                                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                                    <button 
+                                        key={index}
+                                        className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'black-on-white')}`}
+                                    >
+                                        {button.text}
+                                    </button>
+                                )) || (
+                                    <>
+                                        <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                                            <span>התחל עכשיו</span>
+                                        </Button>
+                                        <Button variant="outline" size="lg">
+                                            <span>למד עוד</span>
+                                        </Button>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/components/ColorEditor";
@@ -74,13 +75,17 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     }
   };
 
-  // Handle Basic Design Style variations
+  // Handle Basic Design Style variations with better randomization
   if (designStyle === 'basic' || designStyle.startsWith('hero-section-')) {
     const [selectedBasicDesign, setSelectedBasicDesign] = useState<string>('');
 
     useEffect(() => {
-      // Generate a truly random selection based on timestamp and random
-      const randomSeed = Date.now() + Math.random() * 1000;
+      // Create a more random seed using multiple factors
+      const businessNameSeed = formData?.businessName ? formData.businessName.length * 17 : 1;
+      const timeSeed = Math.floor(Date.now() / 60000); // Changes every minute
+      const randomSeed = Math.random() * 1000;
+      const combinedSeed = (businessNameSeed + timeSeed + randomSeed) * Math.PI;
+      
       const availableDesigns = [
         'hero-section-clean',
         'hero-section-minimal', 
@@ -88,15 +93,16 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
         'hero-section-elegant',
         'hero-section-modern',
         'hero-section-lamp',
-        'hero-section-retro'
+        'hero-section-retro',
+        'hero-section-animated'
       ];
       
-      const randomIndex = Math.floor(randomSeed % availableDesigns.length);
+      const randomIndex = Math.floor(combinedSeed % availableDesigns.length);
       const selectedDesign = availableDesigns[randomIndex];
       
-      console.log('Selected random design:', selectedDesign, 'from index:', randomIndex);
+      console.log('Selected random design:', selectedDesign, 'from index:', randomIndex, 'with seed:', combinedSeed);
       setSelectedBasicDesign(selectedDesign);
-    }, [formData?.businessName, formData?.businessType]); // Change when business data changes
+    }, [formData?.businessName, formData?.businessType, content]); // Add content to dependencies
 
     // Return clean hero section
     if (selectedBasicDesign === 'hero-section-clean') {
@@ -104,6 +110,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
         <HeroSectionClean
           formData={formData}
           currentColors={currentColors}
+          content={content}
         />
       );
     }
@@ -114,6 +121,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
         <HeroSectionModern
           formData={formData}
           currentColors={currentColors}
+          content={content}
         />
       );
     }
@@ -124,6 +132,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
         <HeroSectionLamp
           formData={formData}
           currentColors={currentColors}
+          content={content}
         />
       );
     }
@@ -134,61 +143,183 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
         <HeroSectionRetro
           formData={formData}
           currentColors={currentColors}
+          content={content}
         />
       );
     }
 
-    // Enhanced Mockup Hero (minimal)
+    // Enhanced Mockup Hero (minimal) - with content support
     if (selectedBasicDesign === 'hero-section-minimal') {
       return (
-        <HeroWithMockup
-          title={content?.headline || formData?.businessName || 'העסק שלכם'}
-          description={content?.subheadline || content?.description || `פתרונות מקצועיים ל${formData?.targetAudience || 'הלקוחות שלכם'}`}
-          primaryCta={{
-            text: content?.buttons?.[0]?.text || content?.cta || 'בואו נתחיל',
-            onClick: () => {}
-          }}
-          secondaryCta={{
-            text: content?.buttons?.[1]?.text || 'למד עוד',
-            onClick: () => {}
-          }}
-        />
+        <section className="relative overflow-hidden min-h-screen bg-white text-gray-900" dir="rtl">
+          <div className="container mx-auto px-4 py-20 relative z-10">
+            <div className="text-center max-w-4xl mx-auto">
+              {content?.badge && (
+                <div className={`inline-block mb-6 px-4 py-2 rounded-full text-sm ${getButtonStyleClasses(content.badgeStyle || 'black-on-white')}`}>
+                  {content.badge}
+                </div>
+              )}
+              
+              <h1 className={`text-5xl md:text-7xl font-bold mb-8 ${content?.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'text-gray-900'}`}>
+                {content?.headline || formData?.businessName || 'העסק שלכם'}
+              </h1>
+              
+              <p className={`text-xl md:text-2xl mb-12 ${content?.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-gray-600'}`}>
+                {content?.subheadline || `פתרונות מקצועיים ל${formData?.targetAudience || 'הלקוחות שלכם'}`}
+              </p>
+              
+              <div className="flex gap-4 justify-center flex-wrap">
+                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                  <button 
+                    key={index}
+                    className={`px-8 py-4 rounded-xl font-semibold text-lg transition ${getButtonStyleClasses(button.style || 'black-on-white')}`}
+                  >
+                    {button.text}
+                  </button>
+                )) || (
+                  <button className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg">
+                    {content?.cta || 'בואו נתחיל'}
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
       );
     }
 
-    // Beams Background (classic)
+    // Beams Background (classic) - with content support
     if (selectedBasicDesign === 'hero-section-classic') {
       return (
-        <BeamsBackground
-          title={content?.headline || formData?.businessName || 'חלומות דיגיטליים'}
-          description={content?.subheadline || content?.description || 'שם המחשבות מקבלות צורה והתודעה זורמת כמו כספית נוזלית'}
-          primaryCta={{
-            text: content?.buttons?.[0]?.text || content?.cta || 'היכנסו לזרימה',
-            onClick: () => {}
-          }}
-          secondaryCta={{
-            text: content?.buttons?.[1]?.text || 'חקרו עוד',
-            onClick: () => {}
-          }}
-        />
+        <section className="relative overflow-hidden min-h-screen bg-black text-white flex items-center justify-center" dir="rtl">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="text-center max-w-4xl mx-auto">
+              {content?.badge && (
+                <div className={`inline-block mb-6 px-4 py-2 rounded-full text-sm ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
+                  {content.badge}
+                </div>
+              )}
+              
+              <h1 className={`text-5xl md:text-7xl font-bold mb-8 ${content?.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'text-white'}`}>
+                {content?.headline || formData?.businessName || 'חלומות דיגיטליים'}
+              </h1>
+              
+              <p className={`text-xl md:text-2xl mb-12 ${content?.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-gray-300'}`}>
+                {content?.subheadline || 'שם המחשבות מקבלות צורה והתודעה זורמת כמו כספית נוזלית'}
+              </p>
+              
+              <div className="flex gap-4 justify-center flex-wrap">
+                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                  <button 
+                    key={index}
+                    className={`px-8 py-4 rounded-xl font-semibold text-lg transition ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+                  >
+                    {button.text}
+                  </button>
+                )) || (
+                  <button className="bg-white text-black px-8 py-4 rounded-xl font-semibold text-lg">
+                    {content?.cta || 'היכנסו לזרימה'}
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
       );
     }
 
-    // Gradient Hero (elegant)
+    // Gradient Hero (elegant) - with content support  
     if (selectedBasicDesign === 'hero-section-elegant') {
       return (
-        <GradientHero
-          title={content?.headline || formData?.businessName || 'העתיד כאן עכשיו'}
-          subtitle={content?.subheadline || content?.description || 'חוויה דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש'}
-          primaryCta={{
-            text: content?.buttons?.[0]?.text || content?.cta || 'haledו היום',
-            onClick: () => {}
-          }}
-          secondaryCta={{
-            text: content?.buttons?.[1]?.text || 'גלו עוד',
-            onClick: () => {}
-          }}
-        />
+        <section className="relative overflow-hidden min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white flex items-center justify-center" dir="rtl">
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="text-center max-w-4xl mx-auto">
+              {content?.badge && (
+                <div className={`inline-block mb-6 px-4 py-2 rounded-full text-sm ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
+                  {content.badge}
+                </div>
+              )}
+              
+              <h1 className={`text-5xl md:text-7xl font-bold mb-8 ${content?.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent'}`}>
+                {content?.headline || formData?.businessName || 'העתיד כאן עכשיו'}
+              </h1>
+              
+              <p className={`text-xl md:text-2xl mb-12 ${content?.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-purple-100'}`}>
+                {content?.subheadline || 'חוויה דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש'}
+              </p>
+              
+              <div className="flex gap-4 justify-center flex-wrap">
+                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                  <button 
+                    key={index}
+                    className={`px-8 py-4 rounded-xl font-semibold text-lg transition ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+                  >
+                    {button.text}
+                  </button>
+                )) || (
+                  <button className="bg-white text-purple-900 px-8 py-4 rounded-xl font-semibold text-lg">
+                    {content?.cta || 'התחלו היום'}
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // Animated Hero (animated) - with content support
+    if (selectedBasicDesign === 'hero-section-animated') {
+      return (
+        <section className="relative overflow-hidden min-h-screen bg-black text-white flex items-center justify-center" dir="rtl">
+          <div className="absolute inset-0">
+            {[...Array(50)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute w-2 h-2 bg-blue-500 rounded-full animate-pulse"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 3}s`,
+                  opacity: Math.random() * 0.7 + 0.3
+                }}
+              />
+            ))}
+          </div>
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="text-center max-w-4xl mx-auto">
+              {content?.badge && (
+                <div className={`inline-block mb-6 px-4 py-2 rounded-full text-sm ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
+                  {content.badge}
+                </div>
+              )}
+              
+              <h1 className={`text-5xl md:text-7xl font-bold mb-8 animate-fade-in ${content?.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'text-white'}`}>
+                {content?.headline || formData?.businessName || 'אנימציה דיגיטלית'}
+              </h1>
+              
+              <p className={`text-xl md:text-2xl mb-12 ${content?.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-gray-300'}`}>
+                {content?.subheadline || 'חוויה אינטראקטיבית עם אנימציות מתקדמות'}
+              </p>
+              
+              <div className="flex gap-4 justify-center flex-wrap">
+                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                  <button 
+                    key={index}
+                    className={`px-8 py-4 rounded-xl font-semibold text-lg transition transform hover:scale-105 ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+                  >
+                    {button.text}
+                  </button>
+                )) || (
+                  <button className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transform hover:scale-105 transition">
+                    {content?.cta || 'חוו את האנימציה'}
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
       );
     }
 
@@ -197,6 +328,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       <HeroSectionClean
         formData={formData}
         currentColors={currentColors}
+        content={content}
       />
     );
   }
