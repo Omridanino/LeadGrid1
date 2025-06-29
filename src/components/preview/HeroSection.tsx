@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ColorScheme } from "@/components/ColorEditor";
+import { ColorScheme } from "@/types/colors";
 import { SplineScene } from "@/components/ui/splite";
 import { Spotlight } from "@/components/ui/spotlight";
 import { ChromeGrid } from "@/components/ui/chrome-grid";

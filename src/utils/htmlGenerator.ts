@@ -1,4 +1,4 @@
-import { ColorScheme } from "@/components/ColorEditor";
+import { ColorScheme } from '@/types/colors';
 
 export const generateHtmlFile = (content: any, colors: ColorScheme, formData: any, heroImage: string) => {
   const businessName = formData?.businessName || 'העסק שלי';
@@ -794,8 +794,12 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+            0%, 100% { 
+                transform: translateY(0px); 
+            }
+            50% { 
+                transform: translateY(-20px); 
+            }
         }
 
         /* Geometric Hero */
@@ -809,7 +813,7 @@ export const generateHtmlFile = (content: any, colors: ColorScheme, formData: an
             width: 300px;
             height: 300px;
             background: linear-gradient(45deg, rgba(79, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.1) 100%);
-            clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+            clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%);
             animation: geometricFloat 8s ease-in-out infinite;
         }
 
