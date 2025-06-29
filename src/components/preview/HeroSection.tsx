@@ -21,7 +21,6 @@ import { HeroSectionLamp } from "@/components/ui/hero-section-lamp";
 import { HeroSectionRetro } from "@/components/ui/hero-section-retro";
 import { ArrowLeft, Play, Shield, Zap, Award, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { HeroDesignAli } from "@/components/ui/hero-designali";
 import { HeroFuturistic } from "@/components/ui/hero-futuristic";
 
 interface HeroSectionProps {
@@ -390,11 +389,11 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     const [selectedDesign, setSelectedDesign] = useState(0);
 
     useEffect(() => {
-      // Randomly select one of the 10 3D designs (removed ScrollExpandMedia)
-      setSelectedDesign(Math.floor(Math.random() * 10));
+      // Randomly select one of the 9 3D designs (removed HeroDesignAli)
+      setSelectedDesign(Math.floor(Math.random() * 9));
     }, []);
 
-    // Design 1: Spline 3D Scene with custom styles
+    // Design 0: Spline 3D Scene with custom styles
     if (selectedDesign === 0) {
       return (
         <section className="relative overflow-hidden min-h-screen bg-black/[0.96]">
@@ -462,7 +461,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 2: Chrome Grid with custom styles
+    // Design 1: Chrome Grid with custom styles
     if (selectedDesign === 1) {
       return (
         <div className="h-screen w-screen relative">
@@ -822,39 +821,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     }
 
     if (selectedDesign === 8) {
-      return (
-        <div className="relative w-screen h-screen overflow-hidden">
-          <HeroDesignAli
-            title={content?.headline || formData?.businessName || 'Your complete platform for the Design.'}
-            subtitle={content?.subheadline || 'Welcome to my creative playground! I\'m'}
-            typewriterStrings={["Graphic Design", "Branding", "Web Design", "Web Develop", "Marketing", "UI UX", "Social Media"]}
-            onStartClick={() => {}}
-            onBookCallClick={() => {}}
-          />
-          
-          <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-30 flex gap-4 justify-center">
-            {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-              <button 
-                key={index}
-                className="px-8 py-4 rounded-lg font-bold transition"
-                style={getButtonStyle(button.color)}
-              >
-                {button.text}
-              </button>
-            )) || (
-              <button 
-                className="px-8 py-4 rounded-lg font-bold transition"
-                style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-              >
-                {content?.cta || 'start creating'}
-              </button>
-            )}
-          </div>
-        </div>
-      );
-    }
-
-    if (selectedDesign === 9) {
       return (
         <div className="relative w-screen h-screen overflow-hidden">
           <HeroFuturistic
