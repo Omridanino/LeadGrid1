@@ -12,6 +12,13 @@ interface HeroSectionCleanProps {
 export const HeroSectionClean = ({ formData, currentColors, content }: HeroSectionCleanProps) => {
     const [menuState, setMenuState] = React.useState(false)
     
+    // Force re-render when content changes by using the timestamp
+    const lastUpdated = content?._lastUpdated || 0;
+    
+    React.useEffect(() => {
+        console.log('Hero section updated with content:', content);
+    }, [content, lastUpdated]);
+    
     const businessName = content?.headline || formData?.businessName || "שם העסק"
     const businessStory = content?.subheadline || formData?.businessStory || "הסיפור שלנו מתחיל כאן"
     const mainServices = content?.description || formData?.mainServices || "השירותים המובילים שלנו"
@@ -19,6 +26,8 @@ export const HeroSectionClean = ({ formData, currentColors, content }: HeroSecti
     
     // Enhanced styling functions that use content values with dynamic colors
     const getTextStyleClasses = (style: string, defaultColor?: string) => {
+      console.log('Getting text style classes for:', style);
+      
       // Use dynamic colors from content if available
       if (content?.accentColor) {
         const colorMap: Record<string, string> = {
@@ -64,6 +73,8 @@ export const HeroSectionClean = ({ formData, currentColors, content }: HeroSecti
     };
 
     const getBadgeStyleClasses = (style: string) => {
+      console.log('Getting badge style classes for:', style);
+      
       // Use dynamic colors
       if (content?.accentColor && (!style || style === 'default')) {
         const colorMap: Record<string, string> = {
@@ -104,6 +115,8 @@ export const HeroSectionClean = ({ formData, currentColors, content }: HeroSecti
     };
 
     const getButtonStyleClasses = (style: string) => {
+      console.log('Getting button style classes for:', style);
+      
       // Use dynamic colors for default buttons
       if (content?.accentColor && (!style || style === 'default')) {
         const colorMap: Record<string, string> = {
@@ -144,6 +157,8 @@ export const HeroSectionClean = ({ formData, currentColors, content }: HeroSecti
     };
 
     const getBackgroundClasses = (style: string) => {
+      console.log('Getting background classes for:', style);
+      
       // Use dynamic colors for backgrounds
       if (content?.accentColor && (!style || style === 'default')) {
         const colorMap: Record<string, string> = {
@@ -178,7 +193,7 @@ export const HeroSectionClean = ({ formData, currentColors, content }: HeroSecti
     };
     
     return (
-        <div className={`min-h-screen ${getBackgroundClasses(content?.backgroundStyle)}`} dir="rtl">
+        <div key={lastUpdated} className={`min-h-screen ${getBackgroundClasses(content?.backgroundStyle)}`} dir="rtl">
             <header>
                 <nav
                     data-state={menuState && 'active'}
@@ -278,7 +293,7 @@ export const HeroSectionClean = ({ formData, currentColors, content }: HeroSecti
                                     content.buttons.map((button: any, index: number) => (
                                         button.visible !== false && (
                                             <button
-                                                key={index}
+                                                key={`${index}-${lastUpdated}`}
                                                 className={`px-6 py-3 rounded-lg text-lg font-medium transition-all duration-300 ${getButtonStyleClasses(button.style)} ${button.textStyle && button.textStyle !== 'default' ? getTextStyleClasses(button.textStyle) : ''}`}
                                             >
                                                 {button.text || `כפתור ${index + 1}`}

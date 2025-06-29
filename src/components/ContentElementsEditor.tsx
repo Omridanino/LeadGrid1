@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -36,18 +35,23 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
   }, [content]);
 
   const handleContentUpdate = (newContent: any) => {
-    console.log('Updating content:', newContent);
+    console.log('Real-time content update:', newContent);
     setLocalContent(newContent);
-    // עדכון מיידי בתצוגה המקדימה
+    // Immediate update to parent component
     onContentChange(newContent);
-    // שמירה אוטומטית בlocalStorage
+    // Auto-save to localStorage
     localStorage.setItem('generatedContent', JSON.stringify(newContent));
+    // Force a re-render by updating the timestamp
+    newContent._lastUpdated = Date.now();
+    // Trigger additional update for immediate visual feedback
+    setTimeout(() => onContentChange({...newContent}), 10);
   };
 
   const handleTextChange = (field: string, value: string) => {
     const newContent = {
       ...localContent,
-      [field]: value
+      [field]: value,
+      _lastUpdated: Date.now()
     };
     handleContentUpdate(newContent);
   };
@@ -55,23 +59,28 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
   const handleStyleChange = (field: string, value: string) => {
     const newContent = {
       ...localContent,
-      [`${field}Style`]: value
+      [`${field}Style`]: value,
+      _lastUpdated: Date.now()
     };
+    console.log(`Style changed: ${field}Style = ${value}`);
     handleContentUpdate(newContent);
   };
 
   const handleBackgroundChange = (value: string) => {
     const newContent = {
       ...localContent,
-      backgroundStyle: value
+      backgroundStyle: value,
+      _lastUpdated: Date.now()
     };
+    console.log('Background style changed to:', value);
     handleContentUpdate(newContent);
   };
 
   const handleAccentColorChange = (value: string) => {
     const newContent = {
       ...localContent,
-      accentColor: value
+      accentColor: value,
+      _lastUpdated: Date.now()
     };
     console.log('Accent color changed to:', value);
     handleContentUpdate(newContent);
@@ -84,7 +93,8 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     }
     const newContent = {
       ...localContent,
-      buttons
+      buttons,
+      _lastUpdated: Date.now()
     };
     handleContentUpdate(newContent);
   };
@@ -100,7 +110,8 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     });
     const newContent = {
       ...localContent,
-      buttons
+      buttons,
+      _lastUpdated: Date.now()
     };
     handleContentUpdate(newContent);
   };
@@ -110,7 +121,8 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     buttons.splice(index, 1);
     const newContent = {
       ...localContent,
-      buttons
+      buttons,
+      _lastUpdated: Date.now()
     };
     handleContentUpdate(newContent);
   };
@@ -122,7 +134,8 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     }
     const newContent = {
       ...localContent,
-      buttons
+      buttons,
+      _lastUpdated: Date.now()
     };
     handleContentUpdate(newContent);
   };
@@ -360,7 +373,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
         </CardContent>
       </Card>
 
-      {/* Buttons Editor - Enhanced */}
+      {/* Buttons Editor */}
       <Card className="bg-gray-800 border-gray-700">
         <CardHeader className="pb-2">
           <CardTitle className="text-white text-sm flex items-center gap-2">
