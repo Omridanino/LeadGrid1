@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/types/colors";
@@ -21,7 +22,6 @@ import { HeroSectionLamp } from "@/components/ui/hero-section-lamp";
 import { HeroSectionRetro } from "@/components/ui/hero-section-retro";
 import { HeroFluidBlobs } from "@/components/ui/hero-fluid-blobs";
 import { HeroIsometricIllustration } from "@/components/ui/hero-isometric-illustration";
-import { HeroGeometricShapes } from "@/components/ui/hero-geometric-shapes";
 import { HeroNeumorphism } from "@/components/ui/hero-neumorphism";
 import { HeroMinimalTech } from "@/components/ui/hero-minimal-tech";
 import { ArrowLeft, Play, Shield, Zap, Award, Star } from "lucide-react";
@@ -436,17 +436,22 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
   }
 
   
-  // 3D Tech Design Style - עם סגנונות מותאמים אישית + הסגנונות החדשים
+  // 3D Tech Design Style - Force sequential testing mode for debugging
   if (designStyle === '3d-tech') {
     const [selectedDesign, setSelectedDesign] = useState(0);
 
     useEffect(() => {
-      // Randomly select one of the 14 available 3D designs (9 existing + 5 new)
-      const totalDesigns = 14;
-      setSelectedDesign(Math.floor(Math.random() * totalDesigns));
+      // For testing, cycle through all designs every 5 seconds
+      const interval = setInterval(() => {
+        setSelectedDesign(prev => (prev + 1) % 14);
+      }, 5000);
+      
+      return () => clearInterval(interval);
     }, []);
 
-    // Design 0: Spline 3D Scene with custom styles - Split Layout
+    const customContentProps = getCustomContentProps();
+
+    // Design 0: Spline 3D Scene - SUPPORTS FULL CONTENT EDITOR
     if (selectedDesign === 0) {
       return (
         <section className="relative overflow-hidden min-h-screen bg-black/[0.96]">
@@ -490,7 +495,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                       className="px-6 py-3 rounded-lg font-semibold transition"
                       style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
                     >
-                      {content?.cta || 'haledו עכשיו'}
+                      {content?.cta || 'התחלו עכשיו'}
                     </button>
                   )}
                 </div>
@@ -508,7 +513,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 1: Chrome Grid with custom styles
+    // Design 1: Chrome Grid - SUPPORTS FULL CONTENT EDITOR  
     if (selectedDesign === 1) {
       return (
         <div className="h-screen w-screen relative">
@@ -555,6 +560,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
+    // Design 2: Aurora Grid - SUPPORTS FULL CONTENT EDITOR
     if (selectedDesign === 2) {
       return (
         <section className="relative grid min-h-screen place-content-center overflow-hidden bg-gray-950 px-4 py-24 text-gray-200">
@@ -577,14 +583,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               className="max-w-4xl text-center text-4xl md:text-7xl font-medium leading-tight mb-6"
               style={getTextStyle('headline')}
             >
-              {content?.headline || formData?.businessName || 'the future is now'}
+              {content?.headline || formData?.businessName || 'העתיד כאן עכשיו'}
             </h1>
             
             <p 
               className="my-6 max-w-2xl text-center text-lg leading-relaxed"
               style={getTextStyle('subheadline')}
             >
-              {content?.subheadline || 'a digital experience that brings your business to the future with cutting-edge technologies'}
+              {content?.subheadline || 'חוויה דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש עם טכנולוגיות חדשניות'}
             </p>
             
             <div className="flex gap-4 justify-center flex-wrap">
@@ -597,14 +603,13 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                     boxShadow: '0px 4px 24px rgba(19, 255, 170, 0.3)'
                   }}
                 >
-                  {content?.cta || 'come in'}
+                  {content?.cta || 'היכנסו'}
                   <ArrowLeft className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
                 </button>
               )}
             </div>
           </div>
 
-          
           <div className="absolute inset-0 z-0">
             {[...Array(100)].map((_, i) => (
               <div
@@ -623,7 +628,52 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
+    // Design 3: Fluid Blobs - SUPPORTS FULL CONTENT EDITOR
     if (selectedDesign === 3) {
+      return (
+        <HeroFluidBlobs
+          formData={formData}
+          currentColors={currentColors}
+          content={customContentProps}
+        />
+      );
+    }
+
+    // Design 4: Minimal Tech - SUPPORTS FULL CONTENT EDITOR
+    if (selectedDesign === 4) {
+      return (
+        <HeroMinimalTech
+          formData={formData}
+          currentColors={currentColors}
+          content={customContentProps}
+        />
+      );
+    }
+
+    // Design 5: Neumorphism - SUPPORTS FULL CONTENT EDITOR
+    if (selectedDesign === 5) {
+      return (
+        <HeroNeumorphism
+          formData={formData}
+          currentColors={currentColors}
+          content={customContentProps}
+        />
+      );
+    }
+
+    // Design 6: Isometric Illustration - SUPPORTS PARTIAL CONTENT EDITOR (Limited Button Support)
+    if (selectedDesign === 6) {
+      return (
+        <HeroIsometricIllustration
+          formData={formData}
+          currentColors={currentColors}
+          content={customContentProps}
+        />
+      );
+    }
+
+    // Design 7: Lava Lamp - LIMITED CONTENT EDITOR SUPPORT
+    if (selectedDesign === 7) {
       return (
         <div className="h-screen w-screen flex flex-col justify-center items-center relative">
           <LavaLamp />
@@ -642,14 +692,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               className="text-6xl md:text-8xl font-bold tracking-tight whitespace-nowrap mb-6"
               style={getTextStyle('headline')}
             >
-              {content?.headline || formData?.businessName || 'dreams of the digital'}
+              {content?.headline || formData?.businessName || 'חלומות דיגיטליים'}
             </h1>
             
             <p 
               className="text-lg md:text-xl text-center max-w-2xl leading-relaxed mb-8 px-4"
               style={getTextStyle('subheadline')}
             >
-              {content?.subheadline || 'the computers receive a shape and the information flows like a coin of the realm'}
+              {content?.subheadline || 'שם המחשבות מקבלות צורה והמידע זורם כמו כספית נוזלית'}
             </p>
             
             <div className="flex gap-4 justify-center">
@@ -660,7 +710,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   className="px-8 py-4 rounded-lg font-bold transition"
                   style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
                 >
-                  {content?.cta || 'come in'}
+                  {content?.cta || 'היכנסו לזרימה'}
                 </button>
               )}
             </div>
@@ -669,7 +719,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    if (selectedDesign === 4) {
+    // Design 8: Rubik's Cube - LIMITED CONTENT EDITOR SUPPORT
+    if (selectedDesign === 8) {
       return (
         <div className="h-screen w-screen relative flex flex-col justify-center items-center">
           <div className="absolute inset-0">
@@ -690,14 +741,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               className="text-6xl md:text-8xl font-bold mb-6 tracking-tight"
               style={getTextStyle('headline')}
             >
-              {content?.headline || formData?.businessName || 'solution for complex problems'}
+              {content?.headline || formData?.businessName || 'פתרון לבעיות מורכבות'}
             </h1>
             
             <p 
               className="text-lg md:text-xl max-w-2xl px-6 leading-relaxed mb-8"
               style={getTextStyle('subheadline')}
             >
-              {content?.subheadline || 'one piece at a time - we solve the most complex problems'}
+              {content?.subheadline || 'חלק אחר חלק - אנחנו פותרים את הבעיות הכי מורכבות'}
             </p>
             
             <div className="flex gap-4 justify-center">
@@ -708,7 +759,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   className="px-8 py-4 rounded-lg font-bold transition"
                   style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
                 >
-                  {content?.cta || 'solve with us'}
+                  {content?.cta || 'פתרו איתנו'}
                 </button>
               )}
             </div>
@@ -717,13 +768,13 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    if (selectedDesign === 5) {
+    // Design 9: 3D Robot - LIMITED CONTENT EDITOR SUPPORT  
+    if (selectedDesign === 9) {
       const ROBOT_SCENE_URL = "https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode";
       
       return (
         <div className="relative w-screen h-screen overflow-hidden">
           <div className="flex h-screen">
-            {/* Left side - 3D Robot */}
             <div className="flex-1 relative">
               <InteractiveRobotSpline
                 scene={ROBOT_SCENE_URL}
@@ -731,7 +782,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               />
             </div>
 
-            {/* Right side - Content */}
             <div className="flex-1 relative z-10 p-8 flex flex-col justify-center">
               <div className="max-w-2xl text-white drop-shadow-lg">
                 {content?.badge && (
@@ -742,11 +792,11 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 )}
                 
                 <h1 className={`text-4xl md:text-6xl font-bold mb-6`} style={getTextStyle('headline')}>
-                  {content?.headline || formData?.businessName || 'interactive 3D robot'}
+                  {content?.headline || formData?.businessName || 'רובוט אינטראקטיבי תלת מימדי'}
                 </h1>
                 
                 <p className={`text-lg leading-relaxed mb-8`} style={getTextStyle('subheadline')}>
-                  {content?.subheadline || 'an advanced interactive experience with 3D technology'}
+                  {content?.subheadline || 'חוויה אינטראקטיבית מתקדמת עם טכנולוגיית תלת מימד'}
                 </p>
                 
                 <div className="flex gap-4">
@@ -757,7 +807,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                       className="px-8 py-4 rounded-lg font-bold transition"
                       style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
                     >
-                      {content?.cta || 'explore the robot'}
+                      {content?.cta || 'חקרו את הרובוט'}
                     </button>
                   )}
                 </div>
@@ -768,12 +818,13 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    if (selectedDesign === 6) {
+    // Design 10: Background Circles - LIMITED CONTENT EDITOR SUPPORT
+    if (selectedDesign === 10) {
       return (
         <div className="relative w-screen h-screen overflow-hidden bg-black">
           <BackgroundCircles
-            title={content?.headline || formData?.businessName || 'background circles'}
-            description={content?.subheadline || content?.description || 'advanced geometric design with animated grids'}
+            title={content?.headline || formData?.businessName || 'עיגולי רקע'}
+            description={content?.subheadline || content?.description || 'עיצוב גיאומטרי מתקדם עם רשתות מונפשות'}
             variant="primary"
           />
           
@@ -793,7 +844,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   className="px-8 py-4 rounded-lg font-bold transition"
                   style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
                 >
-                  {content?.cta || 'experience'}
+                  {content?.cta || 'חוו את החוויה'}
                 </button>
               )}
             </div>
@@ -802,13 +853,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    if (selectedDesign === 7) {
+    // Design 11: Horizon - LIMITED CONTENT EDITOR SUPPORT
+    if (selectedDesign === 11) {
       return (
         <div className="relative w-screen h-screen overflow-hidden">
           <HorizonHeroSection
-            title={content?.headline || formData?.businessName || 'HORIZON'}
-            subtitle1={content?.subheadline || 'Where vision meets reality,'}
-            subtitle2={content?.description || 'we shape the future of tomorrow'}
+            title={content?.headline || formData?.businessName || 'אופק'}
+            subtitle1={content?.subheadline || 'שם החזון פוגש את המציאות,'}
+            subtitle2={content?.description || 'אנחנו מעצבים את העתיד של מחר'}
             className="absolute inset-0"
           />
           
@@ -821,7 +873,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   className="px-8 py-4 rounded-lg font-bold transition"
                   style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
                 >
-                  {content?.cta || 'explore the horizon'}
+                  {content?.cta || 'חקרו את האופק'}
                 </button>
               )}
             </div>
@@ -830,13 +882,12 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    if (selectedDesign === 8) {
+    // Design 12: Advanced 3D Element - LIMITED CONTENT EDITOR SUPPORT
+    if (selectedDesign === 12) {
       return (
         <div className="relative w-screen h-screen overflow-hidden bg-black">
-          {/* Background 3D Element - Enlarged x1.8 with continuous movement */}
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
             <div className="relative">
-              {/* Main floating image - enlarged by 1.8 with continuous non-repeating movement */}
               <div 
                 className="w-[1080px] h-[1080px] relative opacity-40"
                 style={{
@@ -854,7 +905,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 />
               </div>
 
-              {/* Floating particles around the image - fewer and smaller */}
               {[...Array(8)].map((_, i) => (
                 <div
                   key={i}
@@ -868,7 +918,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 />
               ))}
 
-              {/* Orbital rings - continuous rotation */}
               <div 
                 className="absolute inset-0 border border-white/10 rounded-full"
                 style={{
@@ -891,7 +940,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               />
             </div>
 
-            {/* Background glow effect - continuous pulse */}
             <div 
               className="absolute inset-0 bg-gradient-radial from-blue-900/20 via-purple-900/10 to-transparent"
               style={{
@@ -900,7 +948,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             />
           </div>
 
-          {/* Main Content - Centered over the background */}
           <div className="relative z-30 h-full flex flex-col justify-center items-center text-center px-8">
             <div className="max-w-4xl text-white">
               {content?.badge && (
@@ -911,11 +958,11 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               )}
               
               <h1 className={`text-4xl md:text-6xl lg:text-7xl font-bold mb-6`} style={getTextStyle('headline')}>
-                {content?.headline || formData?.businessName || 'Build Your Dreams'}
+                {content?.headline || formData?.businessName || 'בנו את החלומות שלכם'}
               </h1>
               
               <p className={`text-lg md:text-xl leading-relaxed mb-8 max-w-2xl mx-auto`} style={getTextStyle('subheadline')}>
-                {content?.subheadline || content?.description || 'AI-powered creativity for the next generation.'}
+                {content?.subheadline || content?.description || 'יצירתיות מונעת בינה מלאכותית לדור הבא.'}
               </p>
               
               <div className="flex gap-4 justify-center flex-wrap">
@@ -926,14 +973,13 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                     className="px-8 py-4 rounded-lg font-bold transition"
                     style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
                   >
-                    {content?.cta || 'explore now'}
+                    {content?.cta || 'חקרו עכשיו'}
                   </button>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Custom CSS for continuous animations */}
           <style>{`
             @keyframes continuousFloat {
               0% { transform: translateY(0px) translateX(0px) scale(1); }
@@ -996,60 +1042,30 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // New Design 9: Fluid Blobs
-    if (selectedDesign === 9) {
-      return (
-        <HeroFluidBlobs
-          formData={formData}
-          currentColors={currentColors}
-          content={content}
-        />
-      );
-    }
-
-    // New Design 10: Isometric Illustration
-    if (selectedDesign === 10) {
-      return (
-        <HeroIsometricIllustration
-          formData={formData}
-          currentColors={currentColors}
-          content={content}
-        />
-      );
-    }
-
-    // New Design 11: Geometric Shapes
-    if (selectedDesign === 11) {
-      return (
-        <HeroGeometricShapes
-          formData={formData}
-          currentColors={currentColors}
-          content={content}
-        />
-      );
-    }
-
-    // New Design 12: Neumorphism
-    if (selectedDesign === 12) {
-      return (
-        <HeroNeumorphism
-          formData={formData}
-          currentColors={currentColors}
-          content={content}
-        />
-      );
-    }
-
-    // New Design 13: Minimal Tech
-    if (selectedDesign === 13) {
-      return (
-        <HeroMinimalTech
-          formData={formData}
-          currentColors={currentColors}
-          content={content}
-        />
-      );
-    }
+    // Design 13: Show current design info
+    return (
+      <div className="h-screen w-screen bg-black text-white flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-4">בודק עיצוב תלת מימדי #{selectedDesign}</h1>
+          <p className="text-xl mb-8">
+            {selectedDesign === 0 && "Spline 3D Scene - תמיכה מלאה בעורך תוכן"}
+            {selectedDesign === 1 && "Chrome Grid - תמיכה מלאה בעורך תוכן"}
+            {selectedDesign === 2 && "Aurora Grid - תמיכה מלאה בעורך תוכן"}
+            {selectedDesign === 3 && "Fluid Blobs - תמיכה מלאה בעורך תוכן"}
+            {selectedDesign === 4 && "Minimal Tech - תמיכה מלאה בעורך תוכן"}
+            {selectedDesign === 5 && "Neumorphism - תמיכה מלאה בעורך תוכן"}
+            {selectedDesign === 6 && "Isometric Illustration - תמיכה חלקית בעורך תוכן"}
+            {selectedDesign === 7 && "Lava Lamp - תמיכה מוגבלת בעורך תוכן"}
+            {selectedDesign === 8 && "Rubik's Cube - תמיכה מוגבלת בעורך תוכן"}
+            {selectedDesign === 9 && "3D Robot - תמיכה מוגבלת בעורך תוכן"}
+            {selectedDesign === 10 && "Background Circles - תמיכה מוגבלת בעורך תוכן"}
+            {selectedDesign === 11 && "Horizon - תמיכה מוגבלת בעורך תוכן"}
+            {selectedDesign === 12 && "Advanced 3D Element - תמיכה מוגבלת בעורך תוכן"}
+          </p>
+          <p className="text-lg">הבדיקה תעבור לעיצוב הבא תוך 5 שניות...</p>
+        </div>
+      </div>
+    );
   }
 
   // Fallback to basic design with custom styles
