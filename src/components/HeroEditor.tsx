@@ -9,23 +9,39 @@ import EditPopup from "./EditPopup";
 interface HeroEditorProps {
   content: any;
   onContentChange: (newContent: any) => void;
+  formData?: any;
 }
 
-const HeroEditor = ({ content, onContentChange }: HeroEditorProps) => {
-  const [localContent, setLocalContent] = useState(content);
+const HeroEditor = ({ content, onContentChange, formData }: HeroEditorProps) => {
+  console.log("HeroEditor - content:", content);
+  console.log("HeroEditor - formData:", formData);
+
+  // Initialize with safe defaults
+  const safeContent = content || {
+    headline: formData?.businessName || '',
+    subheadline: '',
+    cta: 'בואו נתחיל',
+    badge: '',
+    stats: {}
+  };
+
+  const [localContent, setLocalContent] = useState(safeContent);
 
   const updateLocalContent = (field: string, value: string) => {
-    setLocalContent({ ...localContent, [field]: value });
+    const updated = { ...localContent, [field]: value };
+    setLocalContent(updated);
   };
 
   const updateStats = (key: string, value: string) => {
-    setLocalContent({ 
+    const updated = { 
       ...localContent, 
       stats: { ...localContent.stats, [key]: value } 
-    });
+    };
+    setLocalContent(updated);
   };
 
   const handleSave = () => {
+    console.log("Saving hero content:", localContent);
     onContentChange(localContent);
   };
 
