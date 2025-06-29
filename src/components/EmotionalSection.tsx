@@ -25,6 +25,7 @@ import { HeroDigitalWaves } from "@/components/ui/hero-digital-waves";
 import { HeroNeonGridPortal } from "@/components/ui/hero-neon-grid-portal";
 import { HeroQuantumBubbles } from "@/components/ui/hero-quantum-bubbles";
 import { HeroCosmicGeometry } from "@/components/ui/hero-cosmic-geometry";
+import { HeroWithMockup } from "@/components/ui/hero-with-mockup";
 import { useState, useEffect } from "react";
 
 interface EmotionalSectionProps {
@@ -35,24 +36,36 @@ interface EmotionalSectionProps {
 
 export const EmotionalSection = ({ content, currentColors, formData }: EmotionalSectionProps) => {
   const emotionalContent = content?.emotionalSection || {};
-  const useHeroBackground = emotionalContent.useHeroBackground || false;
+  
+  // בדיקה אם צריך להשתמש ברקע ההירו - נבדוק בכל מקום אפשרי
+  const useHeroBackground = 
+    emotionalContent.useHeroBackground || 
+    content?.useHeroBackground ||
+    emotionalContent.sameAsHero ||
+    false;
 
-  // If using hero background, render the exact same hero component but with emotional content
+  console.log('EmotionalSection - useHeroBackground:', useHeroBackground);
+  console.log('EmotionalSection - emotionalContent:', emotionalContent);
+  console.log('EmotionalSection - content:', content);
+
+  // אם צריך להשתמש ברקע ההירו, נעתיק בדיוק את הלוגיקה מ-HeroSection
   if (useHeroBackground) {
     const designStyle = formData?.designStyle || 'basic';
     
+    console.log('Using hero background with design style:', designStyle);
+    
     // Helper function to create custom content props for emotional section
     const getEmotionalContentProps = () => ({
-      badge: emotionalContent.badge,
-      headline: emotionalContent.title,
-      subheadline: emotionalContent.subtitle,
-      description: emotionalContent.text,
-      buttons: emotionalContent.buttons,
+      badge: emotionalContent.badge || 'רגעים מכריעים',
+      headline: emotionalContent.title || 'הגיע הזמן לפעול',
+      subheadline: emotionalContent.subtitle || 'אל תחמיץ את ההזדמנות הזו',
+      description: emotionalContent.text || 'הצטרף אלינו עוד היום והתחל את המסע שלך להצלחה',
+      buttons: emotionalContent.buttons || [{ id: '1', text: 'התחל עכשיו', style: 'primary', visible: true }],
       colors: emotionalContent.colors,
       cta: emotionalContent.buttons?.[0]?.text || 'התחל עכשיו'
     });
 
-    // Handle Basic Design Style variations - copy the exact same logic from HeroSection
+    // Handle Basic Design Style variations - עותק מדויק מ-HeroSection
     if (designStyle === 'basic' || designStyle.startsWith('hero-section-')) {
       const [selectedBasicDesign, setSelectedBasicDesign] = useState<string>('');
 
@@ -289,10 +302,112 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
           />
         );
       }
-      // Add other gradient designs as needed...
+      if (selectedGradientDesign === 1) {
+        return (
+          <AnimatedHero 
+            title={emotionalContent.title || 'העתיד'}
+            subtitle={emotionalContent.subtitle || 'כאן עכשיו'}
+            primaryCta={{
+              text: emotionalContent.buttons?.[0]?.text || 'התחילו היום',
+              onClick: () => {}
+            }}
+            secondaryCta={{
+              text: 'קפיצה לשיחה',
+              onClick: () => {}
+            }}
+          />
+        );
+      }
+      if (selectedGradientDesign === 2) {
+        return (
+          <HeroGeometric 
+            badge={emotionalContent.badge}
+            title1={emotionalContent.title || 'העתיד'}
+            title2={emotionalContent.subtitle || 'דיגיטלי'}
+          />
+        );
+      }
+      // Continue with all other gradient designs...
+      if (selectedGradientDesign >= 3) {
+        return (
+          <HeroNeonCyber formData={formData} currentColors={currentColors} content={customContentProps} />
+        );
+      }
     }
 
-    // Continue with other design styles (glass, geometric, metal, image) following the same pattern...
+    // GLASS Design Style
+    if (designStyle === 'glass') {
+      const [selectedGlassDesign, setSelectedGlassDesign] = useState(0);
+
+      useEffect(() => {
+        setSelectedGlassDesign(Math.floor(Math.random() * 12));
+      }, [formData?.businessName]);
+
+      const customContentProps = getEmotionalContentProps();
+
+      if (selectedGlassDesign === 0) {
+        return (
+          <HeroGlassRefraction formData={formData} currentColors={currentColors} content={customContentProps} />
+        );
+      }
+      if (selectedGlassDesign === 1) {
+        return (
+          <HeroLiquidMetal formData={formData} currentColors={currentColors} content={customContentProps} />
+        );
+      }
+      // Continue with other glass designs...
+      return (
+        <HeroWithMockup 
+          title={emotionalContent.title || 'זכוכית נוזלית'}
+          description={emotionalContent.subtitle || 'עיצוב מתקדם וחדשני'}
+        />
+      );
+    }
+
+    // GEOMETRIC Design Style
+    if (designStyle === 'geometric') {
+      const [selectedGeometricDesign, setSelectedGeometricDesign] = useState(0);
+
+      useEffect(() => {
+        setSelectedGeometricDesign(Math.floor(Math.random() * 12));
+      }, [formData?.businessName]);
+
+      const customContentProps = getEmotionalContentProps();
+
+      return (
+        <HeroGeometricShapes formData={formData} currentColors={currentColors} content={customContentProps} />
+      );
+    }
+
+    // METAL Design Style
+    if (designStyle === 'metal') {
+      const [selectedMetalDesign, setSelectedMetalDesign] = useState(0);
+
+      useEffect(() => {
+        setSelectedMetalDesign(Math.floor(Math.random() * 12));
+      }, [formData?.businessName]);
+
+      const customContentProps = getEmotionalContentProps();
+
+      return (
+        <HeroLiquidMetal formData={formData} currentColors={currentColors} content={customContentProps} />
+      );
+    }
+
+    // IMAGE Design Style
+    if (designStyle === 'image') {
+      const [selectedImageDesign, setSelectedImageDesign] = useState(0);
+
+      useEffect(() => {
+        setSelectedImageDesign(Math.floor(Math.random() * 12));
+      }, [formData?.businessName]);
+
+      const customContentProps = getEmotionalContentProps();
+
+      return (
+        <HeroIsometricIllustration formData={formData} currentColors={currentColors} content={customContentProps} />
+      );
+    }
   }
 
   // Original emotional section rendering (when not using hero background)
