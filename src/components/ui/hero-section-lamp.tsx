@@ -18,11 +18,24 @@ export const HeroSectionLamp = ({ formData, currentColors, content }: HeroSectio
     const mainServices = content?.description || formData?.mainServices || "טכנולוגיה מתקדמת עם עיצוב מרהיב ותוכן איכותי שיקדם את העסק שלכם קדימה"
     const badgeText = content?.badge || ""
     
-    // Enhanced styling functions with ALL colors working - COMPLETELY UPDATED
+    // Enhanced styling functions with support for custom colors
     const getTextStyleClasses = (style: string) => {
       console.log('HeroSectionLamp - getTextStyleClasses called with:', style);
       
       if (!style || style === 'default') return "text-slate-300";
+      
+      // Handle custom colors
+      if (style.startsWith('custom-')) {
+        const color = style.replace('custom-', '');
+        if (color.startsWith('gradient-')) {
+          const gradientParts = color.replace('gradient-', '').split('-');
+          if (gradientParts.length >= 2) {
+            return `bg-gradient-to-r from-[${gradientParts[0]}] to-[${gradientParts[1]}] bg-clip-text text-transparent`;
+          }
+        } else if (color.startsWith('#')) {
+          return `text-[${color}]`;
+        }
+      }
       
       switch (style) {
         // Basic colors - English and Hebrew
@@ -126,6 +139,19 @@ export const HeroSectionLamp = ({ formData, currentColors, content }: HeroSectio
       
       if (!style || style === 'default') return "bg-cyan-500 text-white";
       
+      // Handle custom colors
+      if (style.startsWith('custom-')) {
+        const color = style.replace('custom-', '');
+        if (color.startsWith('gradient-')) {
+          const gradientParts = color.replace('gradient-', '').split('-');
+          if (gradientParts.length >= 2) {
+            return `bg-gradient-to-r from-[${gradientParts[0]}] to-[${gradientParts[1]}] text-white border-0`;
+          }
+        } else if (color.startsWith('#')) {
+          return `bg-[${color}] text-white`;
+        }
+      }
+      
       switch (style) {
         case "black-on-white":
         case "שחור על לבן":
@@ -182,6 +208,19 @@ export const HeroSectionLamp = ({ formData, currentColors, content }: HeroSectio
       console.log('HeroSectionLamp - getButtonStyleClasses called with:', style);
       
       if (!style || style === 'default') return "bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700";
+      
+      // Handle custom colors
+      if (style.startsWith('custom-')) {
+        const color = style.replace('custom-', '');
+        if (color.startsWith('gradient-')) {
+          const gradientParts = color.replace('gradient-', '').split('-');
+          if (gradientParts.length >= 2) {
+            return `bg-gradient-to-r from-[${gradientParts[0]}] to-[${gradientParts[1]}] text-white border-0 hover:opacity-90`;
+          }
+        } else if (color.startsWith('#')) {
+          return `bg-[${color}] text-white hover:opacity-90`;
+        }
+      }
       
       switch (style) {
         case "black-on-white":
