@@ -23,7 +23,6 @@ import { ArrowLeft, Play, Shield, Zap, Award, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { HeroDesignAli } from "@/components/ui/hero-designali";
 import { HeroFuturistic } from "@/components/ui/hero-futuristic";
-import ScrollExpandMedia from "@/components/ui/scroll-expansion-hero";
 
 interface HeroSectionProps {
   content: any;
@@ -391,8 +390,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     const [selectedDesign, setSelectedDesign] = useState(0);
 
     useEffect(() => {
-      // Randomly select one of the 11 3D designs (removed HeroParallax)
-      setSelectedDesign(Math.floor(Math.random() * 11));
+      // Randomly select one of the 10 3D designs (removed ScrollExpandMedia)
+      setSelectedDesign(Math.floor(Math.random() * 10));
     }, []);
 
     // Design 1: Spline 3D Scene with custom styles
@@ -876,48 +875,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               </button>
             ))}
           </div>
-        </div>
-      );
-    }
-
-    if (selectedDesign === 10) {
-      return (
-        <div className="relative w-screen h-screen overflow-hidden">
-          <ScrollExpandMedia
-            mediaType="video"
-            title={content?.headline || formData?.businessName || 'Immersive Experience'}
-            date={content?.badge || 'Digital Journey'}
-            scrollToExpand="Scroll to Expand"
-            textBlend={true}
-          >
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-6 text-white">
-                {content?.subheadline || 'About This Experience'}
-              </h2>
-              <p className="text-lg mb-8 text-white/80">
-                {content?.description || 'This is a demonstration of interactive scroll-based expansion effects with immersive media content.'}
-              </p>
-              
-              <div className="flex gap-4 justify-center">
-                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                  <button 
-                    key={index}
-                    className="px-8 py-4 rounded-lg font-bold transition"
-                    style={getButtonStyle(button.color)}
-                  >
-                    {button.text}
-                  </button>
-                )) || (
-                  <button 
-                    className="px-8 py-4 rounded-lg font-bold transition"
-                    style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                  >
-                    {content?.cta || 'explore more'}
-                  </button>
-                )}
-              </div>
-            </div>
-          </ScrollExpandMedia>
         </div>
       );
     }
