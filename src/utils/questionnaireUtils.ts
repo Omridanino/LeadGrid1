@@ -1,4 +1,3 @@
-
 export interface FormData {
   businessName: string;
   businessType: string;
@@ -34,9 +33,33 @@ export const initialFormData: FormData = {
   mainGoal: "",
   keyFeatures: "",
   contactInfo: "",
-  designStyle: "3d-tech",
+  designStyle: "gradient",
   navigationStyle: "floating",
   selectedElements: []
+};
+
+export const validateDesignStyle = (style: string): boolean => {
+  const validStyles = ['3d-tech', 'gradient', 'glass', 'geometric', 'metal', 'image'];
+  return validStyles.includes(style);
+};
+
+export const getDesignStyleDescription = (style: string): string => {
+  switch (style) {
+    case '3d-tech':
+      return 'עיצוב טכנולוגי מתקדם עם אפקטים תלת-מימדיים מרשימים - מושלם לעסקים חדשניים ומתקדמים';
+    case 'gradient':
+      return 'עיצובים גרדיאנט מתקדמים עם אפקטים תלת-מימדיים צבעוניים ומרהיבים';
+    case 'glass':
+      return 'עיצובים נוזליים וזכוכית עם אפקטים שקופים ומרהיבים';
+    case 'geometric':
+      return 'עיצובים גיאומטריים עם צורות מתמטיות ואפקטים גיאומטריים';
+    case 'metal':
+      return 'עיצובים מתכתיים עם מראה מלוטש ואלגנטי';
+    case 'image':
+      return 'עיצובים עם תמונות תלת-מימדיות ואפקטים חזותיים מרהיבים';
+    default:
+      return 'עיצוב מתקדם ומרהיב';
+  }
 };
 
 export const getStepTitle = (step: number): string => {
@@ -65,13 +88,4 @@ export const validateRequiredFields = (formData: FormData): boolean => {
     formData.competitionDifference &&
     formData.targetAudience
   );
-};
-
-export const validateDesignStyle = (style: string): boolean => {
-  const validStyles = ['3d-tech'];
-  return validStyles.includes(style);
-};
-
-export const getDesignStyleDescription = (style: string): string => {
-  return 'עיצוב טכנולוגי מתקדם עם אפקטים תלת-מימדיים מרשימים - מושלם לעסקים חדשניים ומתקדמים';
 };
