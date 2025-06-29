@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -140,8 +141,12 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     handleContentUpdate(newContent);
   };
 
-  // Enhanced text styling options for all elements
+  // Enhanced text styling options - מעודכן עם כל הצבעים החדשים
   const getTextStyleClasses = (style: string) => {
+    console.log('ContentElementsEditor - getTextStyleClasses called with:', style);
+    
+    if (!style || style === 'default') return "text-white";
+    
     switch (style) {
       case "black-text": return "text-black";
       case "white-text": return "text-white";
@@ -160,29 +165,48 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
       case "gradient-red-text": return "bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent";
       case "gradient-cyan-text": return "bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent";
       case "gradient-rainbow-text": return "bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 bg-clip-text text-transparent";
-      default: return "text-white";
+      case "gradient-blue-ocean": return "bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent";
+      case "gradient-green-nature": return "bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent";
+      case "gradient-red-fire": return "bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent";
+      case "gradient-pink-sunset": return "bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent";
+      case "gradient-gold-black": return "bg-gradient-to-r from-yellow-400 to-black bg-clip-text text-transparent";
+      case "gradient-gold-white": return "bg-gradient-to-r from-yellow-400 to-white bg-clip-text text-transparent";
+      case "gradient-purple-tech": return "bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent";
+      case "neon-blue": return "text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]";
+      case "neon-green": return "text-green-400 drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]";
+      case "neon-purple": return "text-purple-400 drop-shadow-[0_0_10px_rgba(168,85,247,0.8)]";
+      case "neon-pink": return "text-pink-400 drop-shadow-[0_0_10px_rgba(236,72,153,0.8)]";
+      default: 
+        console.log('ContentElementsEditor - Unknown text style, using default:', style);
+        return "text-white";
     }
   };
 
-  // Enhanced button and tag styling options
+  // Enhanced button and tag styling options - מעודכן עם כל הצבעים החדשים
   const getButtonStyleClasses = (style: string) => {
+    console.log('ContentElementsEditor - getButtonStyleClasses called with:', style);
+    
+    if (!style || style === 'default') return "bg-blue-600 text-white hover:bg-blue-700";
+    
     switch (style) {
-      case "black-on-white": return "bg-white text-black border border-black";
-      case "white-on-black": return "bg-black text-white border border-white";
-      case "gradient-gold-black": return "bg-gradient-to-r from-yellow-400 to-black text-white border-0";
-      case "gradient-gold-white": return "bg-gradient-to-r from-yellow-400 to-white text-black border-0";
-      case "gradient-purple-tech": return "bg-gradient-to-r from-purple-600 to-blue-500 text-white border-0";
-      case "gradient-blue-ocean": return "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0";
-      case "gradient-green-nature": return "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0";
-      case "gradient-red-fire": return "bg-gradient-to-r from-red-500 to-orange-500 text-white border-0";
-      case "gradient-pink-sunset": return "bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0";
-      case "neon-blue": return "bg-blue-600 text-white border-2 border-blue-400 shadow-lg shadow-blue-400/50";
-      case "neon-green": return "bg-green-600 text-white border-2 border-green-400 shadow-lg shadow-green-400/50";
-      case "neon-purple": return "bg-purple-600 text-white border-2 border-purple-400 shadow-lg shadow-purple-400/50";
-      case "neon-pink": return "bg-pink-600 text-white border-2 border-pink-400 shadow-lg shadow-pink-400/50";
-      case "glass-dark": return "bg-black/20 text-white border border-white/30 backdrop-blur-sm";
-      case "glass-light": return "bg-white/20 text-black border border-black/30 backdrop-blur-sm";
-      default: return "bg-blue-600 text-white";
+      case "black-on-white": return "bg-white text-black border border-black hover:bg-gray-100";
+      case "white-on-black": return "bg-black text-white border border-white hover:bg-gray-900";
+      case "gradient-gold-black": return "bg-gradient-to-r from-yellow-400 to-black text-white border-0 hover:from-yellow-500 hover:to-gray-900";
+      case "gradient-gold-white": return "bg-gradient-to-r from-yellow-400 to-white text-black border-0 hover:from-yellow-500 hover:to-gray-100";
+      case "gradient-purple-tech": return "bg-gradient-to-r from-purple-600 to-blue-500 text-white border-0 hover:from-purple-700 hover:to-blue-600";
+      case "gradient-blue-ocean": return "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0 hover:from-blue-600 hover:to-cyan-600";
+      case "gradient-green-nature": return "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 hover:from-green-600 hover:to-emerald-600";
+      case "gradient-red-fire": return "bg-gradient-to-r from-red-500 to-orange-500 text-white border-0 hover:from-red-600 hover:to-orange-600";
+      case "gradient-pink-sunset": return "bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0 hover:from-pink-600 hover:to-rose-600";
+      case "neon-blue": return "bg-blue-600 text-white border-2 border-blue-400 shadow-lg shadow-blue-400/50 hover:bg-blue-700 hover:shadow-blue-400/70";
+      case "neon-green": return "bg-green-600 text-white border-2 border-green-400 shadow-lg shadow-green-400/50 hover:bg-green-700 hover:shadow-green-400/70";
+      case "neon-purple": return "bg-purple-600 text-white border-2 border-purple-400 shadow-lg shadow-purple-400/50 hover:bg-purple-700 hover:shadow-purple-400/70";
+      case "neon-pink": return "bg-pink-600 text-white border-2 border-pink-400 shadow-lg shadow-pink-400/50 hover:bg-pink-700 hover:shadow-pink-400/70";
+      case "glass-dark": return "bg-black/20 text-white border border-white/30 backdrop-blur-sm hover:bg-black/30";
+      case "glass-light": return "bg-white/20 text-black border border-black/30 backdrop-blur-sm hover:bg-white/30";
+      default: 
+        console.log('ContentElementsEditor - Unknown button style, using default:', style);
+        return "bg-blue-600 text-white hover:bg-blue-700";
     }
   };
 
@@ -214,6 +238,17 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
         <option value="gradient-red-text">גרדיאנט אדום</option>
         <option value="gradient-cyan-text">גרדיאנט ציאן</option>
         <option value="gradient-rainbow-text">גרדיאנט קשת</option>
+        <option value="gradient-blue-ocean">גרדיאנט כחול אוקיינוס</option>
+        <option value="gradient-green-nature">גרדיאנט ירוק טבע</option>
+        <option value="gradient-red-fire">גרדיאנט אדום אש</option>
+        <option value="gradient-pink-sunset">גרדיאנט ורוד שקיעה</option>
+        <option value="gradient-gold-black">גרדיאנט זהב שחור</option>
+        <option value="gradient-gold-white">גרדיאנט זהב לבן</option>
+        <option value="gradient-purple-tech">גרדיאנט סגול טכנולוגי</option>
+        <option value="neon-blue">נאון כחול</option>
+        <option value="neon-green">נאון ירוק</option>
+        <option value="neon-purple">נאון סגול</option>
+        <option value="neon-pink">נאון ורוד</option>
       </select>
       <div className="mt-1 bg-gray-800 p-2 rounded">
         <div className={`text-sm ${getTextStyleClasses(value || 'white-text')}`}>
@@ -442,6 +477,12 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
                     <option value="green-text">ירוק</option>
                     <option value="red-text">אדום</option>
                     <option value="purple-text">סגול</option>
+                    <option value="pink-text">ורוד</option>
+                    <option value="cyan-text">ציאן</option>
+                    <option value="neon-blue">נאון כחול</option>
+                    <option value="neon-green">נאון ירוק</option>
+                    <option value="neon-purple">נאון סגול</option>
+                    <option value="neon-pink">נאון ורוד</option>
                   </select>
                 </div>
 
