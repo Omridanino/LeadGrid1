@@ -123,10 +123,25 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
     return {};
   };
 
+  // Fix background color handling to support all color types
+  const getBackgroundStyle = () => {
+    if (backgroundColor === 'default') {
+      return { backgroundColor: '#1e1e2e' };
+    }
+    
+    // Check if it's a gradient
+    if (backgroundColor && backgroundColor.includes('gradient')) {
+      return { background: backgroundColor };
+    }
+    
+    // Handle solid colors including hex values
+    return { backgroundColor: backgroundColor };
+  };
+
   return (
     <section 
       className="py-20 px-8 relative"
-      style={{ backgroundColor }}
+      style={getBackgroundStyle()}
     >
       <div className="container mx-auto max-w-4xl text-center">
         {badge && (
