@@ -172,7 +172,7 @@ export const HeroMinimalTech = ({ formData, currentColors, content }: HeroMinima
             >
               <Github className="w-6 h-6" />
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
