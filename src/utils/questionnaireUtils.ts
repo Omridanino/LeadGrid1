@@ -3,11 +3,16 @@ export interface FormData {
   businessName: string;
   businessType: string;
   businessStory: string;
+  businessFoundation: string;
   businessValues: string;
+  businessVision: string;
   mainServices: string;
   uniqueAdvantages: string;
+  competitionDifference: string;
   targetAudience: string;
+  clientProblems: string;
   mainGoal: string;
+  keyFeatures: string;
   contactInfo: string;
   designStyle: string;
   navigationStyle: string;
@@ -18,15 +23,20 @@ export const initialFormData: FormData = {
   businessName: "",
   businessType: "",
   businessStory: "",
+  businessFoundation: "",
   businessValues: "",
+  businessVision: "",
   mainServices: "",
   uniqueAdvantages: "",
+  competitionDifference: "",
   targetAudience: "",
+  clientProblems: "",
   mainGoal: "",
+  keyFeatures: "",
   contactInfo: "",
-  designStyle: "simple-dark",
+  designStyle: "3d-tech",
   navigationStyle: "floating",
-  selectedElements: ["hero", "emotional", "whyUs", "whatWeGive", "testimonials", "contact"]
+  selectedElements: []
 };
 
 export const getStepTitle = (step: number): string => {
@@ -34,7 +44,11 @@ export const getStepTitle = (step: number): string => {
     case 1:
       return "פרטי העסק";
     case 2:
-      return "שירותים ומטרות";
+      return "שירותים ויתרונות";
+    case 3:
+      return "סגנון עיצוב";
+    case 4:
+      return "בחירת אלמנטים";
     default:
       return "";
   }
@@ -48,36 +62,16 @@ export const validateRequiredFields = (formData: FormData): boolean => {
     formData.businessValues &&
     formData.mainServices &&
     formData.uniqueAdvantages &&
+    formData.competitionDifference &&
     formData.targetAudience
   );
 };
 
 export const validateDesignStyle = (style: string): boolean => {
-  const validStyles = ['simple-dark', 'floating-elements', 'glass-phone', 'glass-cube', 'space-particles', 'liquid-design', 'tech-gradient', 'crystal-elements', 'banking-ribbons'];
+  const validStyles = ['3d-tech'];
   return validStyles.includes(style);
 };
 
 export const getDesignStyleDescription = (style: string): string => {
-  switch (style) {
-    case 'simple-dark':
-      return 'עיצוב כהה ונקי עם אנימציות עדינות';
-    case 'floating-elements':
-      return 'אלמנטים מרחפים עם אפקטים גיאומטריים';
-    case 'glass-phone':
-      return 'עיצוב זכוכית עם מוקאפ טלפון';
-    case 'glass-cube':
-      return 'קוביות זכוכית תלת-מימדיות';
-    case 'space-particles':
-      return 'חלקיקי חלל עם אפקטי אורורה';
-    case 'liquid-design':
-      return 'עיצוב נוזלי עם צורות אורגניות';
-    case 'tech-gradient':
-      return 'גרדיאנטים טכנולוגיים מתקדמים';
-    case 'crystal-elements':
-      return 'אלמנטים קריסטליים מרהיבים';
-    case 'banking-ribbons':
-      return 'סרטים אלגנטיים בסגנון בנקאי';
-    default:
-      return 'עיצוב טכנולוגי מתקדם';
-  }
+  return 'עיצוב טכנולוגי מתקדם עם אפקטים תלת-מימדיים מרשימים - מושלם לעסקים חדשניים ומתקדמים';
 };

@@ -10,7 +10,9 @@ interface BusinessInfoStepProps {
     businessName: string;
     businessType: string;
     businessStory: string;
+    businessFoundation: string;
     businessValues: string;
+    businessVision: string;
   };
   updateFormData: (field: string, value: string) => void;
   open: boolean;
@@ -59,10 +61,22 @@ export const BusinessInfoStep = ({ formData, updateFormData }: BusinessInfoStepP
           value={formData.businessStory}
           onChange={(e) => updateFormData('businessStory', e.target.value)}
           className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
-          placeholder="איך התחיל העסק? מה הביא אותך להקים אותו? מה השראת אותך?"
-          rows={4}
+          placeholder="איך התחיל העסק? מה הביא אותך להקים אותו? מה השראת אותך? מה החלום או החזון שהוביל אותך? ספר בפירוט על המסע, האתגרים, וההישגים שלך עד היום..."
+          rows={5}
         />
         <p className="text-sm text-gray-400 mt-1">הסיפור האישי שלך חשוב ליצירת חיבור עם הלקוחות</p>
+      </div>
+
+      <div>
+        <Label htmlFor="businessFoundation" className="text-white font-semibold">מה הבסיס המקצועי והניסיון שלך?</Label>
+        <Textarea
+          id="businessFoundation"
+          value={formData.businessFoundation}
+          onChange={(e) => updateFormData('businessFoundation', e.target.value)}
+          className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
+          placeholder="כמה שנות ניסיון יש לך? איזה השכלה או הכשרה עברת? איזה פרויקטים מרכזיים עשית? איזה הישגים יש לך? איזה הסמכות או הכרה קיבלת?"
+          rows={4}
+        />
       </div>
 
       <div>
@@ -72,10 +86,22 @@ export const BusinessInfoStep = ({ formData, updateFormData }: BusinessInfoStepP
           value={formData.businessValues}
           onChange={(e) => updateFormData('businessValues', e.target.value)}
           className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
-          placeholder="מה חשוב לך בעבודה? איך אתה מתייחס ללקוחות? למשל: אמינות, איכות, יחס אישי..."
-          rows={3}
+          placeholder="מה חשוב לך בעבודה? איך אתה מתייחס ללקוחות? מה הערכים שמנחים אותך בכל החלטה עסקית? למשל: אמינות, איכות, יחס אישי, חדשנות, קיימות..."
+          rows={4}
         />
         <p className="text-sm text-gray-400 mt-1">הערכים שלך יעזרו ללקוחות להזדהות איתך</p>
+      </div>
+
+      <div>
+        <Label htmlFor="businessVision" className="text-white font-semibold">מה החזון ומטרות העתיד של העסק?</Label>
+        <Textarea
+          id="businessVision"
+          value={formData.businessVision}
+          onChange={(e) => updateFormData('businessVision', e.target.value)}
+          className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
+          placeholder="לאן אתה רוצה להגיע? מה המטרות שלך לשנה הקרובה? איך אתה רואה את העסק בעוד 5 שנים? איזה השפעה אתה רוצה להשאיר בתחום שלך?"
+          rows={3}
+        />
       </div>
     </div>
   );

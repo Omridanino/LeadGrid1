@@ -8,6 +8,8 @@ import { useToast } from "@/hooks/use-toast";
 import { Sparkles, ArrowRight, Eye, Download, Zap, Target } from "lucide-react";
 import { BusinessInfoStep } from "./questionnaire/BusinessInfoStep";
 import { GoalsAndFeaturesStep } from "./questionnaire/GoalsAndFeaturesStep";
+import { DesignStyleStep } from "./questionnaire/DesignStyleStep";
+import { ElementsSelectionStep } from "./questionnaire/ElementsSelectionStep";
 import { FormData, initialFormData, getStepTitle, validateRequiredFields } from "@/utils/questionnaireUtils";
 
 interface LandingPageQuestionnaireProps {
@@ -68,7 +70,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
   };
 
   const nextStep = () => {
-    if (currentStep < 2) {
+    if (currentStep < 4) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -85,6 +87,10 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
         return <BusinessInfoStep formData={formData} updateFormData={updateFormData} open={false} setOpen={() => {}} />;
       case 2:
         return <GoalsAndFeaturesStep formData={formData} updateFormData={updateFormData} />;
+      case 3:
+        return <DesignStyleStep formData={formData} updateFormData={updateFormData} />;
+      case 4:
+        return <ElementsSelectionStep formData={formData} updateFormData={updateFormData} />;
       default:
         return null;
     }
@@ -94,6 +100,8 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
     switch (step) {
       case 1: return "פרטי עסק";
       case 2: return "מטרות";
+      case 3: return "עיצוב";
+      case 4: return "אלמנטים";
       default: return `שלב ${step}`;
     }
   };
@@ -123,7 +131,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
               
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-50 to-purple-50 rounded-full px-3 py-1 border border-blue-200/50">
                 <Target className="w-4 h-4 text-blue-600" />
-                <span className="text-xs font-semibold text-blue-700">2 שלבים מהירים 🚀</span>
+                <span className="text-xs font-semibold text-blue-700">4 שלבים מהירים 🚀</span>
               </div>
             </DialogHeader>
 
@@ -132,7 +140,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
               <div className="bg-gradient-to-r from-gray-50/80 to-blue-50/60 rounded-xl p-3 border border-white/30">
                 <div className="flex justify-between items-center">
                   <div className="flex space-x-2 space-x-reverse">
-                    {[1, 2].map((step) => (
+                    {[1, 2, 3, 4].map((step) => (
                       <div key={step} className="flex flex-col items-center">
                         <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold transition-all duration-300 ${
                           step === currentStep
@@ -154,7 +162,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
                   </div>
                   <div className="text-left bg-white/60 rounded-lg p-2 border border-white/40">
                     <span className="text-lg font-bold text-blue-600">{currentStep}</span>
-                    <span className="text-gray-500"> / 2</span>
+                    <span className="text-gray-500"> / 4</span>
                   </div>
                 </div>
               </div>
@@ -197,7 +205,7 @@ const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireP
                     צפה ועדכן
                   </Button>
 
-                  {currentStep < 2 ? (
+                  {currentStep < 4 ? (
                     <Button
                       onClick={nextStep}
                       size="sm"
