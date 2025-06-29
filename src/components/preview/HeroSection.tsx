@@ -36,6 +36,38 @@ interface HeroSectionProps {
 export const HeroSection = ({ content, currentColors, formData, heroImage }: HeroSectionProps) => {
   const designStyle = formData?.designStyle || 'basic';
 
+  // Helper function to get inline style for text colors
+  const getTextStyle = (colorKey: string) => {
+    if (content?.colors?.[colorKey]) {
+      return { color: content.colors[colorKey] };
+    }
+    return {};
+  };
+
+  // Helper function to get inline style for button colors
+  const getButtonStyle = (buttonColor?: string) => {
+    if (buttonColor) {
+      return { 
+        backgroundColor: buttonColor,
+        color: '#ffffff',
+        border: 'none'
+      };
+    }
+    return {};
+  };
+
+  // Helper function to get inline style for badge colors
+  const getBadgeStyle = () => {
+    if (content?.colors?.badge) {
+      return { 
+        backgroundColor: content.colors.badge,
+        color: '#ffffff',
+        border: 'none'
+      };
+    }
+    return {};
+  };
+
   // Helper function to get text style classes
   const getTextStyleClasses = (elementStyle: string) => {
     switch (elementStyle) {
@@ -224,17 +256,26 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
               <div className="max-w-2xl">
                 {content?.badge && (
-                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm ${getButtonStyleClasses(content.badgeStyle || 'black-on-white')}`}>
+                  <div 
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm"
+                    style={getBadgeStyle()}
+                  >
                     <Zap className="w-4 h-4" />
                     <span>{content.badge}</span>
                   </div>
                 )}
                 
-                <h1 className={`text-4xl md:text-6xl font-bold mb-6 ${content.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'}`}>
+                <h1 
+                  className="text-4xl md:text-6xl font-bold mb-6"
+                  style={content?.colors?.headline ? getTextStyle('headline') : {}}
+                >
                   {content?.headline || formData?.businessName || 'expérience 3D'}
                 </h1>
                 
-                <p className={`text-lg leading-relaxed mb-8 max-w-lg ${content.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-gray-300'}`}>
+                <p 
+                  className="text-lg leading-relaxed mb-8 max-w-lg"
+                  style={content?.colors?.subheadline ? getTextStyle('subheadline') : {}}
+                >
                   {content?.subheadline || content?.description || `הביאו את העסק שלכם למימד חדש עם טכנולוגיות מתקדמות ועיצוב חדשני`}
                 </p>
                 
@@ -242,7 +283,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                     <button 
                       key={index}
-                      className={`px-6 py-3 rounded-lg font-semibold transition ${getButtonStyleClasses(button.style || 'black-on-white')}`}
+                      className="px-6 py-3 rounded-lg font-semibold transition"
+                      style={getButtonStyle(button.color)}
                     >
                       {button.text}
                     </button>
@@ -278,17 +320,26 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           <ChromeGrid />
           <div className="absolute z-10 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 pointer-events-none flex flex-col justify-center items-center text-center">
             {content?.badge && (
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
+              <div 
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm"
+                style={getBadgeStyle()}
+              >
                 <Shield className="w-4 h-4" />
                 <span>{content.badge}</span>
               </div>
             )}
             
-            <h1 className={`text-5xl md:text-7xl font-light mb-4 tracking-widest whitespace-nowrap ${content.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'text-white'}`}>
+            <h1 
+              className="text-5xl md:text-7xl font-light mb-4 tracking-widest whitespace-nowrap"
+              style={content?.colors?.headline ? getTextStyle('headline') : {}}
+            >
               {content?.headline || formData?.businessName || 'courageous digital'}
             </h1>
             
-            <p className={`text-sm md:text-lg font-mono tracking-wide mb-8 max-w-2xl ${content.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-white/70'}`}>
+            <p 
+              className="text-sm md:text-lg font-mono tracking-wide mb-8 max-w-2xl"
+              style={content?.colors?.subheadline ? getTextStyle('subheadline') : {}}
+            >
               {content?.subheadline || 'a technology that brings life to the touch - a new way of doing things'}
             </p>
             
@@ -296,7 +347,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                 <button 
                   key={index}
-                  className={`px-8 py-4 rounded-lg font-bold transition transform hover:scale-105 ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+                  className="px-8 py-4 rounded-lg font-bold transition transform hover:scale-105"
+                  style={getButtonStyle(button.color)}
                 >
                   {button.text}
                 </button>
@@ -325,17 +377,26 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           
           <div className="relative z-10 flex flex-col items-center text-center">
             {content?.badge && (
-              <div className={`mb-6 inline-block rounded-full px-4 py-2 text-sm ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
+              <div 
+                className="mb-6 inline-block rounded-full px-4 py-2 text-sm"
+                style={getBadgeStyle()}
+              >
                 <Award className="w-4 h-4 inline mr-2" />
                 {content.badge}
               </div>
             )}
             
-            <h1 className={`max-w-4xl text-center text-4xl md:text-7xl font-medium leading-tight mb-6 ${content.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent'}`}>
+            <h1 
+              className="max-w-4xl text-center text-4xl md:text-7xl font-medium leading-tight mb-6"
+              style={content?.colors?.headline ? getTextStyle('headline') : {}}
+            >
               {content?.headline || formData?.businessName || 'the future is now'}
             </h1>
             
-            <p className={`my-6 max-w-2xl text-center text-lg leading-relaxed ${content.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-gray-300'}`}>
+            <p 
+              className="my-6 max-w-2xl text-center text-lg leading-relaxed"
+              style={content?.colors?.subheadline ? getTextStyle('subheadline') : {}}
+            >
               {content?.subheadline || 'a digital experience that brings your business to the future with cutting-edge technologies'}
             </p>
             
@@ -343,7 +404,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                 <button 
                   key={index}
-                  className={`group relative flex w-fit items-center gap-2 rounded-full px-6 py-3 transition-colors ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+                  className="group relative flex w-fit items-center gap-2 rounded-full px-6 py-3 transition-colors"
+                  style={getButtonStyle(button.color)}
                 >
                   {button.text}
                   <ArrowLeft className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
@@ -387,17 +449,26 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           <LavaLamp />
           <div className="absolute z-10 text-center">
             {content?.badge && (
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-exclusion ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
+              <div 
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-exclusion"
+                style={getBadgeStyle()}
+              >
                 <Zap className="w-4 h-4" />
                 <span>{content.badge}</span>
               </div>
             )}
             
-            <h1 className={`text-6xl md:text-8xl font-bold tracking-tight whitespace-nowrap mb-6 ${content.headlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.headlineStyle)}` : 'mix-blend-exclusion text-white'}`}>
+            <h1 
+              className="text-6xl md:text-8xl font-bold tracking-tight whitespace-nowrap mb-6 mix-blend-exclusion"
+              style={content?.colors?.headline ? getTextStyle('headline') : {}}
+            >
               {content?.headline || formData?.businessName || 'dreams of the digital'}
             </h1>
             
-            <p className={`text-lg md:text-xl text-center max-w-2xl leading-relaxed mb-8 px-4 ${content.subheadlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.subheadlineStyle)}` : 'text-white mix-blend-exclusion'}`}>
+            <p 
+              className="text-lg md:text-xl text-center max-w-2xl leading-relaxed mb-8 px-4 mix-blend-exclusion"
+              style={content?.colors?.subheadline ? getTextStyle('subheadline') : {}}
+            >
               {content?.subheadline || 'the computers receive a shape and the information flows like a coin of the realm'}
             </p>
             
@@ -405,7 +476,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                 <button 
                   key={index}
-                  className={`px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+                  className="px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion"
+                  style={getButtonStyle(button.color)}
                 >
                   {button.text}
                 </button>
@@ -433,17 +505,26 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           </div>
           <div className="absolute z-10 text-center">
             {content?.badge && (
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-difference ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
+              <div 
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-difference"
+                style={getBadgeStyle()}
+              >
                 <Award className="w-4 h-4" />
                 <span>{content.badge}</span>
               </div>
             )}
             
-            <h1 className={`text-6xl md:text-8xl font-bold mb-6 tracking-tight ${content.headlineStyle ? `mix-blend-difference ${getTextStyleClasses(content.headlineStyle)}` : 'mix-blend-difference text-white'}`}>
+            <h1 
+              className="text-6xl md:text-8xl font-bold mb-6 tracking-tight mix-blend-difference"
+              style={content?.colors?.headline ? getTextStyle('headline') : {}}
+            >
               {content?.headline || formData?.businessName || 'solution for complex problems'}
             </h1>
             
-            <p className={`text-lg md:text-xl max-w-2xl px-6 leading-relaxed mb-8 ${content.subheadlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.subheadlineStyle)}` : 'text-white mix-blend-exclusion'}`}>
+            <p 
+              className="text-lg md:text-xl max-w-2xl px-6 leading-relaxed mb-8 mix-blend-exclusion"
+              style={content?.colors?.subheadline ? getTextStyle('subheadline') : {}}
+            >
               {content?.subheadline || 'one piece at a time - we solve the most complex problems'}
             </p>
             
@@ -451,7 +532,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                 <button 
                   key={index}
-                  className={`px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+                  className="px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion"
+                  style={getButtonStyle(button.color)}
                 >
                   {button.text}
                 </button>
@@ -471,7 +553,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 5: Interactive 3D Robot Scene
     if (selectedDesign === 5) {
       const ROBOT_SCENE_URL = "https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode";
       
@@ -485,17 +566,17 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           <div className="absolute inset-0 z-10 pt-20 md:pt-32 lg:pt-40 px-4 md:px-8 pointer-events-none">
             <div className="text-center text-white drop-shadow-lg w-full max-w-2xl mx-auto">
               {content?.badge && (
-                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-exclusion pointer-events-auto ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
+                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-exclusion pointer-events-auto`} style={getBadgeStyle()}>
                   <Zap className="w-4 h-4" />
                   <span>{content.badge}</span>
                 </div>
               )}
               
-              <h1 className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-6 ${content.headlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.headlineStyle)}` : 'mix-blend-exclusion text-white'}`}>
+              <h1 className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-6 mix-blend-exclusion`} style={content?.colors?.headline ? getTextStyle('headline') : { color: 'white' }}>
                 {content?.headline || formData?.businessName || 'interactive 3D robot'}
               </h1>
               
-              <p className={`text-lg leading-relaxed mb-8 px-4 ${content.subheadlineStyle ? `mix-blend-exclusion ${getTextStyleClasses(content.subheadlineStyle)}` : 'text-white mix-blend-exclusion'}`}>
+              <p className={`text-lg leading-relaxed mb-8 px-4 mix-blend-exclusion`} style={content?.colors?.subheadline ? getTextStyle('subheadline') : { color: 'white' }}>
                 {content?.subheadline || 'an advanced interactive experience with 3D technology'}
               </p>
               
@@ -503,7 +584,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                   <button 
                     key={index}
-                    className={`px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+                    className="px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion"
+                    style={getButtonStyle(button.color)}
                   >
                     {button.text}
                   </button>
@@ -524,7 +606,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 6: Background Circles with Animated Grid
     if (selectedDesign === 6) {
       return (
         <div className="relative w-screen h-screen overflow-hidden bg-black">
@@ -534,10 +615,9 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             variant="primary"
           />
           
-          {/* Content overlay */}
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4">
             {content?.badge && (
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm ${getButtonStyleClasses(content.badgeStyle || 'black-on-white')}`}>
+              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm`} style={getBadgeStyle()}>
                 <Award className="w-4 h-4" />
                 <span>{content.badge}</span>
               </div>
@@ -547,7 +627,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                 <button 
                   key={index}
-                  className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'black-on-white')}`}
+                  className="px-8 py-4 rounded-lg font-bold transition"
+                  style={getButtonStyle(button.color)}
                 >
                   {button.text}
                 </button>
@@ -567,7 +648,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 7: Horizon Hero Section
     if (selectedDesign === 7) {
       return (
         <div className="relative w-screen h-screen overflow-hidden">
@@ -578,13 +658,13 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             className="absolute inset-0"
           />
           
-          {/* Content overlay for buttons */}
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4 pointer-events-none">
             <div className="mt-96 flex gap-4 justify-center pointer-events-auto">
               {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                 <button 
                   key={index}
-                  className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+                  className="px-8 py-4 rounded-lg font-bold transition"
+                  style={getButtonStyle(button.color)}
                 >
                   {button.text}
                 </button>
@@ -604,9 +684,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 8: Hero Parallax
     if (selectedDesign === 8) {
-      // Default products for the parallax effect
       const defaultProducts = [
         {
           title: "project 1",
@@ -693,12 +771,12 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             subtitle={content?.subheadline || content?.description || 'we create beautiful products with the latest technologies and innovative ideas'}
           />
           
-          {/* Buttons overlay */}
           <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-30 flex gap-4 justify-center">
             {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
               <button 
                 key={index}
-                className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+                className="px-8 py-4 rounded-lg font-bold transition"
+                style={getButtonStyle(button.color)}
               >
                 {button.text}
               </button>
@@ -717,7 +795,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 9: Hero Design Ali with canvas effects
     if (selectedDesign === 9) {
       return (
         <div className="relative w-screen h-screen overflow-hidden">
@@ -729,12 +806,12 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             onBookCallClick={() => {}}
           />
           
-          {/* Buttons overlay */}
           <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-30 flex gap-4 justify-center">
             {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
               <button 
                 key={index}
-                className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+                className="px-8 py-4 rounded-lg font-bold transition"
+                style={getButtonStyle(button.color)}
               >
                 {button.text}
               </button>
@@ -753,7 +830,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 10: Hero Futuristic with WebGPU effects
     if (selectedDesign === 10) {
       return (
         <div className="relative w-screen h-screen overflow-hidden">
@@ -764,12 +840,12 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             onButtonClick={() => {}}
           />
           
-          {/* Additional buttons if needed */}
           <div className="absolute bottom-40 left-1/2 transform -translate-x-1/2 z-30 flex gap-4 justify-center">
             {content?.buttons?.filter((btn: any) => btn.visible !== false).slice(1).map((button: any, index: number) => (
               <button 
                 key={index}
-                className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+                className="px-8 py-4 rounded-lg font-bold transition"
+                style={getButtonStyle(button.color)}
               >
                 {button.text}
               </button>
@@ -779,7 +855,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 11: Scroll Expansion Hero
     if (selectedDesign === 11) {
       return (
         <div className="relative w-screen h-screen overflow-hidden">
@@ -802,7 +877,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                   <button 
                     key={index}
-                    className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'white-on-black')}`}
+                    className="px-8 py-4 rounded-lg font-bold transition"
+                    style={getButtonStyle(button.color)}
                   >
                     {button.text}
                   </button>
@@ -833,18 +909,25 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-4xl mx-auto">
           {content?.badge && (
-            <div className={`inline-block mb-6 px-4 py-2 rounded-full text-sm ${getButtonStyleClasses(content.badgeStyle || 'black-on-white')}`}>
+            <div 
+              className="inline-block mb-6 px-4 py-2 rounded-full text-sm"
+              style={getBadgeStyle()}
+            >
               {content.badge}
             </div>
           )}
           
-          <h1 className={`text-5xl md:text-7xl font-bold mb-8 ${content.headlineStyle ? getTextStyleClasses(content.headlineStyle) : ''}`}
-              style={!content.headlineStyle ? { color: currentColors.headlineColor } : {}}>
+          <h1 
+            className="text-5xl md:text-7xl font-bold mb-8"
+            style={content?.colors?.headline ? getTextStyle('headline') : { color: currentColors.headlineColor }}
+          >
             {content?.headline || formData?.businessName || 'the business'}
           </h1>
           
-          <p className={`text-xl md:text-2xl mb-12 ${content.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : ''}`}
-             style={!content.subheadlineStyle ? { color: currentColors.subheadlineColor } : {}}>
+          <p 
+            className="text-xl md:text-2xl mb-12"
+            style={content?.colors?.subheadline ? getTextStyle('subheadline') : { color: currentColors.subheadlineColor }}
+          >
             {content?.subheadline || content?.description || 'professional solutions'}
           </p>
           
@@ -852,7 +935,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
               <button 
                 key={index}
-                className={`px-8 py-4 rounded-xl font-semibold text-lg transition ${getButtonStyleClasses(button.style || 'black-on-white')}`}
+                className="px-8 py-4 rounded-xl font-semibold text-lg transition"
+                style={getButtonStyle(button.color)}
               >
                 {button.text}
               </button>
