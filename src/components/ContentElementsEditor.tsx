@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge, Eye, EyeOff, Plus, Trash2 } from "lucide-react";
+import { Badge, Eye, EyeOff, Plus, Trash2, Palette } from "lucide-react";
 
 interface ContentElementsEditorProps {
   content: any;
@@ -45,7 +45,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
   const updateButton = (index: number, field: string, value: any) => {
     const buttons = [...(localContent.buttons || [])];
     if (!buttons[index]) {
-      buttons[index] = { text: "", visible: true };
+      buttons[index] = { text: "", visible: true, color: "#3b82f6" };
     }
     buttons[index] = { ...buttons[index], [field]: value };
     updateField('buttons', buttons);
@@ -53,7 +53,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
 
   const addButton = () => {
     const buttons = [...(localContent.buttons || [])];
-    buttons.push({ text: `כפתור ${buttons.length + 1}`, visible: true });
+    buttons.push({ text: `כפתור ${buttons.length + 1}`, visible: true, color: "#3b82f6" });
     updateField('buttons', buttons);
   };
 
@@ -71,12 +71,24 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     }
   };
 
-  // Initialize buttons if they don't exist
-  if (!localContent.buttons || localContent.buttons.length === 0) {
-    updateField('buttons', [
-      { text: "התחל עכשיו", visible: true }
-    ]);
-  }
+  // Initialize content with default colors if they don't exist
+  useEffect(() => {
+    if (localContent && !localContent.colors) {
+      const defaultColors = {
+        badge: "#8b5cf6",
+        headline: "#ffffff", 
+        subheadline: "#e0f2fe",
+        description: "#d1d5db"
+      };
+      updateField('colors', defaultColors);
+    }
+    
+    if (!localContent.buttons || localContent.buttons.length === 0) {
+      updateField('buttons', [
+        { text: "התחל עכשיו", visible: true, color: "#3b82f6" }
+      ]);
+    }
+  }, []);
 
   return (
     <div className="space-y-6 text-right" dir="rtl">
@@ -92,47 +104,95 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
           {/* Badge */}
           <div>
             <Label className="text-white font-semibold mb-2 block">תג מעל הכותרת</Label>
-            <Input
-              value={localContent.badge || ''}
-              onChange={(e) => updateField('badge', e.target.value)}
-              className="bg-gray-800 border-gray-600 text-white"
-              placeholder="הכנס תג..."
-            />
+            <div className="space-y-2">
+              <Input
+                value={localContent.badge || ''}
+                onChange={(e) => updateField('badge', e.target.value)}
+                className="bg-gray-800 border-gray-600 text-white"
+                placeholder="הכנס תג..."
+              />
+              <div className="flex items-center gap-2">
+                <Label className="text-gray-300 text-sm">צבע התג:</Label>
+                <input
+                  type="color"
+                  value={localContent.colors?.badge || "#8b5cf6"}
+                  onChange={(e) => updateField('colors', { ...localContent.colors, badge: e.target.value })}
+                  className="w-10 h-8 rounded border border-gray-600 bg-gray-800"
+                />
+                <span className="text-xs text-gray-400">{localContent.colors?.badge || "#8b5cf6"}</span>
+              </div>
+            </div>
           </div>
 
           {/* Main Headline */}
           <div>
             <Label className="text-white font-semibold mb-2 block">כותרת ראשית</Label>
-            <Input
-              value={localContent.headline || ''}
-              onChange={(e) => updateField('headline', e.target.value)}
-              className="bg-gray-800 border-gray-600 text-white"
-              placeholder="הכנס כותרת ראשית..."
-            />
+            <div className="space-y-2">
+              <Input
+                value={localContent.headline || ''}
+                onChange={(e) => updateField('headline', e.target.value)}
+                className="bg-gray-800 border-gray-600 text-white"
+                placeholder="הכנס כותרת ראשית..."
+              />
+              <div className="flex items-center gap-2">
+                <Label className="text-gray-300 text-sm">צבע הכותרת:</Label>
+                <input
+                  type="color"
+                  value={localContent.colors?.headline || "#ffffff"}
+                  onChange={(e) => updateField('colors', { ...localContent.colors, headline: e.target.value })}
+                  className="w-10 h-8 rounded border border-gray-600 bg-gray-800"
+                />
+                <span className="text-xs text-gray-400">{localContent.colors?.headline || "#ffffff"}</span>
+              </div>
+            </div>
           </div>
 
           {/* Subheadline */}
           <div>
             <Label className="text-white font-semibold mb-2 block">כותרת משנה</Label>
-            <Textarea
-              value={localContent.subheadline || ''}
-              onChange={(e) => updateField('subheadline', e.target.value)}
-              className="bg-gray-800 border-gray-600 text-white"
-              rows={3}
-              placeholder="הכנס כותרת משנה..."
-            />
+            <div className="space-y-2">
+              <Textarea
+                value={localContent.subheadline || ''}
+                onChange={(e) => updateField('subheadline', e.target.value)}
+                className="bg-gray-800 border-gray-600 text-white"
+                rows={3}
+                placeholder="הכנס כותרת משנה..."
+              />
+              <div className="flex items-center gap-2">
+                <Label className="text-gray-300 text-sm">צבע כותרת המשנה:</Label>
+                <input
+                  type="color"
+                  value={localContent.colors?.subheadline || "#e0f2fe"}
+                  onChange={(e) => updateField('colors', { ...localContent.colors, subheadline: e.target.value })}
+                  className="w-10 h-8 rounded border border-gray-600 bg-gray-800"
+                />
+                <span className="text-xs text-gray-400">{localContent.colors?.subheadline || "#e0f2fe"}</span>
+              </div>
+            </div>
           </div>
 
           {/* Description */}
           <div>
             <Label className="text-white font-semibold mb-2 block">תיאור</Label>
-            <Textarea
-              value={localContent.description || ''}
-              onChange={(e) => updateField('description', e.target.value)}
-              className="bg-gray-800 border-gray-600 text-white"
-              rows={3}
-              placeholder="הכנס תיאור..."
-            />
+            <div className="space-y-2">
+              <Textarea
+                value={localContent.description || ''}
+                onChange={(e) => updateField('description', e.target.value)}
+                className="bg-gray-800 border-gray-600 text-white"
+                rows={3}
+                placeholder="הכנס תיאור..."
+              />
+              <div className="flex items-center gap-2">
+                <Label className="text-gray-300 text-sm">צבע התיאור:</Label>
+                <input
+                  type="color"
+                  value={localContent.colors?.description || "#d1d5db"}
+                  onChange={(e) => updateField('colors', { ...localContent.colors, description: e.target.value })}
+                  className="w-10 h-8 rounded border border-gray-600 bg-gray-800"
+                />
+                <span className="text-xs text-gray-400">{localContent.colors?.description || "#d1d5db"}</span>
+              </div>
+            </div>
           </div>
 
           {/* Background Style */}
@@ -201,6 +261,19 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
                           className="bg-gray-700 border-gray-600 text-white"
                           placeholder="הכנס טקסט כפתור..."
                         />
+                      </div>
+                      
+                      <div>
+                        <Label className="text-gray-300 text-sm mb-1 block">צבע הכפתור</Label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="color"
+                            value={button.color || "#3b82f6"}
+                            onChange={(e) => updateButton(index, 'color', e.target.value)}
+                            className="w-10 h-8 rounded border border-gray-600 bg-gray-700"
+                          />
+                          <span className="text-xs text-gray-400">{button.color || "#3b82f6"}</span>
+                        </div>
                       </div>
                     </div>
                   </CardContent>
