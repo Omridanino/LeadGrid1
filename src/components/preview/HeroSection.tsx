@@ -5,6 +5,7 @@ import { HeroSectionModern } from "@/components/ui/hero-section-modern";
 import { HeroSectionLamp } from "@/components/ui/hero-section-lamp";
 import { HeroSectionRetro } from "@/components/ui/hero-section-retro";
 import { HeroSectionClean } from "@/components/ui/hero-section-clean";
+import { HeroFuturistic } from "@/components/ui/hero-futuristic";
 
 interface HeroSectionProps {
   content: any;
@@ -13,39 +14,29 @@ interface HeroSectionProps {
   heroImage: string;
 }
 
-const getRandomDesignStyle = () => {
-  const basicStyles = ['clean', 'minimal', 'classic', 'elegant', 'modern', 'lamp', 'retro', 'animated'];
-  return basicStyles[Math.floor(Math.random() * basicStyles.length)];
-};
-
 export const HeroSection = ({ content, currentColors, formData, heroImage }: HeroSectionProps) => {
   // שמירת הסגנון הנוכחי ב-state כדי שלא ישתנה בכל עדכון
   const [currentDesignStyle, setCurrentDesignStyle] = useState<string>(() => {
-    // קבלת הסגנון משמור או יצירת חדש אם אין
     const savedStyle = localStorage.getItem('currentDesignStyle');
-    return savedStyle || getRandomDesignStyle();
+    return savedStyle || 'clean';
   });
 
   // שמירת הסגנון ב-localStorage כשהוא משתנה
   useEffect(() => {
-    localStorage.setItem('currentDesignStyle', currentDesignStyle);
+    if (currentDesignStyle) {
+      localStorage.setItem('currentDesignStyle', currentDesignStyle);
+    }
   }, [currentDesignStyle]);
 
-  // רק אם אין סגנון שמור, נבחר חדש (זה קורה רק בטעינה הראשונה)
-  useEffect(() => {
-    if (!localStorage.getItem('currentDesignStyle')) {
-      const newStyle = getRandomDesignStyle();
-      setCurrentDesignStyle(newStyle);
-    }
-  }, []);
-
-  // אם המשתמש ביקש להחליף סגנון במפורש (זה יכול להיות תכונה עתידית)
-  const changeDesignStyle = () => {
-    const newStyle = getRandomDesignStyle();
-    setCurrentDesignStyle(newStyle);
-  };
-
+  // קביעת הסגנון על פי formData או השמור
   const designStyle = formData?.designStyle || currentDesignStyle;
+
+  // עדכון הסגנון אם השתנה ב-formData
+  useEffect(() => {
+    if (formData?.designStyle && formData.designStyle !== currentDesignStyle) {
+      setCurrentDesignStyle(formData.designStyle);
+    }
+  }, [formData?.designStyle, currentDesignStyle]);
 
   // רינדור הקומפוננטה המתאימה לפי הסגנון
   const renderHeroComponent = () => {
@@ -56,6 +47,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
         return <HeroSectionLamp formData={formData} currentColors={currentColors} content={content} />;
       case 'retro':
         return <HeroSectionRetro formData={formData} currentColors={currentColors} content={content} />;
+      case '3d-tech':
+        return <HeroFuturistic formData={formData} currentColors={currentColors} content={content} />;
       case 'clean':
       case 'minimal':
       case 'classic':

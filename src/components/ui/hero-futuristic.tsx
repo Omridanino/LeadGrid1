@@ -56,19 +56,42 @@ const Scene = () => {
 };
 
 interface HeroFuturisticProps {
-  title?: string;
-  subtitle?: string;
-  buttonText?: string;
-  onButtonClick?: () => void;
+  formData?: any;
+  currentColors?: any;
+  content?: any;
 }
 
+// Helper function to get text style classes
+const getTextStyleClasses = (elementStyle: string) => {
+  switch (elementStyle) {
+    case "black-text":
+      return "text-black";
+    case "white-text":
+      return "text-white";
+    case "gold-text":
+      return "text-yellow-400";
+    case "gradient-gold-text":
+      return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
+    case "gradient-purple-text":
+      return "bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent";
+    case "gradient-blue-text":
+      return "bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent";
+    default:
+      return "text-white";
+  }
+};
+
 export const HeroFuturistic = ({
-  title = "Build Your Dreams",
-  subtitle = "AI-powered creativity for the next generation.",
-  buttonText = "Scroll to explore",
-  onButtonClick
+  formData,
+  currentColors,
+  content
 }: HeroFuturisticProps) => {
-  const titleWords = title.split(' ');
+  // קבלת הטקסט מה-content או מה-formData
+  const mainTitle = content?.headline || formData?.businessStory || "Build Your Dreams";
+  const subtitle = content?.subheadline || formData?.mainServices || "AI-powered creativity for the next generation.";
+  const buttonText = content?.buttons?.[0]?.text || "Scroll to explore";
+  
+  const titleWords = mainTitle.split(' ');
   const [visibleWords, setVisibleWords] = useState(0);
   const [subtitleVisible, setSubtitleVisible] = useState(false);
   const [delays, setDelays] = useState<number[]>([]);
@@ -89,15 +112,25 @@ export const HeroFuturistic = ({
     }
   }, [visibleWords, titleWords.length]);
 
+  const onButtonClick = () => {
+    // גלילה לאלמנט הבא
+    const nextSection = document.querySelector('[data-section="next"]');
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="h-screen relative overflow-hidden bg-black">
       <div className="h-screen uppercase items-center w-full absolute z-60 pointer-events-none px-10 flex justify-center flex-col">
         <div className="text-3xl md:text-5xl xl:text-6xl 2xl:text-7xl font-extrabold">
-          <div className="flex space-x-2 lg:space-x-6 overflow-hidden text-white">
+          <div className="flex space-x-2 lg:space-x-6 overflow-hidden flex-wrap justify-center">
             {titleWords.map((word, index) => (
               <div
                 key={index}
-                className={`transition-all duration-1000 ${index < visibleWords ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                className={`transition-all duration-1000 ${
+                  index < visibleWords ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                } ${content?.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'text-white'}`}
                 style={{ 
                   animationDelay: `${index * 0.13 + (delays[index] || 0)}s`
                 }}
@@ -107,9 +140,11 @@ export const HeroFuturistic = ({
             ))}
           </div>
         </div>
-        <div className="text-xs md:text-xl xl:text-2xl 2xl:text-3xl mt-2 overflow-hidden text-white font-bold">
+        <div className="text-xs md:text-xl xl:text-2xl 2xl:text-3xl mt-2 overflow-hidden font-bold">
           <div
-            className={`transition-all duration-1000 ${subtitleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}
+            className={`transition-all duration-1000 ${
+              subtitleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+            } ${content?.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-white'}`}
             style={{ 
               animationDelay: `${titleWords.length * 0.13 + 0.2 + subtitleDelay}s`
             }}
