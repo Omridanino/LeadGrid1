@@ -1,105 +1,130 @@
-import React from "react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+
+import { motion } from "framer-motion";
+import { getColorStyle, getBackgroundStyle } from "@/utils/colorUtils";
 
 interface HeroSectionLampProps {
-  formData: any;
-  currentColors: any;
-  content?: any;
+  content: any;
+  currentColors?: any;
+  formData?: any;
+  heroImage?: string;
 }
 
-export const HeroSectionLamp: React.FC<HeroSectionLampProps> = ({
-  formData,
-  currentColors,
-  content,
-}) => {
-  const [menuState, setMenuState] = React.useState(false);
-
-  // Use content values first, then formData, then defaults
-  const businessName = content?.headline || formData?.businessName || "שם העסק";
-  const businessStory = content?.subheadline || formData?.businessStory || "בונים פתרונות בדרכך הנכונה";
-  const mainServices =
-    content?.description ||
-    formData?.mainServices ||
-    "טכנולוגיה מתקדמת עם עיצוב מרהיב ותוכן איכותי שיקדם את העסק שלכם קדימה";
-  const badgeText = content?.badge || "";
-
-  // פונקציה להחלת סגנון טקסט
-  const getTextStyleClasses = (style: string) => {
-    if (!style || style === "default") return "text-slate-300";
-    if (style.startsWith("custom-")) {
-      const color = style.replace("custom-", "");
-      if (color.startsWith("gradient-")) {
-        const gradientParts = color.replace("gradient-", "").split("-");
-        if (gradientParts.length >= 2) {
-          return `bg-gradient-to-r from-[${gradientParts[0]}] to-[${gradientParts[1]}] bg-clip-text text-transparent`;
-        }
-      } else if (color.startsWith("#")) {
-        return `text-[${color}]`;
+const HeroSectionLamp = ({ content, currentColors, formData, heroImage }: HeroSectionLampProps) => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.2
       }
     }
-    switch (style) {
-      case "black-text":
-      case "שחור":
-        return "text-black";
-      case "white-text":
-      case "לבן":
-        return "text-white";
-      case "gold-text":
-      case "זהב":
-        return "text-yellow-400";
-      case "silver-text":
-      case "כסף":
-        return "text-gray-300";
-      case "blue-text":
-      case "כחול":
-        return "text-blue-400";
-      case "green-text":
-      case "ירוק":
-        return "text-green-400";
-      case "red-text":
-      case "אדום":
-        return "text-red-400";
-      case "purple-text":
-      case "סגול":
-        return "text-purple-400";
-      case "pink-text":
-      case "ורוד":
-        return "text-pink-400";
-      case "cyan-text":
-      case "ציאן":
-        return "text-cyan-400";
-      // Gradients
-      case "gradient-gold-text":
-      case "גרדיאנט זהב":
-        return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
-      case "gradient-blue-text":
-        return "bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent";
-      case "gradient-purple-text":
-        return "bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent";
-      default:
-        return "text-slate-300";
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.8, ease: "easeOut" }
     }
   };
 
   return (
-    <div className="relative w-full flex flex-col items-center p-12">
-      <div className="flex flex-row items-center">
-        <Button onClick={() => setMenuState(!menuState)}>
-          {menuState ? <X /> : <Menu />}
-        </Button>
-        {badgeText && <span className="ml-2 badge bg-yellow-200 text-yellow-700">{badgeText}</span>}
+    <section className="relative min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 overflow-hidden">
+      {/* Lamp Effect */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-96 h-96 bg-gradient-to-b from-purple-500/30 to-transparent rounded-full blur-3xl"></div>
+        <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-gradient-to-b from-blue-500/20 to-transparent rounded-full blur-2xl"></div>
       </div>
-      <h1 className={cn("text-4xl font-bold mt-4", getTextStyleClasses(content?.headlineColor))}>
-        {businessName}
-      </h1>
-      <h2 className={cn("text-xl mt-2", getTextStyleClasses(content?.subheadlineColor))}>
-        {businessStory}
-      </h2>
-      <p className={cn("mt-4 max-w-2xl mx-auto", getTextStyleClasses(content?.descriptionColor))}>
-        {mainServices}
-      </p>
-    </div>
+
+      <motion.div
+        className="relative z-10 container mx-auto px-4 py-20 text-center"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {/* Badge */}
+        {content.badge && (
+          <motion.div
+            variants={itemVariants}
+            className="inline-block mb-6"
+          >
+            <span 
+              className="px-4 py-2 rounded-full text-sm font-medium border border-gray-600"
+              style={{
+                ...getBackgroundStyle(content.badgeStyle),
+                ...getColorStyle(content.badgeTextStyle)
+              }}
+            >
+              {content.badge}
+            </span>
+          </motion.div>
+        )}
+
+        {/* Headline */}
+        <motion.h1
+          variants={itemVariants}
+          className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+          style={getColorStyle(content.headlineStyle)}
+        >
+          {content.headline || 'כותרת ראשית מדהימה'}
+        </motion.h1>
+
+        {/* Subheadline */}
+        {content.subheadline && (
+          <motion.h2
+            variants={itemVariants}
+            className="text-xl md:text-2xl mb-6 max-w-3xl mx-auto leading-relaxed"
+            style={getColorStyle(content.subheadlineStyle)}
+          >
+            {content.subheadline}
+          </motion.h2>
+        )}
+
+        {/* Description */}
+        {content.description && (
+          <motion.p
+            variants={itemVariants}
+            className="text-lg mb-8 max-w-2xl mx-auto"
+            style={getColorStyle(content.descriptionStyle)}
+          >
+            {content.description}
+          </motion.p>
+        )}
+
+        {/* Buttons */}
+        {content.buttons && content.buttons.length > 0 && (
+          <motion.div
+            variants={itemVariants}
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          >
+            {content.buttons.map((button: any, index: number) => {
+              if (button.visible === false) return null;
+              
+              return (
+                <motion.button
+                  key={index}
+                  className="px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                  style={{
+                    ...getBackgroundStyle(button.style),
+                    ...getColorStyle(button.textStyle)
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {button.text}
+                </motion.button>
+              );
+            })}
+          </motion.div>
+        )}
+      </motion.div>
+
+      {/* Background Elements */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black/50 to-transparent"></div>
+    </section>
   );
 };
+
+export default HeroSectionLamp;

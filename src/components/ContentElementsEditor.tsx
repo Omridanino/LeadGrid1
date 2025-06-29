@@ -1,181 +1,267 @@
-import React, { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Eye, EyeOff, Plus, Trash2, Palette } from "lucide-react";
+import { Badge, Eye, EyeOff, Plus, Trash2 } from "lucide-react";
+import ColorPicker from "./ColorPicker";
 
-// טיפוסים
 interface ContentElementsEditorProps {
   content: any;
   onContentChange: (newContent: any) => void;
   formData?: any;
 }
 
-interface ColorPickerProps {
-  value: string;
-  onChange: (value: string) => void;
-  label: string;
-}
+const ContentElementsEditor = ({ content, onContentChange, formData }: ContentElementsEditorProps) => {
+  const [localContent, setLocalContent] = useState(content || {});
 
-// קומפוננטת בחירת צבעים
-const ColorPicker: React.FC<ColorPickerProps> = ({ value, onChange, label }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedType, setSelectedType] = useState<'solid' | 'gradient'>('solid');
-  const [gradientColors, setGradientColors] = useState({ from: '#3b82f6', to: '#1d4ed8' });
-  const [solidColor, setSolidColor] = useState('#3b82f6');
+  useEffect(() => {
+    if (content) {
+      setLocalContent(content);
+    }
+  }, [content]);
 
-  const gradientPresets = [
-    { name: 'זהב', from: '#fbbf24', to: '#f59e0b', value: 'gradient-gold-text' },
-    { name: 'סגול', from: '#a855f7', to: '#7c3aed', value: 'gradient-purple-text' },
-    { name: 'כחול', from: '#3b82f6', to: '#1d4ed8', value: 'gradient-blue-text' },
-    { name: 'ירוק', from: '#10b981', to: '#059669', value: 'gradient-green-text' },
-    { name: 'אדום', from: '#ef4444', to: '#dc2626', value: 'gradient-red-text' },
-    { name: 'ציאן', from: '#06b6d4', to: '#0891b2', value: 'gradient-cyan-text' },
-    { name: 'קשת', from: '#ef4444', to: '#a855f7', value: 'gradient-rainbow-text' },
-    { name: 'כחול אוקיינוס', from: '#3b82f6', to: '#06b6d4', value: 'gradient-blue-ocean' },
-    { name: 'ירוק טבע', from: '#10b981', to: '#34d399', value: 'gradient-green-nature' },
-    { name: 'אדום אש', from: '#ef4444', to: '#fb923c', value: 'gradient-red-fire' },
-    { name: 'ורוד שקיעה', from: '#ec4899', to: '#f43f5e', value: 'gradient-pink-sunset' },
-    { name: 'זהב-שחור', from: '#fbbf24', to: '#000000', value: 'gradient-gold-black' },
-    { name: 'זהב-לבן', from: '#fbbf24', to: '#ffffff', value: 'gradient-gold-white' },
+  const backgroundOptions = [
+    { value: "default", label: "ברירת מחדל" },
+    { value: "dark", label: "כהה" },
+    { value: "light", label: "בהיר" },
+    { value: "gradient-blue", label: "גרדיאנט כחול" },
+    { value: "gradient-purple", label: "גרדיאנט סגול" },
+    { value: "gradient-green", label: "גרדיאנט ירוק" },
+    { value: "gradient-orange", label: "גרדיאנט כתום" },
+    { value: "gradient-pink", label: "גרדיאנט ורוד" },
+    { value: "tech-dark", label: "טכנולוגי כהה" },
+    { value: "minimal-light", label: "מינימליסטי בהיר" },
   ];
 
-  const handleTypeChange = (type: 'solid' | 'gradient') => {
-    setSelectedType(type);
-    if (type === 'solid') {
-      onChange(solidColor);
-    } else {
-      onChange(`linear-gradient(90deg, ${gradientColors.from}, ${gradientColors.to})`);
+  const updateField = (field: string, value: any) => {
+    const newContent = { ...localContent, [field]: value };
+    setLocalContent(newContent);
+    onContentChange(newContent);
+  };
+
+  const updateButton = (index: number, field: string, value: any) => {
+    const buttons = [...(localContent.buttons || [])];
+    if (!buttons[index]) {
+      buttons[index] = { text: "", style: "solid:#3b82f6", textStyle: "solid:#ffffff", visible: true };
+    }
+    buttons[index] = { ...buttons[index], [field]: value };
+    updateField('buttons', buttons);
+  };
+
+  const addButton = () => {
+    const buttons = [...(localContent.buttons || [])];
+    buttons.push({ 
+      text: `כפתור ${buttons.length + 1}`, 
+      style: "solid:#3b82f6", 
+      textStyle: "solid:#ffffff", 
+      visible: true 
+    });
+    updateField('buttons', buttons);
+  };
+
+  const removeButton = (index: number) => {
+    const buttons = [...(localContent.buttons || [])];
+    buttons.splice(index, 1);
+    updateField('buttons', buttons);
+  };
+
+  const toggleButtonVisibility = (index: number) => {
+    const buttons = [...(localContent.buttons || [])];
+    if (buttons[index]) {
+      buttons[index].visible = !buttons[index].visible;
+      updateField('buttons', buttons);
     }
   };
 
+  // Initialize buttons if they don't exist
+  if (!localContent.buttons || localContent.buttons.length === 0) {
+    updateField('buttons', [
+      { text: "התחל עכשיו", style: "solid:#3b82f6", textStyle: "solid:#ffffff", visible: true }
+    ]);
+  }
+
   return (
-    <div className="mb-4">
-      <Label>{label}</Label>
-      <div className="flex gap-2 items-center">
-        <Button type="button" size="sm" onClick={() => setIsOpen((v) => !v)}>
-          <Palette className="w-4 h-4 mr-1" />
-          {selectedType === 'solid' ? "צבע אחיד" : "גרדיאנט"}
-        </Button>
-        {isOpen && (
-          <div className="bg-white shadow-lg rounded p-4 z-50 absolute">
-            <div className="flex gap-2 mb-2">
+    <div className="space-y-6 text-right" dir="rtl">
+      <Card className="bg-gray-900 border-gray-700">
+        <CardHeader>
+          <CardTitle className="text-white flex items-center gap-2">
+            <Badge className="w-5 h-5" />
+            סקשן ראשי (Hero)
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Badge */}
+          <div>
+            <Label className="text-white font-semibold mb-2 block">תג מעל הכותרת</Label>
+            <Input
+              value={localContent.badge || ''}
+              onChange={(e) => updateField('badge', e.target.value)}
+              className="bg-gray-800 border-gray-600 text-white"
+              placeholder="הכנס תג..."
+            />
+            <div className="grid grid-cols-2 gap-2 mt-2">
+              <ColorPicker
+                value={localContent.badgeStyle || 'solid:#3b82f6'}
+                onChange={(value) => updateField('badgeStyle', value)}
+                label="צבע תג"
+              />
+              <ColorPicker
+                value={localContent.badgeTextStyle || 'solid:#ffffff'}
+                onChange={(value) => updateField('badgeTextStyle', value)}
+                label="צבע טקסט תג"
+              />
+            </div>
+          </div>
+
+          {/* Main Headline */}
+          <div>
+            <Label className="text-white font-semibold mb-2 block">כותרת ראשית</Label>
+            <Input
+              value={localContent.headline || ''}
+              onChange={(e) => updateField('headline', e.target.value)}
+              className="bg-gray-800 border-gray-600 text-white"
+              placeholder="הכנס כותרת ראשית..."
+            />
+            <div className="mt-2">
+              <ColorPicker
+                value={localContent.headlineStyle || 'solid:#ffffff'}
+                onChange={(value) => updateField('headlineStyle', value)}
+                label="צבע כותרת ראשית"
+              />
+            </div>
+          </div>
+
+          {/* Subheadline */}
+          <div>
+            <Label className="text-white font-semibold mb-2 block">כותרת משנה</Label>
+            <Textarea
+              value={localContent.subheadline || ''}
+              onChange={(e) => updateField('subheadline', e.target.value)}
+              className="bg-gray-800 border-gray-600 text-white"
+              rows={3}
+              placeholder="הכנס כותרת משנה..."
+            />
+            <div className="mt-2">
+              <ColorPicker
+                value={localContent.subheadlineStyle || 'solid:#d1d5db'}
+                onChange={(value) => updateField('subheadlineStyle', value)}
+                label="צבע כותרת משנה"
+              />
+            </div>
+          </div>
+
+          {/* Description */}
+          <div>
+            <Label className="text-white font-semibold mb-2 block">תיאור</Label>
+            <Textarea
+              value={localContent.description || ''}
+              onChange={(e) => updateField('description', e.target.value)}
+              className="bg-gray-800 border-gray-600 text-white"
+              rows={3}
+              placeholder="הכנס תיאור..."
+            />
+            <div className="mt-2">
+              <ColorPicker
+                value={localContent.descriptionStyle || 'solid:#9ca3af'}
+                onChange={(value) => updateField('descriptionStyle', value)}
+                label="צבע תיאור"
+              />
+            </div>
+          </div>
+
+          {/* Background Style */}
+          <div>
+            <Label className="text-white font-semibold mb-2 block">סגנון רקע</Label>
+            <Select value={localContent.backgroundStyle || 'default'} onValueChange={(value) => updateField('backgroundStyle', value)}>
+              <SelectTrigger className="bg-gray-800 border-gray-600 text-white">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-gray-800 border-gray-600">
+                {backgroundOptions.map(option => (
+                  <SelectItem key={option.value} value={option.value} className="text-white">
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Buttons */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <Label className="text-white font-semibold">כפתורים</Label>
               <Button
-                variant={selectedType === "solid" ? "default" : "outline"}
-                onClick={() => handleTypeChange("solid")}
+                onClick={addButton}
                 size="sm"
+                className="bg-blue-600 hover:bg-blue-700"
               >
-                צבע אחיד
-              </Button>
-              <Button
-                variant={selectedType === "gradient" ? "default" : "outline"}
-                onClick={() => handleTypeChange("gradient")}
-                size="sm"
-              >
-                גרדיאנט
+                <Plus className="w-4 h-4 ml-1" />
+                הוסף כפתור
               </Button>
             </div>
-            {selectedType === "solid" ? (
-              <input
-                type="color"
-                value={solidColor}
-                onChange={e => {
-                  setSolidColor(e.target.value);
-                  onChange(e.target.value);
-                }}
-                className="w-10 h-10 rounded"
-              />
-            ) : (
-              <div>
-                <div className="flex gap-2 items-center mb-2">
-                  <input
-                    type="color"
-                    value={gradientColors.from}
-                    onChange={e => {
-                      setGradientColors({ ...gradientColors, from: e.target.value });
-                      onChange(`linear-gradient(90deg, ${e.target.value}, ${gradientColors.to})`);
-                    }}
-                  />
-                  <span>אל</span>
-                  <input
-                    type="color"
-                    value={gradientColors.to}
-                    onChange={e => {
-                      setGradientColors({ ...gradientColors, to: e.target.value });
-                      onChange(`linear-gradient(90deg, ${gradientColors.from}, ${e.target.value})`);
-                    }}
-                  />
-                </div>
-                <div>
-                  <Label>גרדיאנטים מוכנים</Label>
-                  <div className="grid grid-cols-2 gap-2 mt-2">
-                    {gradientPresets.map(preset => (
-                      <Button
-                        key={preset.value}
-                        type="button"
-                        size="sm"
-                        style={{
-                          background: `linear-gradient(90deg, ${preset.from}, ${preset.to})`,
-                          color: "#fff",
-                          border: value === preset.value ? "2px solid #333" : undefined,
-                        }}
-                        onClick={() => onChange(preset.value)}
-                      >
-                        {preset.name}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
+            
+            <div className="space-y-3">
+              {(localContent.buttons || []).map((button: any, index: number) => (
+                <Card key={index} className="bg-gray-800 border-gray-600">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <Label className="text-white text-sm">כפתור {index + 1}</Label>
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={() => toggleButtonVisibility(index)}
+                          size="sm"
+                          variant={button.visible !== false ? "default" : "outline"}
+                          className="p-2"
+                        >
+                          {button.visible !== false ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                        </Button>
+                        <Button
+                          onClick={() => removeButton(index)}
+                          size="sm"
+                          variant="destructive"
+                          className="p-2"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      <div>
+                        <Label className="text-gray-300 text-sm mb-1 block">טקסט כפתור</Label>
+                        <Input
+                          value={button.text || ''}
+                          onChange={(e) => updateButton(index, 'text', e.target.value)}
+                          className="bg-gray-700 border-gray-600 text-white"
+                          placeholder="הכנס טקסט כפתור..."
+                        />
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-2">
+                        <ColorPicker
+                          value={button.style || 'solid:#3b82f6'}
+                          onChange={(value) => updateButton(index, 'style', value)}
+                          label="צבע כפתור"
+                        />
+                        <ColorPicker
+                          value={button.textStyle || 'solid:#ffffff'}
+                          onChange={(value) => updateButton(index, 'textStyle', value)}
+                          label="צבע טקסט"
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
-        )}
-        <div className="w-6 h-6 rounded-full border ml-2" style={{ background: value }} />
-      </div>
+        </CardContent>
+      </Card>
     </div>
-  );
-};
-
-const ContentElementsEditor: React.FC<ContentElementsEditorProps> = ({
-  content,
-  onContentChange,
-  formData,
-}) => {
-  // דוגמה לעריכה של כותרת+צבע
-  const handleHeadlineChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onContentChange({ ...content, headline: e.target.value });
-  };
-  const handleHeadlineColorChange = (color: string) => {
-    onContentChange({ ...content, headlineColor: color });
-  };
-
-  // ניתן להרחיב לכל האלמנטים הנדרשים
-
-  return (
-    <Card className="w-full bg-white/90 shadow-lg p-4">
-      <CardHeader>
-        <CardTitle>עריכת תוכן</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="mb-4">
-          <Label>כותרת ראשית</Label>
-          <Input
-            value={content.headline || ""}
-            onChange={handleHeadlineChange}
-            placeholder="לדוג' העסק המוביל בישראל"
-          />
-          <ColorPicker
-            value={content.headlineColor || "#3b82f6"}
-            onChange={handleHeadlineColorChange}
-            label="צבע כותרת ראשית"
-          />
-        </div>
-        {/* המשך עריכה לשדות נוספים */}
-      </CardContent>
-    </Card>
   );
 };
 
