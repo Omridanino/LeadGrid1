@@ -51,7 +51,6 @@ export const HeroFluidBlobs = ({ formData, currentColors, content }: HeroFluidBl
 
   // Helper function to render advanced buttons
   const renderAdvancedButton = (button: any, index: number) => {
-    const buttonStyle = button?.style || 'default';
     const buttonText = button?.text || content?.cta || 'התחל לחקור';
     const buttonColor = button?.color;
     

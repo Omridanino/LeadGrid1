@@ -51,7 +51,6 @@ export const HeroMinimalTech = ({ formData, currentColors, content }: HeroMinima
 
   // Helper function to render advanced buttons
   const renderAdvancedButton = (button: any, index: number) => {
-    const buttonStyle = button?.style || 'default';
     const buttonText = button?.text || content?.cta || 'התחל ניסיון חינם';
     const buttonColor = button?.color;
     
@@ -176,6 +175,19 @@ export const HeroMinimalTech = ({ formData, currentColors, content }: HeroMinima
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left Content */}
           <div>
+            {content?.badge && (
+              <motion.div
+                className="inline-block mb-6 px-4 py-2 rounded-full text-sm font-medium"
+                style={getBadgeStyle()}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                <Zap className="w-4 h-4 inline mr-2" />
+                {content.badge}
+              </motion.div>
+            )}
+            
             <motion.h1
               className="text-5xl md:text-6xl font-bold mb-8 leading-tight"
               style={getTextStyle('headline')}

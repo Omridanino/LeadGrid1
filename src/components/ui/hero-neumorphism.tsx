@@ -49,7 +49,6 @@ export const HeroNeumorphism = ({ formData, currentColors, content }: HeroNeumor
 
   // Helper function to render advanced buttons
   const renderAdvancedButton = (button: any, index: number) => {
-    const buttonStyle = button?.style || 'default';
     const buttonText = button?.text || content?.cta || 'הורדה';
     const buttonColor = button?.color;
     
@@ -114,6 +113,18 @@ export const HeroNeumorphism = ({ formData, currentColors, content }: HeroNeumor
     <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
       <div className="relative z-10 container mx-auto px-8 py-20">
         <div className="text-center max-w-4xl mx-auto">
+          {content?.badge && (
+            <motion.div
+              className="inline-block mb-8 px-4 py-2 rounded-full text-sm font-medium"
+              style={getBadgeStyle()}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              {content.badge}
+            </motion.div>
+          )}
+          
           <motion.h1
             className="text-5xl md:text-7xl font-light mb-8 leading-tight"
             style={getTextStyle('headline')}

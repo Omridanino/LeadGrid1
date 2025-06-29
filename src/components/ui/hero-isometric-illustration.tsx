@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Play, Star, Users, Target } from 'lucide-react';
+import { Play, Star, Users, Target, ArrowRight } from 'lucide-react';
 
 interface HeroIsometricIllustrationProps {
   formData?: any;
@@ -49,7 +49,6 @@ export const HeroIsometricIllustration = ({ formData, currentColors, content }: 
 
   // Helper function to render advanced buttons
   const renderAdvancedButton = (button: any, index: number) => {
-    const buttonStyle = button?.style || 'default';
     const buttonText = button?.text || content?.cta || 'הירשם';
     const buttonColor = button?.color;
     
@@ -74,7 +73,7 @@ export const HeroIsometricIllustration = ({ formData, currentColors, content }: 
     return (
       <motion.button
         key={index}
-        className="px-8 py-3 rounded-full font-semibold transition-colors"
+        className="px-8 py-3 rounded-full font-semibold transition-colors flex items-center gap-2"
         style={getButtonStyle()}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -83,6 +82,7 @@ export const HeroIsometricIllustration = ({ formData, currentColors, content }: 
         whileTap={{ scale: 0.95 }}
       >
         {buttonText}
+        <ArrowRight className="w-4 h-4" />
       </motion.button>
     );
   };
@@ -142,7 +142,7 @@ export const HeroIsometricIllustration = ({ formData, currentColors, content }: 
                 renderAdvancedButton(button, index)
               ) || (
                 <motion.button
-                  className="px-8 py-3 rounded-full font-semibold transition-colors"
+                  className="px-8 py-3 rounded-full font-semibold transition-colors flex items-center gap-2"
                   style={{ backgroundColor: '#ffffff', color: '#1f2937' }}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -151,6 +151,7 @@ export const HeroIsometricIllustration = ({ formData, currentColors, content }: 
                   whileTap={{ scale: 0.95 }}
                 >
                   {content?.cta || 'הירשם'}
+                  <ArrowRight className="w-4 h-4" />
                 </motion.button>
               )}
             </div>
@@ -213,7 +214,6 @@ export const HeroIsometricIllustration = ({ formData, currentColors, content }: 
                 <Users className="w-7 h-7" />
               </motion.div>
               
-              {/* Paper Airplane */}
               <motion.div
                 className="absolute top-5 left-1/3 w-8 h-8 text-white"
                 animate={{ 
