@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,15 +28,15 @@ interface ContentElementsEditorProps {
 const ContentElementsEditor = ({ content, onContentChange, formData }: ContentElementsEditorProps) => {
   const [localContent, setLocalContent] = useState(content || {});
 
-  const handleSave = () => {
-    // שמירה מיידית ובפועל
-    onContentChange(localContent);
-    // שמירה בlocalStorage
-    localStorage.setItem('generatedContent', JSON.stringify(localContent));
-    console.log('Content saved:', localContent);
-  };
+  // Update local content when prop changes
+  useEffect(() => {
+    if (content) {
+      setLocalContent(content);
+    }
+  }, [content]);
 
   const handleContentUpdate = (newContent: any) => {
+    console.log('Updating content:', newContent);
     setLocalContent(newContent);
     // עדכון מיידי בתצוגה המקדימה
     onContentChange(newContent);
@@ -73,6 +73,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
       ...localContent,
       accentColor: value
     };
+    console.log('Accent color changed to:', value);
     handleContentUpdate(newContent);
   };
 
@@ -93,7 +94,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     buttons.push({
       text: "כפתור חדש",
       variant: "primary",
-      style: "black-on-white",
+      style: "default",
       textStyle: "default",
       visible: true
     });
@@ -177,7 +178,10 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
       <Label className="text-white text-xs">{label}</Label>
       <select
         value={value || 'white-text'}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => {
+          console.log(`${label} color changed to:`, e.target.value);
+          onChange(e.target.value);
+        }}
         className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded text-xs"
       >
         <option value="white-text">לבן</option>
@@ -210,10 +214,14 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     <div className="space-y-2">
       <Label className="text-white text-xs">{label}</Label>
       <select
-        value={value || 'black-on-white'}
-        onChange={(e) => onChange(e.target.value)}
+        value={value || 'default'}
+        onChange={(e) => {
+          console.log(`${label} style changed to:`, e.target.value);
+          onChange(e.target.value);
+        }}
         className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded text-xs"
       >
+        <option value="default">ברירת מחדל</option>
         <option value="black-on-white">שחור על לבן</option>
         <option value="white-on-black">לבן על שחור</option>
         <option value="gradient-gold-black">גרדיאנט זהב-שחור</option>
@@ -231,7 +239,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
         <option value="glass-light">זכוכית בהירה</option>
       </select>
       <div className="mt-1">
-        <div className={`px-3 py-1 rounded text-xs ${getButtonStyleClasses(value || 'black-on-white')}`}>
+        <div className={`px-3 py-1 rounded text-xs ${getButtonStyleClasses(value || 'default')}`}>
           תצוגה מקדימה
         </div>
       </div>
@@ -240,13 +248,6 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between mb-4">
-        <Button onClick={handleSave} size="sm" className="bg-green-600 hover:bg-green-700 w-full">
-          <Save className="w-4 h-4 ml-1" />
-          שמור שינויים
-        </Button>
-      </div>
-
       {/* Badge/Tag Editor - Enhanced */}
       <Card className="bg-gray-800 border-gray-700">
         <CardHeader className="pb-2">
@@ -434,7 +435,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
                 {/* Button Preview */}
                 <div className="mt-3">
                   <Label className="text-white text-xs mb-1 block">תצוגה מקדימה:</Label>
-                  <button className={`px-4 py-2 rounded text-sm ${getButtonStyleClasses(button.style || 'black-on-white')} ${button.textStyle && button.textStyle !== 'default' ? getTextStyleClasses(button.textStyle) : ''}`}>
+                  <button className={`px-4 py-2 rounded text-sm ${getButtonStyleClasses(button.style || 'default')} ${button.textStyle && button.textStyle !== 'default' ? getTextStyleClasses(button.textStyle) : ''}`}>
                     {button.text || 'תצוגה מקדימה'}
                   </button>
                 </div>
@@ -465,7 +466,10 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
             <Label className="text-white text-xs mb-2 block">צבע רקע ראשי</Label>
             <select
               value={localContent.backgroundStyle || 'default'}
-              onChange={(e) => handleBackgroundChange(e.target.value)}
+              onChange={(e) => {
+                console.log('Background style changed to:', e.target.value);
+                handleBackgroundChange(e.target.value);
+              }}
               className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded text-xs"
             >
               <option value="default">ברירת מחדל</option>
@@ -482,10 +486,13 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
           </div>
           
           <div>
-            <Label className="text-white text-xs mb-2 block">צבע אקסנט</Label>
+            <Label className="text-white text-xs mb-2 block">צבע אקסנט ראשי</Label>
             <select
               value={localContent.accentColor || 'blue'}
-              onChange={(e) => handleAccentColorChange(e.target.value)}
+              onChange={(e) => {
+                console.log('Main accent color changed to:', e.target.value);
+                handleAccentColorChange(e.target.value);
+              }}
               className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded text-xs"
             >
               <option value="blue">כחול</option>
@@ -499,6 +506,13 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
               <option value="gold">זהב</option>
               <option value="silver">כסף</option>
             </select>
+            <div className="mt-2">
+              <div className="text-xs text-gray-400 mb-1">תצוגה מקדימה של צבע האקסנט:</div>
+              <div className="flex gap-2">
+                <div className={`w-6 h-6 rounded ${localContent.accentColor === 'blue' ? 'bg-blue-400' : localContent.accentColor === 'purple' ? 'bg-purple-400' : localContent.accentColor === 'green' ? 'bg-green-400' : localContent.accentColor === 'red' ? 'bg-red-400' : localContent.accentColor === 'orange' ? 'bg-orange-400' : localContent.accentColor === 'pink' ? 'bg-pink-400' : localContent.accentColor === 'cyan' ? 'bg-cyan-400' : localContent.accentColor === 'yellow' ? 'bg-yellow-400' : localContent.accentColor === 'gold' ? 'bg-yellow-400' : localContent.accentColor === 'silver' ? 'bg-gray-300' : 'bg-blue-400'}`}></div>
+                <span className="text-xs text-gray-300">צבע {localContent.accentColor || 'כחול'}</span>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>

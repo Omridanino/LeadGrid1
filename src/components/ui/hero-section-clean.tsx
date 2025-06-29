@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -18,9 +17,29 @@ export const HeroSectionClean = ({ formData, currentColors, content }: HeroSecti
     const mainServices = content?.description || formData?.mainServices || "השירותים המובילים שלנו"
     const badgeText = content?.badge || "חדש"
     
-    // Enhanced styling functions that use content values
-    const getTextStyleClasses = (style: string) => {
-      if (!style || style === 'default') return "text-gray-900 dark:text-white";
+    // Enhanced styling functions that use content values with dynamic colors
+    const getTextStyleClasses = (style: string, defaultColor?: string) => {
+      // Use dynamic colors from content if available
+      if (content?.accentColor) {
+        const colorMap: Record<string, string> = {
+          blue: "text-blue-400",
+          purple: "text-purple-400", 
+          green: "text-green-400",
+          red: "text-red-400",
+          orange: "text-orange-400",
+          pink: "text-pink-400",
+          cyan: "text-cyan-400",
+          yellow: "text-yellow-400",
+          gold: "text-yellow-400",
+          silver: "text-gray-300"
+        };
+        
+        if (style === 'dynamic-accent') {
+          return colorMap[content.accentColor] || "text-blue-400";
+        }
+      }
+      
+      if (!style || style === 'default') return defaultColor || "text-gray-900 dark:text-white";
       
       switch (style) {
         case "black-text": return "text-black";
@@ -40,11 +59,28 @@ export const HeroSectionClean = ({ formData, currentColors, content }: HeroSecti
         case "gradient-red-text": return "bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent";
         case "gradient-cyan-text": return "bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent";
         case "gradient-rainbow-text": return "bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 bg-clip-text text-transparent";
-        default: return "text-gray-900 dark:text-white";
+        default: return defaultColor || "text-gray-900 dark:text-white";
       }
     };
 
     const getBadgeStyleClasses = (style: string) => {
+      // Use dynamic colors
+      if (content?.accentColor && (!style || style === 'default')) {
+        const colorMap: Record<string, string> = {
+          blue: "bg-blue-600 text-white",
+          purple: "bg-purple-600 text-white",
+          green: "bg-green-600 text-white", 
+          red: "bg-red-600 text-white",
+          orange: "bg-orange-600 text-white",
+          pink: "bg-pink-600 text-white",
+          cyan: "bg-cyan-600 text-white",
+          yellow: "bg-yellow-600 text-white",
+          gold: "bg-yellow-600 text-white",
+          silver: "bg-gray-600 text-white"
+        };
+        return colorMap[content.accentColor] || "bg-blue-600 text-white";
+      }
+      
       if (!style || style === 'default') return "bg-blue-600 text-white";
       
       switch (style) {
@@ -68,6 +104,23 @@ export const HeroSectionClean = ({ formData, currentColors, content }: HeroSecti
     };
 
     const getButtonStyleClasses = (style: string) => {
+      // Use dynamic colors for default buttons
+      if (content?.accentColor && (!style || style === 'default')) {
+        const colorMap: Record<string, string> = {
+          blue: "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white",
+          purple: "bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white",
+          green: "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white",
+          red: "bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white",
+          orange: "bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white",
+          pink: "bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800 text-white",
+          cyan: "bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white",
+          yellow: "bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white",
+          gold: "bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white",
+          silver: "bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white"
+        };
+        return colorMap[content.accentColor] || "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white";
+      }
+      
       if (!style || style === 'default') return "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white";
       
       switch (style) {
@@ -91,6 +144,23 @@ export const HeroSectionClean = ({ formData, currentColors, content }: HeroSecti
     };
 
     const getBackgroundClasses = (style: string) => {
+      // Use dynamic colors for backgrounds
+      if (content?.accentColor && (!style || style === 'default')) {
+        const colorMap: Record<string, string> = {
+          blue: "bg-gradient-to-br from-blue-950 to-blue-900 text-white",
+          purple: "bg-gradient-to-br from-purple-950 to-purple-900 text-white",
+          green: "bg-gradient-to-br from-green-950 to-green-900 text-white",
+          red: "bg-gradient-to-br from-red-950 to-red-900 text-white",
+          orange: "bg-gradient-to-br from-orange-950 to-orange-900 text-white",
+          pink: "bg-gradient-to-br from-pink-950 to-pink-900 text-white",
+          cyan: "bg-gradient-to-br from-cyan-950 to-cyan-900 text-white",
+          yellow: "bg-gradient-to-br from-yellow-950 to-yellow-900 text-white",
+          gold: "bg-gradient-to-br from-yellow-950 to-yellow-900 text-white",
+          silver: "bg-gradient-to-br from-gray-950 to-gray-900 text-white"
+        };
+        return colorMap[content.accentColor] || "bg-white text-gray-900";
+      }
+      
       if (!style || style === 'default') return "bg-white text-gray-900";
       
       switch (style) {
@@ -117,7 +187,7 @@ export const HeroSectionClean = ({ formData, currentColors, content }: HeroSecti
                         <div className="flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
                             <div className="flex w-full justify-between lg:w-auto">
                                 <div className="flex items-center space-x-2 space-x-reverse">
-                                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${getBadgeStyleClasses(content?.badgeStyle)}`}>
                                         <span className="text-white font-bold text-sm">{businessName.charAt(0)}</span>
                                     </div>
                                     <span className={`font-semibold text-lg ${getTextStyleClasses(content?.headlineStyle)}`}>{businessName}</span>
@@ -143,7 +213,7 @@ export const HeroSectionClean = ({ formData, currentColors, content }: HeroSecti
                                         <li>
                                             <a href="#about" className={`block duration-150 hover:opacity-80 ${getTextStyleClasses(content?.descriptionStyle)}`}>
                                                 <span>אודות</span>
-                                            </a>
+                                            </a>  
                                         </li>
                                         <li>
                                             <a href="#contact" className={`block duration-150 hover:opacity-80 ${getTextStyleClasses(content?.descriptionStyle)}`}>
@@ -156,10 +226,13 @@ export const HeroSectionClean = ({ formData, currentColors, content }: HeroSecti
                                 <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit lg:border-l lg:pl-6">
                                     <Button
                                         variant="outline"
-                                        size="sm">
+                                        size="sm"
+                                        className={getButtonStyleClasses('white-on-black')}>
                                         <span>התחבר</span>
                                     </Button>
-                                    <Button size="sm">
+                                    <Button 
+                                        size="sm"
+                                        className={getButtonStyleClasses(content?.buttons?.[0]?.style)}>
                                         <span>הירשם</span>
                                     </Button>
                                 </div>
@@ -214,10 +287,10 @@ export const HeroSectionClean = ({ formData, currentColors, content }: HeroSecti
                                     ))
                                 ) : (
                                     <>
-                                        <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                                        <Button size="lg" className={getButtonStyleClasses(content?.buttons?.[0]?.style)}>
                                             <span>התחל עכשיו</span>
                                         </Button>
-                                        <Button variant="outline" size="lg">
+                                        <Button variant="outline" size="lg" className={getButtonStyleClasses('white-on-black')}>
                                             <span>למד עוד</span>
                                         </Button>
                                     </>
