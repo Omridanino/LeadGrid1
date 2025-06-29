@@ -49,8 +49,10 @@ export const HeroSectionRetro = ({ formData, currentColors, content }: HeroSecti
     const description = formData?.mainServices || "אנחנו מתמחים בפתרונות מקצועיים לעסקים המחפשים חדשנות וטכנולוגיה מתקדמת"
     const badgeText = content?.badge || ""
     
-    // Enhanced styling functions that use content values
+    // Enhanced styling functions with comprehensive color support
     const getTextStyleClasses = (style: string) => {
+      console.log('HeroSectionRetro - getTextStyleClasses called with:', style);
+      
       if (!style || style === 'default') return "text-gray-600 dark:text-gray-400";
       
       switch (style) {
@@ -71,11 +73,15 @@ export const HeroSectionRetro = ({ formData, currentColors, content }: HeroSecti
         case "gradient-red-text": return "bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent";
         case "gradient-cyan-text": return "bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent";
         case "gradient-rainbow-text": return "bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 bg-clip-text text-transparent";
-        default: return "text-gray-600 dark:text-gray-400";
+        default: 
+          console.log('HeroSectionRetro - Unknown text style, using default:', style);
+          return "text-gray-600 dark:text-gray-400";
       }
     };
 
     const getBadgeStyleClasses = (style: string) => {
+      console.log('HeroSectionRetro - getBadgeStyleClasses called with:', style);
+      
       if (!style || style === 'default') return "bg-gradient-to-tr from-zinc-300/20 via-gray-400/20 to-transparent dark:from-zinc-300/5 dark:via-gray-400/5 border-[2px] border-black/5 dark:border-white/5";
       
       switch (style) {
@@ -83,7 +89,7 @@ export const HeroSectionRetro = ({ formData, currentColors, content }: HeroSecti
         case "white-on-black": return "bg-black text-white border border-white";
         case "gradient-gold-black": return "bg-gradient-to-r from-yellow-400 to-black text-white border-0";
         case "gradient-gold-white": return "bg-gradient-to-r from-yellow-400 to-white text-black border-0";
-        case "gradient-purple-tech": return "bg-gradient-to-r from-purple-600 to-white text-white border-0";
+        case "gradient-purple-tech": return "bg-gradient-to-r from-purple-600 to-blue-500 text-white border-0";
         case "gradient-blue-ocean": return "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0";
         case "gradient-green-nature": return "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0";
         case "gradient-red-fire": return "bg-gradient-to-r from-red-500 to-orange-500 text-white border-0";
@@ -94,11 +100,15 @@ export const HeroSectionRetro = ({ formData, currentColors, content }: HeroSecti
         case "neon-pink": return "bg-pink-600 text-white border-2 border-pink-400 shadow-lg shadow-pink-400/50";
         case "glass-dark": return "bg-black/20 text-white border border-white/30 backdrop-blur-sm";
         case "glass-light": return "bg-white/20 text-black border border-black/30 backdrop-blur-sm";
-        default: return "bg-gradient-to-tr from-zinc-300/20 via-gray-400/20 to-transparent dark:from-zinc-300/5 dark:via-gray-400/5 border-[2px] border-black/5 dark:border-white/5";
+        default: 
+          console.log('HeroSectionRetro - Unknown badge style, using default:', style);
+          return "bg-gradient-to-tr from-zinc-300/20 via-gray-400/20 to-transparent dark:from-zinc-300/5 dark:via-gray-400/5 border-[2px] border-black/5 dark:border-white/5";
       }
     };
 
     const getBackgroundClasses = (style: string) => {
+      console.log('HeroSectionRetro - getBackgroundClasses called with:', style);
+      
       if (!style || style === 'default') return "";
       
       switch (style) {
@@ -111,11 +121,15 @@ export const HeroSectionRetro = ({ formData, currentColors, content }: HeroSecti
         case "gradient-pink": return "bg-gradient-to-br from-pink-950 to-pink-900";
         case "tech-dark": return "bg-black";
         case "minimal-light": return "bg-gray-100";
-        default: return "";
+        default: 
+          console.log('HeroSectionRetro - Unknown background style, using default:', style);
+          return "";
       }
     };
 
     const getButtonStyleClasses = (style: string) => {
+      console.log('HeroSectionRetro - getButtonStyleClasses called with:', style);
+      
       if (!style || style === 'default') return "bg-gradient-to-tr from-zinc-300/20 via-purple-400/30 to-transparent dark:from-zinc-300/5 dark:via-purple-400/20 text-gray-900 dark:text-white border-input border-[1px] hover:bg-gradient-to-tr hover:from-zinc-300/30 hover:via-purple-400/40 hover:to-transparent dark:hover:from-zinc-300/10 dark:hover:via-purple-400/30";
       
       switch (style) {
@@ -123,7 +137,7 @@ export const HeroSectionRetro = ({ formData, currentColors, content }: HeroSecti
         case "white-on-black": return "bg-black text-white border border-white hover:bg-gray-900";
         case "gradient-gold-black": return "bg-gradient-to-r from-yellow-400 to-black text-white border-0 hover:from-yellow-500 hover:to-gray-900";
         case "gradient-gold-white": return "bg-gradient-to-r from-yellow-400 to-white text-black border-0 hover:from-yellow-500 hover:to-gray-100";
-        case "gradient-purple-tech": return "bg-gradient-to-r from-purple-600 to-white text-white border-0 hover:from-purple-700 hover:to-gray-100";
+        case "gradient-purple-tech": return "bg-gradient-to-r from-purple-600 to-blue-500 text-white border-0 hover:from-purple-700 hover:to-blue-600";
         case "gradient-blue-ocean": return "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0 hover:from-blue-600 hover:to-cyan-600";
         case "gradient-green-nature": return "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 hover:from-green-600 hover:to-emerald-600";
         case "gradient-red-fire": return "bg-gradient-to-r from-red-500 to-orange-500 text-white border-0 hover:from-red-600 hover:to-orange-600";
@@ -134,7 +148,9 @@ export const HeroSectionRetro = ({ formData, currentColors, content }: HeroSecti
         case "neon-pink": return "bg-pink-600 text-white border-2 border-pink-400 shadow-lg shadow-pink-400/50 hover:bg-pink-700";
         case "glass-dark": return "bg-black/20 text-white border border-white/30 backdrop-blur-sm hover:bg-black/30";
         case "glass-light": return "bg-white/20 text-black border border-black/30 backdrop-blur-sm hover:bg-white/30";
-        default: return "bg-gradient-to-tr from-zinc-300/20 via-purple-400/30 to-transparent dark:from-zinc-300/5 dark:via-purple-400/20 text-gray-900 dark:text-white border-input border-[1px] hover:bg-gradient-to-tr hover:from-zinc-300/30 hover:via-purple-400/40 hover:to-transparent dark:hover:from-zinc-300/10 dark:hover:via-purple-400/30";
+        default: 
+          console.log('HeroSectionRetro - Unknown button style, using default:', style);
+          return "bg-gradient-to-tr from-zinc-300/20 via-purple-400/30 to-transparent dark:from-zinc-300/5 dark:via-purple-400/20 text-gray-900 dark:text-white border-input border-[1px] hover:bg-gradient-to-tr hover:from-zinc-300/30 hover:via-purple-400/40 hover:to-transparent dark:hover:from-zinc-300/10 dark:hover:via-purple-400/30";
       }
     };
     

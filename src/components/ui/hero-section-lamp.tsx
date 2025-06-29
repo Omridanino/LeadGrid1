@@ -18,8 +18,10 @@ export const HeroSectionLamp = ({ formData, currentColors, content }: HeroSectio
     const mainServices = content?.description || formData?.mainServices || "טכנולוגיה מתקדמת עם עיצוב מרהיב ותוכן איכותי שיקדם את העסק שלכם קדימה"
     const badgeText = content?.badge || ""
     
-    // Enhanced styling functions that use content values
+    // Enhanced styling functions with comprehensive color support
     const getTextStyleClasses = (style: string) => {
+      console.log('HeroSectionLamp - getTextStyleClasses called with:', style);
+      
       if (!style || style === 'default') return "text-slate-300";
       
       switch (style) {
@@ -40,11 +42,15 @@ export const HeroSectionLamp = ({ formData, currentColors, content }: HeroSectio
         case "gradient-red-text": return "bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent";
         case "gradient-cyan-text": return "bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent";
         case "gradient-rainbow-text": return "bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 bg-clip-text text-transparent";
-        default: return "text-slate-300";
+        default: 
+          console.log('HeroSectionLamp - Unknown text style, using default:', style);
+          return "text-slate-300";
       }
     };
 
     const getBadgeStyleClasses = (style: string) => {
+      console.log('HeroSectionLamp - getBadgeStyleClasses called with:', style);
+      
       if (!style || style === 'default') return "bg-cyan-500 text-white";
       
       switch (style) {
@@ -52,7 +58,7 @@ export const HeroSectionLamp = ({ formData, currentColors, content }: HeroSectio
         case "white-on-black": return "bg-black text-white border border-white";
         case "gradient-gold-black": return "bg-gradient-to-r from-yellow-400 to-black text-white border-0";
         case "gradient-gold-white": return "bg-gradient-to-r from-yellow-400 to-white text-black border-0";
-        case "gradient-purple-tech": return "bg-gradient-to-r from-purple-600 to-white text-white border-0";
+        case "gradient-purple-tech": return "bg-gradient-to-r from-purple-600 to-blue-500 text-white border-0";
         case "gradient-blue-ocean": return "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0";
         case "gradient-green-nature": return "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0";
         case "gradient-red-fire": return "bg-gradient-to-r from-red-500 to-orange-500 text-white border-0";
@@ -63,11 +69,15 @@ export const HeroSectionLamp = ({ formData, currentColors, content }: HeroSectio
         case "neon-pink": return "bg-pink-600 text-white border-2 border-pink-400 shadow-lg shadow-pink-400/50";
         case "glass-dark": return "bg-black/20 text-white border border-white/30 backdrop-blur-sm";
         case "glass-light": return "bg-white/20 text-black border border-black/30 backdrop-blur-sm";
-        default: return "bg-cyan-500 text-white";
+        default: 
+          console.log('HeroSectionLamp - Unknown badge style, using default:', style);
+          return "bg-cyan-500 text-white";
       }
     };
 
     const getButtonStyleClasses = (style: string) => {
+      console.log('HeroSectionLamp - getButtonStyleClasses called with:', style);
+      
       if (!style || style === 'default') return "bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700";
       
       switch (style) {
@@ -75,7 +85,7 @@ export const HeroSectionLamp = ({ formData, currentColors, content }: HeroSectio
         case "white-on-black": return "bg-black text-white border border-white hover:bg-gray-900";
         case "gradient-gold-black": return "bg-gradient-to-r from-yellow-400 to-black text-white border-0 hover:from-yellow-500 hover:to-gray-900";
         case "gradient-gold-white": return "bg-gradient-to-r from-yellow-400 to-white text-black border-0 hover:from-yellow-500 hover:to-gray-100";
-        case "gradient-purple-tech": return "bg-gradient-to-r from-purple-600 to-white text-white border-0 hover:from-purple-700 hover:to-gray-100";
+        case "gradient-purple-tech": return "bg-gradient-to-r from-purple-600 to-blue-500 text-white border-0 hover:from-purple-700 hover:to-blue-600";
         case "gradient-blue-ocean": return "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0 hover:from-blue-600 hover:to-cyan-600";
         case "gradient-green-nature": return "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 hover:from-green-600 hover:to-emerald-600";
         case "gradient-red-fire": return "bg-gradient-to-r from-red-500 to-orange-500 text-white border-0 hover:from-red-600 hover:to-orange-600";
@@ -86,11 +96,15 @@ export const HeroSectionLamp = ({ formData, currentColors, content }: HeroSectio
         case "neon-pink": return "bg-pink-600 text-white border-2 border-pink-400 shadow-lg shadow-pink-400/50 hover:bg-pink-700";
         case "glass-dark": return "bg-black/20 text-white border border-white/30 backdrop-blur-sm hover:bg-black/30";
         case "glass-light": return "bg-white/20 text-black border border-black/30 backdrop-blur-sm hover:bg-white/30";
-        default: return "bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700";
+        default: 
+          console.log('HeroSectionLamp - Unknown button style, using default:', style);
+          return "bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700";
       }
     };
 
     const getBackgroundClasses = (style: string) => {
+      console.log('HeroSectionLamp - getBackgroundClasses called with:', style);
+      
       if (!style || style === 'default') return "bg-slate-950";
       
       switch (style) {
@@ -103,7 +117,9 @@ export const HeroSectionLamp = ({ formData, currentColors, content }: HeroSectio
         case "gradient-pink": return "bg-gradient-to-br from-pink-950 to-pink-900";
         case "tech-dark": return "bg-black";
         case "minimal-light": return "bg-white";
-        default: return "bg-slate-950";
+        default: 
+          console.log('HeroSectionLamp - Unknown background style, using default:', style);
+          return "bg-slate-950";
       }
     };
     
