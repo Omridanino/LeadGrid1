@@ -81,7 +81,7 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
     handleEmotionalButtonsUpdate(updatedButtons);
   };
 
-  // Working color palette that actually changes colors
+  // Working color palette
   const workingColorPalette = [
     { name: 'ברירת מחדל', value: 'default' },
     { name: 'שחור', value: '#000000' },
@@ -120,7 +120,7 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
   return (
     <div className="space-y-6">
       <Tabs defaultValue="content" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 bg-gray-700">
+        <TabsList className="grid w-full grid-cols-3 bg-gray-700">
           <TabsTrigger value="content" className="text-white data-[state=active]:bg-blue-600">
             <Type className="w-4 h-4 mr-2" />
             תוכן
@@ -129,10 +129,6 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
             <Zap className="w-4 h-4 mr-2" />
             כפתורים
           </TabsTrigger>
-          <TabsTrigger value="emotional" className="text-white data-[state=active]:bg-blue-600">
-            <Heart className="w-4 h-4 mr-2" />
-            פסקת רגש
-          </TabsTrigger>
           <TabsTrigger value="colors" className="text-white data-[state=active]:bg-blue-600">
             <Palette className="w-4 h-4 mr-2" />
             צבעים
@@ -140,11 +136,12 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
         </TabsList>
 
         <TabsContent value="content" className="space-y-4">
+          {/* Hero Section Content */}
           <Card className="bg-gray-800 border-gray-700">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
                 <Type className="w-5 h-5" />
-                עריכת תוכן
+                עריכת תוכן הירו
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -195,16 +192,8 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
 
-        <TabsContent value="buttons" className="space-y-4">
-          <ButtonStyleEditor
-            buttons={buttons}
-            onButtonsChange={handleButtonsUpdate}
-          />
-        </TabsContent>
-
-        <TabsContent value="emotional" className="space-y-4">
+          {/* Emotional Section Content */}
           <Card className="bg-gray-800 border-gray-700">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
@@ -257,69 +246,75 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
                   rows={3}
                 />
               </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-              <div>
-                <Label className="text-white">צבע רקע</Label>
-                <div className="grid grid-cols-4 gap-2 mt-2">
-                  {workingColorPalette.map((color, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleEmotionalSectionUpdate({ backgroundColor: color.value === 'default' ? '#1e1e2e' : color.value })}
-                      className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
-                      style={{
-                        background: color.value === 'default' ? '#1e1e2e' : color.value
-                      }}
-                      title={color.name}
-                    >
-                      {emotionalSection.backgroundColor === (color.value === 'default' ? '#1e1e2e' : color.value) && (
-                        <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
-                      )}
-                    </button>
-                  ))}
-                </div>
+        <TabsContent value="buttons" className="space-y-4">
+          {/* Hero Buttons */}
+          <Card className="bg-gray-800 border-gray-700">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Zap className="w-5 h-5" />
+                כפתורי הירו
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ButtonStyleEditor
+                buttons={buttons}
+                onButtonsChange={handleButtonsUpdate}
+              />
+            </CardContent>
+          </Card>
+
+          {/* Emotional Section Buttons */}
+          <Card className="bg-gray-800 border-gray-700">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Heart className="w-5 h-5" />
+                כפתורי פסקת הרגש
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <Label className="text-white">כפתורים</Label>
+                <Button
+                  onClick={addEmotionalButton}
+                  size="sm"
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  <Plus className="w-4 h-4 ml-2" />
+                  הוסף כפתור
+                </Button>
               </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <Label className="text-white">כפתורים</Label>
-                  <Button
-                    onClick={addEmotionalButton}
-                    size="sm"
-                    className="bg-green-600 hover:bg-green-700"
-                  >
-                    <Plus className="w-4 h-4 ml-2" />
-                    הוסף כפתור
-                  </Button>
-                </div>
-                
-                <div className="space-y-3">
-                  {emotionalSection.buttons?.map((button: any) => (
-                    <div key={button.id} className="flex gap-2 p-3 bg-gray-700 rounded">
-                      <Input
-                        value={button.text}
-                        onChange={(e) => updateEmotionalButton(button.id, { text: e.target.value })}
-                        className="bg-gray-600 text-white flex-1"
-                        placeholder="טקסט הכפתור"
-                      />
-                      <select
-                        value={button.style}
-                        onChange={(e) => updateEmotionalButton(button.id, { style: e.target.value })}
-                        className="bg-gray-600 text-white p-2 rounded"
-                      >
-                        <option value="primary">ראשי</option>
-                        <option value="secondary">משני</option>
-                        <option value="outline">מסגרת</option>
-                      </select>
-                      <Button
-                        onClick={() => removeEmotionalButton(button.id)}
-                        size="sm"
-                        variant="destructive"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
+              
+              <div className="space-y-3">
+                {emotionalSection.buttons?.map((button: any) => (
+                  <div key={button.id} className="flex gap-2 p-3 bg-gray-700 rounded">
+                    <Input
+                      value={button.text}
+                      onChange={(e) => updateEmotionalButton(button.id, { text: e.target.value })}
+                      className="bg-gray-600 text-white flex-1"
+                      placeholder="טקסט הכפתור"
+                    />
+                    <select
+                      value={button.style}
+                      onChange={(e) => updateEmotionalButton(button.id, { style: e.target.value })}
+                      className="bg-gray-600 text-white p-2 rounded"
+                    >
+                      <option value="primary">ראשי</option>
+                      <option value="secondary">משני</option>
+                      <option value="outline">מסגרת</option>
+                    </select>
+                    <Button
+                      onClick={() => removeEmotionalButton(button.id)}
+                      size="sm"
+                      variant="destructive"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -334,78 +329,145 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Headline Color */}
+              {/* Hero Colors */}
               <div>
-                <Label className="text-white mb-3 block">צבע כותרת ראשית</Label>
-                <div className="grid grid-cols-4 gap-2">
-                  {workingColorPalette.map((color, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleColorUpdate('headline', color.value)}
-                      className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
-                      style={{
-                        background: color.value === 'default' ? '#374151' : color.value
-                      }}
-                      title={color.name}
-                    >
-                      {localContent.colors?.headline === color.value && (
-                        <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
-                      )}
-                      <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                        {color.name}
-                      </span>
-                    </button>
-                  ))}
+                <h3 className="text-white text-lg font-semibold mb-4">צבעי הירו</h3>
+                
+                {/* Headline Color */}
+                <div className="mb-4">
+                  <Label className="text-white mb-3 block">צבע כותרת ראשית</Label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {workingColorPalette.map((color, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleColorUpdate('headline', color.value)}
+                        className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                        style={{
+                          background: color.value === 'default' ? '#374151' : color.value
+                        }}
+                        title={color.name}
+                      >
+                        {localContent.colors?.headline === color.value && (
+                          <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Subheadline Color */}
+                <div className="mb-4">
+                  <Label className="text-white mb-3 block">צבע תת כותרת</Label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {workingColorPalette.map((color, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleColorUpdate('subheadline', color.value)}
+                        className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                        style={{
+                          background: color.value === 'default' ? '#374151' : color.value
+                        }}
+                        title={color.name}
+                      >
+                        {localContent.colors?.subheadline === color.value && (
+                          <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Badge Color */}
+                <div className="mb-4">
+                  <Label className="text-white mb-3 block">צבע תג עליון</Label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {workingColorPalette.map((color, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleColorUpdate('badge', color.value)}
+                        className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                        style={{
+                          background: color.value === 'default' ? '#374151' : color.value
+                        }}
+                        title={color.name}
+                      >
+                        {localContent.colors?.badge === color.value && (
+                          <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              {/* Subheadline Color */}
+              {/* Emotional Section Colors */}
               <div>
-                <Label className="text-white mb-3 block">צבע תת כותרת</Label>
-                <div className="grid grid-cols-4 gap-2">
-                  {workingColorPalette.map((color, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleColorUpdate('subheadline', color.value)}
-                      className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
-                      style={{
-                        background: color.value === 'default' ? '#374151' : color.value
-                      }}
-                      title={color.name}
-                    >
-                      {localContent.colors?.subheadline === color.value && (
-                        <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
-                      )}
-                      <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                        {color.name}
-                      </span>
-                    </button>
-                  ))}
+                <h3 className="text-white text-lg font-semibold mb-4">צבעי פסקת הרגש</h3>
+                
+                {/* Emotional Background Color */}
+                <div className="mb-4">
+                  <Label className="text-white mb-3 block">צבע רקע פסקת הרגש</Label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {workingColorPalette.map((color, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleEmotionalSectionUpdate({ backgroundColor: color.value === 'default' ? '#1e1e2e' : color.value })}
+                        className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                        style={{
+                          background: color.value === 'default' ? '#1e1e2e' : color.value
+                        }}
+                        title={color.name}
+                      >
+                        {emotionalSection.backgroundColor === (color.value === 'default' ? '#1e1e2e' : color.value) && (
+                          <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* Badge Color */}
-              <div>
-                <Label className="text-white mb-3 block">צבע תג עליון</Label>
-                <div className="grid grid-cols-4 gap-2">
-                  {workingColorPalette.map((color, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleColorUpdate('badge', color.value)}
-                      className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
-                      style={{
-                        background: color.value === 'default' ? '#374151' : color.value
-                      }}
-                      title={color.name}
-                    >
-                      {localContent.colors?.badge === color.value && (
-                        <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
-                      )}
-                      <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                        {color.name}
-                      </span>
-                    </button>
-                  ))}
+                {/* Emotional Title Color */}
+                <div className="mb-4">
+                  <Label className="text-white mb-3 block">צבע כותרת פסקת הרגש</Label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {workingColorPalette.map((color, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleColorUpdate('emotionalTitle', color.value)}
+                        className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                        style={{
+                          background: color.value === 'default' ? '#374151' : color.value
+                        }}
+                        title={color.name}
+                      >
+                        {localContent.colors?.emotionalTitle === color.value && (
+                          <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Emotional Text Color */}
+                <div className="mb-4">
+                  <Label className="text-white mb-3 block">צבע טקסט פסקת הרגש</Label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {workingColorPalette.map((color, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleColorUpdate('emotionalText', color.value)}
+                        className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                        style={{
+                          background: color.value === 'default' ? '#374151' : color.value
+                        }}
+                        title={color.name}
+                      >
+                        {localContent.colors?.emotionalText === color.value && (
+                          <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             </CardContent>
