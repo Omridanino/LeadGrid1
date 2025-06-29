@@ -114,6 +114,29 @@ export const HeroSectionRetro = ({ formData, currentColors, content }: HeroSecti
         default: return "";
       }
     };
+
+    const getButtonStyleClasses = (style: string) => {
+      if (!style || style === 'default') return "bg-gradient-to-tr from-zinc-300/20 via-purple-400/30 to-transparent dark:from-zinc-300/5 dark:via-purple-400/20 text-gray-900 dark:text-white border-input border-[1px] hover:bg-gradient-to-tr hover:from-zinc-300/30 hover:via-purple-400/40 hover:to-transparent dark:hover:from-zinc-300/10 dark:hover:via-purple-400/30";
+      
+      switch (style) {
+        case "black-on-white": return "bg-white text-black border border-black hover:bg-gray-100";
+        case "white-on-black": return "bg-black text-white border border-white hover:bg-gray-900";
+        case "gradient-gold-black": return "bg-gradient-to-r from-yellow-400 to-black text-white border-0 hover:from-yellow-500 hover:to-gray-900";
+        case "gradient-gold-white": return "bg-gradient-to-r from-yellow-400 to-white text-black border-0 hover:from-yellow-500 hover:to-gray-100";
+        case "gradient-purple-tech": return "bg-gradient-to-r from-purple-600 to-white text-white border-0 hover:from-purple-700 hover:to-gray-100";
+        case "gradient-blue-ocean": return "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0 hover:from-blue-600 hover:to-cyan-600";
+        case "gradient-green-nature": return "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 hover:from-green-600 hover:to-emerald-600";
+        case "gradient-red-fire": return "bg-gradient-to-r from-red-500 to-orange-500 text-white border-0 hover:from-red-600 hover:to-orange-600";
+        case "gradient-pink-sunset": return "bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0 hover:from-pink-600 hover:to-rose-600";
+        case "neon-blue": return "bg-blue-600 text-white border-2 border-blue-400 shadow-lg shadow-blue-400/50 hover:bg-blue-700";
+        case "neon-green": return "bg-green-600 text-white border-2 border-green-400 shadow-lg shadow-green-400/50 hover:bg-green-700";
+        case "neon-purple": return "bg-purple-600 text-white border-2 border-purple-400 shadow-lg shadow-purple-400/50 hover:bg-purple-700";
+        case "neon-pink": return "bg-pink-600 text-white border-2 border-pink-400 shadow-lg shadow-pink-400/50 hover:bg-pink-700";
+        case "glass-dark": return "bg-black/20 text-white border border-white/30 backdrop-blur-sm hover:bg-black/30";
+        case "glass-light": return "bg-white/20 text-black border border-black/30 backdrop-blur-sm hover:bg-white/30";
+        default: return "bg-gradient-to-tr from-zinc-300/20 via-purple-400/30 to-transparent dark:from-zinc-300/5 dark:via-purple-400/20 text-gray-900 dark:text-white border-input border-[1px] hover:bg-gradient-to-tr hover:from-zinc-300/30 hover:via-purple-400/40 hover:to-transparent dark:hover:from-zinc-300/10 dark:hover:via-purple-400/30";
+      }
+    };
     
     return (
         <div className={`relative ${getBackgroundClasses(content?.backgroundStyle)}`} dir="rtl">
@@ -129,11 +152,17 @@ export const HeroSectionRetro = ({ formData, currentColors, content }: HeroSecti
                             </h1>
                         )}
                         <h2 className={`text-4xl tracking-tighter font-geist mx-auto md:text-6xl ${getTextStyleClasses(content?.headlineStyle) || 'bg-clip-text text-transparent bg-[linear-gradient(180deg,_#000_0%,_rgba(0,_0,_0,_0.75)_100%)] dark:bg-[linear-gradient(180deg,_#FFF_0%,_rgba(255,_255,_255,_0.00)_202.08%)]'}`}>
-                            {businessStory}
+                            {businessName}
+                            <br />
                             <span className={`${getTextStyleClasses(content?.subheadlineStyle) || 'text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500 dark:from-purple-300 dark:to-orange-200'}`}>
-                                {subtitle}
+                                {businessStory}
                             </span>
                         </h2>
+                        {subtitle && (
+                            <h3 className={`text-xl md:text-2xl ${getTextStyleClasses(content?.descriptionStyle) || 'text-purple-400'}`}>
+                                {subtitle}
+                            </h3>
+                        )}
                         <p className={`max-w-2xl mx-auto ${getTextStyleClasses(content?.descriptionStyle) || 'text-gray-600 dark:text-gray-300'}`}>
                             {description}
                         </p>
@@ -143,7 +172,7 @@ export const HeroSectionRetro = ({ formData, currentColors, content }: HeroSecti
                                 <div className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-white dark:bg-gray-950 text-xs font-medium backdrop-blur-3xl">
                                     <a
                                         href="#"
-                                        className="inline-flex rounded-full text-center group items-center w-full justify-center bg-gradient-to-tr from-zinc-300/20 via-purple-400/30 to-transparent dark:from-zinc-300/5 dark:via-purple-400/20 text-gray-900 dark:text-white border-input border-[1px] hover:bg-gradient-to-tr hover:from-zinc-300/30 hover:via-purple-400/40 hover:to-transparent dark:hover:from-zinc-300/10 dark:hover:via-purple-400/30 transition-all sm:w-auto py-4 px-10"
+                                        className={`inline-flex rounded-full text-center group items-center w-full justify-center transition-all sm:w-auto py-4 px-10 ${getButtonStyleClasses(content?.buttons?.[0]?.style)} ${content?.buttons?.[0]?.textStyle && content.buttons[0].textStyle !== 'default' ? getTextStyleClasses(content.buttons[0].textStyle) : ''}`}
                                     >
                                         {content?.buttons?.[0]?.text || "התחל עכשיו"}
                                     </a>
