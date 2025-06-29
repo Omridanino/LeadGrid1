@@ -579,8 +579,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     if (selectedGlassDesign === 11) {
       return (
         <HeroWithMockup 
-          title={content?.headline || formData?.businessName || 'זכוכית נוזלית'}
-          description={content?.subheadline || content?.description || 'עיצוב מתקדם וחדשני'}
+          title1={content?.headline || formData?.businessName || 'זכוכית נוזלית'}
+          title2={content?.subheadline || content?.description || 'עיצוב מתקדם וחדשני'}
         />
       );
     }
