@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Download, Star, Monitor, FileText, Eye } from 'lucide-react';
+import { Download, Star, Monitor, FileText, Eye, ArrowRight } from 'lucide-react';
 
 interface HeroNeumorphismProps {
   formData?: any;
@@ -88,7 +87,7 @@ export const HeroNeumorphism = ({ formData, currentColors, content }: HeroNeumor
     return (
       <button 
         key={index}
-        className="px-8 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-3 justify-center hover:scale-105"
+        className="px-8 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-3 justify-center hover:scale-105 relative z-20"
         style={getButtonStyle()}
         onMouseEnter={(e) => {
           e.currentTarget.style.boxShadow = `
@@ -103,7 +102,7 @@ export const HeroNeumorphism = ({ formData, currentColors, content }: HeroNeumor
           `;
         }}
       >
-        <Download className="w-5 h-5" />
+        <ArrowRight className="w-5 h-5" />
         {buttonText}
       </button>
     );
@@ -115,7 +114,7 @@ export const HeroNeumorphism = ({ formData, currentColors, content }: HeroNeumor
         <div className="text-center max-w-4xl mx-auto">
           {content?.badge && (
             <motion.div
-              className="inline-block mb-8 px-4 py-2 rounded-full text-sm font-medium"
+              className="inline-block mb-8 px-4 py-2 rounded-full text-sm font-medium relative z-30"
               style={getBadgeStyle()}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -126,7 +125,7 @@ export const HeroNeumorphism = ({ formData, currentColors, content }: HeroNeumor
           )}
           
           <motion.h1
-            className="text-5xl md:text-7xl font-light mb-8 leading-tight"
+            className="text-5xl md:text-7xl font-light mb-8 leading-tight relative z-30"
             style={getTextStyle('headline')}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -136,7 +135,7 @@ export const HeroNeumorphism = ({ formData, currentColors, content }: HeroNeumor
           </motion.h1>
           
           <motion.p
-            className="text-xl mb-12 max-w-2xl mx-auto leading-relaxed"
+            className="text-xl mb-12 max-w-2xl mx-auto leading-relaxed relative z-30"
             style={getTextStyle('subheadline')}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -146,7 +145,7 @@ export const HeroNeumorphism = ({ formData, currentColors, content }: HeroNeumor
           </motion.p>
           
           <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
+            className="flex flex-col sm:flex-row gap-4 justify-center mb-16 relative z-30"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -154,55 +153,37 @@ export const HeroNeumorphism = ({ formData, currentColors, content }: HeroNeumor
             {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
               renderAdvancedButton(button, index)
             ) || (
-              <>
-                <button 
-                  className="px-8 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-3 justify-center hover:scale-105"
-                  style={{
-                    backgroundColor: '#e5e7eb',
-                    color: '#374151',
-                    boxShadow: `
-                      12px 12px 24px rgba(0, 0, 0, 0.1),
-                      -12px -12px 24px rgba(255, 255, 255, 0.8)
-                    `,
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.boxShadow = `
-                      inset 6px 6px 12px rgba(0, 0, 0, 0.1),
-                      inset -6px -6px 12px rgba(255, 255, 255, 0.8)
-                    `;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.boxShadow = `
-                      12px 12px 24px rgba(0, 0, 0, 0.1),
-                      -12px -12px 24px rgba(255, 255, 255, 0.8)
-                    `;
-                  }}
-                >
-                  <Download className="w-5 h-5" />
-                  {content?.cta || 'הורדה'}
-                </button>
-                
-                <button 
-                  className="px-6 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-2 justify-center hover:scale-105"
-                  style={{
-                    backgroundColor: '#e5e7eb',
-                    color: '#374151',
-                    boxShadow: `
-                      12px 12px 24px rgba(0, 0, 0, 0.1),
-                      -12px -12px 24px rgba(255, 255, 255, 0.8)
-                    `,
-                  }}
-                >
-                  <Star className="w-4 h-4" />
-                  <span>Star</span>
-                  <span className="bg-gray-300 px-2 py-1 rounded-lg text-sm">21</span>
-                </button>
-              </>
+              <button 
+                className="px-8 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-3 justify-center hover:scale-105 relative z-20"
+                style={{
+                  backgroundColor: '#e5e7eb',
+                  color: '#374151',
+                  boxShadow: `
+                    12px 12px 24px rgba(0, 0, 0, 0.1),
+                    -12px -12px 24px rgba(255, 255, 255, 0.8)
+                  `,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.boxShadow = `
+                    inset 6px 6px 12px rgba(0, 0, 0, 0.1),
+                    inset -6px -6px 12px rgba(255, 255, 255, 0.8)
+                  `;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.boxShadow = `
+                    12px 12px 24px rgba(0, 0, 0, 0.1),
+                    -12px -12px 24px rgba(255, 255, 255, 0.8)
+                  `;
+                }}
+              >
+                <ArrowRight className="w-5 h-5" />
+                {content?.cta || 'הורדה'}
+              </button>
             )}
           </motion.div>
           
           <motion.div
-            className="text-center mb-16"
+            className="text-center mb-16 relative z-30"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
@@ -213,11 +194,12 @@ export const HeroNeumorphism = ({ formData, currentColors, content }: HeroNeumor
           
           {/* Neumorphic Cards */}
           <motion.div
-            className="grid md:grid-cols-3 gap-12 max-w-4xl mx-auto"
+            className="grid md:grid-cols-3 gap-12 max-w-4xl mx-auto relative z-20"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
+            
             <div 
               className="bg-gray-200 p-8 rounded-3xl text-center transition-all duration-300 hover:scale-105"
               style={{

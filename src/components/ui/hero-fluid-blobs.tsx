@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
@@ -49,7 +48,7 @@ export const HeroFluidBlobs = ({ formData, currentColors, content }: HeroFluidBl
     return { backgroundColor: 'rgba(255, 255, 255, 0.1)', color: '#ffffff' };
   };
 
-  // Helper function to render advanced buttons
+  // Helper function to render advanced buttons with proper color support
   const renderAdvancedButton = (button: any, index: number) => {
     const buttonText = button?.text || content?.cta || 'התחל לחקור';
     const buttonColor = button?.color;

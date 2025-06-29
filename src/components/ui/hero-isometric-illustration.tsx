@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Play, Star, Users, Target, ArrowRight } from 'lucide-react';
@@ -47,7 +46,7 @@ export const HeroIsometricIllustration = ({ formData, currentColors, content }: 
     return { backgroundColor: 'rgba(255, 255, 255, 0.2)', color: '#ffffff' };
   };
 
-  // Helper function to render advanced buttons
+  // Helper function to render advanced buttons with proper color support
   const renderAdvancedButton = (button: any, index: number) => {
     const buttonText = button?.text || content?.cta || 'הירשם';
     const buttonColor = button?.color;
@@ -229,16 +228,6 @@ export const HeroIsometricIllustration = ({ formData, currentColors, content }: 
           </motion.div>
         </div>
       </div>
-      
-      {/* Bottom Stats */}
-      <motion.div
-        className="absolute bottom-20 left-8 text-white text-sm"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1 }}
-      >
-        📈 42 השראות עיצוב חדשות נוספו השבוע
-      </motion.div>
     </section>
   );
 };
