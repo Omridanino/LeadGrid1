@@ -1,10 +1,6 @@
+
 import React from 'react';
 import { ColorScheme } from "@/types/colors";
-import { HeroWith3DElements } from "@/components/preview/HeroVariants/HeroWith3DElements";
-import { HeroGeometricShapes } from "@/components/preview/HeroVariants/HeroGeometricShapes";
-import { HeroGlassRefraction } from "@/components/preview/HeroVariants/HeroGlassRefraction";
-import { HeroLiquidMetal } from "@/components/preview/HeroVariants/HeroLiquidMetal";
-import { HeroParallax } from "@/components/preview/HeroVariants/HeroParallax";
 
 interface HeroSectionProps {
   content: any;
@@ -40,21 +36,6 @@ const HeroSection = ({ content, currentColors, formData, heroImage }: HeroSectio
     }
   };
 
-  const renderHeroVariant = () => {
-    const heroComponents = [
-      () => <HeroWith3DElements badge={content?.badge} title1={content?.headline} title2={content?.subheadline} />,
-      () => <HeroGeometricShapes badge={content?.badge} title1={content?.headline} title2={content?.subheadline} />,
-      () => <HeroGlassRefraction badge={content?.badge} title1={content?.headline} title2={content?.subheadline} />,
-      () => <HeroLiquidMetal badge={content?.badge} title1={content?.headline} title2={content?.subheadline} />,
-      () => <HeroParallax badge={content?.badge} title1={content?.headline} title2={content?.subheadline} />
-    ];
-
-    const randomIndex = Math.floor(Math.random() * heroComponents.length);
-    const HeroComponent = heroComponents[randomIndex];
-    
-    return <HeroComponent />;
-  };
-
   return (
     <div 
       className={`hero w-full min-h-screen text-white ${getStyleClass()}`}
@@ -74,10 +55,10 @@ const HeroSection = ({ content, currentColors, formData, heroImage }: HeroSectio
         {content?.badge && (
           <div className="badge badge-secondary mb-4">{content.badge}</div>
         )}
-        <h1 className="hero-title text-5xl font-bold mb-4" style={{ color: currentColors?.headline || 'white' }}>
+        <h1 className="hero-title text-5xl font-bold mb-4" style={{ color: currentColors?.headlineColor || 'white' }}>
           {content?.headline || formData?.businessName}
         </h1>
-        <p className="hero-subtitle text-2xl mb-8" style={{ color: currentColors?.subheadline || 'white' }}>
+        <p className="hero-subtitle text-2xl mb-8" style={{ color: currentColors?.subheadlineColor || 'white' }}>
           {content?.subheadline || content?.description}
         </p>
         {content?.cta && (
