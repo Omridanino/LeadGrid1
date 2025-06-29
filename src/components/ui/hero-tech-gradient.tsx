@@ -101,7 +101,7 @@ export const HeroTechGradient = ({ formData, currentColors, content }: HeroTechG
               transition={{ duration: 0.8, delay: 0.6 }}
             >
               {content?.cta || 'התחל'}
-            </button>
+            </motion.button>
           </div>
 
           {/* Right side - Floating rounded rectangle */}

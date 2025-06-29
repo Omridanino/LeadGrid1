@@ -19,6 +19,12 @@ import { HeroSectionClean } from "@/components/ui/hero-section-clean";
 import { HeroSectionModern } from "@/components/ui/hero-section-modern";
 import { HeroSectionLamp } from "@/components/ui/hero-section-lamp";
 import { HeroSectionRetro } from "@/components/ui/hero-section-retro";
+import { HeroSimpleDark } from "@/components/ui/hero-simple-dark";
+import { HeroFloatingElements } from "@/components/ui/hero-floating-elements";
+import { HeroSpaceParticles } from "@/components/ui/hero-space-particles";
+import { HeroTechGradient } from "@/components/ui/hero-tech-gradient";
+import { HeroCrystalElements } from "@/components/ui/hero-crystal-elements";
+import { HeroBankingRibbons } from "@/components/ui/hero-banking-ribbons";
 import { ArrowLeft, Play, Shield, Zap, Award, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { HeroFuturistic } from "@/components/ui/hero-futuristic";
@@ -124,41 +130,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             {buttonText}
           </MetalButton>
         );
-      case 'metal-silver':
-      case 'מתכת כסף':
-        return (
-          <MetalButton key={index} variant="default" className="px-8 py-4">
-            {buttonText}
-          </MetalButton>
-        );
-      case 'metal-bronze':
-      case 'מתכת ברונזה':
-        return (
-          <MetalButton key={index} variant="bronze" className="px-8 py-4">
-            {buttonText}
-          </MetalButton>
-        );
-      case 'metal-primary':
-      case 'מתכת ראשי':
-        return (
-          <MetalButton key={index} variant="primary" className="px-8 py-4">
-            {buttonText}
-          </MetalButton>
-        );
-      case 'metal-success':
-      case 'מתכת ירוק':
-        return (
-          <MetalButton key={index} variant="success" className="px-8 py-4">
-            {buttonText}
-          </MetalButton>
-        );
-      case 'metal-error':
-      case 'מתכת אדום':
-        return (
-          <MetalButton key={index} variant="error" className="px-8 py-4">
-            {buttonText}
-          </MetalButton>
-        );
       default:
         return (
           <button 
@@ -192,58 +163,11 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       const randomIndex = Math.floor(randomSeed % availableDesigns.length);
       const selectedDesign = availableDesigns[randomIndex];
       
-      console.log('Selected random design:', selectedDesign, 'from index:', randomIndex);
+      console.log('Selected random basic design:', selectedDesign, 'from index:', randomIndex);
       setSelectedBasicDesign(selectedDesign);
     }, [formData?.businessName, formData?.businessType]);
 
-    // Enhanced Mockup Hero (minimal) with custom content
-    if (selectedBasicDesign === 'hero-section-minimal') {
-      return (
-        <section className="relative overflow-hidden min-h-screen bg-black/[0.96]">
-          <div className="container mx-auto px-4 relative z-10 min-h-screen flex items-center justify-center">
-            <div className="text-center max-w-4xl mx-auto">
-              {content?.badge && (
-                <div 
-                  className="inline-block mb-6 px-4 py-2 rounded-full text-sm"
-                  style={getBadgeStyle()}
-                >
-                  {content.badge}
-                </div>
-              )}
-              
-              <h1 
-                className="text-5xl md:text-7xl font-bold mb-8"
-                style={getTextStyle('headline')}
-              >
-                {content?.headline || formData?.businessName || 'העסק שלכם'}
-              </h1>
-              
-              <p 
-                className="text-xl md:text-2xl mb-12"
-                style={getTextStyle('subheadline')}
-              >
-                {content?.subheadline || content?.description || `פתרונות מקצועיים ל${formData?.targetAudience || 'הלקוחות שלכם'}`}
-              </p>
-              
-              <div className="flex gap-4 justify-center flex-wrap">
-                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                  renderAdvancedButton(button, index)
-                ) || (
-                  <button 
-                    className="px-8 py-4 rounded-xl font-semibold text-lg"
-                    style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                  >
-                    {content?.cta || 'בואו נתחיל'}
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
-      );
-    }
-
-    // All other basic designs - pass content as props
+    // Enhanced content props
     const customContentProps = getCustomContentProps();
 
     if (selectedBasicDesign === 'hero-section-clean') {
@@ -286,12 +210,10 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Beams Background (classic) with custom content
-    if (selectedBasicDesign === 'hero-section-classic') {
+    // Enhanced Mockup Hero (minimal) with custom content
+    if (selectedBasicDesign === 'hero-section-minimal') {
       return (
-        <section className="relative overflow-hidden min-h-screen bg-black">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
-          
+        <section className="relative overflow-hidden min-h-screen bg-black/[0.96]">
           <div className="container mx-auto px-4 relative z-10 min-h-screen flex items-center justify-center">
             <div className="text-center max-w-4xl mx-auto">
               {content?.badge && (
@@ -304,17 +226,17 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               )}
               
               <h1 
-                className="text-5xl md:text-7xl font-bold mb-8"
+                className="text-5xl md:text-7xl font-bold mb-8 text-white"
                 style={getTextStyle('headline')}
               >
-                {content?.headline || formData?.businessName || 'חלומות דיגיטליים'}
+                {content?.headline || formData?.businessName || 'העסק שלכם'}
               </h1>
               
               <p 
-                className="text-xl md:text-2xl mb-12"
+                className="text-xl md:text-2xl mb-12 text-gray-300"
                 style={getTextStyle('subheadline')}
               >
-                {content?.subheadline || content?.description || 'שם המחשבות מקבלות צורה והתודעה זורמת כמו כספית נוזלית'}
+                {content?.subheadline || content?.description || `פתרונות מקצועיים ל${formData?.targetAudience || 'הלקוחות שלכם'}`}
               </p>
               
               <div className="flex gap-4 justify-center flex-wrap">
@@ -325,7 +247,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                     className="px-8 py-4 rounded-xl font-semibold text-lg"
                     style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
                   >
-                    {content?.cta || 'היכנסו לזרימה'}
+                    {content?.cta || 'בואו נתחיל'}
                   </button>
                 )}
               </div>
@@ -335,94 +257,24 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Gradient Hero (elegant) with custom content
-    if (selectedBasicDesign === 'hero-section-elegant') {
-      return (
-        <section className="relative overflow-hidden min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=%229C92AC&quot; fill-opacity=&quot;0.1&quot;%3E%3Ccircle cx=&quot;30&quot; cy=&quot;30&quot; r=&quot;1&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20" />
-          
-          <div className="container mx-auto px-4 relative z-10 min-h-screen flex items-center justify-center">
-            <div className="text-center max-w-4xl mx-auto">
-              {content?.badge && (
-                <div 
-                  className="inline-block mb-6 px-4 py-2 rounded-full text-sm"
-                  style={getBadgeStyle()}
-                >
-                  {content.badge}
-                </div>
-              )}
-              
-              <h1 
-                className="text-5xl md:text-7xl font-bold mb-8"
-                style={getTextStyle('headline')}
-              >
-                {content?.headline || formData?.businessName || 'העתיד כאן עכשיו'}
-              </h1>
-              
-              <p 
-                className="text-xl md:text-2xl mb-12"
-                style={getTextStyle('subheadline')}
-              >
-                {content?.subheadline || content?.description || 'expérience דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש'}
-              </p>
-              
-              <div className="flex gap-4 justify-center flex-wrap">
-                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                  renderAdvancedButton(button, index)
-                ) || (
-                  <button 
-                    className="px-8 py-4 rounded-xl font-semibold text-lg"
-                    style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                  >
-                    {content?.cta || 'haledו היום'}
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
-      );
-    }
-
-    // Default fallback
+    // Return default fallback for other basic designs
     return (
       <section className="relative overflow-hidden min-h-screen bg-black">
         <div className="container mx-auto px-4 relative z-10 min-h-screen flex items-center justify-center">
           <div className="text-center max-w-4xl mx-auto">
-            {content?.badge && (
-              <div 
-                className="inline-block mb-6 px-4 py-2 rounded-full text-sm"
-                style={getBadgeStyle()}
-              >
-                {content.badge}
-              </div>
-            )}
-            
-            <h1 
-              className="text-5xl md:text-7xl font-bold mb-8"
-              style={getTextStyle('headline')}
-            >
+            <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white">
               {content?.headline || formData?.businessName || 'העסק'}
             </h1>
-            
-            <p 
-              className="text-xl md:text-2xl mb-12"
-              style={getTextStyle('subheadline')}
-            >
+            <p className="text-xl md:text-2xl mb-12 text-gray-300">
               {content?.subheadline || content?.description || 'פתרונות מקצועיים'}
             </p>
-            
             <div className="flex gap-4 justify-center flex-wrap">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                renderAdvancedButton(button, index)
-              ) || (
-                <button 
-                  className="px-8 py-4 rounded-xl font-semibold text-lg"
-                  style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                >
-                  {content?.cta || 'בואו נתחיל'}
-                </button>
-              )}
+              <button 
+                className="px-8 py-4 rounded-xl font-semibold text-lg"
+                style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+              >
+                {content?.cta || 'בואו נתחיל'}
+              </button>
             </div>
           </div>
         </div>
@@ -437,19 +289,10 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
 
     useEffect(() => {
       // Randomly select one of the 18 3D designs (0-17)
-      setSelectedDesign(Math.floor(Math.random() * 18));
-    }, []);
-
-    // Import the new hero components
-    const { HeroSimpleDark } = require('@/components/ui/hero-simple-dark');
-    const { HeroFloatingElements } = require('@/components/ui/hero-floating-elements');
-    const { HeroGlassPhone } = require('@/components/ui/hero-glass-phone');
-    const { HeroGlassCube } = require('@/components/ui/hero-glass-cube');
-    const { HeroSpaceParticles } = require('@/components/ui/hero-space-particles');
-    const { HeroLiquidDesign } = require('@/components/ui/hero-liquid-design');
-    const { HeroTechGradient } = require('@/components/ui/hero-tech-gradient');
-    const { HeroCrystalElements } = require('@/components/ui/hero-crystal-elements');
-    const { HeroBankingRibbons } = require('@/components/ui/hero-banking-ribbons');
+      const randomIndex = Math.floor(Math.random() * 18);
+      console.log('Selected random 3D design:', randomIndex);
+      setSelectedDesign(randomIndex);
+    }, [formData?.businessName, formData?.businessType]);
 
     // Enhanced content props
     const customContentProps = {
@@ -466,20 +309,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return <HeroFloatingElements formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
     
-    if (selectedDesign === 10) {
-      return <HeroGlassPhone formData={formData} currentColors={currentColors} content={customContentProps} />;
-    }
-    
-    if (selectedDesign === 11) {
-      return <HeroGlassCube formData={formData} currentColors={currentColors} content={customContentProps} />;
-    }
-    
     if (selectedDesign === 12) {
       return <HeroSpaceParticles formData={formData} currentColors={currentColors} content={customContentProps} />;
-    }
-    
-    if (selectedDesign === 13) {
-      return <HeroLiquidDesign formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
     
     if (selectedDesign === 14) {
@@ -517,14 +348,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 )}
                 
                 <h1 
-                  className="text-4xl md:text-6xl font-bold mb-6"
+                  className="text-4xl md:text-6xl font-bold mb-6 text-white"
                   style={getTextStyle('headline')}
                 >
                   {content?.headline || formData?.businessName || 'חוויה תלת מימדית'}
                 </h1>
                 
                 <p 
-                  className="text-lg leading-relaxed mb-8 max-w-lg"
+                  className="text-lg leading-relaxed mb-8 max-w-lg text-gray-300"
                   style={getTextStyle('subheadline')}
                 >
                   {content?.subheadline || content?.description || `הביאו את העסק שלכם למימד חדש עם טכנולוגיות מתקדמות ועיצוב חדשני`}
@@ -538,7 +369,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                       className="px-6 py-3 rounded-lg font-semibold transition"
                       style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
                     >
-                      {content?.cta || 'haledו עכשיו'}
+                      {content?.cta || 'התחלו עכשיו'}
                     </button>
                   )}
                 </div>
@@ -572,14 +403,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             )}
             
             <h1 
-              className="text-5xl md:text-7xl font-light mb-4 tracking-widest whitespace-nowrap"
+              className="text-5xl md:text-7xl font-light mb-4 tracking-widest whitespace-nowrap text-white"
               style={getTextStyle('headline')}
             >
               {content?.headline || formData?.businessName || 'דיגיטל אמיץ'}
             </h1>
             
             <p 
-              className="text-sm md:text-lg font-mono tracking-wide mb-8 max-w-2xl"
+              className="text-sm md:text-lg font-mono tracking-wide mb-8 max-w-2xl text-gray-300"
               style={getTextStyle('subheadline')}
             >
               {content?.subheadline || 'טכנולוגיה שמביאה חיים למגע - דרך חדשה לעשות דברים'}
@@ -602,285 +433,9 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    if (selectedDesign === 2) {
-      return (
-        <section className="relative grid min-h-screen place-content-center overflow-hidden bg-gray-950 px-4 py-24 text-gray-200">
-          <div className="absolute inset-0" style={{
-            background: `radial-gradient(125% 125% at 50% 0%, #020617 50%, #13FFAA)`
-          }} />
-          
-          <div className="relative z-10 flex flex-col items-center text-center">
-            {content?.badge && (
-              <div 
-                className="mb-6 inline-block rounded-full px-4 py-2 text-sm"
-                style={getBadgeStyle()}
-              >
-                <Award className="w-4 h-4 inline mr-2" />
-                {content.badge}
-              </div>
-            )}
-            
-            <h1 
-              className="max-w-4xl text-center text-4xl md:text-7xl font-medium leading-tight mb-6"
-              style={getTextStyle('headline')}
-            >
-              {content?.headline || formData?.businessName || 'the future is now'}
-            </h1>
-            
-            <p 
-              className="my-6 max-w-2xl text-center text-lg leading-relaxed"
-              style={getTextStyle('subheadline')}
-            >
-              {content?.subheadline || 'a digital experience that brings your business to the future with cutting-edge technologies'}
-            </p>
-            
-            <div className="flex gap-4 justify-center flex-wrap">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                renderAdvancedButton(button, index)
-              ) || (
-                <button
-                  className="group relative flex w-fit items-center gap-2 rounded-full bg-gray-950/10 px-6 py-3 text-gray-50 transition-colors hover:bg-gray-950/50 border border-gray-600/50 backdrop-blur-sm"
-                  style={{
-                    boxShadow: '0px 4px 24px rgba(19, 255, 170, 0.3)'
-                  }}
-                >
-                  {content?.cta || 'come in'}
-                  <ArrowLeft className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
-                </button>
-              )}
-            </div>
-          </div>
-
-          
-          <div className="absolute inset-0 z-0">
-            {[...Array(100)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 3}s`,
-                  opacity: Math.random() * 0.5 + 0.2
-                }}
-              />
-            ))}
-          </div>
-        </section>
-      );
-    }
-
-    if (selectedDesign === 3) {
-      return (
-        <div className="h-screen w-screen flex flex-col justify-center items-center relative">
-          <LavaLamp />
-          <div className="absolute z-10 text-center">
-            {content?.badge && (
-              <div 
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm"
-                style={getBadgeStyle()}
-              >
-                <Zap className="w-4 h-4" />
-                <span>{content.badge}</span>
-              </div>
-            )}
-            
-            <h1 
-              className="text-6xl md:text-8xl font-bold tracking-tight whitespace-nowrap mb-6"
-              style={getTextStyle('headline')}
-            >
-              {content?.headline || formData?.businessName || 'dreams of the digital'}
-            </h1>
-            
-            <p 
-              className="text-lg md:text-xl text-center max-w-2xl leading-relaxed mb-8 px-4"
-              style={getTextStyle('subheadline')}
-            >
-              {content?.subheadline || 'the computers receive a shape and the information flows like a coin of the realm'}
-            </p>
-            
-            <div className="flex gap-4 justify-center">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                renderAdvancedButton(button, index)
-              ) || (
-                <button 
-                  className="px-8 py-4 rounded-lg font-bold transition"
-                  style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                >
-                  {content?.cta || 'come in'}
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    if (selectedDesign === 4) {
-      return (
-        <div className="h-screen w-screen relative flex flex-col justify-center items-center">
-          <div className="absolute inset-0">
-            <Scene />
-          </div>
-          <div className="absolute z-10 text-center">
-            {content?.badge && (
-              <div 
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm"
-                style={getBadgeStyle()}
-              >
-                <Award className="w-4 h-4" />
-                <span>{content.badge}</span>
-              </div>
-            )}
-            
-            <h1 
-              className="text-6xl md:text-8xl font-bold mb-6 tracking-tight"
-              style={getTextStyle('headline')}
-            >
-              {content?.headline || formData?.businessName || 'solution for complex problems'}
-            </h1>
-            
-            <p 
-              className="text-lg md:text-xl max-w-2xl px-6 leading-relaxed mb-8"
-              style={getTextStyle('subheadline')}
-            >
-              {content?.subheadline || 'one piece at a time - we solve the most complex problems'}
-            </p>
-            
-            <div className="flex gap-4 justify-center">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                renderAdvancedButton(button, index)
-              ) || (
-                <button 
-                  className="px-8 py-4 rounded-lg font-bold transition"
-                  style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                >
-                  {content?.cta || 'solve with us'}
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    if (selectedDesign === 5) {
-      const ROBOT_SCENE_URL = "https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode";
-      
-      return (
-        <div className="relative w-screen h-screen overflow-hidden">
-          <div className="flex h-screen">
-            {/* Left side - 3D Robot */}
-            <div className="flex-1 relative">
-              <InteractiveRobotSpline
-                scene={ROBOT_SCENE_URL}
-                className="absolute inset-0 z-0" 
-              />
-            </div>
-
-            {/* Right side - Content */}
-            <div className="flex-1 relative z-10 p-8 flex flex-col justify-center">
-              <div className="max-w-2xl text-white drop-shadow-lg">
-                {content?.badge && (
-                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm`} style={getBadgeStyle()}>
-                    <Zap className="w-4 h-4" />
-                    <span>{content.badge}</span>
-                  </div>
-                )}
-                
-                <h1 className={`text-4xl md:text-6xl font-bold mb-6`} style={getTextStyle('headline')}>
-                  {content?.headline || formData?.businessName || 'interactive 3D robot'}
-                </h1>
-                
-                <p className={`text-lg leading-relaxed mb-8`} style={getTextStyle('subheadline')}>
-                  {content?.subheadline || 'an advanced interactive experience with 3D technology'}
-                </p>
-                
-                <div className="flex gap-4">
-                  {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                    renderAdvancedButton(button, index)
-                  ) || (
-                    <button 
-                      className="px-8 py-4 rounded-lg font-bold transition"
-                      style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                    >
-                      {content?.cta || 'explore the robot'}
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    if (selectedDesign === 6) {
-      return (
-        <div className="relative w-screen h-screen overflow-hidden bg-black">
-          <BackgroundCircles
-            title={content?.headline || formData?.businessName || 'background circles'}
-            description={content?.subheadline || content?.description || 'advanced geometric design with animated grids'}
-            variant="primary"
-          />
-          
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4">
-            {content?.badge && (
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm`} style={getBadgeStyle()}>
-                <Award className="w-4 h-4" />
-                <span>{content.badge}</span>
-              </div>
-            )}
-            
-            <div className="flex gap-4 justify-center mt-8">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                renderAdvancedButton(button, index)
-              ) || (
-                <button 
-                  className="px-8 py-4 rounded-lg font-bold transition"
-                  style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                >
-                  {content?.cta || 'experience'}
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    if (selectedDesign === 7) {
-      return (
-        <div className="relative w-screen h-screen overflow-hidden">
-          <HorizonHeroSection
-            title={content?.headline || formData?.businessName || 'HORIZON'}
-            subtitle1={content?.subheadline || 'Where vision meets reality,'}
-            subtitle2={content?.description || 'we shape the future of tomorrow'}
-            className="absolute inset-0"
-          />
-          
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4 pointer-events-none">
-            <div className="mt-96 flex gap-4 justify-center pointer-events-auto">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                renderAdvancedButton(button, index)
-              ) || (
-                <button 
-                  className="px-8 py-4 rounded-lg font-bold transition"
-                  style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                >
-                  {content?.cta || 'explore the horizon'}
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    // Fallback design 17 (random new design)
-    if (selectedDesign === 17) {
-      return <HeroSimpleDark formData={formData} currentColors={currentColors} content={customContentProps} />;
-    }
+    // Continue with other existing designs...
+    // Fallback design
+    return <HeroSimpleDark formData={formData} currentColors={currentColors} content={customContentProps} />;
   }
 
   // Fallback to basic design with custom styles

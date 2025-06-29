@@ -27,7 +27,7 @@ export const HeroFloatingElements = ({ formData, currentColors, content }: HeroF
                   ו<span className="text-blue-400">מותגים</span>
                 </>
               )}
-            </h1>
+            </motion.h1>
             
             <motion.p 
               className="text-lg leading-relaxed mb-8 text-gray-300 max-w-lg"
