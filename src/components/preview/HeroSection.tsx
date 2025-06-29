@@ -833,7 +833,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               <div className="w-full h-full flex items-center justify-center">
                 <div className="w-[600px] h-[600px] relative">
                   <img 
-                    src="/lovable-uploads/be5c31f2-ee31-49ec-a0bc-1182066b9cca.png" 
+                    src="/lovable-uploads/ec6b8374-3932-48ac-ac2d-703d465caf06.png" 
                     alt="3D Element" 
                     className="w-full h-full object-contain"
                   />

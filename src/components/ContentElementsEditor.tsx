@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ColorScheme } from "@/types/colors";
 import { Palette, Type, Zap, Badge as BadgeIcon, Eye } from "lucide-react";
 import ButtonStyleEditor from "./ButtonStyleEditor";
@@ -44,30 +43,27 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
     handleContentUpdate({ buttons });
   };
 
-  // Color options for text styling
-  const colorOptions = [
-    { value: 'default', label: 'ברירת מחדל' },
-    { value: 'black-text', label: 'שחור' },
-    { value: 'white-text', label: 'לבן' },
-    { value: 'gold-text', label: 'זהב' },
-    { value: 'silver-text', label: 'כסף' },
-    { value: 'blue-text', label: 'כחול' },
-    { value: 'green-text', label: 'ירוק' },
-    { value: 'red-text', label: 'אדום' },
-    { value: 'purple-text', label: 'סגול' },
-    { value: 'pink-text', label: 'ורוד' },
-    { value: 'cyan-text', label: 'ציאן' },
-    { value: 'gradient-gold-text', label: 'גרדיאנט זהב' },
-    { value: 'gradient-purple-text', label: 'גרדיאנט סגול' },
-    { value: 'gradient-blue-text', label: 'גרדיאנט כחול' },
-    { value: 'gradient-green-text', label: 'גרדיאנט ירוק' },
-    { value: 'gradient-red-text', label: 'גרדיאנט אדום' },
-    { value: 'gradient-cyan-text', label: 'גרדיאנט ציאן' },
-    { value: 'gradient-rainbow-text', label: 'גרדיאנט קשת' },
-    { value: 'neon-blue', label: 'נאון כחול' },
-    { value: 'neon-green', label: 'נאון ירוק' },
-    { value: 'neon-purple', label: 'נאון סגול' },
-    { value: 'neon-pink', label: 'נאון ורוד' },
+  // Working color palette that actually changes colors
+  const workingColorPalette = [
+    { name: 'ברירת מחדל', value: 'default' },
+    { name: 'שחור', value: '#000000' },
+    { name: 'לבן', value: '#ffffff' },
+    { name: 'אדום', value: '#ef4444' },
+    { name: 'כחול', value: '#3b82f6' },
+    { name: 'ירוק', value: '#10b981' },
+    { name: 'סגול', value: '#8b5cf6' },
+    { name: 'ורוד', value: '#ec4899' },
+    { name: 'צהוב', value: '#f59e0b' },
+    { name: 'ציאן', value: '#06b6d4' },
+    { name: 'זהב', value: '#d4af37' },
+    { name: 'כסף', value: '#c0c0c0' },
+    { name: 'גרדיאנט זהב', value: 'linear-gradient(45deg, #ffd700, #ffed4a)' },
+    { name: 'גרדיאנט סגול', value: 'linear-gradient(45deg, #8b5cf6, #a855f7)' },
+    { name: 'גרדיאנט כחול', value: 'linear-gradient(45deg, #3b82f6, #1d4ed8)' },
+    { name: 'גרדיאנט ירוק', value: 'linear-gradient(45deg, #10b981, #059669)' },
+    { name: 'גרדיאנט אדום', value: 'linear-gradient(45deg, #ef4444, #dc2626)' },
+    { name: 'גרדיאנט ציאן', value: 'linear-gradient(45deg, #06b6d4, #0891b2)' },
+    { name: 'גרדיאנט קשת', value: 'linear-gradient(45deg, #ef4444, #f59e0b, #10b981, #3b82f6, #8b5cf6)' },
   ];
 
   // Ensure buttons array exists
@@ -164,74 +160,80 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
                 עיצוב צבעים
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
+              {/* Headline Color */}
               <div>
-                <Label className="text-white">צבע כותרת ראשית</Label>
-                <Select
-                  value={localContent.colors?.headline || 'default'}
-                  onValueChange={(value) => handleColorUpdate('headline', value)}
-                >
-                  <SelectTrigger className="w-full bg-gray-700 text-white border-gray-600">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-gray-700 border-gray-600">
-                    {colorOptions.map((option) => (
-                      <SelectItem
-                        key={option.value}
-                        value={option.value}
-                        className="text-white hover:bg-gray-600"
-                      >
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Label className="text-white mb-3 block">צבע כותרת ראשית</Label>
+                <div className="grid grid-cols-4 gap-2">
+                  {workingColorPalette.map((color, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleColorUpdate('headline', color.value)}
+                      className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                      style={{
+                        background: color.value === 'default' ? '#374151' : color.value
+                      }}
+                      title={color.name}
+                    >
+                      {localContent.colors?.headline === color.value && (
+                        <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                      )}
+                      <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                        {color.name}
+                      </span>
+                    </button>
+                  ))}
+                </div>
               </div>
 
+              {/* Subheadline Color */}
               <div>
-                <Label className="text-white">צבע תת כותרת</Label>
-                <Select
-                  value={localContent.colors?.subheadline || 'default'}
-                  onValueChange={(value) => handleColorUpdate('subheadline', value)}
-                >
-                  <SelectTrigger className="w-full bg-gray-700 text-white border-gray-600">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-gray-700 border-gray-600">
-                    {colorOptions.map((option) => (
-                      <SelectItem
-                        key={option.value}
-                        value={option.value}
-                        className="text-white hover:bg-gray-600"
-                      >
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Label className="text-white mb-3 block">צבע תת כותרת</Label>
+                <div className="grid grid-cols-4 gap-2">
+                  {workingColorPalette.map((color, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleColorUpdate('subheadline', color.value)}
+                      className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                      style={{
+                        background: color.value === 'default' ? '#374151' : color.value
+                      }}
+                      title={color.name}
+                    >
+                      {localContent.colors?.subheadline === color.value && (
+                        <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                      )}
+                      <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                        {color.name}
+                      </span>
+                    </button>
+                  ))}
+                </div>
               </div>
 
+              {/* Badge Color */}
               <div>
-                <Label className="text-white">צבע תג עליון</Label>
-                <Select
-                  value={localContent.colors?.badge || 'default'}
-                  onValueChange={(value) => handleColorUpdate('badge', value)}
-                >
-                  <SelectTrigger className="w-full bg-gray-700 text-white border-gray-600">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-gray-700 border-gray-600">
-                    {colorOptions.map((option) => (
-                      <SelectItem
-                        key={option.value}
-                        value={option.value}
-                        className="text-white hover:bg-gray-600"
-                      >
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Label className="text-white mb-3 block">צבע תג עליון</Label>
+                <div className="grid grid-cols-4 gap-2">
+                  {workingColorPalette.map((color, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleColorUpdate('badge', color.value)}
+                      className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                      style={{
+                        background: color.value === 'default' ? '#374151' : color.value
+                      }}
+                      title={color.name}
+                    >
+                      {localContent.colors?.badge === color.value && (
+                        <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                      )}
+                      <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                        {color.name}
+                      </span>
+                    </button>
+                  ))}
+                </div>
               </div>
             </CardContent>
           </Card>
