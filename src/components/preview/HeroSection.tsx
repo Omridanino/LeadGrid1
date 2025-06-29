@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/types/colors";
@@ -40,6 +41,7 @@ import { ArrowLeft, Play, Shield, Zap, Award, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { HeroFuturistic } from "@/components/ui/hero-futuristic";
 import { LiquidButton, MetalButton } from "@/components/ui/liquid-glass-button";
+import { EmotionalSection } from "@/components/EmotionalSection";
 
 interface HeroSectionProps {
   content: any;
@@ -187,56 +189,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           </button>
         );
     }
-  };
-
-  // Emotional Section Component
-  const EmotionalSection = ({ content, currentColors, formData }: any) => {
-    const emotionalContent = content?.emotionalSection || {};
-    const title = emotionalContent.title || 'הגיע הזמן לפעול';
-    const subtitle = emotionalContent.subtitle || 'אל תחמיץ את ההזדמנות הזו';
-    const text = emotionalContent.text || 'הצטרף אלינו עוד היום והתחל את המסע שלך להצלחה';
-    const badge = emotionalContent.badge || 'מוגבל בזמן';
-    const backgroundColor = emotionalContent.backgroundColor || '#1e1e2e';
-    const buttons = emotionalContent.buttons || [{ id: '1', text: 'התחל עכשיו', style: 'primary', visible: true }];
-
-    return (
-      <section 
-        className="py-20 px-8 relative"
-        style={{ backgroundColor }}
-      >
-        <div className="container mx-auto max-w-4xl text-center">
-          {badge && (
-            <div className="inline-block mb-6 px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-sm font-semibold text-white">
-              {badge}
-            </div>
-          )}
-          
-          <h2 
-            className="text-4xl md:text-6xl font-bold mb-6 text-white"
-          >
-            {title}
-          </h2>
-          
-          {subtitle && (
-            <h3 className="text-2xl md:text-3xl mb-8 text-gray-300">
-              {subtitle}
-            </h3>
-          )}
-          
-          <p 
-            className="text-xl md:text-2xl leading-relaxed mb-12 text-gray-300"
-          >
-            {text}
-          </p>
-          
-          <div className="flex gap-4 justify-center flex-wrap">
-            {buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-              renderAdvancedButton(button, index)
-            )}
-          </div>
-        </div>
-      </section>
-    );
   };
 
   // Handle Basic Design Style variations
