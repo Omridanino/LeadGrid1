@@ -411,7 +411,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                       className="px-8 py-4 rounded-xl font-semibold text-lg"
                       style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
                     >
-                      {content?.cta || 'haledו היום'}
+                      {content?.cta || 'נתחיל היום'}
                     </button>
                   )}
                 </div>
@@ -515,10 +515,16 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
         </>
       );
     }
+
+    // Fix component props for HeroGeometric - it expects badge, title1, title2
     if (selectedGradientDesign === 2) {
       return (
         <>
-          <HeroFuturistic formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
+          <HeroGeometric 
+            badge={content?.badge}
+            title1={content?.headline || formData?.businessName || 'העתיד'}
+            title2={content?.subheadline || 'דיגיטלי'}
+          />
           <EmotionalSection content={content} currentColors={currentColors} formData={formData} />
         </>
       );
@@ -780,7 +786,11 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     if (selectedGeometricDesign === 2) {
       return (
         <>
-          <HeroGeometric formData={formData} currentColors={currentColors} content={customContentProps} />
+          <HeroGeometric 
+            badge={content?.badge}
+            title1={content?.headline || formData?.businessName || 'העתיד'}
+            title2={content?.subheadline || 'דיגיטלי'}
+          />
           <EmotionalSection content={content} currentColors={currentColors} formData={formData} />
         </>
       );
