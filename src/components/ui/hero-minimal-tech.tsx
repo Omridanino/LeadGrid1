@@ -12,6 +12,79 @@ interface HeroMinimalTechProps {
 export const HeroMinimalTech = ({ formData, currentColors, content }: HeroMinimalTechProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  // Helper function to get inline style for text colors with gradient support
+  const getTextStyle = (colorKey: string) => {
+    const colorValue = content?.colors?.[colorKey];
+    if (colorValue) {
+      if (colorValue.includes('gradient')) {
+        return { 
+          background: colorValue,
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text'
+        };
+      }
+      return { color: colorValue };
+    }
+    return { color: '#1f2937' };
+  };
+
+  // Helper function to get inline style for badge colors with gradient support
+  const getBadgeStyle = () => {
+    const badgeColor = content?.colors?.badge;
+    if (badgeColor) {
+      if (badgeColor.includes('gradient')) {
+        return { 
+          background: badgeColor,
+          color: '#ffffff',
+          border: 'none'
+        };
+      }
+      return { 
+        backgroundColor: badgeColor,
+        color: '#ffffff',
+        border: 'none'
+      };
+    }
+    return { backgroundColor: '#dbeafe', color: '#1d4ed8' };
+  };
+
+  // Helper function to render advanced buttons
+  const renderAdvancedButton = (button: any, index: number) => {
+    const buttonStyle = button?.style || 'default';
+    const buttonText = button?.text || content?.cta || 'התחל ניסיון חינם';
+    const buttonColor = button?.color;
+    
+    const getButtonStyle = () => {
+      if (buttonColor) {
+        if (buttonColor.includes('gradient')) {
+          return { 
+            background: buttonColor,
+            color: '#ffffff',
+            border: 'none'
+          };
+        }
+        return { 
+          backgroundColor: buttonColor,
+          color: '#ffffff',
+          border: 'none'
+        };
+      }
+      return { backgroundColor: '#2563eb', color: '#ffffff' };
+    };
+
+    return (
+      <button 
+        key={index}
+        className="group px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center gap-3 shadow-lg hover:shadow-xl"
+        style={getButtonStyle()}
+      >
+        {buttonText}
+        <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+      </button>
+    );
+  };
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -104,24 +177,23 @@ export const HeroMinimalTech = ({ formData, currentColors, content }: HeroMinima
           {/* Left Content */}
           <div>
             <motion.h1
-              className="text-5xl md:text-6xl font-bold mb-8 text-gray-900 leading-tight"
+              className="text-5xl md:text-6xl font-bold mb-8 leading-tight"
+              style={getTextStyle('headline')}
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              הפוך את האתר שלך ל
-              <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent block">
-                מדהים
-              </span>
+              {content?.headline || formData?.businessName || 'הפוך את האתר שלך למדהים'}
             </motion.h1>
             
             <motion.p
-              className="text-xl text-gray-600 mb-12 leading-relaxed"
+              className="text-xl mb-12 leading-relaxed"
+              style={getTextStyle('subheadline')}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              {content?.description || 'תבנית דף הנחיתה שלנו עובדת על כל המכשירים, כך שאתם צריכים רק להגדיר אותה פעם אחת, ולקבל תוצאות יפות לתמיד.'}
+              {content?.subheadline || content?.description || 'תבנית דף הנחיתה שלנו עובדת על כל המכשירים, כך שאתם צריכים רק להגדיר אותה פעם אחת, ולקבל תוצאות יפות לתמיד.'}
             </motion.p>
             
             <motion.div
@@ -130,15 +202,24 @@ export const HeroMinimalTech = ({ formData, currentColors, content }: HeroMinima
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <button className="group bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center gap-3 shadow-lg hover:shadow-xl">
-                {content?.buttons?.[0]?.text || 'התחל ניסיון חינם'}
-                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-              </button>
-              
-              <button className="group bg-gray-900 hover:bg-gray-800 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center gap-3">
-                {content?.buttons?.[1]?.text || 'למד עוד'}
-                <Play className="w-5 h-5" />
-              </button>
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+                renderAdvancedButton(button, index)
+              ) || (
+                <>
+                  <button 
+                    className="group px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center gap-3 shadow-lg hover:shadow-xl"
+                    style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
+                  >
+                    {content?.cta || 'התחל ניסיון חינם'}
+                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                  </button>
+                  
+                  <button className="group px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center gap-3 bg-gray-900 hover:bg-gray-800 text-white">
+                    למד עוד
+                    <Play className="w-5 h-5" />
+                  </button>
+                </>
+              )}
             </motion.div>
           </div>
           

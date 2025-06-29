@@ -10,6 +10,83 @@ interface HeroIsometricIllustrationProps {
 }
 
 export const HeroIsometricIllustration = ({ formData, currentColors, content }: HeroIsometricIllustrationProps) => {
+  // Helper function to get inline style for text colors with gradient support
+  const getTextStyle = (colorKey: string) => {
+    const colorValue = content?.colors?.[colorKey];
+    if (colorValue) {
+      if (colorValue.includes('gradient')) {
+        return { 
+          background: colorValue,
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text'
+        };
+      }
+      return { color: colorValue };
+    }
+    return { color: '#ffffff' };
+  };
+
+  // Helper function to get inline style for badge colors with gradient support
+  const getBadgeStyle = () => {
+    const badgeColor = content?.colors?.badge;
+    if (badgeColor) {
+      if (badgeColor.includes('gradient')) {
+        return { 
+          background: badgeColor,
+          color: '#ffffff',
+          border: 'none'
+        };
+      }
+      return { 
+        backgroundColor: badgeColor,
+        color: '#ffffff',
+        border: 'none'
+      };
+    }
+    return { backgroundColor: 'rgba(255, 255, 255, 0.2)', color: '#ffffff' };
+  };
+
+  // Helper function to render advanced buttons
+  const renderAdvancedButton = (button: any, index: number) => {
+    const buttonStyle = button?.style || 'default';
+    const buttonText = button?.text || content?.cta || 'הירשם';
+    const buttonColor = button?.color;
+    
+    const getButtonStyle = () => {
+      if (buttonColor) {
+        if (buttonColor.includes('gradient')) {
+          return { 
+            background: buttonColor,
+            color: '#ffffff',
+            border: 'none'
+          };
+        }
+        return { 
+          backgroundColor: buttonColor,
+          color: '#ffffff',
+          border: 'none'
+        };
+      }
+      return { backgroundColor: '#ffffff', color: '#1f2937' };
+    };
+
+    return (
+      <motion.button
+        key={index}
+        className="px-8 py-3 rounded-full font-semibold transition-colors"
+        style={getButtonStyle()}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.6 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        {buttonText}
+      </motion.button>
+    );
+  };
+
   return (
     <section className="relative min-h-screen overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-pink-500 via-purple-600 to-orange-400" />
@@ -28,43 +105,55 @@ export const HeroIsometricIllustration = ({ formData, currentColors, content }: 
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left Content */}
           <div className="text-white">
-            <motion.div
-              className="inline-block mb-6 px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              {content?.badge || 'עסקים מתקדמים'}
-            </motion.div>
+            {content?.badge && (
+              <motion.div
+                className="inline-block mb-6 px-3 py-1 rounded-full text-sm font-medium"
+                style={getBadgeStyle()}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                {content.badge}
+              </motion.div>
+            )}
             
             <motion.h1
               className="text-5xl md:text-6xl font-bold mb-6 leading-tight"
+              style={getTextStyle('headline')}
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              {content?.headline || 'הודעה ראשית למכירת העסק שלך!'}
+              {content?.headline || formData?.businessName || 'הודעה ראשית למכירת העסק שלך!'}
             </motion.h1>
             
             <motion.p
               className="text-xl mb-8 leading-relaxed opacity-90"
+              style={getTextStyle('subheadline')}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              {content?.description || 'הודעה משנית, לא ארוכה מדי ולא קצרה מדי. תעשה את זה בדיוק כמו שצריך!'}
+              {content?.subheadline || content?.description || 'הודעה משנית, לא ארוכה מדי ולא קצרה מדי. תעשה את זה בדיוק כמו שצריך!'}
             </motion.p>
             
-            <motion.button
-              className="bg-white text-gray-900 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {content?.buttons?.[0]?.text || 'הירשם'}
-            </motion.button>
+            <div className="flex gap-4">
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+                renderAdvancedButton(button, index)
+              ) || (
+                <motion.button
+                  className="px-8 py-3 rounded-full font-semibold transition-colors"
+                  style={{ backgroundColor: '#ffffff', color: '#1f2937' }}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.6 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {content?.cta || 'הירשם'}
+                </motion.button>
+              )}
+            </div>
           </div>
           
           {/* Right Isometric Illustration */}

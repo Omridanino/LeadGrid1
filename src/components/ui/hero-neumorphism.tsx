@@ -10,26 +10,128 @@ interface HeroNeumorphismProps {
 }
 
 export const HeroNeumorphism = ({ formData, currentColors, content }: HeroNeumorphismProps) => {
+  // Helper function to get inline style for text colors with gradient support
+  const getTextStyle = (colorKey: string) => {
+    const colorValue = content?.colors?.[colorKey];
+    if (colorValue) {
+      if (colorValue.includes('gradient')) {
+        return { 
+          background: colorValue,
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text'
+        };
+      }
+      return { color: colorValue };
+    }
+    return { color: '#374151' };
+  };
+
+  // Helper function to get inline style for badge colors with gradient support
+  const getBadgeStyle = () => {
+    const badgeColor = content?.colors?.badge;
+    if (badgeColor) {
+      if (badgeColor.includes('gradient')) {
+        return { 
+          background: badgeColor,
+          color: '#ffffff',
+          border: 'none'
+        };
+      }
+      return { 
+        backgroundColor: badgeColor,
+        color: '#ffffff',
+        border: 'none'
+      };
+    }
+    return { backgroundColor: '#e5e7eb', color: '#374151' };
+  };
+
+  // Helper function to render advanced buttons
+  const renderAdvancedButton = (button: any, index: number) => {
+    const buttonStyle = button?.style || 'default';
+    const buttonText = button?.text || content?.cta || 'הורדה';
+    const buttonColor = button?.color;
+    
+    const getButtonStyle = () => {
+      if (buttonColor) {
+        if (buttonColor.includes('gradient')) {
+          return { 
+            background: buttonColor,
+            color: '#ffffff',
+            border: 'none',
+            boxShadow: `
+              12px 12px 24px rgba(0, 0, 0, 0.1),
+              -12px -12px 24px rgba(255, 255, 255, 0.8)
+            `
+          };
+        }
+        return { 
+          backgroundColor: buttonColor,
+          color: '#ffffff',
+          border: 'none',
+          boxShadow: `
+            12px 12px 24px rgba(0, 0, 0, 0.1),
+            -12px -12px 24px rgba(255, 255, 255, 0.8)
+          `
+        };
+      }
+      return { 
+        backgroundColor: '#e5e7eb',
+        color: '#374151',
+        boxShadow: `
+          12px 12px 24px rgba(0, 0, 0, 0.1),
+          -12px -12px 24px rgba(255, 255, 255, 0.8)
+        `
+      };
+    };
+
+    return (
+      <button 
+        key={index}
+        className="px-8 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-3 justify-center hover:scale-105"
+        style={getButtonStyle()}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.boxShadow = `
+            inset 6px 6px 12px rgba(0, 0, 0, 0.1),
+            inset -6px -6px 12px rgba(255, 255, 255, 0.8)
+          `;
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.boxShadow = `
+            12px 12px 24px rgba(0, 0, 0, 0.1),
+            -12px -12px 24px rgba(255, 255, 255, 0.8)
+          `;
+        }}
+      >
+        <Download className="w-5 h-5" />
+        {buttonText}
+      </button>
+    );
+  };
+
   return (
     <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
       <div className="relative z-10 container mx-auto px-8 py-20">
         <div className="text-center max-w-4xl mx-auto">
           <motion.h1
-            className="text-5xl md:text-7xl font-light mb-8 text-gray-800 leading-tight"
+            className="text-5xl md:text-7xl font-light mb-8 leading-tight"
+            style={getTextStyle('headline')}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            {content?.headline || 'Neumorphism UI'}
+            {content?.headline || formData?.businessName || 'Neumorphism UI'}
           </motion.h1>
           
           <motion.p
-            className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed"
+            className="text-xl mb-12 max-w-2xl mx-auto leading-relaxed"
+            style={getTextStyle('subheadline')}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            {content?.description || 'ערכת ממשק משתמש בהשראת ניומורפיזם שתעזור לכם ליצור אבטיפוס ולעצב אתרים יפים, יצירתיים ומודרניים.'}
+            {content?.subheadline || content?.description || 'ערכת ממשק משתמש בהשראת ניומורפיזם שתעזור לכם ליצור אבטיפוס ולעצב אתרים יפים, יצירתיים ומודרניים.'}
           </motion.p>
           
           <motion.div
@@ -38,46 +140,54 @@ export const HeroNeumorphism = ({ formData, currentColors, content }: HeroNeumor
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <button 
-              className="px-8 py-4 bg-gray-200 text-gray-700 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-3 justify-center hover:scale-105"
-              style={{
-                boxShadow: `
-                  12px 12px 24px rgba(0, 0, 0, 0.1),
-                  -12px -12px 24px rgba(255, 255, 255, 0.8),
-                  inset 0px 0px 0px rgba(0, 0, 0, 0.1),
-                  inset 0px 0px 0px rgba(255, 255, 255, 0.8)
-                `,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = `
-                  inset 6px 6px 12px rgba(0, 0, 0, 0.1),
-                  inset -6px -6px 12px rgba(255, 255, 255, 0.8)
-                `;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = `
-                  12px 12px 24px rgba(0, 0, 0, 0.1),
-                  -12px -12px 24px rgba(255, 255, 255, 0.8)
-                `;
-              }}
-            >
-              <Download className="w-5 h-5" />
-              {content?.buttons?.[0]?.text || 'הורדה'}
-            </button>
-            
-            <button 
-              className="px-6 py-4 bg-gray-200 text-gray-700 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-2 justify-center hover:scale-105"
-              style={{
-                boxShadow: `
-                  12px 12px 24px rgba(0, 0, 0, 0.1),
-                  -12px -12px 24px rgba(255, 255, 255, 0.8)
-                `,
-              }}
-            >
-              <Star className="w-4 h-4" />
-              <span>Star</span>
-              <span className="bg-gray-300 px-2 py-1 rounded-lg text-sm">21</span>
-            </button>
+            {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+              renderAdvancedButton(button, index)
+            ) || (
+              <>
+                <button 
+                  className="px-8 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-3 justify-center hover:scale-105"
+                  style={{
+                    backgroundColor: '#e5e7eb',
+                    color: '#374151',
+                    boxShadow: `
+                      12px 12px 24px rgba(0, 0, 0, 0.1),
+                      -12px -12px 24px rgba(255, 255, 255, 0.8)
+                    `,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow = `
+                      inset 6px 6px 12px rgba(0, 0, 0, 0.1),
+                      inset -6px -6px 12px rgba(255, 255, 255, 0.8)
+                    `;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = `
+                      12px 12px 24px rgba(0, 0, 0, 0.1),
+                      -12px -12px 24px rgba(255, 255, 255, 0.8)
+                    `;
+                  }}
+                >
+                  <Download className="w-5 h-5" />
+                  {content?.cta || 'הורדה'}
+                </button>
+                
+                <button 
+                  className="px-6 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-2 justify-center hover:scale-105"
+                  style={{
+                    backgroundColor: '#e5e7eb',
+                    color: '#374151',
+                    boxShadow: `
+                      12px 12px 24px rgba(0, 0, 0, 0.1),
+                      -12px -12px 24px rgba(255, 255, 255, 0.8)
+                    `,
+                  }}
+                >
+                  <Star className="w-4 h-4" />
+                  <span>Star</span>
+                  <span className="bg-gray-300 px-2 py-1 rounded-lg text-sm">21</span>
+                </button>
+              </>
+            )}
           </motion.div>
           
           <motion.div

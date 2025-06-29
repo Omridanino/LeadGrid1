@@ -10,6 +10,84 @@ interface HeroGeometricShapesProps {
 }
 
 export const HeroGeometricShapes = ({ formData, currentColors, content }: HeroGeometricShapesProps) => {
+  // Helper function to get inline style for text colors with gradient support
+  const getTextStyle = (colorKey: string) => {
+    const colorValue = content?.colors?.[colorKey];
+    if (colorValue) {
+      if (colorValue.includes('gradient')) {
+        return { 
+          background: colorValue,
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text'
+        };
+      }
+      return { color: colorValue };
+    }
+    return { color: '#1f2937' };
+  };
+
+  // Helper function to get inline style for badge colors with gradient support
+  const getBadgeStyle = () => {
+    const badgeColor = content?.colors?.badge;
+    if (badgeColor) {
+      if (badgeColor.includes('gradient')) {
+        return { 
+          background: badgeColor,
+          color: '#ffffff',
+          border: 'none'
+        };
+      }
+      return { 
+        backgroundColor: badgeColor,
+        color: '#ffffff',
+        border: 'none'
+      };
+    }
+    return { backgroundColor: '#dbeafe', color: '#1d4ed8' };
+  };
+
+  // Helper function to render advanced buttons
+  const renderAdvancedButton = (button: any, index: number) => {
+    const buttonStyle = button?.style || 'default';
+    const buttonText = button?.text || content?.cta || 'בואו נתחיל';
+    const buttonColor = button?.color;
+    
+    const getButtonStyle = () => {
+      if (buttonColor) {
+        if (buttonColor.includes('gradient')) {
+          return { 
+            background: buttonColor,
+            color: '#ffffff',
+            border: 'none'
+          };
+        }
+        return { 
+          backgroundColor: buttonColor,
+          color: '#ffffff',
+          border: 'none'
+        };
+      }
+      return { backgroundColor: '#2563eb', color: '#ffffff' };
+    };
+
+    return (
+      <motion.button
+        key={index}
+        className="group px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center gap-3 shadow-lg hover:shadow-xl"
+        style={getButtonStyle()}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.6 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        {buttonText}
+        <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+      </motion.button>
+    );
+  };
+
   return (
     <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-gray-50 to-blue-50">
       {/* Floating Geometric Shapes */}
@@ -66,45 +144,57 @@ export const HeroGeometricShapes = ({ formData, currentColors, content }: HeroGe
       
       <div className="relative z-10 container mx-auto px-8 py-20">
         <div className="max-w-2xl">
-          <motion.div
-            className="inline-flex items-center gap-2 mb-8 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <Zap className="w-4 h-4" />
-            {content?.badge || 'תבנית נחיתה לסטארטאפים'}
-          </motion.div>
+          {content?.badge && (
+            <motion.div
+              className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full text-sm font-medium"
+              style={getBadgeStyle()}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <Zap className="w-4 h-4" />
+              {content.badge}
+            </motion.div>
+          )}
           
           <motion.h1
-            className="text-5xl md:text-7xl font-bold mb-8 text-gray-900 leading-tight"
+            className="text-5xl md:text-7xl font-bold mb-8 leading-tight"
+            style={getTextStyle('headline')}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            {content?.headline || 'תבנית נחיתה לסטארטאפים'}
+            {content?.headline || formData?.businessName || 'תבנית נחיתה לסטארטאפים'}
           </motion.h1>
           
           <motion.p
-            className="text-xl text-gray-600 mb-12 leading-relaxed"
+            className="text-xl mb-12 leading-relaxed"
+            style={getTextStyle('subheadline')}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            {content?.description || 'תבנית דף הנחיתה שלנו עובדת על כל המכשירים, כך שאתם צריכים רק להגדיר אותה פעם אחת, ולקבל תוצאות יפות לתמיד.'}
+            {content?.subheadline || content?.description || 'תבנית דף הנחיתה שלנו עובדת על כל המכשירים, כך שאתם צריכים רק להגדיר אותה פעם אחת, ולקבל תוצאות יפות לתמיד.'}
           </motion.p>
           
-          <motion.button
-            className="group bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center gap-3 shadow-lg hover:shadow-xl"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {content?.buttons?.[0]?.text || 'בואו נתחיל'}
-            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-          </motion.button>
+          <div className="flex gap-4">
+            {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+              renderAdvancedButton(button, index)
+            ) || (
+              <motion.button
+                className="group px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center gap-3 shadow-lg hover:shadow-xl"
+                style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {content?.cta || 'בואו נתחיל'}
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              </motion.button>
+            )}
+          </div>
         </div>
       </div>
       
@@ -120,19 +210,19 @@ export const HeroGeometricShapes = ({ formData, currentColors, content }: HeroGe
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Shield className="w-8 h-8 text-blue-600" />
             </div>
-            <h3 className="font-semibold text-gray-900 mb-2">גמישות</h3>
+            <h3 className="font-semibold text-gray-900 mb-2">אמינות</h3>
           </div>
           <div className="text-center">
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Star className="w-8 h-8 text-blue-600" />
             </div>
-            <h3 className="font-semibold text-gray-900 mb-2">גמישות</h3>
+            <h3 className="font-semibold text-gray-900 mb-2">איכות</h3>
           </div>
           <div className="text-center">
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Zap className="w-8 h-8 text-blue-600" />
             </div>
-            <h3 className="font-semibold text-gray-900 mb-2">גמישות</h3>
+            <h3 className="font-semibold text-gray-900 mb-2">מהירות</h3>
           </div>
         </div>
       </motion.div>
