@@ -73,14 +73,19 @@ export const HeroMinimalTech = ({ formData, currentColors, content }: HeroMinima
     };
 
     return (
-      <button 
+      <motion.button 
         key={index}
         className="group px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center gap-3 shadow-lg hover:shadow-xl"
         style={getButtonStyle()}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.4 + (index * 0.1) }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
       >
         {buttonText}
         <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-      </button>
+      </motion.button>
     );
   };
 
@@ -218,21 +223,33 @@ export const HeroMinimalTech = ({ formData, currentColors, content }: HeroMinima
                 renderAdvancedButton(button, index)
               ) || (
                 <>
-                  <button 
+                  <motion.button 
                     className="group px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center gap-3 shadow-lg hover:shadow-xl"
                     style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     {content?.cta || 'התחל ניסיון חינם'}
                     <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                  </button>
+                  </motion.button>
                   
-                  <button className="group px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center gap-3 bg-gray-900 hover:bg-gray-800 text-white">
+                  <motion.button 
+                    className="group px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 flex items-center gap-3 bg-gray-900 hover:bg-gray-800 text-white"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.5 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     למד עוד
                     <Play className="w-5 h-5" />
-                  </button>
+                  </motion.button>
                 </>
               )}
-            </motion.div>
+            </div>
           </div>
           
           {/* Right Interface */}

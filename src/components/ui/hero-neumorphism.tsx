@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Download, Star, Monitor, FileText, Eye, ArrowRight } from 'lucide-react';
@@ -85,10 +86,15 @@ export const HeroNeumorphism = ({ formData, currentColors, content }: HeroNeumor
     };
 
     return (
-      <button 
+      <motion.button 
         key={index}
-        className="px-8 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-3 justify-center hover:scale-105 relative z-20"
+        className="px-8 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-3 justify-center hover:scale-105 relative z-30"
         style={getButtonStyle()}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.4 + (index * 0.1) }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         onMouseEnter={(e) => {
           e.currentTarget.style.boxShadow = `
             inset 6px 6px 12px rgba(0, 0, 0, 0.1),
@@ -104,7 +110,7 @@ export const HeroNeumorphism = ({ formData, currentColors, content }: HeroNeumor
       >
         <ArrowRight className="w-5 h-5" />
         {buttonText}
-      </button>
+      </motion.button>
     );
   };
 
@@ -153,8 +159,8 @@ export const HeroNeumorphism = ({ formData, currentColors, content }: HeroNeumor
             {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
               renderAdvancedButton(button, index)
             ) || (
-              <button 
-                className="px-8 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-3 justify-center hover:scale-105 relative z-20"
+              <motion.button 
+                className="px-8 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-3 justify-center hover:scale-105 relative z-30"
                 style={{
                   backgroundColor: '#e5e7eb',
                   color: '#374151',
@@ -163,6 +169,11 @@ export const HeroNeumorphism = ({ formData, currentColors, content }: HeroNeumor
                     -12px -12px 24px rgba(255, 255, 255, 0.8)
                   `,
                 }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.boxShadow = `
                     inset 6px 6px 12px rgba(0, 0, 0, 0.1),
@@ -178,18 +189,8 @@ export const HeroNeumorphism = ({ formData, currentColors, content }: HeroNeumor
               >
                 <ArrowRight className="w-5 h-5" />
                 {content?.cta || 'הורדה'}
-              </button>
+              </motion.button>
             )}
-          </motion.div>
-          
-          <motion.div
-            className="text-center mb-16 relative z-30"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          >
-            <div className="w-16 h-1 bg-orange-400 mx-auto mb-4 rounded-full" />
-            <p className="text-gray-500 text-sm">A Themesberg production</p>
           </motion.div>
           
           {/* Neumorphic Cards */}
