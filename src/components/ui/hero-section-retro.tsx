@@ -7,6 +7,7 @@ import { ChevronRight } from 'lucide-react'
 interface HeroSectionRetroProps {
   formData: any;
   currentColors: any;
+  content?: any;
 }
 
 const RetroGrid = ({
@@ -40,30 +41,100 @@ const RetroGrid = ({
   )
 }
 
-export const HeroSectionRetro = ({ formData, currentColors }: HeroSectionRetroProps) => {
-    const businessName = formData?.businessName || "שם העסק"
-    const businessStory = formData?.businessStory || "בונים מוצרים לכולם"
-    const subtitle = formData?.businessTitle || "עיצוב הפרויקטים שלכם מהר יותר עם הערכת UI הגדולה ב-Figma"
+export const HeroSectionRetro = ({ formData, currentColors, content }: HeroSectionRetroProps) => {
+    // Use content values first, then formData, then defaults
+    const businessName = content?.headline || formData?.businessName || "שם העסק"
+    const businessStory = content?.subheadline || formData?.businessStory || "בונים מוצרים לכולם"
+    const subtitle = content?.description || formData?.businessTitle || "עיצוב הפרויקטים שלכם מהר יותר עם הערכת UI הגדולה ב-Figma"
     const description = formData?.mainServices || "אנחנו מתמחים בפתרונות מקצועיים לעסקים המחפשים חדשנות וטכנולוגיה מתקדמת"
+    const badgeText = content?.badge || ""
+    
+    // Enhanced styling functions that use content values
+    const getTextStyleClasses = (style: string) => {
+      if (!style || style === 'default') return "text-gray-600 dark:text-gray-400";
+      
+      switch (style) {
+        case "black-text": return "text-black";
+        case "white-text": return "text-white";
+        case "gold-text": return "text-yellow-400";
+        case "silver-text": return "text-gray-300";
+        case "blue-text": return "text-blue-400";
+        case "green-text": return "text-green-400";
+        case "red-text": return "text-red-400";
+        case "purple-text": return "text-purple-400";
+        case "pink-text": return "text-pink-400";
+        case "cyan-text": return "text-cyan-400";
+        case "gradient-gold-text": return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
+        case "gradient-purple-text": return "bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent";
+        case "gradient-blue-text": return "bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent";
+        case "gradient-green-text": return "bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent";
+        case "gradient-red-text": return "bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent";
+        case "gradient-cyan-text": return "bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent";
+        case "gradient-rainbow-text": return "bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 bg-clip-text text-transparent";
+        default: return "text-gray-600 dark:text-gray-400";
+      }
+    };
+
+    const getBadgeStyleClasses = (style: string) => {
+      if (!style || style === 'default') return "bg-gradient-to-tr from-zinc-300/20 via-gray-400/20 to-transparent dark:from-zinc-300/5 dark:via-gray-400/5 border-[2px] border-black/5 dark:border-white/5";
+      
+      switch (style) {
+        case "black-on-white": return "bg-white text-black border border-black";
+        case "white-on-black": return "bg-black text-white border border-white";
+        case "gradient-gold-black": return "bg-gradient-to-r from-yellow-400 to-black text-white border-0";
+        case "gradient-gold-white": return "bg-gradient-to-r from-yellow-400 to-white text-black border-0";
+        case "gradient-purple-tech": return "bg-gradient-to-r from-purple-600 to-white text-white border-0";
+        case "gradient-blue-ocean": return "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0";
+        case "gradient-green-nature": return "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0";
+        case "gradient-red-fire": return "bg-gradient-to-r from-red-500 to-orange-500 text-white border-0";
+        case "gradient-pink-sunset": return "bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0";
+        case "neon-blue": return "bg-blue-600 text-white border-2 border-blue-400 shadow-lg shadow-blue-400/50";
+        case "neon-green": return "bg-green-600 text-white border-2 border-green-400 shadow-lg shadow-green-400/50";
+        case "neon-purple": return "bg-purple-600 text-white border-2 border-purple-400 shadow-lg shadow-purple-400/50";
+        case "neon-pink": return "bg-pink-600 text-white border-2 border-pink-400 shadow-lg shadow-pink-400/50";
+        case "glass-dark": return "bg-black/20 text-white border border-white/30 backdrop-blur-sm";
+        case "glass-light": return "bg-white/20 text-black border border-black/30 backdrop-blur-sm";
+        default: return "bg-gradient-to-tr from-zinc-300/20 via-gray-400/20 to-transparent dark:from-zinc-300/5 dark:via-gray-400/5 border-[2px] border-black/5 dark:border-white/5";
+      }
+    };
+
+    const getBackgroundClasses = (style: string) => {
+      if (!style || style === 'default') return "";
+      
+      switch (style) {
+        case "dark": return "bg-gray-950";
+        case "light": return "bg-white";
+        case "gradient-blue": return "bg-gradient-to-br from-blue-950 to-blue-900";
+        case "gradient-purple": return "bg-gradient-to-br from-purple-950 to-purple-900";
+        case "gradient-green": return "bg-gradient-to-br from-green-950 to-green-900";
+        case "gradient-orange": return "bg-gradient-to-br from-orange-950 to-orange-900";
+        case "gradient-pink": return "bg-gradient-to-br from-pink-950 to-pink-900";
+        case "tech-dark": return "bg-black";
+        case "minimal-light": return "bg-gray-100";
+        default: return "";
+      }
+    };
     
     return (
-        <div className="relative" dir="rtl">
+        <div className={`relative ${getBackgroundClasses(content?.backgroundStyle)}`} dir="rtl">
             <div className="absolute top-0 z-[0] h-screen w-screen bg-purple-950/10 dark:bg-purple-950/10 bg-[radial-gradient(ellipse_20%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))] dark:bg-[radial-gradient(ellipse_20%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]" />
             <section className="relative max-w-full mx-auto z-1">
                 <RetroGrid />
                 <div className="max-w-screen-xl z-10 mx-auto px-4 py-28 gap-12 md:px-8">
                     <div className="space-y-5 max-w-3xl leading-0 lg:leading-5 mx-auto text-center">
-                        <h1 className="text-sm text-gray-600 dark:text-gray-400 group font-geist mx-auto px-5 py-2 bg-gradient-to-tr from-zinc-300/20 via-gray-400/20 to-transparent dark:from-zinc-300/5 dark:via-gray-400/5 border-[2px] border-black/5 dark:border-white/5 rounded-3xl w-fit">
-                            {businessName}
-                            <ChevronRight className="inline w-4 h-4 ml-2 group-hover:translate-x-1 duration-300" />
-                        </h1>
-                        <h2 className="text-4xl tracking-tighter font-geist bg-clip-text text-transparent mx-auto md:text-6xl bg-[linear-gradient(180deg,_#000_0%,_rgba(0,_0,_0,_0.75)_100%)] dark:bg-[linear-gradient(180deg,_#FFF_0%,_rgba(255,_255,_255,_0.00)_202.08%)]">
+                        {badgeText && (
+                            <h1 className={`text-sm group font-geist mx-auto px-5 py-2 rounded-3xl w-fit ${getBadgeStyleClasses(content?.badgeStyle)} ${getTextStyleClasses(content?.badgeTextStyle)}`}>
+                                {badgeText}
+                                <ChevronRight className="inline w-4 h-4 ml-2 group-hover:translate-x-1 duration-300" />
+                            </h1>
+                        )}
+                        <h2 className={`text-4xl tracking-tighter font-geist mx-auto md:text-6xl ${getTextStyleClasses(content?.headlineStyle) || 'bg-clip-text text-transparent bg-[linear-gradient(180deg,_#000_0%,_rgba(0,_0,_0,_0.75)_100%)] dark:bg-[linear-gradient(180deg,_#FFF_0%,_rgba(255,_255,_255,_0.00)_202.08%)]'}`}>
                             {businessStory}
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500 dark:from-purple-300 dark:to-orange-200">
+                            <span className={`${getTextStyleClasses(content?.subheadlineStyle) || 'text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500 dark:from-purple-300 dark:to-orange-200'}`}>
                                 {subtitle}
                             </span>
                         </h2>
-                        <p className="max-w-2xl mx-auto text-gray-600 dark:text-gray-300">
+                        <p className={`max-w-2xl mx-auto ${getTextStyleClasses(content?.descriptionStyle) || 'text-gray-600 dark:text-gray-300'}`}>
                             {description}
                         </p>
                         <div className="items-center justify-center gap-x-3 space-y-3 sm:flex sm:space-y-0">
@@ -74,7 +145,7 @@ export const HeroSectionRetro = ({ formData, currentColors }: HeroSectionRetroPr
                                         href="#"
                                         className="inline-flex rounded-full text-center group items-center w-full justify-center bg-gradient-to-tr from-zinc-300/20 via-purple-400/30 to-transparent dark:from-zinc-300/5 dark:via-purple-400/20 text-gray-900 dark:text-white border-input border-[1px] hover:bg-gradient-to-tr hover:from-zinc-300/30 hover:via-purple-400/40 hover:to-transparent dark:hover:from-zinc-300/10 dark:hover:via-purple-400/30 transition-all sm:w-auto py-4 px-10"
                                     >
-                                        התחל עכשיו
+                                        {content?.buttons?.[0]?.text || "התחל עכשיו"}
                                     </a>
                                 </div>
                             </span>
