@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -257,7 +258,7 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
                     className="rounded border-gray-300"
                   />
                   <Label htmlFor="use-hero-background" className="text-white">
-                    תרצו שהרקע של פסקת הרגש יהיה כמו הרקע של ההירו?
+                    השתמש באותו עיצוב כמו ההירו הרנדומלי שנבחר
                   </Label>
                 </div>
 
