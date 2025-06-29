@@ -22,6 +22,7 @@ import { HeroSectionRetro } from "@/components/ui/hero-section-retro";
 import { ArrowLeft, Play, Shield, Zap, Award, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { HeroFuturistic } from "@/components/ui/hero-futuristic";
+import { LiquidButton, MetalButton } from "@/components/ui/liquid-glass-button";
 
 interface HeroSectionProps {
   content: any;
@@ -101,6 +102,74 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     cta: content?.cta
   });
 
+  // Helper function to render advanced buttons
+  const renderAdvancedButton = (button: any, index: number) => {
+    const buttonStyle = button?.style || 'default';
+    const buttonText = button?.text || content?.cta || 'לחץ כאן';
+    
+    switch (buttonStyle) {
+      case 'liquid-glass':
+      case 'זכוכית נוזלית':
+        return (
+          <LiquidButton key={index} size="xxl" className="text-white">
+            {buttonText}
+          </LiquidButton>
+        );
+      case 'metal-gold':
+      case 'מתכת זהב':
+        return (
+          <MetalButton key={index} variant="gold">
+            {buttonText}
+          </MetalButton>
+        );
+      case 'metal-silver':
+      case 'מתכת כסף':
+        return (
+          <MetalButton key={index} variant="default">
+            {buttonText}
+          </MetalButton>
+        );
+      case 'metal-bronze':
+      case 'מתכת ברונזה':
+        return (
+          <MetalButton key={index} variant="bronze">
+            {buttonText}
+          </MetalButton>
+        );
+      case 'metal-primary':
+      case 'מתכת ראשי':
+        return (
+          <MetalButton key={index} variant="primary">
+            {buttonText}
+          </MetalButton>
+        );
+      case 'metal-success':
+      case 'מתכת ירוק':
+        return (
+          <MetalButton key={index} variant="success">
+            {buttonText}
+          </MetalButton>
+        );
+      case 'metal-error':
+      case 'מתכת אדום':
+        return (
+          <MetalButton key={index} variant="error">
+            {buttonText}
+          </MetalButton>
+        );
+      default:
+        return (
+          <button 
+            key={index}
+            className="px-8 py-4 rounded-xl font-semibold text-lg transition"
+            style={getButtonStyle(button.color)}
+          >
+            {buttonText}
+          </button>
+        );
+    }
+  };
+
   // Handle Basic Design Style variations
   if (designStyle === 'basic' || designStyle.startsWith('hero-section-')) {
     const [selectedBasicDesign, setSelectedBasicDesign] = useState<string>('');
@@ -155,15 +224,9 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               </p>
               
               <div className="flex gap-4 justify-center flex-wrap">
-                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                  <button 
-                    key={index}
-                    className="px-8 py-4 rounded-xl font-semibold text-lg transition"
-                    style={getButtonStyle(button.color)}
-                  >
-                    {button.text}
-                  </button>
-                )) || (
+                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+                  renderAdvancedButton(button, index)
+                ) || (
                   <button 
                     className="px-8 py-4 rounded-xl font-semibold text-lg"
                     style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
@@ -253,15 +316,9 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               </p>
               
               <div className="flex gap-4 justify-center flex-wrap">
-                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                  <button 
-                    key={index}
-                    className="px-8 py-4 rounded-xl font-semibold text-lg transition"
-                    style={getButtonStyle(button.color)}
-                  >
-                    {button.text}
-                  </button>
-                )) || (
+                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+                  renderAdvancedButton(button, index)
+                ) || (
                   <button 
                     className="px-8 py-4 rounded-xl font-semibold text-lg"
                     style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
@@ -308,15 +365,9 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               </p>
               
               <div className="flex gap-4 justify-center flex-wrap">
-                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                  <button 
-                    key={index}
-                    className="px-8 py-4 rounded-xl font-semibold text-lg transition"
-                    style={getButtonStyle(button.color)}
-                  >
-                    {button.text}
-                  </button>
-                )) || (
+                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+                  renderAdvancedButton(button, index)
+                ) || (
                   <button 
                     className="px-8 py-4 rounded-xl font-semibold text-lg"
                     style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
@@ -360,15 +411,9 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             </p>
             
             <div className="flex gap-4 justify-center flex-wrap">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                <button 
-                  key={index}
-                  className="px-8 py-4 rounded-xl font-semibold text-lg transition"
-                  style={getButtonStyle(button.color)}
-                >
-                  {button.text}
-                </button>
-              )) || (
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+                renderAdvancedButton(button, index)
+              ) || (
                 <button 
                   className="px-8 py-4 rounded-xl font-semibold text-lg"
                   style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
@@ -389,11 +434,11 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     const [selectedDesign, setSelectedDesign] = useState(0);
 
     useEffect(() => {
-      // Randomly select one of the 9 3D designs (removed HeroDesignAli)
+      // Randomly select one of the 9 3D designs
       setSelectedDesign(Math.floor(Math.random() * 9));
     }, []);
 
-    // Design 0: Spline 3D Scene with custom styles
+    // Design 0: Spline 3D Scene with custom styles - Split Layout
     if (selectedDesign === 0) {
       return (
         <section className="relative overflow-hidden min-h-screen bg-black/[0.96]">
@@ -430,15 +475,9 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 </p>
                 
                 <div className="flex gap-4">
-                  {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                    <button 
-                      key={index}
-                      className="px-6 py-3 rounded-lg font-semibold transition"
-                      style={getButtonStyle(button.color)}
-                    >
-                      {button.text}
-                    </button>
-                  )) || (
+                  {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+                    renderAdvancedButton(button, index)
+                  ) || (
                     <button 
                       className="px-6 py-3 rounded-lg font-semibold transition"
                       style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
@@ -492,15 +531,9 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             </p>
             
             <div className="flex gap-4 pointer-events-auto">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                <button 
-                  key={index}
-                  className="px-8 py-4 rounded-lg font-bold transition transform hover:scale-105"
-                  style={getButtonStyle(button.color)}
-                >
-                  {button.text}
-                </button>
-              )) || (
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+                renderAdvancedButton(button, index)
+              ) || (
                 <button 
                   className="px-8 py-4 rounded-lg font-bold transition transform hover:scale-105"
                   style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
@@ -547,16 +580,9 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             </p>
             
             <div className="flex gap-4 justify-center flex-wrap">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                <button 
-                  key={index}
-                  className="group relative flex w-fit items-center gap-2 rounded-full px-6 py-3 transition-colors"
-                  style={getButtonStyle(button.color)}
-                >
-                  {button.text}
-                  <ArrowLeft className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
-                </button>
-              )) || (
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+                renderAdvancedButton(button, index)
+              ) || (
                 <button
                   className="group relative flex w-fit items-center gap-2 rounded-full bg-gray-950/10 px-6 py-3 text-gray-50 transition-colors hover:bg-gray-950/50 border border-gray-600/50 backdrop-blur-sm"
                   style={{
@@ -619,15 +645,9 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             </p>
             
             <div className="flex gap-4 justify-center">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                <button 
-                  key={index}
-                  className="px-8 py-4 rounded-lg font-bold transition"
-                  style={getButtonStyle(button.color)}
-                >
-                  {button.text}
-                </button>
-              )) || (
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+                renderAdvancedButton(button, index)
+              ) || (
                 <button 
                   className="px-8 py-4 rounded-lg font-bold transition"
                   style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
@@ -673,15 +693,9 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             </p>
             
             <div className="flex gap-4 justify-center">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                <button 
-                  key={index}
-                  className="px-8 py-4 rounded-lg font-bold transition"
-                  style={getButtonStyle(button.color)}
-                >
-                  {button.text}
-                </button>
-              )) || (
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+                renderAdvancedButton(button, index)
+              ) || (
                 <button 
                   className="px-8 py-4 rounded-lg font-bold transition"
                   style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
@@ -700,45 +714,45 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       
       return (
         <div className="relative w-screen h-screen overflow-hidden">
-          <InteractiveRobotSpline
-            scene={ROBOT_SCENE_URL}
-            className="absolute inset-0 z-0" 
-          />
+          <div className="flex h-screen">
+            {/* Left side - 3D Robot */}
+            <div className="flex-1 relative">
+              <InteractiveRobotSpline
+                scene={ROBOT_SCENE_URL}
+                className="absolute inset-0 z-0" 
+              />
+            </div>
 
-          <div className="absolute inset-0 z-10 pt-20 md:pt-32 lg:pt-40 px-4 md:px-8 pointer-events-none">
-            <div className="text-center text-white drop-shadow-lg w-full max-w-2xl mx-auto pointer-events-auto">
-              {content?.badge && (
-                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm`} style={getBadgeStyle()}>
-                  <Zap className="w-4 h-4" />
-                  <span>{content.badge}</span>
-                </div>
-              )}
-              
-              <h1 className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-6`} style={getTextStyle('headline')}>
-                {content?.headline || formData?.businessName || 'interactive 3D robot'}
-              </h1>
-              
-              <p className={`text-lg leading-relaxed mb-8 px-4`} style={getTextStyle('subheadline')}>
-                {content?.subheadline || 'an advanced interactive experience with 3D technology'}
-              </p>
-              
-              <div className="flex gap-4 justify-center pointer-events-auto">
-                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                  <button 
-                    key={index}
-                    className="px-8 py-4 rounded-lg font-bold transition"
-                    style={getButtonStyle(button.color)}
-                  >
-                    {button.text}
-                  </button>
-                )) || (
-                  <button 
-                    className="px-8 py-4 rounded-lg font-bold transition"
-                    style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                  >
-                    {content?.cta || 'explore the robot'}
-                  </button>
+            {/* Right side - Content */}
+            <div className="flex-1 relative z-10 p-8 flex flex-col justify-center">
+              <div className="max-w-2xl text-white drop-shadow-lg">
+                {content?.badge && (
+                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm`} style={getBadgeStyle()}>
+                    <Zap className="w-4 h-4" />
+                    <span>{content.badge}</span>
+                  </div>
                 )}
+                
+                <h1 className={`text-4xl md:text-6xl font-bold mb-6`} style={getTextStyle('headline')}>
+                  {content?.headline || formData?.businessName || 'interactive 3D robot'}
+                </h1>
+                
+                <p className={`text-lg leading-relaxed mb-8`} style={getTextStyle('subheadline')}>
+                  {content?.subheadline || 'an advanced interactive experience with 3D technology'}
+                </p>
+                
+                <div className="flex gap-4">
+                  {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+                    renderAdvancedButton(button, index)
+                  ) || (
+                    <button 
+                      className="px-8 py-4 rounded-lg font-bold transition"
+                      style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+                    >
+                      {content?.cta || 'explore the robot'}
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -764,15 +778,9 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             )}
             
             <div className="flex gap-4 justify-center mt-8">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                <button 
-                  key={index}
-                  className="px-8 py-4 rounded-lg font-bold transition"
-                  style={getButtonStyle(button.color)}
-                >
-                  {button.text}
-                </button>
-              )) || (
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+                renderAdvancedButton(button, index)
+              ) || (
                 <button 
                   className="px-8 py-4 rounded-lg font-bold transition"
                   style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
@@ -798,15 +806,9 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4 pointer-events-none">
             <div className="mt-96 flex gap-4 justify-center pointer-events-auto">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                <button 
-                  key={index}
-                  className="px-8 py-4 rounded-lg font-bold transition"
-                  style={getButtonStyle(button.color)}
-                >
-                  {button.text}
-                </button>
-              )) || (
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+                renderAdvancedButton(button, index)
+              ) || (
                 <button 
                   className="px-8 py-4 rounded-lg font-bold transition"
                   style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
@@ -823,23 +825,49 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     if (selectedDesign === 8) {
       return (
         <div className="relative w-screen h-screen overflow-hidden">
-          <HeroFuturistic
-            title={content?.headline || formData?.businessName || 'Build Your Dreams'}
-            subtitle={content?.subheadline || content?.description || 'AI-powered creativity for the next generation.'}
-            buttonText="explore more"
-            onButtonClick={() => {}}
-          />
-          
-          <div className="absolute bottom-40 left-1/2 transform -translate-x-1/2 z-30 flex gap-4 justify-center">
-            {content?.buttons?.filter((btn: any) => btn.visible !== false).slice(1).map((button: any, index: number) => (
-              <button 
-                key={index}
-                className="px-8 py-4 rounded-lg font-bold transition"
-                style={getButtonStyle(button.color)}
-              >
-                {button.text}
-              </button>
-            ))}
+          <div className="flex h-screen">
+            {/* Left side - 3D Element */}
+            <div className="flex-1 relative">
+              <HeroFuturistic
+                title=""
+                subtitle=""
+                buttonText=""
+                onButtonClick={() => {}}
+              />
+            </div>
+
+            {/* Right side - Content */}
+            <div className="flex-1 relative z-30 p-8 flex flex-col justify-center">
+              <div className="max-w-2xl text-white">
+                {content?.badge && (
+                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm`} style={getBadgeStyle()}>
+                    <Award className="w-4 h-4" />
+                    <span>{content.badge}</span>
+                  </div>
+                )}
+                
+                <h1 className={`text-4xl md:text-6xl font-bold mb-6`} style={getTextStyle('headline')}>
+                  {content?.headline || formData?.businessName || 'Build Your Dreams'}
+                </h1>
+                
+                <p className={`text-lg leading-relaxed mb-8`} style={getTextStyle('subheadline')}>
+                  {content?.subheadline || content?.description || 'AI-powered creativity for the next generation.'}
+                </p>
+                
+                <div className="flex gap-4">
+                  {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+                    renderAdvancedButton(button, index)
+                  ) || (
+                    <button 
+                      className="px-8 py-4 rounded-lg font-bold transition"
+                      style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+                    >
+                      {content?.cta || 'explore now'}
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       );
@@ -878,15 +906,9 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           </p>
           
           <div className="flex gap-4 justify-center flex-wrap">
-            {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-              <button 
-                key={index}
-                className="px-8 py-4 rounded-xl font-semibold text-lg transition"
-                style={getButtonStyle(button.color)}
-              >
-                {button.text}
-              </button>
-            )) || (
+            {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+              renderAdvancedButton(button, index)
+            ) || (
               <button 
                 className="px-8 py-4 rounded-xl font-semibold text-lg"
                 style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
