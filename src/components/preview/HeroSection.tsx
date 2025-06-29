@@ -1,7 +1,30 @@
-
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { ColorScheme } from "@/types/colors";
+import { SplineScene } from "@/components/ui/splite";
+import { Spotlight } from "@/components/ui/spotlight";
+import { ChromeGrid } from "@/components/ui/chrome-grid";
+import { AuroraHero } from "@/components/ui/futurastic-hero-section";
+import { LavaLamp } from "@/components/ui/fluid-blob";
+import { Scene } from "@/components/ui/rubik-s-cube";
+import { HeroWithMockup } from "@/components/ui/hero-with-mockup";
+import { BeamsBackground } from "@/components/ui/beams-background";
+import { GradientHero } from "@/components/ui/gradient-hero";
+import { AnimatedHero } from "@/components/ui/animated-hero";
+import { HeroGeometric } from "@/components/ui/shape-landing-hero";
+import { InteractiveRobotSpline } from "@/components/ui/interactive-3d-robot";
+import { BackgroundCircles } from "@/components/ui/background-circles";
+import { HorizonHeroSection } from "@/components/ui/horizon-hero-section";
+import { HeroParallax } from "@/components/ui/hero-parallax";
+import { HeroSectionClean } from "@/components/ui/hero-section-clean";
+import { HeroSectionModern } from "@/components/ui/hero-section-modern";
+import { HeroSectionLamp } from "@/components/ui/hero-section-lamp";
+import { HeroSectionRetro } from "@/components/ui/hero-section-retro";
+import { ArrowLeft, Play, Shield, Zap, Award, Star } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { HeroDesignAli } from "@/components/ui/hero-designali";
+import { HeroFuturistic } from "@/components/ui/hero-futuristic";
+import ScrollExpandMedia from "@/components/ui/scroll-expansion-hero";
 
 interface HeroSectionProps {
   content: any;
@@ -11,151 +34,923 @@ interface HeroSectionProps {
 }
 
 export const HeroSection = ({ content, currentColors, formData, heroImage }: HeroSectionProps) => {
-  // Helper function to get text style based on color configuration
-  const getTextStyle = (colorConfig: any, fallbackColor: string) => {
-    if (!colorConfig) return { color: fallbackColor };
-    
-    if (typeof colorConfig === 'string') {
-      return { color: colorConfig };
+  const designStyle = formData?.designStyle || 'basic';
+
+  // Helper function to get inline style for text colors
+  const getTextStyle = (colorKey: string) => {
+    if (content?.colors?.[colorKey]) {
+      return { color: content.colors[colorKey] };
     }
-    
-    if (colorConfig.type === 'gradient') {
-      return {
-        background: `linear-gradient(${colorConfig.gradientDirection || 'to-r'}, ${colorConfig.gradientFrom || fallbackColor}, ${colorConfig.gradientTo || fallbackColor})`,
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        backgroundClip: 'text'
-      };
-    }
-    
-    return { color: colorConfig.color || fallbackColor };
+    return {};
   };
 
-  // Helper function to get button style
-  const getButtonStyle = (button: any) => {
-    if (button.gradientType === 'gradient') {
-      return {
-        background: `linear-gradient(${button.gradientDirection || 'to-r'}, ${button.gradientFrom || '#3b82f6'}, ${button.gradientTo || '#8b5cf6'})`,
-        border: 'none',
-        color: 'white'
-      };
-    }
-    
-    return {
-      backgroundColor: button.color || '#3b82f6',
-      border: 'none',
-      color: 'white'
-    };
-  };
-
-  // Helper function to get badge style
-  const getBadgeStyle = (colorConfig: any) => {
-    if (!colorConfig) return {};
-    
-    if (typeof colorConfig === 'string') {
-      return { backgroundColor: colorConfig };
-    }
-    
-    if (colorConfig.type === 'gradient') {
-      return {
-        background: `linear-gradient(${colorConfig.gradientDirection || 'to-r'}, ${colorConfig.gradientFrom || '#8b5cf6'}, ${colorConfig.gradientTo || '#8b5cf6'})`,
+  // Helper function to get inline style for button colors
+  const getButtonStyle = (buttonColor?: string) => {
+    if (buttonColor) {
+      return { 
+        backgroundColor: buttonColor,
+        color: '#ffffff',
         border: 'none'
       };
     }
-    
-    return { backgroundColor: colorConfig.color || '#8b5cf6' };
+    return {};
   };
 
-  return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background with style */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800">
-        {/* Add background patterns or effects based on backgroundStyle */}
-        {content?.backgroundStyle === 'gradient-blue' && (
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/50 to-purple-900/50" />
-        )}
-        {content?.backgroundStyle === 'gradient-purple' && (
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-900/50 to-pink-900/50" />
-        )}
-        {content?.backgroundStyle === 'gradient-green' && (
-          <div className="absolute inset-0 bg-gradient-to-r from-green-900/50 to-blue-900/50" />
-        )}
-        {content?.backgroundStyle === 'gradient-orange' && (
-          <div className="absolute inset-0 bg-gradient-to-r from-orange-900/50 to-red-900/50" />
-        )}
-        {content?.backgroundStyle === 'gradient-pink' && (
-          <div className="absolute inset-0 bg-gradient-to-r from-pink-900/50 to-purple-900/50" />
-        )}
-      </div>
+  // Helper function to get inline style for badge colors
+  const getBadgeStyle = () => {
+    if (content?.colors?.badge) {
+      return { 
+        backgroundColor: content.colors.badge,
+        color: '#ffffff',
+        border: 'none'
+      };
+    }
+    return {};
+  };
 
-      {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 text-center">
-        {/* Badge */}
-        {content?.badge && (
-          <div className="mb-6">
-            <Badge 
-              className="text-white border-0 px-4 py-2"
-              style={getBadgeStyle(content.colors?.badge)}
-            >
-              {content.badge}
-            </Badge>
+  // Helper function to get text style classes
+  const getTextStyleClasses = (elementStyle: string) => {
+    switch (elementStyle) {
+      case "black-text":
+        return "text-black";
+      case "white-text":
+        return "text-white";
+      case "gold-text":
+        return "text-yellow-400";
+      case "gradient-gold-text":
+        return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
+      case "gradient-purple-text":
+        return "bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent";
+      case "gradient-blue-text":
+        return "bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent";
+      default:
+        return "text-white";
+    }
+  };
+
+  // Helper function to get button style classes (for buttons we keep backgrounds)
+  const getButtonStyleClasses = (elementStyle: string) => {
+    switch (elementStyle) {
+      case "black-on-white":
+        return "bg-white text-black border border-black";
+      case "white-on-black":
+        return "bg-black text-white border border-white";
+      case "gradient-gold-black":
+        return "bg-gradient-to-r from-yellow-400 to-black text-white border-0";
+      case "gradient-gold-white":
+        return "bg-gradient-to-r from-yellow-400 to-white text-black border-0";
+      case "gradient-purple-tech":
+        return "bg-gradient-to-r from-purple-600 to-white text-white border-0";
+      default:
+        return "bg-blue-600 text-white";
+    }
+  };
+
+  // Handle Basic Design Style variations
+  if (designStyle === 'basic' || designStyle.startsWith('hero-section-')) {
+    const [selectedBasicDesign, setSelectedBasicDesign] = useState<string>('');
+
+    useEffect(() => {
+      // Generate a truly random selection based on timestamp and random
+      const randomSeed = Date.now() + Math.random() * 1000;
+      const availableDesigns = [
+        'hero-section-clean',
+        'hero-section-minimal', 
+        'hero-section-classic',
+        'hero-section-elegant',
+        'hero-section-modern',
+        'hero-section-lamp',
+        'hero-section-retro'
+      ];
+      
+      const randomIndex = Math.floor(randomSeed % availableDesigns.length);
+      const selectedDesign = availableDesigns[randomIndex];
+      
+      console.log('Selected random design:', selectedDesign, 'from index:', randomIndex);
+      setSelectedBasicDesign(selectedDesign);
+    }, [formData?.businessName, formData?.businessType]); // Change when business data changes
+
+    // Return clean hero section
+    if (selectedBasicDesign === 'hero-section-clean') {
+      return (
+        <HeroSectionClean
+          formData={formData}
+          currentColors={currentColors}
+        />
+      );
+    }
+
+    // Return modern hero section  
+    if (selectedBasicDesign === 'hero-section-modern') {
+      return (
+        <HeroSectionModern
+          formData={formData}
+          currentColors={currentColors}
+        />
+      );
+    }
+
+    // Return lamp hero section
+    if (selectedBasicDesign === 'hero-section-lamp') {
+      return (
+        <HeroSectionLamp
+          formData={formData}
+          currentColors={currentColors}
+        />
+      );
+    }
+
+    // Return retro hero section
+    if (selectedBasicDesign === 'hero-section-retro') {
+      return (
+        <HeroSectionRetro
+          formData={formData}
+          currentColors={currentColors}
+        />
+      );
+    }
+
+    // Enhanced Mockup Hero (minimal)
+    if (selectedBasicDesign === 'hero-section-minimal') {
+      return (
+        <HeroWithMockup
+          title={content?.headline || formData?.businessName || 'העסק שלכם'}
+          description={content?.subheadline || content?.description || `פתרונות מקצועיים ל${formData?.targetAudience || 'הלקוחות שלכם'}`}
+          primaryCta={{
+            text: content?.buttons?.[0]?.text || content?.cta || 'בואו נתחיל',
+            onClick: () => {}
+          }}
+          secondaryCta={{
+            text: content?.buttons?.[1]?.text || 'למד עוד',
+            onClick: () => {}
+          }}
+        />
+      );
+    }
+
+    // Beams Background (classic)
+    if (selectedBasicDesign === 'hero-section-classic') {
+      return (
+        <BeamsBackground
+          title={content?.headline || formData?.businessName || 'חלומות דיגיטליים'}
+          description={content?.subheadline || content?.description || 'שם המחשבות מקבלות צורה והתודעה זורמת כמו כספית נוזלית'}
+          primaryCta={{
+            text: content?.buttons?.[0]?.text || content?.cta || 'היכנסו לזרימה',
+            onClick: () => {}
+          }}
+          secondaryCta={{
+            text: content?.buttons?.[1]?.text || 'חקרו עוד',
+            onClick: () => {}
+          }}
+        />
+      );
+    }
+
+    // Gradient Hero (elegant)
+    if (selectedBasicDesign === 'hero-section-elegant') {
+      return (
+        <GradientHero
+          title={content?.headline || formData?.businessName || 'העתיד כאן עכשיו'}
+          subtitle={content?.subheadline || content?.description || 'חוויה דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש'}
+          primaryCta={{
+            text: content?.buttons?.[0]?.text || content?.cta || 'haledו היום',
+            onClick: () => {}
+          }}
+          secondaryCta={{
+            text: content?.buttons?.[1]?.text || 'גלו עוד',
+            onClick: () => {}
+          }}
+        />
+      );
+    }
+
+    // Default fallback - should not happen
+    return (
+      <HeroSectionClean
+        formData={formData}
+        currentColors={currentColors}
+      />
+    );
+  }
+
+  
+  // 3D Tech Design Style - עם סגנונות מותאמים אישית
+  if (designStyle === '3d-tech') {
+    const [selectedDesign, setSelectedDesign] = useState(0);
+
+    useEffect(() => {
+      // Randomly select one of the 12 3D designs (increased from 9)
+      setSelectedDesign(Math.floor(Math.random() * 12));
+    }, []);
+
+    // Design 1: Spline 3D Scene with custom styles
+    if (selectedDesign === 0) {
+      return (
+        <section className="relative overflow-hidden min-h-screen bg-black/[0.96]">
+          <Spotlight
+            className="-top-40 left-0 md:left-60 md:-top-20"
+            fill="white"
+          />
+          
+          <div className="flex h-screen">
+            <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
+              <div className="max-w-2xl">
+                {content?.badge && (
+                  <div 
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm"
+                    style={getBadgeStyle()}
+                  >
+                    <Zap className="w-4 h-4" />
+                    <span>{content.badge}</span>
+                  </div>
+                )}
+                
+                <h1 
+                  className="text-4xl md:text-6xl font-bold mb-6"
+                  style={content?.colors?.headline ? getTextStyle('headline') : {}}
+                >
+                  {content?.headline || formData?.businessName || 'expérience 3D'}
+                </h1>
+                
+                <p 
+                  className="text-lg leading-relaxed mb-8 max-w-lg"
+                  style={content?.colors?.subheadline ? getTextStyle('subheadline') : {}}
+                >
+                  {content?.subheadline || content?.description || `הביאו את העסק שלכם למימד חדש עם טכנולוגיות מתקדמות ועיצוב חדשני`}
+                </p>
+                
+                <div className="flex gap-4">
+                  {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                    <button 
+                      key={index}
+                      className="px-6 py-3 rounded-lg font-semibold transition"
+                      style={getButtonStyle(button.color)}
+                    >
+                      {button.text}
+                    </button>
+                  )) || (
+                    <>
+                      <button className="bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition">
+                        {content?.cta || 'haledo now'}
+                      </button>
+                      <button className="border border-neutral-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition">
+                        go further
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex-1 relative">
+              <SplineScene 
+                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                className="w-full h-full"
+              />
+            </div>
           </div>
-        )}
+        </section>
+      );
+    }
 
-        {/* Main Headline */}
-        {content?.headline && (
-          <h1 
-            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
-            style={getTextStyle(content.colors?.headline, currentColors.headlineColor)}
-          >
-            {content.headline}
-          </h1>
-        )}
-
-        {/* Subheadline */}
-        {content?.subheadline && (
-          <p 
-            className="text-xl md:text-2xl mb-6 max-w-4xl mx-auto leading-relaxed"
-            style={getTextStyle(content.colors?.subheadline, currentColors.subheadlineColor)}
-          >
-            {content.subheadline}
-          </p>
-        )}
-
-        {/* Description */}
-        {content?.description && (
-          <p 
-            className="text-lg md:text-xl mb-8 max-w-3xl mx-auto opacity-90"
-            style={getTextStyle(content.colors?.description, '#d1d5db')}
-          >
-            {content.description}
-          </p>
-        )}
-
-        {/* Buttons */}
-        {content?.buttons && content.buttons.length > 0 && (
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            {content.buttons
-              .filter((button: any) => button.visible !== false)
-              .map((button: any, index: number) => (
-                <Button
+    // Design 2: Chrome Grid with custom styles
+    if (selectedDesign === 1) {
+      return (
+        <div className="h-screen w-screen relative">
+          <ChromeGrid />
+          <div className="absolute z-10 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 pointer-events-none flex flex-col justify-center items-center text-center">
+            {content?.badge && (
+              <div 
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm"
+                style={getBadgeStyle()}
+              >
+                <Shield className="w-4 h-4" />
+                <span>{content.badge}</span>
+              </div>
+            )}
+            
+            <h1 
+              className="text-5xl md:text-7xl font-light mb-4 tracking-widest whitespace-nowrap"
+              style={content?.colors?.headline ? getTextStyle('headline') : {}}
+            >
+              {content?.headline || formData?.businessName || 'courageous digital'}
+            </h1>
+            
+            <p 
+              className="text-sm md:text-lg font-mono tracking-wide mb-8 max-w-2xl"
+              style={content?.colors?.subheadline ? getTextStyle('subheadline') : {}}
+            >
+              {content?.subheadline || 'a technology that brings life to the touch - a new way of doing things'}
+            </p>
+            
+            <div className="flex gap-4 pointer-events-auto">
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                <button 
                   key={index}
-                  size="lg"
-                  className="text-lg px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                  style={getButtonStyle(button)}
+                  className="px-8 py-4 rounded-lg font-bold transition transform hover:scale-105"
+                  style={getButtonStyle(button.color)}
                 >
                   {button.text}
-                </Button>
-              ))}
+                </button>
+              )) || (
+                <>
+                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition transform hover:scale-105">
+                    {content?.cta || 'come in'}
+                  </button>
+                  <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
+                    learn more
+                  </button>
+                </>
+              )}
+            </div>
           </div>
-        )}
-      </div>
+        </div>
+      );
+    }
 
-      {/* Decorative elements */}
-      <div className="absolute top-20 left-10 w-20 h-20 bg-purple-500/20 rounded-full blur-xl" />
-      <div className="absolute bottom-20 right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-xl" />
-      <div className="absolute top-1/2 left-1/4 w-2 h-2 bg-white/50 rounded-full animate-pulse" />
-      <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-purple-400/70 rounded-full animate-pulse" />
+    if (selectedDesign === 2) {
+      return (
+        <section className="relative grid min-h-screen place-content-center overflow-hidden bg-gray-950 px-4 py-24 text-gray-200">
+          <div className="absolute inset-0" style={{
+            background: `radial-gradient(125% 125% at 50% 0%, #020617 50%, #13FFAA)`
+          }} />
+          
+          <div className="relative z-10 flex flex-col items-center text-center">
+            {content?.badge && (
+              <div 
+                className="mb-6 inline-block rounded-full px-4 py-2 text-sm"
+                style={getBadgeStyle()}
+              >
+                <Award className="w-4 h-4 inline mr-2" />
+                {content.badge}
+              </div>
+            )}
+            
+            <h1 
+              className="max-w-4xl text-center text-4xl md:text-7xl font-medium leading-tight mb-6"
+              style={content?.colors?.headline ? getTextStyle('headline') : {}}
+            >
+              {content?.headline || formData?.businessName || 'the future is now'}
+            </h1>
+            
+            <p 
+              className="my-6 max-w-2xl text-center text-lg leading-relaxed"
+              style={content?.colors?.subheadline ? getTextStyle('subheadline') : {}}
+            >
+              {content?.subheadline || 'a digital experience that brings your business to the future with cutting-edge technologies'}
+            </p>
+            
+            <div className="flex gap-4 justify-center flex-wrap">
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                <button 
+                  key={index}
+                  className="group relative flex w-fit items-center gap-2 rounded-full px-6 py-3 transition-colors"
+                  style={getButtonStyle(button.color)}
+                >
+                  {button.text}
+                  <ArrowLeft className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
+                </button>
+              )) || (
+                <button
+                  className="group relative flex w-fit items-center gap-2 rounded-full bg-gray-950/10 px-6 py-3 text-gray-50 transition-colors hover:bg-gray-950/50 border border-gray-600/50 backdrop-blur-sm"
+                  style={{
+                    boxShadow: '0px 4px 24px rgba(19, 255, 170, 0.3)'
+                  }}
+                >
+                  {content?.cta || 'come in'}
+                  <ArrowLeft className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          
+          <div className="absolute inset-0 z-0">
+            {[...Array(100)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 3}s`,
+                  opacity: Math.random() * 0.5 + 0.2
+                }}
+              />
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    if (selectedDesign === 3) {
+      return (
+        <div className="h-screen w-screen flex flex-col justify-center items-center relative">
+          <LavaLamp />
+          <div className="absolute z-10 text-center">
+            {content?.badge && (
+              <div 
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-exclusion"
+                style={getBadgeStyle()}
+              >
+                <Zap className="w-4 h-4" />
+                <span>{content.badge}</span>
+              </div>
+            )}
+            
+            <h1 
+              className="text-6xl md:text-8xl font-bold tracking-tight whitespace-nowrap mb-6 mix-blend-exclusion"
+              style={content?.colors?.headline ? getTextStyle('headline') : {}}
+            >
+              {content?.headline || formData?.businessName || 'dreams of the digital'}
+            </h1>
+            
+            <p 
+              className="text-lg md:text-xl text-center max-w-2xl leading-relaxed mb-8 px-4 mix-blend-exclusion"
+              style={content?.colors?.subheadline ? getTextStyle('subheadline') : {}}
+            >
+              {content?.subheadline || 'the computers receive a shape and the information flows like a coin of the realm'}
+            </p>
+            
+            <div className="flex gap-4 justify-center">
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                <button 
+                  key={index}
+                  className="px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion"
+                  style={getButtonStyle(button.color)}
+                >
+                  {button.text}
+                </button>
+              )) || (
+                <>
+                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
+                    {content?.cta || 'come in'}
+                  </button>
+                  <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
+                    explore more
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (selectedDesign === 4) {
+      return (
+        <div className="h-screen w-screen relative flex flex-col justify-center items-center">
+          <div className="absolute inset-0">
+            <Scene />
+          </div>
+          <div className="absolute z-10 text-center">
+            {content?.badge && (
+              <div 
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-difference"
+                style={getBadgeStyle()}
+              >
+                <Award className="w-4 h-4" />
+                <span>{content.badge}</span>
+              </div>
+            )}
+            
+            <h1 
+              className="text-6xl md:text-8xl font-bold mb-6 tracking-tight mix-blend-difference"
+              style={content?.colors?.headline ? getTextStyle('headline') : {}}
+            >
+              {content?.headline || formData?.businessName || 'solution for complex problems'}
+            </h1>
+            
+            <p 
+              className="text-lg md:text-xl max-w-2xl px-6 leading-relaxed mb-8 mix-blend-exclusion"
+              style={content?.colors?.subheadline ? getTextStyle('subheadline') : {}}
+            >
+              {content?.subheadline || 'one piece at a time - we solve the most complex problems'}
+            </p>
+            
+            <div className="flex gap-4 justify-center">
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                <button 
+                  key={index}
+                  className="px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion"
+                  style={getButtonStyle(button.color)}
+                >
+                  {button.text}
+                </button>
+              )) || (
+                <>
+                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
+                    {content?.cta || 'solve with us'}
+                  </button>
+                  <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
+                    learn how
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (selectedDesign === 5) {
+      const ROBOT_SCENE_URL = "https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode";
+      
+      return (
+        <div className="relative w-screen h-screen overflow-hidden">
+          <InteractiveRobotSpline
+            scene={ROBOT_SCENE_URL}
+            className="absolute inset-0 z-0" 
+          />
+
+          <div className="absolute inset-0 z-10 pt-20 md:pt-32 lg:pt-40 px-4 md:px-8 pointer-events-none">
+            <div className="text-center text-white drop-shadow-lg w-full max-w-2xl mx-auto">
+              {content?.badge && (
+                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-exclusion pointer-events-auto`} style={getBadgeStyle()}>
+                  <Zap className="w-4 h-4" />
+                  <span>{content.badge}</span>
+                </div>
+              )}
+              
+              <h1 className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-6 mix-blend-exclusion`} style={content?.colors?.headline ? getTextStyle('headline') : { color: 'white' }}>
+                {content?.headline || formData?.businessName || 'interactive 3D robot'}
+              </h1>
+              
+              <p className={`text-lg leading-relaxed mb-8 px-4 mix-blend-exclusion`} style={content?.colors?.subheadline ? getTextStyle('subheadline') : { color: 'white' }}>
+                {content?.subheadline || 'an advanced interactive experience with 3D technology'}
+              </p>
+              
+              <div className="flex gap-4 justify-center pointer-events-auto">
+                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                  <button 
+                    key={index}
+                    className="px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion"
+                    style={getButtonStyle(button.color)}
+                  >
+                    {button.text}
+                  </button>
+                )) || (
+                  <>
+                    <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
+                      {content?.cta || 'explore the robot'}
+                    </button>
+                    <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
+                      learn more
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (selectedDesign === 6) {
+      return (
+        <div className="relative w-screen h-screen overflow-hidden bg-black">
+          <BackgroundCircles
+            title={content?.headline || formData?.businessName || 'background circles'}
+            description={content?.subheadline || content?.description || 'advanced geometric design with animated grids'}
+            variant="primary"
+          />
+          
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4">
+            {content?.badge && (
+              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm`} style={getBadgeStyle()}>
+                <Award className="w-4 h-4" />
+                <span>{content.badge}</span>
+              </div>
+            )}
+            
+            <div className="flex gap-4 justify-center mt-8">
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                <button 
+                  key={index}
+                  className="px-8 py-4 rounded-lg font-bold transition"
+                  style={getButtonStyle(button.color)}
+                >
+                  {button.text}
+                </button>
+              )) || (
+                <>
+                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
+                    {content?.cta || 'experience'}
+                  </button>
+                  <button className="border border-gray-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-gray-800 transition">
+                    learn more
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (selectedDesign === 7) {
+      return (
+        <div className="relative w-screen h-screen overflow-hidden">
+          <HorizonHeroSection
+            title={content?.headline || formData?.businessName || 'HORIZON'}
+            subtitle1={content?.subheadline || 'Where vision meets reality,'}
+            subtitle2={content?.description || 'we shape the future of tomorrow'}
+            className="absolute inset-0"
+          />
+          
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4 pointer-events-none">
+            <div className="mt-96 flex gap-4 justify-center pointer-events-auto">
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                <button 
+                  key={index}
+                  className="px-8 py-4 rounded-lg font-bold transition"
+                  style={getButtonStyle(button.color)}
+                >
+                  {button.text}
+                </button>
+              )) || (
+                <>
+                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
+                    {content?.cta || 'explore the horizon'}
+                  </button>
+                  <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
+                    learn more
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (selectedDesign === 8) {
+      const defaultProducts = [
+        {
+          title: "project 1",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 2", 
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 3",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 4",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1542744094-3a31f272c490?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 5",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1553484771-371a605b060b?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 6",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 7",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 8",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 9",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 10",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 11",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1571019613914-85e138f129cc?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 12",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 13",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1542744094-3a31f272c490?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 14",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1553484771-cc0d9b8c2b33?w=600&h=400&fit=crop"
+        },
+        {
+          title: "project 15",
+          link: "#",
+          thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop"
+        }
+      ];
+
+      return (
+        <div className="relative w-screen h-screen overflow-hidden">
+          <HeroParallax
+            products={defaultProducts}
+            title={content?.headline || formData?.businessName || 'the most advanced studio'}
+            subtitle={content?.subheadline || content?.description || 'we create beautiful products with the latest technologies and innovative ideas'}
+          />
+          
+          <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-30 flex gap-4 justify-center">
+            {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+              <button 
+                key={index}
+                className="px-8 py-4 rounded-lg font-bold transition"
+                style={getButtonStyle(button.color)}
+              >
+                {button.text}
+              </button>
+            )) || (
+              <>
+                <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
+                  {content?.cta || 'explore the projects'}
+                </button>
+                <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
+                  contact us
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    if (selectedDesign === 9) {
+      return (
+        <div className="relative w-screen h-screen overflow-hidden">
+          <HeroDesignAli
+            title={content?.headline || formData?.businessName || 'Your complete platform for the Design.'}
+            subtitle={content?.subheadline || 'Welcome to my creative playground! I\'m'}
+            typewriterStrings={["Graphic Design", "Branding", "Web Design", "Web Develop", "Marketing", "UI UX", "Social Media"]}
+            onStartClick={() => {}}
+            onBookCallClick={() => {}}
+          />
+          
+          <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-30 flex gap-4 justify-center">
+            {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+              <button 
+                key={index}
+                className="px-8 py-4 rounded-lg font-bold transition"
+                style={getButtonStyle(button.color)}
+              >
+                {button.text}
+              </button>
+            )) || (
+              <>
+                <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
+                  {content?.cta || 'start creating'}
+                </button>
+                <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
+                  learn more
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    if (selectedDesign === 10) {
+      return (
+        <div className="relative w-screen h-screen overflow-hidden">
+          <HeroFuturistic
+            title={content?.headline || formData?.businessName || 'Build Your Dreams'}
+            subtitle={content?.subheadline || content?.description || 'AI-powered creativity for the next generation.'}
+            buttonText="explore more"
+            onButtonClick={() => {}}
+          />
+          
+          <div className="absolute bottom-40 left-1/2 transform -translate-x-1/2 z-30 flex gap-4 justify-center">
+            {content?.buttons?.filter((btn: any) => btn.visible !== false).slice(1).map((button: any, index: number) => (
+              <button 
+                key={index}
+                className="px-8 py-4 rounded-lg font-bold transition"
+                style={getButtonStyle(button.color)}
+              >
+                {button.text}
+              </button>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    if (selectedDesign === 11) {
+      return (
+        <div className="relative w-screen h-screen overflow-hidden">
+          <ScrollExpandMedia
+            mediaType="video"
+            title={content?.headline || formData?.businessName || 'Immersive Experience'}
+            date={content?.badge || 'Digital Journey'}
+            scrollToExpand="Scroll to Expand"
+            textBlend={true}
+          >
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-3xl font-bold mb-6 text-white">
+                {content?.subheadline || 'About This Experience'}
+              </h2>
+              <p className="text-lg mb-8 text-white/80">
+                {content?.description || 'This is a demonstration of interactive scroll-based expansion effects with immersive media content.'}
+              </p>
+              
+              <div className="flex gap-4 justify-center">
+                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                  <button 
+                    key={index}
+                    className="px-8 py-4 rounded-lg font-bold transition"
+                    style={getButtonStyle(button.color)}
+                  >
+                    {button.text}
+                  </button>
+                )) || (
+                  <>
+                    <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
+                      {content?.cta || 'explore more'}
+                    </button>
+                    <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
+                      contact us
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          </ScrollExpandMedia>
+        </div>
+      );
+    }
+  }
+
+  // Fallback to basic design with custom styles
+  return (
+    <section 
+      className="relative overflow-hidden min-h-screen flex items-center justify-center"
+      style={{ backgroundColor: currentColors.heroBackground }}
+    >
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center max-w-4xl mx-auto">
+          {content?.badge && (
+            <div 
+              className="inline-block mb-6 px-4 py-2 rounded-full text-sm"
+              style={getBadgeStyle()}
+            >
+              {content.badge}
+            </div>
+          )}
+          
+          <h1 
+            className="text-5xl md:text-7xl font-bold mb-8"
+            style={content?.colors?.headline ? getTextStyle('headline') : { color: currentColors.headlineColor }}
+          >
+            {content?.headline || formData?.businessName || 'the business'}
+          </h1>
+          
+          <p 
+            className="text-xl md:text-2xl mb-12"
+            style={content?.colors?.subheadline ? getTextStyle('subheadline') : { color: currentColors.subheadlineColor }}
+          >
+            {content?.subheadline || content?.description || 'professional solutions'}
+          </p>
+          
+          <div className="flex gap-4 justify-center flex-wrap">
+            {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+              <button 
+                key={index}
+                className="px-8 py-4 rounded-xl font-semibold text-lg transition"
+                style={getButtonStyle(button.color)}
+              >
+                {button.text}
+              </button>
+            )) || (
+              <button 
+                className="px-8 py-4 rounded-xl font-semibold text-lg"
+                style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+              >
+                {content?.cta || 'let us start'}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
     </section>
   );
 };

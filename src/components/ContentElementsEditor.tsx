@@ -7,7 +7,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge, Eye, EyeOff, Plus, Trash2, Palette, Save } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
 
 interface ContentElementsEditorProps {
   content: any;
@@ -39,17 +38,6 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
     { value: "minimal-light", label: "מינימליסטי בהיר" },
   ];
 
-  const gradientDirections = [
-    { value: "to-r", label: "שמאל לימין" },
-    { value: "to-l", label: "ימין לשמאל" },
-    { value: "to-t", label: "מטה למעלה" },
-    { value: "to-b", label: "מעלה למטה" },
-    { value: "to-br", label: "אלכסון ימין למטה" },
-    { value: "to-bl", label: "אלכסון שמאל למטה" },
-    { value: "to-tr", label: "אלכסון ימין למעלה" },
-    { value: "to-tl", label: "אלכסון שמאל למעלה" },
-  ];
-
   const updateField = (field: string, value: any) => {
     const newContent = { ...localContent, [field]: value };
     setLocalContent(newContent);
@@ -61,12 +49,6 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
     }
   };
 
-  const updateColorConfig = (element: string, config: any) => {
-    const colors = { ...localContent.colors };
-    colors[element] = config;
-    updateField('colors', colors);
-  };
-
   const updateButton = (index: number, field: string, value: any) => {
     const buttons = [...(localContent.buttons || [])];
     if (!buttons[index]) {
@@ -76,7 +58,7 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
     updateField('buttons', buttons);
     
     // Mark as having unsaved changes if it's a button color change
-    if (field === 'color' || field === 'gradient') {
+    if (field === 'color') {
       setHasUnsavedChanges(true);
     }
   };
@@ -111,8 +93,8 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
         background: "#000000",
         heroBackground: "#000000",
         text: "#ffffff",
-        headlineColor: localContent.colors.headline?.color || localContent.colors.headline || "#ffffff",
-        subheadlineColor: localContent.colors.subheadline?.color || localContent.colors.subheadline || "#e0f2fe",
+        headlineColor: localContent.colors.headline || "#ffffff",
+        subheadlineColor: localContent.colors.subheadline || "#e0f2fe",
         featuresColor: "#ffffff",
         featuresTextColor: "#e5e7eb",
         aboutColor: "#ffffff",
@@ -126,120 +108,14 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
     }
   };
 
-  const renderColorGradientControl = (label: string, elementKey: string, defaultValue: string) => {
-    const colorConfig = localContent.colors?.[elementKey] || { 
-      type: 'solid', 
-      color: defaultValue,
-      gradientFrom: defaultValue,
-      gradientTo: defaultValue,
-      gradientDirection: 'to-r'
-    };
-
-    return (
-      <div className="space-y-3 p-3 bg-gray-700 rounded">
-        <Label className="text-white text-sm font-semibold">{label}:</Label>
-        
-        {/* Color Type Toggle */}
-        <div className="flex items-center gap-3">
-          <Label className="text-gray-300 text-sm">צבע אחיד</Label>
-          <Switch
-            checked={colorConfig.type === 'gradient'}
-            onCheckedChange={(checked) => 
-              updateColorConfig(elementKey, { 
-                ...colorConfig, 
-                type: checked ? 'gradient' : 'solid' 
-              })
-            }
-          />
-          <Label className="text-gray-300 text-sm">גרדיאנט</Label>
-        </div>
-
-        {colorConfig.type === 'solid' ? (
-          /* Solid Color */
-          <div className="flex items-center gap-2">
-            <input
-              type="color"
-              value={colorConfig.color || defaultValue}
-              onChange={(e) => updateColorConfig(elementKey, { ...colorConfig, color: e.target.value })}
-              className="w-10 h-8 rounded border border-gray-600 bg-gray-800"
-            />
-            <span className="text-xs text-gray-400">{colorConfig.color || defaultValue}</span>
-          </div>
-        ) : (
-          /* Gradient Controls */
-          <div className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <Label className="text-gray-300 text-xs">צבע התחלה:</Label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="color"
-                    value={colorConfig.gradientFrom || defaultValue}
-                    onChange={(e) => updateColorConfig(elementKey, { ...colorConfig, gradientFrom: e.target.value })}
-                    className="w-8 h-6 rounded border border-gray-600 bg-gray-800"
-                  />
-                  <span className="text-xs text-gray-400">{colorConfig.gradientFrom || defaultValue}</span>
-                </div>
-              </div>
-              
-              <div>
-                <Label className="text-gray-300 text-xs">צבע סיום:</Label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="color"
-                    value={colorConfig.gradientTo || defaultValue}
-                    onChange={(e) => updateColorConfig(elementKey, { ...colorConfig, gradientTo: e.target.value })}
-                    className="w-8 h-6 rounded border border-gray-600 bg-gray-800"
-                  />
-                  <span className="text-xs text-gray-400">{colorConfig.gradientTo || defaultValue}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Gradient Direction */}
-            <div>
-              <Label className="text-gray-300 text-xs mb-1 block">כיוון הגרדיאנט:</Label>
-              <Select 
-                value={colorConfig.gradientDirection || 'to-r'} 
-                onValueChange={(value) => updateColorConfig(elementKey, { ...colorConfig, gradientDirection: value })}
-              >
-                <SelectTrigger className="bg-gray-600 border-gray-500 text-white text-xs">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-gray-700 border-gray-600">
-                  {gradientDirections.map(direction => (
-                    <SelectItem key={direction.value} value={direction.value} className="text-white text-xs">
-                      {direction.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Gradient Preview */}
-            <div className="space-y-1">
-              <Label className="text-gray-300 text-xs">תצוגה מקדימה:</Label>
-              <div 
-                className="w-full h-6 rounded border border-gray-600"
-                style={{ 
-                  background: `linear-gradient(${colorConfig.gradientDirection || 'to-r'}, ${colorConfig.gradientFrom || defaultValue}, ${colorConfig.gradientTo || defaultValue})` 
-                }}
-              />
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
-
   // Initialize content with default colors if they don't exist
   useEffect(() => {
     if (localContent && !localContent.colors) {
       const defaultColors = {
-        badge: { type: 'solid', color: "#8b5cf6" },
-        headline: { type: 'solid', color: "#ffffff" },
-        subheadline: { type: 'solid', color: "#e0f2fe" },
-        description: { type: 'solid', color: "#d1d5db" }
+        badge: "#8b5cf6",
+        headline: "#ffffff", 
+        subheadline: "#e0f2fe",
+        description: "#d1d5db"
       };
       updateField('colors', defaultColors);
     }
@@ -288,7 +164,16 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
                 className="bg-gray-800 border-gray-600 text-white"
                 placeholder="הכנס תג..."
               />
-              {renderColorGradientControl("צבע התג", "badge", "#8b5cf6")}
+              <div className="flex items-center gap-2">
+                <Label className="text-gray-300 text-sm">צבע התג:</Label>
+                <input
+                  type="color"
+                  value={localContent.colors?.badge || "#8b5cf6"}
+                  onChange={(e) => updateField('colors', { ...localContent.colors, badge: e.target.value })}
+                  className="w-10 h-8 rounded border border-gray-600 bg-gray-800"
+                />
+                <span className="text-xs text-gray-400">{localContent.colors?.badge || "#8b5cf6"}</span>
+              </div>
             </div>
           </div>
 
@@ -302,7 +187,16 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
                 className="bg-gray-800 border-gray-600 text-white"
                 placeholder="הכנס כותרת ראשית..."
               />
-              {renderColorGradientControl("צבע הכותרת", "headline", "#ffffff")}
+              <div className="flex items-center gap-2">
+                <Label className="text-gray-300 text-sm">צבע הכותרת:</Label>
+                <input
+                  type="color"
+                  value={localContent.colors?.headline || "#ffffff"}
+                  onChange={(e) => updateField('colors', { ...localContent.colors, headline: e.target.value })}
+                  className="w-10 h-8 rounded border border-gray-600 bg-gray-800"
+                />
+                <span className="text-xs text-gray-400">{localContent.colors?.headline || "#ffffff"}</span>
+              </div>
             </div>
           </div>
 
@@ -317,7 +211,16 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
                 rows={3}
                 placeholder="הכנס כותרת משנה..."
               />
-              {renderColorGradientControl("צבע כותרת המשנה", "subheadline", "#e0f2fe")}
+              <div className="flex items-center gap-2">
+                <Label className="text-gray-300 text-sm">צבע כותרת המשנה:</Label>
+                <input
+                  type="color"
+                  value={localContent.colors?.subheadline || "#e0f2fe"}
+                  onChange={(e) => updateField('colors', { ...localContent.colors, subheadline: e.target.value })}
+                  className="w-10 h-8 rounded border border-gray-600 bg-gray-800"
+                />
+                <span className="text-xs text-gray-400">{localContent.colors?.subheadline || "#e0f2fe"}</span>
+              </div>
             </div>
           </div>
 
@@ -332,7 +235,16 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
                 rows={3}
                 placeholder="הכנס תיאור..."
               />
-              {renderColorGradientControl("צבע התיאור", "description", "#d1d5db")}
+              <div className="flex items-center gap-2">
+                <Label className="text-gray-300 text-sm">צבע התיאור:</Label>
+                <input
+                  type="color"
+                  value={localContent.colors?.description || "#d1d5db"}
+                  onChange={(e) => updateField('colors', { ...localContent.colors, description: e.target.value })}
+                  className="w-10 h-8 rounded border border-gray-600 bg-gray-800"
+                />
+                <span className="text-xs text-gray-400">{localContent.colors?.description || "#d1d5db"}</span>
+              </div>
             </div>
           </div>
 
@@ -404,80 +316,17 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
                         />
                       </div>
                       
-                      {/* Button Color/Gradient Control */}
-                      <div className="space-y-2">
-                        <Label className="text-gray-300 text-sm">עיצוב הכפתור</Label>
-                        
-                        {/* Toggle between solid and gradient */}
-                        <div className="flex items-center gap-3">
-                          <Label className="text-gray-300 text-xs">צבע אחיד</Label>
-                          <Switch
-                            checked={button.gradientType === 'gradient'}
-                            onCheckedChange={(checked) => 
-                              updateButton(index, 'gradientType', checked ? 'gradient' : 'solid')
-                            }
+                      <div>
+                        <Label className="text-gray-300 text-sm mb-1 block">צבע הכפתור</Label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="color"
+                            value={button.color || "#3b82f6"}
+                            onChange={(e) => updateButton(index, 'color', e.target.value)}
+                            className="w-10 h-8 rounded border border-gray-600 bg-gray-700"
                           />
-                          <Label className="text-gray-300 text-xs">גרדיאנט</Label>
+                          <span className="text-xs text-gray-400">{button.color || "#3b82f6"}</span>
                         </div>
-
-                        {button.gradientType === 'gradient' ? (
-                          <div className="space-y-2">
-                            <div className="grid grid-cols-2 gap-2">
-                              <div>
-                                <Label className="text-gray-300 text-xs">התחלה:</Label>
-                                <input
-                                  type="color"
-                                  value={button.gradientFrom || "#3b82f6"}
-                                  onChange={(e) => updateButton(index, 'gradientFrom', e.target.value)}
-                                  className="w-full h-6 rounded border border-gray-600 bg-gray-700"
-                                />
-                              </div>
-                              <div>
-                                <Label className="text-gray-300 text-xs">סיום:</Label>
-                                <input
-                                  type="color"
-                                  value={button.gradientTo || "#8b5cf6"}
-                                  onChange={(e) => updateButton(index, 'gradientTo', e.target.value)}
-                                  className="w-full h-6 rounded border border-gray-600 bg-gray-700"
-                                />
-                              </div>
-                            </div>
-                            
-                            <Select 
-                              value={button.gradientDirection || 'to-r'} 
-                              onValueChange={(value) => updateButton(index, 'gradientDirection', value)}
-                            >
-                              <SelectTrigger className="bg-gray-700 border-gray-600 text-white text-xs">
-                                <SelectValue placeholder="כיוון" />
-                              </SelectTrigger>
-                              <SelectContent className="bg-gray-700 border-gray-600">
-                                {gradientDirections.map(direction => (
-                                  <SelectItem key={direction.value} value={direction.value} className="text-white text-xs">
-                                    {direction.label}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-
-                            {/* Gradient Preview */}
-                            <div 
-                              className="w-full h-4 rounded border border-gray-600"
-                              style={{ 
-                                background: `linear-gradient(${button.gradientDirection || 'to-r'}, ${button.gradientFrom || '#3b82f6'}, ${button.gradientTo || '#8b5cf6'})` 
-                              }}
-                            />
-                          </div>
-                        ) : (
-                          <div className="flex items-center gap-2">
-                            <input
-                              type="color"
-                              value={button.color || "#3b82f6"}
-                              onChange={(e) => updateButton(index, 'color', e.target.value)}
-                              className="w-10 h-8 rounded border border-gray-600 bg-gray-700"
-                            />
-                            <span className="text-xs text-gray-400">{button.color || "#3b82f6"}</span>
-                          </div>
-                        )}
                       </div>
                     </div>
                   </CardContent>
