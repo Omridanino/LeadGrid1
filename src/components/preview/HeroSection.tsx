@@ -24,6 +24,18 @@ import { HeroIsometricIllustration } from "@/components/ui/hero-isometric-illust
 import { HeroGeometricShapes } from "@/components/ui/hero-geometric-shapes";
 import { HeroNeumorphism } from "@/components/ui/hero-neumorphism";
 import { HeroMinimalTech } from "@/components/ui/hero-minimal-tech";
+import { HeroNeonCyber } from "@/components/ui/hero-neon-cyber";
+import { HeroFloatingCubes } from "@/components/ui/hero-floating-cubes";
+import { HeroHolographic } from "@/components/ui/hero-holographic";
+import { HeroMorphingShapes } from "@/components/ui/hero-morphing-shapes";
+import { HeroLiquidMetal } from "@/components/ui/hero-liquid-metal";
+import { HeroGlassRefraction } from "@/components/ui/hero-glass-refraction";
+import { HeroParticleStorm } from "@/components/ui/hero-particle-storm";
+import { HeroCrystalMatrix } from "@/components/ui/hero-crystal-matrix";
+import { HeroDigitalWaves } from "@/components/ui/hero-digital-waves";
+import { HeroNeonGridPortal } from "@/components/ui/hero-neon-grid-portal";
+import { HeroQuantumBubbles } from "@/components/ui/hero-quantum-bubbles";
+import { HeroCosmicGeometry } from "@/components/ui/hero-cosmic-geometry";
 import { ArrowLeft, Play, Shield, Zap, Award, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { HeroFuturistic } from "@/components/ui/hero-futuristic";
@@ -435,620 +447,252 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     );
   }
 
-  
-  // 3D Tech Design Style - עם סגנונות מותאמים אישית + הסגנונות החדשים
-  if (designStyle === '3d-tech') {
-    const [selectedDesign, setSelectedDesign] = useState(0);
+  // GRADIENT Design Style - 15 different designs
+  if (designStyle === 'gradient') {
+    const [selectedGradientDesign, setSelectedGradientDesign] = useState(0);
 
     useEffect(() => {
-      // Randomly select one of the 14 available 3D designs (9 existing + 5 new)
-      const totalDesigns = 14;
-      setSelectedDesign(Math.floor(Math.random() * totalDesigns));
-    }, []);
+      setSelectedGradientDesign(Math.floor(Math.random() * 15));
+    }, [formData?.businessName]);
 
-    // Design 0: Spline 3D Scene with custom styles - Split Layout
-    if (selectedDesign === 0) {
-      return (
-        <section className="relative overflow-hidden min-h-screen bg-black/[0.96]">
-          <Spotlight
-            className="-top-40 left-0 md:left-60 md:-top-20"
-            fill="white"
-          />
-          
-          <div className="flex h-screen">
-            <div className="flex-1 p-8 relative z-10 flex flex-col justify-center">
-              <div className="max-w-2xl">
-                {content?.badge && (
-                  <div 
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm"
-                    style={getBadgeStyle()}
-                  >
-                    <Zap className="w-4 h-4" />
-                    <span>{content.badge}</span>
-                  </div>
-                )}
-                
-                <h1 
-                  className="text-4xl md:text-6xl font-bold mb-6"
-                  style={getTextStyle('headline')}
-                >
-                  {content?.headline || formData?.businessName || 'חוויה תלת מימדית'}
-                </h1>
-                
-                <p 
-                  className="text-lg leading-relaxed mb-8 max-w-lg"
-                  style={getTextStyle('subheadline')}
-                >
-                  {content?.subheadline || content?.description || `הביאו את העסק שלכם למימד חדש עם טכנולוגיות מתקדמות ועיצוב חדשני`}
-                </p>
-                
-                <div className="flex gap-4">
-                  {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                    renderAdvancedButton(button, index)
-                  ) || (
-                    <button 
-                      className="px-6 py-3 rounded-lg font-semibold transition"
-                      style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                    >
-                      {content?.cta || 'haledו עכשיו'}
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
+    const customContentProps = getCustomContentProps();
 
-            <div className="flex-1 relative">
-              <SplineScene 
-                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                className="w-full h-full"
-              />
-            </div>
-          </div>
-        </section>
-      );
+    // Gradient designs 0-2: Use existing gradient components
+    if (selectedGradientDesign === 0) {
+      return <GradientHero formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGradientDesign === 1) {
+      return <AnimatedHero formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGradientDesign === 2) {
+      return <HeroFuturistic formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
 
-    // Design 1: Chrome Grid with custom styles
-    if (selectedDesign === 1) {
-      return (
-        <div className="h-screen w-screen relative">
-          <ChromeGrid />
-          <div className="absolute z-10 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 pointer-events-none flex flex-col justify-center items-center text-center">
-            {content?.badge && (
-              <div 
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm pointer-events-auto"
-                style={getBadgeStyle()}
-              >
-                <Shield className="w-4 h-4" />
-                <span>{content.badge}</span>
-              </div>
-            )}
-            
-            <h1 
-              className="text-5xl md:text-7xl font-light mb-4 tracking-widest whitespace-nowrap"
-              style={getTextStyle('headline')}
-            >
-              {content?.headline || formData?.businessName || 'דיגיטל אמיץ'}
-            </h1>
-            
-            <p 
-              className="text-sm md:text-lg font-mono tracking-wide mb-8 max-w-2xl"
-              style={getTextStyle('subheadline')}
-            >
-              {content?.subheadline || 'טכנולוגיה שמביאה חיים למגע - דרך חדשה לעשות דברים'}
-            </p>
-            
-            <div className="flex gap-4 pointer-events-auto">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                renderAdvancedButton(button, index)
-              ) || (
-                <button 
-                  className="px-8 py-4 rounded-lg font-bold transition transform hover:scale-105"
-                  style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                >
-                  {content?.cta || 'היכנסו'}
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      );
+    // Gradient designs 3-14: New 3D designs
+    if (selectedGradientDesign === 3) {
+      return <HeroNeonCyber formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
-
-    if (selectedDesign === 2) {
-      return (
-        <section className="relative grid min-h-screen place-content-center overflow-hidden bg-gray-950 px-4 py-24 text-gray-200">
-          <div className="absolute inset-0" style={{
-            background: `radial-gradient(125% 125% at 50% 0%, #020617 50%, #13FFAA)`
-          }} />
-          
-          <div className="relative z-10 flex flex-col items-center text-center">
-            {content?.badge && (
-              <div 
-                className="mb-6 inline-block rounded-full px-4 py-2 text-sm"
-                style={getBadgeStyle()}
-              >
-                <Award className="w-4 h-4 inline mr-2" />
-                {content.badge}
-              </div>
-            )}
-            
-            <h1 
-              className="max-w-4xl text-center text-4xl md:text-7xl font-medium leading-tight mb-6"
-              style={getTextStyle('headline')}
-            >
-              {content?.headline || formData?.businessName || 'the future is now'}
-            </h1>
-            
-            <p 
-              className="my-6 max-w-2xl text-center text-lg leading-relaxed"
-              style={getTextStyle('subheadline')}
-            >
-              {content?.subheadline || 'a digital experience that brings your business to the future with cutting-edge technologies'}
-            </p>
-            
-            <div className="flex gap-4 justify-center flex-wrap">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                renderAdvancedButton(button, index)
-              ) || (
-                <button
-                  className="group relative flex w-fit items-center gap-2 rounded-full bg-gray-950/10 px-6 py-3 text-gray-50 transition-colors hover:bg-gray-950/50 border border-gray-600/50 backdrop-blur-sm"
-                  style={{
-                    boxShadow: '0px 4px 24px rgba(19, 255, 170, 0.3)'
-                  }}
-                >
-                  {content?.cta || 'come in'}
-                  <ArrowLeft className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
-                </button>
-              )}
-            </div>
-          </div>
-
-          
-          <div className="absolute inset-0 z-0">
-            {[...Array(100)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 3}s`,
-                  opacity: Math.random() * 0.5 + 0.2
-                }}
-              />
-            ))}
-          </div>
-        </section>
-      );
+    if (selectedGradientDesign === 4) {
+      return <HeroFloatingCubes formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
-
-    if (selectedDesign === 3) {
-      return (
-        <div className="h-screen w-screen flex flex-col justify-center items-center relative">
-          <LavaLamp />
-          <div className="absolute z-10 text-center">
-            {content?.badge && (
-              <div 
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm"
-                style={getBadgeStyle()}
-              >
-                <Zap className="w-4 h-4" />
-                <span>{content.badge}</span>
-              </div>
-            )}
-            
-            <h1 
-              className="text-6xl md:text-8xl font-bold tracking-tight whitespace-nowrap mb-6"
-              style={getTextStyle('headline')}
-            >
-              {content?.headline || formData?.businessName || 'dreams of the digital'}
-            </h1>
-            
-            <p 
-              className="text-lg md:text-xl text-center max-w-2xl leading-relaxed mb-8 px-4"
-              style={getTextStyle('subheadline')}
-            >
-              {content?.subheadline || 'the computers receive a shape and the information flows like a coin of the realm'}
-            </p>
-            
-            <div className="flex gap-4 justify-center">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                renderAdvancedButton(button, index)
-              ) || (
-                <button 
-                  className="px-8 py-4 rounded-lg font-bold transition"
-                  style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                >
-                  {content?.cta || 'come in'}
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      );
+    if (selectedGradientDesign === 5) {
+      return <HeroHolographic formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
-
-    if (selectedDesign === 4) {
-      return (
-        <div className="h-screen w-screen relative flex flex-col justify-center items-center">
-          <div className="absolute inset-0">
-            <Scene />
-          </div>
-          <div className="absolute z-10 text-center">
-            {content?.badge && (
-              <div 
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm"
-                style={getBadgeStyle()}
-              >
-                <Award className="w-4 h-4" />
-                <span>{content.badge}</span>
-              </div>
-            )}
-            
-            <h1 
-              className="text-6xl md:text-8xl font-bold mb-6 tracking-tight"
-              style={getTextStyle('headline')}
-            >
-              {content?.headline || formData?.businessName || 'solution for complex problems'}
-            </h1>
-            
-            <p 
-              className="text-lg md:text-xl max-w-2xl px-6 leading-relaxed mb-8"
-              style={getTextStyle('subheadline')}
-            >
-              {content?.subheadline || 'one piece at a time - we solve the most complex problems'}
-            </p>
-            
-            <div className="flex gap-4 justify-center">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                renderAdvancedButton(button, index)
-              ) || (
-                <button 
-                  className="px-8 py-4 rounded-lg font-bold transition"
-                  style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                >
-                  {content?.cta || 'solve with us'}
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      );
+    if (selectedGradientDesign === 6) {
+      return <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
-
-    if (selectedDesign === 5) {
-      const ROBOT_SCENE_URL = "https://prod.spline.design/PyzDhpQ9E5f1E3MT/scene.splinecode";
-      
-      return (
-        <div className="relative w-screen h-screen overflow-hidden">
-          <div className="flex h-screen">
-            {/* Left side - 3D Robot */}
-            <div className="flex-1 relative">
-              <InteractiveRobotSpline
-                scene={ROBOT_SCENE_URL}
-                className="absolute inset-0 z-0" 
-              />
-            </div>
-
-            {/* Right side - Content */}
-            <div className="flex-1 relative z-10 p-8 flex flex-col justify-center">
-              <div className="max-w-2xl text-white drop-shadow-lg">
-                {content?.badge && (
-                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm`} style={getBadgeStyle()}>
-                    <Zap className="w-4 h-4" />
-                    <span>{content.badge}</span>
-                  </div>
-                )}
-                
-                <h1 className={`text-4xl md:text-6xl font-bold mb-6`} style={getTextStyle('headline')}>
-                  {content?.headline || formData?.businessName || 'interactive 3D robot'}
-                </h1>
-                
-                <p className={`text-lg leading-relaxed mb-8`} style={getTextStyle('subheadline')}>
-                  {content?.subheadline || 'an advanced interactive experience with 3D technology'}
-                </p>
-                
-                <div className="flex gap-4">
-                  {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                    renderAdvancedButton(button, index)
-                  ) || (
-                    <button 
-                      className="px-8 py-4 rounded-lg font-bold transition"
-                      style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                    >
-                      {content?.cta || 'explore the robot'}
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
+    if (selectedGradientDesign === 7) {
+      return <HeroLiquidMetal formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
-
-    if (selectedDesign === 6) {
-      return (
-        <div className="relative w-screen h-screen overflow-hidden bg-black">
-          <BackgroundCircles
-            title={content?.headline || formData?.businessName || 'background circles'}
-            description={content?.subheadline || content?.description || 'advanced geometric design with animated grids'}
-            variant="primary"
-          />
-          
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4">
-            {content?.badge && (
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm`} style={getBadgeStyle()}>
-                <Award className="w-4 h-4" />
-                <span>{content.badge}</span>
-              </div>
-            )}
-            
-            <div className="flex gap-4 justify-center mt-8">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                renderAdvancedButton(button, index)
-              ) || (
-                <button 
-                  className="px-8 py-4 rounded-lg font-bold transition"
-                  style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                >
-                  {content?.cta || 'experience'}
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      );
+    if (selectedGradientDesign === 8) {
+      return <HeroGlassRefraction formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
-
-    if (selectedDesign === 7) {
-      return (
-        <div className="relative w-screen h-screen overflow-hidden">
-          <HorizonHeroSection
-            title={content?.headline || formData?.businessName || 'HORIZON'}
-            subtitle1={content?.subheadline || 'Where vision meets reality,'}
-            subtitle2={content?.description || 'we shape the future of tomorrow'}
-            className="absolute inset-0"
-          />
-          
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4 pointer-events-none">
-            <div className="mt-96 flex gap-4 justify-center pointer-events-auto">
-              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                renderAdvancedButton(button, index)
-              ) || (
-                <button 
-                  className="px-8 py-4 rounded-lg font-bold transition"
-                  style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                >
-                  {content?.cta || 'explore the horizon'}
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      );
+    if (selectedGradientDesign === 9) {
+      return <HeroParticleStorm formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
-
-    if (selectedDesign === 8) {
-      return (
-        <div className="relative w-screen h-screen overflow-hidden bg-black">
-          {/* Background 3D Element - Enlarged x1.8 with continuous movement */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-            <div className="relative">
-              {/* Main floating image - enlarged by 1.8 with continuous non-repeating movement */}
-              <div 
-                className="w-[1080px] h-[1080px] relative opacity-40"
-                style={{
-                  animation: 'continuousFloat 20s linear infinite, continuousRotate3d 30s linear infinite',
-                }}
-              >
-                <img 
-                  src="/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png" 
-                  alt="3D Floating Element" 
-                  className="w-full h-full object-contain"
-                  style={{
-                    filter: 'drop-shadow(0 0 30px rgba(255, 255, 255, 0.2)) drop-shadow(0 0 60px rgba(107, 115, 255, 0.15))',
-                    transform: 'perspective(1000px) rotateX(10deg) rotateY(15deg)',
-                  }}
-                />
-              </div>
-
-              {/* Floating particles around the image - fewer and smaller */}
-              {[...Array(8)].map((_, i) => (
-                <div
-                  key={i}
-                  className="absolute w-2 h-2 bg-white rounded-full opacity-40"
-                  style={{
-                    left: `${25 + (i % 3) * 20}%`,
-                    top: `${20 + Math.floor(i / 3) * 20}%`,
-                    animation: `continuousParticle${i % 3} ${12 + i * 0.8}s linear infinite`,
-                    boxShadow: '0 0 8px rgba(255, 255, 255, 0.6), 0 0 16px rgba(107, 115, 255, 0.4)',
-                  }}
-                />
-              ))}
-
-              {/* Orbital rings - continuous rotation */}
-              <div 
-                className="absolute inset-0 border border-white/10 rounded-full"
-                style={{
-                  width: '120%',
-                  height: '120%',
-                  left: '-10%',
-                  top: '-10%',
-                  animation: 'continuousOrbit 40s linear infinite',
-                }}
-              />
-              <div 
-                className="absolute inset-0 border border-blue-400/20 rounded-full"
-                style={{
-                  width: '140%',
-                  height: '140%',
-                  left: '-20%',
-                  top: '-20%',
-                  animation: 'continuousOrbit 25s linear infinite reverse',
-                }}
-              />
-            </div>
-
-            {/* Background glow effect - continuous pulse */}
-            <div 
-              className="absolute inset-0 bg-gradient-radial from-blue-900/20 via-purple-900/10 to-transparent"
-              style={{
-                animation: 'continuousPulse 6s linear infinite',
-              }}
-            />
-          </div>
-
-          {/* Main Content - Centered over the background */}
-          <div className="relative z-30 h-full flex flex-col justify-center items-center text-center px-8">
-            <div className="max-w-4xl text-white">
-              {content?.badge && (
-                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm`} style={getBadgeStyle()}>
-                  <Award className="w-4 h-4" />
-                  <span>{content.badge}</span>
-                </div>
-              )}
-              
-              <h1 className={`text-4xl md:text-6xl lg:text-7xl font-bold mb-6`} style={getTextStyle('headline')}>
-                {content?.headline || formData?.businessName || 'Build Your Dreams'}
-              </h1>
-              
-              <p className={`text-lg md:text-xl leading-relaxed mb-8 max-w-2xl mx-auto`} style={getTextStyle('subheadline')}>
-                {content?.subheadline || content?.description || 'AI-powered creativity for the next generation.'}
-              </p>
-              
-              <div className="flex gap-4 justify-center flex-wrap">
-                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                  renderAdvancedButton(button, index)
-                ) || (
-                  <button 
-                    className="px-8 py-4 rounded-lg font-bold transition"
-                    style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                  >
-                    {content?.cta || 'explore now'}
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Custom CSS for continuous animations */}
-          <style>{`
-            @keyframes continuousFloat {
-              0% { transform: translateY(0px) translateX(0px) scale(1); }
-              25% { transform: translateY(-30px) translateX(20px) scale(1.02); }
-              50% { transform: translateY(-15px) translateX(-25px) scale(1.04); }
-              75% { transform: translateY(-40px) translateX(15px) scale(1.01); }
-              100% { transform: translateY(-5px) translateX(-10px) scale(1.03); }
-            }
-            
-            @keyframes continuousRotate3d {
-              0% { transform: perspective(1000px) rotateX(10deg) rotateY(15deg) rotateZ(0deg); }
-              25% { transform: perspective(1000px) rotateX(25deg) rotateY(105deg) rotateZ(15deg); }
-              50% { transform: perspective(1000px) rotateX(5deg) rotateY(195deg) rotateZ(30deg); }
-              75% { transform: perspective(1000px) rotateX(35deg) rotateY(285deg) rotateZ(45deg); }
-              100% { transform: perspective(1000px) rotateX(10deg) rotateY(375deg) rotateZ(60deg); }
-            }
-            
-            @keyframes continuousParticle0 {
-              0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
-              25% { transform: translate(30px, -40px) scale(1.2); opacity: 0.8; }
-              50% { transform: translate(-20px, -60px) scale(0.8); opacity: 0.5; }
-              75% { transform: translate(40px, -20px) scale(1.1); opacity: 0.7; }
-              100% { transform: translate(-10px, -80px) scale(0.9); opacity: 0.3; }
-            }
-            
-            @keyframes continuousParticle1 {
-              0% { transform: translate(0, 0) scale(0.8); opacity: 0.3; }
-              25% { transform: translate(-40px, -30px) scale(1.0); opacity: 0.7; }
-              50% { transform: translate(25px, -70px) scale(1.2); opacity: 0.9; }
-              75% { transform: translate(-30px, -50px) scale(0.9); opacity: 0.5; }
-              100% { transform: translate(20px, -90px) scale(1.1); opacity: 0.4; }
-            }
-            
-            @keyframes continuousParticle2 {
-              0% { transform: translate(0, 0) scale(1.0); opacity: 0.4; }
-              25% { transform: translate(20px, -50px) scale(0.9); opacity: 0.6; }
-              50% { transform: translate(-35px, -35px) scale(1.3); opacity: 0.8; }
-              75% { transform: translate(25px, -75px) scale(0.7); opacity: 0.4; }
-              100% { transform: translate(-15px, -100px) scale(1.0); opacity: 0.6; }
-            }
-            
-            @keyframes continuousOrbit {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-            
-            @keyframes continuousPulse {
-              0% { opacity: 0.2; transform: scale(1); }
-              25% { opacity: 0.4; transform: scale(1.1); }
-              50% { opacity: 0.3; transform: scale(0.9); }
-              75% { opacity: 0.5; transform: scale(1.2); }
-              100% { opacity: 0.2; transform: scale(1); }
-            }
-            
-            .bg-gradient-radial {
-              background: radial-gradient(circle, var(--tw-gradient-stops));
-            }
-          `}</style>
-        </div>
-      );
+    if (selectedGradientDesign === 10) {
+      return <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
-
-    // New Design 9: Fluid Blobs
-    if (selectedDesign === 9) {
-      return (
-        <HeroFluidBlobs
-          formData={formData}
-          currentColors={currentColors}
-          content={content}
-        />
-      );
+    if (selectedGradientDesign === 11) {
+      return <HeroDigitalWaves formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
-
-    // New Design 10: Isometric Illustration
-    if (selectedDesign === 10) {
-      return (
-        <HeroIsometricIllustration
-          formData={formData}
-          currentColors={currentColors}
-          content={content}
-        />
-      );
+    if (selectedGradientDesign === 12) {
+      return <HeroNeonGridPortal formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
-
-    // New Design 11: Geometric Shapes
-    if (selectedDesign === 11) {
-      return (
-        <HeroGeometricShapes
-          formData={formData}
-          currentColors={currentColors}
-          content={content}
-        />
-      );
+    if (selectedGradientDesign === 13) {
+      return <HeroQuantumBubbles formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
-
-    // New Design 12: Neumorphism
-    if (selectedDesign === 12) {
-      return (
-        <HeroNeumorphism
-          formData={formData}
-          currentColors={currentColors}
-          content={content}
-        />
-      );
+    if (selectedGradientDesign === 14) {
+      return <HeroCosmicGeometry formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
+  }
 
-    // New Design 13: Minimal Tech
-    if (selectedDesign === 13) {
-      return (
-        <HeroMinimalTech
-          formData={formData}
-          currentColors={currentColors}
-          content={content}
-        />
-      );
+  // GLASS Design Style - 12 different designs
+  if (designStyle === 'glass') {
+    const [selectedGlassDesign, setSelectedGlassDesign] = useState(0);
+
+    useEffect(() => {
+      setSelectedGlassDesign(Math.floor(Math.random() * 12));
+    }, [formData?.businessName]);
+
+    const customContentProps = getCustomContentProps();
+
+    if (selectedGlassDesign === 0) {
+      return <HeroGlassRefraction formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGlassDesign === 1) {
+      return <HeroLiquidMetal formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGlassDesign === 2) {
+      return <HeroFluidBlobs formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGlassDesign === 3) {
+      return <HeroQuantumBubbles formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGlassDesign === 4) {
+      return <HeroHolographic formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGlassDesign === 5) {
+      return <HeroNeumorphism formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGlassDesign === 6) {
+      return <HeroMinimalTech formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGlassDesign === 7) {
+      return <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGlassDesign === 8) {
+      return <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGlassDesign === 9) {
+      return <GradientHero formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGlassDesign === 10) {
+      return <AnimatedHero formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+  }
+
+  // GEOMETRIC Design Style - 12 different designs
+  if (designStyle === 'geometric') {
+    const [selectedGeometricDesign, setSelectedGeometricDesign] = useState(0);
+
+    useEffect(() => {
+      setSelectedGeometricDesign(Math.floor(Math.random() * 12));
+    }, [formData?.businessName]);
+
+    const customContentProps = getCustomContentProps();
+
+    if (selectedGeometricDesign === 0) {
+      return <HeroGeometricShapes formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGeometricDesign === 1) {
+      return <HeroCosmicGeometry formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGeometricDesign === 2) {
+      return <HeroGeometric formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGeometricDesign === 3) {
+      return <HeroFloatingCubes formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGeometricDesign === 4) {
+      return <HeroIsometricIllustration formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGeometricDesign === 5) {
+      return <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGeometricDesign === 6) {
+      return <HeroNeonGridPortal formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGeometricDesign === 7) {
+      return <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGeometricDesign === 8) {
+      return <HeroParticleStorm formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGeometricDesign === 9) {
+      return <HeroNeonCyber formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGeometricDesign === 10) {
+      return <HeroMinimalTech formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedGeometricDesign === 11) {
+      return <HeroDigitalWaves formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+  }
+
+  // METAL Design Style - 12 different designs
+  if (designStyle === 'metal') {
+    const [selectedMetalDesign, setSelectedMetalDesign] = useState(0);
+
+    useEffect(() => {
+      setSelectedMetalDesign(Math.floor(Math.random() * 12));
+    }, [formData?.businessName]);
+
+    const customContentProps = getCustomContentProps();
+
+    if (selectedMetalDesign === 0) {
+      return <HeroLiquidMetal formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedMetalDesign === 1) {
+      return <HeroMinimalTech formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedMetalDesign === 2) {
+      return <HeroNeumorphism formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedMetalDesign === 3) {
+      return <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedMetalDesign === 4) {
+      return <HeroNeonCyber formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedMetalDesign === 5) {
+      return <HeroFloatingCubes formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedMetalDesign === 6) {
+      return <HeroGeometricShapes formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedMetalDesign === 7) {
+      return <HeroCosmicGeometry formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedMetalDesign === 8) {
+      return <HeroParticleStorm formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedMetalDesign === 9) {
+      return <HeroDigitalWaves formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedMetalDesign === 10) {
+      return <HeroHolographic formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedMetalDesign === 11) {
+      return <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+  }
+
+  // IMAGE Design Style - 12 different designs
+  if (designStyle === 'image') {
+    const [selectedImageDesign, setSelectedImageDesign] = useState(0);
+
+    useEffect(() => {
+      setSelectedImageDesign(Math.floor(Math.random() * 12));
+    }, [formData?.businessName]);
+
+    const customContentProps = getCustomContentProps();
+
+    if (selectedImageDesign === 0) {
+      return <HeroIsometricIllustration formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedImageDesign === 1) {
+      return <HeroHolographic formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedImageDesign === 2) {
+      return <HeroFluidBlobs formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedImageDesign === 3) {
+      return <HeroFloatingCubes formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedImageDesign === 4) {
+      return <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedImageDesign === 5) {
+      return <HeroQuantumBubbles formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedImageDesign === 6) {
+      return <HeroParticleStorm formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedImageDesign === 7) {
+      return <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedImageDesign === 8) {
+      return <HeroDigitalWaves formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedImageDesign === 9) {
+      return <HeroNeonGridPortal formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedImageDesign === 10) {
+      return <HeroGlassRefraction formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    if (selectedImageDesign === 11) {
+      return <HeroFluidBlobs formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
   }
 
