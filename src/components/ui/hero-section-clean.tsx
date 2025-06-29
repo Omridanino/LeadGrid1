@@ -7,17 +7,160 @@ import { Menu, X } from 'lucide-react'
 interface HeroSectionCleanProps {
   formData: any;
   currentColors: any;
+  content?: any;
 }
 
-export const HeroSectionClean = ({ formData, currentColors }: HeroSectionCleanProps) => {
+export const HeroSectionClean = ({ formData, currentColors, content }: HeroSectionCleanProps) => {
     const [menuState, setMenuState] = React.useState(false)
     
-    const businessName = formData?.businessName || "שם העסק"
-    const businessStory = formData?.businessStory || "הסיפור שלנו מתחיל כאן"
-    const mainServices = formData?.mainServices || "השירותים המובילים שלנו"
+    const businessName = content?.headline || formData?.businessName || "שם העסק"
+    const businessStory = content?.subheadline || formData?.businessStory || "הסיפור שלנו מתחיל כאן"
+    const mainServices = content?.description || formData?.mainServices || "השירותים המובילים שלנו"
+    const badgeText = content?.badge || "חדש"
+    
+    // Get styling classes
+    const getTextStyleClasses = (style: string) => {
+      switch (style) {
+        case "black-text":
+          return "text-black";
+        case "white-text":
+          return "text-white";
+        case "gold-text":
+          return "text-yellow-400";
+        case "silver-text":
+          return "text-gray-300";
+        case "blue-text":
+          return "text-blue-400";
+        case "green-text":
+          return "text-green-400";
+        case "red-text":
+          return "text-red-400";
+        case "purple-text":
+          return "text-purple-400";
+        case "pink-text":
+          return "text-pink-400";
+        case "cyan-text":
+          return "text-cyan-400";
+        case "gradient-gold-text":
+          return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
+        case "gradient-purple-text":
+          return "bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent";
+        case "gradient-blue-text":
+          return "bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent";
+        case "gradient-green-text":
+          return "bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent";
+        case "gradient-red-text":
+          return "bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent";
+        case "gradient-cyan-text":
+          return "bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent";
+        case "gradient-rainbow-text":
+          return "bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 bg-clip-text text-transparent";
+        default:
+          return "text-gray-900";
+      }
+    };
+
+    const getBadgeStyleClasses = (style: string) => {
+      switch (style) {
+        case "black-on-white":
+          return "bg-white text-black border border-black";
+        case "white-on-black":
+          return "bg-black text-white border border-white";
+        case "gradient-gold-black":
+          return "bg-gradient-to-r from-yellow-400 to-black text-white border-0";
+        case "gradient-gold-white":
+          return "bg-gradient-to-r from-yellow-400 to-white text-black border-0";
+        case "gradient-purple-tech":
+          return "bg-gradient-to-r from-purple-600 to-white text-white border-0";
+        case "gradient-blue-ocean":
+          return "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0";
+        case "gradient-green-nature":
+          return "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0";
+        case "gradient-red-fire":
+          return "bg-gradient-to-r from-red-500 to-orange-500 text-white border-0";
+        case "gradient-pink-sunset":
+          return "bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0";
+        case "neon-blue":
+          return "bg-blue-600 text-white border-2 border-blue-400 shadow-lg shadow-blue-400/50";
+        case "neon-green":
+          return "bg-green-600 text-white border-2 border-green-400 shadow-lg shadow-green-400/50";
+        case "neon-purple":
+          return "bg-purple-600 text-white border-2 border-purple-400 shadow-lg shadow-purple-400/50";
+        case "neon-pink":
+          return "bg-pink-600 text-white border-2 border-pink-400 shadow-lg shadow-pink-400/50";
+        case "glass-dark":
+          return "bg-black/20 text-white border border-white/30 backdrop-blur-sm";
+        case "glass-light":
+          return "bg-white/20 text-black border border-black/30 backdrop-blur-sm";
+        default:
+          return "bg-blue-600 text-white";
+      }
+    };
+
+    const getButtonStyleClasses = (style: string) => {
+      switch (style) {
+        case "black-on-white":
+          return "bg-white text-black border border-black hover:bg-gray-100";
+        case "white-on-black":
+          return "bg-black text-white border border-white hover:bg-gray-900";
+        case "gradient-gold-black":
+          return "bg-gradient-to-r from-yellow-400 to-black text-white border-0 hover:from-yellow-500 hover:to-gray-900";
+        case "gradient-gold-white":
+          return "bg-gradient-to-r from-yellow-400 to-white text-black border-0 hover:from-yellow-500 hover:to-gray-100";
+        case "gradient-purple-tech":
+          return "bg-gradient-to-r from-purple-600 to-white text-white border-0 hover:from-purple-700 hover:to-gray-100";
+        case "gradient-blue-ocean":
+          return "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0 hover:from-blue-600 hover:to-cyan-600";
+        case "gradient-green-nature":
+          return "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 hover:from-green-600 hover:to-emerald-600";
+        case "gradient-red-fire":
+          return "bg-gradient-to-r from-red-500 to-orange-500 text-white border-0 hover:from-red-600 hover:to-orange-600";
+        case "gradient-pink-sunset":
+          return "bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0 hover:from-pink-600 hover:to-rose-600";
+        case "neon-blue":
+          return "bg-blue-600 text-white border-2 border-blue-400 shadow-lg shadow-blue-400/50 hover:bg-blue-700";
+        case "neon-green":
+          return "bg-green-600 text-white border-2 border-green-400 shadow-lg shadow-green-400/50 hover:bg-green-700";
+        case "neon-purple":
+          return "bg-purple-600 text-white border-2 border-purple-400 shadow-lg shadow-purple-400/50 hover:bg-purple-700";
+        case "neon-pink":
+          return "bg-pink-600 text-white border-2 border-pink-400 shadow-lg shadow-pink-400/50 hover:bg-pink-700";
+        case "glass-dark":
+          return "bg-black/20 text-white border border-white/30 backdrop-blur-sm hover:bg-black/30";
+        case "glass-light":
+          return "bg-white/20 text-black border border-black/30 backdrop-blur-sm hover:bg-white/30";
+        default:
+          return "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700";
+      }
+    };
+
+    const getBackgroundClasses = (style: string) => {
+      switch (style) {
+        case "dark":
+          return "bg-gray-900 text-white";
+        case "light":
+          return "bg-white text-gray-900";
+        case "gradient-blue":
+          return "bg-gradient-to-br from-blue-900 to-blue-600 text-white";
+        case "gradient-purple":
+          return "bg-gradient-to-br from-purple-900 to-purple-600 text-white";
+        case "gradient-green":
+          return "bg-gradient-to-br from-green-900 to-green-600 text-white";
+        case "gradient-orange":
+          return "bg-gradient-to-br from-orange-900 to-orange-600 text-white";
+        case "gradient-pink":
+          return "bg-gradient-to-br from-pink-900 to-pink-600 text-white";
+        case "tech-dark":
+          return "bg-gray-950 text-white";
+        case "minimal-light":
+          return "bg-gray-50 text-gray-900";
+        default:
+          return "bg-white text-gray-900";
+      }
+    };
     
     return (
-        <div className="min-h-screen bg-white text-gray-900" dir="rtl">
+        <div className={`min-h-screen ${getBackgroundClasses(content?.backgroundStyle || 'default')}`} dir="rtl">
             <header>
                 <nav
                     data-state={menuState && 'active'}
@@ -86,23 +229,51 @@ export const HeroSectionClean = ({ formData, currentColors }: HeroSectionCleanPr
                     <div className="h-[80rem] absolute right-0 top-0 w-56 rotate-45 rounded-full bg-[radial-gradient(50%_50%_at_50%_50%,hsla(220,70%,85%,.06)_0,hsla(220,70%,45%,.02)_80%,transparent_100%)]" />
                 </div>
 
-                <section className="overflow-hidden bg-white">
+                <section className="overflow-hidden">
                     <div className="relative mx-auto max-w-5xl px-6 py-28 lg:py-32">
                         <div className="relative z-10 mx-auto max-w-3xl text-center">
-                            <h1 className="text-balance text-4xl font-bold md:text-5xl lg:text-6xl text-gray-900 mb-6">
-                                {businessStory}
+                            {badgeText && (
+                                <div className="mb-6 flex justify-center">
+                                    <span className={`inline-block px-4 py-2 rounded-full text-sm font-medium ${getBadgeStyleClasses(content?.badgeStyle || 'black-on-white')} ${getTextStyleClasses(content?.badgeTextStyle || 'default')}`}>
+                                        {badgeText}
+                                    </span>
+                                </div>
+                            )}
+                            
+                            <h1 className={`text-balance text-4xl font-bold md:text-5xl lg:text-6xl mb-6 ${getTextStyleClasses(content?.headlineStyle || 'black-text')}`}>
+                                {businessName}
                             </h1>
-                            <p className="mx-auto my-8 max-w-2xl text-xl text-gray-600 leading-relaxed">
-                                {mainServices}
+                            <p className={`mx-auto my-8 max-w-2xl text-xl leading-relaxed ${getTextStyleClasses(content?.subheadlineStyle || 'gray-text')}`}>
+                                {businessStory}
                             </p>
+                            {mainServices && (
+                                <p className={`mx-auto my-6 max-w-2xl text-lg leading-relaxed ${getTextStyleClasses(content?.descriptionStyle || 'gray-text')}`}>
+                                    {mainServices}
+                                </p>
+                            )}
 
                             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-10">
-                                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                                    <span>התחל עכשיו</span>
-                                </Button>
-                                <Button variant="outline" size="lg">
-                                    <span>למד עוד</span>
-                                </Button>
+                                {content?.buttons && content.buttons.length > 0 ? (
+                                    content.buttons.map((button: any, index: number) => (
+                                        button.visible !== false && (
+                                            <button
+                                                key={index}
+                                                className={`px-6 py-3 rounded-lg text-lg font-medium transition-all duration-300 ${getButtonStyleClasses(button.style || 'black-on-white')} ${button.textStyle && button.textStyle !== 'default' ? getTextStyleClasses(button.textStyle) : ''}`}
+                                            >
+                                                {button.text || `כפתור ${index + 1}`}
+                                            </button>
+                                        )
+                                    ))
+                                ) : (
+                                    <>
+                                        <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                                            <span>התחל עכשיו</span>
+                                        </Button>
+                                        <Button variant="outline" size="lg">
+                                            <span>למד עוד</span>
+                                        </Button>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>
