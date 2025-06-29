@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Palette, Zap, Award, Star } from "lucide-react";
+import { Palette, Zap, Award, Star, AlertCircle } from "lucide-react";
 
 interface ButtonStyleEditorProps {
   buttons: any[];
@@ -53,6 +52,14 @@ const ButtonStyleEditor = ({ buttons, onButtonsChange }: ButtonStyleEditorProps)
           <Zap className="w-5 h-5" />
           עיצוב כפתורים
         </CardTitle>
+        
+        {/* הודעה על כפתורים שלא ניתנים לעריכה */}
+        <div className="flex items-start gap-2 p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg">
+          <AlertCircle className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
+          <p className="text-sm text-blue-200">
+            <span className="text-blue-300 font-medium">*</span> ישנם כפתורים בעיצובים מסוימים שלא ניתנים לעריכה והם מוגדרים מראש בתבנית העיצוב
+          </p>
+        </div>
       </CardHeader>
       <CardContent className="space-y-4">
         {buttons.map((button, index) => (
