@@ -471,9 +471,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     if (selectedGradientDesign === 1) {
       return (
         <AnimatedHero 
-          badge={content?.badge}
-          title1={content?.headline || formData?.businessName || 'העתיד'}
-          title2="כאן עכשיו"
+          title={content?.headline || formData?.businessName || 'העתיד'}
+          subtitle={content?.subheadline || content?.description || 'כאן עכשיו'}
         />
       );
     }
@@ -572,9 +571,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     if (selectedGlassDesign === 10) {
       return (
         <AnimatedHero 
-          badge={content?.badge}
-          title1={content?.headline || formData?.businessName || 'זכוכית'}
-          title2="נוזלית"
+          title={content?.headline || formData?.businessName || 'זכוכית'}
+          subtitle="נוזלית"
         />
       );
     }
