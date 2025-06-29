@@ -31,21 +31,49 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
   const [localContent, setLocalContent] = useState(content || {});
 
   const handleSave = () => {
+    // שמירת התוכן המקומי לתוכן הגלובלי
     onContentChange(localContent);
+    console.log('Content saved:', localContent);
   };
 
   const handleTextChange = (field: string, value: string) => {
-    setLocalContent({
+    const newContent = {
       ...localContent,
       [field]: value
-    });
+    };
+    setLocalContent(newContent);
+    // עדכון מיידי
+    onContentChange(newContent);
   };
 
   const handleStyleChange = (field: string, value: string) => {
-    setLocalContent({
+    const newContent = {
       ...localContent,
       [`${field}Style`]: value
-    });
+    };
+    setLocalContent(newContent);
+    // עדכון מיידי
+    onContentChange(newContent);
+  };
+
+  const handleBackgroundChange = (value: string) => {
+    const newContent = {
+      ...localContent,
+      backgroundStyle: value
+    };
+    setLocalContent(newContent);
+    // עדכון מיידי
+    onContentChange(newContent);
+  };
+
+  const handleAccentColorChange = (value: string) => {
+    const newContent = {
+      ...localContent,
+      accentColor: value
+    };
+    setLocalContent(newContent);
+    // עדכון מיידי
+    onContentChange(newContent);
   };
 
   const handleButtonChange = (index: number, field: string, value: string) => {
@@ -53,10 +81,13 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     if (buttons[index]) {
       buttons[index] = { ...buttons[index], [field]: value };
     }
-    setLocalContent({
+    const newContent = {
       ...localContent,
       buttons
-    });
+    };
+    setLocalContent(newContent);
+    // עדכון מיידי
+    onContentChange(newContent);
   };
 
   const addButton = () => {
@@ -67,19 +98,23 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
       style: "black-on-white",
       visible: true
     });
-    setLocalContent({
+    const newContent = {
       ...localContent,
       buttons
-    });
+    };
+    setLocalContent(newContent);
+    onContentChange(newContent);
   };
 
   const removeButton = (index: number) => {
     const buttons = [...(localContent.buttons || [])];
     buttons.splice(index, 1);
-    setLocalContent({
+    const newContent = {
       ...localContent,
       buttons
-    });
+    };
+    setLocalContent(newContent);
+    onContentChange(newContent);
   };
 
   const toggleButtonVisibility = (index: number) => {
@@ -87,10 +122,12 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     if (buttons[index]) {
       buttons[index].visible = !buttons[index].visible;
     }
-    setLocalContent({
+    const newContent = {
       ...localContent,
       buttons
-    });
+    };
+    setLocalContent(newContent);
+    onContentChange(newContent);
   };
 
   // Enhanced text styling options for all elements
@@ -275,7 +312,11 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
             <Label className="text-white text-xs mb-2 block">צבע טקסט התג</Label>
             <TextStyleSelector 
               value={localContent.badgeTextStyle} 
-              onChange={(value) => setLocalContent({...localContent, badgeTextStyle: value})} 
+              onChange={(value) => {
+                const newContent = {...localContent, badgeTextStyle: value};
+                setLocalContent(newContent);
+                onContentChange(newContent);
+              }} 
               label=""
             />
           </div>
@@ -475,7 +516,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
         </CardContent>
       </Card>
 
-      {/* Background & Theme Colors - New */}
+      {/* Background & Theme Colors - Enhanced */}
       <Card className="bg-gray-800 border-gray-700">
         <CardHeader className="pb-2">
           <CardTitle className="text-white text-sm flex items-center gap-2">
@@ -488,7 +529,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
             <Label className="text-white text-xs mb-2 block">צבע רקע ראשי</Label>
             <select
               value={localContent.backgroundStyle || 'default'}
-              onChange={(e) => setLocalContent({...localContent, backgroundStyle: e.target.value})}
+              onChange={(e) => handleBackgroundChange(e.target.value)}
               className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded text-xs"
             >
               <option value="default">ברירת מחדל</option>
@@ -508,7 +549,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
             <Label className="text-white text-xs mb-2 block">צבע אקסנט</Label>
             <select
               value={localContent.accentColor || 'blue'}
-              onChange={(e) => setLocalContent({...localContent, accentColor: e.target.value})}
+              onChange={(e) => handleAccentColorChange(e.target.value)}
               className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded text-xs"
             >
               <option value="blue">כחול</option>
@@ -559,10 +600,12 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
                       onClick={() => {
                         const elements = [...(localContent.elements || [])];
                         elements.splice(index, 1);
-                        setLocalContent({
+                        const newContent = {
                           ...localContent,
                           elements
-                        });
+                        };
+                        setLocalContent(newContent);
+                        onContentChange(newContent);
                       }}
                       className="h-6 w-6 p-0 text-red-400 hover:text-red-300"
                     >
