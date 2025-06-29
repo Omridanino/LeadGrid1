@@ -19,6 +19,11 @@ import { HeroSectionClean } from "@/components/ui/hero-section-clean";
 import { HeroSectionModern } from "@/components/ui/hero-section-modern";
 import { HeroSectionLamp } from "@/components/ui/hero-section-lamp";
 import { HeroSectionRetro } from "@/components/ui/hero-section-retro";
+import { HeroFluidBlobs } from "@/components/ui/hero-fluid-blobs";
+import { HeroIsometricIllustration } from "@/components/ui/hero-isometric-illustration";
+import { HeroGeometricShapes } from "@/components/ui/hero-geometric-shapes";
+import { HeroNeumorphism } from "@/components/ui/hero-neumorphism";
+import { HeroMinimalTech } from "@/components/ui/hero-minimal-tech";
 import { ArrowLeft, Play, Shield, Zap, Award, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { HeroFuturistic } from "@/components/ui/hero-futuristic";
@@ -431,13 +436,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
   }
 
   
-  // 3D Tech Design Style - עם סגנונות מותאמים אישית
+  // 3D Tech Design Style - עם סגנונות מותאמים אישית + הסגנונות החדשים
   if (designStyle === '3d-tech') {
     const [selectedDesign, setSelectedDesign] = useState(0);
 
     useEffect(() => {
-      // Randomly select one of the 9 3D designs
-      setSelectedDesign(Math.floor(Math.random() * 9));
+      // Randomly select one of the 14 available 3D designs (9 existing + 5 new)
+      const totalDesigns = 14;
+      setSelectedDesign(Math.floor(Math.random() * totalDesigns));
     }, []);
 
     // Design 0: Spline 3D Scene with custom styles - Split Layout
@@ -987,6 +993,61 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             }
           `}</style>
         </div>
+      );
+    }
+
+    // New Design 9: Fluid Blobs
+    if (selectedDesign === 9) {
+      return (
+        <HeroFluidBlobs
+          formData={formData}
+          currentColors={currentColors}
+          content={content}
+        />
+      );
+    }
+
+    // New Design 10: Isometric Illustration
+    if (selectedDesign === 10) {
+      return (
+        <HeroIsometricIllustration
+          formData={formData}
+          currentColors={currentColors}
+          content={content}
+        />
+      );
+    }
+
+    // New Design 11: Geometric Shapes
+    if (selectedDesign === 11) {
+      return (
+        <HeroGeometricShapes
+          formData={formData}
+          currentColors={currentColors}
+          content={content}
+        />
+      );
+    }
+
+    // New Design 12: Neumorphism
+    if (selectedDesign === 12) {
+      return (
+        <HeroNeumorphism
+          formData={formData}
+          currentColors={currentColors}
+          content={content}
+        />
+      );
+    }
+
+    // New Design 13: Minimal Tech
+    if (selectedDesign === 13) {
+      return (
+        <HeroMinimalTech
+          formData={formData}
+          currentColors={currentColors}
+          content={content}
+        />
       );
     }
   }
