@@ -9,9 +9,10 @@ import EditPopup from "./EditPopup";
 interface HeroEditorProps {
   content: any;
   onContentChange: (newContent: any) => void;
+  formData?: any;
 }
 
-const HeroEditor = ({ content, onContentChange }: HeroEditorProps) => {
+const HeroEditor = ({ content, onContentChange, formData }: HeroEditorProps) => {
   const [localContent, setLocalContent] = useState(content);
 
   const updateLocalContent = (field: string, value: string) => {
