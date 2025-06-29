@@ -356,7 +356,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     if (selectedBasicDesign === 'hero-section-elegant') {
       return (
         <section className="relative overflow-hidden min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=%229C92AC&quot; fill-opacity=&quot;0.1&quot;%3E%3Ccircle cx=&quot;30&quot; cy=&quot;30&quot; r=&quot;1&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20" />
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=%239C92AC&quot; fill-opacity=&quot;0.1&quot;%3E%3Ccircle cx=&quot;30&quot; cy=&quot;30&quot; r=&quot;1&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20" />
           
           <div className="container mx-auto px-4 relative z-10 min-h-screen flex items-center justify-center">
             <div className="text-center max-w-4xl mx-auto">
@@ -455,55 +455,68 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       setSelectedGradientDesign(Math.floor(Math.random() * 15));
     }, [formData?.businessName]);
 
-    const customContentProps = getCustomContentProps();
-
-    // Gradient designs 0-2: Use existing gradient components
+    // Fix the props for GradientHero and AnimatedHero components
     if (selectedGradientDesign === 0) {
-      return <GradientHero formData={formData} currentColors={currentColors} content={customContentProps} />;
+      return (
+        <GradientHero 
+          title={content?.headline || formData?.businessName || 'העתיד כאן'}
+          subtitle={content?.subheadline || content?.description || 'פתרונות מתקדמים'}
+          primaryCta={{
+            text: content?.cta || 'התחילו היום',
+            onClick: () => {}
+          }}
+        />
+      );
     }
     if (selectedGradientDesign === 1) {
-      return <AnimatedHero formData={formData} currentColors={currentColors} content={customContentProps} />;
+      return (
+        <AnimatedHero 
+          badge={content?.badge}
+          title1={content?.headline || formData?.businessName || 'העתיד'}
+          title2="כאן עכשיו"
+        />
+      );
     }
     if (selectedGradientDesign === 2) {
-      return <HeroFuturistic formData={formData} currentColors={currentColors} content={customContentProps} />;
+      return <HeroFuturistic formData={formData} currentColors={currentColors} content={getCustomContentProps()} />;
     }
 
     // Gradient designs 3-14: New 3D designs
     if (selectedGradientDesign === 3) {
-      return <HeroNeonCyber formData={formData} currentColors={currentColors} content={customContentProps} />;
+      return <HeroNeonCyber formData={formData} currentColors={currentColors} content={getCustomContentProps()} />;
     }
     if (selectedGradientDesign === 4) {
-      return <HeroFloatingCubes formData={formData} currentColors={currentColors} content={customContentProps} />;
+      return <HeroFloatingCubes formData={formData} currentColors={currentColors} content={getCustomContentProps()} />;
     }
     if (selectedGradientDesign === 5) {
-      return <HeroHolographic formData={formData} currentColors={currentColors} content={customContentProps} />;
+      return <HeroHolographic formData={formData} currentColors={currentColors} content={getCustomContentProps()} />;
     }
     if (selectedGradientDesign === 6) {
-      return <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />;
+      return <HeroMorphingShapes formData={formData} currentColors={currentColors} content={getCustomContentProps()} />;
     }
     if (selectedGradientDesign === 7) {
-      return <HeroLiquidMetal formData={formData} currentColors={currentColors} content={customContentProps} />;
+      return <HeroLiquidMetal formData={formData} currentColors={currentColors} content={getCustomContentProps()} />;
     }
     if (selectedGradientDesign === 8) {
-      return <HeroGlassRefraction formData={formData} currentColors={currentColors} content={customContentProps} />;
+      return <HeroGlassRefraction formData={formData} currentColors={currentColors} content={getCustomContentProps()} />;
     }
     if (selectedGradientDesign === 9) {
-      return <HeroParticleStorm formData={formData} currentColors={currentColors} content={customContentProps} />;
+      return <HeroParticleStorm formData={formData} currentColors={currentColors} content={getCustomContentProps()} />;
     }
     if (selectedGradientDesign === 10) {
-      return <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />;
+      return <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={getCustomContentProps()} />;
     }
     if (selectedGradientDesign === 11) {
-      return <HeroDigitalWaves formData={formData} currentColors={currentColors} content={customContentProps} />;
+      return <HeroDigitalWaves formData={formData} currentColors={currentColors} content={getCustomContentProps()} />;
     }
     if (selectedGradientDesign === 12) {
-      return <HeroNeonGridPortal formData={formData} currentColors={currentColors} content={customContentProps} />;
+      return <HeroNeonGridPortal formData={formData} currentColors={currentColors} content={getCustomContentProps()} />;
     }
     if (selectedGradientDesign === 13) {
-      return <HeroQuantumBubbles formData={formData} currentColors={currentColors} content={customContentProps} />;
+      return <HeroQuantumBubbles formData={formData} currentColors={currentColors} content={getCustomContentProps()} />;
     }
     if (selectedGradientDesign === 14) {
-      return <HeroCosmicGeometry formData={formData} currentColors={currentColors} content={customContentProps} />;
+      return <HeroCosmicGeometry formData={formData} currentColors={currentColors} content={getCustomContentProps()} />;
     }
   }
 
@@ -545,10 +558,25 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
     if (selectedGlassDesign === 9) {
-      return <GradientHero formData={formData} currentColors={currentColors} content={customContentProps} />;
+      return (
+        <GradientHero 
+          title={content?.headline || formData?.businessName || 'עולם זכוכית'}
+          subtitle={content?.subheadline || content?.description || 'שקיפות וצלילות'}
+          primaryCta={{
+            text: content?.cta || 'התחילו היום',
+            onClick: () => {}
+          }}
+        />
+      );
     }
     if (selectedGlassDesign === 10) {
-      return <AnimatedHero formData={formData} currentColors={currentColors} content={customContentProps} />;
+      return (
+        <AnimatedHero 
+          badge={content?.badge}
+          title1={content?.headline || formData?.businessName || 'זכוכית'}
+          title2="נוזלית"
+        />
+      );
     }
   }
 
