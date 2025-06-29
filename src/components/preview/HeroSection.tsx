@@ -828,16 +828,74 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <div className="relative w-screen h-screen overflow-hidden bg-black">
           <div className="flex h-screen">
-            {/* Left side - 3D Element - with new image */}
+            {/* Left side - Enhanced 3D Element with floating animation */}
             <div className="flex-1 relative">
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="w-[400px] h-[400px] relative">
-                  <img 
-                    src="/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png" 
-                    alt="3D Element" 
-                    className="w-full h-full object-contain opacity-90"
+              <div className="w-full h-full flex items-center justify-center relative">
+                {/* Enhanced 3D floating element */}
+                <div className="relative">
+                  {/* Main floating image */}
+                  <div 
+                    className="w-[1200px] h-[1200px] relative"
+                    style={{
+                      animation: 'float 6s ease-in-out infinite, rotate3d 20s linear infinite',
+                    }}
+                  >
+                    <img 
+                      src="/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png" 
+                      alt="3D Floating Element" 
+                      className="w-full h-full object-contain opacity-95"
+                      style={{
+                        filter: 'drop-shadow(0 0 50px rgba(255, 255, 255, 0.3)) drop-shadow(0 0 100px rgba(107, 115, 255, 0.2))',
+                        transform: 'perspective(1000px) rotateX(10deg) rotateY(15deg)',
+                      }}
+                    />
+                  </div>
+
+                  {/* Floating particles around the image */}
+                  {[...Array(12)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-3 h-3 bg-white rounded-full opacity-60"
+                      style={{
+                        left: `${20 + (i % 4) * 25}%`,
+                        top: `${15 + Math.floor(i / 4) * 25}%`,
+                        animation: `particleFloat${i % 3} ${8 + i * 0.5}s ease-in-out infinite`,
+                        animationDelay: `${i * 0.3}s`,
+                        boxShadow: '0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(107, 115, 255, 0.5)',
+                      }}
+                    />
+                  ))}
+
+                  {/* Orbital rings around the main element */}
+                  <div 
+                    className="absolute inset-0 border-2 border-white/20 rounded-full"
+                    style={{
+                      width: '140%',
+                      height: '140%',
+                      left: '-20%',
+                      top: '-20%',
+                      animation: 'orbitSlow 30s linear infinite',
+                    }}
+                  />
+                  <div 
+                    className="absolute inset-0 border border-blue-400/30 rounded-full"
+                    style={{
+                      width: '160%',
+                      height: '160%',
+                      left: '-30%',
+                      top: '-30%',
+                      animation: 'orbitMedium 20s linear infinite reverse',
+                    }}
                   />
                 </div>
+
+                {/* Background glow effect */}
+                <div 
+                  className="absolute inset-0 bg-gradient-radial from-blue-900/30 via-purple-900/20 to-transparent"
+                  style={{
+                    animation: 'pulse 4s ease-in-out infinite',
+                  }}
+                />
               </div>
             </div>
 
@@ -874,6 +932,53 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               </div>
             </div>
           </div>
+
+          {/* Custom CSS for animations */}
+          <style>{`
+            @keyframes float {
+              0%, 100% { transform: translateY(0px) scale(1); }
+              25% { transform: translateY(-20px) scale(1.02); }
+              50% { transform: translateY(-30px) scale(1.05); }
+              75% { transform: translateY(-15px) scale(1.02); }
+            }
+            
+            @keyframes rotate3d {
+              0% { transform: perspective(1000px) rotateX(10deg) rotateY(15deg) rotateZ(0deg); }
+              25% { transform: perspective(1000px) rotateX(15deg) rotateY(25deg) rotateZ(5deg); }
+              50% { transform: perspective(1000px) rotateX(5deg) rotateY(35deg) rotateZ(10deg); }
+              75% { transform: perspective(1000px) rotateX(20deg) rotateY(45deg) rotateZ(5deg); }
+              100% { transform: perspective(1000px) rotateX(10deg) rotateY(55deg) rotateZ(0deg); }
+            }
+            
+            @keyframes particleFloat0 {
+              0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+              50% { transform: translate(20px, -30px) scale(1.2); opacity: 1; }
+            }
+            
+            @keyframes particleFloat1 {
+              0%, 100% { transform: translate(0, 0) scale(0.8); opacity: 0.4; }
+              50% { transform: translate(-25px, -20px) scale(1.1); opacity: 0.9; }
+            }
+            
+            @keyframes particleFloat2 {
+              0%, 100% { transform: translate(0, 0) scale(1.1); opacity: 0.5; }
+              50% { transform: translate(15px, -35px) scale(0.9); opacity: 0.8; }
+            }
+            
+            @keyframes orbitSlow {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+            
+            @keyframes orbitMedium {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+            
+            .bg-gradient-radial {
+              background: radial-gradient(circle, var(--tw-gradient-stops));
+            }
+          `}</style>
         </div>
       );
     }
