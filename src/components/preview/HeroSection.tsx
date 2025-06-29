@@ -831,11 +831,11 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             {/* Left side - 3D Element - with new image */}
             <div className="flex-1 relative">
               <div className="w-full h-full flex items-center justify-center">
-                <div className="w-[600px] h-[600px] relative">
+                <div className="w-[400px] h-[400px] relative">
                   <img 
-                    src="/lovable-uploads/ec6b8374-3932-48ac-ac2d-703d465caf06.png" 
+                    src="/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png" 
                     alt="3D Element" 
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain opacity-90"
                   />
                 </div>
               </div>
