@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/types/colors";
@@ -102,10 +103,12 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     cta: content?.cta
   });
 
-  // Helper function to render advanced buttons
+  // Helper function to render advanced buttons with proper functionality
   const renderAdvancedButton = (button: any, index: number) => {
     const buttonStyle = button?.style || 'default';
     const buttonText = button?.text || content?.cta || 'לחץ כאן';
+    
+    console.log('Rendering button with style:', buttonStyle, 'text:', buttonText);
     
     switch (buttonStyle) {
       case 'liquid-glass':
@@ -118,42 +121,42 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       case 'metal-gold':
       case 'מתכת זהב':
         return (
-          <MetalButton key={index} variant="gold">
+          <MetalButton key={index} variant="gold" className="px-8 py-4">
             {buttonText}
           </MetalButton>
         );
       case 'metal-silver':
       case 'מתכת כסף':
         return (
-          <MetalButton key={index} variant="default">
+          <MetalButton key={index} variant="default" className="px-8 py-4">
             {buttonText}
           </MetalButton>
         );
       case 'metal-bronze':
       case 'מתכת ברונזה':
         return (
-          <MetalButton key={index} variant="bronze">
+          <MetalButton key={index} variant="bronze" className="px-8 py-4">
             {buttonText}
           </MetalButton>
         );
       case 'metal-primary':
       case 'מתכת ראשי':
         return (
-          <MetalButton key={index} variant="primary">
+          <MetalButton key={index} variant="primary" className="px-8 py-4">
             {buttonText}
           </MetalButton>
         );
       case 'metal-success':
       case 'מתכת ירוק':
         return (
-          <MetalButton key={index} variant="success">
+          <MetalButton key={index} variant="success" className="px-8 py-4">
             {buttonText}
           </MetalButton>
         );
       case 'metal-error':
       case 'מתכת אדום':
         return (
-          <MetalButton key={index} variant="error">
+          <MetalButton key={index} variant="error" className="px-8 py-4">
             {buttonText}
           </MetalButton>
         );
@@ -161,7 +164,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
         return (
           <button 
             key={index}
-            className="px-8 py-4 rounded-xl font-semibold text-lg transition"
+            className="px-8 py-4 rounded-xl font-semibold text-lg transition hover:scale-105"
             style={getButtonStyle(button.color)}
           >
             {buttonText}
@@ -824,16 +827,19 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
 
     if (selectedDesign === 8) {
       return (
-        <div className="relative w-screen h-screen overflow-hidden">
+        <div className="relative w-screen h-screen overflow-hidden bg-black">
           <div className="flex h-screen">
-            {/* Left side - 3D Element */}
+            {/* Left side - 3D Element without background text */}
             <div className="flex-1 relative">
-              <HeroFuturistic
-                title=""
-                subtitle=""
-                buttonText=""
-                onButtonClick={() => {}}
-              />
+              <div className="w-full h-full flex items-center justify-center">
+                <div className="w-96 h-96 relative">
+                  <img 
+                    src="/lovable-uploads/01342860-952c-4dea-9951-95169ffa74d3.png" 
+                    alt="3D Element" 
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Right side - Content */}
