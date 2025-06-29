@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -92,47 +93,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     });
   };
 
-  const addTextElement = () => {
-    const elements = [...(localContent.elements || [])];
-    elements.push({
-      type: "text",
-      content: "טקסט חדש",
-      id: Date.now().toString()
-    });
-    setLocalContent({
-      ...localContent,
-      elements
-    });
-  };
-
-  const addImageElement = () => {
-    const elements = [...(localContent.elements || [])];
-    elements.push({
-      type: "image",
-      src: "",
-      alt: "תמונה חדשה",
-      id: Date.now().toString()
-    });
-    setLocalContent({
-      ...localContent,
-      elements
-    });
-  };
-
-  const addTagElement = () => {
-    const elements = [...(localContent.elements || [])];
-    elements.push({
-      type: "tag",
-      content: "תג חדש",
-      id: Date.now().toString()
-    });
-    setLocalContent({
-      ...localContent,
-      elements
-    });
-  };
-
-  // Fixed function for text styling - now returns text color classes only
+  // Enhanced text styling options for all elements
   const getTextStyleClasses = (style: string) => {
     switch (style) {
       case "black-text":
@@ -141,18 +102,40 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
         return "text-white";
       case "gold-text":
         return "text-yellow-400";
+      case "silver-text":
+        return "text-gray-300";
+      case "blue-text":
+        return "text-blue-400";
+      case "green-text":
+        return "text-green-400";
+      case "red-text":
+        return "text-red-400";
+      case "purple-text":
+        return "text-purple-400";
+      case "pink-text":
+        return "text-pink-400";
+      case "cyan-text":
+        return "text-cyan-400";
       case "gradient-gold-text":
         return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
       case "gradient-purple-text":
         return "bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent";
       case "gradient-blue-text":
         return "bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent";
+      case "gradient-green-text":
+        return "bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent";
+      case "gradient-red-text":
+        return "bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent";
+      case "gradient-cyan-text":
+        return "bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent";
+      case "gradient-rainbow-text":
+        return "bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 bg-clip-text text-transparent";
       default:
         return "text-white";
     }
   };
 
-  // Keep button styles as they were (for buttons we want backgrounds)
+  // Enhanced button and tag styling options
   const getButtonStyleClasses = (style: string) => {
     switch (style) {
       case "black-on-white":
@@ -165,6 +148,26 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
         return "bg-gradient-to-r from-yellow-400 to-white text-black border-0";
       case "gradient-purple-tech":
         return "bg-gradient-to-r from-purple-600 to-white text-white border-0";
+      case "gradient-blue-ocean":
+        return "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0";
+      case "gradient-green-nature":
+        return "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0";
+      case "gradient-red-fire":
+        return "bg-gradient-to-r from-red-500 to-orange-500 text-white border-0";
+      case "gradient-pink-sunset":
+        return "bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0";
+      case "neon-blue":
+        return "bg-blue-600 text-white border-2 border-blue-400 shadow-lg shadow-blue-400/50";
+      case "neon-green":
+        return "bg-green-600 text-white border-2 border-green-400 shadow-lg shadow-green-400/50";
+      case "neon-purple":
+        return "bg-purple-600 text-white border-2 border-purple-400 shadow-lg shadow-purple-400/50";
+      case "neon-pink":
+        return "bg-pink-600 text-white border-2 border-pink-400 shadow-lg shadow-pink-400/50";
+      case "glass-dark":
+        return "bg-black/20 text-white border border-white/30 backdrop-blur-sm";
+      case "glass-light":
+        return "bg-white/20 text-black border border-black/30 backdrop-blur-sm";
       default:
         return "bg-blue-600 text-white";
     }
@@ -181,9 +184,20 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
         <option value="white-text">לבן</option>
         <option value="black-text">שחור</option>
         <option value="gold-text">זהב</option>
+        <option value="silver-text">כסף</option>
+        <option value="blue-text">כחול</option>
+        <option value="green-text">ירוק</option>
+        <option value="red-text">אדום</option>
+        <option value="purple-text">סגול</option>
+        <option value="pink-text">ורוד</option>
+        <option value="cyan-text">ציאן</option>
         <option value="gradient-gold-text">גרדיאנט זהב</option>
         <option value="gradient-purple-text">גרדיאנט סגול</option>
         <option value="gradient-blue-text">גרדיאנט כחול</option>
+        <option value="gradient-green-text">גרדיאנט ירוק</option>
+        <option value="gradient-red-text">גרדיאנט אדום</option>
+        <option value="gradient-cyan-text">גרדיאנט ציאן</option>
+        <option value="gradient-rainbow-text">גרדיאנט קשת</option>
       </select>
       <div className="mt-1 bg-gray-800 p-2 rounded">
         <div className={`text-sm ${getTextStyleClasses(value || 'white-text')}`}>
@@ -206,6 +220,16 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
         <option value="gradient-gold-black">גרדיאנט זהב-שחור</option>
         <option value="gradient-gold-white">גרדיאנט זהב-לבן</option>
         <option value="gradient-purple-tech">גרדיאנט סגול טכנולוגי</option>
+        <option value="gradient-blue-ocean">גרדיאנט כחול אוקיינוס</option>
+        <option value="gradient-green-nature">גרדיאנט ירוק טבע</option>
+        <option value="gradient-red-fire">גרדיאנט אדום אש</option>
+        <option value="gradient-pink-sunset">גרדיאנט ורוד שקיעה</option>
+        <option value="neon-blue">נאון כחול</option>
+        <option value="neon-green">נאון ירוק</option>
+        <option value="neon-purple">נאון סגול</option>
+        <option value="neon-pink">נאון ורוד</option>
+        <option value="glass-dark">זכוכית כהה</option>
+        <option value="glass-light">זכוכית בהירה</option>
       </select>
       <div className="mt-1">
         <div className={`px-3 py-1 rounded text-xs ${getButtonStyleClasses(value || 'black-on-white')}`}>
@@ -224,7 +248,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
         </Button>
       </div>
 
-      {/* Badge/Tag Editor */}
+      {/* Badge/Tag Editor - Enhanced */}
       <Card className="bg-gray-800 border-gray-700">
         <CardHeader className="pb-2">
           <CardTitle className="text-white text-sm flex items-center gap-2">
@@ -232,22 +256,33 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
             תג עליון
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-2">
-          <Input
-            value={localContent.badge || ''}
-            onChange={(e) => handleTextChange('badge', e.target.value)}
-            placeholder="טקסט התג העליון"
-            className="bg-gray-700 border-gray-600 text-white text-right"
-          />
+        <CardContent className="space-y-3">
+          <div>
+            <Label className="text-white text-xs mb-2 block">טקסט התג</Label>
+            <Input
+              value={localContent.badge || ''}
+              onChange={(e) => handleTextChange('badge', e.target.value)}
+              placeholder="טקסט התג העליון"
+              className="bg-gray-700 border-gray-600 text-white text-right"
+            />
+          </div>
           <ButtonStyleSelector 
             value={localContent.badgeStyle} 
             onChange={(value) => handleStyleChange('badge', value)} 
             label="סגנון תג"
           />
+          <div>
+            <Label className="text-white text-xs mb-2 block">צבע טקסט התג</Label>
+            <TextStyleSelector 
+              value={localContent.badgeTextStyle} 
+              onChange={(value) => setLocalContent({...localContent, badgeTextStyle: value})} 
+              label=""
+            />
+          </div>
         </CardContent>
       </Card>
 
-      {/* Main Title Editor */}
+      {/* Main Title Editor - Enhanced */}
       <Card className="bg-gray-800 border-gray-700">
         <CardHeader className="pb-2">
           <CardTitle className="text-white text-sm flex items-center gap-2">
@@ -255,14 +290,17 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
             כותרת ראשית
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-2">
-          <Textarea
-            value={localContent.headline || formData?.businessName || ''}
-            onChange={(e) => handleTextChange('headline', e.target.value)}
-            placeholder="הכותרת הראשית של הדף"
-            className="bg-gray-700 border-gray-600 text-white text-right"
-            rows={2}
-          />
+        <CardContent className="space-y-3">
+          <div>
+            <Label className="text-white text-xs mb-2 block">טקסט הכותרת</Label>
+            <Textarea
+              value={localContent.headline || formData?.businessName || ''}
+              onChange={(e) => handleTextChange('headline', e.target.value)}
+              placeholder="הכותרת הראשית של הדף"
+              className="bg-gray-700 border-gray-600 text-white text-right"
+              rows={2}
+            />
+          </div>
           <TextStyleSelector 
             value={localContent.headlineStyle} 
             onChange={(value) => handleStyleChange('headline', value)} 
@@ -271,7 +309,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
         </CardContent>
       </Card>
 
-      {/* Subtitle Editor */}
+      {/* Subtitle Editor - Enhanced */}
       <Card className="bg-gray-800 border-gray-700">
         <CardHeader className="pb-2">
           <CardTitle className="text-white text-sm flex items-center gap-2">
@@ -279,14 +317,17 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
             כותרת משנה
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-2">
-          <Textarea
-            value={localContent.subheadline || ''}
-            onChange={(e) => handleTextChange('subheadline', e.target.value)}
-            placeholder="כותרת המשנה או התיאור"
-            className="bg-gray-700 border-gray-600 text-white text-right"
-            rows={3}
-          />
+        <CardContent className="space-y-3">
+          <div>
+            <Label className="text-white text-xs mb-2 block">טקסט כותרת המשנה</Label>
+            <Textarea
+              value={localContent.subheadline || ''}
+              onChange={(e) => handleTextChange('subheadline', e.target.value)}
+              placeholder="כותרת המשנה או התיאור"
+              className="bg-gray-700 border-gray-600 text-white text-right"
+              rows={3}
+            />
+          </div>
           <TextStyleSelector 
             value={localContent.subheadlineStyle} 
             onChange={(value) => handleStyleChange('subheadline', value)} 
@@ -295,7 +336,34 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
         </CardContent>
       </Card>
 
-      {/* Buttons Editor */}
+      {/* Description Editor - New */}
+      <Card className="bg-gray-800 border-gray-700">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-white text-sm flex items-center gap-2">
+            <Type className="w-4 h-4 text-purple-400" />
+            תיאור נוסף
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div>
+            <Label className="text-white text-xs mb-2 block">טקסט התיאור</Label>
+            <Textarea
+              value={localContent.description || ''}
+              onChange={(e) => handleTextChange('description', e.target.value)}
+              placeholder="תיאור נוסף או מידע משלים"
+              className="bg-gray-700 border-gray-600 text-white text-right"
+              rows={3}
+            />
+          </div>
+          <TextStyleSelector 
+            value={localContent.descriptionStyle} 
+            onChange={(value) => handleStyleChange('description', value)} 
+            label="סגנון תיאור"
+          />
+        </CardContent>
+      </Card>
+
+      {/* Buttons Editor - Enhanced */}
       <Card className="bg-gray-800 border-gray-700">
         <CardHeader className="pb-2">
           <CardTitle className="text-white text-sm flex items-center gap-2">
@@ -308,8 +376,8 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
         </CardHeader>
         <CardContent className="space-y-3">
           {(localContent.buttons || []).map((button: any, index: number) => (
-            <div key={index} className="p-3 bg-gray-700 rounded-lg border border-gray-600">
-              <div className="flex items-center justify-between mb-2">
+            <div key={index} className="p-4 bg-gray-700 rounded-lg border border-gray-600">
+              <div className="flex items-center justify-between mb-3">
                 <span className="text-white text-sm font-medium">כפתור {index + 1}</span>
                 <div className="flex gap-1">
                   <Button
@@ -331,30 +399,68 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
                 </div>
               </div>
               
-              <Input
-                value={button.text || ''}
-                onChange={(e) => handleButtonChange(index, 'text', e.target.value)}
-                placeholder="טקסט הכפתור"
-                className="bg-gray-600 border-gray-500 text-white text-right mb-2"
-              />
-              
-              <select
-                value={button.style || 'black-on-white'}
-                onChange={(e) => handleButtonChange(index, 'style', e.target.value)}
-                className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded mb-2"
-              >
-                <option value="black-on-white">שחור על לבן</option>
-                <option value="white-on-black">לבן על שחור</option>
-                <option value="gradient-gold-black">גרדיאנט זהב-שחור</option>
-                <option value="gradient-gold-white">גרדיאנט זהב-לבן</option>
-                <option value="gradient-purple-tech">גרדיאנט סגול טכנולוגי</option>
-              </select>
+              <div className="space-y-3">
+                <div>
+                  <Label className="text-white text-xs mb-1 block">טקסט הכפתור</Label>
+                  <Input
+                    value={button.text || ''}
+                    onChange={(e) => handleButtonChange(index, 'text', e.target.value)}
+                    placeholder="טקסט הכפתור"
+                    className="bg-gray-600 border-gray-500 text-white text-right"
+                  />
+                </div>
+                
+                <div>
+                  <Label className="text-white text-xs mb-1 block">סגנון הכפתור</Label>
+                  <select
+                    value={button.style || 'black-on-white'}
+                    onChange={(e) => handleButtonChange(index, 'style', e.target.value)}
+                    className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded text-xs"
+                  >
+                    <option value="black-on-white">שחור על לבן</option>
+                    <option value="white-on-black">לבן על שחור</option>
+                    <option value="gradient-gold-black">גרדיאנט זהב-שחור</option>
+                    <option value="gradient-gold-white">גרדיאנט זהב-לבן</option>
+                    <option value="gradient-purple-tech">גרדיאנט סגול טכנולוגי</option>
+                    <option value="gradient-blue-ocean">גרדיאנט כחול אוקיינוס</option>
+                    <option value="gradient-green-nature">גרדיאנט ירוק טבע</option>
+                    <option value="gradient-red-fire">גרדיאנט אדום אש</option>
+                    <option value="gradient-pink-sunset">גרדיאנט ורוד שקיעה</option>
+                    <option value="neon-blue">נאון כחול</option>
+                    <option value="neon-green">נאון ירוק</option>
+                    <option value="neon-purple">נאון סגול</option>
+                    <option value="neon-pink">נאון ורוד</option>
+                    <option value="glass-dark">זכוכית כהה</option>
+                    <option value="glass-light">זכוכית בהירה</option>
+                  </select>
+                </div>
 
-              {/* Button Preview */}
-              <div className="mt-2">
-                <button className={`px-4 py-2 rounded text-sm ${getButtonStyleClasses(button.style || 'black-on-white')}`}>
-                  {button.text || 'תצוגה מקדימה'}
-                </button>
+                <div>
+                  <Label className="text-white text-xs mb-1 block">צבע טקסט הכפתור</Label>
+                  <select
+                    value={button.textStyle || 'default'}
+                    onChange={(e) => handleButtonChange(index, 'textStyle', e.target.value)}
+                    className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded text-xs"
+                  >
+                    <option value="default">ברירת מחדל</option>
+                    <option value="white-text">לבן</option>
+                    <option value="black-text">שחור</option>
+                    <option value="gold-text">זהב</option>
+                    <option value="silver-text">כסף</option>
+                    <option value="blue-text">כחול</option>
+                    <option value="green-text">ירוק</option>
+                    <option value="red-text">אדום</option>
+                    <option value="purple-text">סגול</option>
+                  </select>
+                </div>
+
+                {/* Button Preview */}
+                <div className="mt-3">
+                  <Label className="text-white text-xs mb-1 block">תצוגה מקדימה:</Label>
+                  <button className={`px-4 py-2 rounded text-sm ${getButtonStyleClasses(button.style || 'black-on-white')} ${button.textStyle && button.textStyle !== 'default' ? getTextStyleClasses(button.textStyle) : ''}`}>
+                    {button.text || 'תצוגה מקדימה'}
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -369,6 +475,57 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
         </CardContent>
       </Card>
 
+      {/* Background & Theme Colors - New */}
+      <Card className="bg-gray-800 border-gray-700">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-white text-sm flex items-center gap-2">
+            <Palette className="w-4 h-4 text-cyan-400" />
+            רקע וצבעי נושא
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <div>
+            <Label className="text-white text-xs mb-2 block">צבע רקע ראשי</Label>
+            <select
+              value={localContent.backgroundStyle || 'default'}
+              onChange={(e) => setLocalContent({...localContent, backgroundStyle: e.target.value})}
+              className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded text-xs"
+            >
+              <option value="default">ברירת מחדל</option>
+              <option value="dark">כהה</option>
+              <option value="light">בהיר</option>
+              <option value="gradient-blue">גרדיאנט כחול</option>
+              <option value="gradient-purple">גרדיאנט סגול</option>
+              <option value="gradient-green">גרדיאנט ירוק</option>
+              <option value="gradient-orange">גרדיאנט כתום</option>
+              <option value="gradient-pink">גרדיאנט ורוד</option>
+              <option value="tech-dark">טכנולוגי כהה</option>
+              <option value="minimal-light">מינימלי בהיר</option>
+            </select>
+          </div>
+          
+          <div>
+            <Label className="text-white text-xs mb-2 block">צבע אקסנט</Label>
+            <select
+              value={localContent.accentColor || 'blue'}
+              onChange={(e) => setLocalContent({...localContent, accentColor: e.target.value})}
+              className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded text-xs"
+            >
+              <option value="blue">כחול</option>
+              <option value="purple">סגול</option>
+              <option value="green">ירוק</option>
+              <option value="red">אדום</option>
+              <option value="orange">כתום</option>
+              <option value="pink">ורוד</option>
+              <option value="cyan">ציאן</option>
+              <option value="yellow">צהוב</option>
+              <option value="gold">זהב</option>
+              <option value="silver">כסף</option>
+            </select>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Elements Management */}
       <Separator className="bg-gray-600" />
 
@@ -376,38 +533,12 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
         <CardHeader>
           <CardTitle className="text-white text-sm flex items-center gap-2">
             <Plus className="w-4 h-4 text-cyan-400" />
-            הוספת אלמנטים
+            ניהול אלמנטים נוספים
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-2">
-            <Button 
-              onClick={addImageElement}
-              className="bg-purple-600 hover:bg-purple-700 text-white"
-            >
-              <ImageIcon className="w-4 h-4 ml-1" />
-              הוסף תמונה
-            </Button>
-            <Button 
-              onClick={addTextElement}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              <Type className="w-4 h-4 ml-1" />
-              הוסף טקסט
-            </Button>
-            <Button 
-              className="bg-orange-600 hover:bg-orange-700 text-white"
-            >
-              <Palette className="w-4 h-4 ml-1" />
-              הוסף רקע
-            </Button>
-            <Button 
-              onClick={addTagElement}
-              className="bg-green-600 hover:bg-green-700 text-white"
-            >
-              <Tag className="w-4 h-4 ml-1" />
-              הוסף תג
-            </Button>
+          <div className="text-white text-xs">
+            <p>כאן תוכל לנהל אלמנטים נוספים כמו תמונות, אייקונים ורקעים מותאמים אישית.</p>
           </div>
           
           {/* Show current elements */}
