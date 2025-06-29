@@ -15,7 +15,6 @@ import { HeroGeometric } from "@/components/ui/shape-landing-hero";
 import { InteractiveRobotSpline } from "@/components/ui/interactive-3d-robot";
 import { BackgroundCircles } from "@/components/ui/background-circles";
 import { HorizonHeroSection } from "@/components/ui/horizon-hero-section";
-import { HeroParallax } from "@/components/ui/hero-parallax";
 import { HeroSectionClean } from "@/components/ui/hero-section-clean";
 import { HeroSectionModern } from "@/components/ui/hero-section-modern";
 import { HeroSectionLamp } from "@/components/ui/hero-section-lamp";
@@ -324,7 +323,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                     className="px-8 py-4 rounded-xl font-semibold text-lg"
                     style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
                   >
-                    {content?.cta || 'התחילו היום'}
+                    {content?.cta || 'haledו היום'}
                   </button>
                 )}
               </div>
@@ -392,8 +391,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     const [selectedDesign, setSelectedDesign] = useState(0);
 
     useEffect(() => {
-      // Randomly select one of the 12 3D designs
-      setSelectedDesign(Math.floor(Math.random() * 12));
+      // Randomly select one of the 11 3D designs (removed HeroParallax)
+      setSelectedDesign(Math.floor(Math.random() * 11));
     }, []);
 
     // Design 1: Spline 3D Scene with custom styles
@@ -446,7 +445,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                       className="px-6 py-3 rounded-lg font-semibold transition"
                       style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
                     >
-                      {content?.cta || 'התחילו עכשיו'}
+                      {content?.cta || 'haledו עכשיו'}
                     </button>
                   )}
                 </div>
@@ -824,115 +823,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     }
 
     if (selectedDesign === 8) {
-      const defaultProducts = [
-        {
-          title: "project 1",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 2", 
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 3",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 4",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1542744094-3a31f272c490?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 5",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1553484771-371a605b060b?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 6",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 7",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 8",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 9",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 10",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 11",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1571019613914-85e138f129cc?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 12",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 13",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1542744094-3a31f272c490?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 14",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1553484771-cc0d9b8c2b33?w=600&h=400&fit=crop"
-        },
-        {
-          title: "project 15",
-          link: "#",
-          thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop"
-        }
-      ];
-
-      return (
-        <div className="relative w-screen h-screen overflow-hidden">
-          <HeroParallax
-            products={defaultProducts}
-            title={content?.headline || formData?.businessName || 'the most advanced studio'}
-            subtitle={content?.subheadline || content?.description || 'we create beautiful products with the latest technologies and innovative ideas'}
-          />
-          
-          <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-30 flex gap-4 justify-center">
-            {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-              <button 
-                key={index}
-                className="px-8 py-4 rounded-lg font-bold transition"
-                style={getButtonStyle(button.color)}
-              >
-                {button.text}
-              </button>
-            )) || (
-              <button 
-                className="px-8 py-4 rounded-lg font-bold transition"
-                style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-              >
-                {content?.cta || 'explore the projects'}
-              </button>
-            )}
-          </div>
-        </div>
-      );
-    }
-
-    if (selectedDesign === 9) {
       return (
         <div className="relative w-screen h-screen overflow-hidden">
           <HeroDesignAli
@@ -965,7 +855,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    if (selectedDesign === 10) {
+    if (selectedDesign === 9) {
       return (
         <div className="relative w-screen h-screen overflow-hidden">
           <HeroFuturistic
@@ -990,7 +880,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    if (selectedDesign === 11) {
+    if (selectedDesign === 10) {
       return (
         <div className="relative w-screen h-screen overflow-hidden">
           <ScrollExpandMedia
@@ -1054,14 +944,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             className="text-5xl md:text-7xl font-bold mb-8"
             style={getTextStyle('headline')}
           >
-            {content?.headline || formData?.businessName || 'the business'}
+            {content?.headline || formData?.businessName || 'העסק'}
           </h1>
           
           <p 
             className="text-xl md:text-2xl mb-12"
             style={getTextStyle('subheadline')}
           >
-            {content?.subheadline || content?.description || 'professional solutions'}
+            {content?.subheadline || content?.description || 'פתרונות מקצועיים'}
           </p>
           
           <div className="flex gap-4 justify-center flex-wrap">
@@ -1078,7 +968,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 className="px-8 py-4 rounded-xl font-semibold text-lg"
                 style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
               >
-                {content?.cta || 'let us start'}
+                {content?.cta || 'בואו נתחיל'}
               </button>
             )}
           </div>
