@@ -827,14 +827,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     if (selectedDesign === 8) {
       return (
         <div className="relative w-screen h-screen overflow-hidden bg-black">
-          {/* Background 3D Element - Smaller and positioned as background */}
+          {/* Background 3D Element - Enlarged x1.8 with continuous movement */}
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
             <div className="relative">
-              {/* Main floating image - smaller size */}
+              {/* Main floating image - enlarged by 1.8 with continuous non-repeating movement */}
               <div 
-                className="w-[600px] h-[600px] relative opacity-40"
+                className="w-[1080px] h-[1080px] relative opacity-40"
                 style={{
-                  animation: 'float 6s ease-in-out infinite, rotate3d 20s linear infinite',
+                  animation: 'continuousFloat 20s linear infinite, continuousRotate3d 30s linear infinite',
                 }}
               >
                 <img 
@@ -856,14 +856,13 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   style={{
                     left: `${25 + (i % 3) * 20}%`,
                     top: `${20 + Math.floor(i / 3) * 20}%`,
-                    animation: `particleFloat${i % 3} ${8 + i * 0.5}s ease-in-out infinite`,
-                    animationDelay: `${i * 0.3}s`,
+                    animation: `continuousParticle${i % 3} ${12 + i * 0.8}s linear infinite`,
                     boxShadow: '0 0 8px rgba(255, 255, 255, 0.6), 0 0 16px rgba(107, 115, 255, 0.4)',
                   }}
                 />
               ))}
 
-              {/* Orbital rings - smaller */}
+              {/* Orbital rings - continuous rotation */}
               <div 
                 className="absolute inset-0 border border-white/10 rounded-full"
                 style={{
@@ -871,7 +870,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   height: '120%',
                   left: '-10%',
                   top: '-10%',
-                  animation: 'orbitSlow 30s linear infinite',
+                  animation: 'continuousOrbit 40s linear infinite',
                 }}
               />
               <div 
@@ -881,16 +880,16 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   height: '140%',
                   left: '-20%',
                   top: '-20%',
-                  animation: 'orbitMedium 20s linear infinite reverse',
+                  animation: 'continuousOrbit 25s linear infinite reverse',
                 }}
               />
             </div>
 
-            {/* Background glow effect - reduced */}
+            {/* Background glow effect - continuous pulse */}
             <div 
               className="absolute inset-0 bg-gradient-radial from-blue-900/20 via-purple-900/10 to-transparent"
               style={{
-                animation: 'pulse 4s ease-in-out infinite',
+                animation: 'continuousPulse 6s linear infinite',
               }}
             />
           </div>
@@ -928,46 +927,59 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             </div>
           </div>
 
-          {/* Custom CSS for animations */}
+          {/* Custom CSS for continuous animations */}
           <style>{`
-            @keyframes float {
-              0%, 100% { transform: translateY(0px) scale(1); }
-              25% { transform: translateY(-15px) scale(1.01); }
-              50% { transform: translateY(-25px) scale(1.02); }
-              75% { transform: translateY(-10px) scale(1.01); }
+            @keyframes continuousFloat {
+              0% { transform: translateY(0px) translateX(0px) scale(1); }
+              25% { transform: translateY(-30px) translateX(20px) scale(1.02); }
+              50% { transform: translateY(-15px) translateX(-25px) scale(1.04); }
+              75% { transform: translateY(-40px) translateX(15px) scale(1.01); }
+              100% { transform: translateY(-5px) translateX(-10px) scale(1.03); }
             }
             
-            @keyframes rotate3d {
+            @keyframes continuousRotate3d {
               0% { transform: perspective(1000px) rotateX(10deg) rotateY(15deg) rotateZ(0deg); }
-              25% { transform: perspective(1000px) rotateX(15deg) rotateY(25deg) rotateZ(5deg); }
-              50% { transform: perspective(1000px) rotateX(5deg) rotateY(35deg) rotateZ(10deg); }
-              75% { transform: perspective(1000px) rotateX(20deg) rotateY(45deg) rotateZ(5deg); }
-              100% { transform: perspective(1000px) rotateX(10deg) rotateY(55deg) rotateZ(0deg); }
+              25% { transform: perspective(1000px) rotateX(25deg) rotateY(105deg) rotateZ(15deg); }
+              50% { transform: perspective(1000px) rotateX(5deg) rotateY(195deg) rotateZ(30deg); }
+              75% { transform: perspective(1000px) rotateX(35deg) rotateY(285deg) rotateZ(45deg); }
+              100% { transform: perspective(1000px) rotateX(10deg) rotateY(375deg) rotateZ(60deg); }
             }
             
-            @keyframes particleFloat0 {
-              0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
-              50% { transform: translate(15px, -20px) scale(1.1); opacity: 0.8; }
+            @keyframes continuousParticle0 {
+              0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+              25% { transform: translate(30px, -40px) scale(1.2); opacity: 0.8; }
+              50% { transform: translate(-20px, -60px) scale(0.8); opacity: 0.5; }
+              75% { transform: translate(40px, -20px) scale(1.1); opacity: 0.7; }
+              100% { transform: translate(-10px, -80px) scale(0.9); opacity: 0.3; }
             }
             
-            @keyframes particleFloat1 {
-              0%, 100% { transform: translate(0, 0) scale(0.8); opacity: 0.3; }
-              50% { transform: translate(-20px, -15px) scale(1.0); opacity: 0.7; }
+            @keyframes continuousParticle1 {
+              0% { transform: translate(0, 0) scale(0.8); opacity: 0.3; }
+              25% { transform: translate(-40px, -30px) scale(1.0); opacity: 0.7; }
+              50% { transform: translate(25px, -70px) scale(1.2); opacity: 0.9; }
+              75% { transform: translate(-30px, -50px) scale(0.9); opacity: 0.5; }
+              100% { transform: translate(20px, -90px) scale(1.1); opacity: 0.4; }
             }
             
-            @keyframes particleFloat2 {
-              0%, 100% { transform: translate(0, 0) scale(1.0); opacity: 0.4; }
-              50% { transform: translate(10px, -25px) scale(0.9); opacity: 0.6; }
+            @keyframes continuousParticle2 {
+              0% { transform: translate(0, 0) scale(1.0); opacity: 0.4; }
+              25% { transform: translate(20px, -50px) scale(0.9); opacity: 0.6; }
+              50% { transform: translate(-35px, -35px) scale(1.3); opacity: 0.8; }
+              75% { transform: translate(25px, -75px) scale(0.7); opacity: 0.4; }
+              100% { transform: translate(-15px, -100px) scale(1.0); opacity: 0.6; }
             }
             
-            @keyframes orbitSlow {
+            @keyframes continuousOrbit {
               0% { transform: rotate(0deg); }
               100% { transform: rotate(360deg); }
             }
             
-            @keyframes orbitMedium {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
+            @keyframes continuousPulse {
+              0% { opacity: 0.2; transform: scale(1); }
+              25% { opacity: 0.4; transform: scale(1.1); }
+              50% { opacity: 0.3; transform: scale(0.9); }
+              75% { opacity: 0.5; transform: scale(1.2); }
+              100% { opacity: 0.2; transform: scale(1); }
             }
             
             .bg-gradient-radial {
