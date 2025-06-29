@@ -83,6 +83,7 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
   const text = emotionalContent.text || 'הצטרף אלינו עוד היום והתחל את המסע שלך להצלחה';
   const badge = emotionalContent.badge || 'מוגבל בזמן';
   const backgroundColor = emotionalContent.backgroundColor || '#1e1e2e';
+  const useHeroBackground = emotionalContent.useHeroBackground || false;
   const buttons = emotionalContent.buttons || [{ id: '1', text: 'התחל עכשיו', style: 'primary', visible: true }];
 
   // Helper function to get inline style for text colors with gradient support
@@ -123,8 +124,16 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
     return {};
   };
 
-  // Fix background color handling to support all color types
+  // Fix background color handling to support all color types and hero background
   const getBackgroundStyle = () => {
+    // If using hero background, return hero-like styling
+    if (useHeroBackground) {
+      return { 
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        position: 'relative' as const
+      };
+    }
+    
     if (backgroundColor === 'default') {
       return { backgroundColor: '#1e1e2e' };
     }
@@ -143,7 +152,11 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
       className="py-20 px-8 relative"
       style={getBackgroundStyle()}
     >
-      <div className="container mx-auto max-w-4xl text-center">
+      {useHeroBackground && (
+        <div className="absolute inset-0 bg-black/20"></div>
+      )}
+      
+      <div className="container mx-auto max-w-4xl text-center relative z-10">
         {badge && (
           <div 
             className="inline-block mb-6 px-4 py-2 rounded-full text-sm font-semibold"

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -114,6 +113,7 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
     text: 'הצטרף אלינו עוד היום והתחל את המסע שלך להצלחה',
     badge: 'מוגבל בזמן',
     backgroundColor: '#1e1e2e',
+    useHeroBackground: false,
     buttons: [{ id: '1', text: 'התחל עכשיו', style: 'primary', visible: true }]
   };
 
@@ -247,25 +247,42 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
                 />
               </div>
 
-              <div>
-                <Label className="text-white">צבע רקע</Label>
-                <div className="grid grid-cols-4 gap-2 mt-2">
-                  {workingColorPalette.map((color, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleEmotionalSectionUpdate({ backgroundColor: color.value === 'default' ? '#1e1e2e' : color.value })}
-                      className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
-                      style={{
-                        background: color.value === 'default' ? '#1e1e2e' : color.value
-                      }}
-                      title={color.name}
-                    >
-                      {emotionalSection.backgroundColor === (color.value === 'default' ? '#1e1e2e' : color.value) && (
-                        <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
-                      )}
-                    </button>
-                  ))}
+              <div className="space-y-4">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="use-hero-background"
+                    checked={emotionalSection.useHeroBackground || false}
+                    onChange={(e) => handleEmotionalSectionUpdate({ useHeroBackground: e.target.checked })}
+                    className="rounded border-gray-300"
+                  />
+                  <Label htmlFor="use-hero-background" className="text-white">
+                    תרצו שהרקע של פסקת הרגש יהיה כמו הרקע של ההירו?
+                  </Label>
                 </div>
+
+                {!emotionalSection.useHeroBackground && (
+                  <div>
+                    <Label className="text-white">צבע רקע</Label>
+                    <div className="grid grid-cols-4 gap-2 mt-2">
+                      {workingColorPalette.map((color, index) => (
+                        <button
+                          key={index}
+                          onClick={() => handleEmotionalSectionUpdate({ backgroundColor: color.value === 'default' ? '#1e1e2e' : color.value })}
+                          className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                          style={{
+                            background: color.value === 'default' ? '#1e1e2e' : color.value
+                          }}
+                          title={color.name}
+                        >
+                          {emotionalSection.backgroundColor === (color.value === 'default' ? '#1e1e2e' : color.value) && (
+                            <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
