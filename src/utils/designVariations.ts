@@ -66,7 +66,7 @@ export const liquidGlassVariations: DesignVariation[] = [
   },
   {
     id: 7,
-    name: "נוזלי ניאון",
+    name: "נוزלי ניאון",
     className: "liquid-neon",
     backgroundElements: ["liquid-neon-lines", "liquid-cyber"],
     animationStyle: "liquid-flow-cyberpunk",
@@ -573,111 +573,111 @@ export const gradientVariations: DesignVariation[] = [
   },
   {
     id: 2,
-    name: "תלת מימד ניאון",
-    className: "gradient-3d-neon",
-    backgroundElements: ["3d-neon-lights", "3d-glow-effects"],
-    animationStyle: "3d-neon-pulse",
+    name: "ניאון קיברנטי",
+    className: "neon-cyber",
+    backgroundElements: ["neon-particles", "cyber-grid"],
+    animationStyle: "cyber-pulse",
     colorScheme: "neon-cyberpunk-gradient",
     uniqueFeatures: ["neon-glow", "cyberpunk-vibe"]
   },
   {
     id: 3,
-    name: "תלת מימד גלקטי",
-    className: "gradient-3d-galactic",
-    backgroundElements: ["3d-stars-field", "3d-nebula"],
-    animationStyle: "3d-galactic-drift",
-    colorScheme: "galactic-space-gradient",
-    uniqueFeatures: ["star-field", "space-depth"]
+    name: "קוביות מרחפות",
+    className: "floating-cubes",
+    backgroundElements: ["3d-cubes", "floating-geometry"],
+    animationStyle: "cube-rotation",
+    colorScheme: "vibrant-3d-gradient",
+    uniqueFeatures: ["3d-cubes", "geometric-flow"]
   },
   {
     id: 4,
-    name: "תלת מימד אוקיינוס",
-    className: "gradient-3d-ocean",
-    backgroundElements: ["3d-water-ripples", "3d-underwater"],
-    animationStyle: "3d-ocean-flow",
-    colorScheme: "ocean-depth-gradient",
-    uniqueFeatures: ["water-effects", "underwater-feel"]
+    name: "הולוגרפי",
+    className: "holographic",
+    backgroundElements: ["hologram-effects", "rainbow-shifts"],
+    animationStyle: "hologram-shimmer",
+    colorScheme: "holographic-rainbow",
+    uniqueFeatures: ["hologram-effect", "color-shifting"]
   },
   {
     id: 5,
-    name: "תלת מימד אש",
-    className: "gradient-3d-fire",
-    backgroundElements: ["3d-flame-particles", "3d-ember-glow"],
-    animationStyle: "3d-fire-dance",
-    colorScheme: "fire-ember-gradient",
-    uniqueFeatures: ["flame-effects", "ember-particles"]
+    name: "צורות משתנות",
+    className: "morphing-shapes",
+    backgroundElements: ["morphing-blobs", "fluid-transitions"],
+    animationStyle: "shape-morphing",
+    colorScheme: "morphing-gradient",
+    uniqueFeatures: ["shape-transformation", "fluid-motion"]
   },
   {
     id: 6,
-    name: "תלת מימד קריסטל",
-    className: "gradient-3d-crystal",
-    backgroundElements: ["3d-crystal-shards", "3d-prism-light"],
-    animationStyle: "3d-crystal-refraction",
-    colorScheme: "crystal-prism-gradient",
-    uniqueFeatures: ["crystal-reflections", "prism-effects"]
+    name: "מתכת נוזלית",
+    className: "liquid-metal",
+    backgroundElements: ["liquid-chrome", "metallic-flow"],
+    animationStyle: "metal-flow",
+    colorScheme: "liquid-metal-gradient",
+    uniqueFeatures: ["metallic-surface", "liquid-chrome"]
   },
   {
     id: 7,
-    name: "תלת מימד ערפל",
-    className: "gradient-3d-mist",
-    backgroundElements: ["3d-fog-layers", "3d-smoke-wisps"],
-    animationStyle: "3d-mist-flow",
-    colorScheme: "mist-ethereal-gradient",
-    uniqueFeatures: ["fog-layers", "ethereal-wisps"]
+    name: "זכוכית שבירה",
+    className: "glass-refraction",
+    backgroundElements: ["glass-prisms", "light-refraction"],
+    animationStyle: "glass-shimmer",
+    colorScheme: "glass-prism-gradient",
+    uniqueFeatures: ["glass-effects", "light-prisma"]
   },
   {
     id: 8,
-    name: "תלת מימד זהב",
-    className: "gradient-3d-gold",
-    backgroundElements: ["3d-gold-particles", "3d-luxury-shine"],
-    animationStyle: "3d-gold-gleam",
-    colorScheme: "gold-luxury-gradient",
-    uniqueFeatures: ["gold-particles", "luxury-glow"]
+    name: "סערת חלקיקים",
+    className: "particle-storm",
+    backgroundElements: ["particle-swarm", "energy-field"],
+    animationStyle: "particle-storm",
+    colorScheme: "energy-storm-gradient",
+    uniqueFeatures: ["particle-effects", "energy-storm"]
   },
   {
     id: 9,
-    name: "תלת מימד צבעוני",
-    className: "gradient-3d-rainbow",
-    backgroundElements: ["3d-color-explosion", "3d-spectrum"],
-    animationStyle: "3d-rainbow-flow",
-    colorScheme: "rainbow-spectrum-gradient",
-    uniqueFeatures: ["color-burst", "spectrum-effects"]
+    name: "מטריצת קריסטל",
+    className: "crystal-matrix",
+    backgroundElements: ["crystal-grid", "geometric-crystals"],
+    animationStyle: "crystal-formation",
+    colorScheme: "crystal-matrix-gradient",
+    uniqueFeatures: ["crystal-structures", "geometric-matrix"]
   },
   {
     id: 10,
-    name: "תלת מימד טכנולוגי",
-    className: "gradient-3d-tech",
-    backgroundElements: ["3d-circuit-lines", "3d-digital-grid"],
-    animationStyle: "3d-tech-pulse",
-    colorScheme: "tech-digital-gradient",
-    uniqueFeatures: ["circuit-patterns", "digital-effects"]
+    name: "גלים דיגיטליים",
+    className: "digital-waves",
+    backgroundElements: ["digital-flow", "wave-patterns"],
+    animationStyle: "wave-motion",
+    colorScheme: "digital-wave-gradient",
+    uniqueFeatures: ["digital-waves", "flowing-data"]
   },
   {
     id: 11,
-    name: "תלת מימד קסום",
-    className: "gradient-3d-magic",
-    backgroundElements: ["3d-magic-sparkles", "3d-enchanted"],
-    animationStyle: "3d-magic-twirl",
-    colorScheme: "magic-enchanted-gradient",
-    uniqueFeatures: ["magic-sparkles", "enchanted-glow"]
+    name: "פורטל ניאון",
+    className: "neon-grid-portal",
+    backgroundElements: ["neon-grid", "portal-effects"],
+    animationStyle: "portal-energy",
+    colorScheme: "neon-portal-gradient",
+    uniqueFeatures: ["grid-portal", "energy-rings"]
   },
   {
     id: 12,
-    name: "תלת מימד דרמטי",
-    className: "gradient-3d-dramatic",
-    backgroundElements: ["3d-shadow-play", "3d-light-rays"],
-    animationStyle: "3d-dramatic-contrast",
-    colorScheme: "dramatic-contrast-gradient",
-    uniqueFeatures: ["shadow-effects", "dramatic-lighting"]
+    name: "בועות קוונטיות",
+    className: "quantum-bubbles",
+    backgroundElements: ["quantum-spheres", "energy-bubbles"],
+    animationStyle: "quantum-float",
+    colorScheme: "quantum-gradient",
+    uniqueFeatures: ["quantum-effects", "floating-spheres"]
   },
   {
     id: 13,
-    name: "תלת מימד רך",
-    className: "gradient-3d-soft",
-    backgroundElements: ["3d-soft-clouds", "3d-gentle-flow"],
-    animationStyle: "3d-soft-drift",
-    colorScheme: "soft-gentle-gradient",
-    uniqueFeatures: ["soft-textures", "gentle-motion"]
+    name: "גיאומטריה קוסמית",
+    className: "cosmic-geometry",
+    backgroundElements: ["cosmic-shapes", "space-geometry"],
+    animationStyle: "cosmic-rotation",
+    colorScheme: "cosmic-gradient",
+    uniqueFeatures: ["cosmic-patterns", "space-geometry"]
   },
   {
     id: 14,
