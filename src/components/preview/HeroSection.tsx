@@ -436,8 +436,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     const [selectedDesign, setSelectedDesign] = useState(0);
 
     useEffect(() => {
-      // Randomly select one of the 8 remaining 3D designs (0-7, excluding 8)
-      setSelectedDesign(Math.floor(Math.random() * 8));
+      // Randomly select one of the 9 3D designs
+      setSelectedDesign(Math.floor(Math.random() * 9));
     }, []);
 
     // Design 0: Spline 3D Scene with custom styles - Split Layout
@@ -820,6 +820,201 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               )}
             </div>
           </div>
+        </div>
+      );
+    }
+
+    // Design 8: Fixed spacing and improved layout with better vertical distribution
+    if (selectedDesign === 8) {
+      return (
+        <div className="relative w-screen h-screen overflow-hidden bg-black">
+          {/* Background 3D Element - Enlarged x1.8 with continuous movement */}
+          <div className="absolute top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2 z-10">
+            <div className="relative">
+              {/* Main floating image - enlarged by 1.8 with continuous non-repeating movement */}
+              <div 
+                className="w-[1080px] h-[1080px] relative opacity-30"
+                style={{
+                  animation: 'continuousFloat 20s linear infinite, continuousRotate3d 30s linear infinite',
+                }}
+              >
+                <img 
+                  src="/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png" 
+                  alt="3D Floating Element" 
+                  className="w-full h-full object-contain"
+                  style={{
+                    filter: 'drop-shadow(0 0 30px rgba(255, 255, 255, 0.2)) drop-shadow(0 0 60px rgba(107, 115, 255, 0.15))',
+                    transform: 'perspective(1000px) rotateX(10deg) rotateY(15deg)',
+                  }}
+                />
+              </div>
+
+              {/* Floating particles around the image - fewer and smaller */}
+              {[...Array(8)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute w-2 h-2 bg-white rounded-full opacity-40"
+                  style={{
+                    left: `${25 + (i % 3) * 20}%`,
+                    top: `${20 + Math.floor(i / 3) * 20}%`,
+                    animation: `continuousParticle${i % 3} ${12 + i * 0.8}s linear infinite`,
+                    boxShadow: '0 0 8px rgba(255, 255, 255, 0.6), 0 0 16px rgba(107, 115, 255, 0.4)',
+                  }}
+                />
+              ))}
+
+              {/* Orbital rings - continuous rotation */}
+              <div 
+                className="absolute inset-0 border border-white/10 rounded-full"
+                style={{
+                  width: '120%',
+                  height: '120%',
+                  left: '-10%',
+                  top: '-10%',
+                  animation: 'continuousOrbit 40s linear infinite',
+                }}
+              />
+              <div 
+                className="absolute inset-0 border border-blue-400/20 rounded-full"
+                style={{
+                  width: '140%',
+                  height: '140%',
+                  left: '-20%',
+                  top: '-20%',
+                  animation: 'continuousOrbit 25s linear infinite reverse',
+                }}
+              />
+            </div>
+
+            {/* Background glow effect - continuous pulse */}
+            <div 
+              className="absolute inset-0 bg-gradient-radial from-blue-900/20 via-purple-900/10 to-transparent"
+              style={{
+                animation: 'continuousPulse 6s linear infinite',
+              }}
+            />
+          </div>
+
+          {/* Main Content - Properly spaced vertical layout */}
+          <div className="relative z-30 h-full flex flex-col justify-center items-center text-center px-8">
+            <div className="max-w-4xl text-white">
+              {/* Badge positioned at the top with more margin */}
+              {content?.badge && (
+                <div 
+                  className={`inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm backdrop-blur-sm border border-white/20 shadow-lg mb-12`} 
+                  style={{
+                    ...getBadgeStyle(),
+                    boxShadow: '0 0 20px rgba(107, 115, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+                  }}
+                >
+                  <Award className="w-4 h-4" />
+                  <span>{content.badge}</span>
+                </div>
+              )}
+              
+              {/* Main headline positioned high with more margin below */}
+              <h1 
+                className={`text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-16`} 
+                style={{
+                  ...getTextStyle('headline'),
+                  textShadow: '0 4px 20px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 255, 255, 0.1)',
+                }}
+              >
+                {content?.headline || formData?.businessName || 'Build Your Dreams'}
+              </h1>
+              
+              {/* Subtitle positioned with proper spacing from headline and buttons */}
+              <p 
+                className={`text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-20`} 
+                style={{
+                  ...getTextStyle('subheadline'),
+                  textShadow: '0 2px 10px rgba(0, 0, 0, 0.7)',
+                }}
+              >
+                {content?.subheadline || content?.description || 'AI-powered creativity for the next generation.'}
+              </p>
+              
+              {/* Buttons positioned at the bottom with enhanced styling */}
+              <div className="flex gap-6 justify-center flex-wrap">
+                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+                  <div key={index} className="transform hover:scale-105 transition-transform duration-300">
+                    {renderAdvancedButton(button, index)}
+                  </div>
+                ) || (
+                  <button 
+                    className="px-10 py-5 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 backdrop-blur-sm border border-white/20"
+                    style={{ 
+                      backgroundColor: currentColors.primary, 
+                      color: '#ffffff',
+                      boxShadow: '0 8px 32px rgba(107, 115, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+                    }}
+                  >
+                    {content?.cta || 'explore now'}
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Custom CSS for continuous animations */}
+          <style>{`
+            @keyframes continuousFloat {
+              0% { transform: translateY(0px) translateX(0px) scale(1); }
+              25% { transform: translateY(-30px) translateX(20px) scale(1.02); }
+              50% { transform: translateY(-15px) translateX(-25px) scale(1.04); }
+              75% { transform: translateY(-40px) translateX(15px) scale(1.01); }
+              100% { transform: translateY(-5px) translateX(-10px) scale(1.03); }
+            }
+            
+            @keyframes continuousRotate3d {
+              0% { transform: perspective(1000px) rotateX(10deg) rotateY(15deg) rotateZ(0deg); }
+              25% { transform: perspective(1000px) rotateX(25deg) rotateY(105deg) rotateZ(15deg); }
+              50% { transform: perspective(1000px) rotateX(5deg) rotateY(195deg) rotateZ(30deg); }
+              75% { transform: perspective(1000px) rotateX(35deg) rotateY(285deg) rotateZ(45deg); }
+              100% { transform: perspective(1000px) rotateX(10deg) rotateY(375deg) rotateZ(60deg); }
+            }
+            
+            @keyframes continuousParticle0 {
+              0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+              25% { transform: translate(30px, -40px) scale(1.2); opacity: 0.8; }
+              50% { transform: translate(-20px, -60px) scale(0.8); opacity: 0.5; }
+              75% { transform: translate(40px, -20px) scale(1.1); opacity: 0.7; }
+              100% { transform: translate(-10px, -80px) scale(0.9); opacity: 0.3; }
+            }
+            
+            @keyframes continuousParticle1 {
+              0% { transform: translate(0, 0) scale(0.8); opacity: 0.3; }
+              25% { transform: translate(-40px, -30px) scale(1.0); opacity: 0.7; }
+              50% { transform: translate(25px, -70px) scale(1.2); opacity: 0.9; }
+              75% { transform: translate(-30px, -50px) scale(0.9); opacity: 0.5; }
+              100% { transform: translate(20px, -90px) scale(1.1); opacity: 0.4; }
+            }
+            
+            @keyframes continuousParticle2 {
+              0% { transform: translate(0, 0) scale(1.0); opacity: 0.4; }
+              25% { transform: translate(20px, -50px) scale(0.9); opacity: 0.6; }
+              50% { transform: translate(-35px, -35px) scale(1.3); opacity: 0.8; }
+              75% { transform: translate(25px, -75px) scale(0.7); opacity: 0.4; }
+              100% { transform: translate(-15px, -100px) scale(1.0); opacity: 0.6; }
+            }
+            
+            @keyframes continuousOrbit {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+            
+            @keyframes continuousPulse {
+              0% { opacity: 0.2; transform: scale(1); }
+              25% { opacity: 0.4; transform: scale(1.1); }
+              50% { opacity: 0.3; transform: scale(0.9); }
+              75% { opacity: 0.5; transform: scale(1.2); }
+              100% { opacity: 0.2; transform: scale(1); }
+            }
+            
+            .bg-gradient-radial {
+              background: radial-gradient(circle, var(--tw-gradient-stops));
+            }
+          `}</style>
         </div>
       );
     }
