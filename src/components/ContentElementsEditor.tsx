@@ -114,7 +114,7 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
     text: 'הצטרף אלינו עוד היום והתחל את המסע שלך להצלחה',
     badge: 'מוגבל בזמן',
     backgroundColor: '#1e1e2e',
-    useHeroBackground: false,
+    followMainDesign: false,
     buttons: [{ id: '1', text: 'התחל עכשיו', style: 'primary', visible: true }]
   };
 
@@ -252,17 +252,17 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
                 <div className="flex items-center space-x-2">
                   <input
                     type="checkbox"
-                    id="use-hero-background"
-                    checked={emotionalSection.useHeroBackground || false}
-                    onChange={(e) => handleEmotionalSectionUpdate({ useHeroBackground: e.target.checked })}
+                    id="follow-main-design"
+                    checked={emotionalSection.followMainDesign || false}
+                    onChange={(e) => handleEmotionalSectionUpdate({ followMainDesign: e.target.checked })}
                     className="rounded border-gray-300"
                   />
-                  <Label htmlFor="use-hero-background" className="text-white">
-                    השתמש באותו עיצוב כמו ההירו הרנדומלי שנבחר
+                  <Label htmlFor="follow-main-design" className="text-white">
+                    המשך עם הסגנון הראשי
                   </Label>
                 </div>
 
-                {!emotionalSection.useHeroBackground && (
+                {!emotionalSection.followMainDesign && (
                   <div>
                     <Label className="text-white">צבע רקע</Label>
                     <div className="grid grid-cols-4 gap-2 mt-2">

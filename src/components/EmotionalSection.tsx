@@ -1,3 +1,4 @@
+
 import { ColorScheme } from "@/types/colors";
 import { LiquidButton, MetalButton } from "@/components/ui/liquid-glass-button";
 import { HeroSectionClean } from "@/components/ui/hero-section-clean";
@@ -38,17 +39,13 @@ interface EmotionalSectionProps {
 export const EmotionalSection = ({ content, currentColors, formData, selectedHeroDesign }: EmotionalSectionProps) => {
   const emotionalContent = content?.emotionalSection || {};
   
-  const useHeroBackground = 
-    emotionalContent.useHeroBackground || 
-    content?.useHeroBackground ||
-    emotionalContent.sameAsHero ||
-    false;
+  const followMainDesign = emotionalContent.followMainDesign || false;
 
-  console.log('EmotionalSection - useHeroBackground:', useHeroBackground);
+  console.log('EmotionalSection - followMainDesign:', followMainDesign);
   console.log('EmotionalSection - selectedHeroDesign:', selectedHeroDesign);
 
-  // אם לא צריך להשתמש ברקע ההירו, נציג את הפסקה הרגילה  
-  if (!useHeroBackground) {
+  // אם לא צריך להמשיך עם הסגנון הראשי, נציג את הפסקה הרגילה  
+  if (!followMainDesign) {
     const renderAdvancedButton = (button: any, index: number) => {
       const buttonStyle = button?.style || 'default';
       const buttonText = button?.text || content?.cta || 'לחץ כאן';
