@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ColorScheme } from "@/types/colors";
 import { Palette, Type, Zap, Badge as BadgeIcon, Eye } from "lucide-react";
 import ButtonStyleEditor from "./ButtonStyleEditor";
+import EmotionalSectionEditor from './EmotionalSectionEditor';
+import HeroEditor from './HeroEditor';
 
 interface ContentElementsEditorProps {
   content: any;
@@ -71,6 +72,19 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
 
   return (
     <div className="space-y-6">
+      {/* Hero Section Editor */}
+      <HeroEditor 
+        content={content}
+        onContentChange={onContentChange}
+        formData={formData}
+      />
+
+      {/* Emotional Section Editor */}
+      <EmotionalSectionEditor
+        content={content}
+        onContentChange={onContentChange}
+      />
+
       <Tabs defaultValue="content" className="w-full">
         <TabsList className="grid w-full grid-cols-3 bg-gray-700">
           <TabsTrigger value="content" className="text-white data-[state=active]:bg-blue-600">
