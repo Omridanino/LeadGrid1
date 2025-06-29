@@ -573,7 +573,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Gradient designs 3-14: New 3D designs
     if (selectedGradientDesign === 3) {
       return (
         <>
@@ -775,6 +774,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           <AnimatedHero 
             title={content?.headline || formData?.businessName || 'זכוכית'}
             subtitle="נוזלית"
+            primaryCta={{
+              text: content?.cta || 'התחילו היום',
+              onClick: () => {}
+            }}
+            secondaryCta={{
+              text: 'קפיצה לשיחה',
+              onClick: () => {}
+            }}
           />
           <EmotionalSection content={content} currentColors={currentColors} formData={formData} />
         </>
