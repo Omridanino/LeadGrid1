@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { getColorStyle, getBackgroundStyle } from "@/utils/colorUtils";
 
 interface HeroSectionLampProps {
-  content: any;
+  content?: any;
   currentColors?: any;
   formData?: any;
   heroImage?: string;
@@ -26,7 +26,10 @@ const HeroSectionLamp = ({ content, currentColors, formData, heroImage }: HeroSe
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.8, ease: "easeOut" }
+      transition: { 
+        duration: 0.8, 
+        ease: [0.4, 0.0, 0.2, 1] // Using cubic-bezier array instead of string
+      }
     }
   };
 
@@ -45,7 +48,7 @@ const HeroSectionLamp = ({ content, currentColors, formData, heroImage }: HeroSe
         animate="visible"
       >
         {/* Badge */}
-        {content.badge && (
+        {content?.badge && (
           <motion.div
             variants={itemVariants}
             className="inline-block mb-6"
@@ -66,13 +69,13 @@ const HeroSectionLamp = ({ content, currentColors, formData, heroImage }: HeroSe
         <motion.h1
           variants={itemVariants}
           className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
-          style={getColorStyle(content.headlineStyle)}
+          style={getColorStyle(content?.headlineStyle)}
         >
-          {content.headline || 'כותרת ראשית מדהימה'}
+          {content?.headline || formData?.businessName || 'כותרת ראשית מדהימה'}
         </motion.h1>
 
         {/* Subheadline */}
-        {content.subheadline && (
+        {content?.subheadline && (
           <motion.h2
             variants={itemVariants}
             className="text-xl md:text-2xl mb-6 max-w-3xl mx-auto leading-relaxed"
@@ -83,7 +86,7 @@ const HeroSectionLamp = ({ content, currentColors, formData, heroImage }: HeroSe
         )}
 
         {/* Description */}
-        {content.description && (
+        {content?.description && (
           <motion.p
             variants={itemVariants}
             className="text-lg mb-8 max-w-2xl mx-auto"
@@ -94,7 +97,7 @@ const HeroSectionLamp = ({ content, currentColors, formData, heroImage }: HeroSe
         )}
 
         {/* Buttons */}
-        {content.buttons && content.buttons.length > 0 && (
+        {content?.buttons && content.buttons.length > 0 && (
           <motion.div
             variants={itemVariants}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"

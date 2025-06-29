@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/components/ColorEditor";
@@ -18,7 +19,7 @@ import { HorizonHeroSection } from "@/components/ui/horizon-hero-section";
 import { HeroParallax } from "@/components/ui/hero-parallax";
 import { HeroSectionClean } from "@/components/ui/hero-section-clean";
 import { HeroSectionModern } from "@/components/ui/hero-section-modern";
-import { HeroSectionLamp } from "@/components/ui/hero-section-lamp";
+import HeroSectionLamp from "@/components/ui/hero-section-lamp";
 import { HeroSectionRetro } from "@/components/ui/hero-section-retro";
 import { ArrowLeft, Play, Shield, Zap, Award, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
