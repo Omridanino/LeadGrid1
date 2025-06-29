@@ -1,8 +1,7 @@
 
 import * as React from "react"
-import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Menu, X, Zap } from 'lucide-react'
+import { Zap } from 'lucide-react'
 
 interface HeroSectionCleanProps {
   formData: any;
@@ -10,8 +9,53 @@ interface HeroSectionCleanProps {
   content?: any;
 }
 
+// פונקציה לקבלת וריאציה רנדומלית - 6 וריאציות
+const getRandomVariation = () => {
+  return Math.floor(Math.random() * 6); // 0, 1, 2, 3, 4, או 5
+};
+
+// פונקציה לקבלת סגנון רקע רנדומלי - 6 סגנונות
+const getRandomBackgroundStyle = (variation: number) => {
+  const styles = [
+    "bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-950 dark:to-blue-950/20",
+    "bg-gradient-to-br from-purple-50 to-pink-100 dark:from-gray-950 dark:to-purple-950/20",
+    "bg-gradient-to-br from-green-50 to-emerald-100 dark:from-gray-950 dark:to-green-950/20",
+    "bg-gradient-to-br from-orange-50 to-red-100 dark:from-gray-950 dark:to-orange-950/20",
+    "bg-gradient-to-br from-cyan-50 to-blue-100 dark:from-gray-950 dark:to-cyan-950/20",
+    "bg-gradient-to-br from-rose-50 to-pink-100 dark:from-gray-950 dark:to-rose-950/20"
+  ];
+  return styles[variation] || styles[0];
+};
+
+// פונקציה לקבלת צבע כפתור רנדומלי - 6 סגנונות
+const getRandomButtonStyle = (variation: number) => {
+  const styles = [
+    "bg-blue-600 hover:bg-blue-700 text-white",
+    "bg-purple-600 hover:bg-purple-700 text-white",
+    "bg-green-600 hover:bg-green-700 text-white",
+    "bg-orange-600 hover:bg-orange-700 text-white",
+    "bg-cyan-600 hover:bg-cyan-700 text-white",
+    "bg-rose-600 hover:bg-rose-700 text-white"
+  ];
+  return styles[variation] || styles[0];
+};
+
+// פונקציה לקבלת צבע אקסנט רנדומלי - 6 צבעים
+const getRandomAccentColor = (variation: number) => {
+  const colors = [
+    "border-blue-200 dark:border-blue-800",
+    "border-purple-200 dark:border-purple-800", 
+    "border-green-200 dark:border-green-800",
+    "border-orange-200 dark:border-orange-800",
+    "border-cyan-200 dark:border-cyan-800",
+    "border-rose-200 dark:border-rose-800"
+  ];
+  return colors[variation] || colors[0];
+};
+
 export const HeroSectionClean = ({ formData, currentColors, content }: HeroSectionCleanProps) => {
-    const [menuState, setMenuState] = React.useState(false)
+    // קבלת וריאציה רנדומלית וקבועה לכל עמוד
+    const [variation] = React.useState(() => getRandomVariation());
     
     // Helper function to get text style classes
     const getTextStyleClasses = (elementStyle: string) => {
@@ -29,7 +73,7 @@ export const HeroSectionClean = ({ formData, currentColors, content }: HeroSecti
         case "gradient-blue-text":
           return "bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent";
         default:
-          return "text-gray-900";
+          return "text-gray-900 dark:text-white";
       }
     };
 
@@ -47,138 +91,131 @@ export const HeroSectionClean = ({ formData, currentColors, content }: HeroSecti
         case "gradient-purple-tech":
           return "bg-gradient-to-r from-purple-600 to-white text-white border-0";
         default:
-          return "bg-blue-600 text-white";
+          return getRandomButtonStyle(variation);
       }
     };
     
     const businessName = content?.headline || formData?.businessName || "שם העסק"
-    const businessStory = content?.subheadline || formData?.businessStory || "הסיפור שלנו מתחיל כאן"
-    const mainServices = content?.description || formData?.mainServices || "השירותים המובילים שלנו"
+    const businessStory = content?.subheadline || formData?.businessStory || "פתרונות נקיים ופשוטים"
+    const mainServices = content?.description || formData?.mainServices || "אנחנו מביאים לכם פתרונות פשוטים ויעילים שעוזרים לכם להצליח"
     
     return (
-        <div className="min-h-screen bg-white text-gray-900" dir="rtl">
-            <header>
-                <nav
-                    data-state={menuState && 'active'}
-                    className="group fixed z-20 w-full border-b border-dashed bg-white/90 backdrop-blur">
-                    <div className="m-auto max-w-5xl px-6">
-                        <div className="flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
-                            <div className="flex w-full justify-between lg:w-auto">
-                                <div className="flex items-center space-x-2 space-x-reverse">
-                                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                                        <span className="text-white font-bold text-sm">{(formData?.businessName || businessName).charAt(0)}</span>
-                                    </div>
-                                    <span className="font-semibold text-lg">{formData?.businessName || businessName}</span>
-                                </div>
-
-                                <button
-                                    onClick={() => setMenuState(!menuState)}
-                                    aria-label={menuState == true ? 'סגור תפריט' : 'פתח תפריט'}
-                                    className="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden">
-                                    <Menu className="group-data-[state=active]:rotate-180 group-data-[state=active]:scale-0 group-data-[state=active]:opacity-0 m-auto size-6 duration-200" />
-                                    <X className="group-data-[state=active]:rotate-0 group-data-[state=active]:scale-100 group-data-[state=active]:opacity-100 absolute inset-0 m-auto size-6 -rotate-180 scale-0 opacity-0 duration-200" />
-                                </button>
-                            </div>
-
-                            <div className="bg-white group-data-[state=active]:block lg:group-data-[state=active]:flex mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border p-6 shadow-2xl shadow-zinc-300/20 md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none">
-                                <div className="lg:pr-4">
-                                    <ul className="space-y-6 text-base lg:flex lg:gap-8 lg:space-y-0 lg:text-sm">
-                                        <li>
-                                            <a href="#services" className="text-gray-600 hover:text-gray-900 block duration-150">
-                                                <span>שירותים</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#about" className="text-gray-600 hover:text-gray-900 block duration-150">
-                                                <span>אודות</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#contact" className="text-gray-600 hover:text-gray-900 block duration-150">
-                                                <span>צור קשר</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit lg:border-l lg:pl-6">
-                                    <Button
-                                        variant="outline"
-                                        size="sm">
-                                        <span>התחבר</span>
-                                    </Button>
-                                    <Button size="sm">
-                                        <span>הירשם</span>
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </header>
-
+        <div className={`min-h-screen ${getRandomBackgroundStyle(variation)}`} dir="rtl">
             <main>
-                <div
-                    aria-hidden
-                    className="z-[2] absolute inset-0 pointer-events-none isolate opacity-30 contain-strict hidden lg:block">
-                    <div className="w-[35rem] h-[80rem] -translate-y-87.5 absolute right-0 top-0 rotate-45 rounded-full bg-[radial-gradient(68.54%_68.72%_at_55.02%_31.46%,hsla(220,70%,85%,.08)_0,hsla(220,70%,55%,.02)_50%,hsla(220,70%,45%,0)_80%)]" />
-                    <div className="h-[80rem] absolute right-0 top-0 w-56 rotate-45 rounded-full bg-[radial-gradient(50%_50%_at_50%_50%,hsla(220,70%,85%,.06)_0,hsla(220,70%,45%,.02)_80%,transparent_100%)]" />
-                </div>
-
-                <section className="overflow-hidden bg-white">
-                    <div className="relative mx-auto max-w-5xl px-6 py-28 lg:py-32">
-                        <div className="relative z-10 mx-auto max-w-3xl text-center">
-                            {content?.badge && (
-                                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm ${getButtonStyleClasses(content.badgeStyle || 'black-on-white')}`}>
+                <section className="py-24 px-4">
+                    <div className="container mx-auto max-w-6xl">
+                        <div className="text-center space-y-8">
+                            {content?.badge ? (
+                                <div className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 shadow-sm ${getRandomAccentColor(variation)}`}>
                                     <Zap className="w-4 h-4" />
-                                    <span>{content.badge}</span>
+                                    <span className="text-sm font-medium">{content.badge}</span>
+                                </div>
+                            ) : (
+                                <div className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 shadow-sm ${getRandomAccentColor(variation)}`}>
+                                    <Zap className="w-4 h-4" />
+                                    <span className="text-sm font-medium">ברוכים הבאים ל{businessName}</span>
                                 </div>
                             )}
                             
-                            <h1 className={`text-balance text-4xl font-bold md:text-5xl lg:text-6xl mb-6 ${content?.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'text-gray-900'}`}>
+                            <h1 className={`text-4xl md:text-6xl lg:text-7xl font-bold leading-tight ${content?.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'text-gray-900 dark:text-white'}`}>
                                 {businessStory}
                             </h1>
                             
-                            <p className={`mx-auto my-8 max-w-2xl text-xl leading-relaxed ${content?.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-gray-600'}`}>
+                            <p className={`text-lg md:text-xl leading-relaxed max-w-3xl mx-auto ${content?.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-gray-600 dark:text-gray-300'}`}>
                                 {mainServices}
                             </p>
-
-                            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-10">
+                            
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                                 {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                                    <button 
+                                    <Button
                                         key={index}
-                                        className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'black-on-white')}`}
+                                        size="lg"
+                                        className={`px-8 py-3 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ${getButtonStyleClasses(button.style || 'default')}`}
                                     >
                                         {button.text}
-                                    </button>
+                                    </Button>
                                 )) || (
                                     <>
-                                        <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                                            <span>התחל עכשיו</span>
+                                        <Button
+                                            size="lg"
+                                            className={`px-8 py-3 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ${getRandomButtonStyle(variation)}`}
+                                        >
+                                            התחל עכשיו
                                         </Button>
-                                        <Button variant="outline" size="lg">
-                                            <span>למד עוד</span>
+                                        <Button
+                                            size="lg"
+                                            variant="outline"
+                                            className="px-8 py-3 text-lg rounded-xl"
+                                        >
+                                            למד עוד
                                         </Button>
                                     </>
                                 )}
                             </div>
                         </div>
-                    </div>
-
-                    <div className="mx-auto -mt-16 max-w-7xl [mask-image:linear-gradient(to_bottom,black_50%,transparent_100%)]">
-                        <div className="[perspective:1200px] [mask-image:linear-gradient(to_left,black_50%,transparent_100%)] -ml-16 pr-16 lg:-ml-56 lg:pr-56">
-                            <div className="[transform:rotateX(20deg)]">
-                                <div className="lg:h-[44rem] relative -skew-x-[0.36rad]">
-                                    <div className="rounded-2xl z-[2] relative border bg-gradient-to-br from-gray-50 to-white shadow-2xl p-8 backdrop-blur-sm">
-                                        <div className="space-y-4">
-                                            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                                            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                                            <div className="h-32 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg"></div>
-                                            <div className="grid grid-cols-3 gap-4">
-                                                <div className="h-20 bg-gray-100 rounded"></div>
-                                                <div className="h-20 bg-gray-100 rounded"></div>
-                                                <div className="h-20 bg-gray-100 rounded"></div>
-                                            </div>
+                        
+                        <div className="mt-20">
+                            <div className={`relative mx-auto max-w-4xl overflow-hidden rounded-2xl border shadow-2xl ${getRandomAccentColor(variation)} bg-white dark:bg-gray-950`}>
+                                <div className="aspect-[16/9] relative rounded-2xl p-8" style={{
+                                    background: `linear-gradient(135deg, ${
+                                        variation === 0 ? 'rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%' :
+                                        variation === 1 ? 'rgba(147, 51, 234, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%' :
+                                        variation === 2 ? 'rgba(34, 197, 94, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%' :
+                                        variation === 3 ? 'rgba(249, 115, 22, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%' :
+                                        variation === 4 ? 'rgba(6, 182, 212, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%' :
+                                        'rgba(244, 63, 94, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%'
+                                    })`
+                                }}>
+                                    <div className="space-y-4">
+                                        <div className={`h-4 rounded w-3/4 ${
+                                            variation === 0 ? 'bg-gradient-to-r from-blue-300 to-purple-300 dark:from-blue-600 dark:to-purple-600' :
+                                            variation === 1 ? 'bg-gradient-to-r from-purple-300 to-pink-300 dark:from-purple-600 dark:to-pink-600' :
+                                            variation === 2 ? 'bg-gradient-to-r from-green-300 to-emerald-300 dark:from-green-600 dark:to-emerald-600' :
+                                            variation === 3 ? 'bg-gradient-to-r from-orange-300 to-red-300 dark:from-orange-600 dark:to-red-600' :
+                                            variation === 4 ? 'bg-gradient-to-r from-cyan-300 to-blue-300 dark:from-cyan-600 dark:to-blue-600' :
+                                            'bg-gradient-to-r from-rose-300 to-pink-300 dark:from-rose-600 dark:to-pink-600'
+                                        }`}></div>
+                                        <div className={`h-4 rounded w-1/2 ${
+                                            variation === 0 ? 'bg-gradient-to-r from-blue-300 to-purple-300 dark:from-blue-600 dark:to-purple-600' :
+                                            variation === 1 ? 'bg-gradient-to-r from-purple-300 to-pink-300 dark:from-purple-600 dark:to-pink-600' :
+                                            variation === 2 ? 'bg-gradient-to-r from-green-300 to-emerald-300 dark:from-green-600 dark:to-emerald-600' :
+                                            variation === 3 ? 'bg-gradient-to-r from-orange-300 to-red-300 dark:from-orange-600 dark:to-red-600' :
+                                            variation === 4 ? 'bg-gradient-to-r from-cyan-300 to-blue-300 dark:from-cyan-600 dark:to-blue-600' :
+                                            'bg-gradient-to-r from-rose-300 to-pink-300 dark:from-rose-600 dark:to-pink-600'
+                                        }`}></div>
+                                        <div className={`h-32 rounded-lg ${
+                                            variation === 0 ? 'bg-gradient-to-br from-blue-200 to-purple-200 dark:from-blue-800 dark:to-purple-800' :
+                                            variation === 1 ? 'bg-gradient-to-br from-purple-200 to-pink-200 dark:from-purple-800 dark:to-pink-800' :
+                                            variation === 2 ? 'bg-gradient-to-br from-green-200 to-emerald-200 dark:from-green-800 dark:to-emerald-800' :
+                                            variation === 3 ? 'bg-gradient-to-br from-orange-200 to-red-200 dark:from-orange-800 dark:to-red-800' :
+                                            variation === 4 ? 'bg-gradient-to-br from-cyan-200 to-blue-200 dark:from-cyan-800 dark:to-blue-800' :
+                                            'bg-gradient-to-br from-rose-200 to-pink-200 dark:from-rose-800 dark:to-pink-800'
+                                        }`}></div>
+                                        <div className="grid grid-cols-3 gap-4">
+                                            <div className={`h-20 rounded ${
+                                                variation === 0 ? 'bg-blue-100 dark:bg-blue-800' :
+                                                variation === 1 ? 'bg-purple-100 dark:bg-purple-800' :
+                                                variation === 2 ? 'bg-green-100 dark:bg-green-800' :
+                                                variation === 3 ? 'bg-orange-100 dark:bg-orange-800' :
+                                                variation === 4 ? 'bg-cyan-100 dark:bg-cyan-800' :
+                                                'bg-rose-100 dark:bg-rose-800'
+                                            }`}></div>
+                                            <div className={`h-20 rounded ${
+                                                variation === 0 ? 'bg-purple-100 dark:bg-purple-800' :
+                                                variation === 1 ? 'bg-pink-100 dark:bg-pink-800' :
+                                                variation === 2 ? 'bg-emerald-100 dark:bg-emerald-800' :
+                                                variation === 3 ? 'bg-red-100 dark:bg-red-800' :
+                                                variation === 4 ? 'bg-blue-100 dark:bg-blue-800' :
+                                                'bg-pink-100 dark:bg-pink-800'
+                                            }`}></div>
+                                            <div className={`h-20 rounded ${
+                                                variation === 0 ? 'bg-blue-100 dark:bg-blue-800' :
+                                                variation === 1 ? 'bg-purple-100 dark:bg-purple-800' :
+                                                variation === 2 ? 'bg-green-100 dark:bg-green-800' :
+                                                variation === 3 ? 'bg-orange-100 dark:bg-orange-800' :
+                                                variation === 4 ? 'bg-cyan-100 dark:bg-cyan-800' :
+                                                'bg-rose-100 dark:bg-rose-800'
+                                            }`}></div>
                                         </div>
                                     </div>
                                 </div>

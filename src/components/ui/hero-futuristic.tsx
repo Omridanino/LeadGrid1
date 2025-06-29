@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Canvas, extend, useFrame, useThree } from '@react-three/fiber';
@@ -9,7 +8,7 @@ import { Mesh } from 'three';
 
 extend(THREE as any);
 
-// מערך של תמונות שונות לוריאציות
+// מערך של תמונות שונות לוריאציות - הרחבתי ל-5 וריאציות
 const TEXTURE_VARIATIONS = [
   {
     texture: 'https://i.postimg.cc/XYwvXN8D/img-4.png',
@@ -22,6 +21,14 @@ const TEXTURE_VARIATIONS = [
   {
     texture: 'https://i.postimg.cc/9f8KzL2D/cyber-grid.jpg', 
     depth: 'https://i.postimg.cc/GtR5Y8hf/cyber-depth.jpg'
+  },
+  {
+    texture: 'https://i.postimg.cc/d1PqXj8Y/neon-circuit.jpg',
+    depth: 'https://i.postimg.cc/FzGkL7Wv/neon-depth.jpg'
+  },
+  {
+    texture: 'https://i.postimg.cc/3x4Rj9Kp/hologram-tech.jpg',
+    depth: 'https://i.postimg.cc/vTnMp8Qf/hologram-depth.jpg'
   }
 ];
 
@@ -99,27 +106,31 @@ const getTextStyleClasses = (elementStyle: string) => {
   }
 };
 
-// פונקציה לקבלת וריאציה רנדומלית
+// פונקציה לקבלת וריאציה רנדומלית - עודכנה ל-5 וריאציות
 const getRandomVariation = () => {
-  return Math.floor(Math.random() * 3); // 0, 1, או 2
+  return Math.floor(Math.random() * 5); // 0, 1, 2, 3, או 4
 };
 
-// פונקציה לקבלת סגנון רקע רנדומלי
+// פונקציה לקבלת סגנון רקע רנדומלי - הרחבתי ל-5 סגנונות
 const getRandomBackgroundStyle = (variation: number) => {
   const styles = [
     "bg-gradient-to-br from-black via-purple-900/30 to-black",
     "bg-gradient-to-br from-black via-blue-900/30 to-black", 
-    "bg-gradient-to-br from-black via-cyan-900/30 to-black"
+    "bg-gradient-to-br from-black via-cyan-900/30 to-black",
+    "bg-gradient-to-br from-black via-pink-900/30 to-black",
+    "bg-gradient-to-br from-black via-green-900/30 to-black"
   ];
   return styles[variation] || styles[0];
 };
 
-// פונקציה לקבלת צבע כפתור רנדומלי
+// פונקציה לקבלת צבע כפתור רנדומלי - הרחבתי ל-5 סגנונות
 const getRandomButtonStyle = (variation: number) => {
   const styles = [
     "bg-white/10 backdrop-blur-sm border border-white/30 text-white hover:bg-white/20",
     "bg-purple-600/20 backdrop-blur-sm border border-purple-400/30 text-purple-100 hover:bg-purple-600/30",
-    "bg-cyan-600/20 backdrop-blur-sm border border-cyan-400/30 text-cyan-100 hover:bg-cyan-600/30"
+    "bg-cyan-600/20 backdrop-blur-sm border border-cyan-400/30 text-cyan-100 hover:bg-cyan-600/30",
+    "bg-pink-600/20 backdrop-blur-sm border border-pink-400/30 text-pink-100 hover:bg-pink-600/30",
+    "bg-green-600/20 backdrop-blur-sm border border-green-400/30 text-green-100 hover:bg-green-600/30"
   ];
   return styles[variation] || styles[0];
 };
