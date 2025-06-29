@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/types/colors";
@@ -192,25 +191,49 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
 
   // Emotional Section Component
   const EmotionalSection = ({ content, currentColors, formData }: any) => {
-    const emotionalContent = content?.emotional || {};
-    const title = emotionalContent.title || 'החלום שלכם מתחיל כאן';
-    const description = emotionalContent.content || `ב${formData?.businessName || 'העסק שלנו'}, אנחנו מאמינים שכל חלום יכול להפוך למציאות. הצטרפו אלינו למסע מרגש שישנה את חייכם.`;
+    const emotionalContent = content?.emotionalSection || {};
+    const title = emotionalContent.title || 'הגיע הזמן לפעול';
+    const subtitle = emotionalContent.subtitle || 'אל תחמיץ את ההזדמנות הזו';
+    const text = emotionalContent.text || 'הצטרף אלינו עוד היום והתחל את המסע שלך להצלחה';
+    const badge = emotionalContent.badge || 'מוגבל בזמן';
+    const backgroundColor = emotionalContent.backgroundColor || '#1e1e2e';
+    const buttons = emotionalContent.buttons || [{ id: '1', text: 'התחל עכשיו', style: 'primary', visible: true }];
 
     return (
-      <section className="py-20 px-8 relative">
+      <section 
+        className="py-20 px-8 relative"
+        style={{ backgroundColor }}
+      >
         <div className="container mx-auto max-w-4xl text-center">
+          {badge && (
+            <div className="inline-block mb-6 px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full text-sm font-semibold text-white">
+              {badge}
+            </div>
+          )}
+          
           <h2 
-            className="text-4xl md:text-6xl font-bold mb-8"
-            style={getTextStyle('headline')}
+            className="text-4xl md:text-6xl font-bold mb-6 text-white"
           >
             {title}
           </h2>
+          
+          {subtitle && (
+            <h3 className="text-2xl md:text-3xl mb-8 text-gray-300">
+              {subtitle}
+            </h3>
+          )}
+          
           <p 
-            className="text-xl md:text-2xl leading-relaxed"
-            style={getTextStyle('subheadline')}
+            className="text-xl md:text-2xl leading-relaxed mb-12 text-gray-300"
           >
-            {description}
+            {text}
           </p>
+          
+          <div className="flex gap-4 justify-center flex-wrap">
+            {buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+              renderAdvancedButton(button, index)
+            )}
+          </div>
         </div>
       </section>
     );
@@ -528,6 +551,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           <AnimatedHero 
             title={content?.headline || formData?.businessName || 'העתיד'}
             subtitle={content?.subheadline || content?.description || 'כאן עכשיו'}
+            primaryCta={{
+              text: content?.cta || 'התחילו היום',
+              onClick: () => {}
+            }}
+            secondaryCta={{
+              text: 'קפיצה לשיחה',
+              onClick: () => {}
+            }}
           />
           <EmotionalSection content={content} currentColors={currentColors} formData={formData} />
         </>
@@ -542,7 +573,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Gradient designs 3-14: New 3D designs
     if (selectedGradientDesign === 3) {
       return (
         <>
@@ -744,6 +774,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           <AnimatedHero 
             title={content?.headline || formData?.businessName || 'זכוכית'}
             subtitle="נוזלית"
+            primaryCta={{
+              text: content?.cta || 'התחילו היום',
+              onClick: () => {}
+            }}
+            secondaryCta={{
+              text: 'קפיצה לשיחה',
+              onClick: () => {}
+            }}
           />
           <EmotionalSection content={content} currentColors={currentColors} formData={formData} />
         </>
