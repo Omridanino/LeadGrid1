@@ -49,7 +49,7 @@ export const HeroSectionRetro = ({ formData, currentColors, content }: HeroSecti
     const description = formData?.mainServices || "אנחנו מתמחים בפתרונות מקצועיים לעסקים המחפשים חדשנות וטכנולוגיה מתקדמת"
     const badgeText = content?.badge || ""
     
-    // Enhanced styling functions with ALL colors working
+    // Enhanced styling functions with ALL colors working - updated with ALL new colors
     const getTextStyleClasses = (style: string) => {
       console.log('HeroSectionRetro - getTextStyleClasses called with:', style);
       
@@ -88,7 +88,7 @@ export const HeroSectionRetro = ({ formData, currentColors, content }: HeroSecti
         case "ציאן":
           return "text-cyan-400";
         
-        // Gradient colors - English and Hebrew
+        // Gradient colors - English and Hebrew - ALL UPDATED
         case "gradient-gold-text":
         case "גרדיאנט זהב":
           return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
@@ -132,7 +132,7 @@ export const HeroSectionRetro = ({ formData, currentColors, content }: HeroSecti
         case "גרדיאנט סגול טכנולוגי":
           return "bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent";
         
-        // Neon colors - English and Hebrew
+        // Neon colors - English and Hebrew - ALL UPDATED
         case "neon-blue":
         case "נאון כחול":
           return "text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]";

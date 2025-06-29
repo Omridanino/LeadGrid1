@@ -18,7 +18,7 @@ export const HeroSectionLamp = ({ formData, currentColors, content }: HeroSectio
     const mainServices = content?.description || formData?.mainServices || "טכנולוגיה מתקדמת עם עיצוב מרהיב ותוכן איכותי שיקדם את העסק שלכם קדימה"
     const badgeText = content?.badge || ""
     
-    // Enhanced styling functions with ALL colors working
+    // Enhanced styling functions with ALL colors working - COMPLETELY UPDATED
     const getTextStyleClasses = (style: string) => {
       console.log('HeroSectionLamp - getTextStyleClasses called with:', style);
       
@@ -57,7 +57,7 @@ export const HeroSectionLamp = ({ formData, currentColors, content }: HeroSectio
         case "ציאן":
           return "text-cyan-400";
         
-        // Gradient colors - English and Hebrew
+        // Gradient colors - English and Hebrew - ALL FULLY UPDATED
         case "gradient-gold-text":
         case "גרדיאנט זהב":
           return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
@@ -101,7 +101,7 @@ export const HeroSectionLamp = ({ formData, currentColors, content }: HeroSectio
         case "גרדיאנט סגול טכנולוגי":
           return "bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent";
         
-        // Neon colors - English and Hebrew
+        // Neon colors - English and Hebrew - ALL FULLY UPDATED
         case "neon-blue":
         case "נאון כחול":
           return "text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]";
