@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ColorScheme } from "@/types/colors";
 import { AnimatedHero } from "@/components/ui/animated-hero";
@@ -7,9 +8,10 @@ interface HeroSectionProps {
   formData: any;
   currentColors: ColorScheme;
   content: any;
+  heroImage?: string;
 }
 
-const HeroSection = ({ formData, currentColors, content }: HeroSectionProps) => {
+const HeroSection = ({ formData, currentColors, content, heroImage }: HeroSectionProps) => {
   const selectedGradientDesign = 3;
 
   const renderHeroContent = () => {
@@ -17,16 +19,8 @@ const HeroSection = ({ formData, currentColors, content }: HeroSectionProps) => 
       return (
         <>
           <AnimatedHero 
-            title={content?.headline || formData?.businessName || 'זכוכית'}
-            subtitle="נוזלית"
-            primaryCta={{
-              text: content?.cta || 'התחילו היום',
-              onClick: () => {}
-            }}
-            secondaryCta={{
-              text: 'קפיצה לשיחה',
-              onClick: () => {}
-            }}
+            title1={content?.headline || formData?.businessName || 'זכוכית'}
+            title2="נוזלית"
           />
           <EmotionalSection content={content} currentColors={currentColors} formData={formData} />
         </>
