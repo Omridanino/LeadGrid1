@@ -363,7 +363,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 className="text-xl md:text-2xl mb-12"
                 style={getTextStyle('subheadline')}
               >
-                {content?.subheadline || content?.description || 'חוויה דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש'}
+                {content?.subheadline || content?.description || 'expérience דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש'}
               </p>
               
               <div className="flex gap-4 justify-center flex-wrap">
@@ -827,108 +827,103 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     if (selectedDesign === 8) {
       return (
         <div className="relative w-screen h-screen overflow-hidden bg-black">
-          <div className="flex h-screen">
-            {/* Left side - Enhanced 3D Element with floating animation */}
-            <div className="flex-1 relative">
-              <div className="w-full h-full flex items-center justify-center relative">
-                {/* Enhanced 3D floating element */}
-                <div className="relative">
-                  {/* Main floating image */}
-                  <div 
-                    className="w-[1200px] h-[1200px] relative"
-                    style={{
-                      animation: 'float 6s ease-in-out infinite, rotate3d 20s linear infinite',
-                    }}
-                  >
-                    <img 
-                      src="/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png" 
-                      alt="3D Floating Element" 
-                      className="w-full h-full object-contain opacity-95"
-                      style={{
-                        filter: 'drop-shadow(0 0 50px rgba(255, 255, 255, 0.3)) drop-shadow(0 0 100px rgba(107, 115, 255, 0.2))',
-                        transform: 'perspective(1000px) rotateX(10deg) rotateY(15deg)',
-                      }}
-                    />
-                  </div>
-
-                  {/* Floating particles around the image */}
-                  {[...Array(12)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="absolute w-3 h-3 bg-white rounded-full opacity-60"
-                      style={{
-                        left: `${20 + (i % 4) * 25}%`,
-                        top: `${15 + Math.floor(i / 4) * 25}%`,
-                        animation: `particleFloat${i % 3} ${8 + i * 0.5}s ease-in-out infinite`,
-                        animationDelay: `${i * 0.3}s`,
-                        boxShadow: '0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(107, 115, 255, 0.5)',
-                      }}
-                    />
-                  ))}
-
-                  {/* Orbital rings around the main element */}
-                  <div 
-                    className="absolute inset-0 border-2 border-white/20 rounded-full"
-                    style={{
-                      width: '140%',
-                      height: '140%',
-                      left: '-20%',
-                      top: '-20%',
-                      animation: 'orbitSlow 30s linear infinite',
-                    }}
-                  />
-                  <div 
-                    className="absolute inset-0 border border-blue-400/30 rounded-full"
-                    style={{
-                      width: '160%',
-                      height: '160%',
-                      left: '-30%',
-                      top: '-30%',
-                      animation: 'orbitMedium 20s linear infinite reverse',
-                    }}
-                  />
-                </div>
-
-                {/* Background glow effect */}
-                <div 
-                  className="absolute inset-0 bg-gradient-radial from-blue-900/30 via-purple-900/20 to-transparent"
+          {/* Background 3D Element - Smaller and positioned as background */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+            <div className="relative">
+              {/* Main floating image - smaller size */}
+              <div 
+                className="w-[600px] h-[600px] relative opacity-40"
+                style={{
+                  animation: 'float 6s ease-in-out infinite, rotate3d 20s linear infinite',
+                }}
+              >
+                <img 
+                  src="/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png" 
+                  alt="3D Floating Element" 
+                  className="w-full h-full object-contain"
                   style={{
-                    animation: 'pulse 4s ease-in-out infinite',
+                    filter: 'drop-shadow(0 0 30px rgba(255, 255, 255, 0.2)) drop-shadow(0 0 60px rgba(107, 115, 255, 0.15))',
+                    transform: 'perspective(1000px) rotateX(10deg) rotateY(15deg)',
                   }}
                 />
               </div>
+
+              {/* Floating particles around the image - fewer and smaller */}
+              {[...Array(8)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute w-2 h-2 bg-white rounded-full opacity-40"
+                  style={{
+                    left: `${25 + (i % 3) * 20}%`,
+                    top: `${20 + Math.floor(i / 3) * 20}%`,
+                    animation: `particleFloat${i % 3} ${8 + i * 0.5}s ease-in-out infinite`,
+                    animationDelay: `${i * 0.3}s`,
+                    boxShadow: '0 0 8px rgba(255, 255, 255, 0.6), 0 0 16px rgba(107, 115, 255, 0.4)',
+                  }}
+                />
+              ))}
+
+              {/* Orbital rings - smaller */}
+              <div 
+                className="absolute inset-0 border border-white/10 rounded-full"
+                style={{
+                  width: '120%',
+                  height: '120%',
+                  left: '-10%',
+                  top: '-10%',
+                  animation: 'orbitSlow 30s linear infinite',
+                }}
+              />
+              <div 
+                className="absolute inset-0 border border-blue-400/20 rounded-full"
+                style={{
+                  width: '140%',
+                  height: '140%',
+                  left: '-20%',
+                  top: '-20%',
+                  animation: 'orbitMedium 20s linear infinite reverse',
+                }}
+              />
             </div>
 
-            {/* Right side - Content */}
-            <div className="flex-1 relative z-30 p-8 flex flex-col justify-center">
-              <div className="max-w-2xl text-white">
-                {content?.badge && (
-                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm`} style={getBadgeStyle()}>
-                    <Award className="w-4 h-4" />
-                    <span>{content.badge}</span>
-                  </div>
-                )}
-                
-                <h1 className={`text-4xl md:text-6xl font-bold mb-6`} style={getTextStyle('headline')}>
-                  {content?.headline || formData?.businessName || 'Build Your Dreams'}
-                </h1>
-                
-                <p className={`text-lg leading-relaxed mb-8`} style={getTextStyle('subheadline')}>
-                  {content?.subheadline || content?.description || 'AI-powered creativity for the next generation.'}
-                </p>
-                
-                <div className="flex gap-4">
-                  {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                    renderAdvancedButton(button, index)
-                  ) || (
-                    <button 
-                      className="px-8 py-4 rounded-lg font-bold transition"
-                      style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                    >
-                      {content?.cta || 'explore now'}
-                    </button>
-                  )}
+            {/* Background glow effect - reduced */}
+            <div 
+              className="absolute inset-0 bg-gradient-radial from-blue-900/20 via-purple-900/10 to-transparent"
+              style={{
+                animation: 'pulse 4s ease-in-out infinite',
+              }}
+            />
+          </div>
+
+          {/* Main Content - Centered over the background */}
+          <div className="relative z-30 h-full flex flex-col justify-center items-center text-center px-8">
+            <div className="max-w-4xl text-white">
+              {content?.badge && (
+                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm`} style={getBadgeStyle()}>
+                  <Award className="w-4 h-4" />
+                  <span>{content.badge}</span>
                 </div>
+              )}
+              
+              <h1 className={`text-4xl md:text-6xl lg:text-7xl font-bold mb-6`} style={getTextStyle('headline')}>
+                {content?.headline || formData?.businessName || 'Build Your Dreams'}
+              </h1>
+              
+              <p className={`text-lg md:text-xl leading-relaxed mb-8 max-w-2xl mx-auto`} style={getTextStyle('subheadline')}>
+                {content?.subheadline || content?.description || 'AI-powered creativity for the next generation.'}
+              </p>
+              
+              <div className="flex gap-4 justify-center flex-wrap">
+                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+                  renderAdvancedButton(button, index)
+                ) || (
+                  <button 
+                    className="px-8 py-4 rounded-lg font-bold transition"
+                    style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+                  >
+                    {content?.cta || 'explore now'}
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -937,9 +932,9 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           <style>{`
             @keyframes float {
               0%, 100% { transform: translateY(0px) scale(1); }
-              25% { transform: translateY(-20px) scale(1.02); }
-              50% { transform: translateY(-30px) scale(1.05); }
-              75% { transform: translateY(-15px) scale(1.02); }
+              25% { transform: translateY(-15px) scale(1.01); }
+              50% { transform: translateY(-25px) scale(1.02); }
+              75% { transform: translateY(-10px) scale(1.01); }
             }
             
             @keyframes rotate3d {
@@ -951,18 +946,18 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             }
             
             @keyframes particleFloat0 {
-              0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
-              50% { transform: translate(20px, -30px) scale(1.2); opacity: 1; }
+              0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+              50% { transform: translate(15px, -20px) scale(1.1); opacity: 0.8; }
             }
             
             @keyframes particleFloat1 {
-              0%, 100% { transform: translate(0, 0) scale(0.8); opacity: 0.4; }
-              50% { transform: translate(-25px, -20px) scale(1.1); opacity: 0.9; }
+              0%, 100% { transform: translate(0, 0) scale(0.8); opacity: 0.3; }
+              50% { transform: translate(-20px, -15px) scale(1.0); opacity: 0.7; }
             }
             
             @keyframes particleFloat2 {
-              0%, 100% { transform: translate(0, 0) scale(1.1); opacity: 0.5; }
-              50% { transform: translate(15px, -35px) scale(0.9); opacity: 0.8; }
+              0%, 100% { transform: translate(0, 0) scale(1.0); opacity: 0.4; }
+              50% { transform: translate(10px, -25px) scale(0.9); opacity: 0.6; }
             }
             
             @keyframes orbitSlow {
