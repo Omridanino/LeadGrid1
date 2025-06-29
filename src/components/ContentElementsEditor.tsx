@@ -6,16 +6,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge, Eye, EyeOff, Plus, Trash2, Palette } from "lucide-react";
+import { Badge, Eye, EyeOff, Plus, Trash2, Palette, Save } from "lucide-react";
 
 interface ContentElementsEditorProps {
   content: any;
   onContentChange: (newContent: any) => void;
+  onColorsChange?: (colors: any) => void;
   formData?: any;
 }
 
-const ContentElementsEditor = ({ content, onContentChange, formData }: ContentElementsEditorProps) => {
+const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formData }: ContentElementsEditorProps) => {
   const [localContent, setLocalContent] = useState(content || {});
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   useEffect(() => {
     if (content) {
@@ -40,6 +42,11 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     const newContent = { ...localContent, [field]: value };
     setLocalContent(newContent);
     onContentChange(newContent);
+    
+    // Mark as having unsaved changes if it's a color change
+    if (field === 'colors') {
+      setHasUnsavedChanges(true);
+    }
   };
 
   const updateButton = (index: number, field: string, value: any) => {
@@ -49,6 +56,11 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     }
     buttons[index] = { ...buttons[index], [field]: value };
     updateField('buttons', buttons);
+    
+    // Mark as having unsaved changes if it's a button color change
+    if (field === 'color') {
+      setHasUnsavedChanges(true);
+    }
   };
 
   const addButton = () => {
@@ -68,6 +80,31 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     if (buttons[index]) {
       buttons[index].visible = !buttons[index].visible;
       updateField('buttons', buttons);
+    }
+  };
+
+  const saveDesign = () => {
+    if (onColorsChange && localContent.colors) {
+      // Convert content colors to the ColorScheme format expected by the parent
+      const colorScheme = {
+        primary: "#3b82f6",
+        secondary: "#8b5cf6", 
+        accent: "#06b6d4",
+        background: "#000000",
+        heroBackground: "#000000",
+        text: "#ffffff",
+        headlineColor: localContent.colors.headline || "#ffffff",
+        subheadlineColor: localContent.colors.subheadline || "#e0f2fe",
+        featuresColor: "#ffffff",
+        featuresTextColor: "#e5e7eb",
+        aboutColor: "#ffffff",
+        aboutTextColor: "#d1d5db",
+        contactColor: "#ffffff",
+        contactTextColor: "#d1d5db"
+      };
+      
+      onColorsChange(colorScheme);
+      setHasUnsavedChanges(false);
     }
   };
 
@@ -92,6 +129,22 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
 
   return (
     <div className="space-y-6 text-right" dir="rtl">
+      {/* Save Design Button */}
+      {hasUnsavedChanges && (
+        <div className="sticky top-0 z-10 bg-gray-900 p-4 border border-gray-700 rounded-lg">
+          <Button
+            onClick={saveDesign}
+            className="w-full bg-green-600 hover:bg-green-700 text-white"
+          >
+            <Save className="w-4 h-4 ml-2" />
+            שמור עיצוב
+          </Button>
+          <p className="text-xs text-gray-400 mt-2 text-center">
+            יש לך שינויי צבעים שלא נשמרו
+          </p>
+        </div>
+      )}
+
       {/* Hero Section */}
       <Card className="bg-gray-900 border-gray-700">
         <CardHeader>

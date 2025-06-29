@@ -75,6 +75,7 @@ const GeneratedLandingPage = () => {
             <ContentElementsEditor 
               content={state.content}
               onContentChange={state.setContent}
+              onColorsChange={state.handleColorChange}
               formData={state.formData}
             />
           </div>
