@@ -124,14 +124,27 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
     return {};
   };
 
+  // Get hero style classes based on formData.heroStyle
+  const getHeroStyleClasses = () => {
+    switch (formData?.heroStyle) {
+      case 'geometric':
+        return 'style-geometric';
+      case 'glass':
+        return 'style-glass';
+      case 'metal':
+        return 'style-metal';
+      case 'image':
+        return 'style-image';
+      default:
+        return 'style-3d';
+    }
+  };
+
   // Fix background color handling to support all color types and hero background
   const getBackgroundStyle = () => {
-    // If using hero background, return hero-like styling
+    // If using hero background, return empty style and use classes instead
     if (useHeroBackground) {
-      return { 
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        position: 'relative' as const
-      };
+      return {};
     }
     
     if (backgroundColor === 'default') {
@@ -147,9 +160,21 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
     return { backgroundColor: backgroundColor };
   };
 
+  // Get section classes
+  const getSectionClasses = () => {
+    let classes = "py-20 px-8 relative";
+    
+    // If using hero background, add the hero style classes
+    if (useHeroBackground) {
+      classes += ` ${getHeroStyleClasses()}`;
+    }
+    
+    return classes;
+  };
+
   return (
     <section 
-      className="py-20 px-8 relative"
+      className={getSectionClasses()}
       style={getBackgroundStyle()}
     >
       {useHeroBackground && (
