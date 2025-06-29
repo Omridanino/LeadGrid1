@@ -23,14 +23,12 @@ const HeroSectionLamp = ({ content, currentColors, formData, heroImage }: HeroSe
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { 
-        duration: 0.8, 
-        ease: "easeOut"
-      }
-    }
+    visible: { y: 0, opacity: 1 }
+  };
+
+  const itemTransition = {
+    duration: 0.8,
+    ease: "easeOut"
   };
 
   return (
@@ -51,6 +49,7 @@ const HeroSectionLamp = ({ content, currentColors, formData, heroImage }: HeroSe
         {content?.badge && (
           <motion.div
             variants={itemVariants}
+            transition={itemTransition}
             className="inline-block mb-6"
           >
             <span 
@@ -68,6 +67,7 @@ const HeroSectionLamp = ({ content, currentColors, formData, heroImage }: HeroSe
         {/* Headline */}
         <motion.h1
           variants={itemVariants}
+          transition={itemTransition}
           className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
           style={getColorStyle(content?.headlineStyle)}
         >
@@ -78,6 +78,7 @@ const HeroSectionLamp = ({ content, currentColors, formData, heroImage }: HeroSe
         {content?.subheadline && (
           <motion.h2
             variants={itemVariants}
+            transition={itemTransition}
             className="text-xl md:text-2xl mb-6 max-w-3xl mx-auto leading-relaxed"
             style={getColorStyle(content.subheadlineStyle)}
           >
@@ -89,6 +90,7 @@ const HeroSectionLamp = ({ content, currentColors, formData, heroImage }: HeroSe
         {content?.description && (
           <motion.p
             variants={itemVariants}
+            transition={itemTransition}
             className="text-lg mb-8 max-w-2xl mx-auto"
             style={getColorStyle(content.descriptionStyle)}
           >
@@ -100,6 +102,7 @@ const HeroSectionLamp = ({ content, currentColors, formData, heroImage }: HeroSe
         {content?.buttons && content.buttons.length > 0 && (
           <motion.div
             variants={itemVariants}
+            transition={itemTransition}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             {content.buttons.map((button: any, index: number) => {
