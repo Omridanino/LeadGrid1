@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/types/colors";
@@ -148,8 +149,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     const [selectedBasicDesign, setSelectedBasicDesign] = useState<string>('');
 
     useEffect(() => {
-      // Generate a truly random selection based on timestamp and random
-      const randomSeed = Date.now() + Math.random() * 1000;
       const availableDesigns = [
         'hero-section-clean',
         'hero-section-minimal', 
@@ -160,7 +159,9 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
         'hero-section-retro'
       ];
       
-      const randomIndex = Math.floor(randomSeed % availableDesigns.length);
+      // Create a unique seed based on business name and type to ensure consistency
+      const seed = (formData?.businessName || '') + (formData?.businessType || '') + Date.now();
+      const randomIndex = Math.abs(seed.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % availableDesigns.length;
       const selectedDesign = availableDesigns[randomIndex];
       
       console.log('Selected random basic design:', selectedDesign, 'from index:', randomIndex);
@@ -257,9 +258,9 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Return default fallback for other basic designs
+    // Return elegant for classic and elegant
     return (
-      <section className="relative overflow-hidden min-h-screen bg-black">
+      <section className="relative overflow-hidden min-h-screen bg-gradient-to-br from-gray-900 via-purple-900/20 to-gray-900">
         <div className="container mx-auto px-4 relative z-10 min-h-screen flex items-center justify-center">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white">
@@ -282,17 +283,18 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     );
   }
 
-  
   // 3D Tech Design Style - עם סגנונות מותאמים אישית
   if (designStyle === '3d-tech') {
     const [selectedDesign, setSelectedDesign] = useState(0);
 
     useEffect(() => {
-      // Randomly select one of the 18 3D designs (0-17)
-      const randomIndex = Math.floor(Math.random() * 18);
-      console.log('Selected random 3D design:', randomIndex);
+      // Create a unique seed based on business info for consistent randomization
+      const seed = (formData?.businessName || '') + (formData?.businessType || '') + (formData?.targetAudience || '');
+      const randomValue = Math.abs(seed.split('').reduce((a, b) => a + b.charCodeAt(0), 0));
+      const randomIndex = randomValue % 20; // 20 different 3D designs
+      console.log('Selected random 3D design:', randomIndex, 'with seed:', seed);
       setSelectedDesign(randomIndex);
-    }, [formData?.businessName, formData?.businessType]);
+    }, [formData?.businessName, formData?.businessType, formData?.targetAudience]);
 
     // Enhanced content props
     const customContentProps = {
@@ -300,7 +302,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       buttons: content?.buttons?.filter((btn: any) => btn.visible !== false)
     };
 
-    // New designs from uploaded images (designs 8-17)
+    // New designs from uploaded images (designs 8-19)
     if (selectedDesign === 8) {
       return <HeroSimpleDark formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
@@ -309,23 +311,47 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return <HeroFloatingElements formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
     
-    if (selectedDesign === 12) {
+    if (selectedDesign === 10) {
       return <HeroSpaceParticles formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
     
-    if (selectedDesign === 14) {
+    if (selectedDesign === 11) {
       return <HeroTechGradient formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
     
-    if (selectedDesign === 15) {
+    if (selectedDesign === 12) {
       return <HeroCrystalElements formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
     
-    if (selectedDesign === 16) {
+    if (selectedDesign === 13) {
       return <HeroBankingRibbons formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
+    
+    if (selectedDesign === 14) {
+      return <HeroFuturistic formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    
+    if (selectedDesign === 15) {
+      return <GradientHero formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    
+    if (selectedDesign === 16) {
+      return <AnimatedHero formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    
+    if (selectedDesign === 17) {
+      return <HeroGeometric formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    
+    if (selectedDesign === 18) {
+      return <HorizonHeroSection formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    
+    if (selectedDesign === 19) {
+      return <HeroWithMockup formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
 
-    // Keep existing designs (0-7)
+    // Original designs (0-7)
     if (selectedDesign === 0) {
       return (
         <section className="relative overflow-hidden min-h-screen bg-black/[0.96]">
@@ -433,9 +459,148 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Continue with other existing designs...
+    if (selectedDesign === 2) {
+      return (
+        <section className="relative overflow-hidden min-h-screen bg-black">
+          <AuroraHero />
+          <div className="absolute inset-0 z-10 flex items-center justify-center">
+            <div className="text-center max-w-4xl mx-auto px-4">
+              <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white">
+                {content?.headline || formData?.businessName || 'עתיד אורורה'}
+              </h1>
+              <p className="text-xl mb-12 text-gray-300">
+                {content?.subheadline || 'חוויה חדשנית עם אפקטים ויזואליים מרהיבים'}
+              </p>
+              <button 
+                className="px-8 py-4 rounded-xl font-semibold text-lg"
+                style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+              >
+                {content?.cta || 'גלה עוד'}
+              </button>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    if (selectedDesign === 3) {
+      return (
+        <section className="relative overflow-hidden min-h-screen bg-black">
+          <LavaLamp />
+          <div className="absolute inset-0 z-10 flex items-center justify-center">
+            <div className="text-center max-w-4xl mx-auto px-4">
+              <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white">
+                {content?.headline || formData?.businessName || 'זרם נוזלי'}
+              </h1>
+              <p className="text-xl mb-12 text-gray-300">
+                {content?.subheadline || 'עיצוב דינמי עם תנועות נוזליות מרהיבות'}
+              </p>
+              <button 
+                className="px-8 py-4 rounded-xl font-semibold text-lg"
+                style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+              >
+                {content?.cta || 'התחל כעת'}
+              </button>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    if (selectedDesign === 4) {
+      return (
+        <section className="relative overflow-hidden min-h-screen bg-black">
+          <Scene />
+          <div className="absolute inset-0 z-10 flex items-center justify-center">
+            <div className="text-center max-w-4xl mx-auto px-4">
+              <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white">
+                {content?.headline || formData?.businessName || 'קוביית רוביק'}
+              </h1>
+              <p className="text-xl mb-12 text-gray-300">
+                {content?.subheadline || 'פתרונות מורכבים בפשטות מדהימה'}
+              </p>
+              <button 
+                className="px-8 py-4 rounded-xl font-semibold text-lg"
+                style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+              >
+                {content?.cta || 'פתור איתנו'}
+              </button>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    if (selectedDesign === 5) {
+      return (
+        <section className="relative overflow-hidden min-h-screen bg-black">
+          <BeamsBackground />
+          <div className="absolute inset-0 z-10 flex items-center justify-center">
+            <div className="text-center max-w-4xl mx-auto px-4">
+              <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white">
+                {content?.headline || formData?.businessName || 'קרני אור'}
+              </h1>
+              <p className="text-xl mb-12 text-gray-300">
+                {content?.subheadline || 'נתיבי אור המובילים לעתיד דיגיטלי'}
+              </p>
+              <button 
+                className="px-8 py-4 rounded-xl font-semibold text-lg"
+                style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+              >
+                {content?.cta || 'עקוב אחר האור'}
+              </button>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    if (selectedDesign === 6) {
+      return (
+        <section className="relative overflow-hidden min-h-screen bg-black">
+          <InteractiveRobotSpline />
+          <div className="absolute inset-0 z-10 flex items-center justify-center">
+            <div className="text-center max-w-4xl mx-auto px-4">
+              <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white">
+                {content?.headline || formData?.businessName || 'רובוט אינטראקטיבי'}
+              </h1>
+              <p className="text-xl mb-12 text-gray-300">
+                {content?.subheadline || 'טכנולוגיה אינטראקטיבית עם אינטליגנציה מלאכותית'}
+              </p>
+              <button 
+                className="px-8 py-4 rounded-xl font-semibold text-lg"
+                style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+              >
+                {content?.cta || 'פגוש את הרובוט'}
+              </button>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
     // Fallback design
-    return <HeroSimpleDark formData={formData} currentColors={currentColors} content={customContentProps} />;
+    return (
+      <section className="relative overflow-hidden min-h-screen bg-black">
+        <BackgroundCircles />
+        <div className="absolute inset-0 z-10 flex items-center justify-center">
+          <div className="text-center max-w-4xl mx-auto px-4">
+            <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white">
+              {content?.headline || formData?.businessName || 'עיגולי רקע'}
+            </h1>
+            <p className="text-xl mb-12 text-gray-300">
+              {content?.subheadline || 'עיצוב גיאומטרי עם תנועות מרהיבות'}
+            </p>
+            <button 
+              className="px-8 py-4 rounded-xl font-semibold text-lg"
+              style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+            >
+              {content?.cta || 'היכנס למעגל'}
+            </button>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   // Fallback to basic design with custom styles
