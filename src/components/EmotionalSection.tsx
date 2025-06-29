@@ -32,13 +32,12 @@ interface EmotionalSectionProps {
   content: any;
   currentColors: ColorScheme;
   formData: any;
-  selectedHeroDesign?: string; // עיצוב ההירו שנבחר רנדומלי
+  selectedHeroDesign?: string;
 }
 
 export const EmotionalSection = ({ content, currentColors, formData, selectedHeroDesign }: EmotionalSectionProps) => {
   const emotionalContent = content?.emotionalSection || {};
   
-  // בדיקה אם צריך להשתמש ברקע ההירו
   const useHeroBackground = 
     emotionalContent.useHeroBackground || 
     content?.useHeroBackground ||
@@ -230,7 +229,6 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
     cta: emotionalContent.buttons?.[0]?.text || 'התחל עכשיו'
   };
 
-  // כאן נשתמש באותו עיצוב כמו ההירו שנבחר רנדומלי
   console.log('Using same hero design as selected:', selectedHeroDesign);
 
   // נשתמש באותו עיצוב כמו ההירו שנבחר
@@ -533,6 +531,70 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
     case 'hero-parallax':
       return (
         <HeroParallax 
+          formData={formData} 
+          currentColors={currentColors} 
+          content={heroContentForEmotional} 
+        />
+      );
+    case 'hero-neumorphism':
+      return (
+        <HeroNeumorphism 
+          formData={formData} 
+          currentColors={currentColors} 
+          content={heroContentForEmotional} 
+        />
+      );
+    case 'hero-minimal-tech':
+      return (
+        <HeroMinimalTech 
+          formData={formData} 
+          currentColors={currentColors} 
+          content={heroContentForEmotional} 
+        />
+      );
+    case 'hero-holographic':
+      return (
+        <HeroHolographic 
+          formData={formData} 
+          currentColors={currentColors} 
+          content={heroContentForEmotional} 
+        />
+      );
+    case 'hero-morphing-shapes':
+      return (
+        <HeroMorphingShapes 
+          formData={formData} 
+          currentColors={currentColors} 
+          content={heroContentForEmotional} 
+        />
+      );
+    case 'hero-crystal-matrix':
+      return (
+        <HeroCrystalMatrix 
+          formData={formData} 
+          currentColors={currentColors} 
+          content={heroContentForEmotional} 
+        />
+      );
+    case 'hero-neon-grid-portal':
+      return (
+        <HeroNeonGridPortal 
+          formData={formData} 
+          currentColors={currentColors} 
+          content={heroContentForEmotional} 
+        />
+      );
+    case 'hero-quantum-bubbles':
+      return (
+        <HeroQuantumBubbles 
+          formData={formData} 
+          currentColors={currentColors} 
+          content={heroContentForEmotional} 
+        />
+      );
+    case 'hero-cosmic-geometry':
+      return (
+        <HeroCosmicGeometry 
           formData={formData} 
           currentColors={currentColors} 
           content={heroContentForEmotional} 
