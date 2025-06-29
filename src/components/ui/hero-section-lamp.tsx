@@ -1,130 +1,443 @@
-
-import { motion } from "framer-motion";
-import { getColorStyle, getBackgroundStyle } from "@/utils/colorUtils";
+import * as React from "react"
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { Menu, X } from 'lucide-react'
 
 interface HeroSectionLampProps {
-  content: any;
-  currentColors?: any;
-  formData?: any;
-  heroImage?: string;
+  formData: any;
+  currentColors: any;
+  content?: any;
 }
 
-const HeroSectionLamp = ({ content, currentColors, formData, heroImage }: HeroSectionLampProps) => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.2
+export const HeroSectionLamp = ({ formData, currentColors, content }: HeroSectionLampProps) => {
+    const [menuState, setMenuState] = React.useState(false)
+    
+    // Use content values first, then formData, then defaults
+    const businessName = content?.headline || formData?.businessName || "שם העסק"
+    const businessStory = content?.subheadline || formData?.businessStory || "בונים פתרונות בדרך הנכונה"
+    const mainServices = content?.description || formData?.mainServices || "טכנולוגיה מתקדמת עם עיצוב מרהיב ותוכן איכותי שיקדם את העסק שלכם קדימה"
+    const badgeText = content?.badge || ""
+    
+    // Enhanced styling functions with support for custom colors
+    const getTextStyleClasses = (style: string) => {
+      console.log('HeroSectionLamp - getTextStyleClasses called with:', style);
+      
+      if (!style || style === 'default') return "text-slate-300";
+      
+      // Handle custom colors
+      if (style.startsWith('custom-')) {
+        const color = style.replace('custom-', '');
+        if (color.startsWith('gradient-')) {
+          const gradientParts = color.replace('gradient-', '').split('-');
+          if (gradientParts.length >= 2) {
+            return `bg-gradient-to-r from-[${gradientParts[0]}] to-[${gradientParts[1]}] bg-clip-text text-transparent`;
+          }
+        } else if (color.startsWith('#')) {
+          return `text-[${color}]`;
+        }
       }
-    }
-  };
+      
+      switch (style) {
+        // Basic colors - English and Hebrew
+        case "black-text":
+        case "שחור":
+          return "text-black";
+        case "white-text":
+        case "לבן":
+          return "text-white";
+        case "gold-text":
+        case "זהב":
+          return "text-yellow-400";
+        case "silver-text":
+        case "כסף":
+          return "text-gray-300";
+        case "blue-text":
+        case "כחול":
+          return "text-blue-400";
+        case "green-text":
+        case "ירוק":
+          return "text-green-400";
+        case "red-text":
+        case "אדום":
+          return "text-red-400";
+        case "purple-text":
+        case "סגול":
+          return "text-purple-400";
+        case "pink-text":
+        case "ורוד":
+          return "text-pink-400";
+        case "cyan-text":
+        case "ציאן":
+          return "text-cyan-400";
+        
+        // Gradient colors - English and Hebrew - ALL FULLY UPDATED
+        case "gradient-gold-text":
+        case "גרדיאנט זהב":
+          return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
+        case "gradient-purple-text":
+        case "גרדיאנט סגול":
+          return "bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent";
+        case "gradient-blue-text":
+        case "גרדיאנט כחול":
+          return "bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent";
+        case "gradient-green-text":
+        case "גרדיאנט ירוק":
+          return "bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent";
+        case "gradient-red-text":
+        case "גרדיאנט אדום":
+          return "bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent";
+        case "gradient-cyan-text":
+        case "גרדיאנט ציאן":
+          return "bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent";
+        case "gradient-rainbow-text":
+        case "גרדיאנט קשת":
+          return "bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 bg-clip-text text-transparent";
+        case "gradient-blue-ocean":
+        case "גרדיאנט כחול אוקיינוס":
+          return "bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent";
+        case "gradient-green-nature":
+        case "גרדיאנט ירוק טבע":
+          return "bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent";
+        case "gradient-red-fire":
+        case "גרדיאנט אדום אש":
+          return "bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent";
+        case "gradient-pink-sunset":
+        case "גרדיאנט ורוד שקיעה":
+          return "bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent";
+        case "gradient-gold-black":
+        case "גרדיאנט זהב שחור":
+          return "bg-gradient-to-r from-yellow-400 to-black bg-clip-text text-transparent";
+        case "gradient-gold-white":
+        case "גרדיאנט זהב לבן":
+          return "bg-gradient-to-r from-yellow-400 to-white bg-clip-text text-transparent";
+        case "gradient-purple-tech":
+        case "גרדיאנט סגול טכנולוגי":
+          return "bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent";
+        
+        // Neon colors - English and Hebrew - ALL FULLY UPDATED
+        case "neon-blue":
+        case "נאון כחול":
+          return "text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]";
+        case "neon-green":
+        case "נאון ירוק":
+          return "text-green-400 drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]";
+        case "neon-purple":
+        case "נאון סגול":
+          return "text-purple-400 drop-shadow-[0_0_10px_rgba(168,85,247,0.8)]";
+        case "neon-pink":
+        case "נאון ורוד":
+          return "text-pink-400 drop-shadow-[0_0_10px_rgba(236,72,153,0.8)]";
+        
+        default: 
+          console.log('HeroSectionLamp - Unknown text style, using default:', style);
+          return "text-slate-300";
+      }
+    };
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.8, ease: "easeOut" }
-    }
-  };
+    const getBadgeStyleClasses = (style: string) => {
+      console.log('HeroSectionLamp - getBadgeStyleClasses called with:', style);
+      
+      if (!style || style === 'default') return "bg-cyan-500 text-white";
+      
+      // Handle custom colors
+      if (style.startsWith('custom-')) {
+        const color = style.replace('custom-', '');
+        if (color.startsWith('gradient-')) {
+          const gradientParts = color.replace('gradient-', '').split('-');
+          if (gradientParts.length >= 2) {
+            return `bg-gradient-to-r from-[${gradientParts[0]}] to-[${gradientParts[1]}] text-white border-0`;
+          }
+        } else if (color.startsWith('#')) {
+          return `bg-[${color}] text-white`;
+        }
+      }
+      
+      switch (style) {
+        case "black-on-white":
+        case "שחור על לבן":
+          return "bg-white text-black border border-black hover:bg-gray-100";
+        case "white-on-black":
+        case "לבן על שחור":
+          return "bg-black text-white border border-white hover:bg-gray-900";
+        case "gradient-gold-black":
+        case "גרדיאנט זהב-שחור":
+          return "bg-gradient-to-r from-yellow-400 to-black text-white border-0";
+        case "gradient-gold-white":
+        case "גרדיאנט זהב-לבן":
+          return "bg-gradient-to-r from-yellow-400 to-white text-black border-0";
+        case "gradient-purple-tech":
+        case "גרדיאנט סגול טכנולוגי":
+          return "bg-gradient-to-r from-purple-600 to-blue-500 text-white border-0";
+        case "gradient-blue-ocean":
+        case "גרדיאנט כחול אוקיינוס":
+          return "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0";
+        case "gradient-green-nature":
+        case "גרדיאנט ירוק טבע":
+          return "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0";
+        case "gradient-red-fire":
+        case "גרדיאנט אדום אש":
+          return "bg-gradient-to-r from-red-500 to-orange-500 text-white border-0";
+        case "gradient-pink-sunset":
+        case "גרדיאנט ורוד שקיעה":
+          return "bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0";
+        case "neon-blue":
+        case "נאון כחול":
+          return "bg-blue-600 text-white border-2 border-blue-400 shadow-lg shadow-blue-400/50";
+        case "neon-green":
+        case "נאון ירוק":
+          return "bg-green-600 text-white border-2 border-green-400 shadow-lg shadow-green-400/50";
+        case "neon-purple":
+        case "נאון סגול":
+          return "bg-purple-600 text-white border-2 border-purple-400 shadow-lg shadow-purple-400/50";
+        case "neon-pink":
+        case "נאון ורוד":
+          return "bg-pink-600 text-white border-2 border-pink-400 shadow-lg shadow-pink-400/50";
+        case "glass-dark":
+        case "זכוכית כהה":
+          return "bg-black/20 text-white border border-white/30 backdrop-blur-sm";
+        case "glass-light":
+        case "זכוכית בהירה":
+          return "bg-white/20 text-black border border-black/30 backdrop-blur-sm";
+        default: 
+          console.log('HeroSectionLamp - Unknown badge style, using default:', style);
+          return "bg-cyan-500 text-white";
+      }
+    };
 
-  return (
-    <section className="relative min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 overflow-hidden">
-      {/* Lamp Effect */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-96 h-96 bg-gradient-to-b from-purple-500/30 to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-gradient-to-b from-blue-500/20 to-transparent rounded-full blur-2xl"></div>
-      </div>
+    const getButtonStyleClasses = (style: string) => {
+      console.log('HeroSectionLamp - getButtonStyleClasses called with:', style);
+      
+      if (!style || style === 'default') return "bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700";
+      
+      // Handle custom colors
+      if (style.startsWith('custom-')) {
+        const color = style.replace('custom-', '');
+        if (color.startsWith('gradient-')) {
+          const gradientParts = color.replace('gradient-', '').split('-');
+          if (gradientParts.length >= 2) {
+            return `bg-gradient-to-r from-[${gradientParts[0]}] to-[${gradientParts[1]}] text-white border-0 hover:opacity-90`;
+          }
+        } else if (color.startsWith('#')) {
+          return `bg-[${color}] text-white hover:opacity-90`;
+        }
+      }
+      
+      switch (style) {
+        case "black-on-white":
+        case "שחור על לבן":
+          return "bg-white text-black border border-black hover:bg-gray-100";
+        case "white-on-black":
+        case "לבן על שחור":
+          return "bg-black text-white border border-white hover:bg-gray-900";
+        case "gradient-gold-black":
+        case "גרדיאנט זהב-שחור":
+          return "bg-gradient-to-r from-yellow-400 to-black text-white border-0 hover:from-yellow-500 hover:to-gray-900";
+        case "gradient-gold-white":
+        case "גרדיאנט זהב-לבן":
+          return "bg-gradient-to-r from-yellow-400 to-white text-black border-0 hover:from-yellow-500 hover:to-gray-100";
+        case "gradient-purple-tech":
+        case "גרדיאנט סגול טכנולוגי":
+          return "bg-gradient-to-r from-purple-600 to-blue-500 text-white border-0 hover:from-purple-700 hover:to-blue-600";
+        case "gradient-blue-ocean":
+        case "גרדיאנט כחול אוקיינוס":
+          return "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0 hover:from-blue-600 hover:to-cyan-600";
+        case "gradient-green-nature":
+        case "גרדיאנט ירוק טבע":
+          return "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 hover:from-green-600 hover:to-emerald-600";
+        case "gradient-red-fire":
+        case "גרדיאנט אדום אש":
+          return "bg-gradient-to-r from-red-500 to-orange-500 text-white border-0 hover:from-red-600 hover:to-orange-600";
+        case "gradient-pink-sunset":
+        case "גרדיאנט ורוד שקיעה":
+          return "bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0 hover:from-pink-600 hover:to-rose-600";
+        case "neon-blue":
+        case "נאון כחול":
+          return "bg-blue-600 text-white border-2 border-blue-400 shadow-lg shadow-blue-400/50 hover:bg-blue-700";
+        case "neon-green":
+        case "נאון ירוק":
+          return "bg-green-600 text-white border-2 border-green-400 shadow-lg shadow-green-400/50 hover:bg-green-700";
+        case "neon-purple":
+        case "נאון סגול":
+          return "bg-purple-600 text-white border-2 border-purple-400 shadow-lg shadow-purple-400/50 hover:bg-purple-700";
+        case "neon-pink":
+        case "נאון ורוד":
+          return "bg-pink-600 text-white border-2 border-pink-400 shadow-lg shadow-pink-400/50 hover:bg-pink-700";
+        case "glass-dark":
+        case "זכוכית כהה":
+          return "bg-black/20 text-white border border-white/30 backdrop-blur-sm hover:bg-black/30";
+        case "glass-light":
+        case "זכוכית בהירה":
+          return "bg-white/20 text-black border border-black/30 backdrop-blur-sm hover:bg-white/30";
+        default: 
+          console.log('HeroSectionLamp - Unknown button style, using default:', style);
+          return "bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700";
+      }
+    };
 
-      <motion.div
-        className="relative z-10 container mx-auto px-4 py-20 text-center"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* Badge */}
-        {content.badge && (
-          <motion.div
-            variants={itemVariants}
-            className="inline-block mb-6"
-          >
-            <span 
-              className="px-4 py-2 rounded-full text-sm font-medium border border-gray-600"
-              style={{
-                ...getBackgroundStyle(content.badgeStyle),
-                ...getColorStyle(content.badgeTextStyle)
-              }}
-            >
-              {content.badge}
-            </span>
-          </motion.div>
-        )}
+    const getBackgroundClasses = (style: string) => {
+      console.log('HeroSectionLamp - getBackgroundClasses called with:', style);
+      
+      if (!style || style === 'default') return "bg-slate-950";
+      
+      switch (style) {
+        case "dark":
+          return "bg-gray-950";
+        case "light":
+          return "bg-gray-100";
+        case "gradient-blue":
+          return "bg-gradient-to-br from-blue-950 to-blue-900";
+        case "gradient-purple":
+          return "bg-gradient-to-br from-purple-950 to-purple-900";
+        case "gradient-green":
+          return "bg-gradient-to-br from-green-950 to-green-900";
+        case "gradient-orange":
+          return "bg-gradient-to-br from-orange-950 to-orange-900";
+        case "gradient-pink":
+          return "bg-gradient-to-br from-pink-950 to-pink-900";
+        case "tech-dark":
+          return "bg-black";
+        case "minimal-light":
+          return "bg-white";
+        default: 
+          console.log('HeroSectionLamp - Unknown background style, using default:', style);
+          return "bg-slate-950";
+      }
+    };
+    
+    return (
+        <div className={`relative flex min-h-screen flex-col items-center justify-center overflow-hidden ${getBackgroundClasses(content?.backgroundStyle)} w-full rounded-md z-0`} dir="rtl">
+            <header className="absolute top-0 w-full z-30">
+                <nav
+                    data-state={menuState && 'active'}
+                    className="group fixed z-20 w-full border-b border-dashed bg-slate-950/80 backdrop-blur">
+                    <div className="m-auto max-w-5xl px-6">
+                        <div className="flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
+                            <div className="flex w-full justify-between lg:w-auto">
+                                <div className="flex items-center space-x-2 space-x-reverse">
+                                    <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
+                                        <span className="text-white font-bold text-sm">{businessName.charAt(0)}</span>
+                                    </div>
+                                    <span className="font-semibold text-lg text-white">{businessName}</span>
+                                </div>
 
-        {/* Headline */}
-        <motion.h1
-          variants={itemVariants}
-          className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
-          style={getColorStyle(content.headlineStyle)}
-        >
-          {content.headline || 'כותרת ראשית מדהימה'}
-        </motion.h1>
+                                <button
+                                    onClick={() => setMenuState(!menuState)}
+                                    aria-label={menuState == true ? 'סגור תפריט' : 'פתח תפריט'}
+                                    className="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden">
+                                    <Menu className="group-data-[state=active]:rotate-180 group-data-[state=active]:scale-0 group-data-[state=active]:opacity-0 m-auto size-6 duration-200 text-white" />
+                                    <X className="group-data-[state=active]:rotate-0 group-data-[state=active]:scale-100 group-data-[state=active]:opacity-100 absolute inset-0 m-auto size-6 -rotate-180 scale-0 opacity-0 duration-200 text-white" />
+                                </button>
+                            </div>
 
-        {/* Subheadline */}
-        {content.subheadline && (
-          <motion.h2
-            variants={itemVariants}
-            className="text-xl md:text-2xl mb-6 max-w-3xl mx-auto leading-relaxed"
-            style={getColorStyle(content.subheadlineStyle)}
-          >
-            {content.subheadline}
-          </motion.h2>
-        )}
+                            <div className="bg-slate-950 group-data-[state=active]:block lg:group-data-[state=active]:flex mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border border-slate-800 p-6 shadow-2xl md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none">
+                                <div className="lg:pr-4">
+                                    <ul className="space-y-6 text-base lg:flex lg:gap-8 lg:space-y-0 lg:text-sm">
+                                        <li>
+                                            <a href="#services" className="text-slate-400 hover:text-white block duration-150">
+                                                <span>שירותים</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#about" className="text-slate-400 hover:text-white block duration-150">
+                                                <span>אודות</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#contact" className="text-slate-400 hover:text-white block duration-150">
+                                                <span>צור קשר</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
 
-        {/* Description */}
-        {content.description && (
-          <motion.p
-            variants={itemVariants}
-            className="text-lg mb-8 max-w-2xl mx-auto"
-            style={getColorStyle(content.descriptionStyle)}
-          >
-            {content.description}
-          </motion.p>
-        )}
+                                <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit lg:border-l lg:border-slate-700 lg:pl-6">
+                                    <Button variant="outline" size="sm" className="border-slate-600 text-white hover:bg-slate-800">
+                                        <span>התחבר</span>
+                                    </Button>
+                                    <Button size="sm" className="bg-cyan-500 hover:bg-cyan-600">
+                                        <span>הירשם</span>
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </header>
 
-        {/* Buttons */}
-        {content.buttons && content.buttons.length > 0 && (
-          <motion.div
-            variants={itemVariants}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-          >
-            {content.buttons.map((button: any, index: number) => {
-              if (button.visible === false) return null;
-              
-              return (
-                <motion.button
-                  key={index}
-                  className="px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
-                  style={{
-                    ...getBackgroundStyle(button.style),
-                    ...getColorStyle(button.textStyle)
-                  }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+            {/* Lamp Effect */}
+            <div className="relative flex w-full flex-1 scale-y-125 items-center justify-center isolate z-0">
+                <div
+                    style={{
+                        backgroundImage: `conic-gradient(var(--conic-position), var(--tw-gradient-stops))`,
+                    }}
+                    className="absolute inset-auto right-1/2 h-56 overflow-visible w-[30rem] bg-gradient-conic from-cyan-500 via-transparent to-transparent text-white [--conic-position:from_70deg_at_center_top]"
                 >
-                  {button.text}
-                </motion.button>
-              );
-            })}
-          </motion.div>
-        )}
-      </motion.div>
+                    <div className="absolute w-[100%] left-0 bg-slate-950 h-40 bottom-0 z-20 [mask-image:linear-gradient(to_top,white,transparent)]" />
+                    <div className="absolute w-40 h-[100%] left-0 bg-slate-950 bottom-0 z-20 [mask-image:linear-gradient(to_right,white,transparent)]" />
+                </div>
+                <div
+                    style={{
+                        backgroundImage: `conic-gradient(var(--conic-position), var(--tw-gradient-stops))`,
+                    }}
+                    className="absolute inset-auto left-1/2 h-56 w-[30rem] bg-gradient-conic from-transparent via-transparent to-cyan-500 text-white [--conic-position:from_290deg_at_center_top]"
+                >
+                    <div className="absolute w-40 h-[100%] right-0 bg-slate-950 bottom-0 z-20 [mask-image:linear-gradient(to_left,white,transparent)]" />
+                    <div className="absolute w-[100%] right-0 bg-slate-950 h-40 bottom-0 z-20 [mask-image:linear-gradient(to_top,white,transparent)]" />
+                </div>
+                <div className="absolute top-1/2 h-48 w-full translate-y-12 scale-x-150 bg-slate-950 blur-2xl"></div>
+                <div className="absolute top-1/2 z-50 h-48 w-full bg-transparent opacity-10 backdrop-blur-md"></div>
+                <div className="absolute inset-auto z-50 h-36 w-[28rem] -translate-y-1/2 rounded-full bg-cyan-500 opacity-50 blur-3xl"></div>
+                <div className="absolute inset-auto z-30 h-36 w-64 -translate-y-[6rem] rounded-full bg-cyan-400 blur-2xl"></div>
+                <div className="absolute inset-auto z-50 h-0.5 w-[30rem] -translate-y-[7rem] bg-cyan-400"></div>
+                <div className="absolute inset-auto z-40 h-44 w-full -translate-y-[12.5rem] bg-slate-950"></div>
+            </div>
 
-      {/* Background Elements */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black/50 to-transparent"></div>
-    </section>
-  );
-};
-
-export default HeroSectionLamp;
+            {/* Content */}
+            <div className="relative z-50 flex -translate-y-80 flex-col items-center px-5 text-center">
+                {badgeText && (
+                    <div className="mb-6 flex justify-center">
+                        <span className={`inline-block px-4 py-2 rounded-full text-sm font-medium ${getBadgeStyleClasses(content?.badgeStyle)} ${getTextStyleClasses(content?.badgeTextStyle)}`}>
+                            {badgeText}
+                        </span>
+                    </div>
+                )}
+                
+                <h1 className={`mt-8 py-4 text-center text-4xl font-medium tracking-tight md:text-7xl ${getTextStyleClasses(content?.headlineStyle)}`}>
+                    {businessStory}
+                </h1>
+                <p className={`mt-8 max-w-2xl text-lg leading-relaxed ${getTextStyleClasses(content?.subheadlineStyle)}`}>
+                    {mainServices}
+                </p>
+                {content?.description && (
+                    <p className={`mt-6 max-w-2xl text-base leading-relaxed ${getTextStyleClasses(content?.descriptionStyle)}`}>
+                        {content.description}
+                    </p>
+                )}
+                
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-10">
+                    {content?.buttons && content.buttons.length > 0 ? (
+                        content.buttons.map((button: any, index: number) => (
+                            button.visible !== false && (
+                                <button
+                                    key={index}
+                                    className={`px-6 py-3 rounded-lg text-lg font-medium transition-all duration-300 ${getButtonStyleClasses(button.style)} ${button.textStyle && button.textStyle !== 'default' ? getTextStyleClasses(button.textStyle) : ''}`}
+                                >
+                                    {button.text || `כפתור ${index + 1}`}
+                                </button>
+                            )
+                        ))
+                    ) : (
+                        <>
+                            <Button size="lg" className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700">
+                                <span>התחל עכשיו</span>
+                            </Button>
+                            <Button variant="outline" size="lg" className="border-slate-600 text-slate-300 hover:bg-slate-800">
+                                <span>למד עוד</span>
+                            </Button>
+                        </>
+                    )}
+                </div>
+            </div>
+        </div>
+    )
+}
