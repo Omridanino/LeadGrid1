@@ -324,7 +324,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                     className="px-8 py-4 rounded-xl font-semibold text-lg"
                     style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
                   >
-                    {content?.cta || 'חלדו היום'}
+                    {content?.cta || 'התחילו היום'}
                   </button>
                 )}
               </div>
@@ -352,7 +352,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               className="text-5xl md:text-7xl font-bold mb-8"
               style={getTextStyle('headline')}
             >
-              {content?.headline || formData?.businessName || 'העסק שלכם'}
+              {content?.headline || formData?.businessName || 'העסק'}
             </h1>
             
             <p 
@@ -422,7 +422,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   className="text-4xl md:text-6xl font-bold mb-6"
                   style={getTextStyle('headline')}
                 >
-                  {content?.headline || formData?.businessName || 'expérience 3D'}
+                  {content?.headline || formData?.businessName || 'חוויה תלת מימדית'}
                 </h1>
                 
                 <p 
@@ -446,7 +446,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                       className="px-6 py-3 rounded-lg font-semibold transition"
                       style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
                     >
-                      {content?.cta || 'haledo now'}
+                      {content?.cta || 'התחילו עכשיו'}
                     </button>
                   )}
                 </div>
@@ -484,14 +484,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               className="text-5xl md:text-7xl font-light mb-4 tracking-widest whitespace-nowrap"
               style={getTextStyle('headline')}
             >
-              {content?.headline || formData?.businessName || 'courageous digital'}
+              {content?.headline || formData?.businessName || 'דיגיטל אמיץ'}
             </h1>
             
             <p 
               className="text-sm md:text-lg font-mono tracking-wide mb-8 max-w-2xl"
               style={getTextStyle('subheadline')}
             >
-              {content?.subheadline || 'a technology that brings life to the touch - a new way of doing things'}
+              {content?.subheadline || 'טכנולוגיה שמביאה חיים למגע - דרך חדשה לעשות דברים'}
             </p>
             
             <div className="flex gap-4 pointer-events-auto">
@@ -508,7 +508,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   className="px-8 py-4 rounded-lg font-bold transition transform hover:scale-105"
                   style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
                 >
-                  {content?.cta || 'come in'}
+                  {content?.cta || 'היכנסו'}
                 </button>
               )}
             </div>
