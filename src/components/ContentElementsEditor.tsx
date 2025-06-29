@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ColorScheme } from "@/types/colors";
-import { Palette, Type, Zap, Badge as BadgeIcon, Eye, Heart } from "lucide-react";
+import { Palette, Type, Zap, Badge as BadgeIcon, Eye } from "lucide-react";
 import ButtonStyleEditor from "./ButtonStyleEditor";
 
 interface ContentElementsEditorProps {
@@ -42,10 +43,6 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
     handleContentUpdate({ buttons });
   };
 
-  const handleEmotionalSectionUpdate = (emotionalData: any) => {
-    handleContentUpdate({ emotional: emotionalData });
-  };
-
   // Working color palette that actually changes colors
   const workingColorPalette = [
     { name: 'ברירת מחדל', value: 'default' },
@@ -72,30 +69,13 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
   // Ensure buttons array exists
   const buttons = localContent.buttons || [{ text: localContent.cta || 'לחץ כאן', style: 'default', visible: true }];
 
-  // Initialize emotional section data
-  const emotionalSection = localContent.emotional || {
-    title: 'הכרויות שמובילות לתוצאות',
-    subtitle: 'אנחנו כאן כדי להפוך את החלומות שלכם למציאות',
-    text: 'עם ניסיון של שנים רבות ואלפי לקוחות מרוצים, אנחנו יודעים איך להביא לכם בדיוק את מה שחיפשתם.',
-    buttons: [
-      { text: 'בואו נכיר', style: 'primary', visible: true },
-      { text: 'עוד פרטים', style: 'secondary', visible: true }
-    ],
-    badge: 'הטובים ביותר',
-    backgroundColor: '#1a1a2e'
-  };
-
   return (
     <div className="space-y-6">
       <Tabs defaultValue="content" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 bg-gray-700">
+        <TabsList className="grid w-full grid-cols-3 bg-gray-700">
           <TabsTrigger value="content" className="text-white data-[state=active]:bg-blue-600">
             <Type className="w-4 h-4 mr-2" />
             תוכן
-          </TabsTrigger>
-          <TabsTrigger value="emotional" className="text-white data-[state=active]:bg-purple-600">
-            <Heart className="w-4 h-4 mr-2" />
-            פסקת רגש
           </TabsTrigger>
           <TabsTrigger value="buttons" className="text-white data-[state=active]:bg-blue-600">
             <Zap className="w-4 h-4 mr-2" />
@@ -159,95 +139,6 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
                   className="bg-gray-700 text-white border-gray-600"
                   placeholder="תיאור מפורט יותר (אופציונלי)"
                   rows={3}
-                />
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="emotional" className="space-y-4">
-          <Card className="bg-gray-800 border-gray-700">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Heart className="w-5 h-5 text-purple-500" />
-                עריכת פסקת רגש
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <Label htmlFor="emotional-badge" className="text-white">תג עליון</Label>
-                <Input
-                  id="emotional-badge"
-                  value={emotionalSection.badge || ''}
-                  onChange={(e) => handleEmotionalSectionUpdate({ ...emotionalSection, badge: e.target.value })}
-                  className="bg-gray-700 text-white border-gray-600"
-                  placeholder="תג עליון לפסקת הרגש"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="emotional-title" className="text-white">כותרת ראשית</Label>
-                <Input
-                  id="emotional-title"
-                  value={emotionalSection.title || ''}
-                  onChange={(e) => handleEmotionalSectionUpdate({ ...emotionalSection, title: e.target.value })}
-                  className="bg-gray-700 text-white border-gray-600"
-                  placeholder="כותרת ראשית לפסקת הרגש"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="emotional-subtitle" className="text-white">תת כותרת</Label>
-                <Input
-                  id="emotional-subtitle"
-                  value={emotionalSection.subtitle || ''}
-                  onChange={(e) => handleEmotionalSectionUpdate({ ...emotionalSection, subtitle: e.target.value })}
-                  className="bg-gray-700 text-white border-gray-600"
-                  placeholder="תת כותרת לפסקת הרגש"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="emotional-text" className="text-white">טקסט מפורט</Label>
-                <Textarea
-                  id="emotional-text"
-                  value={emotionalSection.text || ''}
-                  onChange={(e) => handleEmotionalSectionUpdate({ ...emotionalSection, text: e.target.value })}
-                  className="bg-gray-700 text-white border-gray-600"
-                  placeholder="הטקסט הרגשי המפורט"
-                  rows={4}
-                />
-              </div>
-
-              <div>
-                <Label className="text-white mb-3 block">צבע רקע פסקת הרגש</Label>
-                <div className="grid grid-cols-4 gap-2">
-                  {workingColorPalette.map((color, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleEmotionalSectionUpdate({ ...emotionalSection, backgroundColor: color.value })}
-                      className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
-                      style={{
-                        background: color.value === 'default' ? '#374151' : color.value
-                      }}
-                      title={color.name}
-                    >
-                      {emotionalSection.backgroundColor === color.value && (
-                        <div className="absolute inset-0 border-2 border-purple-500 rounded-lg"></div>
-                      )}
-                      <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                        {color.name}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <Label className="text-white mb-3 block">כפתורי פסקת הרגש</Label>
-                <ButtonStyleEditor
-                  buttons={emotionalSection.buttons || []}
-                  onButtonsChange={(buttons) => handleEmotionalSectionUpdate({ ...emotionalSection, buttons })}
                 />
               </div>
             </CardContent>
