@@ -49,7 +49,7 @@ export const HeroSectionRetro = ({ formData, currentColors, content }: HeroSecti
     const description = formData?.mainServices || "אנחנו מתמחים בפתרונות מקצועיים לעסקים המחפשים חדשנות וטכנולוגיה מתקדמת"
     const badgeText = content?.badge || ""
     
-    // Enhanced styling functions with comprehensive color support
+    // Enhanced styling functions with all new colors
     const getTextStyleClasses = (style: string) => {
       console.log('HeroSectionRetro - getTextStyleClasses called with:', style);
       
@@ -73,6 +73,17 @@ export const HeroSectionRetro = ({ formData, currentColors, content }: HeroSecti
         case "gradient-red-text": return "bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent";
         case "gradient-cyan-text": return "bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent";
         case "gradient-rainbow-text": return "bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 bg-clip-text text-transparent";
+        case "gradient-blue-ocean": return "bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent";
+        case "gradient-green-nature": return "bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent";
+        case "gradient-red-fire": return "bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent";
+        case "gradient-pink-sunset": return "bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent";
+        case "gradient-gold-black": return "bg-gradient-to-r from-yellow-400 to-black bg-clip-text text-transparent";
+        case "gradient-gold-white": return "bg-gradient-to-r from-yellow-400 to-white bg-clip-text text-transparent";
+        case "gradient-purple-tech": return "bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent";
+        case "neon-blue": return "text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]";
+        case "neon-green": return "text-green-400 drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]";
+        case "neon-purple": return "text-purple-400 drop-shadow-[0_0_10px_rgba(168,85,247,0.8)]";
+        case "neon-pink": return "text-pink-400 drop-shadow-[0_0_10px_rgba(236,72,153,0.8)]";
         default: 
           console.log('HeroSectionRetro - Unknown text style, using default:', style);
           return "text-gray-600 dark:text-gray-400";
