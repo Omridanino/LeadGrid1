@@ -249,7 +249,7 @@ export const HeroMinimalTech = ({ formData, currentColors, content }: HeroMinima
                   </motion.button>
                 </>
               )}
-            </div>
+            </motion.div>
           </div>
           
           {/* Right Interface */}
