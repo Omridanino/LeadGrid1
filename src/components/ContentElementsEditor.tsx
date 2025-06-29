@@ -5,12 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { 
   Edit3, 
   Type, 
-  Image as ImageIcon, 
   MousePointer, 
   Tag, 
   Plus, 
@@ -31,9 +29,19 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
   const [localContent, setLocalContent] = useState(content || {});
 
   const handleSave = () => {
-    // שמירת התוכן המקומי לתוכן הגלובלי
+    // שמירה מיידית ובפועל
     onContentChange(localContent);
+    // שמירה בlocalStorage
+    localStorage.setItem('generatedContent', JSON.stringify(localContent));
     console.log('Content saved:', localContent);
+  };
+
+  const handleContentUpdate = (newContent: any) => {
+    setLocalContent(newContent);
+    // עדכון מיידי בתצוגה המקדימה
+    onContentChange(newContent);
+    // שמירה אוטומטית בlocalStorage
+    localStorage.setItem('generatedContent', JSON.stringify(newContent));
   };
 
   const handleTextChange = (field: string, value: string) => {
@@ -41,9 +49,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
       ...localContent,
       [field]: value
     };
-    setLocalContent(newContent);
-    // עדכון מיידי
-    onContentChange(newContent);
+    handleContentUpdate(newContent);
   };
 
   const handleStyleChange = (field: string, value: string) => {
@@ -51,9 +57,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
       ...localContent,
       [`${field}Style`]: value
     };
-    setLocalContent(newContent);
-    // עדכון מיידי
-    onContentChange(newContent);
+    handleContentUpdate(newContent);
   };
 
   const handleBackgroundChange = (value: string) => {
@@ -61,9 +65,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
       ...localContent,
       backgroundStyle: value
     };
-    setLocalContent(newContent);
-    // עדכון מיידי
-    onContentChange(newContent);
+    handleContentUpdate(newContent);
   };
 
   const handleAccentColorChange = (value: string) => {
@@ -71,9 +73,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
       ...localContent,
       accentColor: value
     };
-    setLocalContent(newContent);
-    // עדכון מיידי
-    onContentChange(newContent);
+    handleContentUpdate(newContent);
   };
 
   const handleButtonChange = (index: number, field: string, value: string) => {
@@ -85,9 +85,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
       ...localContent,
       buttons
     };
-    setLocalContent(newContent);
-    // עדכון מיידי
-    onContentChange(newContent);
+    handleContentUpdate(newContent);
   };
 
   const addButton = () => {
@@ -96,14 +94,14 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
       text: "כפתור חדש",
       variant: "primary",
       style: "black-on-white",
+      textStyle: "default",
       visible: true
     });
     const newContent = {
       ...localContent,
       buttons
     };
-    setLocalContent(newContent);
-    onContentChange(newContent);
+    handleContentUpdate(newContent);
   };
 
   const removeButton = (index: number) => {
@@ -113,8 +111,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
       ...localContent,
       buttons
     };
-    setLocalContent(newContent);
-    onContentChange(newContent);
+    handleContentUpdate(newContent);
   };
 
   const toggleButtonVisibility = (index: number) => {
@@ -126,87 +123,52 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
       ...localContent,
       buttons
     };
-    setLocalContent(newContent);
-    onContentChange(newContent);
+    handleContentUpdate(newContent);
   };
 
   // Enhanced text styling options for all elements
   const getTextStyleClasses = (style: string) => {
     switch (style) {
-      case "black-text":
-        return "text-black";
-      case "white-text":
-        return "text-white";
-      case "gold-text":
-        return "text-yellow-400";
-      case "silver-text":
-        return "text-gray-300";
-      case "blue-text":
-        return "text-blue-400";
-      case "green-text":
-        return "text-green-400";
-      case "red-text":
-        return "text-red-400";
-      case "purple-text":
-        return "text-purple-400";
-      case "pink-text":
-        return "text-pink-400";
-      case "cyan-text":
-        return "text-cyan-400";
-      case "gradient-gold-text":
-        return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
-      case "gradient-purple-text":
-        return "bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent";
-      case "gradient-blue-text":
-        return "bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent";
-      case "gradient-green-text":
-        return "bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent";
-      case "gradient-red-text":
-        return "bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent";
-      case "gradient-cyan-text":
-        return "bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent";
-      case "gradient-rainbow-text":
-        return "bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 bg-clip-text text-transparent";
-      default:
-        return "text-white";
+      case "black-text": return "text-black";
+      case "white-text": return "text-white";
+      case "gold-text": return "text-yellow-400";
+      case "silver-text": return "text-gray-300";
+      case "blue-text": return "text-blue-400";
+      case "green-text": return "text-green-400";
+      case "red-text": return "text-red-400";
+      case "purple-text": return "text-purple-400";
+      case "pink-text": return "text-pink-400";
+      case "cyan-text": return "text-cyan-400";
+      case "gradient-gold-text": return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
+      case "gradient-purple-text": return "bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent";
+      case "gradient-blue-text": return "bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent";
+      case "gradient-green-text": return "bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent";
+      case "gradient-red-text": return "bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent";
+      case "gradient-cyan-text": return "bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent";
+      case "gradient-rainbow-text": return "bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 via-blue-400 to-purple-400 bg-clip-text text-transparent";
+      default: return "text-white";
     }
   };
 
   // Enhanced button and tag styling options
   const getButtonStyleClasses = (style: string) => {
     switch (style) {
-      case "black-on-white":
-        return "bg-white text-black border border-black";
-      case "white-on-black":
-        return "bg-black text-white border border-white";
-      case "gradient-gold-black":
-        return "bg-gradient-to-r from-yellow-400 to-black text-white border-0";
-      case "gradient-gold-white":
-        return "bg-gradient-to-r from-yellow-400 to-white text-black border-0";
-      case "gradient-purple-tech":
-        return "bg-gradient-to-r from-purple-600 to-white text-white border-0";
-      case "gradient-blue-ocean":
-        return "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0";
-      case "gradient-green-nature":
-        return "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0";
-      case "gradient-red-fire":
-        return "bg-gradient-to-r from-red-500 to-orange-500 text-white border-0";
-      case "gradient-pink-sunset":
-        return "bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0";
-      case "neon-blue":
-        return "bg-blue-600 text-white border-2 border-blue-400 shadow-lg shadow-blue-400/50";
-      case "neon-green":
-        return "bg-green-600 text-white border-2 border-green-400 shadow-lg shadow-green-400/50";
-      case "neon-purple":
-        return "bg-purple-600 text-white border-2 border-purple-400 shadow-lg shadow-purple-400/50";
-      case "neon-pink":
-        return "bg-pink-600 text-white border-2 border-pink-400 shadow-lg shadow-pink-400/50";
-      case "glass-dark":
-        return "bg-black/20 text-white border border-white/30 backdrop-blur-sm";
-      case "glass-light":
-        return "bg-white/20 text-black border border-black/30 backdrop-blur-sm";
-      default:
-        return "bg-blue-600 text-white";
+      case "black-on-white": return "bg-white text-black border border-black";
+      case "white-on-black": return "bg-black text-white border border-white";
+      case "gradient-gold-black": return "bg-gradient-to-r from-yellow-400 to-black text-white border-0";
+      case "gradient-gold-white": return "bg-gradient-to-r from-yellow-400 to-white text-black border-0";
+      case "gradient-purple-tech": return "bg-gradient-to-r from-purple-600 to-blue-500 text-white border-0";
+      case "gradient-blue-ocean": return "bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0";
+      case "gradient-green-nature": return "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0";
+      case "gradient-red-fire": return "bg-gradient-to-r from-red-500 to-orange-500 text-white border-0";
+      case "gradient-pink-sunset": return "bg-gradient-to-r from-pink-500 to-rose-500 text-white border-0";
+      case "neon-blue": return "bg-blue-600 text-white border-2 border-blue-400 shadow-lg shadow-blue-400/50";
+      case "neon-green": return "bg-green-600 text-white border-2 border-green-400 shadow-lg shadow-green-400/50";
+      case "neon-purple": return "bg-purple-600 text-white border-2 border-purple-400 shadow-lg shadow-purple-400/50";
+      case "neon-pink": return "bg-pink-600 text-white border-2 border-pink-400 shadow-lg shadow-pink-400/50";
+      case "glass-dark": return "bg-black/20 text-white border border-white/30 backdrop-blur-sm";
+      case "glass-light": return "bg-white/20 text-black border border-black/30 backdrop-blur-sm";
+      default: return "bg-blue-600 text-white";
     }
   };
 
@@ -308,18 +270,11 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
             onChange={(value) => handleStyleChange('badge', value)} 
             label="סגנון תג"
           />
-          <div>
-            <Label className="text-white text-xs mb-2 block">צבע טקסט התג</Label>
-            <TextStyleSelector 
-              value={localContent.badgeTextStyle} 
-              onChange={(value) => {
-                const newContent = {...localContent, badgeTextStyle: value};
-                setLocalContent(newContent);
-                onContentChange(newContent);
-              }} 
-              label=""
-            />
-          </div>
+          <TextStyleSelector 
+            value={localContent.badgeTextStyle} 
+            onChange={(value) => handleStyleChange('badgeText', value)} 
+            label="צבע טקסט התג"
+          />
         </CardContent>
       </Card>
 
@@ -451,30 +406,11 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
                   />
                 </div>
                 
-                <div>
-                  <Label className="text-white text-xs mb-1 block">סגנון הכפתור</Label>
-                  <select
-                    value={button.style || 'black-on-white'}
-                    onChange={(e) => handleButtonChange(index, 'style', e.target.value)}
-                    className="w-full bg-gray-600 border border-gray-500 text-white text-right p-2 rounded text-xs"
-                  >
-                    <option value="black-on-white">שחור על לבן</option>
-                    <option value="white-on-black">לבן על שחור</option>
-                    <option value="gradient-gold-black">גרדיאנט זהב-שחור</option>
-                    <option value="gradient-gold-white">גרדיאנט זהב-לבן</option>
-                    <option value="gradient-purple-tech">גרדיאנט סגול טכנולוגי</option>
-                    <option value="gradient-blue-ocean">גרדיאנט כחול אוקיינוס</option>
-                    <option value="gradient-green-nature">גרדיאנט ירוק טבע</option>
-                    <option value="gradient-red-fire">גרדיאנט אדום אש</option>
-                    <option value="gradient-pink-sunset">גרדיאנט ורוד שקיעה</option>
-                    <option value="neon-blue">נאון כחול</option>
-                    <option value="neon-green">נאון ירוק</option>
-                    <option value="neon-purple">נאון סגול</option>
-                    <option value="neon-pink">נאון ורוד</option>
-                    <option value="glass-dark">זכוכית כהה</option>
-                    <option value="glass-light">זכוכית בהירה</option>
-                  </select>
-                </div>
+                <ButtonStyleSelector 
+                  value={button.style} 
+                  onChange={(value) => handleButtonChange(index, 'style', value)} 
+                  label="סגנון הכפתור"
+                />
 
                 <div>
                   <Label className="text-white text-xs mb-1 block">צבע טקסט הכפתור</Label>
@@ -564,58 +500,6 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
               <option value="silver">כסף</option>
             </select>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Elements Management */}
-      <Separator className="bg-gray-600" />
-
-      <Card className="bg-gray-800 border-gray-700">
-        <CardHeader>
-          <CardTitle className="text-white text-sm flex items-center gap-2">
-            <Plus className="w-4 h-4 text-cyan-400" />
-            ניהול אלמנטים נוספים
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="text-white text-xs">
-            <p>כאן תוכל לנהל אלמנטים נוספים כמו תמונות, אייקונים ורקעים מותאמים אישית.</p>
-          </div>
-          
-          {/* Show current elements */}
-          {(localContent.elements || []).length > 0 && (
-            <div className="mt-4">
-              <h4 className="text-white text-sm mb-2">אלמנטים נוכחיים:</h4>
-              <div className="space-y-2">
-                {(localContent.elements || []).map((element: any, index: number) => (
-                  <div key={element.id || index} className="bg-gray-700 p-2 rounded flex items-center justify-between">
-                    <span className="text-white text-xs">
-                      {element.type === 'text' ? '📝 טקסט' : 
-                       element.type === 'image' ? '🖼️ תמונה' : 
-                       element.type === 'tag' ? '🏷️ תג' : element.type}
-                    </span>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => {
-                        const elements = [...(localContent.elements || [])];
-                        elements.splice(index, 1);
-                        const newContent = {
-                          ...localContent,
-                          elements
-                        };
-                        setLocalContent(newContent);
-                        onContentChange(newContent);
-                      }}
-                      className="h-6 w-6 p-0 text-red-400 hover:text-red-300"
-                    >
-                      <Trash2 className="w-3 h-3" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </CardContent>
       </Card>
     </div>
