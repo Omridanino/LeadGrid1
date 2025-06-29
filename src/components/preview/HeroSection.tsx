@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/types/colors";
@@ -829,10 +828,10 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <div className="relative w-screen h-screen overflow-hidden bg-black">
           <div className="flex h-screen">
-            {/* Left side - 3D Element without background text */}
+            {/* Left side - 3D Element - enlarged and without background text */}
             <div className="flex-1 relative">
               <div className="w-full h-full flex items-center justify-center">
-                <div className="w-96 h-96 relative">
+                <div className="w-[600px] h-[600px] relative"> {/* גדלתי מ-96 ל-600px (x2.5) */}
                   <img 
                     src="/lovable-uploads/01342860-952c-4dea-9951-95169ffa74d3.png" 
                     alt="3D Element" 
