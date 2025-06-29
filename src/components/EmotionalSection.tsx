@@ -1,4 +1,3 @@
-
 import { ColorScheme } from "@/types/colors";
 import { LiquidButton, MetalButton } from "@/components/ui/liquid-glass-button";
 import { HeroSectionClean } from "@/components/ui/hero-section-clean";
@@ -47,9 +46,8 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
   console.log('EmotionalSection - useHeroBackground:', useHeroBackground);
   console.log('EmotionalSection - emotionalContent:', emotionalContent);
 
-  // אם לא צריך להשתמש ברקע ההירו, נציג את הפסקה הרגילה
+  // אם לא צריך להשתמש ברקע ההירו, נציג את הפסקה הרגילה  
   if (!useHeroBackground) {
-    // Helper function to render advanced buttons with proper functionality
     const renderAdvancedButton = (button: any, index: number) => {
       const buttonStyle = button?.style || 'default';
       const buttonText = button?.text || content?.cta || 'לחץ כאן';
@@ -124,11 +122,9 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
     const backgroundColor = emotionalContent.backgroundColor || '#1e1e2e';
     const buttons = emotionalContent.buttons || [{ id: '1', text: 'התחל עכשיו', style: 'primary', visible: true }];
 
-    // Helper function to get inline style for text colors with gradient support
     const getTextStyle = (colorKey: string) => {
       const colorValue = emotionalContent?.colors?.[colorKey];
       if (colorValue) {
-        // Check if it's a gradient
         if (colorValue.includes('gradient')) {
           return { 
             background: colorValue,
@@ -142,7 +138,6 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
       return {};
     };
 
-    // Helper function to get inline style for badge colors with gradient support
     const getBadgeStyle = () => {
       const badgeColor = emotionalContent?.colors?.badge;
       if (badgeColor) {
@@ -162,18 +157,15 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
       return {};
     };
 
-    // Fix background color handling to support all color types
     const getBackgroundStyle = () => {
       if (backgroundColor === 'default') {
         return { backgroundColor: '#1e1e2e' };
       }
       
-      // Check if it's a gradient
       if (backgroundColor && backgroundColor.includes('gradient')) {
         return { background: backgroundColor };
       }
       
-      // Handle solid colors including hex values
       return { backgroundColor: backgroundColor };
     };
 
@@ -225,13 +217,13 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
     );
   }
 
-  // אם צריך להשתמש ברקע ההירו - נשתמש באותו קומפוננט הירו עם התוכן של פסקת הרגש
+  // כאן נשתמש באותו עיצוב בדיוק כמו ההירו - נייבא את HeroSection.tsx ונעביר לו את התוכן של פסקת הרגש
   const designStyle = formData?.designStyle || 'basic';
   
   console.log('Using hero background with design style:', designStyle);
   
-  // Helper function to create emotional content props that match hero structure
-  const getEmotionalContentForHero = () => ({
+  // נעביר את התוכן של פסקת הרגש בפורמט שההירו מצפה לו
+  const heroContentForEmotional = {
     badge: emotionalContent.badge || 'רגעים מכריעים',
     headline: emotionalContent.title || 'הגיע הזמן לפעול',
     subheadline: emotionalContent.subtitle || 'אל תחמיץ את ההזדמנות הזו',
@@ -239,9 +231,9 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
     buttons: emotionalContent.buttons || [{ id: '1', text: 'התחל עכשיו', style: 'primary', visible: true }],
     colors: emotionalContent.colors,
     cta: emotionalContent.buttons?.[0]?.text || 'התחל עכשיו'
-  });
+  };
 
-  // Handle Basic Design Style variations
+  // עכשיו נשתמש באותה לוגיקה בדיוק כמו ב-HeroSection.tsx
   if (designStyle === 'basic' || designStyle.startsWith('hero-section-')) {
     const [selectedBasicDesign, setSelectedBasicDesign] = useState<string>('');
 
@@ -262,14 +254,12 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
       setSelectedBasicDesign(selectedDesign);
     }, [formData?.businessName, formData?.businessType]);
 
-    const emotionalContentForHero = getEmotionalContentForHero();
-
     if (selectedBasicDesign === 'hero-section-clean') {
       return (
         <HeroSectionClean
           formData={formData}
           currentColors={currentColors}
-          content={emotionalContentForHero}
+          content={heroContentForEmotional}
         />
       );
     }
@@ -279,7 +269,7 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
         <HeroSectionModern
           formData={formData}
           currentColors={currentColors}
-          content={emotionalContentForHero}
+          content={heroContentForEmotional}
         />
       );
     }
@@ -289,7 +279,7 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
         <HeroSectionLamp
           formData={formData}
           currentColors={currentColors}
-          content={emotionalContentForHero}
+          content={heroContentForEmotional}
         />
       );
     }
@@ -299,7 +289,7 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
         <HeroSectionRetro
           formData={formData}
           currentColors={currentColors}
-          content={emotionalContentForHero}
+          content={heroContentForEmotional}
         />
       );
     }
@@ -464,8 +454,6 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
       setSelectedGradientDesign(Math.floor(Math.random() * 15));
     }, [formData?.businessName]);
 
-    const emotionalContentForHero = getEmotionalContentForHero();
-
     if (selectedGradientDesign === 0) {
       return (
         <GradientHero 
@@ -506,7 +494,7 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
     // Continue with other gradient designs...
     if (selectedGradientDesign >= 3) {
       return (
-        <HeroNeonCyber formData={formData} currentColors={currentColors} content={emotionalContentForHero} />
+        <HeroNeonCyber formData={formData} currentColors={currentColors} content={heroContentForEmotional} />
       );
     }
   }
@@ -519,16 +507,14 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
       setSelectedGlassDesign(Math.floor(Math.random() * 12));
     }, [formData?.businessName]);
 
-    const emotionalContentForHero = getEmotionalContentForHero();
-
     if (selectedGlassDesign === 0) {
       return (
-        <HeroGlassRefraction formData={formData} currentColors={currentColors} content={emotionalContentForHero} />
+        <HeroGlassRefraction formData={formData} currentColors={currentColors} content={heroContentForEmotional} />
       );
     }
     if (selectedGlassDesign === 1) {
       return (
-        <HeroLiquidMetal formData={formData} currentColors={currentColors} content={emotionalContentForHero} />
+        <HeroLiquidMetal formData={formData} currentColors={currentColors} content={heroContentForEmotional} />
       );
     }
     // Continue with other glass designs...
@@ -542,25 +528,22 @@ export const EmotionalSection = ({ content, currentColors, formData }: Emotional
 
   // GEOMETRIC Design Style
   if (designStyle === 'geometric') {
-    const emotionalContentForHero = getEmotionalContentForHero();
     return (
-      <HeroGeometricShapes formData={formData} currentColors={currentColors} content={emotionalContentForHero} />
+      <HeroGeometricShapes formData={formData} currentColors={currentColors} content={heroContentForEmotional} />
     );
   }
 
   // METAL Design Style
   if (designStyle === 'metal') {
-    const emotionalContentForHero = getEmotionalContentForHero();
     return (
-      <HeroLiquidMetal formData={formData} currentColors={currentColors} content={emotionalContentForHero} />
+      <HeroLiquidMetal formData={formData} currentColors={currentColors} content={heroContentForEmotional} />
     );
   }
 
   // IMAGE Design Style
   if (designStyle === 'image') {
-    const emotionalContentForHero = getEmotionalContentForHero();
     return (
-      <HeroIsometricIllustration formData={formData} currentColors={currentColors} content={emotionalContentForHero} />
+      <HeroIsometricIllustration formData={formData} currentColors={currentColors} content={heroContentForEmotional} />
     );
   }
 
