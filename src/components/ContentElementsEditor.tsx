@@ -6,240 +6,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge, Eye, EyeOff, Plus, Trash2, Palette } from "lucide-react";
+import { Badge, Eye, EyeOff, Plus, Trash2 } from "lucide-react";
+import ColorPicker from "./ColorPicker";
 
 interface ContentElementsEditorProps {
   content: any;
   onContentChange: (newContent: any) => void;
   formData?: any;
 }
-
-// Color Picker Component
-const ColorPicker = ({ value, onChange, label }: { value: string; onChange: (value: string) => void; label: string }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedType, setSelectedType] = useState<'solid' | 'gradient'>('solid');
-  const [gradientColors, setGradientColors] = useState({ from: '#3b82f6', to: '#1d4ed8' });
-  const [solidColor, setSolidColor] = useState('#3b82f6');
-
-  // Predefined gradient options
-  const gradientPresets = [
-    { name: 'זהב', from: '#fbbf24', to: '#f59e0b', value: 'gradient-gold-text' },
-    { name: 'סגול', from: '#a855f7', to: '#7c3aed', value: 'gradient-purple-text' },
-    { name: 'כחול', from: '#3b82f6', to: '#1d4ed8', value: 'gradient-blue-text' },
-    { name: 'ירוק', from: '#10b981', to: '#059669', value: 'gradient-green-text' },
-    { name: 'אדום', from: '#ef4444', to: '#dc2626', value: 'gradient-red-text' },
-    { name: 'ציאן', from: '#06b6d4', to: '#0891b2', value: 'gradient-cyan-text' },
-    { name: 'קשת', from: '#ef4444', to: '#a855f7', value: 'gradient-rainbow-text' },
-    { name: 'כחול אוקיינוס', from: '#3b82f6', to: '#06b6d4', value: 'gradient-blue-ocean' },
-    { name: 'ירוק טבע', from: '#10b981', to: '#34d399', value: 'gradient-green-nature' },
-    { name: 'אדום אש', from: '#ef4444', to: '#fb923c', value: 'gradient-red-fire' },
-    { name: 'ורוד שקיעה', from: '#ec4899', to: '#f43f5e', value: 'gradient-pink-sunset' },
-    { name: 'זהב-שחור', from: '#fbbf24', to: '#000000', value: 'gradient-gold-black' },
-    { name: 'זהב-לבן', from: '#fbbf24', to: '#ffffff', value: 'gradient-gold-white' },
-    { name: 'סגול טכנולוגי', from: '#7c3aed', to: '#3b82f6', value: 'gradient-purple-tech' },
-  ];
-
-  // Solid color presets
-  const solidPresets = [
-    { name: 'שחור', color: '#000000', value: 'black-text' },
-    { name: 'לבן', color: '#ffffff', value: 'white-text' },
-    { name: 'זהב', color: '#fbbf24', value: 'gold-text' },
-    { name: 'כסף', color: '#d1d5db', value: 'silver-text' },
-    { name: 'כחול', color: '#3b82f6', value: 'blue-text' },
-    { name: 'ירוק', color: '#10b981', value: 'green-text' },
-    { name: 'אדום', color: '#ef4444', value: 'red-text' },
-    { name: 'סגול', color: '#a855f7', value: 'purple-text' },
-    { name: 'ורוד', color: '#ec4899', value: 'pink-text' },
-    { name: 'ציאן', color: '#06b6d4', value: 'cyan-text' },
-  ];
-
-  // Neon color presets
-  const neonPresets = [
-    { name: 'נאון כחול', color: '#3b82f6', value: 'neon-blue' },
-    { name: 'נאון ירוק', color: '#10b981', value: 'neon-green' },
-    { name: 'נאון סגול', color: '#a855f7', value: 'neon-purple' },
-    { name: 'נאון ורוד', color: '#ec4899', value: 'neon-pink' },
-  ];
-
-  const handleSolidColorChange = (color: string, colorValue: string) => {
-    setSolidColor(color);
-    onChange(colorValue);
-  };
-
-  const handleGradientChange = (gradientValue: string) => {
-    onChange(gradientValue);
-  };
-
-  const handleCustomSolidChange = (color: string) => {
-    setSolidColor(color);
-    onChange(`custom-${color}`);
-  };
-
-  const handleCustomGradientChange = () => {
-    const customGradient = `custom-gradient-${gradientColors.from}-${gradientColors.to}`;
-    onChange(customGradient);
-  };
-
-  return (
-    <div className="space-y-2">
-      <Label className="text-gray-300 text-sm mb-1 block">{label}</Label>
-      <div className="relative">
-        <Button
-          onClick={() => setIsOpen(!isOpen)}
-          variant="outline"
-          className="w-full bg-gray-800 border-gray-600 text-white justify-start"
-        >
-          <Palette className="w-4 h-4 ml-2" />
-          בחר צבע
-        </Button>
-        
-        {isOpen && (
-          <div className="absolute top-12 left-0 right-0 bg-gray-800 border border-gray-600 rounded-lg p-4 z-50 max-h-96 overflow-y-auto">
-            {/* Type Selection */}
-            <div className="flex gap-2 mb-4">
-              <Button
-                size="sm"
-                variant={selectedType === 'solid' ? 'default' : 'outline'}
-                onClick={() => setSelectedType('solid')}
-                className="flex-1"
-              >
-                צבע אחיד
-              </Button>
-              <Button
-                size="sm"
-                variant={selectedType === 'gradient' ? 'default' : 'outline'}
-                onClick={() => setSelectedType('gradient')}
-                className="flex-1"
-              >
-                גרדיאנט
-              </Button>
-            </div>
-
-            {selectedType === 'solid' && (
-              <div className="space-y-4">
-                {/* Solid Color Presets */}
-                <div>
-                  <Label className="text-white text-sm mb-2 block">צבעים בסיסיים</Label>
-                  <div className="grid grid-cols-5 gap-2">
-                    {solidPresets.map((preset) => (
-                      <button
-                        key={preset.value}
-                        onClick={() => handleSolidColorChange(preset.color, preset.value)}
-                        className="w-8 h-8 rounded border border-gray-600 hover:scale-110 transition-transform"
-                        style={{ backgroundColor: preset.color }}
-                        title={preset.name}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Neon Colors */}
-                <div>
-                  <Label className="text-white text-sm mb-2 block">צבעי נאון</Label>
-                  <div className="grid grid-cols-4 gap-2">
-                    {neonPresets.map((preset) => (
-                      <button
-                        key={preset.value}
-                        onClick={() => handleSolidColorChange(preset.color, preset.value)}
-                        className="w-8 h-8 rounded border-2 border-white/30 hover:scale-110 transition-transform shadow-lg"
-                        style={{ 
-                          backgroundColor: preset.color,
-                          boxShadow: `0 0 10px ${preset.color}80`
-                        }}
-                        title={preset.name}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Custom Color Picker */}
-                <div>
-                  <Label className="text-white text-sm mb-2 block">צבע מותאם אישית</Label>
-                  <input
-                    type="color"
-                    value={solidColor}
-                    onChange={(e) => handleCustomSolidChange(e.target.value)}
-                    className="w-full h-10 rounded border border-gray-600 bg-gray-700"
-                  />
-                </div>
-              </div>
-            )}
-
-            {selectedType === 'gradient' && (
-              <div className="space-y-4">
-                {/* Gradient Presets */}
-                <div>
-                  <Label className="text-white text-sm mb-2 block">גרדיאנטים מוכנים</Label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {gradientPresets.map((preset) => (
-                      <button
-                        key={preset.value}
-                        onClick={() => handleGradientChange(preset.value)}
-                        className="h-8 rounded border border-gray-600 hover:scale-105 transition-transform text-xs text-white"
-                        style={{
-                          background: `linear-gradient(to right, ${preset.from}, ${preset.to})`
-                        }}
-                        title={preset.name}
-                      >
-                        {preset.name}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Custom Gradient */}
-                <div>
-                  <Label className="text-white text-sm mb-2 block">גרדיאנט מותאם אישית</Label>
-                  <div className="space-y-2">
-                    <div className="flex gap-2">
-                      <div className="flex-1">
-                        <Label className="text-gray-300 text-xs block mb-1">צבע התחלה</Label>
-                        <input
-                          type="color"
-                          value={gradientColors.from}
-                          onChange={(e) => setGradientColors(prev => ({ ...prev, from: e.target.value }))}
-                          className="w-full h-8 rounded border border-gray-600 bg-gray-700"
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <Label className="text-gray-300 text-xs block mb-1">צבע סיום</Label>
-                        <input
-                          type="color"
-                          value={gradientColors.to}
-                          onChange={(e) => setGradientColors(prev => ({ ...prev, to: e.target.value }))}
-                          className="w-full h-8 rounded border border-gray-600 bg-gray-700"
-                        />
-                      </div>
-                    </div>
-                    <Button
-                      onClick={handleCustomGradientChange}
-                      size="sm"
-                      className="w-full"
-                      style={{
-                        background: `linear-gradient(to right, ${gradientColors.from}, ${gradientColors.to})`
-                      }}
-                    >
-                      החל גרדיאנט
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            <Button
-              onClick={() => setIsOpen(false)}
-              size="sm"
-              variant="outline"
-              className="w-full mt-4"
-            >
-              סגור
-            </Button>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
 
 const ContentElementsEditor = ({ content, onContentChange, formData }: ContentElementsEditorProps) => {
   const [localContent, setLocalContent] = useState(content || {});
@@ -272,7 +46,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
   const updateButton = (index: number, field: string, value: any) => {
     const buttons = [...(localContent.buttons || [])];
     if (!buttons[index]) {
-      buttons[index] = { text: "", style: "default", textStyle: "default", visible: true };
+      buttons[index] = { text: "", style: "solid:#3b82f6", textStyle: "solid:#ffffff", visible: true };
     }
     buttons[index] = { ...buttons[index], [field]: value };
     updateField('buttons', buttons);
@@ -280,7 +54,12 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
 
   const addButton = () => {
     const buttons = [...(localContent.buttons || [])];
-    buttons.push({ text: `כפתור ${buttons.length + 1}`, style: "default", textStyle: "default", visible: true });
+    buttons.push({ 
+      text: `כפתור ${buttons.length + 1}`, 
+      style: "solid:#3b82f6", 
+      textStyle: "solid:#ffffff", 
+      visible: true 
+    });
     updateField('buttons', buttons);
   };
 
@@ -301,13 +80,12 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
   // Initialize buttons if they don't exist
   if (!localContent.buttons || localContent.buttons.length === 0) {
     updateField('buttons', [
-      { text: "התחל עכשיו", style: "default", textStyle: "default", visible: true }
+      { text: "התחל עכשיו", style: "solid:#3b82f6", textStyle: "solid:#ffffff", visible: true }
     ]);
   }
 
   return (
     <div className="space-y-6 text-right" dir="rtl">
-      {/* Hero Section */}
       <Card className="bg-gray-900 border-gray-700">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
@@ -327,12 +105,12 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
             />
             <div className="grid grid-cols-2 gap-2 mt-2">
               <ColorPicker
-                value={localContent.badgeStyle || 'default'}
+                value={localContent.badgeStyle || 'solid:#3b82f6'}
                 onChange={(value) => updateField('badgeStyle', value)}
-                label="סגנון תג"
+                label="צבע תג"
               />
               <ColorPicker
-                value={localContent.badgeTextStyle || 'default'}
+                value={localContent.badgeTextStyle || 'solid:#ffffff'}
                 onChange={(value) => updateField('badgeTextStyle', value)}
                 label="צבע טקסט תג"
               />
@@ -350,7 +128,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
             />
             <div className="mt-2">
               <ColorPicker
-                value={localContent.headlineStyle || 'default'}
+                value={localContent.headlineStyle || 'solid:#ffffff'}
                 onChange={(value) => updateField('headlineStyle', value)}
                 label="צבע כותרת ראשית"
               />
@@ -369,7 +147,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
             />
             <div className="mt-2">
               <ColorPicker
-                value={localContent.subheadlineStyle || 'default'}
+                value={localContent.subheadlineStyle || 'solid:#d1d5db'}
                 onChange={(value) => updateField('subheadlineStyle', value)}
                 label="צבע כותרת משנה"
               />
@@ -388,7 +166,7 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
             />
             <div className="mt-2">
               <ColorPicker
-                value={localContent.descriptionStyle || 'default'}
+                value={localContent.descriptionStyle || 'solid:#9ca3af'}
                 onChange={(value) => updateField('descriptionStyle', value)}
                 label="צבע תיאור"
               />
@@ -465,14 +243,14 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
                       
                       <div className="grid grid-cols-2 gap-2">
                         <ColorPicker
-                          value={button.style || 'default'}
+                          value={button.style || 'solid:#3b82f6'}
                           onChange={(value) => updateButton(index, 'style', value)}
-                          label="סגנון כפתור"
+                          label="צבע כפתור"
                         />
                         <ColorPicker
-                          value={button.textStyle || 'default'}
+                          value={button.textStyle || 'solid:#ffffff'}
                           onChange={(value) => updateButton(index, 'textStyle', value)}
-                          label="צבע טקסט כפתור"
+                          label="צבע טקסט"
                         />
                       </div>
                     </div>
