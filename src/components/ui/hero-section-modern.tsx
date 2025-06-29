@@ -2,59 +2,20 @@
 import * as React from "react"
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Menu, X, ArrowRight, ChevronRight, Zap } from 'lucide-react'
+import { Menu, X, ArrowRight, ChevronRight } from 'lucide-react'
 
 interface HeroSectionModernProps {
   formData: any;
   currentColors: any;
-  content?: any;
 }
 
-export const HeroSectionModern = ({ formData, currentColors, content }: HeroSectionModernProps) => {
+export const HeroSectionModern = ({ formData, currentColors }: HeroSectionModernProps) => {
     const [menuState, setMenuState] = React.useState(false)
     const [isScrolled, setIsScrolled] = React.useState(false)
     
-    // Helper function to get text style classes
-    const getTextStyleClasses = (elementStyle: string) => {
-      switch (elementStyle) {
-        case "black-text":
-          return "text-black";
-        case "white-text":
-          return "text-white";
-        case "gold-text":
-          return "text-yellow-400";
-        case "gradient-gold-text":
-          return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
-        case "gradient-purple-text":
-          return "bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent";
-        case "gradient-blue-text":
-          return "bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent";
-        default:
-          return "text-gray-900 dark:text-white";
-      }
-    };
-
-    // Helper function to get button style classes
-    const getButtonStyleClasses = (elementStyle: string) => {
-      switch (elementStyle) {
-        case "black-on-white":
-          return "bg-white text-black border border-black";
-        case "white-on-black":
-          return "bg-black text-white border border-white";
-        case "gradient-gold-black":
-          return "bg-gradient-to-r from-yellow-400 to-black text-white border-0";
-        case "gradient-gold-white":
-          return "bg-gradient-to-r from-yellow-400 to-white text-black border-0";
-        case "gradient-purple-tech":
-          return "bg-gradient-to-r from-purple-600 to-white text-white border-0";
-        default:
-          return "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700";
-      }
-    };
-    
-    const businessName = content?.headline || formData?.businessName || "שם העסק"
-    const businessStory = content?.subheadline || formData?.businessStory || "פתרונות מודרניים לעתיד הדיגיטלי"
-    const mainServices = content?.description || formData?.mainServices || "קומפוננטים מותאמים לבניית אתרים ואפליקציות מודרניות שנראות ומרגישות בדיוק כמו שחלמתם"
+    const businessName = formData?.businessName || "שם העסק"
+    const businessStory = formData?.businessStory || "פתרונות מודרניים לעתיד הדיגיטלי"
+    const mainServices = formData?.mainServices || "קומפוננטים מותאמים לבניית אתרים ואפליקציות מודרניות שנראות ומרגישות בדיוק כמו שחלמתם"
     
     React.useEffect(() => {
         const handleScroll = () => {
@@ -146,61 +107,42 @@ export const HeroSectionModern = ({ formData, currentColors, content }: HeroSect
                     <div className="relative pt-24 md:pt-36">
                         <div className="mx-auto max-w-7xl px-6">
                             <div className="text-center mx-auto">
-                                {content?.badge ? (
-                                    <div className={`inline-flex items-center gap-4 rounded-full border p-1 pl-4 shadow-md transition-all duration-300 mb-8 ${getButtonStyleClasses(content.badgeStyle || 'black-on-white')}`}>
-                                        <Zap className="w-4 h-4" />
-                                        <span className="text-sm">{content.badge}</span>
-                                    </div>
-                                ) : (
-                                    <div className="hover:bg-white dark:hover:bg-gray-950 bg-gray-100 dark:bg-gray-800 group mx-auto flex w-fit items-center gap-4 rounded-full border p-1 pl-4 shadow-md transition-all duration-300 mb-8">
-                                        <span className="text-sm">הכירו את הטכנולוגיה המתקדמת שלנו</span>
-                                        <span className="block h-4 w-0.5 border-l bg-gray-400"></span>
-                                        <div className="bg-white dark:bg-gray-950 group-hover:bg-gray-100 dark:group-hover:bg-gray-800 size-6 overflow-hidden rounded-full duration-500">
-                                            <div className="flex w-12 -translate-x-1/2 duration-500 ease-in-out group-hover:translate-x-0">
-                                                <span className="flex size-6">
-                                                    <ArrowRight className="m-auto size-3" />
-                                                </span>
-                                                <span className="flex size-6">
-                                                    <ArrowRight className="m-auto size-3" />
-                                                </span>
-                                            </div>
+                                <div className="hover:bg-white dark:hover:bg-gray-950 bg-gray-100 dark:bg-gray-800 group mx-auto flex w-fit items-center gap-4 rounded-full border p-1 pl-4 shadow-md transition-all duration-300 mb-8">
+                                    <span className="text-sm">הכירו את הטכנולוגיה המתקדמת שלנו</span>
+                                    <span className="block h-4 w-0.5 border-l bg-gray-400"></span>
+                                    <div className="bg-white dark:bg-gray-950 group-hover:bg-gray-100 dark:group-hover:bg-gray-800 size-6 overflow-hidden rounded-full duration-500">
+                                        <div className="flex w-12 -translate-x-1/2 duration-500 ease-in-out group-hover:translate-x-0">
+                                            <span className="flex size-6">
+                                                <ArrowRight className="m-auto size-3" />
+                                            </span>
+                                            <span className="flex size-6">
+                                                <ArrowRight className="m-auto size-3" />
+                                            </span>
                                         </div>
                                     </div>
-                                )}
+                                </div>
                         
-                                <h1 className={`mt-8 max-w-4xl mx-auto text-balance text-4xl md:text-6xl lg:text-7xl font-bold mb-8 ${content?.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'text-gray-900 dark:text-white'}`}>
+                                <h1 className="mt-8 max-w-4xl mx-auto text-balance text-4xl md:text-6xl lg:text-7xl font-bold mb-8">
                                     {businessStory}
                                 </h1>
-                                <p className={`mx-auto mt-8 max-w-2xl text-balance text-lg leading-relaxed ${content?.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-gray-600 dark:text-gray-300'}`}>
+                                <p className="mx-auto mt-8 max-w-2xl text-balance text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
                                     {mainServices}
                                 </p>
 
                                 <div className="mt-12 flex flex-col items-center justify-center gap-2 md:flex-row">
-                                    {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                                        <div key={index} className="bg-gray-100 dark:bg-gray-800 rounded-[14px] border p-0.5">
-                                            <Button
-                                                size="lg"
-                                                className={`rounded-xl px-5 text-base ${getButtonStyleClasses(button.style || 'gradient-purple-tech')}`}>
-                                                <span>{button.text}</span>
-                                            </Button>
-                                        </div>
-                                    )) || (
-                                        <>
-                                            <div className="bg-gray-100 dark:bg-gray-800 rounded-[14px] border p-0.5">
-                                                <Button
-                                                    size="lg"
-                                                    className="rounded-xl px-5 text-base bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-                                                    <span>התחל לבנות</span>
-                                                </Button>
-                                            </div>
-                                            <Button
-                                                size="lg"
-                                                variant="ghost"
-                                                className="rounded-xl px-5">
-                                                <span>בקש הדגמה</span>
-                                            </Button>
-                                        </>
-                                    )}
+                                    <div className="bg-gray-100 dark:bg-gray-800 rounded-[14px] border p-0.5">
+                                        <Button
+                                            size="lg"
+                                            className="rounded-xl px-5 text-base bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                                            <span>התחל לבנות</span>
+                                        </Button>
+                                    </div>
+                                    <Button
+                                        size="lg"
+                                        variant="ghost"
+                                        className="rounded-xl px-5">
+                                        <span>בקש הדגמה</span>
+                                    </Button>
                                 </div>
                             </div>
                         </div>

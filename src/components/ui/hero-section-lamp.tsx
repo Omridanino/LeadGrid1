@@ -2,58 +2,19 @@
 import * as React from "react"
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Menu, X, Zap } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 
 interface HeroSectionLampProps {
   formData: any;
   currentColors: any;
-  content?: any;
 }
 
-export const HeroSectionLamp = ({ formData, currentColors, content }: HeroSectionLampProps) => {
+export const HeroSectionLamp = ({ formData, currentColors }: HeroSectionLampProps) => {
     const [menuState, setMenuState] = React.useState(false)
     
-    // Helper function to get text style classes
-    const getTextStyleClasses = (elementStyle: string) => {
-      switch (elementStyle) {
-        case "black-text":
-          return "text-black";
-        case "white-text":
-          return "text-white";
-        case "gold-text":
-          return "text-yellow-400";
-        case "gradient-gold-text":
-          return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
-        case "gradient-purple-text":
-          return "bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent";
-        case "gradient-blue-text":
-          return "bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent";
-        default:
-          return "bg-gradient-to-br from-slate-300 to-slate-500 bg-clip-text text-transparent";
-      }
-    };
-
-    // Helper function to get button style classes
-    const getButtonStyleClasses = (elementStyle: string) => {
-      switch (elementStyle) {
-        case "black-on-white":
-          return "bg-white text-black border border-black";
-        case "white-on-black":
-          return "bg-black text-white border border-white";
-        case "gradient-gold-black":
-          return "bg-gradient-to-r from-yellow-400 to-black text-white border-0";
-        case "gradient-gold-white":
-          return "bg-gradient-to-r from-yellow-400 to-white text-black border-0";
-        case "gradient-purple-tech":
-          return "bg-gradient-to-r from-purple-600 to-white text-white border-0";
-        default:
-          return "bg-gradient-to-r from-cyan-500 to-blue-600 text-white";
-      }
-    };
-    
-    const businessName = content?.headline || formData?.businessName || "שם העסק"
-    const businessStory = content?.subheadline || formData?.businessStory || "בונים פתרונות בדרך הנכונה"
-    const mainServices = content?.description || formData?.mainServices || "טכנולוגיה מתקדמת עם עיצוב מרהיב ותוכן איכותי שיקדם את העסק שלכם קדימה"
+    const businessName = formData?.businessName || "שם העסק"
+    const businessStory = formData?.businessStory || "בונים פתרונות בדרך הנכונה"
+    const mainServices = formData?.mainServices || "טכנולוגיה מתקדמת עם עיצוב מרהיב ותוכן איכותי שיקדם את העסק שלכם קדימה"
     
     return (
         <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-slate-950 w-full rounded-md z-0" dir="rtl">
@@ -66,9 +27,9 @@ export const HeroSectionLamp = ({ formData, currentColors, content }: HeroSectio
                             <div className="flex w-full justify-between lg:w-auto">
                                 <div className="flex items-center space-x-2 space-x-reverse">
                                     <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
-                                        <span className="text-white font-bold text-sm">{(formData?.businessName || businessName).charAt(0)}</span>
+                                        <span className="text-white font-bold text-sm">{businessName.charAt(0)}</span>
                                     </div>
-                                    <span className="font-semibold text-lg text-white">{formData?.businessName || businessName}</span>
+                                    <span className="font-semibold text-lg text-white">{businessName}</span>
                                 </div>
 
                                 <button
@@ -145,39 +106,20 @@ export const HeroSectionLamp = ({ formData, currentColors, content }: HeroSectio
 
             {/* Content */}
             <div className="relative z-50 flex -translate-y-80 flex-col items-center px-5 text-center">
-                {content?.badge && (
-                    <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm ${getButtonStyleClasses(content.badgeStyle || 'white-on-black')}`}>
-                        <Zap className="w-4 h-4" />
-                        <span>{content.badge}</span>
-                    </div>
-                )}
-                
-                <h1 className={`mt-8 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl ${content?.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'bg-gradient-to-br from-slate-300 to-slate-500'}`}>
+                <h1 className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl">
                     {businessStory}
                 </h1>
-                
-                <p className={`mt-8 max-w-2xl text-lg leading-relaxed ${content?.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-slate-400'}`}>
+                <p className="mt-8 max-w-2xl text-lg text-slate-400 leading-relaxed">
                     {mainServices}
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-10">
-                    {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
-                        <button 
-                            key={index}
-                            className={`px-8 py-4 rounded-lg font-bold transition ${getButtonStyleClasses(button.style || 'white-on-black')}`}
-                        >
-                            {button.text}
-                        </button>
-                    )) || (
-                        <>
-                            <Button size="lg" className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700">
-                                <span>התחל עכשיו</span>
-                            </Button>
-                            <Button variant="outline" size="lg" className="border-slate-600 text-slate-300 hover:bg-slate-800">
-                                <span>למד עוד</span>
-                            </Button>
-                        </>
-                    )}
+                    <Button size="lg" className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700">
+                        <span>התחל עכשיו</span>
+                    </Button>
+                    <Button variant="outline" size="lg" className="border-slate-600 text-slate-300 hover:bg-slate-800">
+                        <span>למד עוד</span>
+                    </Button>
                 </div>
             </div>
         </div>

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Canvas, extend, useFrame, useThree } from '@react-three/fiber';
@@ -8,36 +9,14 @@ import { Mesh } from 'three';
 
 extend(THREE as any);
 
-// מערך של תמונות שונות לוריאציות - הרחבתי ל-5 וריאציות
-const TEXTURE_VARIATIONS = [
-  {
-    texture: 'https://i.postimg.cc/XYwvXN8D/img-4.png',
-    depth: 'https://i.postimg.cc/2SHKQh2q/raw-4.webp'
-  },
-  {
-    texture: 'https://i.postimg.cc/kg8yJtRB/tech-abstract-1.jpg',
-    depth: 'https://i.postimg.cc/L6mK2vXd/tech-depth-1.jpg'
-  },
-  {
-    texture: 'https://i.postimg.cc/9f8KzL2D/cyber-grid.jpg', 
-    depth: 'https://i.postimg.cc/GtR5Y8hf/cyber-depth.jpg'
-  },
-  {
-    texture: 'https://i.postimg.cc/d1PqXj8Y/neon-circuit.jpg',
-    depth: 'https://i.postimg.cc/FzGkL7Wv/neon-depth.jpg'
-  },
-  {
-    texture: 'https://i.postimg.cc/3x4Rj9Kp/hologram-tech.jpg',
-    depth: 'https://i.postimg.cc/vTnMp8Qf/hologram-depth.jpg'
-  }
-];
+const TEXTUREMAP = { src: 'https://i.postimg.cc/XYwvXN8D/img-4.png' };
+const DEPTHMAP = { src: 'https://i.postimg.cc/2SHKQh2q/raw-4.webp' };
 
 const WIDTH = 300;
 const HEIGHT = 300;
 
-const Scene = ({ variation }: { variation: number }) => {
-  const selectedTextures = TEXTURE_VARIATIONS[variation] || TEXTURE_VARIATIONS[0];
-  const [rawMap, depthMap] = useTexture([selectedTextures.texture, selectedTextures.depth]);
+const Scene = () => {
+  const [rawMap, depthMap] = useTexture([TEXTUREMAP.src, DEPTHMAP.src]);
   const meshRef = useRef<Mesh>(null);
   const [visible, setVisible] = useState(false);
 
@@ -77,78 +56,19 @@ const Scene = ({ variation }: { variation: number }) => {
 };
 
 interface HeroFuturisticProps {
-  formData?: any;
-  currentColors?: any;
-  content?: any;
+  title?: string;
+  subtitle?: string;
+  buttonText?: string;
+  onButtonClick?: () => void;
 }
 
-// Helper function to get text style classes
-const getTextStyleClasses = (elementStyle: string) => {
-  switch (elementStyle) {
-    case "black-text":
-      return "text-black";
-    case "white-text":
-      return "text-white";
-    case "gold-text":
-      return "text-yellow-400";
-    case "gradient-gold-text":
-      return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
-    case "gradient-purple-text":
-      return "bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent";
-    case "gradient-blue-text":
-      return "bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent";
-    case "gradient-neon-text":
-      return "bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent";
-    case "gradient-fire-text":
-      return "bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent";
-    default:
-      return "text-white";
-  }
-};
-
-// פונקציה לקבלת וריאציה רנדומלית - עודכנה ל-5 וריאציות
-const getRandomVariation = () => {
-  return Math.floor(Math.random() * 5); // 0, 1, 2, 3, או 4
-};
-
-// פונקציה לקבלת סגנון רקע רנדומלי - הרחבתי ל-5 סגנונות
-const getRandomBackgroundStyle = (variation: number) => {
-  const styles = [
-    "bg-gradient-to-br from-black via-purple-900/30 to-black",
-    "bg-gradient-to-br from-black via-blue-900/30 to-black", 
-    "bg-gradient-to-br from-black via-cyan-900/30 to-black",
-    "bg-gradient-to-br from-black via-pink-900/30 to-black",
-    "bg-gradient-to-br from-black via-green-900/30 to-black"
-  ];
-  return styles[variation] || styles[0];
-};
-
-// פונקציה לקבלת צבע כפתור רנדומלי - הרחבתי ל-5 סגנונות
-const getRandomButtonStyle = (variation: number) => {
-  const styles = [
-    "bg-white/10 backdrop-blur-sm border border-white/30 text-white hover:bg-white/20",
-    "bg-purple-600/20 backdrop-blur-sm border border-purple-400/30 text-purple-100 hover:bg-purple-600/30",
-    "bg-cyan-600/20 backdrop-blur-sm border border-cyan-400/30 text-cyan-100 hover:bg-cyan-600/30",
-    "bg-pink-600/20 backdrop-blur-sm border border-pink-400/30 text-pink-100 hover:bg-pink-600/30",
-    "bg-green-600/20 backdrop-blur-sm border border-green-400/30 text-green-100 hover:bg-green-600/30"
-  ];
-  return styles[variation] || styles[0];
-};
-
 export const HeroFuturistic = ({
-  formData,
-  currentColors,
-  content
+  title = "Build Your Dreams",
+  subtitle = "AI-powered creativity for the next generation.",
+  buttonText = "Scroll to explore",
+  onButtonClick
 }: HeroFuturisticProps) => {
-  // קבלת וריאציה רנדומלית וקבועה לכל עמוד
-  const [variation] = useState(() => getRandomVariation());
-  
-  // קבלת הטקסט מה-content או מה-formData
-  const mainTitle = content?.headline || formData?.businessStory || "Build Your Dreams";
-  const subtitle = content?.subheadline || formData?.mainServices || "AI-powered creativity for the next generation.";
-  const buttonText = content?.buttons?.[0]?.text || "Scroll to explore";
-  
-  const titleWords = mainTitle.split(' ');
+  const titleWords = title.split(' ');
   const [visibleWords, setVisibleWords] = useState(0);
   const [subtitleVisible, setSubtitleVisible] = useState(false);
   const [delays, setDelays] = useState<number[]>([]);
@@ -169,25 +89,15 @@ export const HeroFuturistic = ({
     }
   }, [visibleWords, titleWords.length]);
 
-  const onButtonClick = () => {
-    // גלילה לאלמנט הבא
-    const nextSection = document.querySelector('[data-section="next"]');
-    if (nextSection) {
-      nextSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
-    <div className={`h-screen relative overflow-hidden ${getRandomBackgroundStyle(variation)}`}>
+    <div className="h-screen relative overflow-hidden bg-black">
       <div className="h-screen uppercase items-center w-full absolute z-60 pointer-events-none px-10 flex justify-center flex-col">
         <div className="text-3xl md:text-5xl xl:text-6xl 2xl:text-7xl font-extrabold">
-          <div className="flex space-x-2 lg:space-x-6 overflow-hidden flex-wrap justify-center">
+          <div className="flex space-x-2 lg:space-x-6 overflow-hidden text-white">
             {titleWords.map((word, index) => (
               <div
                 key={index}
-                className={`transition-all duration-1000 ${
-                  index < visibleWords ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                } ${content?.headlineStyle ? getTextStyleClasses(content.headlineStyle) : 'text-white'}`}
+                className={`transition-all duration-1000 ${index < visibleWords ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
                 style={{ 
                   animationDelay: `${index * 0.13 + (delays[index] || 0)}s`
                 }}
@@ -197,11 +107,9 @@ export const HeroFuturistic = ({
             ))}
           </div>
         </div>
-        <div className="text-xs md:text-xl xl:text-2xl 2xl:text-3xl mt-2 overflow-hidden font-bold">
+        <div className="text-xs md:text-xl xl:text-2xl 2xl:text-3xl mt-2 overflow-hidden text-white font-bold">
           <div
-            className={`transition-all duration-1000 ${
-              subtitleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
-            } ${content?.subheadlineStyle ? getTextStyleClasses(content.subheadlineStyle) : 'text-white'}`}
+            className={`transition-all duration-1000 ${subtitleVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}
             style={{ 
               animationDelay: `${titleWords.length * 0.13 + 0.2 + subtitleDelay}s`
             }}
@@ -212,15 +120,15 @@ export const HeroFuturistic = ({
       </div>
 
       <button
-        className={`absolute bottom-20 left-1/2 transform -translate-x-1/2 z-50 pointer-events-auto ${getRandomButtonStyle(variation)} px-6 py-3 rounded-lg transition-all duration-300 flex items-center gap-2`}
+        className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-50 pointer-events-auto bg-white/10 backdrop-blur-sm border border-white/30 text-white px-6 py-3 rounded-lg hover:bg-white/20 transition-all duration-300 flex items-center gap-2"
         style={{ animationDelay: '2.2s' }}
         onClick={onButtonClick}
       >
         {buttonText}
         <span className="animate-bounce">
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M11 5V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            <path d="M6 12L11 17L16 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M11 5V17" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M6 12L11 17L16 12" stroke="white" strokeWidth="2" strokeLinecap="round"/>
           </svg>
         </span>
       </button>
@@ -229,7 +137,7 @@ export const HeroFuturistic = ({
         flat
         className="absolute inset-0"
       >
-        <Scene variation={variation} />
+        <Scene />
       </Canvas>
     </div>
   );
