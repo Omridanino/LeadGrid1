@@ -436,11 +436,65 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     const [selectedDesign, setSelectedDesign] = useState(0);
 
     useEffect(() => {
-      // Randomly select one of the 8 remaining 3D designs (0-7, excluding 8)
-      setSelectedDesign(Math.floor(Math.random() * 8));
+      // Randomly select one of the 18 3D designs (0-17)
+      setSelectedDesign(Math.floor(Math.random() * 18));
     }, []);
 
-    // Design 0: Spline 3D Scene with custom styles - Split Layout
+    // Import the new hero components
+    const { HeroSimpleDark } = require('@/components/ui/hero-simple-dark');
+    const { HeroFloatingElements } = require('@/components/ui/hero-floating-elements');
+    const { HeroGlassPhone } = require('@/components/ui/hero-glass-phone');
+    const { HeroGlassCube } = require('@/components/ui/hero-glass-cube');
+    const { HeroSpaceParticles } = require('@/components/ui/hero-space-particles');
+    const { HeroLiquidDesign } = require('@/components/ui/hero-liquid-design');
+    const { HeroTechGradient } = require('@/components/ui/hero-tech-gradient');
+    const { HeroCrystalElements } = require('@/components/ui/hero-crystal-elements');
+    const { HeroBankingRibbons } = require('@/components/ui/hero-banking-ribbons');
+
+    // Enhanced content props
+    const customContentProps = {
+      ...getCustomContentProps(),
+      buttons: content?.buttons?.filter((btn: any) => btn.visible !== false)
+    };
+
+    // New designs from uploaded images (designs 8-17)
+    if (selectedDesign === 8) {
+      return <HeroSimpleDark formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    
+    if (selectedDesign === 9) {
+      return <HeroFloatingElements formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    
+    if (selectedDesign === 10) {
+      return <HeroGlassPhone formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    
+    if (selectedDesign === 11) {
+      return <HeroGlassCube formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    
+    if (selectedDesign === 12) {
+      return <HeroSpaceParticles formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    
+    if (selectedDesign === 13) {
+      return <HeroLiquidDesign formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    
+    if (selectedDesign === 14) {
+      return <HeroTechGradient formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    
+    if (selectedDesign === 15) {
+      return <HeroCrystalElements formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+    
+    if (selectedDesign === 16) {
+      return <HeroBankingRibbons formData={formData} currentColors={currentColors} content={customContentProps} />;
+    }
+
+    // Keep existing designs (0-7)
     if (selectedDesign === 0) {
       return (
         <section className="relative overflow-hidden min-h-screen bg-black/[0.96]">
@@ -502,7 +556,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 1: Chrome Grid with custom styles
     if (selectedDesign === 1) {
       return (
         <div className="h-screen w-screen relative">
@@ -822,6 +875,11 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           </div>
         </div>
       );
+    }
+
+    // Fallback design 17 (random new design)
+    if (selectedDesign === 17) {
+      return <HeroSimpleDark formData={formData} currentColors={currentColors} content={customContentProps} />;
     }
   }
 
