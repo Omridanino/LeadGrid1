@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,60 +22,104 @@ const ContentElementsEditor = ({ content, onContentChange, formData }: ContentEl
     }
   }, [content]);
 
-  // All available color options - both Hebrew and English
+  // COMPLETE color options - ALL colors that are supported in the hero components
   const colorOptions = [
     { value: "default", label: "ברירת מחדל" },
-    // Basic colors
+    // Basic colors - Hebrew and English
     { value: "black-text", label: "שחור" },
+    { value: "שחור", label: "שחור" },
     { value: "white-text", label: "לבן" },
+    { value: "לבן", label: "לבן" },
     { value: "gold-text", label: "זהב" },
+    { value: "זהב", label: "זהב" },
     { value: "silver-text", label: "כסף" },
+    { value: "כסף", label: "כסף" },
     { value: "blue-text", label: "כחול" },
+    { value: "כחול", label: "כחול" },
     { value: "green-text", label: "ירוק" },
+    { value: "ירוק", label: "ירוק" },
     { value: "red-text", label: "אדום" },
+    { value: "אדום", label: "אדום" },
     { value: "purple-text", label: "סגול" },
+    { value: "סגול", label: "סגול" },
     { value: "pink-text", label: "ורוד" },
+    { value: "ורוד", label: "ורוד" },
     { value: "cyan-text", label: "ציאן" },
-    // Gradient colors
+    { value: "ציאן", label: "ציאן" },
+    // Gradient colors - Hebrew and English
     { value: "gradient-gold-text", label: "גרדיאנט זהב" },
+    { value: "גרדיאנט זהב", label: "גרדיאנט זהב" },
     { value: "gradient-purple-text", label: "גרדיאנט סגול" },
+    { value: "גרדיאנט סגול", label: "גרדיאנט סגול" },
     { value: "gradient-blue-text", label: "גרדיאנט כחול" },
+    { value: "גרדיאנט כחול", label: "גרדיאנט כחול" },
     { value: "gradient-green-text", label: "גרדיאנט ירוק" },
+    { value: "גרדיאנט ירוק", label: "גרדיאנט ירוק" },
     { value: "gradient-red-text", label: "גרדיאנט אדום" },
+    { value: "גרדיאנט אדום", label: "גרדיאנט אדום" },
     { value: "gradient-cyan-text", label: "גרדיאנט ציאן" },
+    { value: "גרדיאנט ציאן", label: "גרדיאנט ציאן" },
     { value: "gradient-rainbow-text", label: "גרדיאנט קשת" },
+    { value: "גרדיאנט קשת", label: "גרדיאנט קשת" },
     { value: "gradient-blue-ocean", label: "גרדיאנט כחול אוקיינוס" },
+    { value: "גרדיאנט כחול אוקיינוס", label: "גרדיאנט כחול אוקיינוס" },
     { value: "gradient-green-nature", label: "גרדיאנט ירוק טבע" },
+    { value: "גרדיאנט ירוק טבע", label: "גרדיאנט ירוק טבע" },
     { value: "gradient-red-fire", label: "גרדיאנט אדום אש" },
+    { value: "גרדיאנט אדום אש", label: "גרדיאנט אדום אש" },
     { value: "gradient-pink-sunset", label: "גרדיאנט ורוד שקיעה" },
+    { value: "גרדיאנט ורוד שקיעה", label: "גרדיאנט ורוד שקיעה" },
     { value: "gradient-gold-black", label: "גרדיאנט זהב-שחור" },
+    { value: "גרדיאנט זהב-שחור", label: "גרדיאנט זהב-שחור" },
     { value: "gradient-gold-white", label: "גרדיאנט זהב-לבן" },
+    { value: "גרדיאנט זהב-לבן", label: "גרדיאנט זהב-לבן" },
     { value: "gradient-purple-tech", label: "גרדיאנט סגול טכנולוגי" },
-    // Neon colors
+    { value: "גרדיאנט סגול טכנולוגי", label: "גרדיאנט סגול טכנולוגי" },
+    // Neon colors - Hebrew and English
     { value: "neon-blue", label: "נאון כחול" },
+    { value: "נאון כחול", label: "נאון כחול" },
     { value: "neon-green", label: "נאון ירוק" },
+    { value: "נאון ירוק", label: "נאון ירוק" },
     { value: "neon-purple", label: "נאון סגול" },
+    { value: "נאון סגול", label: "נאון סגול" },
     { value: "neon-pink", label: "נאון ורוד" },
+    { value: "נאון ורוד", label: "נאון ורוד" },
   ];
 
+  // COMPLETE button color options - ALL styles that are supported in the hero components
   const buttonColorOptions = [
     { value: "default", label: "ברירת מחדל" },
-    // Basic button styles
+    // Basic button styles - Hebrew and English
     { value: "black-on-white", label: "שחור על לבן" },
+    { value: "שחור על לבן", label: "שחור על לבן" },
     { value: "white-on-black", label: "לבן על שחור" },
+    { value: "לבן על שחור", label: "לבן על שחור" },
     { value: "gradient-gold-black", label: "גרדיאנט זהב-שחור" },
+    { value: "גרדיאנט זהב-שחור", label: "גרדיאנט זהב-שחור" },
     { value: "gradient-gold-white", label: "גרדיאנט זהב-לבן" },
+    { value: "גרדיאנט זהב-לבן", label: "גרדיאנט זהב-לבן" },
     { value: "gradient-purple-tech", label: "גרדיאנט סגול טכנולוגי" },
+    { value: "גרדיאנט סגול טכנולוגי", label: "גרדיאנט סגול טכנולוגי" },
     { value: "gradient-blue-ocean", label: "גרדיאנט כחול אוקיינוס" },
+    { value: "גרדיאנט כחול אוקיינוס", label: "גרדיאנט כחול אוקיינוס" },
     { value: "gradient-green-nature", label: "גרדיאנט ירוק טבע" },
+    { value: "גרדיאנט ירוק טבע", label: "גרדיאנט ירוק טבע" },
     { value: "gradient-red-fire", label: "גרדיאנט אדום אש" },
+    { value: "גרדיאנט אדום אש", label: "גרדיאנט אדום אש" },
     { value: "gradient-pink-sunset", label: "גרדיאנט ורוד שקיעה" },
+    { value: "גרדיאנט ורוד שקיעה", label: "גרדיאנט ורוד שקיעה" },
     { value: "neon-blue", label: "נאון כחול" },
+    { value: "נאון כחול", label: "נאון כחול" },
     { value: "neon-green", label: "נאון ירוק" },
+    { value: "נאון ירוק", label: "נאון ירוק" },
     { value: "neon-purple", label: "נאון סגול" },
+    { value: "נאון סגול", label: "נאון סגול" },
     { value: "neon-pink", label: "נאון ורוד" },
+    { value: "נאון ורוד", label: "נאון ורוד" },
     { value: "glass-dark", label: "זכוכית כהה" },
+    { value: "זכוכית כהה", label: "זכוכית כהה" },
     { value: "glass-light", label: "זכוכית בהירה" },
+    { value: "זכוכית בהירה", label: "זכוכית בהירה" },
   ];
 
   const backgroundOptions = [
