@@ -551,6 +551,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           <AnimatedHero 
             title={content?.headline || formData?.businessName || 'העתיד'}
             subtitle={content?.subheadline || content?.description || 'כאן עכשיו'}
+            primaryCta={{
+              text: content?.cta || 'התחילו היום',
+              onClick: () => {}
+            }}
+            secondaryCta={{
+              text: 'קפיצה לשיחה',
+              onClick: () => {}
+            }}
           />
           <EmotionalSection content={content} currentColors={currentColors} formData={formData} />
         </>
