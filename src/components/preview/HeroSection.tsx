@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { HeroWithMockup } from "@/components/ui/hero-with-mockup";
 import { GradientHero } from "@/components/ui/gradient-hero";
@@ -12,6 +13,7 @@ import { HeroParticleStorm } from "@/components/ui/hero-particle-storm";
 import { HeroHolographic } from "@/components/ui/hero-holographic";
 import { EmotionalSection } from "@/components/ui/emotional-section";
 import { ColorScheme } from '@/types/colors';
+import { getRandomVariation } from '@/utils/designVariations';
 
 interface HeroSectionProps {
   formData?: any;
@@ -24,7 +26,11 @@ interface HeroSectionProps {
 const HeroSection = ({ formData, content, currentColors, heroImage, elements }: HeroSectionProps) => {
   const renderHeroSection = () => {
     const heroContent = content?.hero || content || {};
-    const designStyle = formData?.designStyle || 'modern';
+    const designStyle = formData?.designStyle || formData?.heroStyle || 'modern';
+    
+    // Get random variation based on design style
+    const variation = getRandomVariation(designStyle);
+    const combinedDesignStyle = `${designStyle}-${variation.id}`;
 
     switch (designStyle) {
       case 'modern':
@@ -50,6 +56,7 @@ const HeroSection = ({ formData, content, currentColors, heroImage, elements }: 
         );
 
       case 'gradient':
+      case '3d':
         return (
           <>
             <GradientHero
@@ -65,7 +72,7 @@ const HeroSection = ({ formData, content, currentColors, heroImage, elements }: 
                 formData={formData}
                 currentColors={currentColors}
                 content={content.emotional}
-                designStyle="gradient"
+                designStyle={combinedDesignStyle}
               />
             )}
           </>

@@ -1,12 +1,11 @@
 
-import React from 'react';
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, Trash2, Heart } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Heart, Plus, Trash2, Palette } from "lucide-react";
+import EditPopup from "./EditPopup";
 
 interface EmotionalSectionEditorProps {
   content: any;
@@ -14,186 +13,278 @@ interface EmotionalSectionEditorProps {
 }
 
 const EmotionalSectionEditor = ({ content, onContentChange }: EmotionalSectionEditorProps) => {
-  const emotionalContent = content?.emotional || {
+  const safeContent = content || {};
+  const safeEmotional = safeContent.emotional || {
     badge: 'הסיפור שלנו',
     headline: 'הרגש שמניע אותנו קדימה',
-    description: 'כל מה שאנחנו עושים נובע מהלב - מהרצון העמוק לעזור, ליצור ולהשפיע. זה מה שמבדיל אותנו ומה שמניע אותנו להיות הטובים ביותר.',
+    description: 'כל מה שאנחנו עושים נובע מהלב - מהרצון העמוק לעזור, ליצור ולהשפיע.',
     buttons: [],
     colors: {
       badge: '',
       headline: '',
-      subheadline: '',
+      subheadline: ''
     }
   };
 
-  const updateEmotionalContent = (field: string, value: any) => {
-    const newEmotionalContent = { ...emotionalContent, [field]: value };
-    onContentChange({
-      ...content,
-      emotional: newEmotionalContent
-    });
+  const [localEmotional, setLocalEmotional] = useState(safeEmotional);
+
+  const updateEmotionalField = (field: string, value: string) => {
+    const updated = { ...localEmotional, [field]: value };
+    setLocalEmotional(updated);
   };
 
-  const updateEmotionalColors = (colorField: string, value: string) => {
-    const newColors = { ...emotionalContent.colors, [colorField]: value };
-    updateEmotionalContent('colors', newColors);
+  const updateColor = (colorType: string, value: string) => {
+    const updated = { 
+      ...localEmotional, 
+      colors: { ...localEmotional.colors, [colorType]: value } 
+    };
+    setLocalEmotional(updated);
   };
 
   const addButton = () => {
-    const newButtons = [...(emotionalContent.buttons || []), {
+    const newButton = {
+      id: Date.now(),
       text: 'כפתור חדש',
       color: '',
       visible: true
-    }];
-    updateEmotionalContent('buttons', newButtons);
+    };
+    const updated = { 
+      ...localEmotional, 
+      buttons: [...(localEmotional.buttons || []), newButton] 
+    };
+    setLocalEmotional(updated);
   };
 
-  const updateButton = (index: number, field: string, value: any) => {
-    const newButtons = [...(emotionalContent.buttons || [])];
-    newButtons[index] = { ...newButtons[index], [field]: value };
-    updateEmotionalContent('buttons', newButtons);
+  const updateButton = (buttonId: number, field: string, value: any) => {
+    const updated = {
+      ...localEmotional,
+      buttons: localEmotional.buttons?.map((btn: any) => 
+        btn.id === buttonId ? { ...btn, [field]: value } : btn
+      ) || []
+    };
+    setLocalEmotional(updated);
   };
 
-  const removeButton = (index: number) => {
-    const newButtons = emotionalContent.buttons.filter((_: any, i: number) => i !== index);
-    updateEmotionalContent('buttons', newButtons);
+  const removeButton = (buttonId: number) => {
+    const updated = {
+      ...localEmotional,
+      buttons: localEmotional.buttons?.filter((btn: any) => btn.id !== buttonId) || []
+    };
+    setLocalEmotional(updated);
   };
+
+  const handleSave = () => {
+    const updatedContent = {
+      ...safeContent,
+      emotional: localEmotional
+    };
+    onContentChange(updatedContent);
+  };
+
+  const colorOptions = [
+    { label: 'כחול', value: '#3b82f6' },
+    { label: 'סגול', value: '#8b5cf6' },
+    { label: 'ירוק', value: '#10b981' },
+    { label: 'אדום', value: '#ef4444' },
+    { label: 'כתום', value: '#f97316' },
+    { label: 'צהוב', value: '#eab308' },
+    { label: 'ורוד', value: '#ec4899' },
+    { label: 'טורקיז', value: '#06b6d4' },
+    { label: 'גרדיינט כחול-סגול', value: 'linear-gradient(45deg, #3b82f6, #8b5cf6)' },
+    { label: 'גרדיינט ירוק-כחול', value: 'linear-gradient(45deg, #10b981, #06b6d4)' },
+    { label: 'גרדיינט ורוד-כתום', value: 'linear-gradient(45deg, #ec4899, #f97316)' },
+    { label: 'גרדיינט זהב', value: 'linear-gradient(45deg, #fbbf24, #f59e0b)' }
+  ];
 
   return (
-    <Card className="mb-6">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Heart className="w-5 h-5" />
-          פסקת רגש
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Tabs defaultValue="content" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="content">תוכן</TabsTrigger>
-            <TabsTrigger value="colors">צבעים</TabsTrigger>
-            <TabsTrigger value="buttons">כפתורים</TabsTrigger>
-          </TabsList>
+    <EditPopup
+      title="עריכת פסקת רגש"
+      triggerText="פסקת רגש"
+      icon={Heart}
+      onSave={handleSave}
+    >
+      <div className="space-y-6">
+        {/* תוכן בסיסי */}
+        <div className="space-y-4">
+          <h3 className="text-white font-semibold text-lg mb-4">תוכן</h3>
+          
+          <div>
+            <Label className="text-white font-semibold text-right block mb-2">תג</Label>
+            <Input
+              value={localEmotional.badge || ''}
+              onChange={(e) => updateEmotionalField('badge', e.target.value)}
+              className="bg-gray-800 border-gray-600 text-white text-right"
+              placeholder="הכנס תג..."
+            />
+          </div>
 
-          <TabsContent value="content" className="space-y-4">
-            <div>
-              <Label htmlFor="emotional-badge">תג (Badge)</Label>
-              <Input
-                id="emotional-badge"
-                value={emotionalContent.badge}
-                onChange={(e) => updateEmotionalContent('badge', e.target.value)}
-                placeholder="הסיפור שלנו"
-              />
+          <div>
+            <Label className="text-white font-semibold text-right block mb-2">כותרת</Label>
+            <Input
+              value={localEmotional.headline || ''}
+              onChange={(e) => updateEmotionalField('headline', e.target.value)}
+              className="bg-gray-800 border-gray-600 text-white text-right"
+              placeholder="הכנס כותרת..."
+            />
+          </div>
+
+          <div>
+            <Label className="text-white font-semibold text-right block mb-2">תיאור</Label>
+            <Textarea
+              value={localEmotional.description || ''}
+              onChange={(e) => updateEmotionalField('description', e.target.value)}
+              className="bg-gray-800 border-gray-600 text-white text-right"
+              rows={4}
+              placeholder="הכנס תיאור..."
+            />
+          </div>
+        </div>
+
+        {/* עריכת צבעים */}
+        <div className="space-y-4">
+          <h3 className="text-white font-semibold text-lg mb-4 flex items-center gap-2">
+            <Palette className="w-5 h-5" />
+            צבעים
+          </h3>
+
+          <div>
+            <Label className="text-white font-medium text-right block mb-2">צבע תג</Label>
+            <div className="grid grid-cols-2 gap-2">
+              {colorOptions.map((color) => (
+                <button
+                  key={color.value}
+                  onClick={() => updateColor('badge', color.value)}
+                  className={`p-2 rounded text-xs border ${
+                    localEmotional.colors?.badge === color.value 
+                      ? 'border-blue-400 bg-blue-900/30' 
+                      : 'border-gray-600 bg-gray-800'
+                  } text-white hover:border-gray-400 transition-colors`}
+                  style={{
+                    background: color.value.includes('gradient') 
+                      ? color.value 
+                      : `${color.value}20`
+                  }}
+                >
+                  {color.label}
+                </button>
+              ))}
             </div>
+          </div>
 
-            <div>
-              <Label htmlFor="emotional-headline">כותרת</Label>
-              <Input
-                id="emotional-headline"
-                value={emotionalContent.headline}
-                onChange={(e) => updateEmotionalContent('headline', e.target.value)}
-                placeholder="הרגש שמניע אותנו קדימה"
-              />
+          <div>
+            <Label className="text-white font-medium text-right block mb-2">צבע כותרת</Label>
+            <div className="grid grid-cols-2 gap-2">
+              {colorOptions.map((color) => (
+                <button
+                  key={color.value}
+                  onClick={() => updateColor('headline', color.value)}
+                  className={`p-2 rounded text-xs border ${
+                    localEmotional.colors?.headline === color.value 
+                      ? 'border-blue-400 bg-blue-900/30' 
+                      : 'border-gray-600 bg-gray-800'
+                  } text-white hover:border-gray-400 transition-colors`}
+                  style={{
+                    background: color.value.includes('gradient') 
+                      ? color.value 
+                      : `${color.value}20`
+                  }}
+                >
+                  {color.label}
+                </button>
+              ))}
             </div>
+          </div>
 
-            <div>
-              <Label htmlFor="emotional-description">תיאור</Label>
-              <Textarea
-                id="emotional-description"
-                value={emotionalContent.description}
-                onChange={(e) => updateEmotionalContent('description', e.target.value)}
-                placeholder="כל מה שאנחנו עושים נובע מהלב..."
-                rows={4}
-              />
+          <div>
+            <Label className="text-white font-medium text-right block mb-2">צבע תת-כותרת</Label>
+            <div className="grid grid-cols-2 gap-2">
+              {colorOptions.map((color) => (
+                <button
+                  key={color.value}
+                  onClick={() => updateColor('subheadline', color.value)}
+                  className={`p-2 rounded text-xs border ${
+                    localEmotional.colors?.subheadline === color.value 
+                      ? 'border-blue-400 bg-blue-900/30' 
+                      : 'border-gray-600 bg-gray-800'
+                  } text-white hover:border-gray-400 transition-colors`}
+                  style={{
+                    background: color.value.includes('gradient') 
+                      ? color.value 
+                      : `${color.value}20`
+                  }}
+                >
+                  {color.label}
+                </button>
+              ))}
             </div>
-          </TabsContent>
+          </div>
+        </div>
 
-          <TabsContent value="colors" className="space-y-4">
-            <div>
-              <Label htmlFor="emotional-badge-color">צבע תג</Label>
-              <Input
-                id="emotional-badge-color"
-                type="text"
-                value={emotionalContent.colors?.badge || ''}
-                onChange={(e) => updateEmotionalColors('badge', e.target.value)}
-                placeholder="linear-gradient(45deg, #667eea, #764ba2) או #3b82f6"
-              />
-            </div>
+        {/* כפתורים */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-white font-semibold text-lg">כפתורים</h3>
+            <Button
+              onClick={addButton}
+              size="sm"
+              className="bg-green-600 hover:bg-green-700 text-white"
+            >
+              <Plus className="w-4 h-4 ml-1" />
+              הוסף כפתור
+            </Button>
+          </div>
 
-            <div>
-              <Label htmlFor="emotional-headline-color">צבע כותרת</Label>
-              <Input
-                id="emotional-headline-color"
-                type="text"
-                value={emotionalContent.colors?.headline || ''}
-                onChange={(e) => updateEmotionalColors('headline', e.target.value)}
-                placeholder="linear-gradient(45deg, #667eea, #764ba2) או #ffffff"
-              />
-            </div>
+          {localEmotional.buttons?.map((button: any) => (
+            <div key={button.id} className="bg-gray-800 p-4 rounded-lg space-y-3">
+              <div className="flex items-center justify-between">
+                <Label className="text-white font-medium">כפתור #{button.id}</Label>
+                <Button
+                  onClick={() => removeButton(button.id)}
+                  size="sm"
+                  variant="destructive"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </div>
 
-            <div>
-              <Label htmlFor="emotional-subheadline-color">צבע תיאור</Label>
-              <Input
-                id="emotional-subheadline-color"
-                type="text"
-                value={emotionalContent.colors?.subheadline || ''}
-                onChange={(e) => updateEmotionalColors('subheadline', e.target.value)}
-                placeholder="linear-gradient(45deg, #667eea, #764ba2) או #e5e7eb"
-              />
-            </div>
-          </TabsContent>
+              <div>
+                <Label className="text-gray-300 text-sm text-right block mb-1">טקסט</Label>
+                <Input
+                  value={button.text || ''}
+                  onChange={(e) => updateButton(button.id, 'text', e.target.value)}
+                  className="bg-gray-700 border-gray-600 text-white text-right"
+                  placeholder="טקסט הכפתור..."
+                />
+              </div>
 
-          <TabsContent value="buttons" className="space-y-4">
-            <div className="flex items-center justify-between">
-              <Label>כפתורים</Label>
-              <Button onClick={addButton} size="sm">
-                <Plus className="w-4 h-4 mr-1" />
-                הוסף כפתור
-              </Button>
-            </div>
-
-            {emotionalContent.buttons?.map((button: any, index: number) => (
-              <Card key={index} className="p-4">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <Label>כפתור {index + 1}</Label>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => removeButton(index)}
+              <div>
+                <Label className="text-gray-300 text-sm text-right block mb-2">צבע כפתור</Label>
+                <div className="grid grid-cols-2 gap-1">
+                  {colorOptions.slice(0, 8).map((color) => (
+                    <button
+                      key={color.value}
+                      onClick={() => updateButton(button.id, 'color', color.value)}
+                      className={`p-1 rounded text-xs border ${
+                        button.color === color.value 
+                          ? 'border-blue-400' 
+                          : 'border-gray-600'
+                      } text-white hover:border-gray-400 transition-colors`}
+                      style={{
+                        background: color.value.includes('gradient') 
+                          ? color.value 
+                          : `${color.value}40`
+                      }}
                     >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-
-                  <div>
-                    <Label>טקסט כפתור</Label>
-                    <Input
-                      value={button.text}
-                      onChange={(e) => updateButton(index, 'text', e.target.value)}
-                      placeholder="טקסט הכפתור"
-                    />
-                  </div>
-
-                  <div>
-                    <Label>צבע כפתור</Label>
-                    <Input
-                      value={button.color || ''}
-                      onChange={(e) => updateButton(index, 'color', e.target.value)}
-                      placeholder="linear-gradient(45deg, #667eea, #764ba2) או #3b82f6"
-                    />
-                  </div>
+                      {color.label}
+                    </button>
+                  ))}
                 </div>
-              </Card>
-            ))}
-
-            {(!emotionalContent.buttons || emotionalContent.buttons.length === 0) && (
-              <p className="text-gray-500 text-center py-4">אין כפתורים. לחץ על "הוסף כפתור" כדי להוסיף.</p>
-            )}
-          </TabsContent>
-        </Tabs>
-      </CardContent>
-    </Card>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </EditPopup>
   );
 };
 
