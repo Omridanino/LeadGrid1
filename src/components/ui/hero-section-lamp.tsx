@@ -28,7 +28,7 @@ const HeroSectionLamp = ({ content, currentColors, formData, heroImage }: HeroSe
       opacity: 1,
       transition: { 
         duration: 0.8, 
-        ease: [0.4, 0.0, 0.2, 1] // Using cubic-bezier array instead of string
+        ease: "easeOut"
       }
     }
   };
