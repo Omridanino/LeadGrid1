@@ -1,8 +1,8 @@
 import { ColorScheme } from "@/types/colors";
 import { EmotionalSection } from "./EmotionalSection";
-import TestimonialsSection from "./TestimonialsSection";
-import ModernFeaturesSection from "./ModernFeaturesSection";
-import Footer from "./Footer";
+import { TestimonialsSection } from "./TestimonialsSection";
+import { ModernFeaturesSection } from "./ModernFeaturesSection";
+import { Footer } from "./Footer";
 import { HeroSectionClean } from "@/components/ui/hero-section-clean";
 import { HeroSectionModern } from "@/components/ui/hero-section-modern";
 import { HeroSectionLamp } from "@/components/ui/hero-section-lamp";
