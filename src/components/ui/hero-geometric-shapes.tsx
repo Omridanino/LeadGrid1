@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Zap, Shield, Star } from 'lucide-react';
@@ -168,7 +167,7 @@ export const HeroGeometricShapes = ({ formData, currentColors, content }: HeroGe
           </motion.h1>
           
           <motion.p
-            className="text-xl mb-16 leading-relaxed"
+            className="text-xl mb-20 leading-relaxed"
             style={getTextStyle('subheadline')}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -177,7 +176,7 @@ export const HeroGeometricShapes = ({ formData, currentColors, content }: HeroGe
             {content?.subheadline || content?.description || 'תבנית דף הנחיתה שלנו עובדת על כל המכשירים, כך שאתם צריכים רק להגדיר אותה פעם אחת, ולקבל תוצאות יפות לתמיד.'}
           </motion.p>
           
-          <div className="flex gap-4 mb-20">
+          <div className="flex gap-4 mb-32">
             {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
               renderAdvancedButton(button, index)
             ) || (
