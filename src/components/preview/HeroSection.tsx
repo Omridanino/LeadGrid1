@@ -36,17 +36,34 @@ interface HeroSectionProps {
 export const HeroSection = ({ content, currentColors, formData, heroImage }: HeroSectionProps) => {
   const designStyle = formData?.designStyle || 'basic';
 
-  // Helper function to get inline style for text colors
+  // Helper function to get inline style for text colors with gradient support
   const getTextStyle = (colorKey: string) => {
-    if (content?.colors?.[colorKey]) {
-      return { color: content.colors[colorKey] };
+    const colorValue = content?.colors?.[colorKey];
+    if (colorValue) {
+      // Check if it's a gradient
+      if (colorValue.includes('gradient')) {
+        return { 
+          background: colorValue,
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text'
+        };
+      }
+      return { color: colorValue };
     }
     return {};
   };
 
-  // Helper function to get inline style for button colors
+  // Helper function to get inline style for button colors with gradient support
   const getButtonStyle = (buttonColor?: string) => {
     if (buttonColor) {
+      if (buttonColor.includes('gradient')) {
+        return { 
+          background: buttonColor,
+          color: '#ffffff',
+          border: 'none'
+        };
+      }
       return { 
         backgroundColor: buttonColor,
         color: '#ffffff',
@@ -56,11 +73,19 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     return {};
   };
 
-  // Helper function to get inline style for badge colors
+  // Helper function to get inline style for badge colors with gradient support
   const getBadgeStyle = () => {
-    if (content?.colors?.badge) {
+    const badgeColor = content?.colors?.badge;
+    if (badgeColor) {
+      if (badgeColor.includes('gradient')) {
+        return { 
+          background: badgeColor,
+          color: '#ffffff',
+          border: 'none'
+        };
+      }
       return { 
-        backgroundColor: content.colors.badge,
+        backgroundColor: badgeColor,
         color: '#ffffff',
         border: 'none'
       };
@@ -68,43 +93,16 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     return {};
   };
 
-  // Helper function to get text style classes
-  const getTextStyleClasses = (elementStyle: string) => {
-    switch (elementStyle) {
-      case "black-text":
-        return "text-black";
-      case "white-text":
-        return "text-white";
-      case "gold-text":
-        return "text-yellow-400";
-      case "gradient-gold-text":
-        return "bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent";
-      case "gradient-purple-text":
-        return "bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent";
-      case "gradient-blue-text":
-        return "bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent";
-      default:
-        return "text-white";
-    }
-  };
-
-  // Helper function to get button style classes (for buttons we keep backgrounds)
-  const getButtonStyleClasses = (elementStyle: string) => {
-    switch (elementStyle) {
-      case "black-on-white":
-        return "bg-white text-black border border-black";
-      case "white-on-black":
-        return "bg-black text-white border border-white";
-      case "gradient-gold-black":
-        return "bg-gradient-to-r from-yellow-400 to-black text-white border-0";
-      case "gradient-gold-white":
-        return "bg-gradient-to-r from-yellow-400 to-white text-black border-0";
-      case "gradient-purple-tech":
-        return "bg-gradient-to-r from-purple-600 to-white text-white border-0";
-      default:
-        return "bg-blue-600 text-white";
-    }
-  };
+  // Helper function to create custom content props for components
+  const getCustomContentProps = () => ({
+    badge: content?.badge,
+    headline: content?.headline || formData?.businessName,
+    subheadline: content?.subheadline || content?.description,
+    description: content?.description,
+    buttons: content?.buttons,
+    colors: content?.colors,
+    cta: content?.cta
+  });
 
   // Handle Basic Design Style variations
   if (designStyle === 'basic' || designStyle.startsWith('hero-section-')) {
@@ -128,108 +126,263 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       
       console.log('Selected random design:', selectedDesign, 'from index:', randomIndex);
       setSelectedBasicDesign(selectedDesign);
-    }, [formData?.businessName, formData?.businessType]); // Change when business data changes
+    }, [formData?.businessName, formData?.businessType]);
 
-    // Return clean hero section
+    // Enhanced Mockup Hero (minimal) with custom content
+    if (selectedBasicDesign === 'hero-section-minimal') {
+      return (
+        <section className="relative overflow-hidden min-h-screen bg-black/[0.96]">
+          <div className="container mx-auto px-4 relative z-10 min-h-screen flex items-center justify-center">
+            <div className="text-center max-w-4xl mx-auto">
+              {content?.badge && (
+                <div 
+                  className="inline-block mb-6 px-4 py-2 rounded-full text-sm"
+                  style={getBadgeStyle()}
+                >
+                  {content.badge}
+                </div>
+              )}
+              
+              <h1 
+                className="text-5xl md:text-7xl font-bold mb-8"
+                style={getTextStyle('headline')}
+              >
+                {content?.headline || formData?.businessName || 'העסק שלכם'}
+              </h1>
+              
+              <p 
+                className="text-xl md:text-2xl mb-12"
+                style={getTextStyle('subheadline')}
+              >
+                {content?.subheadline || content?.description || `פתרונות מקצועיים ל${formData?.targetAudience || 'הלקוחות שלכם'}`}
+              </p>
+              
+              <div className="flex gap-4 justify-center flex-wrap">
+                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                  <button 
+                    key={index}
+                    className="px-8 py-4 rounded-xl font-semibold text-lg transition"
+                    style={getButtonStyle(button.color)}
+                  >
+                    {button.text}
+                  </button>
+                )) || (
+                  <button 
+                    className="px-8 py-4 rounded-xl font-semibold text-lg"
+                    style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+                  >
+                    {content?.cta || 'בואו נתחיל'}
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // All other basic designs - pass content as props
+    const customContentProps = getCustomContentProps();
+
     if (selectedBasicDesign === 'hero-section-clean') {
       return (
         <HeroSectionClean
           formData={formData}
           currentColors={currentColors}
+          content={customContentProps}
         />
       );
     }
 
-    // Return modern hero section  
     if (selectedBasicDesign === 'hero-section-modern') {
       return (
         <HeroSectionModern
           formData={formData}
           currentColors={currentColors}
+          content={customContentProps}
         />
       );
     }
 
-    // Return lamp hero section
     if (selectedBasicDesign === 'hero-section-lamp') {
       return (
         <HeroSectionLamp
           formData={formData}
           currentColors={currentColors}
+          content={customContentProps}
         />
       );
     }
 
-    // Return retro hero section
     if (selectedBasicDesign === 'hero-section-retro') {
       return (
         <HeroSectionRetro
           formData={formData}
           currentColors={currentColors}
+          content={customContentProps}
         />
       );
     }
 
-    // Enhanced Mockup Hero (minimal)
-    if (selectedBasicDesign === 'hero-section-minimal') {
-      return (
-        <HeroWithMockup
-          title={content?.headline || formData?.businessName || 'העסק שלכם'}
-          description={content?.subheadline || content?.description || `פתרונות מקצועיים ל${formData?.targetAudience || 'הלקוחות שלכם'}`}
-          primaryCta={{
-            text: content?.buttons?.[0]?.text || content?.cta || 'בואו נתחיל',
-            onClick: () => {}
-          }}
-          secondaryCta={{
-            text: content?.buttons?.[1]?.text || 'למד עוד',
-            onClick: () => {}
-          }}
-        />
-      );
-    }
-
-    // Beams Background (classic)
+    // Beams Background (classic) with custom content
     if (selectedBasicDesign === 'hero-section-classic') {
       return (
-        <BeamsBackground
-          title={content?.headline || formData?.businessName || 'חלומות דיגיטליים'}
-          description={content?.subheadline || content?.description || 'שם המחשבות מקבלות צורה והתודעה זורמת כמו כספית נוזלית'}
-          primaryCta={{
-            text: content?.buttons?.[0]?.text || content?.cta || 'היכנסו לזרימה',
-            onClick: () => {}
-          }}
-          secondaryCta={{
-            text: content?.buttons?.[1]?.text || 'חקרו עוד',
-            onClick: () => {}
-          }}
-        />
+        <section className="relative overflow-hidden min-h-screen bg-black">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+          
+          <div className="container mx-auto px-4 relative z-10 min-h-screen flex items-center justify-center">
+            <div className="text-center max-w-4xl mx-auto">
+              {content?.badge && (
+                <div 
+                  className="inline-block mb-6 px-4 py-2 rounded-full text-sm"
+                  style={getBadgeStyle()}
+                >
+                  {content.badge}
+                </div>
+              )}
+              
+              <h1 
+                className="text-5xl md:text-7xl font-bold mb-8"
+                style={getTextStyle('headline')}
+              >
+                {content?.headline || formData?.businessName || 'חלומות דיגיטליים'}
+              </h1>
+              
+              <p 
+                className="text-xl md:text-2xl mb-12"
+                style={getTextStyle('subheadline')}
+              >
+                {content?.subheadline || content?.description || 'שם המחשבות מקבלות צורה והתודעה זורמת כמו כספית נוזלית'}
+              </p>
+              
+              <div className="flex gap-4 justify-center flex-wrap">
+                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                  <button 
+                    key={index}
+                    className="px-8 py-4 rounded-xl font-semibold text-lg transition"
+                    style={getButtonStyle(button.color)}
+                  >
+                    {button.text}
+                  </button>
+                )) || (
+                  <button 
+                    className="px-8 py-4 rounded-xl font-semibold text-lg"
+                    style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+                  >
+                    {content?.cta || 'היכנסו לזרימה'}
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
       );
     }
 
-    // Gradient Hero (elegant)
+    // Gradient Hero (elegant) with custom content
     if (selectedBasicDesign === 'hero-section-elegant') {
       return (
-        <GradientHero
-          title={content?.headline || formData?.businessName || 'העתיד כאן עכשיו'}
-          subtitle={content?.subheadline || content?.description || 'חוויה דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש'}
-          primaryCta={{
-            text: content?.buttons?.[0]?.text || content?.cta || 'haledו היום',
-            onClick: () => {}
-          }}
-          secondaryCta={{
-            text: content?.buttons?.[1]?.text || 'גלו עוד',
-            onClick: () => {}
-          }}
-        />
+        <section className="relative overflow-hidden min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="1"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20" />
+          
+          <div className="container mx-auto px-4 relative z-10 min-h-screen flex items-center justify-center">
+            <div className="text-center max-w-4xl mx-auto">
+              {content?.badge && (
+                <div 
+                  className="inline-block mb-6 px-4 py-2 rounded-full text-sm"
+                  style={getBadgeStyle()}
+                >
+                  {content.badge}
+                </div>
+              )}
+              
+              <h1 
+                className="text-5xl md:text-7xl font-bold mb-8"
+                style={getTextStyle('headline')}
+              >
+                {content?.headline || formData?.businessName || 'העתיד כאן עכשיו'}
+              </h1>
+              
+              <p 
+                className="text-xl md:text-2xl mb-12"
+                style={getTextStyle('subheadline')}
+              >
+                {content?.subheadline || content?.description || 'חוויה דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש'}
+              </p>
+              
+              <div className="flex gap-4 justify-center flex-wrap">
+                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                  <button 
+                    key={index}
+                    className="px-8 py-4 rounded-xl font-semibold text-lg transition"
+                    style={getButtonStyle(button.color)}
+                  >
+                    {button.text}
+                  </button>
+                )) || (
+                  <button 
+                    className="px-8 py-4 rounded-xl font-semibold text-lg"
+                    style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+                  >
+                    {content?.cta || 'חלדו היום'}
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
       );
     }
 
-    // Default fallback - should not happen
+    // Default fallback
     return (
-      <HeroSectionClean
-        formData={formData}
-        currentColors={currentColors}
-      />
+      <section className="relative overflow-hidden min-h-screen bg-black">
+        <div className="container mx-auto px-4 relative z-10 min-h-screen flex items-center justify-center">
+          <div className="text-center max-w-4xl mx-auto">
+            {content?.badge && (
+              <div 
+                className="inline-block mb-6 px-4 py-2 rounded-full text-sm"
+                style={getBadgeStyle()}
+              >
+                {content.badge}
+              </div>
+            )}
+            
+            <h1 
+              className="text-5xl md:text-7xl font-bold mb-8"
+              style={getTextStyle('headline')}
+            >
+              {content?.headline || formData?.businessName || 'העסק שלכם'}
+            </h1>
+            
+            <p 
+              className="text-xl md:text-2xl mb-12"
+              style={getTextStyle('subheadline')}
+            >
+              {content?.subheadline || content?.description || 'פתרונות מקצועיים'}
+            </p>
+            
+            <div className="flex gap-4 justify-center flex-wrap">
+              {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                <button 
+                  key={index}
+                  className="px-8 py-4 rounded-xl font-semibold text-lg transition"
+                  style={getButtonStyle(button.color)}
+                >
+                  {button.text}
+                </button>
+              )) || (
+                <button 
+                  className="px-8 py-4 rounded-xl font-semibold text-lg"
+                  style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+                >
+                  {content?.cta || 'בואו נתחיל'}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
     );
   }
 
@@ -239,11 +392,11 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     const [selectedDesign, setSelectedDesign] = useState(0);
 
     useEffect(() => {
-      // Randomly select one of the 12 3D designs (increased from 9)
+      // Randomly select one of the 12 3D designs
       setSelectedDesign(Math.floor(Math.random() * 12));
     }, []);
 
-    // Design 1: Spline 3D Scene with custom styles
+    // Design 1: Spline 3D Scene with custom styles - remove mix-blend modes
     if (selectedDesign === 0) {
       return (
         <section className="relative overflow-hidden min-h-screen bg-black/[0.96]">
@@ -267,14 +420,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 
                 <h1 
                   className="text-4xl md:text-6xl font-bold mb-6"
-                  style={content?.colors?.headline ? getTextStyle('headline') : {}}
+                  style={getTextStyle('headline')}
                 >
                   {content?.headline || formData?.businessName || 'expérience 3D'}
                 </h1>
                 
                 <p 
                   className="text-lg leading-relaxed mb-8 max-w-lg"
-                  style={content?.colors?.subheadline ? getTextStyle('subheadline') : {}}
+                  style={getTextStyle('subheadline')}
                 >
                   {content?.subheadline || content?.description || `הביאו את העסק שלכם למימד חדש עם טכנולוגיות מתקדמות ועיצוב חדשני`}
                 </p>
@@ -289,14 +442,12 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                       {button.text}
                     </button>
                   )) || (
-                    <>
-                      <button className="bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition">
-                        {content?.cta || 'haledo now'}
-                      </button>
-                      <button className="border border-neutral-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-neutral-800 transition">
-                        go further
-                      </button>
-                    </>
+                    <button 
+                      className="px-6 py-3 rounded-lg font-semibold transition"
+                      style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+                    >
+                      {content?.cta || 'haledo now'}
+                    </button>
                   )}
                 </div>
               </div>
@@ -313,7 +464,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 2: Chrome Grid with custom styles
+    // Design 2: Chrome Grid with custom styles - remove mix-blend modes
     if (selectedDesign === 1) {
       return (
         <div className="h-screen w-screen relative">
@@ -321,7 +472,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           <div className="absolute z-10 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 pointer-events-none flex flex-col justify-center items-center text-center">
             {content?.badge && (
               <div 
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm pointer-events-auto"
                 style={getBadgeStyle()}
               >
                 <Shield className="w-4 h-4" />
@@ -331,14 +482,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             
             <h1 
               className="text-5xl md:text-7xl font-light mb-4 tracking-widest whitespace-nowrap"
-              style={content?.colors?.headline ? getTextStyle('headline') : {}}
+              style={getTextStyle('headline')}
             >
               {content?.headline || formData?.businessName || 'courageous digital'}
             </h1>
             
             <p 
               className="text-sm md:text-lg font-mono tracking-wide mb-8 max-w-2xl"
-              style={content?.colors?.subheadline ? getTextStyle('subheadline') : {}}
+              style={getTextStyle('subheadline')}
             >
               {content?.subheadline || 'a technology that brings life to the touch - a new way of doing things'}
             </p>
@@ -353,14 +504,12 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   {button.text}
                 </button>
               )) || (
-                <>
-                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition transform hover:scale-105">
-                    {content?.cta || 'come in'}
-                  </button>
-                  <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
-                    learn more
-                  </button>
-                </>
+                <button 
+                  className="px-8 py-4 rounded-lg font-bold transition transform hover:scale-105"
+                  style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+                >
+                  {content?.cta || 'come in'}
+                </button>
               )}
             </div>
           </div>
@@ -388,14 +537,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             
             <h1 
               className="max-w-4xl text-center text-4xl md:text-7xl font-medium leading-tight mb-6"
-              style={content?.colors?.headline ? getTextStyle('headline') : {}}
+              style={getTextStyle('headline')}
             >
               {content?.headline || formData?.businessName || 'the future is now'}
             </h1>
             
             <p 
               className="my-6 max-w-2xl text-center text-lg leading-relaxed"
-              style={content?.colors?.subheadline ? getTextStyle('subheadline') : {}}
+              style={getTextStyle('subheadline')}
             >
               {content?.subheadline || 'a digital experience that brings your business to the future with cutting-edge technologies'}
             </p>
@@ -450,7 +599,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           <div className="absolute z-10 text-center">
             {content?.badge && (
               <div 
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-exclusion"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm"
                 style={getBadgeStyle()}
               >
                 <Zap className="w-4 h-4" />
@@ -459,15 +608,15 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             )}
             
             <h1 
-              className="text-6xl md:text-8xl font-bold tracking-tight whitespace-nowrap mb-6 mix-blend-exclusion"
-              style={content?.colors?.headline ? getTextStyle('headline') : {}}
+              className="text-6xl md:text-8xl font-bold tracking-tight whitespace-nowrap mb-6"
+              style={getTextStyle('headline')}
             >
               {content?.headline || formData?.businessName || 'dreams of the digital'}
             </h1>
             
             <p 
-              className="text-lg md:text-xl text-center max-w-2xl leading-relaxed mb-8 px-4 mix-blend-exclusion"
-              style={content?.colors?.subheadline ? getTextStyle('subheadline') : {}}
+              className="text-lg md:text-xl text-center max-w-2xl leading-relaxed mb-8 px-4"
+              style={getTextStyle('subheadline')}
             >
               {content?.subheadline || 'the computers receive a shape and the information flows like a coin of the realm'}
             </p>
@@ -476,20 +625,18 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                 <button 
                   key={index}
-                  className="px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion"
+                  className="px-8 py-4 rounded-lg font-bold transition"
                   style={getButtonStyle(button.color)}
                 >
                   {button.text}
                 </button>
               )) || (
-                <>
-                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
-                    {content?.cta || 'come in'}
-                  </button>
-                  <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
-                    explore more
-                  </button>
-                </>
+                <button 
+                  className="px-8 py-4 rounded-lg font-bold transition"
+                  style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+                >
+                  {content?.cta || 'come in'}
+                </button>
               )}
             </div>
           </div>
@@ -506,7 +653,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           <div className="absolute z-10 text-center">
             {content?.badge && (
               <div 
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-difference"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm"
                 style={getBadgeStyle()}
               >
                 <Award className="w-4 h-4" />
@@ -515,15 +662,15 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             )}
             
             <h1 
-              className="text-6xl md:text-8xl font-bold mb-6 tracking-tight mix-blend-difference"
-              style={content?.colors?.headline ? getTextStyle('headline') : {}}
+              className="text-6xl md:text-8xl font-bold mb-6 tracking-tight"
+              style={getTextStyle('headline')}
             >
               {content?.headline || formData?.businessName || 'solution for complex problems'}
             </h1>
             
             <p 
-              className="text-lg md:text-xl max-w-2xl px-6 leading-relaxed mb-8 mix-blend-exclusion"
-              style={content?.colors?.subheadline ? getTextStyle('subheadline') : {}}
+              className="text-lg md:text-xl max-w-2xl px-6 leading-relaxed mb-8"
+              style={getTextStyle('subheadline')}
             >
               {content?.subheadline || 'one piece at a time - we solve the most complex problems'}
             </p>
@@ -532,20 +679,18 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                 <button 
                   key={index}
-                  className="px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion"
+                  className="px-8 py-4 rounded-lg font-bold transition"
                   style={getButtonStyle(button.color)}
                 >
                   {button.text}
                 </button>
               )) || (
-                <>
-                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
-                    {content?.cta || 'solve with us'}
-                  </button>
-                  <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
-                    learn how
-                  </button>
-                </>
+                <button 
+                  className="px-8 py-4 rounded-lg font-bold transition"
+                  style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+                >
+                  {content?.cta || 'solve with us'}
+                </button>
               )}
             </div>
           </div>
@@ -564,19 +709,19 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           />
 
           <div className="absolute inset-0 z-10 pt-20 md:pt-32 lg:pt-40 px-4 md:px-8 pointer-events-none">
-            <div className="text-center text-white drop-shadow-lg w-full max-w-2xl mx-auto">
+            <div className="text-center text-white drop-shadow-lg w-full max-w-2xl mx-auto pointer-events-auto">
               {content?.badge && (
-                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm mix-blend-exclusion pointer-events-auto`} style={getBadgeStyle()}>
+                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm`} style={getBadgeStyle()}>
                   <Zap className="w-4 h-4" />
                   <span>{content.badge}</span>
                 </div>
               )}
               
-              <h1 className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-6 mix-blend-exclusion`} style={content?.colors?.headline ? getTextStyle('headline') : { color: 'white' }}>
+              <h1 className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-6`} style={getTextStyle('headline')}>
                 {content?.headline || formData?.businessName || 'interactive 3D robot'}
               </h1>
               
-              <p className={`text-lg leading-relaxed mb-8 px-4 mix-blend-exclusion`} style={content?.colors?.subheadline ? getTextStyle('subheadline') : { color: 'white' }}>
+              <p className={`text-lg leading-relaxed mb-8 px-4`} style={getTextStyle('subheadline')}>
                 {content?.subheadline || 'an advanced interactive experience with 3D technology'}
               </p>
               
@@ -584,20 +729,18 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
                   <button 
                     key={index}
-                    className="px-8 py-4 rounded-lg font-bold transition mix-blend-exclusion"
+                    className="px-8 py-4 rounded-lg font-bold transition"
                     style={getButtonStyle(button.color)}
                   >
                     {button.text}
                   </button>
                 )) || (
-                  <>
-                    <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition mix-blend-exclusion">
-                      {content?.cta || 'explore the robot'}
-                    </button>
-                    <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm mix-blend-exclusion">
-                      learn more
-                    </button>
-                  </>
+                  <button 
+                    className="px-8 py-4 rounded-lg font-bold transition"
+                    style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+                  >
+                    {content?.cta || 'explore the robot'}
+                  </button>
                 )}
               </div>
             </div>
@@ -633,14 +776,12 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   {button.text}
                 </button>
               )) || (
-                <>
-                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
-                    {content?.cta || 'experience'}
-                  </button>
-                  <button className="border border-gray-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-gray-800 transition">
-                    learn more
-                  </button>
-                </>
+                <button 
+                  className="px-8 py-4 rounded-lg font-bold transition"
+                  style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+                >
+                  {content?.cta || 'experience'}
+                </button>
               )}
             </div>
           </div>
@@ -669,14 +810,12 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   {button.text}
                 </button>
               )) || (
-                <>
-                  <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
-                    {content?.cta || 'explore the horizon'}
-                  </button>
-                  <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
-                    learn more
-                  </button>
-                </>
+                <button 
+                  className="px-8 py-4 rounded-lg font-bold transition"
+                  style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+                >
+                  {content?.cta || 'explore the horizon'}
+                </button>
               )}
             </div>
           </div>
@@ -781,14 +920,12 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 {button.text}
               </button>
             )) || (
-              <>
-                <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
-                  {content?.cta || 'explore the projects'}
-                </button>
-                <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
-                  contact us
-                </button>
-              </>
+              <button 
+                className="px-8 py-4 rounded-lg font-bold transition"
+                style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+              >
+                {content?.cta || 'explore the projects'}
+              </button>
             )}
           </div>
         </div>
@@ -816,14 +953,12 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                 {button.text}
               </button>
             )) || (
-              <>
-                <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
-                  {content?.cta || 'start creating'}
-                </button>
-                <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
-                  learn more
-                </button>
-              </>
+              <button 
+                className="px-8 py-4 rounded-lg font-bold transition"
+                style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+              >
+                {content?.cta || 'start creating'}
+              </button>
             )}
           </div>
         </div>
@@ -883,14 +1018,12 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                     {button.text}
                   </button>
                 )) || (
-                  <>
-                    <button className="bg-white text-black px-8 py-4 rounded-lg font-bold hover:bg-gray-200 transition">
-                      {content?.cta || 'explore more'}
-                    </button>
-                    <button className="border border-white/30 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/10 transition backdrop-blur-sm">
-                      contact us
-                    </button>
-                  </>
+                  <button 
+                    className="px-8 py-4 rounded-lg font-bold transition"
+                    style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+                  >
+                    {content?.cta || 'explore more'}
+                  </button>
                 )}
               </div>
             </div>
@@ -919,14 +1052,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           
           <h1 
             className="text-5xl md:text-7xl font-bold mb-8"
-            style={content?.colors?.headline ? getTextStyle('headline') : { color: currentColors.headlineColor }}
+            style={getTextStyle('headline')}
           >
             {content?.headline || formData?.businessName || 'the business'}
           </h1>
           
           <p 
             className="text-xl md:text-2xl mb-12"
-            style={content?.colors?.subheadline ? getTextStyle('subheadline') : { color: currentColors.subheadlineColor }}
+            style={getTextStyle('subheadline')}
           >
             {content?.subheadline || content?.description || 'professional solutions'}
           </p>

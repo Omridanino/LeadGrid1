@@ -7,15 +7,70 @@ import { Menu, X, ArrowRight, ChevronRight } from 'lucide-react'
 interface HeroSectionModernProps {
   formData: any;
   currentColors: any;
+  content?: any;
 }
 
-export const HeroSectionModern = ({ formData, currentColors }: HeroSectionModernProps) => {
+export const HeroSectionModern = ({ formData, currentColors, content }: HeroSectionModernProps) => {
     const [menuState, setMenuState] = React.useState(false)
     const [isScrolled, setIsScrolled] = React.useState(false)
     
-    const businessName = formData?.businessName || "שם העסק"
-    const businessStory = formData?.businessStory || "פתרונות מודרניים לעתיד הדיגיטלי"
-    const mainServices = formData?.mainServices || "קומפוננטים מותאמים לבניית אתרים ואפליקציות מודרניות שנראות ומרגישות בדיוק כמו שחלמתם"
+    const businessName = content?.headline || formData?.businessName || "שם העסק"
+    const businessStory = content?.subheadline || formData?.businessStory || "פתרונות מודרניים לעתיד הדיגיטלי"
+    const mainServices = content?.description || formData?.mainServices || "קומפוננטים מותאמים לבניית אתרים ואפליקציות מודרניות שנראות ומרגישות בדיוק כמו שחלמתם"
+    
+    // Helper functions for styling
+    const getTextStyle = (colorKey: string) => {
+      const colorValue = content?.colors?.[colorKey];
+      if (colorValue) {
+        if (colorValue.includes('gradient')) {
+          return { 
+            background: colorValue,
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
+          };
+        }
+        return { color: colorValue };
+      }
+      return {};
+    };
+
+    const getButtonStyle = (buttonColor?: string) => {
+      if (buttonColor) {
+        if (buttonColor.includes('gradient')) {
+          return { 
+            background: buttonColor,
+            color: '#ffffff',
+            border: 'none'
+          };
+        }
+        return { 
+          backgroundColor: buttonColor,
+          color: '#ffffff',
+          border: 'none'
+        };
+      }
+      return {};
+    };
+
+    const getBadgeStyle = () => {
+      const badgeColor = content?.colors?.badge;
+      if (badgeColor) {
+        if (badgeColor.includes('gradient')) {
+          return { 
+            background: badgeColor,
+            color: '#ffffff',
+            border: 'none'
+          };
+        }
+        return { 
+          backgroundColor: badgeColor,
+          color: '#ffffff',
+          border: 'none'
+        };
+      }
+      return {};
+    };
     
     React.useEffect(() => {
         const handleScroll = () => {
@@ -107,42 +162,57 @@ export const HeroSectionModern = ({ formData, currentColors }: HeroSectionModern
                     <div className="relative pt-24 md:pt-36">
                         <div className="mx-auto max-w-7xl px-6">
                             <div className="text-center mx-auto">
-                                <div className="hover:bg-white dark:hover:bg-gray-950 bg-gray-100 dark:bg-gray-800 group mx-auto flex w-fit items-center gap-4 rounded-full border p-1 pl-4 shadow-md transition-all duration-300 mb-8">
-                                    <span className="text-sm">הכירו את הטכנולוגיה המתקדמת שלנו</span>
-                                    <span className="block h-4 w-0.5 border-l bg-gray-400"></span>
-                                    <div className="bg-white dark:bg-gray-950 group-hover:bg-gray-100 dark:group-hover:bg-gray-800 size-6 overflow-hidden rounded-full duration-500">
-                                        <div className="flex w-12 -translate-x-1/2 duration-500 ease-in-out group-hover:translate-x-0">
-                                            <span className="flex size-6">
-                                                <ArrowRight className="m-auto size-3" />
-                                            </span>
-                                            <span className="flex size-6">
-                                                <ArrowRight className="m-auto size-3" />
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
+                                {content?.badge && (
+                                  <div className="hover:bg-white dark:hover:bg-gray-950 bg-gray-100 dark:bg-gray-800 group mx-auto flex w-fit items-center gap-4 rounded-full border p-1 pl-4 shadow-md transition-all duration-300 mb-8" style={getBadgeStyle()}>
+                                      <span className="text-sm">{content.badge}</span>
+                                      <span className="block h-4 w-0.5 border-l bg-gray-400"></span>
+                                      <div className="bg-white dark:bg-gray-950 group-hover:bg-gray-100 dark:group-hover:bg-gray-800 size-6 overflow-hidden rounded-full duration-500">
+                                          <div className="flex w-12 -translate-x-1/2 duration-500 ease-in-out group-hover:translate-x-0">
+                                              <span className="flex size-6">
+                                                  <ArrowRight className="m-auto size-3" />
+                                              </span>
+                                              <span className="flex size-6">
+                                                  <ArrowRight className="m-auto size-3" />
+                                              </span>
+                                          </div>
+                                      </div>
+                                  </div>
+                                )}
                         
-                                <h1 className="mt-8 max-w-4xl mx-auto text-balance text-4xl md:text-6xl lg:text-7xl font-bold mb-8">
+                                <h1 className="mt-8 max-w-4xl mx-auto text-balance text-4xl md:text-6xl lg:text-7xl font-bold mb-8" style={getTextStyle('headline')}>
                                     {businessStory}
                                 </h1>
-                                <p className="mx-auto mt-8 max-w-2xl text-balance text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                                <p className="mx-auto mt-8 max-w-2xl text-balance text-lg text-gray-600 dark:text-gray-300 leading-relaxed" style={getTextStyle('subheadline')}>
                                     {mainServices}
                                 </p>
 
                                 <div className="mt-12 flex flex-col items-center justify-center gap-2 md:flex-row">
-                                    <div className="bg-gray-100 dark:bg-gray-800 rounded-[14px] border p-0.5">
+                                    {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => (
+                                      <div key={index} className="bg-gray-100 dark:bg-gray-800 rounded-[14px] border p-0.5">
+                                          <Button
+                                              size="lg"
+                                              className="rounded-xl px-5 text-base"
+                                              style={getButtonStyle(button.color)}>
+                                              <span>{button.text}</span>
+                                          </Button>
+                                      </div>
+                                    )) || (
+                                      <>
+                                        <div className="bg-gray-100 dark:bg-gray-800 rounded-[14px] border p-0.5">
+                                            <Button
+                                                size="lg"
+                                                className="rounded-xl px-5 text-base bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                                                <span>התחל לבנות</span>
+                                            </Button>
+                                        </div>
                                         <Button
                                             size="lg"
-                                            className="rounded-xl px-5 text-base bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-                                            <span>התחל לבנות</span>
+                                            variant="ghost"
+                                            className="rounded-xl px-5">
+                                            <span>בקש הדגמה</span>
                                         </Button>
-                                    </div>
-                                    <Button
-                                        size="lg"
-                                        variant="ghost"
-                                        className="rounded-xl px-5">
-                                        <span>בקש הדגמה</span>
-                                    </Button>
+                                      </>
+                                    )}
                                 </div>
                             </div>
                         </div>
