@@ -824,16 +824,15 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       );
     }
 
-    // Design 8: Fixed spacing and improved layout with better vertical distribution
     if (selectedDesign === 8) {
       return (
         <div className="relative w-screen h-screen overflow-hidden bg-black">
           {/* Background 3D Element - Enlarged x1.8 with continuous movement */}
-          <div className="absolute top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2 z-10">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
             <div className="relative">
               {/* Main floating image - enlarged by 1.8 with continuous non-repeating movement */}
               <div 
-                className="w-[1080px] h-[1080px] relative opacity-30"
+                className="w-[1080px] h-[1080px] relative opacity-40"
                 style={{
                   animation: 'continuousFloat 20s linear infinite, continuousRotate3d 30s linear infinite',
                 }}
@@ -895,59 +894,31 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             />
           </div>
 
-          {/* Main Content - Properly spaced vertical layout */}
+          {/* Main Content - Centered over the background */}
           <div className="relative z-30 h-full flex flex-col justify-center items-center text-center px-8">
             <div className="max-w-4xl text-white">
-              {/* Badge positioned at the top with more margin */}
               {content?.badge && (
-                <div 
-                  className={`inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm backdrop-blur-sm border border-white/20 shadow-lg mb-12`} 
-                  style={{
-                    ...getBadgeStyle(),
-                    boxShadow: '0 0 20px rgba(107, 115, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
-                  }}
-                >
+                <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-sm`} style={getBadgeStyle()}>
                   <Award className="w-4 h-4" />
                   <span>{content.badge}</span>
                 </div>
               )}
               
-              {/* Main headline positioned high with more margin below */}
-              <h1 
-                className={`text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-16`} 
-                style={{
-                  ...getTextStyle('headline'),
-                  textShadow: '0 4px 20px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 255, 255, 0.1)',
-                }}
-              >
+              <h1 className={`text-4xl md:text-6xl lg:text-7xl font-bold mb-6`} style={getTextStyle('headline')}>
                 {content?.headline || formData?.businessName || 'Build Your Dreams'}
               </h1>
               
-              {/* Subtitle positioned with proper spacing from headline and buttons */}
-              <p 
-                className={`text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-20`} 
-                style={{
-                  ...getTextStyle('subheadline'),
-                  textShadow: '0 2px 10px rgba(0, 0, 0, 0.7)',
-                }}
-              >
+              <p className={`text-lg md:text-xl leading-relaxed mb-8 max-w-2xl mx-auto`} style={getTextStyle('subheadline')}>
                 {content?.subheadline || content?.description || 'AI-powered creativity for the next generation.'}
               </p>
               
-              {/* Buttons positioned at the bottom with enhanced styling */}
-              <div className="flex gap-6 justify-center flex-wrap">
+              <div className="flex gap-4 justify-center flex-wrap">
                 {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                  <div key={index} className="transform hover:scale-105 transition-transform duration-300">
-                    {renderAdvancedButton(button, index)}
-                  </div>
+                  renderAdvancedButton(button, index)
                 ) || (
                   <button 
-                    className="px-10 py-5 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 backdrop-blur-sm border border-white/20"
-                    style={{ 
-                      backgroundColor: currentColors.primary, 
-                      color: '#ffffff',
-                      boxShadow: '0 8px 32px rgba(107, 115, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
-                    }}
+                    className="px-8 py-4 rounded-lg font-bold transition"
+                    style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
                   >
                     {content?.cta || 'explore now'}
                   </button>
