@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Zap, Shield, Star } from 'lucide-react';
+import { ArrowRight, Zap } from 'lucide-react';
 
 interface HeroGeometricShapesProps {
   formData?: any;
@@ -176,7 +176,7 @@ export const HeroGeometricShapes = ({ formData, currentColors, content }: HeroGe
             {content?.subheadline || content?.description || 'תבנית דף הנחיתה שלנו עובדת על כל המכשירים, כך שאתם צריכים רק להגדיר אותה פעם אחת, ולקבל תוצאות יפות לתמיד.'}
           </motion.p>
           
-          <div className="flex gap-4 mb-32">
+          <div className="flex gap-4">
             {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
               renderAdvancedButton(button, index)
             ) || (
@@ -196,35 +196,6 @@ export const HeroGeometricShapes = ({ formData, currentColors, content }: HeroGe
           </div>
         </div>
       </div>
-      
-      {/* Bottom Features */}
-      <motion.div
-        className="absolute bottom-20 left-8 right-8"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1 }}
-      >
-        <div className="grid grid-cols-3 gap-8 max-w-2xl">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Shield className="w-8 h-8 text-blue-600" />
-            </div>
-            <h3 className="font-semibold text-gray-900 mb-2">אמינות</h3>
-          </div>
-          <div className="text-center">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Star className="w-8 h-8 text-blue-600" />
-            </div>
-            <h3 className="font-semibold text-gray-900 mb-2">איכות</h3>
-          </div>
-          <div className="text-center">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Zap className="w-8 h-8 text-blue-600" />
-            </div>
-            <h3 className="font-semibold text-gray-900 mb-2">מהירות</h3>
-          </div>
-        </div>
-      </motion.div>
     </section>
   );
 };
