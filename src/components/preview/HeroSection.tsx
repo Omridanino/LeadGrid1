@@ -343,7 +343,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   className="text-5xl md:text-7xl font-bold mb-8"
                   style={getTextStyle('headline')}
                 >
-                  {content?.headline || formData?.businessName || 'חלומות דיגיטליים'}
+                  {content?.headline || formData?.businessName || 'חלומות 디지יטליים'}
                 </h1>
                 
                 <p 
@@ -402,7 +402,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
                   className="text-xl md:text-2xl mb-12"
                   style={getTextStyle('subheadline')}
                 >
-                  {content?.subheadline || content?.description || 'expérience דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש'}
+                  {content?.subheadline || content?.description || 'expérience 디지털 מתקדמת שמביאה את העסק שלכם לעידן החדש'}
                 </p>
                 
                 <div className="flex gap-4 justify-center flex-wrap">
