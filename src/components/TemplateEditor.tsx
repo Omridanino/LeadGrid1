@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -46,13 +45,22 @@ const TemplateEditor = ({ template, onTemplateChange, onClose }: TemplateEditorP
   }, [editedTemplate, onTemplateChange]);
 
   const updateSection = (section: keyof TemplateData, updates: any) => {
-    setEditedTemplate(prev => ({
-      ...prev,
-      [section]: {
-        ...prev[section],
-        ...updates
+    setEditedTemplate(prev => {
+      const currentSection = prev[section];
+      if (typeof currentSection === 'object' && currentSection !== null) {
+        return {
+          ...prev,
+          [section]: {
+            ...currentSection,
+            ...updates
+          }
+        };
       }
-    }));
+      return {
+        ...prev,
+        [section]: updates
+      };
+    });
   };
 
   const updateStyles = (styleUpdates: any) => {
@@ -364,9 +372,6 @@ const TemplateEditor = ({ template, onTemplateChange, onClose }: TemplateEditorP
                           <div 
                             className="w-8 h-8 rounded border border-gray-600 cursor-pointer"
                             style={{ backgroundColor: editedTemplate.styles.primaryColor }}
-                            onClick={() => {
-                              // Open color picker
-                            }}
                           />
                         </div>
                       </div>
@@ -621,4 +626,3 @@ const TemplatePreview = ({ template }: { template: TemplateData }) => {
 };
 
 export default TemplateEditor;
-
