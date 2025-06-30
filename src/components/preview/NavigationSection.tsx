@@ -6,9 +6,11 @@ interface NavigationSectionProps {
   formData: {
     navigationStyle?: string;
   };
+  activeSection?: string;
+  onNavigate?: (sectionId: string) => void;
 }
 
-export const NavigationSection = ({ formData }: NavigationSectionProps) => {
+export const NavigationSection = ({ formData, activeSection, onNavigate }: NavigationSectionProps) => {
   if (formData.navigationStyle === 'dock') {
     return (
       <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">

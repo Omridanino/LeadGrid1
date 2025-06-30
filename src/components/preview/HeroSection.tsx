@@ -10,7 +10,7 @@ import { HeroHolographic } from "@/components/ui/hero-holographic";
 import { HeroLiquidMetal } from "@/components/ui/hero-liquid-metal";
 import { HeroGlassRefraction } from "@/components/ui/hero-glass-refraction";
 import { HeroMinimalTech } from "@/components/ui/hero-minimal-tech";
-import { HeroGradient } from "@/components/ui/gradient-hero";
+import { GradientHero } from "@/components/ui/gradient-hero";
 
 interface HeroSectionProps {
   content: any;
@@ -111,6 +111,10 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     case 'hero-minimal-tech':
       return <HeroMinimalTech content={renderHeroContent()} />;
     default:
-      return <HeroGradient content={renderHeroContent()} />;
+      return (
+        <div className="min-h-screen bg-black text-white flex items-center justify-center py-20">
+          {renderHeroContent()}
+        </div>
+      );
   }
 };

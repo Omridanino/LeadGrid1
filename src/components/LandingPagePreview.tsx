@@ -3,9 +3,9 @@ import { useState, useRef, useEffect } from 'react';
 import { ColorScheme } from "@/types/colors";
 import { HeroSection } from "./preview/HeroSection";
 import { NavigationSection } from "./preview/NavigationSection";
-import { ModernFeaturesSection } from "./ModernFeaturesSection";
-import { TestimonialsSection } from "./TestimonialsSection";
-import { Footer } from "./Footer";
+import ModernFeaturesSection from "./ModernFeaturesSection";
+import TestimonialsSection from "./TestimonialsSection";
+import Footer from "./Footer";
 
 interface LandingPagePreviewProps {
   content: any;
@@ -61,8 +61,6 @@ const LandingPagePreview = ({
   return (
     <div className="min-h-screen bg-black text-white" dir="rtl">
       <NavigationSection 
-        content={content}
-        currentColors={currentColors}
         formData={formData}
         activeSection={activeSection}
         onNavigate={scrollToSection}
