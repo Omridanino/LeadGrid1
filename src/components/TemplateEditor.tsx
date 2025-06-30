@@ -118,29 +118,31 @@ const TemplateEditor = ({ template, onTemplateChange, onClose }: TemplateEditorP
           </div>
         </div>
 
-        {/* Tabs Navigation */}
+        {/* Tabs Navigation and Content */}
         <div className="flex-1 overflow-hidden">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
+            {/* Tabs List */}
             <div className="p-2 border-b border-gray-800">
               <ScrollArea className="w-full">
-                <div className="flex flex-wrap gap-1">
+                <TabsList className="grid w-full grid-cols-2 gap-1 bg-gray-800">
                   {sections.map((section) => {
                     const Icon = section.icon;
                     return (
                       <TabsTrigger
                         key={section.id}
                         value={section.id}
-                        className="flex items-center gap-2 px-3 py-2 text-xs data-[state=active]:bg-blue-600 data-[state=active]:text-white text-gray-400"
+                        className="flex items-center gap-1 px-2 py-2 text-xs data-[state=active]:bg-blue-600 data-[state=active]:text-white text-gray-400"
                       >
                         <Icon className="w-3 h-3" />
                         {section.name}
                       </TabsTrigger>
                     );
                   })}
-                </div>
+                </TabsList>
               </ScrollArea>
             </div>
 
+            {/* Tabs Content */}
             <div className="flex-1 overflow-hidden">
               <ScrollArea className="h-full">
                 <div className="p-4 space-y-4">
