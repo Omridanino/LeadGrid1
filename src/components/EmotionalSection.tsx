@@ -1,3 +1,4 @@
+
 import { ColorScheme } from "@/types/colors";
 import { LiquidButton, MetalButton } from "@/components/ui/liquid-glass-button";
 import { cn } from "@/lib/utils";
@@ -301,6 +302,22 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
     }
   };
 
+  // New button that copies Hero background exactly
+  const getHeroBackgroundButton = () => {
+    if (!heroBackground || Object.keys(heroBackground).length === 0) {
+      return null;
+    }
+
+    return (
+      <button
+        className="px-8 py-4 rounded-xl font-semibold text-lg transition hover:scale-105 text-white"
+        style={heroBackground}
+      >
+        כפתור עם רקע הירו
+      </button>
+    );
+  };
+
   const heroTextStyles = getHeroBasedTextStyles();
   const heroStyles = getHeroMatchingStyles();
 
@@ -369,6 +386,9 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
           {buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
             renderAdvancedButton(button, index)
           )}
+          
+          {/* New Hero Background Button */}
+          {getHeroBackgroundButton()}
         </div>
       </div>
     </section>
