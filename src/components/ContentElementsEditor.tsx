@@ -1,267 +1,597 @@
-import React, { useState, useEffect } from 'react';
-import { SketchPicker } from 'react-color';
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ColorScheme } from "@/types/colors";
+import { Palette, Type, Zap, Badge as BadgeIcon, Eye, Heart, Plus, Trash2 } from "lucide-react";
+import ButtonStyleEditor from "./ButtonStyleEditor";
 
 interface ContentElementsEditorProps {
   content: any;
-  onContentChange: (newContent: any) => void;
-  onColorsChange: (newColors: any) => void;
+  onContentChange: (content: any) => void;
+  onColorsChange: (colors: ColorScheme) => void;
   formData: any;
 }
 
 const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formData }: ContentElementsEditorProps) => {
-  const [heroTitle, setHeroTitle] = useState(content?.heroSection?.title || '');
-  const [heroSubtitle, setHeroSubtitle] = useState(content?.heroSection?.subtitle || '');
-  const [heroButtonText, setHeroButtonText] = useState(content?.heroSection?.button?.text || '');
-  const [heroBackgroundColor, setHeroBackgroundColor] = useState(content?.heroSection?.backgroundColor || '#ffffff');
-  const [heroBackgroundImage, setHeroBackgroundImage] = useState(content?.heroSection?.backgroundImage || '');
-  const [emotionalTitle, setEmotionalTitle] = useState(content?.emotionalSection?.title || '');
-  const [emotionalSubtitle, setEmotionalSubtitle] = useState(content?.emotionalSection?.subtitle || '');
-  const [emotionalText, setEmotionalText] = useState(content?.emotionalSection?.text || '');
-  const [emotionalBadge, setEmotionalBadge] = useState(content?.emotionalSection?.badge || '');
-  const [emotionalBackgroundColor, setEmotionalBackgroundColor] = useState(content?.emotionalSection?.backgroundColor || '#1e1e2e');
+  const [localContent, setLocalContent] = useState(content || {});
 
+  // Sync with parent content changes
   useEffect(() => {
-    setHeroTitle(content?.heroSection?.title || '');
-    setHeroSubtitle(content?.heroSection?.subtitle || '');
-    setHeroButtonText(content?.heroSection?.button?.text || '');
-    setHeroBackgroundColor(content?.heroSection?.backgroundColor || '#ffffff');
-    setHeroBackgroundImage(content?.heroSection?.backgroundImage || '');
-    setEmotionalTitle(content?.emotionalSection?.title || '');
-    setEmotionalSubtitle(content?.emotionalSection?.subtitle || '');
-    setEmotionalText(content?.emotionalSection?.text || '');
-    setEmotionalBadge(content?.emotionalSection?.badge || '');
-    setEmotionalBackgroundColor(content?.emotionalSection?.backgroundColor || '#1e1e2e');
+    setLocalContent(content || {});
   }, [content]);
 
-  const updateContent = (newContent: any) => {
-    onContentChange(newContent);
-  };
-
-  const handleHeroTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTitle = e.target.value;
-    setHeroTitle(newTitle);
-    updateContent({
-      ...content,
-      heroSection: {
-        ...content.heroSection,
-        title: newTitle
-      }
-    });
-  };
-
-  const handleHeroSubtitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newSubtitle = e.target.value;
-    setHeroSubtitle(newSubtitle);
-    updateContent({
-      ...content,
-      heroSection: {
-        ...content.heroSection,
-        subtitle: newSubtitle
-      }
-    });
-  };
-
-  const handleHeroButtonTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newButtonText = e.target.value;
-    setHeroButtonText(newButtonText);
-    updateContent({
-      ...content,
-      heroSection: {
-        ...content.heroSection,
-        button: {
-          ...content.heroSection.button,
-          text: newButtonText
-        }
-      }
-    });
-  };
-
-  const handleHeroBackgroundColorChange = (color: any) => {
-    setHeroBackgroundColor(color.hex);
-    updateContent({
-      ...content,
-      heroSection: {
-        ...content.heroSection,
-        backgroundColor: color.hex
-      }
-    });
-  };
-
-  const handleHeroBackgroundImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newBackgroundImage = e.target.value;
-    setHeroBackgroundImage(newBackgroundImage);
-    updateContent({
-      ...content,
-      heroSection: {
-        ...content.heroSection,
-        backgroundImage: newBackgroundImage
-      }
-    });
-  };
-
-  const handleEmotionalTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTitle = e.target.value;
-    setEmotionalTitle(newTitle);
-    updateContent({
-      ...content,
-      emotionalSection: {
-        ...content.emotionalSection,
-        title: newTitle
-      }
-    });
-  };
-
-  const handleEmotionalSubtitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newSubtitle = e.target.value;
-    setEmotionalSubtitle(newSubtitle);
-    updateContent({
-      ...content,
-      emotionalSection: {
-        ...content.emotionalSection,
-        subtitle: newSubtitle
-      }
-    });
-  };
-
-  const handleEmotionalTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newText = e.target.value;
-    setEmotionalText(newText);
-    updateContent({
-      ...content,
-      emotionalSection: {
-        ...content.emotionalSection,
-        text: newText
-      }
-    });
-  };
-
-  const handleEmotionalBadgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newBadge = e.target.value;
-    setEmotionalBadge(newBadge);
-    updateContent({
-      ...content,
-      emotionalSection: {
-        ...content.emotionalSection,
-        badge: newBadge
-      }
-    });
-  };
-
-  const handleEmotionalBackgroundColorChange = (color: any) => {
-    setEmotionalBackgroundColor(color.hex);
-    updateContent({
-      ...content,
-      emotionalSection: {
-        ...content.emotionalSection,
-        backgroundColor: color.hex
-      }
-    });
-  };
-
-  const copyHeroBackgroundToEmotional = () => {
-    if (!content) return;
-
-    // Get the current hero section background
-    const heroSection = content.heroSection || {};
-    const heroBackground = heroSection.background;
-    const heroBackgroundColor = heroSection.backgroundColor;
-    const heroBackgroundImage = heroSection.backgroundImage;
-
-    // Determine what background style to copy
-    let backgroundToCopy = '';
-    if (heroBackgroundImage) {
-      backgroundToCopy = heroBackgroundImage;
-    } else if (heroBackground) {
-      backgroundToCopy = heroBackground;
-    } else if (heroBackgroundColor) {
-      backgroundToCopy = heroBackgroundColor;
-    }
-
-    // Update the emotional section with the hero's background
-    const updatedContent = {
-      ...content,
-      emotionalSection: {
-        ...content.emotionalSection,
-        backgroundColor: backgroundToCopy || heroBackgroundColor || '#1e1e2e'
-      }
-    };
-
+  const handleContentUpdate = (updates: any) => {
+    const updatedContent = { ...localContent, ...updates };
+    setLocalContent(updatedContent);
     onContentChange(updatedContent);
-    
-    // Show success message
-    console.log('Hero background copied to Emotional Section:', backgroundToCopy);
+  };
+
+  const handleColorUpdate = (colorKey: string, colorValue: string) => {
+    const updatedColors = {
+      ...localContent.colors,
+      [colorKey]: colorValue
+    };
+    handleContentUpdate({ colors: updatedColors });
+  };
+
+  const handleButtonsUpdate = (buttons: any[]) => {
+    handleContentUpdate({ buttons });
+  };
+
+  // Emotional section handlers
+  const handleEmotionalSectionUpdate = (updates: any) => {
+    const updatedEmotionalSection = {
+      ...localContent.emotionalSection,
+      ...updates
+    };
+    handleContentUpdate({ emotionalSection: updatedEmotionalSection });
+  };
+
+  const handleEmotionalButtonsUpdate = (buttons: any[]) => {
+    handleEmotionalSectionUpdate({ buttons });
+  };
+
+  const addEmotionalButton = () => {
+    const currentButtons = localContent.emotionalSection?.buttons || [];
+    const newButton = {
+      id: Date.now().toString(),
+      text: 'כפתור חדש',
+      style: 'primary',
+      visible: true
+    };
+    handleEmotionalButtonsUpdate([...currentButtons, newButton]);
+  };
+
+  const removeEmotionalButton = (buttonId: string) => {
+    const currentButtons = localContent.emotionalSection?.buttons || [];
+    const updatedButtons = currentButtons.filter((btn: any) => btn.id !== buttonId);
+    handleEmotionalButtonsUpdate(updatedButtons);
+  };
+
+  const updateEmotionalButton = (buttonId: string, updates: any) => {
+    const currentButtons = localContent.emotionalSection?.buttons || [];
+    const updatedButtons = currentButtons.map((btn: any) => 
+      btn.id === buttonId ? { ...btn, ...updates } : btn
+    );
+    handleEmotionalButtonsUpdate(updatedButtons);
+  };
+
+  // Working color palette that actually changes colors
+  const workingColorPalette = [
+    { name: 'ברירת מחדל', value: 'default' },
+    { name: 'שחור', value: '#000000' },
+    { name: 'לבן', value: '#ffffff' },
+    { name: 'אדום', value: '#ef4444' },
+    { name: 'כחול', value: '#3b82f6' },
+    { name: 'ירוק', value: '#10b981' },
+    { name: 'סגול', value: '#8b5cf6' },
+    { name: 'ורוד', value: '#ec4899' },
+    { name: 'צהוב', value: '#f59e0b' },
+    { name: 'ציאן', value: '#06b6d4' },
+    { name: 'זהב', value: '#d4af37' },
+    { name: 'כסף', value: '#c0c0c0' },
+    { name: 'גרדיאנט זהב', value: 'linear-gradient(45deg, #ffd700, #ffed4a)' },
+    { name: 'גרדיאנט סגול', value: 'linear-gradient(45deg, #8b5cf6, #a855f7)' },
+    { name: 'גרדיאנט כחול', value: 'linear-gradient(45deg, #3b82f6, #1d4ed8)' },
+    { name: 'גרדיאנט ירוק', value: 'linear-gradient(45deg, #10b981, #059669)' },
+    { name: 'גרדיאנט אדום', value: 'linear-gradient(45deg, #ef4444, #dc2626)' },
+    { name: 'גרדיאנט ציאן', value: 'linear-gradient(45deg, #06b6d4, #0891b2)' },
+    { name: 'גרדיאנט קשת', value: 'linear-gradient(45deg, #ef4444, #f59e0b, #10b981, #3b82f6, #8b5cf6)' },
+  ];
+
+  // Ensure buttons array exists
+  const buttons = localContent.buttons || [{ text: localContent.cta || 'לחץ כאן', style: 'default', visible: true }];
+
+  // Emotional section data
+  const emotionalSection = localContent.emotionalSection || {
+    title: 'הגיע הזמן לפעול',
+    subtitle: 'אל תחמיץ את ההזדמנות הזו',
+    text: 'הצטרף אלינו עוד היום והתחל את המסע שלך להצלחה',
+    badge: 'מוגבל בזמן',
+    backgroundColor: '#1e1e2e',
+    useHeroDesign: false,
+    buttons: [{ id: '1', text: 'התחל עכשיו', style: 'primary', visible: true }]
   };
 
   return (
     <div className="space-y-6">
-      {/* Hero Section */}
-      <div className="bg-gray-900 rounded-lg p-4">
-        <h2 className="text-white font-semibold mb-4">הגדרות Hero Section</h2>
-        <div className="space-y-4">
-          <div>
-            <Label className="text-gray-400">כותרת:</Label>
-            <Input type="text" value={heroTitle} onChange={handleHeroTitleChange} className="bg-gray-800 text-white" />
-          </div>
-          <div>
-            <Label className="text-gray-400">כותרת משנית:</Label>
-            <Input type="text" value={heroSubtitle} onChange={handleHeroSubtitleChange} className="bg-gray-800 text-white" />
-          </div>
-          <div>
-            <Label className="text-gray-400">טקסט כפתור:</Label>
-            <Input type="text" value={heroButtonText} onChange={handleHeroButtonTextChange} className="bg-gray-800 text-white" />
-          </div>
-          <div>
-            <Label className="text-gray-400">צבע רקע:</Label>
-            <SketchPicker color={heroBackgroundColor} onChange={handleHeroBackgroundColorChange} />
-          </div>
-          <div>
-            <Label className="text-gray-400">תמונת רקע (URL):</Label>
-            <Input type="text" value={heroBackgroundImage} onChange={handleHeroBackgroundImageChange} className="bg-gray-800 text-white" />
-          </div>
-        </div>
-      </div>
+      <Tabs defaultValue="content" className="w-full">
+        <TabsList className="grid w-full grid-cols-3 bg-gray-700">
+          <TabsTrigger value="content" className="text-white data-[state=active]:bg-blue-600">
+            <Type className="w-4 h-4 mr-2" />
+            תוכן
+          </TabsTrigger>
+          <TabsTrigger value="buttons" className="text-white data-[state=active]:bg-blue-600">
+            <Zap className="w-4 h-4 mr-2" />
+            כפתורים
+          </TabsTrigger>
+          <TabsTrigger value="colors" className="text-white data-[state=active]:bg-blue-600">
+            <Palette className="w-4 h-4 mr-2" />
+            צבעים
+          </TabsTrigger>
+        </TabsList>
 
-      {/* Emotional Section */}
-      <div className="bg-gray-900 rounded-lg p-4">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-white font-semibold">פסקת רגש</h3>
-          <Button
-            onClick={copyHeroBackgroundToEmotional}
-            size="sm"
-            className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
-          >
-            העתק רקע הירו
-          </Button>
-        </div>
-        <div className="space-y-4">
-          <div>
-            <Label className="text-gray-400">כותרת:</Label>
-            <Input type="text" value={emotionalTitle} onChange={handleEmotionalTitleChange} className="bg-gray-800 text-white" />
-          </div>
-          <div>
-            <Label className="text-gray-400">כותרת משנית:</Label>
-            <Input type="text" value={emotionalSubtitle} onChange={handleEmotionalSubtitleChange} className="bg-gray-800 text-white" />
-          </div>
-          <div>
-            <Label className="text-gray-400">טקסט:</Label>
-            <Textarea value={emotionalText} onChange={handleEmotionalTextChange} className="bg-gray-800 text-white" />
-          </div>
-          <div>
-            <Label className="text-gray-400">באדג' (תג):</Label>
-            <Input type="text" value={emotionalBadge} onChange={handleEmotionalBadgeChange} className="bg-gray-800 text-white" />
-          </div>
-          <div>
-            <Label className="text-gray-400">צבע רקע:</Label>
-            <SketchPicker color={emotionalBackgroundColor} onChange={handleEmotionalBackgroundColorChange} />
-          </div>
-        </div>
-      </div>
+        <TabsContent value="content" className="space-y-4">
+          {/* HERO SECTION */}
+          <Card className="bg-gray-800 border-gray-700">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Type className="w-5 h-5" />
+                הירו - תוכן ראשי
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label htmlFor="badge" className="text-white">תג עליון</Label>
+                <Input
+                  id="badge"
+                  value={localContent.badge || ''}
+                  onChange={(e) => handleContentUpdate({ badge: e.target.value })}
+                  className="bg-gray-700 text-white border-gray-600"
+                  placeholder="תג עליון (אופציונלי)"
+                />
+              </div>
 
-      {/* Add more sections here as needed */}
+              <div>
+                <Label htmlFor="headline" className="text-white">כותרת ראשית</Label>
+                <Input
+                  id="headline"
+                  value={localContent.headline || formData?.businessName || ''}
+                  onChange={(e) => handleContentUpdate({ headline: e.target.value })}
+                  className="bg-gray-700 text-white border-gray-600"
+                  placeholder="הכותרת הראשית שלכם"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="subheadline" className="text-white">תת כותרת</Label>
+                <Textarea
+                  id="subheadline"
+                  value={localContent.subheadline || localContent.description || ''}
+                  onChange={(e) => handleContentUpdate({ subheadline: e.target.value })}
+                  className="bg-gray-700 text-white border-gray-600"
+                  placeholder="תיאור קצר על העסק או השירות"
+                  rows={3}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="description" className="text-white">תיאור מפורט</Label>
+                <Textarea
+                  id="description"
+                  value={localContent.description || ''}
+                  onChange={(e) => handleContentUpdate({ description: e.target.value })}
+                  className="bg-gray-700 text-white border-gray-600"
+                  placeholder="תיאור מפורט יותר (אופציונלי)"
+                  rows={3}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* EMOTIONAL SECTION */}
+          <Card className="bg-gray-800 border-gray-700">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Heart className="w-5 h-5" />
+                פסקת רגש
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label className="text-white mb-3 block">סגנון עיצוב</Label>
+                <div className="flex gap-4">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="emotionalDesign"
+                      checked={!emotionalSection.useHeroDesign}
+                      onChange={() => handleEmotionalSectionUpdate({ useHeroDesign: false })}
+                      className="text-blue-600"
+                    />
+                    <span className="text-white">עיצוב עצמאי</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="emotionalDesign"
+                      checked={emotionalSection.useHeroDesign}
+                      onChange={() => handleEmotionalSectionUpdate({ useHeroDesign: true })}
+                      className="text-blue-600"
+                    />
+                    <span className="text-white">בסגנון ההירו</span>
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="emotional-badge" className="text-white">תג עליון</Label>
+                <Input
+                  id="emotional-badge"
+                  value={emotionalSection.badge || ''}
+                  onChange={(e) => handleEmotionalSectionUpdate({ badge: e.target.value })}
+                  className="bg-gray-700 text-white border-gray-600"
+                  placeholder="תג עליון (אופציונלי)"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="emotional-title" className="text-white">כותרת ראשית</Label>
+                <Input
+                  id="emotional-title"
+                  value={emotionalSection.title || ''}
+                  onChange={(e) => handleEmotionalSectionUpdate({ title: e.target.value })}
+                  className="bg-gray-700 text-white border-gray-600"
+                  placeholder="כותרת פסקת הרגש"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="emotional-subtitle" className="text-white">תת כותרת</Label>
+                <Input
+                  id="emotional-subtitle"
+                  value={emotionalSection.subtitle || ''}
+                  onChange={(e) => handleEmotionalSectionUpdate({ subtitle: e.target.value })}
+                  className="bg-gray-700 text-white border-gray-600"
+                  placeholder="תת כותרת פסקת הרגש"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="emotional-text" className="text-white">תיאור מפורט</Label>
+                <Textarea
+                  id="emotional-text"
+                  value={emotionalSection.text || ''}
+                  onChange={(e) => handleEmotionalSectionUpdate({ text: e.target.value })}
+                  className="bg-gray-700 text-white border-gray-600"
+                  placeholder="הטקסט של פסקת הרגש"
+                  rows={3}
+                />
+              </div>
+
+              {!emotionalSection.useHeroDesign && (
+                <div>
+                  <Label className="text-white">צבע רקע</Label>
+                  <div className="grid grid-cols-4 gap-2 mt-2">
+                    {workingColorPalette.map((color, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleEmotionalSectionUpdate({ backgroundColor: color.value === 'default' ? '#1e1e2e' : color.value })}
+                        className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                        style={{
+                          background: color.value === 'default' ? '#1e1e2e' : color.value
+                        }}
+                        title={color.name}
+                      >
+                        {emotionalSection.backgroundColor === (color.value === 'default' ? '#1e1e2e' : color.value) && (
+                          <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="buttons" className="space-y-4">
+          {/* HERO BUTTONS */}
+          <Card className="bg-gray-800 border-gray-700">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Zap className="w-5 h-5" />
+                כפתורי הירו
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ButtonStyleEditor
+                buttons={buttons}
+                onButtonsChange={handleButtonsUpdate}
+              />
+            </CardContent>
+          </Card>
+
+          {/* EMOTIONAL SECTION BUTTONS */}
+          <Card className="bg-gray-800 border-gray-700">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Heart className="w-5 h-5" />
+                כפתורי פסקת הרגש
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <Label className="text-white">כפתורים</Label>
+                <Button
+                  onClick={addEmotionalButton}
+                  size="sm"
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  <Plus className="w-4 h-4 ml-2" />
+                  הוסף כפתור
+                </Button>
+              </div>
+              
+              <div className="space-y-3">
+                {emotionalSection.buttons?.map((button: any) => (
+                  <div key={button.id} className="flex gap-2 p-3 bg-gray-700 rounded">
+                    <Input
+                      value={button.text}
+                      onChange={(e) => updateEmotionalButton(button.id, { text: e.target.value })}
+                      className="bg-gray-600 text-white flex-1"
+                      placeholder="טקסט הכפתור"
+                    />
+                    <select
+                      value={button.style}
+                      onChange={(e) => updateEmotionalButton(button.id, { style: e.target.value })}
+                      className="bg-gray-600 text-white p-2 rounded"
+                    >
+                      <option value="primary">ראשי</option>
+                      <option value="secondary">משני</option>
+                      <option value="outline">מסגרת</option>
+                      <option value="liquid-glass">זכוכית נוזלית</option>
+                      <option value="metal-gold">מתכת זהב</option>
+                      <option value="metal-silver">מתכת כסף</option>
+                      <option value="metal-bronze">מתכת ברונזה</option>
+                      <option value="metal-primary">מתכת ראשי</option>
+                      <option value="metal-success">מתכת ירוק</option>
+                      <option value="metal-error">מתכת אדום</option>
+                    </select>
+                    <Button
+                      onClick={() => removeEmotionalButton(button.id)}
+                      size="sm"
+                      variant="destructive"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="colors" className="space-y-4">
+          {/* HERO COLORS */}
+          <Card className="bg-gray-800 border-gray-700">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Palette className="w-5 h-5" />
+                צבעי הירו
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Hero Badge Color */}
+              <div>
+                <Label className="text-white mb-3 block">צבע תג עליון</Label>
+                <div className="grid grid-cols-4 gap-2">
+                  {workingColorPalette.map((color, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleColorUpdate('badge', color.value)}
+                      className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                      style={{
+                        background: color.value === 'default' ? '#374151' : color.value
+                      }}
+                      title={color.name}
+                    >
+                      {localContent.colors?.badge === color.value && (
+                        <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Headline Color */}
+              <div>
+                <Label className="text-white mb-3 block">צבע כותרת ראשית</Label>
+                <div className="grid grid-cols-4 gap-2">
+                  {workingColorPalette.map((color, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleColorUpdate('headline', color.value)}
+                      className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                      style={{
+                        background: color.value === 'default' ? '#374151' : color.value
+                      }}
+                      title={color.name}
+                    >
+                      {localContent.colors?.headline === color.value && (
+                        <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Subheadline Color */}
+              <div>
+                <Label className="text-white mb-3 block">צבע תת כותרת</Label>
+                <div className="grid grid-cols-4 gap-2">
+                  {workingColorPalette.map((color, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleColorUpdate('subheadline', color.value)}
+                      className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                      style={{
+                        background: color.value === 'default' ? '#374151' : color.value
+                      }}
+                      title={color.name}
+                    >
+                      {localContent.colors?.subheadline === color.value && (
+                        <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* EMOTIONAL SECTION COLORS - Only show if not using hero design */}
+          {!emotionalSection.useHeroDesign && (
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Heart className="w-5 h-5" />
+                  צבעי פסקת הרגש
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Emotional Badge Color */}
+                <div>
+                  <Label className="text-white mb-3 block">צבע תג עליון</Label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {workingColorPalette.map((color, index) => (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          const updatedEmotionalSection = {
+                            ...localContent.emotionalSection,
+                            colors: {
+                              ...localContent.emotionalSection?.colors,
+                              badge: color.value
+                            }
+                          };
+                          handleEmotionalSectionUpdate(updatedEmotionalSection);
+                        }}
+                        className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                        style={{
+                          background: color.value === 'default' ? '#374151' : color.value
+                        }}
+                        title={color.name}
+                      >
+                        {emotionalSection.colors?.badge === color.value && (
+                          <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Emotional Title Color */}
+                <div>
+                  <Label className="text-white mb-3 block">צבע כותרת ראשית</Label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {workingColorPalette.map((color, index) => (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          const updatedEmotionalSection = {
+                            ...localContent.emotionalSection,
+                            colors: {
+                              ...localContent.emotionalSection?.colors,
+                              title: color.value
+                            }
+                          };
+                          handleEmotionalSectionUpdate(updatedEmotionalSection);
+                        }}
+                        className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                        style={{
+                          background: color.value === 'default' ? '#374151' : color.value
+                        }}
+                        title={color.name}
+                      >
+                        {emotionalSection.colors?.title === color.value && (
+                          <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Emotional Subtitle Color */}
+                <div>
+                  <Label className="text-white mb-3 block">צבע תת כותרת</Label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {workingColorPalette.map((color, index) => (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          const updatedEmotionalSection = {
+                            ...localContent.emotionalSection,
+                            colors: {
+                              ...localContent.emotionalSection?.colors,
+                              subtitle: color.value
+                            }
+                          };
+                          handleEmotionalSectionUpdate(updatedEmotionalSection);
+                        }}
+                        className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                        style={{
+                          background: color.value === 'default' ? '#374151' : color.value
+                        }}
+                        title={color.name}
+                      >
+                        {emotionalSection.colors?.subtitle === color.value && (
+                          <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Emotional Text Color */}
+                <div>
+                  <Label className="text-white mb-3 block">צבע טקסט</Label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {workingColorPalette.map((color, index) => (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          const updatedEmotionalSection = {
+                            ...localContent.emotionalSection,
+                            colors: {
+                              ...localContent.emotionalSection?.colors,
+                              text: color.value
+                            }
+                          };
+                          handleEmotionalSectionUpdate(updatedEmotionalSection);
+                        }}
+                        className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                        style={{
+                          background: color.value === 'default' ? '#374151' : color.value
+                        }}
+                        title={color.name}
+                      >
+                        {emotionalSection.colors?.text === color.value && (
+                          <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

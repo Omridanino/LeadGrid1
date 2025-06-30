@@ -2,24 +2,16 @@
 import { ColorScheme } from "@/types/colors";
 import { LiquidButton, MetalButton } from "@/components/ui/liquid-glass-button";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
 
 interface EmotionalSectionProps {
   content: any;
   currentColors: ColorScheme;
   formData: any;
   selectedHeroDesign?: string;
-  heroBackground?: any;
 }
 
-export const EmotionalSection = ({ content, currentColors, formData, selectedHeroDesign, heroBackground }: EmotionalSectionProps) => {
-  console.log('EmotionalSection - selectedHeroDesign:', selectedHeroDesign);
-  console.log('EmotionalSection - heroBackground:', heroBackground);
-  
+export const EmotionalSection = ({ content, currentColors, formData, selectedHeroDesign }: EmotionalSectionProps) => {
   const emotionalContent = content?.emotionalSection || {};
-  
-  // Add local state for useHeroDesign toggle
-  const [useHeroDesign, setUseHeroDesign] = useState(false);
   
   const renderAdvancedButton = (button: any, index: number) => {
     const buttonStyle = button?.style || 'default';
@@ -94,6 +86,7 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
   const badge = emotionalContent.badge || 'מוגבל בזמן';
   const backgroundColor = emotionalContent.backgroundColor || '#1e1e2e';
   const buttons = emotionalContent.buttons || [{ id: '1', text: 'התחל עכשיו', style: 'primary', visible: true }];
+  const useHeroDesign = emotionalContent.useHeroDesign || false;
 
   const getTextStyle = (colorKey: string) => {
     if (!useHeroDesign) {
@@ -134,37 +127,67 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
     return {};
   };
 
-  // פונקציה שמחזירה את הסגנון המדויק של ההירו הנבחר
-  const getHeroMatchingStyles = () => {
-    if (!useHeroDesign) {
-      // אם לא בסגנון הירו, השתמש ברקע הרגיל
-      if (backgroundColor?.includes('gradient')) {
-        return { backgroundImage: backgroundColor };
+  const getBackgroundStyle = () => {
+    if (useHeroDesign) {
+      // Apply hero design styling based on selectedHeroDesign
+      switch (selectedHeroDesign) {
+        case 'hero-futuristic':
+          return { 
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            position: 'relative' as const
+          };
+        case 'hero-neon-cyber':
+          return { 
+            background: 'linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e)',
+            position: 'relative' as const
+          };
+        case 'hero-holographic':
+          return { 
+            background: 'radial-gradient(ellipse at center, #1e3c72 0%, #2a5298 100%)',
+            position: 'relative' as const
+          };
+        case 'hero-liquid-metal':
+          return { 
+            background: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)',
+            position: 'relative' as const
+          };
+        case 'hero-glass-refraction':
+          return { 
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
+            backdropFilter: 'blur(20px)',
+            position: 'relative' as const
+          };
+        default:
+          return { 
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            position: 'relative' as const
+          };
       }
-      return { backgroundColor: backgroundColor === 'default' ? '#1e1e2e' : backgroundColor };
     }
-
-    console.log('Using hero background:', heroBackground);
-
-    // השתמש ברקע שהועבר מההירו
-    if (heroBackground && Object.keys(heroBackground).length > 0) {
-      return {
-        ...heroBackground,
-        color: '#ffffff' // וודא שהטקסט יהיה לבן
-      };
+    
+    if (backgroundColor === 'default') {
+      return { backgroundColor: '#1e1e2e' };
     }
-
-    // ברירת מחדל אם אין רקע הירו
-    return { 
-      backgroundColor: '#1e1e2e',
-      color: '#ffffff'
-    };
+    
+    if (backgroundColor && backgroundColor.includes('gradient')) {
+      return { background: backgroundColor };
+    }
+    
+    return { backgroundColor: backgroundColor };
   };
 
-  const getHeroBasedClasses = () => {
+  const getHeroDesignClasses = () => {
     if (!useHeroDesign) return '';
     
     switch (selectedHeroDesign) {
+      case 'hero-futuristic':
+        return 'relative overflow-hidden';
+      case 'hero-neon-cyber':
+        return 'relative overflow-hidden';
+      case 'hero-holographic':
+        return 'relative overflow-hidden';
+      case 'hero-liquid-metal':
+        return 'relative overflow-hidden';
       case 'hero-glass-refraction':
         return 'relative overflow-hidden backdrop-blur-sm';
       default:
@@ -172,7 +195,7 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
     }
   };
 
-  const renderHeroBasedEffects = () => {
+  const renderHeroDesignEffects = () => {
     if (!useHeroDesign) return null;
     
     switch (selectedHeroDesign) {
@@ -214,170 +237,57 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
     }
   };
 
-  const getHeroBasedTextStyles = () => {
-    if (!useHeroDesign) return {};
-    
-    switch (selectedHeroDesign) {
-      case 'hero-futuristic':
-      case 'hero-holographic':
-      case 'hero-liquid-metal':
-      case 'hero-glass-refraction':
-        return {
-          title: { 
-            background: 'linear-gradient(to bottom, #ffffff, rgba(255,255,255,0.9), #d1d5db)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text'
-          },
-          subtitle: { color: '#d1d5db' },
-          text: { color: '#d1d5db' }
-        };
-      case 'hero-neon-cyber':
-        return {
-          title: { 
-            color: '#00ffff',
-            textShadow: '0 0 30px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.6)'
-          },
-          subtitle: { color: '#00ffff' },
-          text: { color: '#00ffff' }
-        };
-      case 'hero-particle-storm':
-        return {
-          title: { 
-            color: '#ffffff',
-            filter: 'drop-shadow(0 0 20px rgba(255, 107, 107, 0.8))'
-          },
-          subtitle: { color: '#ffffff' },
-          text: { color: '#ffffff' }
-        };
-      case 'hero-morphing-shapes':
-        return {
-          title: { color: '#ffffff' },
-          subtitle: { color: '#ffffff' },
-          text: { color: '#ffffff' }
-        };
-      case 'hero-quantum-bubbles':
-        return {
-          title: { 
-            background: 'linear-gradient(45deg, #a8edea, #fed6e3, #d299c2)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            filter: 'drop-shadow(0 0 30px rgba(168, 237, 234, 0.8))'
-          },
-          subtitle: { color: '#e2e8f0' },
-          text: { color: '#e2e8f0' }
-        };
-      default:
-        return {
-          title: { color: '#ffffff' },
-          subtitle: { color: '#d1d5db' },
-          text: { color: '#d1d5db' }
-        };
-    }
-  };
-
-  const getHeroBadgeStyle = () => {
-    if (!useHeroDesign) return getBadgeStyle();
-    
-    switch (selectedHeroDesign) {
-      case 'hero-neon-cyber':
-        return { 
-          backgroundColor: 'rgba(0, 255, 255, 0.2)', 
-          color: '#00ffff', 
-          border: '1px solid #00ffff' 
-        };
-      case 'hero-quantum-bubbles':
-        return { 
-          background: 'rgba(168, 237, 234, 0.2)',
-          color: '#a8edea',
-          border: '1px solid rgba(168, 237, 234, 0.3)'
-        };
-      default:
-        return { 
-          background: 'rgba(255,255,255,0.1)', 
-          color: '#ffffff', 
-          border: '1px solid rgba(255,255,255,0.2)' 
-        };
-    }
-  };
-
-  // New button that copies Hero background exactly
-  const getHeroBackgroundButton = () => {
-    if (!heroBackground || Object.keys(heroBackground).length === 0) {
-      return null;
-    }
-
-    return (
-      <button
-        className="px-8 py-4 rounded-xl font-semibold text-lg transition hover:scale-105 text-white"
-        style={heroBackground}
-      >
-        כפתור עם רקע הירו
-      </button>
-    );
-  };
-
-  const heroTextStyles = getHeroBasedTextStyles();
-  const heroStyles = getHeroMatchingStyles();
-
-  const handleToggleHeroDesign = () => {
-    console.log('Toggle clicked - current state:', useHeroDesign);
-    setUseHeroDesign(!useHeroDesign);
-    console.log('New state will be:', !useHeroDesign);
-  };
-
   return (
     <section 
-      className={cn("py-20 px-8", getHeroBasedClasses())}
-      style={heroStyles}
+      className={cn("py-20 px-8", getHeroDesignClasses())}
+      style={getBackgroundStyle()}
     >
-      {renderHeroBasedEffects()}
+      {renderHeroDesignEffects()}
       
       <div className="container mx-auto max-w-4xl text-center relative z-10">
-        {/* Toggle Button for Hero Design */}
-        <div className="mb-6">
-          <button
-            onClick={handleToggleHeroDesign}
-            className={cn(
-              "px-4 py-2 rounded-lg text-sm font-medium transition-all",
-              useHeroDesign 
-                ? "bg-blue-600 text-white shadow-lg" 
-                : "bg-gray-600 text-gray-300 hover:bg-gray-500"
-            )}
-          >
-            {useHeroDesign ? "מופעל: בסגנון הירו" : "בסגנון הירו"}
-          </button>
-        </div>
-
         {badge && (
           <div 
-            className="inline-block mb-6 px-4 py-2 rounded-full text-sm font-semibold backdrop-blur-sm"
-            style={getHeroBadgeStyle()}
+            className={cn(
+              "inline-block mb-6 px-4 py-2 rounded-full text-sm font-semibold",
+              useHeroDesign && "backdrop-blur-sm border border-white/20"
+            )}
+            style={getBadgeStyle() || (useHeroDesign ? 
+              { background: 'rgba(255,255,255,0.1)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.2)' } :
+              { background: 'linear-gradient(45deg, #8b5cf6, #ec4899)', color: '#ffffff' }
+            )}
           >
             {badge}
           </div>
         )}
         
         <h2 
-          className="text-4xl md:text-6xl font-bold mb-6"
-          style={useHeroDesign ? heroTextStyles.title : (getTextStyle('title') || { color: '#ffffff' })}
+          className={cn(
+            "text-4xl md:text-6xl font-bold mb-6",
+            useHeroDesign && "bg-gradient-to-b from-white via-white/90 to-gray-300 bg-clip-text text-transparent"
+          )}
+          style={useHeroDesign ? {} : (getTextStyle('title') || { color: '#ffffff' })}
         >
           {title}
         </h2>
         
         {subtitle && (
           <h3 
-            className="text-2xl md:text-3xl mb-8"
-            style={useHeroDesign ? heroTextStyles.subtitle : (getTextStyle('subtitle') || { color: '#d1d5db' })}
+            className={cn(
+              "text-2xl md:text-3xl mb-8",
+              useHeroDesign && "text-gray-300"
+            )}
+            style={useHeroDesign ? {} : (getTextStyle('subtitle') || { color: '#d1d5db' })}
           >
             {subtitle}
           </h3>
         )}
         
         <p 
-          className="text-xl md:text-2xl leading-relaxed mb-12"
-          style={useHeroDesign ? heroTextStyles.text : (getTextStyle('text') || { color: '#d1d5db' })}
+          className={cn(
+            "text-xl md:text-2xl leading-relaxed mb-12",
+            useHeroDesign && "text-gray-300"
+          )}
+          style={useHeroDesign ? {} : (getTextStyle('text') || { color: '#d1d5db' })}
         >
           {text}
         </p>
@@ -386,9 +296,6 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
           {buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
             renderAdvancedButton(button, index)
           )}
-          
-          {/* New Hero Background Button */}
-          {getHeroBackgroundButton()}
         </div>
       </div>
     </section>
