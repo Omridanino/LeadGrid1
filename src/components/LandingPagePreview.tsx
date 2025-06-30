@@ -1,7 +1,7 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ColorScheme } from "@/types/colors";
-import { HeroSection } from "@/components/preview/HeroSection";
+import { HeroSection } from "@/components/HeroSection";
 
 interface LandingPagePreviewProps {
   content: any;
@@ -32,13 +32,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       scrollBehavior: 'smooth'
     }}>
       <div className="w-full min-h-screen" style={{ position: 'relative' }}>
-        {/* Hero Section Only */}
-        <HeroSection 
-          content={content}
-          currentColors={currentColors}
-          formData={formData}
-          heroImage={heroImage}
-        />
+        {/* Main Site Hero Section Only */}
+        <HeroSection onStartQuestionnaire={() => {}} />
       </div>
     </div>
   );
