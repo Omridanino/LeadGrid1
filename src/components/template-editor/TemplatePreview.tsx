@@ -15,27 +15,27 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
   return (
     <div className="min-h-full" style={{ backgroundColor: template.styles.backgroundColor, color: template.styles.textColor }}>
       {/* Hero Section */}
-      <section className="py-20 px-4" style={{ background: `linear-gradient(135deg, ${template.styles.primaryColor}dd, ${template.styles.secondaryColor}dd)` }}>
+      <section className="py-20 px-4" style={{ backgroundColor: template.styles.heroBackground }}>
         <div className="max-w-6xl mx-auto text-center">
           {template.hero.badge && (
             <Badge className="mb-4 text-white" style={{ backgroundColor: template.styles.accentColor }}>
               {template.hero.badge}
             </Badge>
           )}
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">
+          <h1 className="text-4xl md:text-6xl font-bold mb-4" style={{ color: template.styles.textColor }}>
             {template.hero.title}
           </h1>
-          <h2 className="text-xl md:text-2xl mb-6 text-white/90">
+          <h2 className="text-xl md:text-2xl mb-6" style={{ color: template.styles.textColor, opacity: 0.9 }}>
             {template.hero.subtitle}
           </h2>
-          <p className="text-lg mb-8 max-w-3xl mx-auto text-white/80">
+          <p className="text-lg mb-8 max-w-3xl mx-auto" style={{ color: template.styles.textColor, opacity: 0.8 }}>
             {template.hero.description}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="text-white" style={{ backgroundColor: template.styles.accentColor }}>
               {template.hero.button1Text}
             </Button>
-            <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-gray-900">
+            <Button size="lg" className="text-white" style={{ backgroundColor: template.styles.primaryColor }}>
               {template.hero.button2Text}
             </Button>
           </div>
@@ -43,24 +43,24 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* Emotional Section */}
-      <section className="py-16 px-4" style={{ backgroundColor: template.styles.backgroundColor }}>
+      <section className="py-16 px-4" style={{ backgroundColor: template.styles.emotionalBackground }}>
         <div className="max-w-4xl mx-auto text-center">
           {template.emotional.badge && (
             <Badge className="mb-4" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
               {template.emotional.badge}
             </Badge>
           )}
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: template.styles.textColor }}>
             {template.emotional.title}
           </h2>
-          <p className="text-lg leading-relaxed opacity-90 mb-8">
+          <p className="text-lg leading-relaxed opacity-90 mb-8" style={{ color: template.styles.textColor }}>
             {template.emotional.description}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor }}>
+            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
               {template.emotional.button1Text}
             </Button>
-            <Button size="lg" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
+            <Button size="lg" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
               {template.emotional.button2Text}
             </Button>
           </div>
@@ -68,7 +68,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4" style={{ backgroundColor: `${template.styles.primaryColor}05` }}>
+      <section className="py-16 px-4" style={{ backgroundColor: template.styles.featuresBackground }}>
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             {template.features.badge && (
@@ -76,11 +76,11 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
                 {template.features.badge}
               </Badge>
             )}
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: template.styles.textColor }}>
               {template.features.title}
             </h2>
             {template.features.subtitle && (
-              <p className="text-xl opacity-80">
+              <p className="text-xl opacity-80" style={{ color: template.styles.textColor }}>
                 {template.features.subtitle}
               </p>
             )}
@@ -90,17 +90,17 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
             {template.features.items.map((item, index) => (
               <Card key={index} className="text-center p-6 border-0 shadow-lg hover:shadow-xl transition-shadow">
                 <div className="text-4xl mb-4">{item.icon}</div>
-                <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                <p className="opacity-80">{item.description}</p>
+                <h3 className="text-xl font-bold mb-2" style={{ color: template.styles.textColor }}>{item.title}</h3>
+                <p className="opacity-80" style={{ color: template.styles.textColor }}>{item.description}</p>
               </Card>
             ))}
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor }}>
+            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
               {template.features.button1Text}
             </Button>
-            <Button size="lg" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
+            <Button size="lg" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
               {template.features.button2Text}
             </Button>
           </div>
@@ -108,7 +108,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 px-4" style={{ backgroundColor: template.styles.backgroundColor }}>
+      <section className="py-16 px-4" style={{ backgroundColor: template.styles.testimonialsBackground }}>
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             {template.testimonials.badge && (
@@ -116,7 +116,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
                 {template.testimonials.badge}
               </Badge>
             )}
-            <h2 className="text-3xl md:text-4xl font-bold">
+            <h2 className="text-3xl md:text-4xl font-bold" style={{ color: template.styles.textColor }}>
               {template.testimonials.title}
             </h2>
           </div>
@@ -129,20 +129,20 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
                     <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
-                <p className="mb-4 italic">"{testimonial.content}"</p>
+                <p className="mb-4 italic" style={{ color: template.styles.textColor }}>"{testimonial.content}"</p>
                 <div>
-                  <p className="font-bold">{testimonial.name}</p>
-                  <p className="text-sm opacity-80">{testimonial.role}</p>
+                  <p className="font-bold" style={{ color: template.styles.textColor }}>{testimonial.name}</p>
+                  <p className="text-sm opacity-80" style={{ color: template.styles.textColor }}>{testimonial.role}</p>
                 </div>
               </Card>
             ))}
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor }}>
+            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
               {template.testimonials.button1Text}
             </Button>
-            <Button size="lg" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
+            <Button size="lg" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
               {template.testimonials.button2Text}
             </Button>
           </div>
@@ -150,7 +150,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* About Section */}
-      <section className="py-16 px-4" style={{ backgroundColor: `${template.styles.secondaryColor}05` }}>
+      <section className="py-16 px-4" style={{ backgroundColor: template.styles.aboutBackground }}>
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             {template.about.badge && (
@@ -158,10 +158,10 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
                 {template.about.badge}
               </Badge>
             )}
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: template.styles.textColor }}>
               {template.about.title}
             </h2>
-            <p className="text-lg max-w-4xl mx-auto opacity-90">
+            <p className="text-lg max-w-4xl mx-auto opacity-90" style={{ color: template.styles.textColor }}>
               {template.about.description}
             </p>
           </div>
@@ -173,17 +173,17 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
                   <div className="text-4xl font-bold mb-2" style={{ color: template.styles.primaryColor }}>
                     {stat.number}
                   </div>
-                  <div className="text-lg opacity-80">{stat.label}</div>
+                  <div className="text-lg opacity-80" style={{ color: template.styles.textColor }}>{stat.label}</div>
                 </div>
               ))}
             </div>
           )}
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor }}>
+            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
               {template.about.button1Text}
             </Button>
-            <Button size="lg" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
+            <Button size="lg" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
               {template.about.button2Text}
             </Button>
           </div>
@@ -191,7 +191,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-16 px-4" style={{ backgroundColor: template.styles.backgroundColor }}>
+      <section className="py-16 px-4" style={{ backgroundColor: template.styles.pricingBackground }}>
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             {template.pricing.badge && (
@@ -199,11 +199,11 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
                 {template.pricing.badge}
               </Badge>
             )}
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: template.styles.textColor }}>
               {template.pricing.title}
             </h2>
             {template.pricing.subtitle && (
-              <p className="text-xl opacity-80">
+              <p className="text-xl opacity-80" style={{ color: template.styles.textColor }}>
                 {template.pricing.subtitle}
               </p>
             )}
@@ -212,20 +212,20 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             {template.pricing.plans.map((plan, index) => (
               <Card key={index} className={`p-6 text-center ${plan.recommended ? 'ring-2 ring-blue-500 scale-105' : ''}`}>
-                <h3 className="text-2xl font-bold mb-4">{plan.name}</h3>
+                <h3 className="text-2xl font-bold mb-4" style={{ color: template.styles.textColor }}>{plan.name}</h3>
                 <div className="mb-6">
-                  <span className="text-4xl font-bold">{plan.price}</span>
+                  <span className="text-4xl font-bold" style={{ color: template.styles.primaryColor }}>{plan.price}</span>
                   <span className="text-gray-600">/{plan.period}</span>
                 </div>
                 <ul className="space-y-2 mb-6 text-right">
                   {plan.features.map((feature, i) => (
-                    <li key={i} className="flex items-center gap-2">
+                    <li key={i} className="flex items-center gap-2" style={{ color: template.styles.textColor }}>
                       <span className="text-green-500">✓</span>
                       {feature}
                     </li>
                   ))}
                 </ul>
-                <Button className="w-full" style={{ backgroundColor: template.styles.primaryColor }}>
+                <Button className="w-full text-white" style={{ backgroundColor: template.styles.primaryColor }}>
                   {plan.buttonText}
                 </Button>
               </Card>
@@ -233,10 +233,10 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor }}>
+            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
               {template.pricing.button1Text}
             </Button>
-            <Button size="lg" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
+            <Button size="lg" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
               {template.pricing.button2Text}
             </Button>
           </div>
@@ -244,7 +244,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 px-4" style={{ backgroundColor: `${template.styles.primaryColor}05` }}>
+      <section className="py-16 px-4" style={{ backgroundColor: template.styles.faqBackground }}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             {template.faq.badge && (
@@ -252,7 +252,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
                 {template.faq.badge}
               </Badge>
             )}
-            <h2 className="text-3xl md:text-4xl font-bold">
+            <h2 className="text-3xl md:text-4xl font-bold" style={{ color: template.styles.textColor }}>
               {template.faq.title}
             </h2>
           </div>
@@ -260,17 +260,17 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
           <div className="space-y-4 mb-12">
             {template.faq.questions.map((qa, index) => (
               <Card key={index} className="p-6">
-                <h3 className="text-lg font-bold mb-2 text-right">{qa.question}</h3>
-                <p className="opacity-80 text-right">{qa.answer}</p>
+                <h3 className="text-lg font-bold mb-2 text-right" style={{ color: template.styles.textColor }}>{qa.question}</h3>
+                <p className="opacity-80 text-right" style={{ color: template.styles.textColor }}>{qa.answer}</p>
               </Card>
             ))}
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor }}>
+            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
               {template.faq.button1Text}
             </Button>
-            <Button size="lg" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
+            <Button size="lg" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
               {template.faq.button2Text}
             </Button>
           </div>
@@ -278,7 +278,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-16 px-4" style={{ background: `linear-gradient(135deg, ${template.styles.primaryColor}dd, ${template.styles.accentColor}dd)` }}>
+      <section className="py-16 px-4" style={{ backgroundColor: template.styles.finalCtaBackground }}>
         <div className="max-w-4xl mx-auto text-center">
           {template.finalCta.badge && (
             <Badge className="mb-4 text-white" style={{ backgroundColor: template.styles.secondaryColor }}>
@@ -295,7 +295,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
             <Button size="lg" className="text-white" style={{ backgroundColor: template.styles.accentColor }}>
               {template.finalCta.button1Text}
             </Button>
-            <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-gray-900">
+            <Button size="lg" className="text-white" style={{ backgroundColor: template.styles.secondaryColor }}>
               {template.finalCta.button2Text}
             </Button>
           </div>
@@ -303,13 +303,13 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* Contact Section */}
-      <section className="py-16 px-4" style={{ backgroundColor: template.styles.backgroundColor }}>
+      <section className="py-16 px-4" style={{ backgroundColor: template.styles.contactBackground }}>
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: template.styles.textColor }}>
             {template.contact.title}
           </h2>
           {template.contact.subtitle && (
-            <p className="text-xl mb-8 opacity-80">
+            <p className="text-xl mb-8 opacity-80" style={{ color: template.styles.textColor }}>
               {template.contact.subtitle}
             </p>
           )}
@@ -319,7 +319,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
               <Input placeholder="אימייל" className="text-right" />
               <Input placeholder="טלפון" className="text-right" />
               <Textarea placeholder="הודעה" rows={4} className="text-right" />
-              <Button className="w-full" style={{ backgroundColor: template.styles.primaryColor }}>
+              <Button className="w-full text-white" style={{ backgroundColor: template.styles.primaryColor }}>
                 {template.contact.buttonText}
               </Button>
             </div>
