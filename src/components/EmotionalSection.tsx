@@ -127,9 +127,34 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
     return {};
   };
 
+  const getHeroBackgroundStyle = () => {
+    // Get hero background from content or use hero design colors
+    const heroBackground = content?.heroBackground || content?.colors?.heroBackground;
+    
+    if (heroBackground) {
+      if (heroBackground.includes('gradient')) {
+        return { background: heroBackground };
+      }
+      return { backgroundColor: heroBackground };
+    }
+    
+    // If no specific hero background, use currentColors
+    if (currentColors.background && currentColors.background !== '#000000') {
+      return { backgroundColor: currentColors.background };
+    }
+    
+    // Fallback to a nice gradient that matches common hero styles
+    return { 
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+    };
+  };
+
   const getBackgroundStyle = () => {
     if (useHeroDesign) {
-      // Apply hero design styling based on selectedHeroDesign
+      // Apply hero background style when using hero design
+      const heroStyle = getHeroBackgroundStyle();
+      
+      // Apply hero design styling based on selectedHeroDesign or hero background
       switch (selectedHeroDesign) {
         case 'hero-futuristic':
           return { 
@@ -159,7 +184,7 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
           };
         default:
           return { 
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            ...heroStyle,
             position: 'relative' as const
           };
       }
