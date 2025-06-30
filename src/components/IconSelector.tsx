@@ -15,61 +15,19 @@ const IconSelector = ({ selectedIcon, onIconSelect, triggerClassName }: IconSele
   const [searchTerm, setSearchTerm] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
-  // Liquid Glass Icon Component
-  const LiquidGlassIconButton = ({ icon, isSelected, onClick }: { icon: string, isSelected: boolean, onClick: () => void }) => (
+  // Glass Icon Button Component with proper RemixIcon display
+  const IconButton = ({ icon, isSelected, onClick }: { icon: string, isSelected: boolean, onClick: () => void }) => (
     <button
       onClick={onClick}
-      className={`relative group p-3 rounded-lg border transition-all flex items-center justify-center overflow-hidden ${
+      className={`relative group p-3 rounded-lg border transition-all flex items-center justify-center overflow-hidden min-h-[48px] ${
         isSelected 
-          ? 'border-purple-400' 
-          : 'border-gray-600 hover:border-purple-400'
+          ? 'border-purple-400 bg-purple-500/20' 
+          : 'border-gray-600 hover:border-purple-400 bg-gray-800/50'
       }`}
-      style={{
-        background: isSelected 
-          ? `linear-gradient(135deg, 
-              rgba(156, 64, 255, 0.3) 0%,
-              rgba(107, 115, 255, 0.2) 50%,
-              rgba(255, 107, 157, 0.3) 100%)`
-          : `linear-gradient(135deg, 
-              rgba(255, 255, 255, 0.05) 0%,
-              rgba(255, 255, 255, 0.02) 50%,
-              rgba(255, 255, 255, 0.05) 100%)`,
-        backdropFilter: 'blur(10px)',
-        boxShadow: isSelected
-          ? `inset 0 1px 0 rgba(255, 255, 255, 0.2),
-             0 8px 25px rgba(107, 115, 255, 0.3),
-             0 0 15px rgba(156, 64, 255, 0.2)`
-          : `inset 0 1px 0 rgba(255, 255, 255, 0.1),
-             0 4px 15px rgba(0, 0, 0, 0.2)`,
-      }}
       title={icon}
     >
-      {/* Reflection effect */}
-      <div 
-        className="absolute inset-0 rounded-lg"
-        style={{
-          background: `linear-gradient(135deg, 
-            rgba(255, 255, 255, 0.15) 0%,
-            transparent 30%,
-            transparent 70%,
-            rgba(255, 255, 255, 0.05) 100%)`,
-        }}
-      />
-      
-      {/* Shine effect on hover */}
-      <div 
-        className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        style={{
-          background: `linear-gradient(45deg, 
-            transparent 30%,
-            rgba(255, 255, 255, 0.2) 50%,
-            transparent 70%)`,
-          transform: 'translateX(-100%)',
-        }}
-      />
-      
       <i 
-        className={`ri-${icon} text-xl text-white relative z-10`}
+        className={`ri-${icon} text-xl text-white`}
         style={{
           filter: isSelected 
             ? 'drop-shadow(0 0 8px rgba(156, 64, 255, 0.8))'
@@ -146,50 +104,22 @@ const IconSelector = ({ selectedIcon, onIconSelect, triggerClassName }: IconSele
       <DialogTrigger asChild>
         <Button 
           variant="outline" 
-          className={`gap-2 backdrop-blur-sm border-white/20 text-white hover:bg-white/10 ${triggerClassName}`}
-          style={{
-            background: `linear-gradient(135deg, 
-              rgba(255, 255, 255, 0.05) 0%,
-              rgba(255, 255, 255, 0.02) 100%)`,
-            boxShadow: `
-              inset 0 1px 0 rgba(255, 255, 255, 0.1),
-              0 4px 15px rgba(0, 0, 0, 0.2)
-            `,
-          }}
+          className={`gap-2 bg-gray-800 border-gray-700 text-white hover:bg-gray-700 ${triggerClassName}`}
         >
-          <i className={`ri-${selectedIcon || 'palette-line'} text-lg`}></i>
-          בחר אייקון מקצועי
+          {selectedIcon ? (
+            <i className={`ri-${selectedIcon} text-lg`}></i>
+          ) : (
+            <Palette className="w-4 h-4" />
+          )}
+          בחר אייקון
         </Button>
       </DialogTrigger>
       <DialogContent 
-        className="max-w-4xl max-h-[80vh] overflow-y-auto border-gray-700 text-white"
-        style={{
-          background: `linear-gradient(135deg, 
-            rgba(17, 24, 39, 0.95) 0%,
-            rgba(31, 41, 55, 0.95) 100%)`,
-          backdropFilter: 'blur(20px)',
-          boxShadow: `
-            inset 0 1px 0 rgba(255, 255, 255, 0.1),
-            0 25px 50px rgba(0, 0, 0, 0.5)
-          `,
-        }}
+        className="max-w-4xl max-h-[80vh] overflow-y-auto bg-gray-900 border-gray-700 text-white"
       >
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-purple-400 flex items-center gap-2">
-            <div className="w-6 h-6">
-              <div 
-                className="w-full h-full rounded-lg flex items-center justify-center"
-                style={{
-                  background: `linear-gradient(135deg, 
-                    rgba(156, 64, 255, 0.3) 0%,
-                    rgba(107, 115, 255, 0.2) 100%)`,
-                  backdropFilter: 'blur(10px)',
-                  boxShadow: `0 0 15px rgba(156, 64, 255, 0.3)`,
-                }}
-              >
-                <Palette className="w-4 h-4 text-white" />
-              </div>
-            </div>
+            <Palette className="w-6 h-6" />
             בחירת אייקון מקצועי
           </DialogTitle>
         </DialogHeader>
@@ -202,13 +132,7 @@ const IconSelector = ({ selectedIcon, onIconSelect, triggerClassName }: IconSele
               placeholder="חפש אייקון..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pr-10 border-gray-600 text-white"
-              style={{
-                background: `linear-gradient(135deg, 
-                  rgba(255, 255, 255, 0.05) 0%,
-                  rgba(255, 255, 255, 0.02) 100%)`,
-                backdropFilter: 'blur(10px)',
-              }}
+              className="pr-10 bg-gray-800 border-gray-600 text-white"
             />
           </div>
 
@@ -218,7 +142,7 @@ const IconSelector = ({ selectedIcon, onIconSelect, triggerClassName }: IconSele
               <h3 className="text-lg font-semibold mb-4 text-white">תוצאות חיפוש</h3>
               <div className="grid grid-cols-8 gap-3">
                 {filteredIcons.map((icon) => (
-                  <LiquidGlassIconButton
+                  <IconButton
                     key={icon}
                     icon={icon}
                     isSelected={selectedIcon === icon}
@@ -233,7 +157,7 @@ const IconSelector = ({ selectedIcon, onIconSelect, triggerClassName }: IconSele
                 <h3 className="text-lg font-semibold mb-4 text-white">{category}</h3>
                 <div className="grid grid-cols-8 gap-3">
                   {icons.map((icon) => (
-                    <LiquidGlassIconButton
+                    <IconButton
                       key={icon}
                       icon={icon}
                       isSelected={selectedIcon === icon}

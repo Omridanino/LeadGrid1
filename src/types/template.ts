@@ -1,141 +1,157 @@
 
-export interface TemplateData {
-  id: number;
-  name: string;
-  category: 'minimal' | 'colorful' | 'artistic' | 'corporate' | 'organic' | 'tech';
-  hero: {
-    badge?: string;
+export interface TemplateStyles {
+  // Background colors for each section
+  backgroundColor: string;
+  heroBackground: string;
+  emotionalBackground: string;
+  featuresBackground: string;
+  testimonialsBackground: string;
+  aboutBackground: string;
+  pricingBackground: string;
+  faqBackground: string;
+  finalCtaBackground: string;
+  contactBackground: string;
+  
+  // Text and accent colors
+  textColor: string;
+  primaryColor: string;
+  secondaryColor: string;
+  accentColor: string;
+}
+
+export interface HeroSection {
+  badge?: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  button1Text: string;
+  button2Text: string;
+  button1Icon?: string;
+  button2Icon?: string;
+  image?: string;
+}
+
+export interface EmotionalSection {
+  badge?: string;
+  title: string;
+  description: string;
+  button1Text: string;
+  button2Text: string;
+  button1Icon?: string;
+  button2Icon?: string;
+}
+
+export interface FinalCtaSection {
+  badge?: string;
+  title: string;
+  description: string;
+  button1Text: string;
+  button2Text: string;
+  button1Icon?: string;
+  button2Icon?: string;
+}
+
+export interface FeaturesSection {
+  badge?: string;
+  title: string;
+  subtitle?: string;
+  items: {
     title: string;
-    subtitle: string;
     description: string;
-    button1Text: string;
-    button2Text: string;
-    image?: string;
-  };
-  emotional: {
-    badge?: string;
-    title: string;
-    description: string;
-    button1Text: string;
-    button2Text: string;
-  };
-  features: {
-    badge?: string;
-    title: string;
-    subtitle?: string;
-    items: Array<{
-      title: string;
-      description: string;
-      icon: string;
-    }>;
-    button1Text: string;
-    button2Text: string;
-  };
+    icon: string;
+  }[];
+  button1Text: string;
+  button2Text: string;
+  button1Icon?: string;
+  button2Icon?: string;
+}
+
+export interface TestimonialsSection {
+  badge?: string;
+  title: string;
   testimonials: {
-    badge?: string;
-    title: string;
-    testimonials: Array<{
-      name: string;
-      role: string;
-      content: string;
-      rating: number;
-      image?: string;
-    }>;
-    button1Text: string;
-    button2Text: string;
-  };
-  about: {
-    badge?: string;
-    title: string;
-    description: string;
+    name: string;
+    role: string;
+    content: string;
+    rating: number;
     image?: string;
-    stats?: Array<{
-      number: string;
-      label: string;
-    }>;
-    button1Text: string;
-    button2Text: string;
-  };
-  pricing: {
-    badge?: string;
-    title: string;
-    subtitle?: string;
-    plans: Array<{
-      name: string;
-      price: string;
-      period: string;
-      features: string[];
-      recommended?: boolean;
-      buttonText: string;
-    }>;
-    button1Text: string;
-    button2Text: string;
-  };
-  faq: {
-    badge?: string;
-    title: string;
-    subtitle?: string;
-    questions: Array<{
-      question: string;
-      answer: string;
-    }>;
-    button1Text: string;
-    button2Text: string;
-  };
-  finalCta: {
-    badge?: string;
-    title: string;
-    description: string;
-    button1Text: string;
-    button2Text: string;
-  };
-  contact: {
-    title: string;
-    subtitle?: string;
-    fields: Array<{
-      name: string;
-      type: string;
-      placeholder: string;
-      required: boolean;
-    }>;
+  }[];
+  button1Text: string;
+  button2Text: string;
+  button1Icon?: string;
+  button2Icon?: string;
+}
+
+export interface AboutSection {
+  badge?: string;
+  title: string;
+  description: string;
+  image?: string;
+  stats?: {
+    number: string;
+    label: string;
+  }[];
+  button1Text: string;
+  button2Text: string;
+  button1Icon?: string;
+  button2Icon?: string;
+}
+
+export interface PricingSection {
+  badge?: string;
+  title: string;
+  subtitle?: string;
+  plans: {
+    name: string;
+    price: string;
+    period: string;
+    features: string[];
+    recommended?: boolean;
     buttonText: string;
-  };
-  footer: {
-    companyName: string;
-    description: string;
-    links: Array<{
-      category: string;
-      items: Array<{
-        name: string;
-        href: string;
-      }>;
-    }>;
-    socialMedia: Array<{
-      name: string;
-      href: string;
-      icon: string;
-    }>;
-    contactInfo: {
-      address: string;
-      phone: string;
-      email: string;
-    };
-  };
-  styles: {
-    backgroundColor: string;
-    textColor: string;
-    primaryColor: string;
-    secondaryColor: string;
-    accentColor: string;
-    heroBackground: string;
-    emotionalBackground: string;
-    featuresBackground: string;
-    testimonialsBackground: string;
-    aboutBackground: string;
-    pricingBackground: string;
-    faqBackground: string;
-    finalCtaBackground: string;
-    contactBackground: string;
-    footerBackground: string;
-  };
+  }[];
+  button1Text: string;
+  button2Text: string;
+  button1Icon?: string;
+  button2Icon?: string;
+}
+
+export interface FaqSection {
+  badge?: string;
+  title: string;
+  subtitle?: string;
+  questions: {
+    question: string;
+    answer: string;
+  }[];
+  button1Text: string;
+  button2Text: string;
+  button1Icon?: string;
+  button2Icon?: string;
+}
+
+export interface ContactSection {
+  title: string;
+  subtitle?: string;
+  buttonText: string;
+}
+
+export interface FooterSection {
+  companyName: string;
+}
+
+export interface TemplateData {
+  id: string;
+  name: string;
+  category: string;
+  hero: HeroSection;
+  emotional: EmotionalSection;
+  features: FeaturesSection;
+  testimonials: TestimonialsSection;
+  about: AboutSection;
+  pricing: PricingSection;
+  faq: FaqSection;
+  finalCta: FinalCtaSection;
+  contact: ContactSection;
+  footer: FooterSection;
+  styles: TemplateStyles;
 }
