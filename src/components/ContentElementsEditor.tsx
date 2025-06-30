@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -113,7 +114,6 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
     text: 'הצטרף אלינו עוד היום והתחל את המסע שלך להצלחה',
     badge: 'מוגבל בזמן',
     backgroundColor: '#1e1e2e',
-    useHeroDesign: false,
     buttons: [{ id: '1', text: 'התחל עכשיו', style: 'primary', visible: true }]
   };
 
@@ -203,32 +203,6 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label className="text-white mb-3 block">סגנון עיצוב</Label>
-                <div className="flex gap-4">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="emotionalDesign"
-                      checked={!emotionalSection.useHeroDesign}
-                      onChange={() => handleEmotionalSectionUpdate({ useHeroDesign: false })}
-                      className="text-blue-600"
-                    />
-                    <span className="text-white">עיצוב עצמאי</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="emotionalDesign"
-                      checked={emotionalSection.useHeroDesign}
-                      onChange={() => handleEmotionalSectionUpdate({ useHeroDesign: true })}
-                      className="text-blue-600"
-                    />
-                    <span className="text-white">בסגנון ההירו</span>
-                  </label>
-                </div>
-              </div>
-
-              <div>
                 <Label htmlFor="emotional-badge" className="text-white">תג עליון</Label>
                 <Input
                   id="emotional-badge"
@@ -273,28 +247,26 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
                 />
               </div>
 
-              {!emotionalSection.useHeroDesign && (
-                <div>
-                  <Label className="text-white">צבע רקע</Label>
-                  <div className="grid grid-cols-4 gap-2 mt-2">
-                    {workingColorPalette.map((color, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handleEmotionalSectionUpdate({ backgroundColor: color.value === 'default' ? '#1e1e2e' : color.value })}
-                        className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
-                        style={{
-                          background: color.value === 'default' ? '#1e1e2e' : color.value
-                        }}
-                        title={color.name}
-                      >
-                        {emotionalSection.backgroundColor === (color.value === 'default' ? '#1e1e2e' : color.value) && (
-                          <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
-                        )}
-                      </button>
-                    ))}
-                  </div>
+              <div>
+                <Label className="text-white">צבע רקע</Label>
+                <div className="grid grid-cols-4 gap-2 mt-2">
+                  {workingColorPalette.map((color, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleEmotionalSectionUpdate({ backgroundColor: color.value === 'default' ? '#1e1e2e' : color.value })}
+                      className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                      style={{
+                        background: color.value === 'default' ? '#1e1e2e' : color.value
+                      }}
+                      title={color.name}
+                    >
+                      {emotionalSection.backgroundColor === (color.value === 'default' ? '#1e1e2e' : color.value) && (
+                        <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                      )}
+                    </button>
+                  ))}
                 </div>
-              )}
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -454,142 +426,140 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
             </CardContent>
           </Card>
 
-          {/* EMOTIONAL SECTION COLORS - Only show if not using hero design */}
-          {!emotionalSection.useHeroDesign && (
-            <Card className="bg-gray-800 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <Heart className="w-5 h-5" />
-                  צבעי פסקת הרגש
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Emotional Badge Color */}
-                <div>
-                  <Label className="text-white mb-3 block">צבע תג עליון</Label>
-                  <div className="grid grid-cols-4 gap-2">
-                    {workingColorPalette.map((color, index) => (
-                      <button
-                        key={index}
-                        onClick={() => {
-                          const updatedEmotionalSection = {
-                            ...localContent.emotionalSection,
-                            colors: {
-                              ...localContent.emotionalSection?.colors,
-                              badge: color.value
-                            }
-                          };
-                          handleEmotionalSectionUpdate(updatedEmotionalSection);
-                        }}
-                        className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
-                        style={{
-                          background: color.value === 'default' ? '#374151' : color.value
-                        }}
-                        title={color.name}
-                      >
-                        {emotionalSection.colors?.badge === color.value && (
-                          <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
-                        )}
-                      </button>
-                    ))}
-                  </div>
+          {/* EMOTIONAL SECTION COLORS */}
+          <Card className="bg-gray-800 border-gray-700">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Heart className="w-5 h-5" />
+                צבעי פסקת הרגש
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Emotional Badge Color */}
+              <div>
+                <Label className="text-white mb-3 block">צבע תג עליון</Label>
+                <div className="grid grid-cols-4 gap-2">
+                  {workingColorPalette.map((color, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        const updatedEmotionalSection = {
+                          ...localContent.emotionalSection,
+                          colors: {
+                            ...localContent.emotionalSection?.colors,
+                            badge: color.value
+                          }
+                        };
+                        handleEmotionalSectionUpdate(updatedEmotionalSection);
+                      }}
+                      className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                      style={{
+                        background: color.value === 'default' ? '#374151' : color.value
+                      }}
+                      title={color.name}
+                    >
+                      {emotionalSection.colors?.badge === color.value && (
+                        <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                      )}
+                    </button>
+                  ))}
                 </div>
+              </div>
 
-                {/* Emotional Title Color */}
-                <div>
-                  <Label className="text-white mb-3 block">צבע כותרת ראשית</Label>
-                  <div className="grid grid-cols-4 gap-2">
-                    {workingColorPalette.map((color, index) => (
-                      <button
-                        key={index}
-                        onClick={() => {
-                          const updatedEmotionalSection = {
-                            ...localContent.emotionalSection,
-                            colors: {
-                              ...localContent.emotionalSection?.colors,
-                              title: color.value
-                            }
-                          };
-                          handleEmotionalSectionUpdate(updatedEmotionalSection);
-                        }}
-                        className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
-                        style={{
-                          background: color.value === 'default' ? '#374151' : color.value
-                        }}
-                        title={color.name}
-                      >
-                        {emotionalSection.colors?.title === color.value && (
-                          <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
-                        )}
-                      </button>
-                    ))}
-                  </div>
+              {/* Emotional Title Color */}
+              <div>
+                <Label className="text-white mb-3 block">צבע כותרת ראשית</Label>
+                <div className="grid grid-cols-4 gap-2">
+                  {workingColorPalette.map((color, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        const updatedEmotionalSection = {
+                          ...localContent.emotionalSection,
+                          colors: {
+                            ...localContent.emotionalSection?.colors,
+                            title: color.value
+                          }
+                        };
+                        handleEmotionalSectionUpdate(updatedEmotionalSection);
+                      }}
+                      className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                      style={{
+                        background: color.value === 'default' ? '#374151' : color.value
+                      }}
+                      title={color.name}
+                    >
+                      {emotionalSection.colors?.title === color.value && (
+                        <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                      )}
+                    </button>
+                  ))}
                 </div>
+              </div>
 
-                {/* Emotional Subtitle Color */}
-                <div>
-                  <Label className="text-white mb-3 block">צבע תת כותרת</Label>
-                  <div className="grid grid-cols-4 gap-2">
-                    {workingColorPalette.map((color, index) => (
-                      <button
-                        key={index}
-                        onClick={() => {
-                          const updatedEmotionalSection = {
-                            ...localContent.emotionalSection,
-                            colors: {
-                              ...localContent.emotionalSection?.colors,
-                              subtitle: color.value
-                            }
-                          };
-                          handleEmotionalSectionUpdate(updatedEmotionalSection);
-                        }}
-                        className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
-                        style={{
-                          background: color.value === 'default' ? '#374151' : color.value
-                        }}
-                        title={color.name}
-                      >
-                        {emotionalSection.colors?.subtitle === color.value && (
-                          <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
-                        )}
-                      </button>
-                    ))}
-                  </div>
+              {/* Emotional Subtitle Color */}
+              <div>
+                <Label className="text-white mb-3 block">צבע תת כותרת</Label>
+                <div className="grid grid-cols-4 gap-2">
+                  {workingColorPalette.map((color, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        const updatedEmotionalSection = {
+                          ...localContent.emotionalSection,
+                          colors: {
+                            ...localContent.emotionalSection?.colors,
+                            subtitle: color.value
+                          }
+                        };
+                        handleEmotionalSectionUpdate(updatedEmotionalSection);
+                      }}
+                      className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                      style={{
+                        background: color.value === 'default' ? '#374151' : color.value
+                      }}
+                      title={color.name}
+                    >
+                      {emotionalSection.colors?.subtitle === color.value && (
+                        <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                      )}
+                    </button>
+                  ))}
                 </div>
+              </div>
 
-                {/* Emotional Text Color */}
-                <div>
-                  <Label className="text-white mb-3 block">צבע טקסט</Label>
-                  <div className="grid grid-cols-4 gap-2">
-                    {workingColorPalette.map((color, index) => (
-                      <button
-                        key={index}
-                        onClick={() => {
-                          const updatedEmotionalSection = {
-                            ...localContent.emotionalSection,
-                            colors: {
-                              ...localContent.emotionalSection?.colors,
-                              text: color.value
-                            }
-                          };
-                          handleEmotionalSectionUpdate(updatedEmotionalSection);
-                        }}
-                        className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
-                        style={{
-                          background: color.value === 'default' ? '#374151' : color.value
-                        }}
-                        title={color.name}
-                      >
-                        {emotionalSection.colors?.text === color.value && (
-                          <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
-                        )}
-                      </button>
-                    ))}
-                  </div>
+              {/* Emotional Text Color */}
+              <div>
+                <Label className="text-white mb-3 block">צבע טקסט</Label>
+                <div className="grid grid-cols-4 gap-2">
+                  {workingColorPalette.map((color, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        const updatedEmotionalSection = {
+                          ...localContent.emotionalSection,
+                          colors: {
+                            ...localContent.emotionalSection?.colors,
+                            text: color.value
+                          }
+                        };
+                        handleEmotionalSectionUpdate(updatedEmotionalSection);
+                      }}
+                      className="w-12 h-12 rounded-lg border-2 border-gray-600 hover:border-white transition-all relative group"
+                      style={{
+                        background: color.value === 'default' ? '#374151' : color.value
+                      }}
+                      title={color.name}
+                    >
+                      {emotionalSection.colors?.text === color.value && (
+                        <div className="absolute inset-0 border-2 border-blue-500 rounded-lg"></div>
+                      )}
+                    </button>
+                  ))}
                 </div>
-              </CardContent>
-            </Card>
-          )}
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>
