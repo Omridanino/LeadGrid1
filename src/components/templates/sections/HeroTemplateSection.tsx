@@ -7,7 +7,6 @@ interface HeroTemplateSectionProps {
   description: string;
   button1Text: string;
   button2Text: string;
-  image?: string;
   className?: string;
   designStyle?: string;
   templateId?: number;
@@ -19,7 +18,6 @@ export const HeroTemplateSection = ({
   description,
   button1Text,
   button2Text,
-  image,
   className = "",
   designStyle = "basic",
   templateId = 1
@@ -64,51 +62,35 @@ export const HeroTemplateSection = ({
   };
 
   return (
-    <section className={`template-section py-20 px-8 min-h-screen flex items-center relative overflow-hidden ${className}`}>
+    <section className={`template-section py-32 px-8 min-h-screen flex items-center relative overflow-hidden ${className}`}>
       {renderDesignElements()}
       
-      <div className="container mx-auto max-w-7xl template-content">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
-              {title}
-            </h1>
-            
-            <h2 className="text-xl md:text-2xl lg:text-3xl font-medium opacity-90">
-              {subtitle}
-            </h2>
-            
-            <p className="text-lg md:text-xl leading-relaxed opacity-80 max-w-2xl">
-              {description}
-            </p>
-            
-            <div className="flex gap-6 pt-4 flex-wrap">
-              <Button size="lg" className={`px-8 py-4 text-lg font-semibold ${getButtonClass()}`}>
-                {button1Text}
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="px-8 py-4 text-lg font-semibold border-2 bg-transparent backdrop-blur-sm hover:bg-white/10 transition-all duration-300"
-              >
-                {button2Text}
-              </Button>
-            </div>
-          </div>
+      <div className="container mx-auto max-w-6xl template-content">
+        <div className="text-center space-y-8 max-w-4xl mx-auto">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight">
+            {title}
+          </h1>
           
-          {image && (
-            <div className="flex justify-center lg:justify-end">
-              <div className="relative">
-                <img 
-                  src={image} 
-                  alt="Hero"
-                  className="max-w-full h-auto rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-500"
-                  style={{ maxHeight: '500px' }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/10 rounded-2xl"></div>
-              </div>
-            </div>
-          )}
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-medium opacity-90">
+            {subtitle}
+          </h2>
+          
+          <p className="text-xl md:text-2xl leading-relaxed opacity-80 max-w-3xl mx-auto">
+            {description}
+          </p>
+          
+          <div className="flex gap-6 pt-8 justify-center flex-wrap">
+            <Button size="lg" className={`px-10 py-5 text-xl font-semibold ${getButtonClass()}`}>
+              {button1Text}
+            </Button>
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="px-10 py-5 text-xl font-semibold border-2 bg-transparent backdrop-blur-sm hover:bg-white/10 transition-all duration-300"
+            >
+              {button2Text}
+            </Button>
+          </div>
         </div>
       </div>
     </section>

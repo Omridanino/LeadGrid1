@@ -60,26 +60,26 @@ export const EmotionalTemplateSection = ({
   };
 
   return (
-    <section className={`template-section py-20 px-8 relative overflow-hidden ${className}`}>
+    <section className={`template-section py-24 px-8 relative overflow-hidden ${className}`}>
       {renderDesignElements()}
       
-      <div className="container mx-auto text-center max-w-4xl template-content">
-        <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight">
+      <div className="container mx-auto text-center max-w-5xl template-content">
+        <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
           {title}
         </h2>
         
-        <p className="text-xl md:text-2xl mb-12 leading-relaxed opacity-90 max-w-3xl mx-auto">
+        <p className="text-xl md:text-2xl lg:text-3xl mb-12 leading-relaxed opacity-90 max-w-4xl mx-auto">
           {description}
         </p>
         
         <div className="flex gap-6 justify-center flex-wrap">
-          <Button size="lg" className={`px-8 py-4 text-lg font-semibold ${getButtonClass()}`}>
+          <Button size="lg" className={`px-10 py-5 text-xl font-semibold ${getButtonClass()}`}>
             {button1Text}
           </Button>
           <Button 
             variant="outline" 
             size="lg" 
-            className="px-8 py-4 text-lg font-semibold border-2 bg-transparent backdrop-blur-sm hover:bg-white/10 transition-all duration-300"
+            className="px-10 py-5 text-xl font-semibold border-2 bg-transparent backdrop-blur-sm hover:bg-white/10 transition-all duration-300"
           >
             {button2Text}
           </Button>

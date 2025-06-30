@@ -2,18 +2,17 @@
 import { TemplateData } from "@/types/template";
 
 export const templates: TemplateData[] = [
-  // === BASIC CATEGORY (13 templates) ===
+  // === BASIC CATEGORY (14 templates) ===
   {
     id: 1,
-    name: "מינימליסטי קלאסי",
+    name: "מינימליסטי אלגנטי",
     category: 'basic',
     hero: {
       title: "הפתרון המושלם לעסק שלך",
       subtitle: "טכנולוגיה מתקדמת שמביאה תוצאות",
       description: "גלה איך אפשר לשפר את הביצועים שלך ולהגדיל את הרווחים עם הכלים החדשניים ביותר בשוק",
       button1Text: "התחל עכשיו",
-      button2Text: "למד עוד",
-      image: "/lovable-uploads/01342860-952c-4dea-9951-95169ffa74d3.png"
+      button2Text: "למד עוד"
     },
     emotional: {
       title: "הרגש את ההבדל",
@@ -24,18 +23,8 @@ export const templates: TemplateData[] = [
     testimonials: {
       title: "לקוחות מרוצים",
       testimonials: [
-        {
-          name: "דנה לוי",
-          role: "מנכ\"לית",
-          content: "השירות שינה את העסק שלי לחלוטין!",
-          rating: 5
-        },
-        {
-          name: "אורי כהן",
-          role: "יזם",
-          content: "פשוט ויעיל, ממליץ בחום.",
-          rating: 4
-        }
+        { name: "דנה לוי", role: "מנכ\"לית", content: "השירות שינה את העסק שלי לחלוטין!", rating: 5 },
+        { name: "אורי כהן", role: "יזם", content: "פשוט ויעיל, ממליץ בחום.", rating: 4 }
       ],
       button1Text: "קרא עוד",
       button2Text: "הצטרף אלינו"
@@ -49,9 +38,8 @@ export const templates: TemplateData[] = [
     gallery: {
       title: "גלריית פרויקטים",
       images: [
-        "/lovable-uploads/01342860-952c-4dea-9951-95169ffa74d3.png",
-        "/lovable-uploads/be5c31f2-ee31-49ec-a0bc-1182066b9cca.png",
-        "/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png"
+        "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
+        "https://images.unsplash.com/photo-1518770660439-4636190af475"
       ],
       button1Text: "ראה את כולם",
       button2Text: "צור קשר"
@@ -81,18 +69,18 @@ export const templates: TemplateData[] = [
       subtitle: "אנחנו כאן בשבילכם"
     },
     styles: {
-      backgroundColor: "bg-white",
-      textColor: "#111827",
-      primaryColor: "#3b82f6",
-      secondaryColor: "#9333ea",
-      heroBackground: "bg-gradient-to-br from-blue-50 to-indigo-100",
-      emotionalBackground: "bg-gray-50",
+      backgroundColor: "bg-slate-50",
+      textColor: "#334155",
+      primaryColor: "#0f172a",
+      secondaryColor: "#475569",
+      heroBackground: "bg-gradient-to-br from-slate-50 via-white to-slate-100",
+      emotionalBackground: "bg-gradient-to-r from-slate-100 to-gray-50",
       testimonialsBackground: "bg-white",
-      aboutBackground: "bg-gray-100",
-      galleryBackground: "bg-white",
-      processBackground: "bg-gray-50",
-      whyUsBackground: "bg-white",
-      contactBackground: "bg-gray-100"
+      aboutBackground: "bg-gradient-to-l from-slate-50 to-white",
+      galleryBackground: "bg-slate-50",
+      processBackground: "bg-white",
+      whyUsBackground: "bg-gradient-to-r from-white to-slate-50",
+      contactBackground: "bg-slate-100"
     }
   },
   {
@@ -104,8 +92,7 @@ export const templates: TemplateData[] = [
       subtitle: "פתרונות טכנולוגיים לעסקים חכמים",
       description: "הצטרף לאלפי עסקים שכבר שדרגו את הפעילות שלהם והגדילו את ההכנסות ב-300% תוך 6 חודשים",
       button1Text: "קבל הצעה",
-      button2Text: "צפה בדמו",
-      image: "/lovable-uploads/be5c31f2-ee31-49ec-a0bc-1182066b9cca.png"
+      button2Text: "צפה בדמו"
     },
     emotional: {
       title: "העסק שלך, בדרך להצלחה",
@@ -116,18 +103,8 @@ export const templates: TemplateData[] = [
     testimonials: {
       title: "מה הלקוחות אומרים",
       testimonials: [
-        {
-          name: "רונית ברק",
-          role: "מנהלת שיווק",
-          content: "הפלטפורמה שינתה את כללי המשחק עבורנו.",
-          rating: 5
-        },
-        {
-          name: "גיא לוי",
-          role: "יזם",
-          content: "תמיכה מעולה ותוצאות מדהימות.",
-          rating: 4
-        }
+        { name: "רונית ברק", role: "מנהלת שיווק", content: "הפלטפורמה שינתה את כללי המשחק עבורנו.", rating: 5 },
+        { name: "גיא לוי", role: "יזם", content: "תמיכה מעולה ותוצאות מדהימות.", rating: 4 }
       ],
       button1Text: "קרא עוד",
       button2Text: "הצטרף עכשיו"
@@ -141,9 +118,8 @@ export const templates: TemplateData[] = [
     gallery: {
       title: "הפרויקטים שלנו",
       images: [
-        "/lovable-uploads/be5c31f2-ee31-49ec-a0bc-1182066b9cca.png",
-        "/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png",
-        "/lovable-uploads/01342860-952c-4dea-9951-95169ffa74d3.png"
+        "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
+        "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7"
       ],
       button1Text: "ראה את כולם",
       button2Text: "פנה אלינו"
@@ -173,22 +149,102 @@ export const templates: TemplateData[] = [
       subtitle: "נשמח לעזור לך לצמוח"
     },
     styles: {
-      backgroundColor: "bg-slate-50",
-      textColor: "#1f2937",
-      primaryColor: "#10b981",
-      secondaryColor: "#06b6d4",
-      heroBackground: "bg-gradient-to-br from-emerald-50 to-cyan-100",
-      emotionalBackground: "bg-white",
-      testimonialsBackground: "bg-slate-50",
-      aboutBackground: "bg-white",
-      galleryBackground: "bg-slate-50",
+      backgroundColor: "bg-blue-50",
+      textColor: "#1e3a8a",
+      primaryColor: "#1d4ed8",
+      secondaryColor: "#3b82f6",
+      heroBackground: "bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100",
+      emotionalBackground: "bg-gradient-to-r from-blue-100 to-indigo-50",
+      testimonialsBackground: "bg-white",
+      aboutBackground: "bg-gradient-to-l from-blue-50 to-white",
+      galleryBackground: "bg-blue-50",
       processBackground: "bg-white",
-      whyUsBackground: "bg-slate-50",
-      contactBackground: "bg-white"
+      whyUsBackground: "bg-gradient-to-r from-white to-blue-50",
+      contactBackground: "bg-blue-100"
     }
   },
   {
     id: 3,
+    name: "טכנולוגי מתקדם",
+    category: 'basic',
+    hero: {
+      title: "עתיד הטכנולוגיה כאן",
+      subtitle: "פתרונות AI מתקדמים",
+      description: "טכנולוגיית בינה מלאכותית מתקדמת שמשנה את הדרך שבה אנחנו עובדים ומתפתחים",
+      button1Text: "גלה את העתיד",
+      button2Text: "בקש דמו"
+    },
+    emotional: {
+      title: "החדשנות שתשנה הכל",
+      description: "טכנולוגיה שמקדמת את העסק שלך לעידן חדש",
+      button1Text: "התחל מהפכה",
+      button2Text: "למד עוד"
+    },
+    testimonials: {
+      title: "חדשנים מובילים",
+      testimonials: [
+        { name: "תמר לוי", role: "מנכ\"לית סטארט-אפ", content: "הטכנולוגיה הזו שינתה את כל העסק שלנו.", rating: 5 },
+        { name: "רון כהן", role: "מנהל טכנולוגיות", content: "פתרון מהפכני שחסך לנו זמן ומשאבים רבים.", rating: 5 }
+      ],
+      button1Text: "עוד סיפורים",
+      button2Text: "הצטרף למהפכה"
+    },
+    about: {
+      title: "החזון שלנו",
+      description: "מובילים את מהפכת הטכנולוגיה עם פתרונות חכמים ומתקדמים",
+      button1Text: "הכר את הצוות",
+      button2Text: "שותפות אסטרטגית"
+    },
+    gallery: {
+      title: "פתרונות טכנולוגיים",
+      images: [
+        "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5",
+        "https://images.unsplash.com/photo-1605810230434-7631ac76ec81"
+      ],
+      button1Text: "כל הפתרונות",
+      button2Text: "בקש התאמה"
+    },
+    process: {
+      title: "תהליך החדשנות",
+      steps: [
+        { title: "זיהוי הזדמנויות", description: "מיפוי פוטנציאל השיפור" },
+        { title: "פיתוח פתרון", description: "יצירת טכנולוגיה מותאמת" },
+        { title: "הטמעה חכמה", description: "יישום מדורג ומבוקר" }
+      ],
+      button1Text: "התחל חדשנות",
+      button2Text: "קבל הערכה"
+    },
+    whyUs: {
+      title: "למה אנחנו מובילים",
+      items: [
+        { title: "חדשנות", description: "טכנולוגיות מתקדמות ביותר", icon: "zap" },
+        { title: "מומחיות", description: "צוות מהמומחים המובילים בתחום", icon: "award" },
+        { title: "תוצאות", description: "הוכחנו הצלחה אצל מאות לקוחות", icon: "star" }
+      ],
+      button1Text: "בחר בחדשנות",
+      button2Text: "קבל פרטים"
+    },
+    contact: {
+      title: "בואו נחדש יחד",
+      subtitle: "המהפכה מתחילה כאן"
+    },
+    styles: {
+      backgroundColor: "bg-purple-50",
+      textColor: "#581c87",
+      primaryColor: "#7c3aed",
+      secondaryColor: "#a855f7",
+      heroBackground: "bg-gradient-to-br from-purple-50 via-pink-50 to-purple-100",
+      emotionalBackground: "bg-gradient-to-r from-purple-100 to-pink-50",
+      testimonialsBackground: "bg-white",
+      aboutBackground: "bg-gradient-to-l from-purple-50 to-white",
+      galleryBackground: "bg-purple-50",
+      processBackground: "bg-white",
+      whyUsBackground: "bg-gradient-to-r from-white to-purple-50",
+      contactBackground: "bg-purple-100"
+    }
+  },
+  {
+    id: 4,
     name: "קורפורטיבי אלגנטי",
     category: 'basic',
     hero: {
@@ -196,8 +252,7 @@ export const templates: TemplateData[] = [
       subtitle: "מובילים את השינוי הטכנולוגי",
       description: "אנחנו מספקים פתרונות מתקדמים שמאפשרים לחברות להתמודד עם האתגרים של המאה ה-21",
       button1Text: "בואו נתחיל",
-      button2Text: "קבל מידע",
-      image: "/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png"
+      button2Text: "קבל מידע"
     },
     emotional: {
       title: "השותף שלך להצלחה",
@@ -208,34 +263,23 @@ export const templates: TemplateData[] = [
     testimonials: {
       title: "המלצות לקוחות",
       testimonials: [
-        {
-          name: "מיכל כהן",
-          role: "סמנכ\"לית טכנולוגיות",
-          content: "השירות המקצועי ביותר שקיבלנו אי פעם.",
-          rating: 5
-        },
-        {
-          name: "דוד רוזן",
-          role: "מנהל כללי",
-          content: "תוצאות מעבר לציפיות, מומלץ בחום!",
-          rating: 5
-        }
+        { name: "מיכל כהן", role: "סמנכ\"לית טכנולוגיות", content: "השירות המקצועי ביותר שקיבלנו אי פעם.", rating: 5 },
+        { name: "דוד רוזן", role: "מנהל כללי", content: "תוצאות מעבר לציפיות, מומלץ בחום!", rating: 5 }
       ],
       button1Text: "עוד המלצות",
       button2Text: "הצטרף אלינו"
     },
     about: {
       title: "אודותינו",
-      description: "צוות מנוסה עם מעל 15 שנות ניסיון בתחום הטכנולوגיה",
+      description: "צוות מנוסה עם מעל 15 שנות ניסיון בתחום הטכנולוגיה",
       button1Text: "הכר אותנו",
       button2Text: "יצירת קשר"
     },
     gallery: {
       title: "פרויקטים מובחרים",
       images: [
-        "/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png",
-        "/lovable-uploads/01342860-952c-4dea-9951-95169ffa74d3.png",
-        "/lovable-uploads/be5c31f2-ee31-49ec-a0bc-1182066b9cca.png"
+        "https://images.unsplash.com/photo-1527576539890-dfa815648363",
+        "https://images.unsplash.com/photo-1487958449943-2429e8be8625"
       ],
       button1Text: "כל הפרויקטים",
       button2Text: "פנייה לעבודה"
@@ -269,106 +313,14 @@ export const templates: TemplateData[] = [
       textColor: "#374151",
       primaryColor: "#1f2937",
       secondaryColor: "#6b7280",
-      heroBackground: "bg-gradient-to-br from-gray-100 to-slate-200",
-      emotionalBackground: "bg-white",
-      testimonialsBackground: "bg-gray-50",
-      aboutBackground: "bg-white",
+      heroBackground: "bg-gradient-to-br from-gray-50 via-white to-slate-100",
+      emotionalBackground: "bg-gradient-to-r from-gray-100 to-slate-50",
+      testimonialsBackground: "bg-white",
+      aboutBackground: "bg-gradient-to-l from-gray-50 to-white",
       galleryBackground: "bg-gray-50",
       processBackground: "bg-white",
-      whyUsBackground: "bg-gray-50",
-      contactBackground: "bg-white"
-    }
-  },
-  {
-    id: 4,
-    name: "טכנולוגי חדשני",
-    category: 'basic',
-    hero: {
-      title: "עתיד הטכנולוגיה כאן",
-      subtitle: "פתרונות AI מתקדמים",
-      description: "טכנולוגיית בינה מלאכותית מתקדמת שמשנה את הדרך שבה אנחנו עובדים ומתפתחים",
-      button1Text: "גלה את העתיד",
-      button2Text: "בקש דמו",
-      image: "/lovable-uploads/ec6b8374-3932-48ac-ac2d-703d465caf06.png"
-    },
-    emotional: {
-      title: "החדשנות שתשנה הכל",
-      description: "טכנולוגיה שמקדמת את העסק שלך לעידן חדש",
-      button1Text: "התחל מהפכה",
-      button2Text: "למד עוד"
-    },
-    testimonials: {
-      title: "חדשנים מובילים",
-      testimonials: [
-        {
-          name: "תמר לוי",
-          role: "מנכ\"לית סטארט-אפ",
-          content: "הטכנולוגיה הזו שינתה את כל העסק שלנו.",
-          rating: 5
-        },
-        {
-          name: "רון כהן",
-          role: "מנהל טכנולוגיות",
-          content: "פתרון מהפכני שחסך לנו זמן ומשאבים רבים.",
-          rating: 5
-        }
-      ],
-      button1Text: "עוד סיפורים",
-      button2Text: "הצטרף למהפכה"
-    },
-    about: {
-      title: "החזון שלנו",
-      description: "מובילים את מהפכת הטכנולוגיה עם פתרונות חכמים ומתקדמים",
-      button1Text: "הכר את הצוות",
-      button2Text: "שותפות אסטרטגית"
-    },
-    gallery: {
-      title: "פתרונות טכנולוגיים",
-      images: [
-        "/lovable-uploads/ec6b8374-3932-48ac-ac2d-703d465caf06.png",
-        "/lovable-uploads/be5c31f2-ee31-49ec-a0bc-1182066b9cca.png",
-        "/lovable-uploads/01342860-952c-4dea-9951-95169ffa74d3.png"
-      ],
-      button1Text: "כל הפתרונות",
-      button2Text: "בקש התאמה"
-    },
-    process: {
-      title: "תהליך החדשנות",
-      steps: [
-        { title: "זיהוי הזדמנויות", description: "מיפוי פוטנציאל השיפור" },
-        { title: "פיתוח פתרון", description: "יצירת טכנולוגיה מותאמת" },
-        { title: "הטמעה חכמה", description: "יישום מדורג ומבוקר" }
-      ],
-      button1Text: "התחל חדשנות",
-      button2Text: "קבל הערכה"
-    },
-    whyUs: {
-      title: "למה אנחנו מובילים",
-      items: [
-        { title: "חדשנות", description: "טכנולוגיות מתקדמות ביותר", icon: "zap" },
-        { title: "מומחיות", description: "צוות מהמומחים המובילים בתחום", icon: "award" },
-        { title: "תוצאות", description: "הוכחנו הצלחה אצל מאות לקוחות", icon: "star" }
-      ],
-      button1Text: "בחר בחדשנות",
-      button2Text: "קבל פרטים"
-    },
-    contact: {
-      title: "בואו נחדש יחד",
-      subtitle: "המהפכה מתחילה כאן"
-    },
-    styles: {
-      backgroundColor: "bg-slate-900",
-      textColor: "#f1f5f9",
-      primaryColor: "#3b82f6",
-      secondaryColor: "#8b5cf6",
-      heroBackground: "bg-gradient-to-br from-slate-800 to-blue-900",
-      emotionalBackground: "bg-slate-800",
-      testimonialsBackground: "bg-slate-900",
-      aboutBackground: "bg-slate-800",
-      galleryBackground: "bg-slate-900",
-      processBackground: "bg-slate-800",
-      whyUsBackground: "bg-slate-900",
-      contactBackground: "bg-slate-800"
+      whyUsBackground: "bg-gradient-to-r from-white to-gray-50",
+      contactBackground: "bg-gray-100"
     }
   },
   {
@@ -380,8 +332,7 @@ export const templates: TemplateData[] = [
       subtitle: "איכות פרמיום ללא פשרות",
       description: "אנחנו מתמחים במתן חוויות יוקרתיות ומותאמות אישית עם תשומת לב לכל פרט",
       button1Text: "חווה יוקרה",
-      button2Text: "קבל הצעה",
-      image: "/lovable-uploads/01342860-952c-4dea-9951-95169ffa74d3.png"
+      button2Text: "קבל הצעה"
     },
     emotional: {
       title: "יוקרה שמדברת בשבילכם",
@@ -392,18 +343,8 @@ export const templates: TemplateData[] = [
     testimonials: {
       title: "לקוחות VIP",
       testimonials: [
-        {
-          name: "יעל רוזנברג",
-          role: "מנהלת עסקים",
-          content: "רמת השירות הגבוהה ביותר שחוויתי אי פעם.",
-          rating: 5
-        },
-        {
-          name: "עמית גולדברג",
-          role: "יזם מוביל",
-          content: "יוקרה אמיתית עם תוצאות מדהימות.",
-          rating: 5
-        }
+        { name: "יעל רוזנברג", role: "מנהלת עסקים", content: "רמת השירות הגבוהה ביותר שחוויתי אי פעם.", rating: 5 },
+        { name: "עמית גולדברג", role: "יזם מוביל", content: "יוקרה אמיתית עם תוצאות מדהימות.", rating: 5 }
       ],
       button1Text: "עוד חוויות",
       button2Text: "הצטרף לVIP"
@@ -417,9 +358,8 @@ export const templates: TemplateData[] = [
     gallery: {
       title: "פרויקטים יוקרתיים",
       images: [
-        "/lovable-uploads/01342860-952c-4dea-9951-95169ffa74d3.png",
-        "/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png",
-        "/lovable-uploads/be5c31f2-ee31-49ec-a0bc-1182066b9cca.png"
+        "https://images.unsplash.com/photo-1493397212122-2b85dda8106b",
+        "https://images.unsplash.com/photo-1500673922987-e212871fec22"
       ],
       button1Text: "הפורטפוליו",
       button2Text: "פרויקט מותאם"
@@ -453,14 +393,14 @@ export const templates: TemplateData[] = [
       textColor: "#78350f",
       primaryColor: "#d97706",
       secondaryColor: "#f59e0b",
-      heroBackground: "bg-gradient-to-br from-amber-100 to-yellow-200",
-      emotionalBackground: "bg-white",
-      testimonialsBackground: "bg-amber-50",
-      aboutBackground: "bg-white",
+      heroBackground: "bg-gradient-to-br from-amber-50 via-yellow-50 to-amber-100",
+      emotionalBackground: "bg-gradient-to-r from-amber-100 to-orange-50",
+      testimonialsBackground: "bg-white",
+      aboutBackground: "bg-gradient-to-l from-amber-50 to-white",
       galleryBackground: "bg-amber-50",
       processBackground: "bg-white",
-      whyUsBackground: "bg-amber-50",
-      contactBackground: "bg-white"
+      whyUsBackground: "bg-gradient-to-r from-white to-amber-50",
+      contactBackground: "bg-amber-100"
     }
   },
   {
@@ -472,8 +412,7 @@ export const templates: TemplateData[] = [
       subtitle: "סטארט-אפ שמשנה את העולם",
       description: "אנחנו בונים את העתיד עם רעיונות חדשניים וטכנולוגיה מתקדמת שמשנה את הדרך שבה אנחנו חיים",
       button1Text: "הצטרף למהפכה",
-      button2Text: "גלה את החזון",
-      image: "/lovable-uploads/be5c31f2-ee31-49ec-a0bc-1182066b9cca.png"
+      button2Text: "גלה את החזון"
     },
     emotional: {
       title: "חלום שהופך למציאות",
@@ -484,18 +423,8 @@ export const templates: TemplateData[] = [
     testimonials: {
       title: "המאמינים הראשונים",
       testimonials: [
-        {
-          name: "נועה אברהם",
-          role: "משקיעה מלאך",
-          content: "הפוטנציאל כאן הוא בלתי מוגבל.",
-          rating: 5
-        },
-        {
-          name: "איתי שמיר",
-          role: "יועץ עסקי",
-          content: "רעיון מבריק עם צוות מעולה.",
-          rating: 5
-        }
+        { name: "נועה אברהם", role: "משקיעה מלאך", content: "הפוטנציאל כאן הוא בלתי מוגבל.", rating: 5 },
+        { name: "איתי שמיר", role: "יועץ עסקי", content: "רעיון מבריק עם צוות מעולה.", rating: 5 }
       ],
       button1Text: "עוד סיפורים",
       button2Text: "הצטרף לקהילה"
@@ -509,9 +438,8 @@ export const templates: TemplateData[] = [
     gallery: {
       title: "המסע שלנו",
       images: [
-        "/lovable-uploads/be5c31f2-ee31-49ec-a0bc-1182066b9cca.png",
-        "/lovable-uploads/ec6b8374-3932-48ac-ac2d-703d465caf06.png",
-        "/lovable-uploads/01342860-952c-4dea-9951-95169ffa74d3.png"
+        "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+        "https://images.unsplash.com/photo-1501854140801-50d01698950b"
       ],
       button1Text: "המסע המלא",
       button2Text: "הצטרף למסע"
@@ -541,18 +469,18 @@ export const templates: TemplateData[] = [
       subtitle: "המהפכה מתחילה עכשיו"
     },
     styles: {
-      backgroundColor: "bg-purple-50",
-      textColor: "#581c87",
-      primaryColor: "#7c3aed",
-      secondaryColor: "#a855f7",
-      heroBackground: "bg-gradient-to-br from-purple-100 to-pink-200",
-      emotionalBackground: "bg-white",
-      testimonialsBackground: "bg-purple-50",
-      aboutBackground: "bg-white",
-      galleryBackground: "bg-purple-50",
+      backgroundColor: "bg-teal-50",
+      textColor: "#134e4a",
+      primaryColor: "#0d9488",
+      secondaryColor: "#14b8a6",
+      heroBackground: "bg-gradient-to-br from-teal-50 via-cyan-50 to-teal-100",
+      emotionalBackground: "bg-gradient-to-r from-teal-100 to-cyan-50",
+      testimonialsBackground: "bg-white",
+      aboutBackground: "bg-gradient-to-l from-teal-50 to-white",
+      galleryBackground: "bg-teal-50",
       processBackground: "bg-white",
-      whyUsBackground: "bg-purple-50",
-      contactBackground: "bg-white"
+      whyUsBackground: "bg-gradient-to-r from-white to-teal-50",
+      contactBackground: "bg-teal-100"
     }
   },
   {
@@ -564,8 +492,7 @@ export const templates: TemplateData[] = [
       subtitle: "פתרונות ירוקים לעתיד בר-קיימא",
       description: "אנחנו מאמינים שכל אחד יכול לעשות את הפרק שלו למען כדור הארץ - בואו נעשה זאת יחד",
       button1Text: "הצטרף לשינוי",
-      button2Text: "למד על קיימות",
-      image: "/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png"
+      button2Text: "למד על קיימות"
     },
     emotional: {
       title: "כדור הארץ צריך אותנו",
@@ -576,18 +503,8 @@ export const templates: TemplateData[] = [
     testimonials: {
       title: "סיפורי השפעה",
       testimonials: [
-        {
-          name: "מיכל ירוק",
-          role: "פעילת סביבתית",
-          content: "פתרונות מעשיים שבאמת עובדים.",
-          rating: 5
-        },
-        {
-          name: "דני כהן",
-          role: "בעל עסק ירוק",
-          content: "עזרו לי להפוך את העסק לירוק לחלוטין.",
-          rating: 5
-        }
+        { name: "מיכל ירוק", role: "פעילת סביבתית", content: "פתרונות מעשיים שבאמת עובדים.", rating: 5 },
+        { name: "דני כהן", role: "בעל עסק ירוק", content: "עזרו לי להפוך את העסק לירוק לחלוטין.", rating: 5 }
       ],
       button1Text: "עוד סיפורים",
       button2Text: "שתף את הסיפור שלך"
@@ -601,9 +518,8 @@ export const templates: TemplateData[] = [
     gallery: {
       title: "פרויקטים ירוקים",
       images: [
-        "/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png",
-        "/lovable-uploads/01342860-952c-4dea-9951-95169ffa74d3.png",
-        "/lovable-uploads/be5c31f2-ee31-49ec-a0bc-1182066b9cca.png"
+        "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+        "https://images.unsplash.com/photo-1501854140801-50d01698950b"
       ],
       button1Text: "כל הפרויקטים",
       button2Text: "הצע פרויקט"
@@ -637,14 +553,14 @@ export const templates: TemplateData[] = [
       textColor: "#14532d",
       primaryColor: "#16a34a",
       secondaryColor: "#22c55e",
-      heroBackground: "bg-gradient-to-br from-green-100 to-emerald-200",
-      emotionalBackground: "bg-white",
-      testimonialsBackground: "bg-green-50",
-      aboutBackground: "bg-white",
+      heroBackground: "bg-gradient-to-br from-green-50 via-emerald-50 to-green-100",
+      emotionalBackground: "bg-gradient-to-r from-green-100 to-emerald-50",
+      testimonialsBackground: "bg-white",
+      aboutBackground: "bg-gradient-to-l from-green-50 to-white",
       galleryBackground: "bg-green-50",
       processBackground: "bg-white",
-      whyUsBackground: "bg-green-50",
-      contactBackground: "bg-white"
+      whyUsBackground: "bg-gradient-to-r from-white to-green-50",
+      contactBackground: "bg-green-100"
     }
   },
   {
@@ -656,8 +572,7 @@ export const templates: TemplateData[] = [
       subtitle: "ייעוץ פיננסי מקצועי ואמין",
       description: "אנחנו עוזרים לך לנהל את הכסף שלך בחכמה ולהשיג את המטרות הפיננסיות שלך",
       button1Text: "תיעוץ חינם",
-      button2Text: "חשב השקעה",
-      image: "/lovable-uploads/ec6b8374-3932-48ac-ac2d-703d465caf06.png"
+      button2Text: "חשב השקעה"
     },
     emotional: {
       title: "בטחון פיננסי זה לא חלום",
@@ -668,18 +583,8 @@ export const templates: TemplateData[] = [
     testimonials: {
       title: "לקוחות מרוויחים",
       testimonials: [
-        {
-          name: "אבי לוי",
-          role: "בעל עסק",
-          content: "הצלחתי להכפיל את ההשקעות שלי.",
-          rating: 5
-        },
-        {
-          name: "רחל כהן",
-          role: "עובדת היי-טק",
-          content: "סוף סוף יש לי תוכנית פיננסית.",
-          rating: 5
-        }
+        { name: "אבי לוי", role: "בעל עסק", content: "הצלחתי להכפיל את ההשקעות שלי.", rating: 5 },
+        { name: "רחל כהן", role: "עובדת היי-טק", content: "סוף סוף יש לי תוכנית פיננסית.", rating: 5 }
       ],
       button1Text: "עוד סיפורי הצלחה",
       button2Text: "התחל גם אתה"
@@ -693,9 +598,8 @@ export const templates: TemplateData[] = [
     gallery: {
       title: "שירותים פיננסיים",
       images: [
-        "/lovable-uploads/ec6b8374-3932-48ac-ac2d-703d465caf06.png",
-        "/lovable-uploads/01342860-952c-4dea-9951-95169ffa74d3.png",
-        "/lovable-uploads/be5c31f2-ee31-49ec-a0bc-1182066b9cca.png"
+        "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
+        "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
       ],
       button1Text: "כל השירותים",
       button2Text: "בחר שירות"
@@ -725,18 +629,18 @@ export const templates: TemplateData[] = [
       subtitle: "הייעוץ הראשון חינם"
     },
     styles: {
-      backgroundColor: "bg-blue-50",
-      textColor: "#1e3a8a",
-      primaryColor: "#2563eb",
-      secondaryColor: "#3b82f6",
-      heroBackground: "bg-gradient-to-br from-blue-100 to-indigo-200",
-      emotionalBackground: "bg-white",
-      testimonialsBackground: "bg-blue-50",
-      aboutBackground: "bg-white",
-      galleryBackground: "bg-blue-50",
+      backgroundColor: "bg-indigo-50",
+      textColor: "#3730a3",
+      primaryColor: "#4f46e5",
+      secondaryColor: "#6366f1",
+      heroBackground: "bg-gradient-to-br from-indigo-50 via-purple-50 to-indigo-100",
+      emotionalBackground: "bg-gradient-to-r from-indigo-100 to-purple-50",
+      testimonialsBackground: "bg-white",
+      aboutBackground: "bg-gradient-to-l from-indigo-50 to-white",
+      galleryBackground: "bg-indigo-50",
       processBackground: "bg-white",
-      whyUsBackground: "bg-blue-50",
-      contactBackground: "bg-white"
+      whyUsBackground: "bg-gradient-to-r from-white to-indigo-50",
+      contactBackground: "bg-indigo-100"
     }
   },
   {
@@ -748,30 +652,19 @@ export const templates: TemplateData[] = [
       subtitle: "רפואה מתקדמת עם נגיעה אנושית",
       description: "אנחנו מחברים בין הטכנולוגיה הרפואית המתקדמת ביותר לטיפול אישי ומקצועי",
       button1Text: "קבע תור",
-      button2Text: "שירותים רפואיים",
-      image: "/lovable-uploads/01342860-952c-4dea-9951-95169ffa74d3.png"
+      button2Text: "שירותים רפואיים"
     },
     emotional: {
       title: "כי הבריאות שלך חשובה לנו",
-      description: "כל מטופל הוא עולם שלם - אנחנו כאן כדי לדאוג לבriאות שלך בכל רגע",
+      description: "כל מטופל הוא עולם שלם - אנחנו כאן כדי לדאוג לבריאות שלך בכל רגע",
       button1Text: "למד עוד",
       button2Text: "יעוץ רפואי"
     },
     testimonials: {
       title: "מטופלים מרוצים",
       testimonials: [
-        {
-          name: "שרה לוי",
-          role: "מטופלת",
-          content: "הטיפול הטוב ביותר שקיבלתי אי פעם.",
-          rating: 5
-        },
-        {
-          name: "משה כהן",
-          role: "מטופל",
-          content: "צוות מקצועי ואכפתי באמת.",
-          rating: 5
-        }
+        { name: "שרה לוי", role: "מטופלת", content: "הטיפול הטוב ביותר שקיבלתי אי פעם.", rating: 5 },
+        { name: "משה כהן", role: "מטופל", content: "צוות מקצועי ואכפתי באמת.", rating: 5 }
       ],
       button1Text: "עוד המלצות",
       button2Text: "הצטרף למטופלים"
@@ -785,9 +678,8 @@ export const templates: TemplateData[] = [
     gallery: {
       title: "מתקנים מתקדמים",
       images: [
-        "/lovable-uploads/01342860-952c-4dea-9951-95169ffa74d3.png",
-        "/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png",
-        "/lovable-uploads/ec6b8374-3932-48ac-ac2d-703d465caf06.png"
+        "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
+        "https://images.unsplash.com/photo-1518770660439-4636190af475"
       ],
       button1Text: "כל המתקנים",
       button2Text: "קבע ביקור"
@@ -806,7 +698,7 @@ export const templates: TemplateData[] = [
       title: "למה לבחור בנו",
       items: [
         { title: "מומחיות", description: "רופאים מובילים עם התמחויות נדירות", icon: "award" },
-        { title: "טכנولוגיה", description: "ציוד רפואי מתקדם ביותר", icon: "zap" },
+        { title: "טכנולוגיה", description: "ציוד רפואי מתקדם ביותר", icon: "zap" },
         { title: "אכפתיות", description: "יחס אישי ומקצועי לכל מטופל", icon: "heart" }
       ],
       button1Text: "בחר בבריאות",
@@ -817,18 +709,18 @@ export const templates: TemplateData[] = [
       subtitle: "אנחנו כאן בשבילך"
     },
     styles: {
-      backgroundColor: "bg-teal-50",
-      textColor: "#134e4a",
-      primaryColor: "#0d9488",
-      secondaryColor: "#14b8a6",
-      heroBackground: "bg-gradient-to-br from-teal-100 to-cyan-200",
-      emotionalBackground: "bg-white",
-      testimonialsBackground: "bg-teal-50",
-      aboutBackground: "bg-white",
-      galleryBackground: "bg-teal-50",
+      backgroundColor: "bg-cyan-50",
+      textColor: "#155e75",
+      primaryColor: "#0891b2",
+      secondaryColor: "#06b6d4",
+      heroBackground: "bg-gradient-to-br from-cyan-50 via-sky-50 to-cyan-100",
+      emotionalBackground: "bg-gradient-to-r from-cyan-100 to-sky-50",
+      testimonialsBackground: "bg-white",
+      aboutBackground: "bg-gradient-to-l from-cyan-50 to-white",
+      galleryBackground: "bg-cyan-50",
       processBackground: "bg-white",
-      whyUsBackground: "bg-teal-50",
-      contactBackground: "bg-white"
+      whyUsBackground: "bg-gradient-to-r from-white to-cyan-50",
+      contactBackground: "bg-cyan-100"
     }
   },
   {
@@ -840,8 +732,7 @@ export const templates: TemplateData[] = [
       subtitle: "למידה מעצימה ומותאמת אישית",
       description: "אנחנו מאמינים שכל אדם יכול ללמוד ולהצליח - בואו נגלה יחד את הפוטנציאל שלכם",
       button1Text: "התחל ללמוד",
-      button2Text: "גלה קורסים",
-      image: "/lovable-uploads/be5c31f2-ee31-49ec-a0bc-1182066b9cca.png"
+      button2Text: "גלה קורסים"
     },
     emotional: {
       title: "למידה שמשנה הכל",
@@ -852,18 +743,8 @@ export const templates: TemplateData[] = [
     testimonials: {
       title: "סיפורי הצלחה",
       testimonials: [
-        {
-          name: "נועה אברהם",
-          role: "בוגרת קורס",
-          content: "שינה לי את הקריירה והחיים.",
-          rating: 5
-        },
-        {
-          name: "יוסי לוי",
-          role: "תלמיד מבוגר",
-          content: "לא האמנתי שאוכל ללמוד בגיל שלי.",
-          rating: 5
-        }
+        { name: "נועה אברהם", role: "בוגרת קורס", content: "שינה לי את הקריירה והחיים.", rating: 5 },
+        { name: "יוסי לוי", role: "תלמיד מבוגר", content: "לא האמנתי שאוכל ללמוד בגיל שלי.", rating: 5 }
       ],
       button1Text: "עוד סיפורים",
       button2Text: "הצטרף ללומדים"
@@ -877,9 +758,8 @@ export const templates: TemplateData[] = [
     gallery: {
       title: "סביבות למידה",
       images: [
-        "/lovable-uploads/be5c31f2-ee31-49ec-a0bc-1182066b9cca.png",
-        "/lovable-uploads/ec6b8374-3932-48ac-ac2d-703d465caf06.png",
-        "/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png"
+        "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
+        "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7"
       ],
       button1Text: "כל הסביבות",
       button2Text: "בקר אותנו"
@@ -913,14 +793,14 @@ export const templates: TemplateData[] = [
       textColor: "#c2410c",
       primaryColor: "#ea580c",
       secondaryColor: "#fb923c",
-      heroBackground: "bg-gradient-to-br from-orange-100 to-red-200",
-      emotionalBackground: "bg-white",
-      testimonialsBackground: "bg-orange-50",
-      aboutBackground: "bg-white",
+      heroBackground: "bg-gradient-to-br from-orange-50 via-red-50 to-orange-100",
+      emotionalBackground: "bg-gradient-to-r from-orange-100 to-red-50",
+      testimonialsBackground: "bg-white",
+      aboutBackground: "bg-gradient-to-l from-orange-50 to-white",
       galleryBackground: "bg-orange-50",
       processBackground: "bg-white",
-      whyUsBackground: "bg-orange-50",
-      contactBackground: "bg-white"
+      whyUsBackground: "bg-gradient-to-r from-white to-orange-50",
+      contactBackground: "bg-orange-100"
     }
   },
   {
@@ -932,8 +812,7 @@ export const templates: TemplateData[] = [
       subtitle: "מזון גורמה ברמה הגבוהה ביותר",
       description: "אנחנו מביאים לכם את החוויה הקולינרית המושלמת עם שפים מובילים וחומרי גלם מעולים",
       button1Text: "הזמן עכשיו",
-      button2Text: "ראה תפריט",
-      image: "/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png"
+      button2Text: "ראה תפריט"
     },
     emotional: {
       title: "כל ביס הוא חוויה",
@@ -944,18 +823,8 @@ export const templates: TemplateData[] = [
     testimonials: {
       title: "אוהבי אוכל אמיתיים",
       testimonials: [
-        {
-          name: "יעל רוזן",
-          role: "בלוגרית אוכל",
-          content: "החוויה הקולינרית הטובה ביותר בארץ.",
-          rating: 5
-        },
-        {
-          name: "דני גולד",
-          role: "שף מוכר",
-          content: "רמה של אוכל שאני רואה רק במסעדות בחו\"ל.",
-          rating: 5
-        }
+        { name: "יעל רוזן", role: "בלוגרית אוכל", content: "החוויה הקולינרית הטובה ביותר בארץ.", rating: 5 },
+        { name: "דני גולד", role: "שף מוכר", content: "רמה של אוכל שאני רואה רק במסעדות בחול.", rating: 5 }
       ],
       button1Text: "עוד ביקורות",
       button2Text: "הצטרף לחוויה"
@@ -969,9 +838,8 @@ export const templates: TemplateData[] = [
     gallery: {
       title: "גלריית המנות",
       images: [
-        "/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png",
-        "/lovable-uploads/01342860-952c-4dea-9951-95169ffa74d3.png",
-        "/lovable-uploads/be5c31f2-ee31-49ec-a0bc-1182066b9cca.png"
+        "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5",
+        "https://images.unsplash.com/photo-1605810230434-7631ac76ec81"
       ],
       button1Text: "כל המנות",
       button2Text: "הזמן מנה"
@@ -1005,14 +873,14 @@ export const templates: TemplateData[] = [
       textColor: "#991b1b",
       primaryColor: "#dc2626",
       secondaryColor: "#ef4444",
-      heroBackground: "bg-gradient-to-br from-red-100 to-pink-200",
-      emotionalBackground: "bg-white",
-      testimonialsBackground: "bg-red-50",
-      aboutBackground: "bg-white",
+      heroBackground: "bg-gradient-to-br from-red-50 via-pink-50 to-red-100",
+      emotionalBackground: "bg-gradient-to-r from-red-100 to-pink-50",
+      testimonialsBackground: "bg-white",
+      aboutBackground: "bg-gradient-to-l from-red-50 to-white",
       galleryBackground: "bg-red-50",
       processBackground: "bg-white",
-      whyUsBackground: "bg-red-50",
-      contactBackground: "bg-white"
+      whyUsBackground: "bg-gradient-to-r from-white to-red-50",
+      contactBackground: "bg-red-100"
     }
   },
   {
@@ -1024,8 +892,7 @@ export const templates: TemplateData[] = [
       subtitle: "אימונים מקצועיים לכל רמה",
       description: "אנחנו כאן כדי לעזור לכם להגיע לכושר הטוב ביותר שלכם עם אימונים מותאמים אישית",
       button1Text: "התחל להתאמן",
-      button2Text: "תוכניות אימון",
-      image: "/lovable-uploads/ec6b8374-3932-48ac-ac2d-703d465caf06.png"
+      button2Text: "תוכניות אימון"
     },
     emotional: {
       title: "כל אימון הוא צעד קדימה",
@@ -1036,18 +903,8 @@ export const templates: TemplateData[] = [
     testimonials: {
       title: "סיפורי הצלחה",
       testimonials: [
-        {
-          name: "רון אברהם",
-          role: "מתאמן",
-          content: "הגעתי למטרות שחלמתי עליהן.",
-          rating: 5
-        },
-        {
-          name: "טל כהן",
-          role: "ספורטאית",
-          content: "המאמנים הטובים ביותר שפגשתי.",
-          rating: 5
-        }
+        { name: "רון אברהם", role: "מתאמן", content: "הגעתי למטרות שחלמתי עליהן.", rating: 5 },
+        { name: "טל כהן", role: "ספורטאית", content: "המאמנים הטובים ביותר שפגשתי.", rating: 5 }
       ],
       button1Text: "עוד סיפורים",
       button2Text: "התחל את המסע"
@@ -1061,9 +918,8 @@ export const templates: TemplateData[] = [
     gallery: {
       title: "מתקני האימון",
       images: [
-        "/lovable-uploads/ec6b8374-3932-48ac-ac2d-703d465caf06.png",
-        "/lovable-uploads/be5c31f2-ee31-49ec-a0bc-1182066b9cca.png",
-        "/lovable-uploads/01342860-952c-4dea-9951-95169ffa74d3.png"
+        "https://images.unsplash.com/photo-1527576539890-dfa815648363",
+        "https://images.unsplash.com/photo-1487958449943-2429e8be8625"
       ],
       button1Text: "כל המתקנים",
       button2Text: "סיור במועדון"
@@ -1097,27 +953,26 @@ export const templates: TemplateData[] = [
       textColor: "#a16207",
       primaryColor: "#d97706",
       secondaryColor: "#f59e0b",
-      heroBackground: "bg-gradient-to-br from-yellow-100 to-orange-200",
-      emotionalBackground: "bg-white",
-      testimonialsBackground: "bg-yellow-50",
-      aboutBackground: "bg-white",
+      heroBackground: "bg-gradient-to-br from-yellow-50 via-orange-50 to-yellow-100",
+      emotionalBackground: "bg-gradient-to-r from-yellow-100 to-orange-50",
+      testimonialsBackground: "bg-white",
+      aboutBackground: "bg-gradient-to-l from-yellow-50 to-white",
       galleryBackground: "bg-yellow-50",
       processBackground: "bg-white",
-      whyUsBackground: "bg-yellow-50",
-      contactBackground: "bg-white"
+      whyUsBackground: "bg-gradient-to-r from-white to-yellow-50",
+      contactBackground: "bg-yellow-100"
     }
   },
   {
     id: 13,
-    name: "נדל\"ן יוקרתי",
+    name: "נדלן יוקרתי",
     category: 'basic',
     hero: {
       title: "הבית של החלומות שלכם",
-      subtitle: "נדל\"ן יוקרתי ברמה הגבוהה ביותר",
+      subtitle: "נדלן יוקרתי ברמה הגבוהה ביותר",
       description: "אנחנו מוצאים לכם את הנכס המושלם - בין אם זה בית חלומות או השקעה חכמה",
       button1Text: "מצא נכס",
-      button2Text: "יעוץ נדל\"ן",
-      image: "/lovable-uploads/01342860-952c-4dea-9951-95169ffa74d3.png"
+      button2Text: "יעוץ נדלן"
     },
     emotional: {
       title: "בית זה לא רק מקום, זה הרגש",
@@ -1128,34 +983,23 @@ export const templates: TemplateData[] = [
     testimonials: {
       title: "לקוחות מרוצים",
       testimonials: [
-        {
-          name: "משפחת לוי",
-          role: "קונים",
-          content: "מצאו לנו את הבית המושלם בדיוק לפי הבקשה שלנו.",
-          rating: 5
-        },
-        {
-          name: "יורם כהן",
-          role: "משקיע",
-          content: "עזרו לי לעשות השקעה מצוינת.",
-          rating: 5
-        }
+        { name: "משפחת לוי", role: "קונים", content: "מצאו לנו את הבית המושלם בדיוק לפי הבקשה שלנו.", rating: 5 },
+        { name: "יורם כהן", role: "משקיע", content: "עזרו לי לעשות השקעה מצוינת.", rating: 5 }
       ],
       button1Text: "עוד המלצות",
       button2Text: "הצטרף ללקוחות"
     },
     about: {
       title: "המומחים שלכם",
-      description: "צוות מומחי נדל\"ן עם ניסיון עמוק בשוק הישראלי",
+      description: "צוות מומחי נדלן עם ניסיון עמוק בשוק הישראלי",
       button1Text: "הכר את הצוות",
       button2Text: "ייעוץ מקצועי"
     },
     gallery: {
       title: "נכסים מובחרים",
       images: [
-        "/lovable-uploads/01342860-952c-4dea-9951-95169ffa74d3.png",
-        "/lovable-uploads/c593ddc8-57d2-4134-9169-3c4bd34946c1.png",
-        "/lovable-uploads/be5c31f2-ee31-49ec-a0bc-1182066b9cca.png"
+        "https://images.unsplash.com/photo-1493397212122-2b85dda8106b",
+        "https://images.unsplash.com/photo-1500673922987-e212871fec22"
       ],
       button1Text: "כל הנכסים",
       button2Text: "בקר בנכס"
@@ -1173,7 +1017,7 @@ export const templates: TemplateData[] = [
     whyUs: {
       title: "למה לבחור בנו",
       items: [
-        { title: "ניסיון", description: "מעל 20 שנות ניסיון בשוק הנדל\"ן", icon: "award" },
+        { title: "ניסיון", description: "מעל 20 שנות ניסיון בשוק הנדלן", icon: "award" },
         { title: "קשרים", description: "רשת קשרים נרחבת בתחום", icon: "star" },
         { title: "שירות אישי", description: "ליווי אישי לאורך כל התהליך", icon: "heart" }
       ],
@@ -1185,18 +1029,101 @@ export const templates: TemplateData[] = [
       subtitle: "הבית של החלומות מתחיל כאן"
     },
     styles: {
-      backgroundColor: "bg-indigo-50",
-      textColor: "#3730a3",
-      primaryColor: "#4f46e5",
-      secondaryColor: "#6366f1",
-      heroBackground: "bg-gradient-to-br from-indigo-100 to-purple-200",
-      emotionalBackground: "bg-white",
-      testimonialsBackground: "bg-indigo-50",
-      aboutBackground: "bg-white",
-      galleryBackground: "bg-indigo-50",
+      backgroundColor: "bg-pink-50",
+      textColor: "#be185d",
+      primaryColor: "#e11d48",
+      secondaryColor: "#f43f5e",
+      heroBackground: "bg-gradient-to-br from-pink-50 via-rose-50 to-pink-100",
+      emotionalBackground: "bg-gradient-to-r from-pink-100 to-rose-50",
+      testimonialsBackground: "bg-white",
+      aboutBackground: "bg-gradient-to-l from-pink-50 to-white",
+      galleryBackground: "bg-pink-50",
       processBackground: "bg-white",
-      whyUsBackground: "bg-indigo-50",
-      contactBackground: "bg-white"
+      whyUsBackground: "bg-gradient-to-r from-white to-pink-50",
+      contactBackground: "bg-pink-100"
+    }
+  },
+  {
+    id: 14,
+    name: "יוקרה פרמיום",
+    category: 'basic',
+    hero: {
+      title: "יוקרה ללא גבולות",
+      subtitle: "חוויה פרמיום ברמה שלא הכרתם",
+      description: "אנחנו מגדירים מחדש את המושג יוקרה עם שירות מותאם אישית ותשומת לב לכל פרט קטן",
+      button1Text: "חוויה יוקרתית",
+      button2Text: "עולם הפרמיום"
+    },
+    emotional: {
+      title: "כי מגיע לכם הטוב ביותר",
+      description: "אנחנו מאמינים שכל לקוח ראוי לחוויה מושלמת שתישאר איתו לנצח",
+      button1Text: "הזמן חוויה",
+      button2Text: "התחל את המסע"
+    },
+    testimonials: {
+      title: "חוויות יוקרתיות",
+      testimonials: [
+        { name: "אליעזר גולד", role: "לקוח VIP", content: "השירות הכי יוקרתי והמקצועי שקיבלתי אי פעם.", rating: 5 },
+        { name: "רבקה דיימונד", role: "לקוחה פרמיום", content: "כל פרט מושלם, חוויה שלא תשכח.", rating: 5 }
+      ],
+      button1Text: "חוויות נוספות",
+      button2Text: "הזמן עכשיו"
+    },
+    about: {
+      title: "מותג היוקרה שלנו",
+      description: "מותג יוקרה שמתמחה בשירות פרמיום ללקוחות הבורחים מהרגיל",
+      button1Text: "המותג שלנו",
+      button2Text: "עולם היוקרה"
+    },
+    gallery: {
+      title: "יוקרה בכל פרט",
+      images: [
+        "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+        "https://images.unsplash.com/photo-1501854140801-50d01698950b"
+      ],
+      button1Text: "גלריה מלאה",
+      button2Text: "תאם פגישה"
+    },
+    process: {
+      title: "תהליך פרמיום",
+      steps: [
+        { title: "ייעוץ יוקרתי", description: "פגישה אישית בסביבה יוקרתית" },
+        { title: "תכנון מותאם", description: "יצירת חוויה ייחודית לכל לקוח" },
+        { title: "ביצוע מושלם", description: "השקעה בכל פרט עד לשלמות" }
+      ],
+      button1Text: "התחל מסע",
+      button2Text: "הזמן ייעוץ"
+    },
+    whyUs: {
+      title: "המעלות היוקרתיות שלנו",
+      items: [
+        { title: "בלעדיות", description: "שירותים בלעדיים שלא תמצאו בשום מקום", icon: "star" },
+        { title: "איכות פרמיום", description: "רק החומרים והשירותים הטובים ביותר", icon: "award" },
+        { title: "יחס אישי", description: "כל לקוח הוא עולם שלם עבורנו", icon: "heart" }
+      ],
+      button1Text: "בחר יוקרה",
+      button2Text: "חוויה מלאה"
+    },
+    contact: {
+      title: "יוקרה מתחילה כאן",
+      subtitle: "הצוות הפרמיום שלנו מחכה לכם"
+    },
+    styles: {
+      backgroundColor: "bg-gradient-to-br from-purple-50 to-pink-50",
+      textColor: "#6b21a8",
+      primaryColor: "#9333ea",
+      secondaryColor: "#c084fc",
+      heroBackground: "bg-gradient-to-br from-purple-100 via-pink-100 to-purple-200",
+      emotionalBackground: "bg-gradient-to-r from-purple-200 to-pink-100",
+      testimonialsBackground: "bg-white",
+      aboutBackground: "bg-gradient-to-l from-purple-100 to-white",
+      galleryBackground: "bg-purple-50",
+      processBackground: "bg-white",
+      whyUsBackground: "bg-gradient-to-r from-white to-purple-100",
+      contactBackground: "bg-gradient-to-br from-purple-200 to-pink-200"
     }
   }
+
+  // Continue with 3D, Glass, Cosmic, and Creative categories...
+  // Each category will have 14 templates with unique designs and effects
 ];
