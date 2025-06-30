@@ -47,7 +47,7 @@ const TemplateEditor = ({ template, onTemplateChange, onClose }: TemplateEditorP
   const updateSection = (section: keyof TemplateData, updates: any) => {
     setEditedTemplate(prev => {
       const currentSection = prev[section];
-      if (typeof currentSection === 'object' && currentSection !== null) {
+      if (typeof currentSection === 'object' && currentSection !== null && !Array.isArray(currentSection)) {
         return {
           ...prev,
           [section]: {
