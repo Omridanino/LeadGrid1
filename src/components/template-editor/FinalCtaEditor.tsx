@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { TemplateData } from '@/types/template';
+import { BackgroundSelector } from './BackgroundSelector';
 import { ColorPicker } from './ColorPicker';
 import IconSelector from '../IconSelector';
 
@@ -88,19 +89,21 @@ export const FinalCtaEditor = ({ template, onUpdate, onStyleUpdate }: FinalCtaEd
         </div>
       </div>
 
-      {/* Colors Section */}
+      {/* Colors and Background Section */}
       <div className="space-y-4">
-        <h3 className="text-white text-lg font-semibold border-b border-gray-700 pb-2">צבעים</h3>
+        <h3 className="text-white text-lg font-semibold border-b border-gray-700 pb-2">עיצוב רקע</h3>
         
-        <ColorPicker
+        <BackgroundSelector
           label="רקע הסקשן"
-          value={template.styles.finalCtaBackground}
-          onChange={(value) => onStyleUpdate({ finalCtaBackground: value })}
+          colorValue={template.styles.finalCtaBackground}
+          imageValue={template.styles.finalCtaBackgroundImage}
+          onColorChange={(value) => onStyleUpdate({ finalCtaBackground: value })}
+          onImageChange={(value) => onStyleUpdate({ finalCtaBackgroundImage: value })}
         />
         
         <ColorPicker
           label="צבע טקסט"
-          value="#ffffff"
+          value={template.styles.textColor}
           onChange={(value) => onStyleUpdate({ textColor: value })}
         />
         
