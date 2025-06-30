@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/types/colors";
@@ -195,1028 +196,56 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     return { backgroundColor: backgroundColor };
   };
 
-  // Helper function to render integrated emotional section content
-  const renderEmotionalSectionContent = () => {
+  // Helper function to get inline style for text colors with gradient support for emotional section
+  const getEmotionalTextStyle = (colorKey: string) => {
     const emotionalContent = content?.emotionalSection || {};
-    const title = emotionalContent.title || 'הגיע הזמן לפעול';
-    const subtitle = emotionalContent.subtitle || 'אל תחמיץ את ההזדמנות הזו';
-    const text = emotionalContent.text || 'הצטרף אלינו עוד היום והתחל את המסע שלך להצלחה';
-    const badge = emotionalContent.badge || 'מוגבל בזמן';
-    const buttons = emotionalContent.buttons || [{ id: '1', text: 'התחל עכשיו', style: 'primary', visible: true }];
-
-    // Helper function to get inline style for text colors with gradient support for emotional section
-    const getEmotionalTextStyle = (colorKey: string) => {
-      const colorValue = emotionalContent?.colors?.[colorKey];
-      if (colorValue) {
-        // Check if it's a gradient
-        if (colorValue.includes('gradient')) {
-          return { 
-            background: colorValue,
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text'
-          };
-        }
-        return { color: colorValue };
-      }
-      return {};
-    };
-
-    // Helper function to get inline style for badge colors with gradient support for emotional section
-    const getEmotionalBadgeStyle = () => {
-      const badgeColor = emotionalContent?.colors?.badge;
-      if (badgeColor) {
-        if (badgeColor.includes('gradient')) {
-          return { 
-            background: badgeColor,
-            color: '#ffffff',
-            border: 'none'
-          };
-        }
+    const colorValue = emotionalContent?.colors?.[colorKey];
+    if (colorValue) {
+      // Check if it's a gradient
+      if (colorValue.includes('gradient')) {
         return { 
-          backgroundColor: badgeColor,
+          background: colorValue,
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text'
+        };
+      }
+      return { color: colorValue };
+    }
+    return {};
+  };
+
+  // Helper function to get inline style for badge colors with gradient support for emotional section
+  const getEmotionalBadgeStyle = () => {
+    const emotionalContent = content?.emotionalSection || {};
+    const badgeColor = emotionalContent?.colors?.badge;
+    if (badgeColor) {
+      if (badgeColor.includes('gradient')) {
+        return { 
+          background: badgeColor,
           color: '#ffffff',
           border: 'none'
         };
       }
-      return {};
-    };
-
-    return (
-      <div className="py-20 px-8">
-        <div className="container mx-auto max-w-4xl text-center">
-          {badge && (
-            <div 
-              className="inline-block mb-6 px-4 py-2 rounded-full text-sm font-semibold"
-              style={getEmotionalBadgeStyle() || { background: 'linear-gradient(45deg, #8b5cf6, #ec4899)', color: '#ffffff' }}
-            >
-              {badge}
-            </div>
-          )}
-          
-          <h2 
-            className="text-4xl md:text-6xl font-bold mb-6"
-            style={getEmotionalTextStyle('title') || { color: '#ffffff' }}
-          >
-            {title}
-          </h2>
-          
-          {subtitle && (
-            <h3 
-              className="text-2xl md:text-3xl mb-8"
-              style={getEmotionalTextStyle('subtitle') || { color: '#d1d5db' }}
-            >
-              {subtitle}
-            </h3>
-          )}
-          
-          <p 
-            className="text-xl md:text-2xl leading-relaxed mb-12"
-            style={getEmotionalTextStyle('text') || { color: '#d1d5db' }}
-          >
-            {text}
-          </p>
-          
-          <div className="flex gap-4 justify-center flex-wrap">
-            {buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-              renderAdvancedButton(button, index)
-            )}
-          </div>
-        </div>
-      </div>
-    );
+      return { 
+        backgroundColor: badgeColor,
+        color: '#ffffff',
+        border: 'none'
+      };
+    }
+    return {};
   };
 
-  // Handle Basic Design Style variations
-  if (designStyle === 'basic' || designStyle.startsWith('hero-section-')) {
-    const [selectedBasicDesign, setSelectedBasicDesign] = useState<string>('');
-
-    useEffect(() => {
-      // Generate a truly random selection based on timestamp and random
-      const randomSeed = Date.now() + Math.random() * 1000;
-      const availableDesigns = [
-        'hero-section-clean',
-        'hero-section-minimal', 
-        'hero-section-classic',
-        'hero-section-elegant',
-        'hero-section-modern',
-        'hero-section-lamp',
-        'hero-section-retro'
-      ];
-      
-      const randomIndex = Math.floor(randomSeed % availableDesigns.length);
-      const selectedDesign = availableDesigns[randomIndex];
-      
-      console.log('Selected random design:', selectedDesign, 'from index:', randomIndex);
-      setSelectedBasicDesign(selectedDesign);
-    }, [formData?.businessName, formData?.businessType]);
-
-    // Enhanced Mockup Hero (minimal) with custom content and integrated emotional section
-    if (selectedBasicDesign === 'hero-section-minimal') {
-      return (
-        <section className="relative overflow-hidden min-h-screen bg-black/[0.96]" style={getBackgroundStyle()}>
-          <div className="container mx-auto px-4 relative z-10 min-h-screen flex flex-col">
-            {/* Hero Content */}
-            <div className="flex items-center justify-center flex-1">
-              <div className="text-center max-w-4xl mx-auto">
-                {content?.badge && (
-                  <div 
-                    className="inline-block mb-6 px-4 py-2 rounded-full text-sm"
-                    style={getBadgeStyle()}
-                  >
-                    {content.badge}
-                  </div>
-                )}
-                
-                <h1 
-                  className="text-5xl md:text-7xl font-bold mb-8"
-                  style={getTextStyle('headline')}
-                >
-                  {content?.headline || formData?.businessName || 'העסק שלכם'}
-                </h1>
-                
-                <p 
-                  className="text-xl md:text-2xl mb-12"
-                  style={getTextStyle('subheadline')}
-                >
-                  {content?.subheadline || content?.description || `פתרונות מקצועיים ל${formData?.targetAudience || 'הלקוחות שלכם'}`}
-                </p>
-                
-                <div className="flex gap-4 justify-center flex-wrap">
-                  {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                    renderAdvancedButton(button, index)
-                  ) || (
-                    <button 
-                      className="px-8 py-4 rounded-xl font-semibold text-lg"
-                      style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                    >
-                      {content?.cta || 'בואו נתחיל'}
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-            
-            {/* Integrated Emotional Section */}
-            {renderEmotionalSectionContent()}
-          </div>
-        </section>
-      );
-    }
-
-    // All other basic designs - with integrated emotional section
-    const customContentProps = {
-      badge: content?.badge,
-      headline: content?.headline || formData?.businessName,
-      subheadline: content?.subheadline || content?.description,
-      description: content?.description,
-      buttons: content?.buttons,
-      colors: content?.colors,
-      cta: content?.cta
-    };
-
-    if (selectedBasicDesign === 'hero-section-clean') {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroSectionClean
-            formData={formData}
-            currentColors={currentColors}
-            content={customContentProps}
-          />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-
-    if (selectedBasicDesign === 'hero-section-modern') {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroSectionModern
-            formData={formData}
-            currentColors={currentColors}
-            content={customContentProps}
-          />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-
-    if (selectedBasicDesign === 'hero-section-lamp') {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroSectionLamp
-            formData={formData}
-            currentColors={currentColors}
-            content={customContentProps}
-          />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-
-    if (selectedBasicDesign === 'hero-section-retro') {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroSectionRetro
-            formData={formData}
-            currentColors={currentColors}
-            content={customContentProps}
-          />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-
-    // Beams Background (classic) with custom content and integrated emotional section
-    if (selectedBasicDesign === 'hero-section-classic') {
-      return (
-        <section className="relative overflow-hidden min-h-screen bg-black" style={getBackgroundStyle()}>
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
-          
-          <div className="container mx-auto px-4 relative z-10 min-h-screen flex flex-col">
-            {/* Hero Content */}
-            <div className="flex items-center justify-center flex-1">
-              <div className="text-center max-w-4xl mx-auto">
-                {content?.badge && (
-                  <div 
-                    className="inline-block mb-6 px-4 py-2 rounded-full text-sm"
-                    style={getBadgeStyle()}
-                  >
-                    {content.badge}
-                  </div>
-                )}
-                
-                <h1 
-                  className="text-5xl md:text-7xl font-bold mb-8"
-                  style={getTextStyle('headline')}
-                >
-                  {content?.headline || formData?.businessName || 'חלומות דיגיטליים'}
-                </h1>
-                
-                <p 
-                  className="text-xl md:text-2xl mb-12"
-                  style={getTextStyle('subheadline')}
-                >
-                  {content?.subheadline || content?.description || 'שם המחשבות מקבלות צורה והתודעה זורמת כמו כספית נוזלית'}
-                </p>
-                
-                <div className="flex gap-4 justify-center flex-wrap">
-                  {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                    renderAdvancedButton(button, index)
-                  ) || (
-                    <button 
-                      className="px-8 py-4 rounded-xl font-semibold text-lg"
-                      style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                    >
-                      {content?.cta || 'היכנסו לזרימה'}
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-            
-            {/* Integrated Emotional Section */}
-            {renderEmotionalSectionContent()}
-          </div>
-        </section>
-      );
-    }
-
-    // Gradient Hero (elegant) with custom content and integrated emotional section
-    if (selectedBasicDesign === 'hero-section-elegant') {
-      return (
-        <section className="relative overflow-hidden min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900" style={getBackgroundStyle()}>
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=%229C92AC&quot; fill-opacity=&quot;0.1&quot;%3E%3Ccircle cx=&quot;30&quot; cy=&quot;30&quot; r=&quot;1&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20" />
-          
-          <div className="container mx-auto px-4 relative z-10 min-h-screen flex flex-col">
-            {/* Hero Content */}
-            <div className="flex items-center justify-center flex-1">
-              <div className="text-center max-w-4xl mx-auto">
-                {content?.badge && (
-                  <div 
-                    className="inline-block mb-6 px-4 py-2 rounded-full text-sm"
-                    style={getBadgeStyle()}
-                  >
-                    {content.badge}
-                  </div>
-                )}
-                
-                <h1 
-                  className="text-5xl md:text-7xl font-bold mb-8"
-                  style={getTextStyle('headline')}
-                >
-                  {content?.headline || formData?.businessName || 'העתיד כאן עכשיו'}
-                </h1>
-                
-                <p 
-                  className="text-xl md:text-2xl mb-12"
-                  style={getTextStyle('subheadline')}
-                >
-                  {content?.subheadline || content?.description || 'expérience דיגיטלית מתקדמת שמביאה את העסק שלכם לעידן החדש'}
-                </p>
-                
-                <div className="flex gap-4 justify-center flex-wrap">
-                  {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                    renderAdvancedButton(button, index)
-                  ) || (
-                    <button 
-                      className="px-8 py-4 rounded-xl font-semibold text-lg"
-                      style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                    >
-                      {content?.cta || 'נתחיל היום'}
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-            
-            {/* Integrated Emotional Section */}
-            {renderEmotionalSectionContent()}
-          </div>
-        </section>
-      );
-    }
-
-    // Default fallback with integrated emotional section
-    return (
-      <section className="relative overflow-hidden min-h-screen bg-black" style={getBackgroundStyle()}>
-        <div className="container mx-auto px-4 relative z-10 min-h-screen flex flex-col">
-          {/* Hero Content */}
-          <div className="flex items-center justify-center flex-1">
-            <div className="text-center max-w-4xl mx-auto">
-              {content?.badge && (
-                <div 
-                  className="inline-block mb-6 px-4 py-2 rounded-full text-sm"
-                  style={getBadgeStyle()}
-                >
-                  {content.badge}
-                </div>
-              )}
-              
-              <h1 
-                className="text-5xl md:text-7xl font-bold mb-8"
-                style={getTextStyle('headline')}
-              >
-                {content?.headline || formData?.businessName || 'העסק'}
-              </h1>
-              
-              <p 
-                className="text-xl md:text-2xl mb-12"
-                style={getTextStyle('subheadline')}
-              >
-                {content?.subheadline || content?.description || 'פתרונות מקצועיים'}
-              </p>
-              
-              <div className="flex gap-4 justify-center flex-wrap">
-                {content?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
-                  renderAdvancedButton(button, index)
-                ) || (
-                  <button 
-                    className="px-8 py-4 rounded-xl font-semibold text-lg"
-                    style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
-                  >
-                    {content?.cta || 'בואו נתחיל'}
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-          
-          {/* Integrated Emotional Section */}
-          {renderEmotionalSectionContent()}
-        </div>
-      </section>
-    );
-  }
-
-  // GRADIENT Design Style - 15 different designs with integrated emotional section
-  if (designStyle === 'gradient') {
-    const [selectedGradientDesign, setSelectedGradientDesign] = useState(0);
-
-    useEffect(() => {
-      setSelectedGradientDesign(Math.floor(Math.random() * 15));
-    }, [formData?.businessName]);
-
-    // All gradient designs will embed the emotional section within the same background
-    const wrapWithEmotionalSection = (heroComponent: JSX.Element) => (
-      <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-        {heroComponent}
-        {renderEmotionalSectionContent()}
-      </section>
-    );
-
-    // Fix the props for GradientHero and AnimatedHero components
-    if (selectedGradientDesign === 0) {
-      return wrapWithEmotionalSection(
-        <GradientHero 
-          title={content?.headline || formData?.businessName || 'העתיד כאן'}
-          subtitle={content?.subheadline || content?.description || 'פתרונות מתקדמים'}
-          primaryCta={{
-            text: content?.cta || 'התחילו היום',
-            onClick: () => {}
-          }}
-        />
-      );
-    }
-    if (selectedGradientDesign === 1) {
-      return wrapWithEmotionalSection(
-        <AnimatedHero 
-          title={content?.headline || formData?.businessName || 'העתיד'}
-          subtitle={content?.subheadline || content?.description || 'כאן עכשיו'}
-          primaryCta={{
-            text: content?.cta || 'התחילו היום',
-            onClick: () => {}
-          }}
-          secondaryCta={{
-            text: 'קפיצה לשיחה',
-            onClick: () => {}
-          }}
-        />
-      );
-    }
-
-    // Fix component props for HeroGeometric - it expects badge, title1, title2
-    if (selectedGradientDesign === 2) {
-      return wrapWithEmotionalSection(
-        <HeroGeometric 
-          badge={content?.badge}
-          title1={content?.headline || formData?.businessName || 'העתיד'}
-          title2={content?.subheadline || 'דיגיטלי'}
-        />
-      );
-    }
-
-    const customContentProps = {
-      badge: content?.badge,
-      headline: content?.headline || formData?.businessName,
-      subheadline: content?.subheadline || content?.description,
-      description: content?.description,
-      buttons: content?.buttons,
-      colors: content?.colors,
-      cta: content?.cta
-    };
-
-    if (selectedGradientDesign === 3) {
-      return wrapWithEmotionalSection(
-        <HeroNeonCyber formData={formData} currentColors={currentColors} content={customContentProps} />
-      );
-    }
-    if (selectedGradientDesign === 4) {
-      return wrapWithEmotionalSection(
-        <HeroFloatingCubes formData={formData} currentColors={currentColors} content={customContentProps} />
-      );
-    }
-    if (selectedGradientDesign === 5) {
-      return wrapWithEmotionalSection(
-        <HeroHolographic formData={formData} currentColors={currentColors} content={customContentProps} />
-      );
-    }
-    if (selectedGradientDesign === 6) {
-      return wrapWithEmotionalSection(
-        <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-      );
-    }
-    if (selectedGradientDesign === 7) {
-      return wrapWithEmotionalSection(
-        <HeroLiquidMetal formData={formData} currentColors={currentColors} content={customContentProps} />
-      );
-    }
-    if (selectedGradientDesign === 8) {
-      return wrapWithEmotionalSection(
-        <HeroGlassRefraction formData={formData} currentColors={currentColors} content={customContentProps} />
-      );
-    }
-    if (selectedGradientDesign === 9) {
-      return wrapWithEmotionalSection(
-        <HeroParticleStorm formData={formData} currentColors={currentColors} content={customContentProps} />
-      );
-    }
-    if (selectedGradientDesign === 10) {
-      return wrapWithEmotionalSection(
-        <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />
-      );
-    }
-    if (selectedGradientDesign === 11) {
-      return wrapWithEmotionalSection(
-        <HeroDigitalWaves formData={formData} currentColors={currentColors} content={customContentProps} />
-      );
-    }
-    if (selectedGradientDesign === 12) {
-      return wrapWithEmotionalSection(
-        <HeroNeonGridPortal formData={formData} currentColors={currentColors} content={customContentProps} />
-      );
-    }
-    if (selectedGradientDesign === 13) {
-      return wrapWithEmotionalSection(
-        <HeroQuantumBubbles formData={formData} currentColors={currentColors} content={customContentProps} />
-      );
-    }
-    if (selectedGradientDesign === 14) {
-      return wrapWithEmotionalSection(
-        <HeroCosmicGeometry formData={formData} currentColors={currentColors} content={customContentProps} />
-      );
-    }
-  }
-
-  // GLASS Design Style - 12 different designs
-  if (designStyle === 'glass') {
-    const [selectedGlassDesign, setSelectedGlassDesign] = useState(0);
-
-    useEffect(() => {
-      setSelectedGlassDesign(Math.floor(Math.random() * 12));
-    }, [formData?.businessName]);
-
-    const customContentProps = {
-      badge: content?.badge,
-      headline: content?.headline || formData?.businessName,
-      subheadline: content?.subheadline || content?.description,
-      description: content?.description,
-      buttons: content?.buttons,
-      colors: content?.colors,
-      cta: content?.cta
-    };
-
-    if (selectedGlassDesign === 0) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroGlassRefraction formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGlassDesign === 1) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroLiquidMetal formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGlassDesign === 2) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroFluidBlobs formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGlassDesign === 3) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroQuantumBubbles formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGlassDesign === 4) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroHolographic formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGlassDesign === 5) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroNeumorphism formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGlassDesign === 6) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroMinimalTech formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGlassDesign === 7) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGlassDesign === 8) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGlassDesign === 9) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <GradientHero 
-            title={content?.headline || formData?.businessName || 'עולם זכוכית'}
-            subtitle={content?.subheadline || content?.description || 'שקיפות וצלילות'}
-            primaryCta={{
-              text: content?.cta || 'התחילו היום',
-              onClick: () => {}
-            }}
-          />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGlassDesign === 10) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <AnimatedHero 
-            title={content?.headline || formData?.businessName || 'זכוכית'}
-            subtitle="נוזלית"
-            primaryCta={{
-              text: content?.cta || 'התחילו היום',
-              onClick: () => {}
-            }}
-            secondaryCta={{
-              text: 'קפיצה לשיחה',
-              onClick: () => {}
-            }}
-          />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGlassDesign === 11) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroWithMockup 
-            title={content?.headline || formData?.businessName || 'זכוכית נוזלית'}
-            description={content?.subheadline || content?.description || 'עיצוב מתקדם וחדשני'}
-          />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-  }
-
-  // GEOMETRIC Design Style - 12 different designs
-  if (designStyle === 'geometric') {
-    const [selectedGeometricDesign, setSelectedGeometricDesign] = useState(0);
-
-    useEffect(() => {
-      setSelectedGeometricDesign(Math.floor(Math.random() * 12));
-    }, [formData?.businessName]);
-
-    const customContentProps = {
-      badge: content?.badge,
-      headline: content?.headline || formData?.businessName,
-      subheadline: content?.subheadline || content?.description,
-      description: content?.description,
-      buttons: content?.buttons,
-      colors: content?.colors,
-      cta: content?.cta
-    };
-
-    if (selectedGeometricDesign === 0) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroGeometricShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGeometricDesign === 1) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroCosmicGeometry formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGeometricDesign === 2) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroGeometric 
-            badge={content?.badge}
-            title1={content?.headline || formData?.businessName || 'העתיד'}
-            title2={content?.subheadline || 'דיגיטלי'}
-          />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGeometricDesign === 3) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroFloatingCubes formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGeometricDesign === 4) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroIsometricIllustration formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGeometricDesign === 5) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGeometricDesign === 6) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroNeonGridPortal formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGeometricDesign === 7) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGeometricDesign === 8) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroParticleStorm formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGeometricDesign === 9) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroNeonCyber formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGeometricDesign === 10) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroMinimalTech formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedGeometricDesign === 11) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroDigitalWaves formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-  }
-
-  // METAL Design Style - 12 different designs
-  if (designStyle === 'metal') {
-    const [selectedMetalDesign, setSelectedMetalDesign] = useState(0);
-
-    useEffect(() => {
-      setSelectedMetalDesign(Math.floor(Math.random() * 12));
-    }, [formData?.businessName]);
-
-    const customContentProps = {
-      badge: content?.badge,
-      headline: content?.headline || formData?.businessName,
-      subheadline: content?.subheadline || content?.description,
-      description: content?.description,
-      buttons: content?.buttons,
-      colors: content?.colors,
-      cta: content?.cta
-    };
-
-    if (selectedMetalDesign === 0) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroLiquidMetal formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedMetalDesign === 1) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroMinimalTech formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedMetalDesign === 2) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroNeumorphism formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedMetalDesign === 3) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedMetalDesign === 4) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroNeonCyber formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedMetalDesign === 5) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroFloatingCubes formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedMetalDesign === 6) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroGeometricShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedMetalDesign === 7) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroCosmicGeometry formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedMetalDesign === 8) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroParticleStorm formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedMetalDesign === 9) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroDigitalWaves formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedMetalDesign === 10) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroHolographic formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedMetalDesign === 11) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-  }
-
-  // IMAGE Design Style - 12 different designs
-  if (designStyle === 'image') {
-    const [selectedImageDesign, setSelectedImageDesign] = useState(0);
-
-    useEffect(() => {
-      setSelectedImageDesign(Math.floor(Math.random() * 12));
-    }, [formData?.businessName]);
-
-    const customContentProps = {
-      badge: content?.badge,
-      headline: content?.headline || formData?.businessName,
-      subheadline: content?.subheadline || content?.description,
-      description: content?.description,
-      buttons: content?.buttons,
-      colors: content?.colors,
-      cta: content?.cta
-    };
-
-    if (selectedImageDesign === 0) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroIsometricIllustration formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedImageDesign === 1) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroHolographic formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedImageDesign === 2) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroFluidBlobs formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedImageDesign === 3) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroFloatingCubes formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedImageDesign === 4) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedImageDesign === 5) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroQuantumBubbles formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedImageDesign === 6) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroParticleStorm formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedImageDesign === 7) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedImageDesign === 8) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroDigitalWaves formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedImageDesign === 9) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroNeonGridPortal formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedImageDesign === 10) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroGlassRefraction formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-    if (selectedImageDesign === 11) {
-      return (
-        <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
-          <HeroFluidBlobs formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSectionContent()}
-        </section>
-      );
-    }
-  }
-
-  // Fallback to basic design with custom styles and integrated emotional section
+  // Return ONE unified section with all content
   return (
     <section 
-      className="relative overflow-hidden min-h-screen flex flex-col"
+      className="relative overflow-hidden min-h-screen"
       style={getBackgroundStyle()}
     >
-      <div className="container mx-auto px-4 relative z-10 flex-1 flex flex-col">
+      <div className="container mx-auto px-4 relative z-10">
         {/* Hero Content */}
-        <div className="flex items-center justify-center flex-1">
-          <div className="text-center max-w-4xl mx-auto">
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center max-w-4xl mx-auto py-20">
             {content?.badge && (
               <div 
                 className="inline-block mb-6 px-4 py-2 rounded-full text-sm"
@@ -1230,14 +259,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               className="text-5xl md:text-7xl font-bold mb-8"
               style={getTextStyle('headline')}
             >
-              {content?.headline || formData?.businessName || 'העסק'}
+              {content?.headline || formData?.businessName || 'העסק שלכם'}
             </h1>
             
             <p 
               className="text-xl md:text-2xl mb-12"
               style={getTextStyle('subheadline')}
             >
-              {content?.subheadline || content?.description || 'פתרונות מקצועיים'}
+              {content?.subheadline || content?.description || `פתרונות מקצועיים ל${formData?.targetAudience || 'הלקוחות שלכם'}`}
             </p>
             
             <div className="flex gap-4 justify-center flex-wrap">
@@ -1255,8 +284,55 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           </div>
         </div>
         
-        {/* Integrated Emotional Section */}
-        {renderEmotionalSectionContent()}
+        {/* Emotional Section Content - Same background, continuous flow */}
+        <div className="py-20 px-8">
+          <div className="container mx-auto max-w-4xl text-center">
+            {content?.emotionalSection?.badge && (
+              <div 
+                className="inline-block mb-6 px-4 py-2 rounded-full text-sm font-semibold"
+                style={getEmotionalBadgeStyle() || { background: 'linear-gradient(45deg, #8b5cf6, #ec4899)', color: '#ffffff' }}
+              >
+                {content.emotionalSection.badge}
+              </div>
+            )}
+            
+            <h2 
+              className="text-4xl md:text-6xl font-bold mb-6"
+              style={getEmotionalTextStyle('title') || { color: '#ffffff' }}
+            >
+              {content?.emotionalSection?.title || 'הגיע הזמן לפעול'}
+            </h2>
+            
+            {content?.emotionalSection?.subtitle && (
+              <h3 
+                className="text-2xl md:text-3xl mb-8"
+                style={getEmotionalTextStyle('subtitle') || { color: '#d1d5db' }}
+              >
+                {content.emotionalSection.subtitle}
+              </h3>
+            )}
+            
+            <p 
+              className="text-xl md:text-2xl leading-relaxed mb-12"
+              style={getEmotionalTextStyle('text') || { color: '#d1d5db' }}
+            >
+              {content?.emotionalSection?.text || 'הצטרף אלינו עוד היום והתחל את המסע שלך להצלחה'}
+            </p>
+            
+            <div className="flex gap-4 justify-center flex-wrap">
+              {content?.emotionalSection?.buttons?.filter((btn: any) => btn.visible !== false).map((button: any, index: number) => 
+                renderAdvancedButton(button, index)
+              ) || (
+                <button 
+                  className="px-8 py-4 rounded-xl font-semibold text-lg"
+                  style={{ backgroundColor: currentColors.primary, color: '#ffffff' }}
+                >
+                  התחל עכשיו
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
