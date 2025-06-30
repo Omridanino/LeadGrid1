@@ -28,11 +28,11 @@ export const HeroTemplateSection = ({
       case '3d':
         return 'effect-3d-float';
       case 'glass':
-        return 'glass-morphism';
+        return 'spectacular-glass';
       case 'geometric':
-        return 'geometric-pattern-1';
+        return 'cosmic-space';
       case 'creative':
-        return 'brush-stroke paint-splash';
+        return 'artistic-paint';
       default:
         return 'fade-in-up';
     }
@@ -45,36 +45,79 @@ export const HeroTemplateSection = ({
       case 'glass':
         return 'btn-glass';
       case 'geometric':
-        return 'btn-geometric';
+        return 'btn-cosmic';
       case 'creative':
-        return 'brush-stroke';
+        return 'btn-artistic';
       default:
         return 'hover:scale-105 transition-transform duration-300';
     }
   };
 
+  const renderDesignElements = () => {
+    switch (designStyle) {
+      case '3d':
+        return (
+          <>
+            <div className="floating-cubes"></div>
+          </>
+        );
+      case 'glass':
+        return (
+          <div className="glass-bubbles">
+            <div className="glass-bubble"></div>
+            <div className="glass-bubble"></div>
+            <div className="glass-bubble"></div>
+          </div>
+        );
+      case 'geometric':
+        return (
+          <>
+            <div className="cosmic-planet"></div>
+            <div className="cosmic-rings"></div>
+          </>
+        );
+      case 'creative':
+        return (
+          <>
+            <div className="paint-splash"></div>
+            <div className="paint-splash"></div>
+            <div className="paint-splash"></div>
+            <div className="brush-stroke"></div>
+            <div className="creative-particles">
+              <div className="particle"></div>
+              <div className="particle"></div>
+              <div className="particle"></div>
+              <div className="particle"></div>
+            </div>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
-    <section className={`min-h-screen flex items-center justify-center p-8 ${className}`}>
-      <div className={`container mx-auto text-center max-w-4xl ${getDesignClasses()}`}>
+    <section className={`min-h-screen flex items-center justify-center p-8 relative ${className}`}>
+      <div className={`container mx-auto text-center max-w-4xl relative z-10 ${getDesignClasses()}`}>
         {badge && (
-          <Badge className="mb-6 text-sm px-6 py-3 font-semibold tracking-wide">
+          <Badge className="mb-6 text-sm px-6 py-3 font-semibold tracking-wide backdrop-blur-sm">
             {badge}
           </Badge>
         )}
         
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight relative z-20">
           {title}
         </h1>
         
-        <h2 className="text-xl md:text-2xl lg:text-3xl mb-8 opacity-90 font-medium">
+        <h2 className="text-xl md:text-2xl lg:text-3xl mb-8 opacity-90 font-medium relative z-20">
           {subtitle}
         </h2>
         
-        <p className="text-lg md:text-xl mb-12 max-w-3xl mx-auto leading-relaxed opacity-80">
+        <p className="text-lg md:text-xl mb-12 max-w-3xl mx-auto leading-relaxed opacity-80 relative z-20">
           {description}
         </p>
         
-        <div className="flex gap-6 justify-center flex-wrap">
+        <div className="flex gap-6 justify-center flex-wrap relative z-20">
           <Button size="lg" className={`px-8 py-4 text-lg font-semibold ${getButtonClasses()}`}>
             {button1Text}
           </Button>
@@ -83,6 +126,7 @@ export const HeroTemplateSection = ({
           </Button>
         </div>
       </div>
+      {renderDesignElements()}
     </section>
   );
 };

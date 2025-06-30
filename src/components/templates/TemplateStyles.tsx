@@ -18,201 +18,422 @@ export const TemplateStyles = () => (
       color: rgba(0,0,0,0.9);
     }
 
-    /* Enhanced 3D Effects */
+    /* === SPECTACULAR 3D EFFECTS WITH FLOATING ELEMENTS === */
     .effect-3d-float {
       animation: float3d 6s ease-in-out infinite;
       transform-style: preserve-3d;
+      position: relative;
+    }
+    
+    .effect-3d-float::before {
+      content: '';
+      position: absolute;
+      top: 10%;
+      right: 10%;
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(45deg, rgba(139, 92, 246, 0.6), rgba(236, 72, 153, 0.4));
+      border-radius: 50%;
+      animation: float3dElement1 8s ease-in-out infinite;
+      z-index: -1;
+    }
+    
+    .effect-3d-float::after {
+      content: '';
+      position: absolute;
+      bottom: 20%;
+      left: 15%;
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.5), rgba(34, 211, 238, 0.3));
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      animation: float3dElement2 10s ease-in-out infinite reverse;
+      z-index: -1;
     }
     
     @keyframes float3d {
-      0%, 100% { transform: translateY(0px) rotateX(0deg); }
-      50% { transform: translateY(-20px) rotateX(5deg); }
+      0%, 100% { transform: translateY(0px) rotateX(0deg) perspective(1000px); }
+      50% { transform: translateY(-30px) rotateX(10deg) perspective(1000px); }
     }
     
-    .neon-glow {
-      box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.1);
+    @keyframes float3dElement1 {
+      0%, 100% { 
+        transform: translateY(0px) translateX(0px) rotateZ(0deg) scale(1);
+        opacity: 0.6;
+      }
+      33% { 
+        transform: translateY(-50px) translateX(30px) rotateZ(120deg) scale(1.2);
+        opacity: 0.8;
+      }
+      66% { 
+        transform: translateY(20px) translateX(-20px) rotateZ(240deg) scale(0.9);
+        opacity: 0.4;
+      }
     }
     
-    .neon-border {
-      border-image: linear-gradient(45deg, #8B5CF6, #EC4899) 1;
+    @keyframes float3dElement2 {
+      0%, 100% { 
+        transform: translateY(0px) translateX(0px) rotateY(0deg) scale(1);
+        opacity: 0.5;
+      }
+      50% { 
+        transform: translateY(-40px) translateX(25px) rotateY(180deg) scale(1.3);
+        opacity: 0.7;
+      }
     }
     
-    .holographic-effect {
-      background: linear-gradient(45deg, rgba(6, 182, 212, 0.1), rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
-      animation: hologram 4s ease-in-out infinite;
-    }
-    
-    @keyframes hologram {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-    
-    .matrix-rain::before {
-      content: '';
+    .floating-cubes {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(34, 197, 94, 0.1) 2px, rgba(34, 197, 94, 0.1) 4px);
-      animation: matrix-fall 20s linear infinite;
-      pointer-events: none;
+      top: 30%;
+      right: 20%;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(45deg, rgba(168, 85, 247, 0.7), rgba(59, 130, 246, 0.5));
+      transform: rotateX(45deg) rotateY(45deg);
+      animation: cube3dRotate 12s linear infinite;
+      z-index: -1;
     }
     
-    @keyframes matrix-fall {
-      0% { transform: translateY(-100%); }
-      100% { transform: translateY(100vh); }
-    }
-    
-    .cosmic-float {
-      animation: cosmic-drift 8s ease-in-out infinite;
-    }
-    
-    @keyframes cosmic-drift {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      33% { transform: translateY(-15px) rotate(1deg); }
-      66% { transform: translateY(10px) rotate(-1deg); }
-    }
-    
-    .metallic-shine {
-      background: linear-gradient(45deg, rgba(251, 146, 60, 0.8), rgba(239, 68, 68, 0.6), rgba(251, 191, 36, 0.8));
-      animation: metallic-shimmer 3s ease-in-out infinite;
-    }
-    
-    @keyframes metallic-shimmer {
-      0%, 100% { filter: brightness(1) contrast(1); }
-      50% { filter: brightness(1.2) contrast(1.1); }
+    @keyframes cube3dRotate {
+      0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+      100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
     }
 
-    /* Advanced Glass Effects */
-    .glass-morphism {
-      backdrop-filter: blur(20px) saturate(180%);
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    }
-    
-    .crystal-glass {
-      backdrop-filter: blur(25px) saturate(200%);
-      background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(14, 165, 233, 0.05));
-      border: 1px solid rgba(6, 182, 212, 0.2);
-      box-shadow: 0 12px 40px rgba(6, 182, 212, 0.15);
-    }
-    
-    .mystical-glass {
-      backdrop-filter: blur(30px) saturate(150%);
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(168, 85, 247, 0.08));
-      border: 1px solid rgba(139, 92, 246, 0.25);
-      box-shadow: 0 15px 45px rgba(139, 92, 246, 0.2);
-    }
-    
-    .dreamy-glass {
-      backdrop-filter: blur(22px) saturate(170%);
-      background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(244, 63, 94, 0.06));
-      border: 1px solid rgba(236, 72, 153, 0.2);
-      box-shadow: 0 10px 35px rgba(236, 72, 153, 0.18);
-    }
-
-    /* Enhanced Geometric Patterns */
-    .hexagon-pattern {
-      background-image: radial-gradient(circle at 25px 25px, rgba(255,255,255,0.1) 2px, transparent 2px);
-      background-size: 50px 43px;
+    /* === SPECTACULAR GLASS MORPHISM REDESIGN === */
+    .spectacular-glass {
       position: relative;
-    }
-    
-    .hexagon-pattern::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 25px;
-      right: 0;
-      bottom: 0;
-      background-image: radial-gradient(circle at 25px 25px, rgba(255,255,255,0.1) 2px, transparent 2px);
-      background-size: 50px 43px;
-    }
-    
-    .triangle-pattern {
-      background-image: linear-gradient(45deg, transparent 35%, rgba(255,255,255,0.1) 35%, rgba(255,255,255,0.1) 65%, transparent 65%);
-      background-size: 20px 20px;
-      animation: triangle-shift 10s linear infinite;
-    }
-    
-    @keyframes triangle-shift {
-      0% { background-position: 0 0; }
-      100% { background-position: 40px 40px; }
-    }
-    
-    .diamond-pattern {
-      background-image: 
-        linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 40%, rgba(255,255,255,0.1) 60%, transparent 60%),
-        linear-gradient(-45deg, transparent 40%, rgba(255,255,255,0.1) 40%, rgba(255,255,255,0.1) 60%, transparent 60%);
-      background-size: 30px 30px;
-      animation: diamond-sparkle 6s ease-in-out infinite;
-    }
-    
-    @keyframes diamond-sparkle {
-      0%, 100% { opacity: 0.8; }
-      50% { opacity: 1; }
-    }
-
-    /* Creative Artistic Effects */
-    .watercolor-splash {
-      position: relative;
+      background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.25) 0%,
+        rgba(255, 255, 255, 0.1) 25%,
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0.1) 75%,
+        rgba(255, 255, 255, 0.2) 100%
+      );
+      backdrop-filter: blur(30px) saturate(200%);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
       overflow: hidden;
     }
     
-    .watercolor-splash::before {
+    .spectacular-glass::before {
       content: '';
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at 30% 70%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                  radial-gradient(circle at 70% 30%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-                  radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
-      animation: watercolor-flow 15s ease-in-out infinite;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.3) 50%, 
+        transparent 100%
+      );
+      animation: glassShine 3s ease-in-out infinite;
+      z-index: 1;
+    }
+    
+    @keyframes glassShine {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+    
+    .glass-bubbles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
+      z-index: 0;
     }
     
-    @keyframes watercolor-flow {
-      0%, 100% { transform: rotate(0deg) scale(1); }
-      33% { transform: rotate(120deg) scale(1.1); }
-      66% { transform: rotate(240deg) scale(0.9); }
+    .glass-bubble {
+      position: absolute;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 70%, transparent 100%);
+      border-radius: 50%;
+      animation: bubbleFloat 6s ease-in-out infinite;
     }
     
-    .graffiti-effect {
+    .glass-bubble:nth-child(1) {
+      width: 60px;
+      height: 60px;
+      top: 20%;
+      right: 15%;
+      animation-delay: 0s;
+    }
+    
+    .glass-bubble:nth-child(2) {
+      width: 40px;
+      height: 40px;
+      bottom: 30%;
+      left: 20%;
+      animation-delay: 2s;
+    }
+    
+    .glass-bubble:nth-child(3) {
+      width: 80px;
+      height: 80px;
+      top: 60%;
+      right: 30%;
+      animation-delay: 4s;
+    }
+    
+    @keyframes bubbleFloat {
+      0%, 100% { 
+        transform: translateY(0px) scale(1);
+        opacity: 0.3;
+      }
+      50% { 
+        transform: translateY(-40px) scale(1.2);
+        opacity: 0.7;
+      }
+    }
+
+    /* === COSMIC/SPACE THEME (REPLACING GEOMETRIC) === */
+    .cosmic-space {
       position: relative;
+      background: radial-gradient(ellipse at center, 
+        rgba(30, 27, 75, 0.9) 0%,
+        rgba(15, 15, 35, 0.95) 30%,
+        rgba(5, 5, 15, 0.98) 70%,
+        rgba(0, 0, 0, 1) 100%
+      );
+      overflow: hidden;
     }
     
-    .graffiti-effect::after {
+    .cosmic-space::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(45deg, transparent 70%, rgba(255, 255, 255, 0.1) 70%, rgba(255, 255, 255, 0.1) 72%, transparent 72%);
-      background-size: 10px 10px;
-      animation: graffiti-texture 8s linear infinite;
+      background: 
+        radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(139, 92, 246, 0.6), transparent),
+        radial-gradient(1px 1px at 90px 40px, rgba(59, 130, 246, 0.4), transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(236, 72, 153, 0.5), transparent),
+        radial-gradient(2px 2px at 160px 30px, rgba(34, 211, 238, 0.3), transparent);
+      background-repeat: repeat;
+      background-size: 200px 100px;
+      animation: starsMove 20s linear infinite;
       pointer-events: none;
     }
     
-    @keyframes graffiti-texture {
-      0% { background-position: 0 0; }
-      100% { background-position: 20px 20px; }
+    @keyframes starsMove {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-100px); }
     }
     
-    .pastel-dream {
-      filter: saturate(0.8) brightness(1.1);
+    .cosmic-planet {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, 
+        rgba(139, 92, 246, 0.8) 0%,
+        rgba(79, 70, 229, 0.6) 40%,
+        rgba(30, 27, 75, 0.8) 100%
+      );
+      box-shadow: 
+        0 0 40px rgba(139, 92, 246, 0.3),
+        inset -20px -20px 40px rgba(0, 0, 0, 0.3);
+      animation: planetOrbit 25s linear infinite;
+      top: 20%;
+      right: 10%;
     }
     
-    .oil-paint {
-      filter: contrast(1.1) saturate(1.2);
-      background-blend-mode: multiply;
+    @keyframes planetOrbit {
+      0% { transform: rotate(0deg) translateX(0px) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(50px) rotate(-360deg); }
+    }
+    
+    .cosmic-rings {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border: 3px solid rgba(34, 211, 238, 0.3);
+      border-radius: 50%;
+      top: 50%;
+      left: 15%;
+      animation: ringsRotate 15s linear infinite;
+    }
+    
+    .cosmic-rings::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 150px;
+      height: 150px;
+      border: 2px solid rgba(236, 72, 153, 0.4);
+      border-radius: 50%;
+      animation: ringsRotate 10s linear infinite reverse;
+    }
+    
+    @keyframes ringsRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
-    /* Enhanced Buttons */
+    /* === ENHANCED CREATIVE ARTISTIC EFFECTS === */
+    .artistic-paint {
+      position: relative;
+      background: linear-gradient(45deg,
+        rgba(236, 72, 153, 0.1) 0%,
+        rgba(139, 92, 246, 0.15) 25%,
+        rgba(34, 197, 94, 0.1) 50%,
+        rgba(251, 146, 60, 0.12) 75%,
+        rgba(59, 130, 246, 0.1) 100%
+      );
+      overflow: hidden;
+    }
+    
+    .paint-splash {
+      position: absolute;
+      background: radial-gradient(ellipse at center,
+        rgba(236, 72, 153, 0.6) 0%,
+        rgba(236, 72, 153, 0.3) 40%,
+        transparent 70%
+      );
+      width: 150px;
+      height: 100px;
+      border-radius: 50% 20% 40% 30%;
+      animation: paintDrip 8s ease-in-out infinite;
+      top: 10%;
+      right: 20%;
+    }
+    
+    .paint-splash:nth-child(2) {
+      background: radial-gradient(ellipse at center,
+        rgba(34, 197, 94, 0.5) 0%,
+        rgba(34, 197, 94, 0.2) 40%,
+        transparent 70%
+      );
+      width: 120px;
+      height: 80px;
+      bottom: 20%;
+      left: 25%;
+      animation-delay: 2s;
+    }
+    
+    .paint-splash:nth-child(3) {
+      background: radial-gradient(ellipse at center,
+        rgba(251, 146, 60, 0.6) 0%,
+        rgba(251, 146, 60, 0.3) 40%,
+        transparent 70%
+      );
+      width: 100px;
+      height: 120px;
+      top: 60%;
+      right: 15%;
+      animation-delay: 4s;
+    }
+    
+    @keyframes paintDrip {
+      0%, 100% { 
+        transform: scale(1) rotate(0deg);
+        opacity: 0.6;
+      }
+      25% { 
+        transform: scale(1.2) rotate(10deg);
+        opacity: 0.8;
+      }
+      50% { 
+        transform: scale(0.9) rotate(-5deg);
+        opacity: 0.4;
+      }
+      75% { 
+        transform: scale(1.1) rotate(15deg);
+        opacity: 0.7;
+      }
+    }
+    
+    .brush-stroke {
+      position: absolute;
+      width: 200px;
+      height: 20px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(139, 92, 246, 0.4) 20%,
+        rgba(139, 92, 246, 0.6) 50%,
+        rgba(139, 92, 246, 0.3) 80%,
+        transparent 100%
+      );
+      transform: rotate(-15deg);
+      animation: brushMove 6s ease-in-out infinite;
+      top: 40%;
+      left: 10%;
+    }
+    
+    @keyframes brushMove {
+      0%, 100% { 
+        transform: rotate(-15deg) translateX(0px);
+        opacity: 0.5;
+      }
+      50% { 
+        transform: rotate(-10deg) translateX(50px);
+        opacity: 0.8;
+      }
+    }
+    
+    .creative-particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      animation: particleFloat 4s ease-in-out infinite;
+    }
+    
+    .particle:nth-child(1) {
+      background: rgba(236, 72, 153, 0.8);
+      top: 25%;
+      left: 30%;
+      animation-delay: 0s;
+    }
+    
+    .particle:nth-child(2) {
+      background: rgba(34, 197, 94, 0.7);
+      top: 45%;
+      right: 25%;
+      animation-delay: 1s;
+    }
+    
+    .particle:nth-child(3) {
+      background: rgba(251, 146, 60, 0.6);
+      bottom: 35%;
+      left: 40%;
+      animation-delay: 2s;
+    }
+    
+    .particle:nth-child(4) {
+      background: rgba(59, 130, 246, 0.8);
+      top: 70%;
+      right: 35%;
+      animation-delay: 3s;
+    }
+    
+    @keyframes particleFloat {
+      0%, 100% { 
+        transform: translateY(0px) scale(1);
+        opacity: 0.4;
+      }
+      50% { 
+        transform: translateY(-30px) scale(1.5);
+        opacity: 1;
+      }
+    }
+
+    /* === ENHANCED BUTTONS === */
     .btn-3d {
       transform: perspective(1px) translateZ(0);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -237,17 +458,41 @@ export const TemplateStyles = () => (
       box-shadow: 0 8px 25px rgba(0,0,0,0.15);
     }
     
-    .btn-geometric {
-      clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
+    .btn-cosmic {
+      background: linear-gradient(45deg, rgba(139, 92, 246, 0.8), rgba(59, 130, 246, 0.6));
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
       transition: all 0.3s ease;
     }
     
-    .btn-geometric:hover {
-      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-      transform: scale(1.05);
+    .btn-cosmic:hover {
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+      transform: translateY(-2px) scale(1.05);
+    }
+    
+    .btn-artistic {
+      background: linear-gradient(45deg, rgba(236, 72, 153, 0.7), rgba(34, 197, 94, 0.5));
+      border: 2px solid rgba(236, 72, 153, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-artistic::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+    
+    .btn-artistic:hover::before {
+      left: 100%;
     }
 
-    /* Advanced Animations */
+    /* === ADVANCED ANIMATIONS === */
     .fade-in-up {
       opacity: 0;
       transform: translateY(30px);
@@ -269,51 +514,59 @@ export const TemplateStyles = () => (
     .scale-on-scroll.in-view {
       transform: scale(1);
     }
-    
-    .parallax-element {
-      will-change: transform;
-      transition: transform 0.1s ease-out;
-    }
 
-    /* Responsive Enhancements */
+    /* === RESPONSIVE ENHANCEMENTS === */
     @media (max-width: 768px) {
       .template-text h1 { font-size: clamp(2rem, 6vw, 3.5rem); }
       .template-text h2 { font-size: clamp(1.8rem, 5vw, 3rem); }
       .template-text h3 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
       .template-text p { font-size: clamp(1rem, 3vw, 1.2rem); }
       
-      .btn-3d:hover {
-        transform: translateY(-2px) scale(1.02);
+      .floating-cubes, .cosmic-planet {
+        width: 80px;
+        height: 80px;
+      }
+      
+      .cosmic-rings {
+        width: 150px;
+        height: 150px;
+      }
+      
+      .paint-splash {
+        width: 100px;
+        height: 70px;
       }
     }
     
-    /* High Contrast & Accessibility */
+    /* === HIGH CONTRAST & ACCESSIBILITY === */
     @media (prefers-contrast: high) {
       .template-text {
         text-shadow: none;
         font-weight: 600;
       }
       
-      .glass-morphism, .crystal-glass, .mystical-glass, .dreamy-glass {
+      .spectacular-glass, .cosmic-space, .artistic-paint {
         background: rgba(255,255,255,0.95);
         color: #000;
         border: 2px solid #000;
       }
     }
     
-    /* Reduced Motion */
+    /* === REDUCED MOTION === */
     @media (prefers-reduced-motion: reduce) {
       .effect-3d-float,
-      .cosmic-float,
-      .watercolor-flow,
-      .matrix-rain,
-      .parallax-element {
+      .floating-cubes,
+      .cosmic-planet,
+      .cosmic-rings,
+      .paint-splash,
+      .brush-stroke,
+      .particle {
         animation: none;
         transform: none;
       }
     }
     
-    /* Performance Optimizations */
+    /* === PERFORMANCE OPTIMIZATIONS === */
     .template-section {
       contain: layout style paint;
       will-change: transform;
