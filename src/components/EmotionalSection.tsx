@@ -1,4 +1,3 @@
-
 import { ColorScheme } from "@/types/colors";
 import { LiquidButton, MetalButton } from "@/components/ui/liquid-glass-button";
 import { cn } from "@/lib/utils";
@@ -133,7 +132,7 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
     return {};
   };
 
-  // מחזיר את הסגנון המדויק של ההירו הנבחר
+  // פונקציה שמחזירה את הסגנון המדויק של ההירו הנבחר
   const getHeroMatchingStyles = () => {
     if (!useHeroDesign) {
       // אם לא בסגנון הירו, השתמש ברקע הרגיל
@@ -145,7 +144,35 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
 
     console.log('Copying hero background for design:', selectedHeroDesign);
 
-    // העתק את הרקע המדויק של ההירו
+    // העתק את הרקע המדויק של ההירו לפי ה-selectedHeroDesign
+    if (!selectedHeroDesign) {
+      return { backgroundColor: '#1e1e2e', color: '#ffffff' };
+    }
+
+    // קריאה ישירה לקומפוננט ההירו כדי לקבל את הסגנון המדויק
+    const heroElement = document.querySelector('[class*="hero"]');
+    if (heroElement) {
+      const computedStyle = window.getComputedStyle(heroElement);
+      const bgImage = computedStyle.backgroundImage;
+      const bgColor = computedStyle.backgroundColor;
+      
+      console.log('Found hero element with bgImage:', bgImage, 'bgColor:', bgColor);
+      
+      if (bgImage && bgImage !== 'none') {
+        return { 
+          backgroundImage: bgImage,
+          backgroundColor: bgColor || '#1e1e2e',
+          color: '#ffffff' 
+        };
+      } else if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)') {
+        return { 
+          backgroundColor: bgColor,
+          color: '#ffffff' 
+        };
+      }
+    }
+
+    // אם לא מצאנו אלמנט הירו, נשתמש בהגדרות ברירת מחדל לפי הסגנון
     switch (selectedHeroDesign) {
       case 'hero-section-clean':
         return { 
@@ -175,69 +202,11 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
           backgroundSize: '14px 24px',
           color: '#ffffff'
         };
-      case 'hero-section-elegant':
-        return { 
-          backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: '#ffffff'
-        };
-      case 'hero-section-minimal':
-        return { 
-          backgroundColor: 'rgba(0,0,0,0.96)',
-          color: '#ffffff'
-        };
-      // עיצובי מתכת
-      case 'hero-minimal-tech':
-      case 'hero-liquid-metal':
-        return { 
-          backgroundImage: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)',
-          color: '#ffffff'
-        };
-      // עיצובי Gradient וגיאומטריים
-      case 'hero-geometric':
-      case 'hero-neon-cyber':
-      case 'hero-floating-cubes':
-      case 'hero-holographic':
-      case 'hero-morphing-shapes':
-      case 'hero-glass-refraction':  
-      case 'hero-particle-storm':
-      case 'hero-crystal-matrix':
-      case 'hero-digital-waves':
-      case 'hero-neon-grid-portal':
-      case 'hero-quantum-bubbles':
-      case 'hero-cosmic-geometry':
-        return { 
-          backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: '#ffffff'
-        };
       default:
-        // ברירת מחדל לפי סגנון העיצוב הכללי
-        if (formData?.designStyle === 'gradient') {
-          return { 
-            backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: '#ffffff'
-          };
-        } else if (formData?.designStyle === 'glass') {
-          return { 
-            backgroundColor: 'rgba(255,255,255,0.1)',
-            backdropFilter: 'blur(20px)',
-            color: '#ffffff'
-          };
-        } else if (formData?.designStyle === 'metal') {
-          return { 
-            backgroundImage: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)',
-            color: '#ffffff'
-          };
-        } else if (formData?.designStyle === 'geometric') {
-          return { 
-            backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: '#ffffff'
-          };
-        } else {
-          return { 
-            backgroundColor: '#1e1e2e',
-            color: '#ffffff'
-          };
-        }
+        return { 
+          backgroundColor: '#1e1e2e',
+          color: '#ffffff'
+        };
     }
   };
 
