@@ -17,7 +17,9 @@ import {
   Building,
   Eye,
   Palette,
-  EyeOff
+  EyeOff,
+  Minus,
+  Plus
 } from 'lucide-react';
 import { TemplateData } from '@/types/template';
 import { TemplatePreview } from './template-editor/TemplatePreview';
@@ -42,6 +44,7 @@ const TemplateEditor = ({ template, onTemplateChange, onClose }: TemplateEditorP
   const [editedTemplate, setEditedTemplate] = useState<TemplateData>(template);
   const [activeTab, setActiveTab] = useState('hero');
   const [isEditorHidden, setIsEditorHidden] = useState(false);
+  const [isTabsCollapsed, setIsTabsCollapsed] = useState(false);
 
   useEffect(() => {
     onTemplateChange(editedTemplate);
@@ -149,29 +152,46 @@ const TemplateEditor = ({ template, onTemplateChange, onClose }: TemplateEditorP
             </div>
           </div>
 
-          {/* Tabs Navigation */}
-          <div className="p-2 border-b border-gray-800 flex-shrink-0">
-            <ScrollArea className="w-full">
-              <div className="grid grid-cols-2 gap-1 bg-gray-800 rounded p-1">
-                {sections.map((section) => {
-                  const Icon = section.icon;
-                  return (
-                    <button
-                      key={section.id}
-                      onClick={() => setActiveTab(section.id)}
-                      className={`flex items-center gap-1 px-2 py-2 text-xs rounded transition-colors ${
-                        activeTab === section.id 
-                          ? 'bg-blue-600 text-white' 
-                          : 'text-gray-400 hover:text-white hover:bg-gray-700'
-                      }`}
-                    >
-                      <Icon className="w-3 h-3" />
-                      {section.name}
-                    </button>
-                  );
-                })}
+          {/* Tabs Navigation with Collapse/Expand */}
+          <div className="border-b border-gray-800 flex-shrink-0">
+            <div className="p-2 flex items-center justify-between">
+              <Button
+                onClick={() => setIsTabsCollapsed(!isTabsCollapsed)}
+                size="sm"
+                className="bg-gray-700 hover:bg-gray-600 text-white"
+              >
+                {isTabsCollapsed ? <Plus className="w-4 h-4" /> : <Minus className="w-4 h-4" />}
+              </Button>
+              {!isTabsCollapsed && (
+                <span className="text-gray-400 text-sm">סקשנים</span>
+              )}
+            </div>
+            
+            {!isTabsCollapsed && (
+              <div className="p-2">
+                <ScrollArea className="w-full">
+                  <div className="grid grid-cols-2 gap-1 bg-gray-800 rounded p-1">
+                    {sections.map((section) => {
+                      const Icon = section.icon;
+                      return (
+                        <button
+                          key={section.id}
+                          onClick={() => setActiveTab(section.id)}
+                          className={`flex items-center gap-1 px-2 py-2 text-xs rounded transition-colors ${
+                            activeTab === section.id 
+                              ? 'bg-blue-600 text-white' 
+                              : 'text-gray-400 hover:text-white hover:bg-gray-700'
+                          }`}
+                        >
+                          <Icon className="w-3 h-3" />
+                          {section.name}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </ScrollArea>
               </div>
-            </ScrollArea>
+            )}
           </div>
 
           {/* Editor Content */}
