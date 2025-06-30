@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Upload, X, Palette } from 'lucide-react';
+import { Upload, X, Palette, ImageIcon } from 'lucide-react';
 
 interface BackgroundSelectorProps {
   label: string;
@@ -29,6 +29,18 @@ const PLACEHOLDER_IMAGES = [
 export const BackgroundSelector = ({ label, colorValue, imageValue, onColorChange, onImageChange }: BackgroundSelectorProps) => {
   const [activeTab, setActiveTab] = useState<'color' | 'image'>(imageValue ? 'image' : 'color');
 
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        onImageChange(result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="space-y-2">
       <Label className="text-white text-sm font-medium">{label}</Label>
@@ -39,7 +51,7 @@ export const BackgroundSelector = ({ label, colorValue, imageValue, onColorChang
             צבע
           </TabsTrigger>
           <TabsTrigger value="image" className="text-white data-[state=active]:bg-blue-600">
-            <Upload className="w-4 h-4 ml-1" />
+            <ImageIcon className="w-4 h-4 ml-1" />
             תמונה
           </TabsTrigger>
         </TabsList>
@@ -53,14 +65,31 @@ export const BackgroundSelector = ({ label, colorValue, imageValue, onColorChang
           />
         </TabsContent>
         
-        <TabsContent value="image" className="space-y-2">
-          <Input
-            type="url"
-            placeholder="הדבק כתובת תמונה..."
-            value={imageValue || ''}
-            onChange={(e) => onImageChange(e.target.value)}
-            className="bg-gray-800 border-gray-700 text-white text-right"
-          />
+        <TabsContent value="image" className="space-y-3">
+          {/* File Upload Section */}
+          <div className="space-y-2">
+            <Label className="text-white text-xs font-medium">העלה תמונה מהמחשב</Label>
+            <div className="flex items-center gap-2">
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={handleFileUpload}
+                className="bg-gray-800 border-gray-700 text-white file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-sm file:font-medium file:bg-blue-600 file:text-white hover:file:bg-blue-700"
+              />
+            </div>
+          </div>
+
+          {/* URL Input Section */}
+          <div className="space-y-2">
+            <Label className="text-white text-xs font-medium">או הדבק כתובת תמונה</Label>
+            <Input
+              type="url"
+              placeholder="https://example.com/image.jpg"
+              value={imageValue && !imageValue.startsWith('data:') ? imageValue : ''}
+              onChange={(e) => onImageChange(e.target.value)}
+              className="bg-gray-800 border-gray-700 text-white text-right"
+            />
+          </div>
           
           {imageValue && (
             <div className="relative">
@@ -79,22 +108,26 @@ export const BackgroundSelector = ({ label, colorValue, imageValue, onColorChang
             </div>
           )}
           
-          <div className="grid grid-cols-4 gap-2 mt-3">
-            {PLACEHOLDER_IMAGES.map((img, index) => (
-              <Card 
-                key={index} 
-                className="cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all"
-                onClick={() => onImageChange(img)}
-              >
-                <CardContent className="p-1">
-                  <img 
-                    src={img} 
-                    alt={`תמונת רקע ${index + 1}`}
-                    className="w-full h-12 object-cover rounded"
-                  />
-                </CardContent>
-              </Card>
-            ))}
+          {/* Sample Images Section */}
+          <div className="space-y-2">
+            <Label className="text-white text-xs font-medium">או בחר מתמונות לדוגמה</Label>
+            <div className="grid grid-cols-4 gap-2">
+              {PLACEHOLDER_IMAGES.map((img, index) => (
+                <Card 
+                  key={index} 
+                  className="cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all"
+                  onClick={() => onImageChange(img)}
+                >
+                  <CardContent className="p-1">
+                    <img 
+                      src={img} 
+                      alt={`תמונת רקע ${index + 1}`}
+                      className="w-full h-12 object-cover rounded"
+                    />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </TabsContent>
       </Tabs>
