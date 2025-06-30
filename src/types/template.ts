@@ -175,6 +175,18 @@ export interface FooterSection {
   };
 }
 
+export interface TemplateEffects {
+  hero?: string | null;
+  emotional?: string | null;
+  features?: string | null;
+  testimonials?: string | null;
+  about?: string | null;
+  pricing?: string | null;
+  faq?: string | null;
+  finalCta?: string | null;
+  contact?: string | null;
+}
+
 export interface TemplateData {
   id: string;
   name: string;
@@ -190,4 +202,5 @@ export interface TemplateData {
   contact: ContactSection;
   footer: FooterSection;
   styles: TemplateStyles;
+  effects?: TemplateEffects;
 }

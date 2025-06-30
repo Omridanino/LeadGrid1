@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -18,7 +17,8 @@ import {
   Eye,
   EyeOff,
   Minus,
-  Plus
+  Plus,
+  Palette
 } from 'lucide-react';
 import { TemplateData } from '@/types/template';
 import { TemplatePreview } from './template-editor/TemplatePreview';
@@ -31,6 +31,7 @@ import { PricingEditor } from './template-editor/PricingEditor';
 import { FaqEditor } from './template-editor/FaqEditor';
 import { FinalCtaEditor } from './template-editor/FinalCtaEditor';
 import { ContactEditor } from './template-editor/ContactEditor';
+import { EffectsEditor } from './template-editor/EffectsEditor';
 
 interface TemplateEditorProps {
   template: TemplateData;
@@ -77,6 +78,16 @@ const TemplateEditor = ({ template, onTemplateChange, onClose }: TemplateEditorP
     }));
   };
 
+  const updateEffects = (section: string, effectType: string | null) => {
+    setEditedTemplate(prev => ({
+      ...prev,
+      effects: {
+        ...prev.effects,
+        [section]: effectType
+      }
+    }));
+  };
+
   const sections = [
     { id: 'hero', name: 'הירו', icon: Sparkles },
     { id: 'emotional', name: 'רגש', icon: Heart },
@@ -86,7 +97,8 @@ const TemplateEditor = ({ template, onTemplateChange, onClose }: TemplateEditorP
     { id: 'pricing', name: 'מחירים', icon: DollarSign },
     { id: 'faq', name: 'שאלות', icon: HelpCircle },
     { id: 'finalCta', name: 'קריאה לפעולה', icon: Zap },
-    { id: 'contact', name: 'יצירת קשר', icon: MessageSquare }
+    { id: 'contact', name: 'יצירת קשר', icon: MessageSquare },
+    { id: 'effects', name: 'אפקטים', icon: Palette }
   ];
 
   const renderEditor = () => {
@@ -109,6 +121,8 @@ const TemplateEditor = ({ template, onTemplateChange, onClose }: TemplateEditorP
         return <FinalCtaEditor template={editedTemplate} onUpdate={(updates) => updateSection('finalCta', updates)} onStyleUpdate={updateStyles} />;
       case 'contact':
         return <ContactEditor template={editedTemplate} onUpdate={(updates) => updateSection('contact', updates)} onStyleUpdate={updateStyles} />;
+      case 'effects':
+        return <EffectsEditor template={editedTemplate} onUpdate={updateEffects} />;
       default:
         return null;
     }

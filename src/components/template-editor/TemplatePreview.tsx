@@ -1,4 +1,3 @@
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -26,11 +25,40 @@ const getSectionStyle = (backgroundColor: string, backgroundImage?: string) => {
   return baseStyle;
 };
 
+const getEffectClasses = (effectType: string | null) => {
+  if (!effectType) return '';
+  
+  switch (effectType) {
+    case 'fade-in':
+      return 'animate-fade-in';
+    case 'slide-up':
+      return 'animate-slide-in-up';
+    case 'scale-in':
+      return 'animate-scale-in';
+    case 'float':
+      return 'animate-float';
+    case 'glow':
+      return 'animate-pulse-glow';
+    case 'parallax':
+      return 'parallax-section';
+    case 'glass':
+      return 'glass-effect';
+    case 'neon':
+      return 'neon-glow';
+    case 'particles':
+      return 'particles-bg';
+    case 'wave':
+      return 'wave-animation';
+    default:
+      return '';
+  }
+};
+
 export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
   return (
     <div className="min-h-full" style={{ backgroundColor: template.styles.backgroundColor, color: template.styles.textColor }}>
       {/* Hero Section */}
-      <section className="py-20 px-4 relative" style={getSectionStyle(template.styles.heroBackground, template.styles.heroBackgroundImage)}>
+      <section className={`py-20 px-4 relative ${getEffectClasses(template.effects?.hero)}`} style={getSectionStyle(template.styles.heroBackground, template.styles.heroBackgroundImage)}>
         {template.styles.heroBackgroundImage && (
           <div className="absolute inset-0 bg-black/40"></div>
         )}
@@ -63,7 +91,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* Emotional Section */}
-      <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.emotionalBackground, template.styles.emotionalBackgroundImage)}>
+      <section className={`py-16 px-4 relative ${getEffectClasses(template.effects?.emotional)}`} style={getSectionStyle(template.styles.emotionalBackground, template.styles.emotionalBackgroundImage)}>
         {template.styles.emotionalBackgroundImage && (
           <div className="absolute inset-0 bg-black/30"></div>
         )}
@@ -93,7 +121,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.featuresBackground, template.styles.featuresBackgroundImage)}>
+      <section className={`py-16 px-4 relative ${getEffectClasses(template.effects?.features)}`} style={getSectionStyle(template.styles.featuresBackground, template.styles.featuresBackgroundImage)}>
         {template.styles.featuresBackgroundImage && (
           <div className="absolute inset-0 bg-black/30"></div>
         )}
@@ -138,7 +166,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.testimonialsBackground, template.styles.testimonialsBackgroundImage)}>
+      <section className={`py-16 px-4 relative ${getEffectClasses(template.effects?.testimonials)}`} style={getSectionStyle(template.styles.testimonialsBackground, template.styles.testimonialsBackgroundImage)}>
         {template.styles.testimonialsBackgroundImage && (
           <div className="absolute inset-0 bg-black/30"></div>
         )}
@@ -185,7 +213,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* About Section */}
-      <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.aboutBackground, template.styles.aboutBackgroundImage)}>
+      <section className={`py-16 px-4 relative ${getEffectClasses(template.effects?.about)}`} style={getSectionStyle(template.styles.aboutBackground, template.styles.aboutBackgroundImage)}>
         {template.styles.aboutBackgroundImage && (
           <div className="absolute inset-0 bg-black/30"></div>
         )}
@@ -231,7 +259,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.pricingBackground, template.styles.pricingBackgroundImage)}>
+      <section className={`py-16 px-4 relative ${getEffectClasses(template.effects?.pricing)}`} style={getSectionStyle(template.styles.pricingBackground, template.styles.pricingBackgroundImage)}>
         {template.styles.pricingBackgroundImage && (
           <div className="absolute inset-0 bg-black/30"></div>
         )}
@@ -289,7 +317,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.faqBackground, template.styles.faqBackgroundImage)}>
+      <section className={`py-16 px-4 relative ${getEffectClasses(template.effects?.faq)}`} style={getSectionStyle(template.styles.faqBackground, template.styles.faqBackgroundImage)}>
         {template.styles.faqBackgroundImage && (
           <div className="absolute inset-0 bg-black/30"></div>
         )}
@@ -328,7 +356,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.finalCtaBackground, template.styles.finalCtaBackgroundImage)}>
+      <section className={`py-16 px-4 relative ${getEffectClasses(template.effects?.finalCta)}`} style={getSectionStyle(template.styles.finalCtaBackground, template.styles.finalCtaBackgroundImage)}>
         {template.styles.finalCtaBackgroundImage && (
           <div className="absolute inset-0 bg-black/30"></div>
         )}
@@ -358,7 +386,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* Contact Section */}
-      <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.contactBackground, template.styles.contactBackgroundImage)}>
+      <section className={`py-16 px-4 relative ${getEffectClasses(template.effects?.contact)}`} style={getSectionStyle(template.styles.contactBackground, template.styles.contactBackgroundImage)}>
         {template.styles.contactBackgroundImage && (
           <div className="absolute inset-0 bg-black/30"></div>
         )}
