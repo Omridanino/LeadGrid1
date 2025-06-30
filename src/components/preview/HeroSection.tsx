@@ -108,17 +108,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     return {};
   };
 
-  // Helper function to create custom content props for components
-  const getCustomContentProps = () => ({
-    badge: content?.badge,
-    headline: content?.headline || formData?.businessName,
-    subheadline: content?.subheadline || content?.description,
-    description: content?.description,
-    buttons: content?.buttons,
-    colors: content?.colors,
-    cta: content?.cta
-  });
-
   // Helper function to render advanced buttons with proper functionality
   const renderAdvancedButton = (button: any, index: number) => {
     const buttonStyle = button?.style || 'default';
@@ -189,8 +178,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     }
   };
 
-  // Helper function to render emotional section content
-  const renderEmotionalSection = () => {
+  // Helper function to render emotional section content WITHIN hero
+  const renderIntegratedEmotionalSection = () => {
     const emotionalContent = content?.emotionalSection || {};
     const title = emotionalContent.title || 'הגיע הזמן לפעול';
     const subtitle = emotionalContent.subtitle || 'אל תחמיץ את ההזדמנות הזו';
@@ -322,7 +311,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       setSelectedBasicDesign(selectedDesign);
     }, [formData?.businessName, formData?.businessType]);
 
-    // Enhanced Mockup Hero (minimal) with custom content and emotional section
+    // Enhanced Mockup Hero (minimal) with custom content and integrated emotional section
     if (selectedBasicDesign === 'hero-section-minimal') {
       return (
         <section className="relative overflow-hidden min-h-screen bg-black/[0.96]" style={getBackgroundStyle()}>
@@ -368,15 +357,23 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               </div>
             </div>
             
-            {/* Emotional Section */}
-            {renderEmotionalSection()}
+            {/* Integrated Emotional Section */}
+            {renderIntegratedEmotionalSection()}
           </div>
         </section>
       );
     }
 
-    // All other basic designs - with embedded emotional section
-    const customContentProps = getCustomContentProps();
+    // All other basic designs - with integrated emotional section
+    const customContentProps = {
+      badge: content?.badge,
+      headline: content?.headline || formData?.businessName,
+      subheadline: content?.subheadline || content?.description,
+      description: content?.description,
+      buttons: content?.buttons,
+      colors: content?.colors,
+      cta: content?.cta
+    };
 
     if (selectedBasicDesign === 'hero-section-clean') {
       return (
@@ -386,7 +383,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             currentColors={currentColors}
             content={customContentProps}
           />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -399,7 +396,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             currentColors={currentColors}
             content={customContentProps}
           />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -412,7 +409,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             currentColors={currentColors}
             content={customContentProps}
           />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -425,12 +422,12 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             currentColors={currentColors}
             content={customContentProps}
           />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
 
-    // Beams Background (classic) with custom content and emotional section
+    // Beams Background (classic) with custom content and integrated emotional section
     if (selectedBasicDesign === 'hero-section-classic') {
       return (
         <section className="relative overflow-hidden min-h-screen bg-black" style={getBackgroundStyle()}>
@@ -478,14 +475,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               </div>
             </div>
             
-            {/* Emotional Section */}
-            {renderEmotionalSection()}
+            {/* Integrated Emotional Section */}
+            {renderIntegratedEmotionalSection()}
           </div>
         </section>
       );
     }
 
-    // Gradient Hero (elegant) with custom content and emotional section
+    // Gradient Hero (elegant) with custom content and integrated emotional section
     if (selectedBasicDesign === 'hero-section-elegant') {
       return (
         <section className="relative overflow-hidden min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900" style={getBackgroundStyle()}>
@@ -533,14 +530,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               </div>
             </div>
             
-            {/* Emotional Section */}
-            {renderEmotionalSection()}
+            {/* Integrated Emotional Section */}
+            {renderIntegratedEmotionalSection()}
           </div>
         </section>
       );
     }
 
-    // Default fallback with emotional section
+    // Default fallback with integrated emotional section
     return (
       <section className="relative overflow-hidden min-h-screen bg-black" style={getBackgroundStyle()}>
         <div className="container mx-auto px-4 relative z-10 min-h-screen flex flex-col">
@@ -585,14 +582,14 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             </div>
           </div>
           
-          {/* Emotional Section */}
-          {renderEmotionalSection()}
+          {/* Integrated Emotional Section */}
+          {renderIntegratedEmotionalSection()}
         </div>
       </section>
     );
   }
 
-  // GRADIENT Design Style - 15 different designs with embedded emotional section
+  // GRADIENT Design Style - 15 different designs with integrated emotional section
   if (designStyle === 'gradient') {
     const [selectedGradientDesign, setSelectedGradientDesign] = useState(0);
 
@@ -604,7 +601,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     const wrapWithEmotionalSection = (heroComponent: JSX.Element) => (
       <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
         {heroComponent}
-        {renderEmotionalSection()}
+        {renderIntegratedEmotionalSection()}
       </section>
     );
 
@@ -651,62 +648,158 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
 
     if (selectedGradientDesign === 3) {
       return wrapWithEmotionalSection(
-        <HeroNeonCyber formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
+        <HeroNeonCyber formData={formData} currentColors={currentColors} content={{
+          badge: content?.badge,
+          headline: content?.headline || formData?.businessName,
+          subheadline: content?.subheadline || content?.description,
+          description: content?.description,
+          buttons: content?.buttons,
+          colors: content?.colors,
+          cta: content?.cta
+        }} />
       );
     }
     if (selectedGradientDesign === 4) {
       return wrapWithEmotionalSection(
-        <HeroFloatingCubes formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
+        <HeroFloatingCubes formData={formData} currentColors={currentColors} content={{
+          badge: content?.badge,
+          headline: content?.headline || formData?.businessName,
+          subheadline: content?.subheadline || content?.description,
+          description: content?.description,
+          buttons: content?.buttons,
+          colors: content?.colors,
+          cta: content?.cta
+        }} />
       );
     }
     if (selectedGradientDesign === 5) {
       return wrapWithEmotionalSection(
-        <HeroHolographic formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
+        <HeroHolographic formData={formData} currentColors={currentColors} content={{
+          badge: content?.badge,
+          headline: content?.headline || formData?.businessName,
+          subheadline: content?.subheadline || content?.description,
+          description: content?.description,
+          buttons: content?.buttons,
+          colors: content?.colors,
+          cta: content?.cta
+        }} />
       );
     }
     if (selectedGradientDesign === 6) {
       return wrapWithEmotionalSection(
-        <HeroMorphingShapes formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
+        <HeroMorphingShapes formData={formData} currentColors={currentColors} content={{
+          badge: content?.badge,
+          headline: content?.headline || formData?.businessName,
+          subheadline: content?.subheadline || content?.description,
+          description: content?.description,
+          buttons: content?.buttons,
+          colors: content?.colors,
+          cta: content?.cta
+        }} />
       );
     }
     if (selectedGradientDesign === 7) {
       return wrapWithEmotionalSection(
-        <HeroLiquidMetal formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
+        <HeroLiquidMetal formData={formData} currentColors={currentColors} content={{
+          badge: content?.badge,
+          headline: content?.headline || formData?.businessName,
+          subheadline: content?.subheadline || content?.description,
+          description: content?.description,
+          buttons: content?.buttons,
+          colors: content?.colors,
+          cta: content?.cta
+        }} />
       );
     }
     if (selectedGradientDesign === 8) {
       return wrapWithEmotionalSection(
-        <HeroGlassRefraction formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
+        <HeroGlassRefraction formData={formData} currentColors={currentColors} content={{
+          badge: content?.badge,
+          headline: content?.headline || formData?.businessName,
+          subheadline: content?.subheadline || content?.description,
+          description: content?.description,
+          buttons: content?.buttons,
+          colors: content?.colors,
+          cta: content?.cta
+        }} />
       );
     }
     if (selectedGradientDesign === 9) {
       return wrapWithEmotionalSection(
-        <HeroParticleStorm formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
+        <HeroParticleStorm formData={formData} currentColors={currentColors} content={{
+          badge: content?.badge,
+          headline: content?.headline || formData?.businessName,
+          subheadline: content?.subheadline || content?.description,
+          description: content?.description,
+          buttons: content?.buttons,
+          colors: content?.colors,
+          cta: content?.cta
+        }} />
       );
     }
     if (selectedGradientDesign === 10) {
       return wrapWithEmotionalSection(
-        <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
+        <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={{
+          badge: content?.badge,
+          headline: content?.headline || formData?.businessName,
+          subheadline: content?.subheadline || content?.description,
+          description: content?.description,
+          buttons: content?.buttons,
+          colors: content?.colors,
+          cta: content?.cta
+        }} />
       );
     }
     if (selectedGradientDesign === 11) {
       return wrapWithEmotionalSection(
-        <HeroDigitalWaves formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
+        <HeroDigitalWaves formData={formData} currentColors={currentColors} content={{
+          badge: content?.badge,
+          headline: content?.headline || formData?.businessName,
+          subheadline: content?.subheadline || content?.description,
+          description: content?.description,
+          buttons: content?.buttons,
+          colors: content?.colors,
+          cta: content?.cta
+        }} />
       );
     }
     if (selectedGradientDesign === 12) {
       return wrapWithEmotionalSection(
-        <HeroNeonGridPortal formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
+        <HeroNeonGridPortal formData={formData} currentColors={currentColors} content={{
+          badge: content?.badge,
+          headline: content?.headline || formData?.businessName,
+          subheadline: content?.subheadline || content?.description,
+          description: content?.description,
+          buttons: content?.buttons,
+          colors: content?.colors,
+          cta: content?.cta
+        }} />
       );
     }
     if (selectedGradientDesign === 13) {
       return wrapWithEmotionalSection(
-        <HeroQuantumBubbles formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
+        <HeroQuantumBubbles formData={formData} currentColors={currentColors} content={{
+          badge: content?.badge,
+          headline: content?.headline || formData?.businessName,
+          subheadline: content?.subheadline || content?.description,
+          description: content?.description,
+          buttons: content?.buttons,
+          colors: content?.colors,
+          cta: content?.cta
+        }} />
       );
     }
     if (selectedGradientDesign === 14) {
       return wrapWithEmotionalSection(
-        <HeroCosmicGeometry formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
+        <HeroCosmicGeometry formData={formData} currentColors={currentColors} content={{
+          badge: content?.badge,
+          headline: content?.headline || formData?.businessName,
+          subheadline: content?.subheadline || content?.description,
+          description: content?.description,
+          buttons: content?.buttons,
+          colors: content?.colors,
+          cta: content?.cta
+        }} />
       );
     }
   }
@@ -719,13 +812,21 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       setSelectedGlassDesign(Math.floor(Math.random() * 12));
     }, [formData?.businessName]);
 
-    const customContentProps = getCustomContentProps();
+    const customContentProps = {
+      badge: content?.badge,
+      headline: content?.headline || formData?.businessName,
+      subheadline: content?.subheadline || content?.description,
+      description: content?.description,
+      buttons: content?.buttons,
+      colors: content?.colors,
+      cta: content?.cta
+    };
 
     if (selectedGlassDesign === 0) {
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroGlassRefraction formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -733,7 +834,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroLiquidMetal formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -741,7 +842,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroFluidBlobs formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -749,7 +850,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroQuantumBubbles formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -757,7 +858,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroHolographic formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -765,7 +866,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroNeumorphism formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -773,7 +874,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroMinimalTech formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -781,7 +882,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -789,7 +890,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -804,7 +905,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               onClick: () => {}
             }}
           />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -823,7 +924,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               onClick: () => {}
             }}
           />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -834,7 +935,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             title={content?.headline || formData?.businessName || 'זכוכית נוזלית'}
             description={content?.subheadline || content?.description || 'עיצוב מתקדם וחדשני'}
           />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -848,13 +949,21 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       setSelectedGeometricDesign(Math.floor(Math.random() * 12));
     }, [formData?.businessName]);
 
-    const customContentProps = getCustomContentProps();
+    const customContentProps = {
+      badge: content?.badge,
+      headline: content?.headline || formData?.businessName,
+      subheadline: content?.subheadline || content?.description,
+      description: content?.description,
+      buttons: content?.buttons,
+      colors: content?.colors,
+      cta: content?.cta
+    };
 
     if (selectedGeometricDesign === 0) {
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroGeometricShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -862,7 +971,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroCosmicGeometry formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -874,7 +983,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             title1={content?.headline || formData?.businessName || 'העתיד'}
             title2={content?.subheadline || 'דיגיטלי'}
           />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -882,7 +991,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroFloatingCubes formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -890,7 +999,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroIsometricIllustration formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -898,7 +1007,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -906,7 +1015,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroNeonGridPortal formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -914,7 +1023,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -922,7 +1031,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroParticleStorm formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -930,7 +1039,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroNeonCyber formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -938,7 +1047,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroMinimalTech formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -946,7 +1055,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroDigitalWaves formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -960,13 +1069,21 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       setSelectedMetalDesign(Math.floor(Math.random() * 12));
     }, [formData?.businessName]);
 
-    const customContentProps = getCustomContentProps();
+    const customContentProps = {
+      badge: content?.badge,
+      headline: content?.headline || formData?.businessName,
+      subheadline: content?.subheadline || content?.description,
+      description: content?.description,
+      buttons: content?.buttons,
+      colors: content?.colors,
+      cta: content?.cta
+    };
 
     if (selectedMetalDesign === 0) {
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroLiquidMetal formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -974,7 +1091,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroMinimalTech formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -982,7 +1099,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroNeumorphism formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -990,7 +1107,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -998,7 +1115,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroNeonCyber formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1006,7 +1123,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroFloatingCubes formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1014,7 +1131,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroGeometricShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1022,7 +1139,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroCosmicGeometry formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1030,7 +1147,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroParticleStorm formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1038,7 +1155,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroDigitalWaves formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1046,7 +1163,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroHolographic formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1054,7 +1171,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1068,13 +1185,21 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       setSelectedImageDesign(Math.floor(Math.random() * 12));
     }, [formData?.businessName]);
 
-    const customContentProps = getCustomContentProps();
+    const customContentProps = {
+      badge: content?.badge,
+      headline: content?.headline || formData?.businessName,
+      subheadline: content?.subheadline || content?.description,
+      description: content?.description,
+      buttons: content?.buttons,
+      colors: content?.colors,
+      cta: content?.cta
+    };
 
     if (selectedImageDesign === 0) {
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroIsometricIllustration formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1082,7 +1207,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroHolographic formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1090,7 +1215,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroFluidBlobs formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1098,7 +1223,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroFloatingCubes formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1106,7 +1231,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1114,7 +1239,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroQuantumBubbles formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1122,7 +1247,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroParticleStorm formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1130,7 +1255,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1138,7 +1263,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroDigitalWaves formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1146,7 +1271,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroNeonGridPortal formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1154,7 +1279,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroGlassRefraction formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
@@ -1162,13 +1287,13 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <section className="relative overflow-hidden min-h-screen" style={getBackgroundStyle()}>
           <HeroFluidBlobs formData={formData} currentColors={currentColors} content={customContentProps} />
-          {renderEmotionalSection()}
+          {renderIntegratedEmotionalSection()}
         </section>
       );
     }
   }
 
-  // Fallback to basic design with custom styles and emotional section
+  // Fallback to basic design with custom styles and integrated emotional section
   return (
     <section 
       className="relative overflow-hidden min-h-screen flex flex-col"
@@ -1216,8 +1341,8 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           </div>
         </div>
         
-        {/* Emotional Section */}
-        {renderEmotionalSection()}
+        {/* Integrated Emotional Section */}
+        {renderIntegratedEmotionalSection()}
       </div>
     </section>
   );
