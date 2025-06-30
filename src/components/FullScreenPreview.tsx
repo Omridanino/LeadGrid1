@@ -1,10 +1,10 @@
+
 import { useState } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ColorScheme } from "@/types/colors";
 import { HeroSection } from "@/components/preview/HeroSection";
 import { NavigationSection } from "@/components/preview/NavigationSection";
-import { PreviewStyles } from "@/components/preview/PreviewStyles";
 
 interface FullScreenPreviewProps {
   content: any;
@@ -54,8 +54,6 @@ const FullScreenPreview = ({ content, currentColors, formData, heroImage, isOpen
           position: 'relative'
         }}
       >
-        <PreviewStyles />
-
         {/* Hero Section Only */}
         <HeroSection 
           content={content}

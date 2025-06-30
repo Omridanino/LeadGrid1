@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Search, Sparkles, Zap, Eye, Download, Filter } from "lucide-react";
 import { templates } from "@/data/templates";
-import { LandingPageTemplate } from "@/components/templates/LandingPageTemplate";
 
 interface TemplateSelectorProps {
   isOpen: boolean;
@@ -217,7 +216,14 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
                   בחר תבנית
                 </Button>
               </div>
-              <LandingPageTemplate template={previewTemplate} />
+              {/* Placeholder for template preview */}
+              <div className="w-full h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
+                <div className="text-center text-white">
+                  <Sparkles className="w-16 h-16 mx-auto mb-4 text-purple-400" />
+                  <h2 className="text-2xl font-bold mb-2">{previewTemplate.name}</h2>
+                  <p className="text-gray-400">תצוגה מקדימה של התבנית</p>
+                </div>
+              </div>
             </div>
           </DialogContent>
         </Dialog>

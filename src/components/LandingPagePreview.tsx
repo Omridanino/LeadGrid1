@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { ColorScheme } from "@/types/colors";
 import HeroSection from "@/components/HeroSection";
-import { LandingPageTemplate } from "@/components/templates/LandingPageTemplate";
 
 interface LandingPagePreviewProps {
   content: any;
@@ -20,22 +19,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
           <p className="text-lg">טוען את הדף שלך...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // If there's a selected template, show it
-  if (formData.selectedTemplate) {
-    return (
-      <div className="w-full h-full" style={{ 
-        maxHeight: '100vh', 
-        overflowY: 'auto', 
-        overflowX: 'hidden',
-        scrollBehavior: 'smooth'
-      }}>
-        <div className="w-full min-h-screen" style={{ position: 'relative' }}>
-          <LandingPageTemplate template={formData.selectedTemplate} />
         </div>
       </div>
     );
