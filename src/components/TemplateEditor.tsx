@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -167,13 +168,13 @@ const TemplateEditor = ({ template, onTemplateChange, onClose }: TemplateEditorP
               <Button
                 onClick={() => setIsTabsCollapsed(!isTabsCollapsed)}
                 size="sm"
-                className="bg-gray-700 hover:bg-gray-600 text-white"
+                className="bg-gray-700 hover:bg-gray-600 text-white flex items-center gap-2"
               >
                 {isTabsCollapsed ? <Plus className="w-4 h-4" /> : <Minus className="w-4 h-4" />}
+                <span className="text-xs">
+                  {isTabsCollapsed ? 'פתח את עריכת הסקשנים' : 'סגור את עריכת הסקשנים'}
+                </span>
               </Button>
-              {!isTabsCollapsed && (
-                <span className="text-gray-400 text-sm">סקשנים</span>
-              )}
             </div>
             
             {!isTabsCollapsed && (
