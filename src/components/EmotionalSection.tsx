@@ -11,6 +11,9 @@ interface EmotionalSectionProps {
 }
 
 export const EmotionalSection = ({ content, currentColors, formData, selectedHeroDesign }: EmotionalSectionProps) => {
+  console.log('EmotionalSection - selectedHeroDesign:', selectedHeroDesign);
+  console.log('EmotionalSection - formData.designStyle:', formData?.designStyle);
+  
   const emotionalContent = content?.emotionalSection || {};
   
   const renderAdvancedButton = (button: any, index: number) => {
@@ -127,68 +130,106 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
     return {};
   };
 
-  // Apply hero design styles when useHeroDesign is true
-  const getHeroBasedStyles = () => {
-    if (!useHeroDesign || !selectedHeroDesign) {
+  // מחזיר את הסגנון המדויק של ההירו הנבחר
+  const getHeroMatchingStyles = () => {
+    if (!useHeroDesign) {
+      // אם לא בסגנון הירו, השתמש ברקע הרגיל
       return {
         background: backgroundColor === 'default' ? '#1e1e2e' : backgroundColor,
         backgroundImage: backgroundColor?.includes('gradient') ? backgroundColor : undefined
       };
     }
 
-    // Copy exact styling from each hero design
+    console.log('Using hero design:', selectedHeroDesign);
+    console.log('Design style:', formData?.designStyle);
+
+    // אם צריך להתאים לסגנון הירו, העתק את הסגנון הספציפי
     switch (selectedHeroDesign) {
-      case 'hero-futuristic':
+      case 'hero-section-clean':
+        return { 
+          background: 'black',
+          color: '#ffffff'
+        };
+      case 'hero-section-modern':
         return { 
           background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          position: 'relative' as const
+          color: '#ffffff'
         };
+      case 'hero-section-lamp':
+        return { 
+          background: 'radial-gradient(ellipse 80% 80% at 50% -20%, rgba(120, 119, 198, 0.3), rgba(255, 255, 255, 0))',
+          backgroundColor: '#0a0a0a',
+          color: '#ffffff'
+        };
+      case 'hero-section-retro':
+        return { 
+          background: 'linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1)',
+          color: '#ffffff'
+        };
+      case 'hero-section-classic':
+        return { 
+          background: 'black',
+          backgroundImage: 'linear-gradient(to right,#4f4f4f2e 1px,transparent 1px),linear-gradient(to bottom,#4f4f4f2e 1px,transparent 1px)',
+          backgroundSize: '14px 24px',
+          color: '#ffffff'
+        };
+      case 'hero-section-elegant':
+        return { 
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          color: '#ffffff'
+        };
+      case 'hero-section-minimal':
+        return { 
+          background: 'rgba(0,0,0,0.96)',
+          color: '#ffffff'
+        };
+      // עיצובי Gradient
+      case 'hero-geometric':
       case 'hero-neon-cyber':
-        return { 
-          background: 'linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e)',
-          position: 'relative' as const
-        };
+      case 'hero-floating-cubes':
       case 'hero-holographic':
-        return { 
-          background: 'radial-gradient(ellipse at center, #1e3c72 0%, #2a5298 100%)',
-          position: 'relative' as const
-        };
-      case 'hero-liquid-metal':
-        return { 
-          background: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)',
-          position: 'relative' as const
-        };
-      case 'hero-glass-refraction':
-        return { 
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
-          backdropFilter: 'blur(20px)',
-          position: 'relative' as const
-        };
-      case 'hero-parallax':
-        return { 
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          position: 'relative' as const
-        };
-      case 'hero-particle-storm':
-        return { 
-          background: '#000000',
-          position: 'relative' as const
-        };
       case 'hero-morphing-shapes':
-        return { 
-          background: 'linear-gradient(135deg, #667eea, #764ba2, #f093fb)',
-          position: 'relative' as const
-        };
+      case 'hero-liquid-metal':
+      case 'hero-glass-refraction':
+      case 'hero-particle-storm':
+      case 'hero-crystal-matrix':
+      case 'hero-digital-waves':
+      case 'hero-neon-grid-portal':
       case 'hero-quantum-bubbles':
+      case 'hero-cosmic-geometry':
         return { 
           background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          position: 'relative' as const
+          color: '#ffffff'
         };
       default:
-        return { 
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          position: 'relative' as const
-        };
+        // ברירת מחדל לפי סגנון העיצוב הכללי
+        if (formData?.designStyle === 'gradient') {
+          return { 
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: '#ffffff'
+          };
+        } else if (formData?.designStyle === 'glass') {
+          return { 
+            background: 'rgba(255,255,255,0.1)',
+            backdropFilter: 'blur(20px)',
+            color: '#ffffff'
+          };
+        } else if (formData?.designStyle === 'metal') {
+          return { 
+            background: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)',
+            color: '#ffffff'
+          };
+        } else if (formData?.designStyle === 'geometric') {
+          return { 
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: '#ffffff'
+          };
+        } else {
+          return { 
+            background: '#1e1e2e',
+            color: '#ffffff'
+          };
+        }
     }
   };
 
@@ -334,11 +375,12 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
   };
 
   const heroTextStyles = getHeroBasedTextStyles();
+  const heroStyles = getHeroMatchingStyles();
 
   return (
     <section 
       className={cn("py-20 px-8", getHeroBasedClasses())}
-      style={getHeroBasedStyles()}
+      style={heroStyles}
     >
       {renderHeroBasedEffects()}
       
