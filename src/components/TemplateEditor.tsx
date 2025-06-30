@@ -16,7 +16,6 @@ import {
   MessageSquare,
   Building,
   Eye,
-  Palette,
   EyeOff,
   Minus,
   Plus
@@ -32,7 +31,6 @@ import { PricingEditor } from './template-editor/PricingEditor';
 import { FaqEditor } from './template-editor/FaqEditor';
 import { FinalCtaEditor } from './template-editor/FinalCtaEditor';
 import { ContactEditor } from './template-editor/ContactEditor';
-import { StylesEditor } from './template-editor/StylesEditor';
 
 interface TemplateEditorProps {
   template: TemplateData;
@@ -88,32 +86,29 @@ const TemplateEditor = ({ template, onTemplateChange, onClose }: TemplateEditorP
     { id: 'pricing', name: 'מחירים', icon: DollarSign },
     { id: 'faq', name: 'שאלות', icon: HelpCircle },
     { id: 'finalCta', name: 'קריאה לפעולה', icon: Zap },
-    { id: 'contact', name: 'יצירת קשר', icon: MessageSquare },
-    { id: 'styles', name: 'עיצוב', icon: Palette }
+    { id: 'contact', name: 'יצירת קשר', icon: MessageSquare }
   ];
 
   const renderEditor = () => {
     switch (activeTab) {
       case 'hero':
-        return <HeroEditor template={editedTemplate} onUpdate={(updates) => updateSection('hero', updates)} />;
+        return <HeroEditor template={editedTemplate} onUpdate={(updates) => updateSection('hero', updates)} onStyleUpdate={updateStyles} />;
       case 'emotional':
-        return <EmotionalEditor template={editedTemplate} onUpdate={(updates) => updateSection('emotional', updates)} />;
+        return <EmotionalEditor template={editedTemplate} onUpdate={(updates) => updateSection('emotional', updates)} onStyleUpdate={updateStyles} />;
       case 'features':
-        return <FeaturesEditor template={editedTemplate} onUpdate={(updates) => updateSection('features', updates)} />;
+        return <FeaturesEditor template={editedTemplate} onUpdate={(updates) => updateSection('features', updates)} onStyleUpdate={updateStyles} />;
       case 'testimonials':
-        return <TestimonialsEditor template={editedTemplate} onUpdate={(updates) => updateSection('testimonials', updates)} />;
+        return <TestimonialsEditor template={editedTemplate} onUpdate={(updates) => updateSection('testimonials', updates)} onStyleUpdate={updateStyles} />;
       case 'about':
-        return <AboutEditor template={editedTemplate} onUpdate={(updates) => updateSection('about', updates)} />;
+        return <AboutEditor template={editedTemplate} onUpdate={(updates) => updateSection('about', updates)} onStyleUpdate={updateStyles} />;
       case 'pricing':
-        return <PricingEditor template={editedTemplate} onUpdate={(updates) => updateSection('pricing', updates)} />;
+        return <PricingEditor template={editedTemplate} onUpdate={(updates) => updateSection('pricing', updates)} onStyleUpdate={updateStyles} />;
       case 'faq':
-        return <FaqEditor template={editedTemplate} onUpdate={(updates) => updateSection('faq', updates)} />;
+        return <FaqEditor template={editedTemplate} onUpdate={(updates) => updateSection('faq', updates)} onStyleUpdate={updateStyles} />;
       case 'finalCta':
-        return <FinalCtaEditor template={editedTemplate} onUpdate={(updates) => updateSection('finalCta', updates)} />;
+        return <FinalCtaEditor template={editedTemplate} onUpdate={(updates) => updateSection('finalCta', updates)} onStyleUpdate={updateStyles} />;
       case 'contact':
-        return <ContactEditor template={editedTemplate} onUpdate={(updates) => updateSection('contact', updates)} />;
-      case 'styles':
-        return <StylesEditor template={editedTemplate} onUpdate={updateStyles} />;
+        return <ContactEditor template={editedTemplate} onUpdate={(updates) => updateSection('contact', updates)} onStyleUpdate={updateStyles} />;
       default:
         return null;
     }
