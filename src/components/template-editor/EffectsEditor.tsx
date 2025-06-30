@@ -43,7 +43,11 @@ export const EffectsEditor = ({ template, onUpdate }: EffectsEditorProps) => {
   };
 
   const handleEffectToggle = (sectionId: string, enabled: boolean) => {
-    if (!enabled) {
+    if (enabled) {
+      // When enabling, set a default effect (first one in the list)
+      onUpdate(sectionId, availableEffects[0].id);
+    } else {
+      // When disabling, remove the effect
       onUpdate(sectionId, null);
     }
   };
@@ -78,7 +82,7 @@ export const EffectsEditor = ({ template, onUpdate }: EffectsEditorProps) => {
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-white text-base">{section.name}</CardTitle>
                     <div className="flex items-center gap-2">
-                      {isEnabled && (
+                      {isEnabled && currentEffect && (
                         <Badge variant="secondary" className="text-xs">
                           {availableEffects.find(e => e.id === currentEffect)?.name}
                         </Badge>
