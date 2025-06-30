@@ -1,3 +1,4 @@
+
 import { ColorScheme } from "@/types/colors";
 import { LiquidButton, MetalButton } from "@/components/ui/liquid-glass-button";
 import { cn } from "@/lib/utils";
@@ -17,7 +18,7 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
   const emotionalContent = content?.emotionalSection || {};
   
   // Add local state for useHeroDesign toggle
-  const [useHeroDesign, setUseHeroDesign] = useState(emotionalContent.useHeroDesign || false);
+  const [useHeroDesign, setUseHeroDesign] = useState(false);
   
   const renderAdvancedButton = (button: any, index: number) => {
     const buttonStyle = button?.style || 'default';
@@ -142,10 +143,9 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
       return { backgroundColor: backgroundColor === 'default' ? '#1e1e2e' : backgroundColor };
     }
 
-    console.log('Using hero design:', selectedHeroDesign);
-    console.log('Design style:', formData?.designStyle);
+    console.log('Copying hero background for design:', selectedHeroDesign);
 
-    // אם צריך להתאים לסגנון הירו, העתק את הסגנון הספציפי
+    // העתק את הרקע המדויק של ההירו
     switch (selectedHeroDesign) {
       case 'hero-section-clean':
         return { 
@@ -187,22 +187,18 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
         };
       // עיצובי מתכת
       case 'hero-minimal-tech':
-        return { 
-          backgroundImage: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)',
-          color: '#ffffff'
-        };
       case 'hero-liquid-metal':
         return { 
           backgroundImage: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)',
           color: '#ffffff'
         };
-      // עיצובי Gradient
+      // עיצובי Gradient וגיאומטריים
       case 'hero-geometric':
       case 'hero-neon-cyber':
       case 'hero-floating-cubes':
       case 'hero-holographic':
       case 'hero-morphing-shapes':
-      case 'hero-glass-refraction':
+      case 'hero-glass-refraction':  
       case 'hero-particle-storm':
       case 'hero-crystal-matrix':
       case 'hero-digital-waves':
@@ -389,6 +385,12 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
   const heroTextStyles = getHeroBasedTextStyles();
   const heroStyles = getHeroMatchingStyles();
 
+  const handleToggleHeroDesign = () => {
+    console.log('Toggle clicked - current state:', useHeroDesign);
+    setUseHeroDesign(!useHeroDesign);
+    console.log('New state will be:', !useHeroDesign);
+  };
+
   return (
     <section 
       className={cn("py-20 px-8", getHeroBasedClasses())}
@@ -400,10 +402,7 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
         {/* Toggle Button for Hero Design */}
         <div className="mb-6">
           <button
-            onClick={() => {
-              console.log('Toggle useHeroDesign from', useHeroDesign, 'to', !useHeroDesign);
-              setUseHeroDesign(!useHeroDesign);
-            }}
+            onClick={handleToggleHeroDesign}
             className={cn(
               "px-4 py-2 rounded-lg text-sm font-medium transition-all",
               useHeroDesign 
