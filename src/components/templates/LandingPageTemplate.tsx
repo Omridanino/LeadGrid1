@@ -1,4 +1,3 @@
-
 import { TemplateData } from "@/types/template";
 import { HeroTemplateSection } from "./sections/HeroTemplateSection";
 import { EmotionalTemplateSection } from "./sections/EmotionalTemplateSection";
@@ -26,12 +25,15 @@ export const LandingPageTemplate = ({ template }: LandingPageTemplateProps) => {
           {...template.hero}
           className={`${styles.heroBackground} template-text-${styles.backgroundColor.includes('black') || styles.backgroundColor.includes('gray-9') ? 'dark' : 'light'}`}
           designStyle={template.category}
+          templateId={template.id}
         />
 
         {/* Emotional Section */}
         <EmotionalTemplateSection
           {...template.emotional}
           className={`${styles.emotionalBackground} template-text-${styles.backgroundColor.includes('black') || styles.backgroundColor.includes('gray-9') ? 'dark' : 'light'}`}
+          designStyle={template.category}
+          templateId={template.id}
         />
 
         {/* Testimonials Section */}
