@@ -102,15 +102,15 @@ export const EffectsEditor = ({ template, onUpdate }: EffectsEditorProps) => {
                         <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
                           <SelectValue placeholder="בחר אפקט..." />
                         </SelectTrigger>
-                        <SelectContent className="bg-gray-700 border-gray-600">
+                        <SelectContent className="bg-gray-800 border-gray-600 z-[100]">
                           {availableEffects.map((effect) => (
                             <SelectItem 
                               key={effect.id} 
                               value={effect.id}
-                              className="text-white hover:bg-gray-600"
+                              className="text-white hover:bg-gray-700 focus:bg-gray-700 bg-gray-800"
                             >
-                              <div className="text-right">
-                                <div className="font-medium">{effect.name}</div>
+                              <div className="text-right w-full">
+                                <div className="font-medium text-white">{effect.name}</div>
                                 <div className="text-xs text-gray-400">{effect.description}</div>
                               </div>
                             </SelectItem>
