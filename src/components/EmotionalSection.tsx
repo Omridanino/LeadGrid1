@@ -127,107 +127,131 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
     return {};
   };
 
-  const getHeroBackgroundStyle = () => {
-    console.log('Getting hero background style, currentColors:', currentColors);
-    console.log('Hero background from currentColors:', currentColors.heroBackground);
-    console.log('Background from currentColors:', currentColors.background);
-    console.log('Primary from currentColors:', currentColors.primary);
+  // Function to get the actual hero background based on the design style and random selection
+  const getActualHeroBackground = () => {
+    const designStyle = formData?.designStyle || 'basic';
     
-    // First try to get the hero background from currentColors
-    if (currentColors.heroBackground && currentColors.heroBackground !== '#000000') {
-      console.log('Using heroBackground:', currentColors.heroBackground);
-      if (currentColors.heroBackground.includes('gradient')) {
-        return { background: currentColors.heroBackground };
+    // Get the same random seed logic that HeroSection uses
+    const businessName = formData?.businessName || '';
+    const businessType = formData?.businessType || '';
+    const seedString = businessName + businessType;
+    const seed = seedString.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    
+    if (designStyle === 'basic' || designStyle.startsWith('hero-section-')) {
+      const availableDesigns = [
+        'hero-section-clean',
+        'hero-section-minimal',
+        'hero-section-classic',
+        'hero-section-elegant',
+        'hero-section-modern',
+        'hero-section-lamp',
+        'hero-section-retro'
+      ];
+      const selectedIndex = seed % availableDesigns.length;
+      const selectedDesign = availableDesigns[selectedIndex];
+      
+      switch (selectedDesign) {
+        case 'hero-section-minimal':
+          return { backgroundColor: 'black' };
+        case 'hero-section-clean':
+          return { background: 'linear-gradient(135deg, #1e293b 0%, #334155 100%)' };
+        case 'hero-section-modern':
+          return { background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)' };
+        case 'hero-section-lamp':
+          return { backgroundColor: '#0a0a0a' };
+        case 'hero-section-retro':
+          return { background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)' };
+        case 'hero-section-classic':
+          return { backgroundColor: 'black' };
+        case 'hero-section-elegant':
+          return { background: 'linear-gradient(135deg, #581c87 0%, #1e3a8a 50%, #312e81 100%)' };
+        default:
+          return { backgroundColor: 'black' };
       }
-      return { backgroundColor: currentColors.heroBackground };
     }
     
-    // Then try the regular background
-    if (currentColors.background && currentColors.background !== '#000000') {
-      console.log('Using background:', currentColors.background);
-      if (currentColors.background.includes('gradient')) {
-        return { background: currentColors.background };
+    if (designStyle === 'gradient') {
+      const selectedIndex = seed % 15;
+      switch (selectedIndex) {
+        case 0:
+        case 1:
+        case 9:
+        case 10:
+          return { background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' };
+        case 2:
+          return { background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)' };
+        case 3:
+        case 9:
+          return { background: 'linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e)' };
+        case 4:
+        case 5:
+          return { background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)' };
+        case 6:
+        case 7:
+          return { background: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)' };
+        case 8:
+          return { 
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
+            backdropFilter: 'blur(20px)'
+          };
+        default:
+          return { background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' };
       }
-      return { backgroundColor: currentColors.background };
     }
     
-    // Check for primary color as fallback
-    if (currentColors.primary && currentColors.primary !== '#000000') {
-      console.log('Using primary as fallback:', currentColors.primary);
-      return { backgroundColor: currentColors.primary };
-    }
-    
-    // Last resort - check the design style for appropriate background
-    const designStyle = formData?.designStyle;
-    console.log('Design style for fallback:', designStyle);
-    
-    switch (designStyle) {
-      case 'metal':
-        return { 
-          background: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)'
-        };
-      case 'glass':
+    if (designStyle === 'glass') {
+      const selectedIndex = seed % 12;
+      if (selectedIndex <= 3) {
         return { 
           background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
           backdropFilter: 'blur(20px)'
         };
-      case 'gradient':
-        return { 
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-        };
-      case 'geometric':
-        return { 
-          background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)'
-        };
-      default:
-        return { 
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-        };
+      } else if (selectedIndex <= 6) {
+        return { background: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)' };
+      } else {
+        return { background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)' };
+      }
     }
+    
+    if (designStyle === 'geometric') {
+      const selectedIndex = seed % 12;
+      if (selectedIndex <= 3) {
+        return { background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)' };
+      } else if (selectedIndex <= 6) {
+        return { background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)' };
+      } else {
+        return { background: 'linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e)' };
+      }
+    }
+    
+    if (designStyle === 'metal') {
+      return { background: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)' };
+    }
+    
+    if (designStyle === 'image') {
+      const selectedIndex = seed % 12;
+      if (selectedIndex <= 3) {
+        return { background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)' };
+      } else if (selectedIndex <= 6) {
+        return { background: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)' };
+      } else {
+        return { background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' };
+      }
+    }
+    
+    // Fallback
+    return { background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' };
   };
 
   const getBackgroundStyle = () => {
-    console.log('Getting background style, useHeroDesign:', useHeroDesign);
-    
     if (useHeroDesign) {
-      // Apply hero background style when using hero design
-      const heroStyle = getHeroBackgroundStyle();
-      console.log('Applied hero style:', heroStyle);
-      
-      // Apply hero design styling based on selectedHeroDesign or hero background
-      switch (selectedHeroDesign) {
-        case 'hero-futuristic':
-          return { 
-            ...heroStyle,
-            position: 'relative' as const
-          };
-        case 'hero-neon-cyber':
-          return { 
-            ...heroStyle,
-            position: 'relative' as const
-          };
-        case 'hero-holographic':
-          return { 
-            ...heroStyle,
-            position: 'relative' as const
-          };
-        case 'hero-liquid-metal':
-          return { 
-            ...heroStyle,
-            position: 'relative' as const
-          };
-        case 'hero-glass-refraction':
-          return { 
-            ...heroStyle,
-            backdropFilter: 'blur(20px)',
-            position: 'relative' as const
-          };
-        default:
-          return { 
-            ...heroStyle,
-            position: 'relative' as const
-          };
-      }
+      // Get the actual hero background that's being displayed
+      const heroStyle = getActualHeroBackground();
+      console.log('Using actual hero background:', heroStyle);
+      return { 
+        ...heroStyle,
+        position: 'relative' as const
+      };
     }
     
     if (backgroundColor === 'default') {
