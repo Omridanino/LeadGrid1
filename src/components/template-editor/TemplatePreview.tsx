@@ -29,6 +29,7 @@ const getEffectClasses = (effectType: string | null) => {
   if (!effectType) return '';
   
   switch (effectType) {
+    // Basic Effects
     case 'fade-in':
       return 'animate-fade-in';
     case 'slide-up':
@@ -49,10 +50,65 @@ const getEffectClasses = (effectType: string | null) => {
       return 'animate-tilt';
     case 'shimmer':
       return 'animate-shimmer';
-    case 'glow':
-      return 'animate-pulse-glow';
+    
+    // 3D Effects
+    case 'flip-3d':
+      return 'animate-flip-3d';
+    case 'cube-rotate':
+      return 'animate-cube-rotate';
+    case 'elastic-bounce':
+      return 'animate-elastic-bounce';
+    
+    // Particle Effects
     case 'particles':
       return 'particles-bg';
+    case 'stardust':
+      return 'stardust-bg';
+    case 'particle-float':
+      return 'animate-particle-float';
+    
+    // Light Effects
+    case 'aurora':
+      return 'animate-aurora';
+    case 'light-beam':
+      return 'light-beam-bg';
+    case 'pulse-glow':
+      return 'animate-pulse-glow';
+    case 'holographic':
+      return 'animate-holographic';
+    
+    // Morphing Effects
+    case 'morph':
+      return 'animate-morph';
+    case 'liquid-distort':
+      return 'animate-liquid-distort';
+    
+    // Interactive Effects
+    case 'magnetic-pull':
+      return 'animate-magnetic-pull magnetic-field';
+    case 'ripple':
+      return 'animate-ripple';
+    
+    // Motion Effects
+    case 'vortex':
+      return 'animate-vortex';
+    case 'spiral':
+      return 'animate-spiral';
+    case 'orbital':
+      return 'animate-orbital';
+    
+    // Color Effects
+    case 'color-breathing':
+      return 'animate-color-breathing';
+    case 'rainbow-wave':
+      return 'animate-rainbow-wave';
+    case 'gradient-shift':
+      return 'animate-gradient-shift';
+    
+    // Glass Effects
+    case 'glass-morph':
+      return 'animate-glass-morph glass-effect';
+    
     default:
       return '';
   }
@@ -72,7 +128,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
               {template.hero.badge}
             </Badge>
           )}
-          <h1 className="text-4xl md:text-6xl font-bold mb-4" style={{ color: template.styles.heroBackgroundImage ? '#ffffff' : template.styles.textColor }}>
+          <h1 className={`text-4xl md:text-6xl font-bold mb-4 ${template.effects?.hero === 'holographic' ? 'holographic-text' : ''}`} style={{ color: template.styles.heroBackgroundImage ? '#ffffff' : template.styles.textColor }}>
             {template.hero.title}
           </h1>
           <h2 className="text-xl md:text-2xl mb-6" style={{ color: template.styles.heroBackgroundImage ? '#ffffff' : template.styles.textColor, opacity: 0.9 }}>
@@ -82,7 +138,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
             {template.hero.description}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-white flex items-center gap-2" style={{ backgroundColor: template.styles.accentColor }}>
+            <Button size="lg" className={`text-white flex items-center gap-2 ${template.effects?.hero === 'liquid-distort' ? 'liquid-button' : ''}`} style={{ backgroundColor: template.styles.accentColor }}>
               {template.hero.button1Icon && <i className={`ri-${template.hero.button1Icon}`}></i>}
               {template.hero.button1Text}
             </Button>
@@ -105,7 +161,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
               {template.emotional.badge}
             </Badge>
           )}
-          <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: template.styles.emotionalBackgroundImage ? '#ffffff' : template.styles.textColor }}>
+          <h2 className={`text-3xl md:text-4xl font-bold mb-6 ${template.effects?.emotional === 'holographic' ? 'holographic-text' : ''}`} style={{ color: template.styles.emotionalBackgroundImage ? '#ffffff' : template.styles.textColor }}>
             {template.emotional.title}
           </h2>
           <p className="text-lg leading-relaxed opacity-90 mb-8" style={{ color: template.styles.emotionalBackgroundImage ? '#ffffff' : template.styles.textColor }}>
@@ -136,7 +192,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
                 {template.features.badge}
               </Badge>
             )}
-            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: template.styles.featuresBackgroundImage ? '#ffffff' : template.styles.textColor }}>
+            <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${template.effects?.features === 'holographic' ? 'holographic-text' : ''}`} style={{ color: template.styles.featuresBackgroundImage ? '#ffffff' : template.styles.textColor }}>
               {template.features.title}
             </h2>
             {template.features.subtitle && (
@@ -148,7 +204,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             {template.features.items.map((item, index) => (
-              <Card key={index} className="text-center p-6 border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <Card key={index} className={`text-center p-6 border-0 shadow-lg hover:shadow-xl transition-shadow ${template.effects?.features === 'glass-morph' ? 'glass-effect' : ''}`}>
                 <div className="text-4xl mb-4">{item.icon}</div>
                 <h3 className="text-xl font-bold mb-2" style={{ color: template.styles.textColor }}>{item.title}</h3>
                 <p className="opacity-80" style={{ color: template.styles.textColor }}>{item.description}</p>
@@ -181,14 +237,14 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
                 {template.testimonials.badge}
               </Badge>
             )}
-            <h2 className="text-3xl md:text-4xl font-bold" style={{ color: template.styles.testimonialsBackgroundImage ? '#ffffff' : template.styles.textColor }}>
+            <h2 className={`text-3xl md:text-4xl font-bold ${template.effects?.testimonials === 'holographic' ? 'holographic-text' : ''}`} style={{ color: template.styles.testimonialsBackgroundImage ? '#ffffff' : template.styles.textColor }}>
               {template.testimonials.title}
             </h2>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             {template.testimonials.testimonials.map((testimonial, index) => (
-              <Card key={index} className="p-6 border-0 shadow-lg">
+              <Card key={index} className={`p-6 border-0 shadow-lg ${template.effects?.testimonials === 'glass-morph' ? 'glass-effect' : ''}`}>
                 <div className="flex items-center mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
@@ -228,7 +284,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
                 {template.about.badge}
               </Badge>
             )}
-            <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: template.styles.aboutBackgroundImage ? '#ffffff' : template.styles.textColor }}>
+            <h2 className={`text-3xl md:text-4xl font-bold mb-6 ${template.effects?.about === 'holographic' ? 'holographic-text' : ''}`} style={{ color: template.styles.aboutBackgroundImage ? '#ffffff' : template.styles.textColor }}>
               {template.about.title}
             </h2>
             <p className="text-lg max-w-4xl mx-auto opacity-90" style={{ color: template.styles.aboutBackgroundImage ? '#ffffff' : template.styles.textColor }}>
@@ -274,7 +330,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
                 {template.pricing.badge}
               </Badge>
             )}
-            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: template.styles.pricingBackgroundImage ? '#ffffff' : template.styles.textColor }}>
+            <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${template.effects?.pricing === 'holographic' ? 'holographic-text' : ''}`} style={{ color: template.styles.pricingBackgroundImage ? '#ffffff' : template.styles.textColor }}>
               {template.pricing.title}
             </h2>
             {template.pricing.subtitle && (
@@ -286,7 +342,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
           
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             {template.pricing.plans.map((plan, index) => (
-              <Card key={index} className={`p-6 text-center ${plan.recommended ? 'ring-2 ring-blue-500 scale-105' : ''}`}>
+              <Card key={index} className={`p-6 text-center ${plan.recommended ? 'ring-2 ring-blue-500 scale-105' : ''} ${template.effects?.pricing === 'glass-morph' ? 'glass-effect' : ''}`}>
                 <h3 className="text-2xl font-bold mb-4" style={{ color: template.styles.textColor }}>{plan.name}</h3>
                 <div className="mb-6">
                   <span className="text-4xl font-bold" style={{ color: template.styles.primaryColor }}>{plan.price}</span>
@@ -332,14 +388,14 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
                 {template.faq.badge}
               </Badge>
             )}
-            <h2 className="text-3xl md:text-4xl font-bold" style={{ color: template.styles.faqBackgroundImage ? '#ffffff' : template.styles.textColor }}>
+            <h2 className={`text-3xl md:text-4xl font-bold ${template.effects?.faq === 'holographic' ? 'holographic-text' : ''}`} style={{ color: template.styles.faqBackgroundImage ? '#ffffff' : template.styles.textColor }}>
               {template.faq.title}
             </h2>
           </div>
           
           <div className="space-y-4 mb-12">
             {template.faq.questions.map((qa, index) => (
-              <Card key={index} className="p-6">
+              <Card key={index} className={`p-6 ${template.effects?.faq === 'glass-morph' ? 'glass-effect' : ''}`}>
                 <h3 className="text-lg font-bold mb-2 text-right" style={{ color: template.styles.textColor }}>{qa.question}</h3>
                 <p className="opacity-80 text-right" style={{ color: template.styles.textColor }}>{qa.answer}</p>
               </Card>
@@ -370,7 +426,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
               {template.finalCta.badge}
             </Badge>
           )}
-          <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: template.styles.finalCtaBackgroundImage ? '#ffffff' : template.styles.textColor }}>
+          <h2 className={`text-3xl md:text-4xl font-bold mb-6 ${template.effects?.finalCta === 'holographic' ? 'holographic-text' : ''}`} style={{ color: template.styles.finalCtaBackgroundImage ? '#ffffff' : template.styles.textColor }}>
             {template.finalCta.title}
           </h2>
           <p className="text-lg mb-8" style={{ color: template.styles.finalCtaBackgroundImage ? '#ffffff' : template.styles.textColor, opacity: 0.9 }}>
@@ -395,7 +451,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
           <div className="absolute inset-0 bg-black/30"></div>
         )}
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: template.styles.contactBackgroundImage ? '#ffffff' : template.styles.textColor }}>
+          <h2 className={`text-3xl md:text-4xl font-bold mb-6 ${template.effects?.contact === 'holographic' ? 'holographic-text' : ''}`} style={{ color: template.styles.contactBackgroundImage ? '#ffffff' : template.styles.textColor }}>
             {template.contact.title}
           </h2>
           {template.contact.subtitle && (
@@ -403,7 +459,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
               {template.contact.subtitle}
             </p>
           )}
-          <Card className="p-8 max-w-md mx-auto">
+          <Card className={`p-8 max-w-md mx-auto ${template.effects?.contact === 'glass-morph' ? 'glass-effect' : ''}`}>
             <div className="space-y-4">
               <Input placeholder="שם מלא" className="text-right" />
               <Input placeholder="אימייל" className="text-right" />
