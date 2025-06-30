@@ -2,7 +2,7 @@
 export interface TemplateData {
   id: number;
   name: string;
-  category: 'basic' | '3d' | 'glass' | 'geometric' | 'creative';
+  category: 'minimal' | 'colorful' | 'artistic' | 'corporate' | 'organic' | 'tech';
   hero: {
     badge?: string;
     title: string;
