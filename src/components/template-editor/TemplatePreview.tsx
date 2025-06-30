@@ -53,9 +53,17 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             {template.emotional.title}
           </h2>
-          <p className="text-lg leading-relaxed opacity-90">
+          <p className="text-lg leading-relaxed opacity-90 mb-8">
             {template.emotional.description}
           </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor }}>
+              {template.emotional.button1Text}
+            </Button>
+            <Button size="lg" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
+              {template.emotional.button2Text}
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -78,7 +86,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
             )}
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             {template.features.items.map((item, index) => (
               <Card key={index} className="text-center p-6 border-0 shadow-lg hover:shadow-xl transition-shadow">
                 <div className="text-4xl mb-4">{item.icon}</div>
@@ -86,6 +94,15 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
                 <p className="opacity-80">{item.description}</p>
               </Card>
             ))}
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor }}>
+              {template.features.button1Text}
+            </Button>
+            <Button size="lg" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
+              {template.features.button2Text}
+            </Button>
           </div>
         </div>
       </section>
@@ -104,7 +121,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
             </h2>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             {template.testimonials.testimonials.map((testimonial, index) => (
               <Card key={index} className="p-6 border-0 shadow-lg">
                 <div className="flex items-center mb-4">
@@ -119,6 +136,15 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
                 </div>
               </Card>
             ))}
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor }}>
+              {template.testimonials.button1Text}
+            </Button>
+            <Button size="lg" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
+              {template.testimonials.button2Text}
+            </Button>
           </div>
         </div>
       </section>
@@ -141,7 +167,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
           </div>
           
           {template.about.stats && template.about.stats.length > 0 && (
-            <div className="grid md:grid-cols-3 gap-8 text-center">
+            <div className="grid md:grid-cols-3 gap-8 text-center mb-12">
               {template.about.stats.map((stat, index) => (
                 <div key={index}>
                   <div className="text-4xl font-bold mb-2" style={{ color: template.styles.primaryColor }}>
@@ -152,6 +178,15 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
               ))}
             </div>
           )}
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor }}>
+              {template.about.button1Text}
+            </Button>
+            <Button size="lg" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
+              {template.about.button2Text}
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -174,7 +209,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
             )}
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
             {template.pricing.plans.map((plan, index) => (
               <Card key={index} className={`p-6 text-center ${plan.recommended ? 'ring-2 ring-blue-500 scale-105' : ''}`}>
                 <h3 className="text-2xl font-bold mb-4">{plan.name}</h3>
@@ -196,6 +231,15 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
               </Card>
             ))}
           </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor }}>
+              {template.pricing.button1Text}
+            </Button>
+            <Button size="lg" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
+              {template.pricing.button2Text}
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -213,13 +257,22 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
             </h2>
           </div>
           
-          <div className="space-y-4">
+          <div className="space-y-4 mb-12">
             {template.faq.questions.map((qa, index) => (
               <Card key={index} className="p-6">
                 <h3 className="text-lg font-bold mb-2 text-right">{qa.question}</h3>
                 <p className="opacity-80 text-right">{qa.answer}</p>
               </Card>
             ))}
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor }}>
+              {template.faq.button1Text}
+            </Button>
+            <Button size="lg" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
+              {template.faq.button2Text}
+            </Button>
           </div>
         </div>
       </section>
