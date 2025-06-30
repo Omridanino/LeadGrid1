@@ -179,23 +179,6 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     }
   };
 
-  // Fix background color handling to support all color types
-  const getBackgroundStyle = () => {
-    const backgroundColor = content?.emotionalSection?.backgroundColor || content?.backgroundColor || '#1e1e2e';
-    
-    if (backgroundColor === 'default') {
-      return { backgroundColor: '#1e1e2e' };
-    }
-    
-    // Check if it's a gradient
-    if (backgroundColor && backgroundColor.includes('gradient')) {
-      return { background: backgroundColor };
-    }
-    
-    // Handle solid colors including hex values
-    return { backgroundColor: backgroundColor };
-  };
-
   // Helper function to get inline style for text colors with gradient support for emotional section
   const getEmotionalTextStyle = (colorKey: string) => {
     const emotionalContent = content?.emotionalSection || {};
@@ -236,12 +219,100 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
     return {};
   };
 
-  // Return ONE unified section with all content
+  // Dynamic Background Components based on design style
+  const renderDynamicBackground = () => {
+    const backgroundVariations = [
+      'floating-cubes',
+      'neon-cyber', 
+      'holographic',
+      'morphing-shapes',
+      'liquid-metal',
+      'glass-refraction',
+      'particle-storm',
+      'crystal-matrix',
+      'digital-waves',
+      'neon-grid-portal',
+      'quantum-bubbles',
+      'cosmic-geometry'
+    ];
+
+    const randomVariation = backgroundVariations[Math.floor(Math.random() * backgroundVariations.length)];
+
+    switch (designStyle) {
+      case 'glass':
+        switch (randomVariation) {
+          case 'floating-cubes':
+            return <HeroFloatingCubes />;
+          case 'glass-refraction':
+            return <HeroGlassRefraction />;
+          case 'holographic':
+            return <HeroHolographic />;
+          case 'liquid-metal':
+            return <HeroLiquidMetal />;
+          default:
+            return <HeroFluidBlobs />;
+        }
+      
+      case 'geometric':
+        switch (randomVariation) {
+          case 'cosmic-geometry':
+            return <HeroCosmicGeometry />;
+          case 'crystal-matrix':
+            return <HeroCrystalMatrix />;
+          case 'morphing-shapes':
+            return <HeroMorphingShapes />;
+          case 'floating-cubes':
+            return <HeroFloatingCubes />;
+          default:
+            return <HeroGeometricShapes />;
+        }
+      
+      case 'metal':
+        switch (randomVariation) {
+          case 'liquid-metal':
+            return <HeroLiquidMetal />;
+          case 'neon-cyber':
+            return <HeroNeonCyber />;
+          case 'digital-waves':
+            return <HeroDigitalWaves />;
+          case 'particle-storm':
+            return <HeroParticleStorm />;
+          default:
+            return <HeroMinimalTech />;
+        }
+      
+      case 'image':
+        return <HeroIsometricIllustration />;
+      
+      case 'gradient':
+      default:
+        switch (randomVariation) {
+          case 'neon-grid-portal':
+            return <HeroNeonGridPortal />;
+          case 'quantum-bubbles':
+            return <HeroQuantumBubbles />;
+          case 'particle-storm':
+            return <HeroParticleStorm />;
+          case 'digital-waves':
+            return <HeroDigitalWaves />;
+          case 'holographic':
+            return <HeroHolographic />;
+          case 'cosmic-geometry':
+            return <HeroCosmicGeometry />;
+          default:
+            return <GradientHero />;
+        }
+    }
+  };
+
+  // Return ONE unified section with dynamic background
   return (
-    <section 
-      className="relative overflow-hidden min-h-screen"
-      style={getBackgroundStyle()}
-    >
+    <section className="relative overflow-hidden min-h-screen">
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 w-full h-full">
+        {renderDynamicBackground()}
+      </div>
+      
       <div className="container mx-auto px-4 relative z-10">
         {/* Hero Content */}
         <div className="min-h-screen flex items-center justify-center">
