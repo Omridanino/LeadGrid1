@@ -42,7 +42,7 @@ export const HeroTemplateSection = ({
             <div className="glass-orbs"></div>
           </>
         );
-      case 'cosmic':
+      case 'geometric':
         return (
           <>
             <div className="cosmic-geometry"></div>

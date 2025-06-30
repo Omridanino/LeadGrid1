@@ -40,7 +40,7 @@ export const EmotionalTemplateSection = ({
             <div className="glass-orbs"></div>
           </>
         );
-      case 'cosmic':
+      case 'geometric':
         return (
           <>
             <div className="cosmic-geometry"></div>
