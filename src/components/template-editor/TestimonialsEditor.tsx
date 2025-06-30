@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus, Trash2 } from "lucide-react";
 import { TemplateData } from '@/types/template';
+import { BackgroundSelector } from './BackgroundSelector';
 import { ColorPicker } from './ColorPicker';
 
 interface TestimonialsEditorProps {
@@ -130,14 +131,16 @@ export const TestimonialsEditor = ({ template, onUpdate, onStyleUpdate }: Testim
         </div>
       </div>
 
-      {/* Colors Section */}
+      {/* Colors and Background Section */}
       <div className="space-y-4">
-        <h3 className="text-white text-lg font-semibold border-b border-gray-700 pb-2">צבעים</h3>
+        <h3 className="text-white text-lg font-semibold border-b border-gray-700 pb-2">עיצוב רקע</h3>
         
-        <ColorPicker
+        <BackgroundSelector
           label="רקע הסקשן"
-          value={template.styles.testimonialsBackground}
-          onChange={(value) => onStyleUpdate({ testimonialsBackground: value })}
+          colorValue={template.styles.testimonialsBackground}
+          imageValue={template.styles.testimonialsBackgroundImage}
+          onColorChange={(value) => onStyleUpdate({ testimonialsBackground: value })}
+          onImageChange={(value) => onStyleUpdate({ testimonialsBackgroundImage: value })}
         />
         
         <ColorPicker

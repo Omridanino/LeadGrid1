@@ -1,3 +1,4 @@
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -92,19 +93,22 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4" style={{ backgroundColor: template.styles.featuresBackground }}>
-        <div className="max-w-6xl mx-auto">
+      <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.featuresBackground, template.styles.featuresBackgroundImage)}>
+        {template.styles.featuresBackgroundImage && (
+          <div className="absolute inset-0 bg-black/30"></div>
+        )}
+        <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-12">
             {template.features.badge && (
               <Badge className="mb-4" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
                 {template.features.badge}
               </Badge>
             )}
-            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: template.styles.textColor }}>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: template.styles.featuresBackgroundImage ? '#ffffff' : template.styles.textColor }}>
               {template.features.title}
             </h2>
             {template.features.subtitle && (
-              <p className="text-xl opacity-80" style={{ color: template.styles.textColor }}>
+              <p className="text-xl opacity-80" style={{ color: template.styles.featuresBackgroundImage ? '#ffffff' : template.styles.textColor }}>
                 {template.features.subtitle}
               </p>
             )}
@@ -134,15 +138,18 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 px-4" style={{ backgroundColor: template.styles.testimonialsBackground }}>
-        <div className="max-w-6xl mx-auto">
+      <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.testimonialsBackground, template.styles.testimonialsBackgroundImage)}>
+        {template.styles.testimonialsBackgroundImage && (
+          <div className="absolute inset-0 bg-black/30"></div>
+        )}
+        <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-12">
             {template.testimonials.badge && (
               <Badge className="mb-4" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
                 {template.testimonials.badge}
               </Badge>
             )}
-            <h2 className="text-3xl md:text-4xl font-bold" style={{ color: template.styles.textColor }}>
+            <h2 className="text-3xl md:text-4xl font-bold" style={{ color: template.styles.testimonialsBackgroundImage ? '#ffffff' : template.styles.textColor }}>
               {template.testimonials.title}
             </h2>
           </div>
@@ -178,18 +185,21 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* About Section */}
-      <section className="py-16 px-4" style={{ backgroundColor: template.styles.aboutBackground }}>
-        <div className="max-w-6xl mx-auto">
+      <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.aboutBackground, template.styles.aboutBackgroundImage)}>
+        {template.styles.aboutBackgroundImage && (
+          <div className="absolute inset-0 bg-black/30"></div>
+        )}
+        <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-12">
             {template.about.badge && (
               <Badge className="mb-4" variant="outline" style={{ borderColor: template.styles.secondaryColor, color: template.styles.secondaryColor }}>
                 {template.about.badge}
               </Badge>
             )}
-            <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: template.styles.textColor }}>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: template.styles.aboutBackgroundImage ? '#ffffff' : template.styles.textColor }}>
               {template.about.title}
             </h2>
-            <p className="text-lg max-w-4xl mx-auto opacity-90" style={{ color: template.styles.textColor }}>
+            <p className="text-lg max-w-4xl mx-auto opacity-90" style={{ color: template.styles.aboutBackgroundImage ? '#ffffff' : template.styles.textColor }}>
               {template.about.description}
             </p>
           </div>
@@ -201,7 +211,7 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
                   <div className="text-4xl font-bold mb-2" style={{ color: template.styles.primaryColor }}>
                     {stat.number}
                   </div>
-                  <div className="text-lg opacity-80" style={{ color: template.styles.textColor }}>{stat.label}</div>
+                  <div className="text-lg opacity-80" style={{ color: template.styles.aboutBackgroundImage ? '#ffffff' : template.styles.textColor }}>{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -221,19 +231,22 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-16 px-4" style={{ backgroundColor: template.styles.pricingBackground }}>
-        <div className="max-w-6xl mx-auto">
+      <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.pricingBackground, template.styles.pricingBackgroundImage)}>
+        {template.styles.pricingBackgroundImage && (
+          <div className="absolute inset-0 bg-black/30"></div>
+        )}
+        <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-12">
             {template.pricing.badge && (
               <Badge className="mb-4" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
                 {template.pricing.badge}
               </Badge>
             )}
-            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: template.styles.textColor }}>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: template.styles.pricingBackgroundImage ? '#ffffff' : template.styles.textColor }}>
               {template.pricing.title}
             </h2>
             {template.pricing.subtitle && (
-              <p className="text-xl opacity-80" style={{ color: template.styles.textColor }}>
+              <p className="text-xl opacity-80" style={{ color: template.styles.pricingBackgroundImage ? '#ffffff' : template.styles.textColor }}>
                 {template.pricing.subtitle}
               </p>
             )}
@@ -276,15 +289,18 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 px-4" style={{ backgroundColor: template.styles.faqBackground }}>
-        <div className="max-w-4xl mx-auto">
+      <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.faqBackground, template.styles.faqBackgroundImage)}>
+        {template.styles.faqBackgroundImage && (
+          <div className="absolute inset-0 bg-black/30"></div>
+        )}
+        <div className="max-w-4xl mx-auto relative z-10">
           <div className="text-center mb-12">
             {template.faq.badge && (
               <Badge className="mb-4" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
                 {template.faq.badge}
               </Badge>
             )}
-            <h2 className="text-3xl md:text-4xl font-bold" style={{ color: template.styles.textColor }}>
+            <h2 className="text-3xl md:text-4xl font-bold" style={{ color: template.styles.faqBackgroundImage ? '#ffffff' : template.styles.textColor }}>
               {template.faq.title}
             </h2>
           </div>
@@ -342,13 +358,16 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* Contact Section */}
-      <section className="py-16 px-4" style={{ backgroundColor: template.styles.contactBackground }}>
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: template.styles.textColor }}>
+      <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.contactBackground, template.styles.contactBackgroundImage)}>
+        {template.styles.contactBackgroundImage && (
+          <div className="absolute inset-0 bg-black/30"></div>
+        )}
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: template.styles.contactBackgroundImage ? '#ffffff' : template.styles.textColor }}>
             {template.contact.title}
           </h2>
           {template.contact.subtitle && (
-            <p className="text-xl mb-8 opacity-80" style={{ color: template.styles.textColor }}>
+            <p className="text-xl mb-8 opacity-80" style={{ color: template.styles.contactBackgroundImage ? '#ffffff' : template.styles.textColor }}>
               {template.contact.subtitle}
             </p>
           )}

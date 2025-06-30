@@ -1,9 +1,11 @@
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Plus, Trash2 } from "lucide-react";
 import { TemplateData } from '@/types/template';
+import { BackgroundSelector } from './BackgroundSelector';
 import { ColorPicker } from './ColorPicker';
 
 interface FeaturesEditorProps {
@@ -123,14 +125,16 @@ export const FeaturesEditor = ({ template, onUpdate, onStyleUpdate }: FeaturesEd
         </div>
       </div>
 
-      {/* Colors Section */}
+      {/* Colors and Background Section */}
       <div className="space-y-4">
-        <h3 className="text-white text-lg font-semibold border-b border-gray-700 pb-2">צבעים</h3>
+        <h3 className="text-white text-lg font-semibold border-b border-gray-700 pb-2">עיצוב רקע</h3>
         
-        <ColorPicker
+        <BackgroundSelector
           label="רקע הסקשן"
-          value={template.styles.featuresBackground}
-          onChange={(value) => onStyleUpdate({ featuresBackground: value })}
+          colorValue={template.styles.featuresBackground}
+          imageValue={template.styles.featuresBackgroundImage}
+          onColorChange={(value) => onStyleUpdate({ featuresBackground: value })}
+          onImageChange={(value) => onStyleUpdate({ featuresBackgroundImage: value })}
         />
         
         <ColorPicker

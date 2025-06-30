@@ -1,6 +1,8 @@
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TemplateData } from '@/types/template';
+import { BackgroundSelector } from './BackgroundSelector';
 import { ColorPicker } from './ColorPicker';
 
 interface ContactEditorProps {
@@ -47,14 +49,16 @@ export const ContactEditor = ({ template, onUpdate, onStyleUpdate }: ContactEdit
         </div>
       </div>
 
-      {/* Colors Section */}
+      {/* Colors and Background Section */}
       <div className="space-y-4">
-        <h3 className="text-white text-lg font-semibold border-b border-gray-700 pb-2">צבעים</h3>
+        <h3 className="text-white text-lg font-semibold border-b border-gray-700 pb-2">עיצוב רקע</h3>
         
-        <ColorPicker
+        <BackgroundSelector
           label="רקע הסקשן"
-          value={template.styles.contactBackground}
-          onChange={(value) => onStyleUpdate({ contactBackground: value })}
+          colorValue={template.styles.contactBackground}
+          imageValue={template.styles.contactBackgroundImage}
+          onColorChange={(value) => onStyleUpdate({ contactBackground: value })}
+          onImageChange={(value) => onStyleUpdate({ contactBackgroundImage: value })}
         />
         
         <ColorPicker
