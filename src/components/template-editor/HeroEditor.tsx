@@ -1,8 +1,10 @@
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { TemplateData } from '@/types/template';
 import { BackgroundSelector } from './BackgroundSelector';
+import { ColorPicker } from './ColorPicker';
 import IconSelector from '../IconSelector';
 
 interface HeroEditorProps {
