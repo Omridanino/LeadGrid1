@@ -1,7 +1,7 @@
-
 import { ColorScheme } from "@/types/colors";
 import { LiquidButton, MetalButton } from "@/components/ui/liquid-glass-button";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 interface EmotionalSectionProps {
   content: any;
@@ -15,6 +15,9 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
   console.log('EmotionalSection - formData.designStyle:', formData?.designStyle);
   
   const emotionalContent = content?.emotionalSection || {};
+  
+  // Add local state for useHeroDesign toggle
+  const [useHeroDesign, setUseHeroDesign] = useState(emotionalContent.useHeroDesign || false);
   
   const renderAdvancedButton = (button: any, index: number) => {
     const buttonStyle = button?.style || 'default';
@@ -89,7 +92,6 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
   const badge = emotionalContent.badge || 'מוגבל בזמן';
   const backgroundColor = emotionalContent.backgroundColor || '#1e1e2e';
   const buttons = emotionalContent.buttons || [{ id: '1', text: 'התחל עכשיו', style: 'primary', visible: true }];
-  const useHeroDesign = emotionalContent.useHeroDesign || false;
 
   const getTextStyle = (colorKey: string) => {
     if (!useHeroDesign) {
@@ -134,10 +136,10 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
   const getHeroMatchingStyles = () => {
     if (!useHeroDesign) {
       // אם לא בסגנון הירו, השתמש ברקע הרגיל
-      return {
-        background: backgroundColor === 'default' ? '#1e1e2e' : backgroundColor,
-        backgroundImage: backgroundColor?.includes('gradient') ? backgroundColor : undefined
-      };
+      if (backgroundColor?.includes('gradient')) {
+        return { backgroundImage: backgroundColor };
+      }
+      return { backgroundColor: backgroundColor === 'default' ? '#1e1e2e' : backgroundColor };
     }
 
     console.log('Using hero design:', selectedHeroDesign);
@@ -147,40 +149,51 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
     switch (selectedHeroDesign) {
       case 'hero-section-clean':
         return { 
-          background: 'black',
+          backgroundColor: 'black',
           color: '#ffffff'
         };
       case 'hero-section-modern':
         return { 
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
           color: '#ffffff'
         };
       case 'hero-section-lamp':
         return { 
-          background: 'radial-gradient(ellipse 80% 80% at 50% -20%, rgba(120, 119, 198, 0.3), rgba(255, 255, 255, 0))',
+          backgroundImage: 'radial-gradient(ellipse 80% 80% at 50% -20%, rgba(120, 119, 198, 0.3), rgba(255, 255, 255, 0))',
           backgroundColor: '#0a0a0a',
           color: '#ffffff'
         };
       case 'hero-section-retro':
         return { 
-          background: 'linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1)',
+          backgroundImage: 'linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1)',
           color: '#ffffff'
         };
       case 'hero-section-classic':
         return { 
-          background: 'black',
+          backgroundColor: 'black',
           backgroundImage: 'linear-gradient(to right,#4f4f4f2e 1px,transparent 1px),linear-gradient(to bottom,#4f4f4f2e 1px,transparent 1px)',
           backgroundSize: '14px 24px',
           color: '#ffffff'
         };
       case 'hero-section-elegant':
         return { 
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
           color: '#ffffff'
         };
       case 'hero-section-minimal':
         return { 
-          background: 'rgba(0,0,0,0.96)',
+          backgroundColor: 'rgba(0,0,0,0.96)',
+          color: '#ffffff'
+        };
+      // עיצובי מתכת
+      case 'hero-minimal-tech':
+        return { 
+          backgroundImage: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)',
+          color: '#ffffff'
+        };
+      case 'hero-liquid-metal':
+        return { 
+          backgroundImage: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)',
           color: '#ffffff'
         };
       // עיצובי Gradient
@@ -189,7 +202,6 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
       case 'hero-floating-cubes':
       case 'hero-holographic':
       case 'hero-morphing-shapes':
-      case 'hero-liquid-metal':
       case 'hero-glass-refraction':
       case 'hero-particle-storm':
       case 'hero-crystal-matrix':
@@ -198,35 +210,35 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
       case 'hero-quantum-bubbles':
       case 'hero-cosmic-geometry':
         return { 
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
           color: '#ffffff'
         };
       default:
         // ברירת מחדל לפי סגנון העיצוב הכללי
         if (formData?.designStyle === 'gradient') {
           return { 
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
             color: '#ffffff'
           };
         } else if (formData?.designStyle === 'glass') {
           return { 
-            background: 'rgba(255,255,255,0.1)',
+            backgroundColor: 'rgba(255,255,255,0.1)',
             backdropFilter: 'blur(20px)',
             color: '#ffffff'
           };
         } else if (formData?.designStyle === 'metal') {
           return { 
-            background: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)',
+            backgroundImage: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)',
             color: '#ffffff'
           };
         } else if (formData?.designStyle === 'geometric') {
           return { 
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
             color: '#ffffff'
           };
         } else {
           return { 
-            background: '#1e1e2e',
+            backgroundColor: '#1e1e2e',
             color: '#ffffff'
           };
         }
@@ -385,6 +397,24 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
       {renderHeroBasedEffects()}
       
       <div className="container mx-auto max-w-4xl text-center relative z-10">
+        {/* Toggle Button for Hero Design */}
+        <div className="mb-6">
+          <button
+            onClick={() => {
+              console.log('Toggle useHeroDesign from', useHeroDesign, 'to', !useHeroDesign);
+              setUseHeroDesign(!useHeroDesign);
+            }}
+            className={cn(
+              "px-4 py-2 rounded-lg text-sm font-medium transition-all",
+              useHeroDesign 
+                ? "bg-blue-600 text-white shadow-lg" 
+                : "bg-gray-600 text-gray-300 hover:bg-gray-500"
+            )}
+          >
+            {useHeroDesign ? "מופעל: בסגנון הירו" : "בסגנון הירו"}
+          </button>
+        </div>
+
         {badge && (
           <div 
             className="inline-block mb-6 px-4 py-2 rounded-full text-sm font-semibold backdrop-blur-sm"
