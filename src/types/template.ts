@@ -10,6 +10,7 @@ export interface TemplateData {
     description: string;
     button1Text: string;
     button2Text: string;
+    image?: string; // New field for hero image
   };
   emotional: {
     badge?: string;

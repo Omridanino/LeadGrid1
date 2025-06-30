@@ -47,7 +47,7 @@ export const EmotionalTemplateSection = ({
       case 'creative':
         return 'btn-artistic';
       default:
-        return 'hover:scale-105 transition-transform duration-300';
+        return 'hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl';
     }
   };
 
@@ -75,8 +75,10 @@ export const EmotionalTemplateSection = ({
           <>
             <div className="paint-splash"></div>
             <div className="paint-splash"></div>
+            <div className="paint-splash"></div>
             <div className="brush-stroke"></div>
             <div className="creative-particles">
+              <div className="particle"></div>
               <div className="particle"></div>
               <div className="particle"></div>
               <div className="particle"></div>
@@ -89,7 +91,7 @@ export const EmotionalTemplateSection = ({
   };
 
   return (
-    <section className={`py-20 px-8 relative ${className}`}>
+    <section className={`py-20 px-8 relative overflow-hidden ${className}`}>
       <div className={`container mx-auto text-center max-w-4xl relative z-10 ${getDesignClasses()}`}>
         {badge && (
           <Badge className="mb-6 text-sm px-6 py-3 font-semibold tracking-wide backdrop-blur-sm">
