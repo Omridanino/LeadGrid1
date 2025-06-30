@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ChevronRight, Palette, Zap, Sparkles, Building, Leaf, Cpu, Check } from "lucide-react";
+import TemplateSelector from "./TemplateSelector";
 
 interface StyleQuestionnaireProps {
   isOpen: boolean;
@@ -15,6 +16,8 @@ interface StyleQuestionnaireProps {
 const StyleQuestionnaire = ({ isOpen, onClose, onStyleSelect }: StyleQuestionnaireProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
+  const [showTemplates, setShowTemplates] = useState(false);
+  const [selectedStyle, setSelectedStyle] = useState<string>("");
 
   const questions = [
     {
@@ -292,8 +295,9 @@ const StyleQuestionnaire = ({ isOpen, onClose, onStyleSelect }: StyleQuestionnai
   };
 
   const handleStyleSelect = (styleId: string) => {
+    setSelectedStyle(styleId);
     onStyleSelect(styleId);
-    onClose();
+    setShowTemplates(true);
   };
 
   const getRecommendedStyle = () => {
@@ -311,195 +315,208 @@ const StyleQuestionnaire = ({ isOpen, onClose, onStyleSelect }: StyleQuestionnai
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" dir="rtl">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
-      >
-        {/* Header */}
-        <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 p-8 text-white relative overflow-hidden">
-          <div className="absolute inset-0 bg-black/10"></div>
-          <div className="relative z-10">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-3xl font-bold mb-2">🎯 בוא נמצא את העיצוב המושלם עבורך</h2>
-                <p className="text-blue-100 text-lg">
-                  {currentStep < questions.length 
-                    ? `שלב ${currentStep + 1} מתוך ${questions.length} | כ-30 שניות` 
-                    : "🎉 בחר את הסגנון שלך מתוך 70 תבניות פרימיום"}
-                </p>
-              </div>
-              <button
-                onClick={onClose}
-                className="text-white/80 hover:text-white transition-colors text-2xl font-bold bg-white/10 rounded-full w-10 h-10 flex items-center justify-center"
-              >
-                ✕
-              </button>
-            </div>
-            
-            {/* Progress Bar */}
-            {currentStep < questions.length && (
-              <div className="bg-white/20 rounded-full h-3">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${((currentStep + 1) / questions.length) * 100}%` }}
-                  className="h-full bg-white rounded-full shadow-lg"
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
-                />
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="p-8">
-          <AnimatePresence mode="wait">
-            {currentStep < questions.length ? (
-              // Questionnaire Steps
-              <motion.div
-                key={currentStep}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="space-y-8"
-              >
-                <div className="text-center mb-8">
-                  <h3 className="text-3xl font-bold text-gray-900 mb-3">
-                    {questions[currentStep].title}
-                  </h3>
-                  <p className="text-gray-600 text-lg">{questions[currentStep].subtitle}</p>
-                </div>
-
-                <div className="grid gap-4 max-w-3xl mx-auto">
-                  {questions[currentStep].options.map((option, index) => (
-                    <motion.div
-                      key={option.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <Card
-                        className={`cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02] ${
-                          selectedAnswers[currentStep] === option.id
-                            ? "ring-2 ring-purple-500 bg-purple-50 shadow-lg scale-[1.02]"
-                            : "hover:bg-gray-50 border-gray-200"
-                        }`}
-                        onClick={() => handleAnswerSelect(option.id)}
-                      >
-                        <CardContent className="p-6">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4">
-                              <div className="text-3xl">{option.icon}</div>
-                              <div>
-                                <h4 className="font-bold text-gray-900 mb-1 text-lg">
-                                  {option.label}
-                                </h4>
-                                <p className="text-gray-600">{option.description}</p>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              {selectedAnswers[currentStep] === option.id && (
-                                <Check className="w-6 h-6 text-green-500" />
-                              )}
-                              <ChevronRight className="w-5 h-5 text-gray-400" />
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            ) : (
-              // Style Selection
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="space-y-8"
-              >
-                <div className="text-center mb-8">
-                  <div className="mb-4">
-                    <Badge className="bg-green-100 text-green-800 px-4 py-2 text-lg">
-                      ✨ המלצה מותאמת אישית
-                    </Badge>
-                  </div>
-                  <h3 className="text-3xl font-bold text-gray-900 mb-3">
-                    בחר את סגנון העיצוב שלך
-                  </h3>
-                  <p className="text-gray-600 text-lg">
-                    על בסיס התשובות שלך, אנחנו ממליצים על <span className="font-bold text-purple-600">
-                      {styles.find(s => s.id === recommendedStyleId)?.name}
-                    </span>
+    <>
+      <div className="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" dir="rtl">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
+        >
+          {/* Header */}
+          <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 p-8 text-white relative overflow-hidden">
+            <div className="absolute inset-0 bg-black/10"></div>
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-3xl font-bold mb-2">🎯 בוא נמצא את העיצוב המושלם עבורך</h2>
+                  <p className="text-blue-100 text-lg">
+                    {currentStep < questions.length 
+                      ? `שלב ${currentStep + 1} מתוך ${questions.length} | כ-30 שניות` 
+                      : "🎉 בחר את הסגנון שלך מתוך 70 תבניות פרימיום"}
                   </p>
                 </div>
+                <button
+                  onClick={onClose}
+                  className="text-white/80 hover:text-white transition-colors text-2xl font-bold bg-white/10 rounded-full w-10 h-10 flex items-center justify-center"
+                >
+                  ✕
+                </button>
+              </div>
+              
+              {/* Progress Bar */}
+              {currentStep < questions.length && (
+                <div className="bg-white/20 rounded-full h-3">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${((currentStep + 1) / questions.length) * 100}%` }}
+                    className="h-full bg-white rounded-full shadow-lg"
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {styles.map((style, index) => (
-                    <motion.div
-                      key={style.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="cursor-pointer"
-                      onClick={() => handleStyleSelect(style.id)}
-                    >
-                      <Card className={`h-full overflow-hidden transition-all duration-300 hover:shadow-2xl ${
-                        style.id === recommendedStyleId 
-                          ? "ring-4 ring-green-400 shadow-xl" 
-                          : "hover:shadow-xl"
-                      }`}>
-                        <div className={`${style.color} p-6 ${style.textColor} relative`}>
-                          {style.id === recommendedStyleId && (
-                            <div className="absolute top-2 right-2">
-                              <Badge className="bg-green-500 text-white text-xs">
-                                🎯 מומלץ
+          <div className="p-8">
+            <AnimatePresence mode="wait">
+              {currentStep < questions.length ? (
+                // Questionnaire Steps
+                <motion.div
+                  key={currentStep}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="space-y-8"
+                >
+                  <div className="text-center mb-8">
+                    <h3 className="text-3xl font-bold text-gray-900 mb-3">
+                      {questions[currentStep].title}
+                    </h3>
+                    <p className="text-gray-600 text-lg">{questions[currentStep].subtitle}</p>
+                  </div>
+
+                  <div className="grid gap-4 max-w-3xl mx-auto">
+                    {questions[currentStep].options.map((option, index) => (
+                      <motion.div
+                        key={option.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                      >
+                        <Card
+                          className={`cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02] ${
+                            selectedAnswers[currentStep] === option.id
+                              ? "ring-2 ring-purple-500 bg-purple-50 shadow-lg scale-[1.02]"
+                              : "hover:bg-gray-50 border-gray-200"
+                          }`}
+                          onClick={() => handleAnswerSelect(option.id)}
+                        >
+                          <CardContent className="p-6">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-4">
+                                <div className="text-3xl">{option.icon}</div>
+                                <div>
+                                  <h4 className="font-bold text-gray-900 mb-1 text-lg">
+                                    {option.label}
+                                  </h4>
+                                  <p className="text-gray-600">{option.description}</p>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                {selectedAnswers[currentStep] === option.id && (
+                                  <Check className="w-6 h-6 text-green-500" />
+                                )}
+                                <ChevronRight className="w-5 h-5 text-gray-400" />
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              ) : (
+                // Style Selection
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="space-y-8"
+                >
+                  <div className="text-center mb-8">
+                    <div className="mb-4">
+                      <Badge className="bg-green-100 text-green-800 px-4 py-2 text-lg">
+                        ✨ המלצה מותאמת אישית
+                      </Badge>
+                    </div>
+                    <h3 className="text-3xl font-bold text-gray-900 mb-3">
+                      בחר את סגנון העיצוב שלך
+                    </h3>
+                    <p className="text-gray-600 text-lg">
+                      על בסיס התשובות שלך, אנחנו ממליצים על <span className="font-bold text-purple-600">
+                        {styles.find(s => s.id === recommendedStyleId)?.name}
+                      </span>
+                    </p>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {styles.map((style, index) => (
+                      <motion.div
+                        key={style.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="cursor-pointer"
+                        onClick={() => handleStyleSelect(style.id)}
+                      >
+                        <Card className={`h-full overflow-hidden transition-all duration-300 hover:shadow-2xl ${
+                          style.id === recommendedStyleId 
+                            ? "ring-4 ring-green-400 shadow-xl" 
+                            : "hover:shadow-xl"
+                        }`}>
+                          <div className={`${style.color} p-6 ${style.textColor} relative`}>
+                            {style.id === recommendedStyleId && (
+                              <div className="absolute top-2 right-2">
+                                <Badge className="bg-green-500 text-white text-xs">
+                                  🎯 מומלץ
+                                </Badge>
+                              </div>
+                            )}
+                            <div className="flex items-center justify-between mb-4">
+                              {style.icon}
+                              <Badge variant="secondary" className="bg-white/20 text-current text-xs">
+                                {style.count}
                               </Badge>
                             </div>
-                          )}
-                          <div className="flex items-center justify-between mb-4">
-                            {style.icon}
-                            <Badge variant="secondary" className="bg-white/20 text-current text-xs">
-                              {style.count}
-                            </Badge>
+                            <h4 className="font-bold text-xl mb-2">{style.name}</h4>
+                            <p className="text-sm opacity-90 mb-4">{style.description}</p>
+                            
+                            <div className="space-y-1">
+                              {style.benefits.map((benefit, i) => (
+                                <div key={i} className="flex items-center gap-2 text-xs opacity-80">
+                                  <Check className="w-3 h-3" />
+                                  <span>{benefit}</span>
+                                </div>
+                              ))}
+                            </div>
                           </div>
-                          <h4 className="font-bold text-xl mb-2">{style.name}</h4>
-                          <p className="text-sm opacity-90 mb-4">{style.description}</p>
-                          
-                          <div className="space-y-1">
-                            {style.benefits.map((benefit, i) => (
-                              <div key={i} className="flex items-center gap-2 text-xs opacity-80">
-                                <Check className="w-3 h-3" />
-                                <span>{benefit}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                        <CardContent className="p-4">
-                          <Button
-                            variant={style.id === recommendedStyleId ? "default" : "outline"}
-                            className={`w-full ${
-                              style.id === recommendedStyleId 
-                                ? "bg-green-600 hover:bg-green-700 text-white shadow-lg" 
-                                : ""
-                            }`}
-                          >
-                            {style.id === recommendedStyleId ? "🎯 בחר המלצה (מומלץ)" : "בחר סגנון זה"}
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </motion.div>
-    </div>
+                          <CardContent className="p-4">
+                            <Button
+                              variant={style.id === recommendedStyleId ? "default" : "outline"}
+                              className={`w-full ${
+                                style.id === recommendedStyleId 
+                                  ? "bg-green-600 hover:bg-green-700 text-white shadow-lg" 
+                                  : ""
+                              }`}
+                            >
+                              {style.id === recommendedStyleId ? "🎯 בחר המלצה (מומלץ)" : "בחר סגנון זה"}
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Template Selector */}
+      <TemplateSelector
+        isOpen={showTemplates}
+        onClose={() => {
+          setShowTemplates(false);
+          onClose();
+        }}
+        selectedStyle={selectedStyle}
+      />
+    </>
   );
 };
 
 export default StyleQuestionnaire;
+
