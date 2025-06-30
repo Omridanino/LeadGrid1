@@ -1,4 +1,3 @@
-
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -13,16 +12,18 @@ interface EffectsEditorProps {
 }
 
 const availableEffects = [
-  { id: 'fade-in', name: 'הופעה הדרגתית', description: 'אלמנטים מופיעים בהדרגה' },
+  { id: 'fade-in', name: 'הופעה הדרגתית', description: 'אלמנטים מופיעים בהדרגה מלמטה' },
   { id: 'slide-up', name: 'החלקה מלמטה', description: 'אלמנטים מחליקים מלמטה למעלה' },
   { id: 'scale-in', name: 'הגדלה הדרגתית', description: 'אלמנטים מתחילים קטנים ומתרחבים' },
+  { id: 'bounce-in', name: 'קפיצה פנימה', description: 'אלמנטים קופצים פנימה עם אפקט אלסטי' },
+  { id: 'slide-right', name: 'החלקה מימין', description: 'אלמנטים מחליקים מצד ימין' },
+  { id: 'flip', name: 'היפוך', description: 'אלמנטים מתהפכים בתלת מימד' },
+  { id: 'zoom-in', name: 'זום פנימה', description: 'אלמנטים מתקרבים עם זום' },
   { id: 'float', name: 'ריחוף', description: 'אלמנטים מרחפים למעלה ולמטה' },
+  { id: 'tilt', name: 'הטיה עדינה', description: 'אלמנטים מתנדנדים בעדינות' },
+  { id: 'shimmer', name: 'ברק', description: 'אפקט ברק עובר על האלמנטים' },
   { id: 'glow', name: 'זוהר', description: 'אפקט זוהר סביב אלמנטים' },
-  { id: 'parallax', name: 'פרלקס', description: 'רקע נע בקצב שונה מהתוכן' },
-  { id: 'glass', name: 'זכוכית', description: 'אפקט זכוכית מטושטשת' },
-  { id: 'neon', name: 'ניאון', description: 'אפקט ניאון זוהר' },
-  { id: 'particles', name: 'חלקיקים', description: 'חלקיקים נעים ברקע' },
-  { id: 'wave', name: 'גלים', description: 'אנימציית גלים ברקע' }
+  { id: 'particles', name: 'חלקיקים', description: 'חלקיקים צבעוניים ברקע' }
 ];
 
 const sections = [

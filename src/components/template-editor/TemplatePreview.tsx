@@ -32,23 +32,27 @@ const getEffectClasses = (effectType: string | null) => {
     case 'fade-in':
       return 'animate-fade-in';
     case 'slide-up':
-      return 'animate-slide-in-up';
+      return 'animate-slide-up';
     case 'scale-in':
       return 'animate-scale-in';
+    case 'bounce-in':
+      return 'animate-bounce-in';
+    case 'slide-right':
+      return 'animate-slide-right';
+    case 'flip':
+      return 'animate-flip';
+    case 'zoom-in':
+      return 'animate-zoom-in';
     case 'float':
       return 'animate-float';
+    case 'tilt':
+      return 'animate-tilt';
+    case 'shimmer':
+      return 'animate-shimmer';
     case 'glow':
       return 'animate-pulse-glow';
-    case 'parallax':
-      return 'parallax-section';
-    case 'glass':
-      return 'glass-effect';
-    case 'neon':
-      return 'neon-glow';
     case 'particles':
       return 'particles-bg';
-    case 'wave':
-      return 'wave-animation';
     default:
       return '';
   }
