@@ -128,57 +128,97 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
   };
 
   const getHeroBackgroundStyle = () => {
-    // Get hero background from content or use hero design colors
-    const heroBackground = content?.heroBackground || content?.colors?.heroBackground;
+    console.log('Getting hero background style, currentColors:', currentColors);
+    console.log('Hero background from currentColors:', currentColors.heroBackground);
+    console.log('Background from currentColors:', currentColors.background);
+    console.log('Primary from currentColors:', currentColors.primary);
     
-    if (heroBackground) {
-      if (heroBackground.includes('gradient')) {
-        return { background: heroBackground };
+    // First try to get the hero background from currentColors
+    if (currentColors.heroBackground && currentColors.heroBackground !== '#000000') {
+      console.log('Using heroBackground:', currentColors.heroBackground);
+      if (currentColors.heroBackground.includes('gradient')) {
+        return { background: currentColors.heroBackground };
       }
-      return { backgroundColor: heroBackground };
+      return { backgroundColor: currentColors.heroBackground };
     }
     
-    // If no specific hero background, use currentColors
+    // Then try the regular background
     if (currentColors.background && currentColors.background !== '#000000') {
+      console.log('Using background:', currentColors.background);
+      if (currentColors.background.includes('gradient')) {
+        return { background: currentColors.background };
+      }
       return { backgroundColor: currentColors.background };
     }
     
-    // Fallback to a nice gradient that matches common hero styles
-    return { 
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-    };
+    // Check for primary color as fallback
+    if (currentColors.primary && currentColors.primary !== '#000000') {
+      console.log('Using primary as fallback:', currentColors.primary);
+      return { backgroundColor: currentColors.primary };
+    }
+    
+    // Last resort - check the design style for appropriate background
+    const designStyle = formData?.designStyle;
+    console.log('Design style for fallback:', designStyle);
+    
+    switch (designStyle) {
+      case 'metal':
+        return { 
+          background: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)'
+        };
+      case 'glass':
+        return { 
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
+          backdropFilter: 'blur(20px)'
+        };
+      case 'gradient':
+        return { 
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+        };
+      case 'geometric':
+        return { 
+          background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)'
+        };
+      default:
+        return { 
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+        };
+    }
   };
 
   const getBackgroundStyle = () => {
+    console.log('Getting background style, useHeroDesign:', useHeroDesign);
+    
     if (useHeroDesign) {
       // Apply hero background style when using hero design
       const heroStyle = getHeroBackgroundStyle();
+      console.log('Applied hero style:', heroStyle);
       
       // Apply hero design styling based on selectedHeroDesign or hero background
       switch (selectedHeroDesign) {
         case 'hero-futuristic':
           return { 
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            ...heroStyle,
             position: 'relative' as const
           };
         case 'hero-neon-cyber':
           return { 
-            background: 'linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e)',
+            ...heroStyle,
             position: 'relative' as const
           };
         case 'hero-holographic':
           return { 
-            background: 'radial-gradient(ellipse at center, #1e3c72 0%, #2a5298 100%)',
+            ...heroStyle,
             position: 'relative' as const
           };
         case 'hero-liquid-metal':
           return { 
-            background: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)',
+            ...heroStyle,
             position: 'relative' as const
           };
         case 'hero-glass-refraction':
           return { 
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
+            ...heroStyle,
             backdropFilter: 'blur(20px)',
             position: 'relative' as const
           };
