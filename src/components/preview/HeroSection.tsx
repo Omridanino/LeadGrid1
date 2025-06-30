@@ -13,29 +13,49 @@ import { HeroMinimalTech } from "@/components/ui/hero-minimal-tech";
 import { GradientHero } from "@/components/ui/gradient-hero";
 
 interface HeroSectionProps {
-  content: any;
-  currentColors: ColorScheme;
-  formData: any;
+  content?: any;
+  currentColors?: ColorScheme;
+  formData?: any;
   heroImage?: string;
 }
 
-export const HeroSection = ({ content, currentColors, formData, heroImage }: HeroSectionProps) => {
+export const HeroSection = ({ content = {}, currentColors, formData = {}, heroImage }: HeroSectionProps) => {
   const selectedDesign = formData?.designStyle || 'hero-gradient';
   const heroContent = content?.heroSection || {};
   const emotionalContent = content?.emotionalSection || {};
   
-  // Hero content
+  // Hero content with fallbacks
   const heroTitle = heroContent.title || formData?.businessName || 'ברוכים הבאים';
   const heroSubtitle = heroContent.subtitle || 'הפתרון המושלם עבורכם';
   const heroDescription = heroContent.description || 'טקסט תיאור כאן';
   const heroCta = heroContent.cta || 'התחל עכשיו';
   
-  // Emotional section content
+  // Emotional section content with fallbacks
   const emotionalTitle = emotionalContent.title || 'הגיע הזמן לפעול';
   const emotionalSubtitle = emotionalContent.subtitle || 'אל תחמיץ את ההזדמנות הזו';
   const emotionalText = emotionalContent.text || 'הצטרף אלינו עוד היום והתחל את המסע שלך להצלחה';
   const emotionalBadge = emotionalContent.badge || 'מוגבל בזמן';
   const emotionalButtons = emotionalContent.buttons || [{ id: '1', text: 'התחל עכשיו', style: 'primary', visible: true }];
+
+  // Default color scheme
+  const defaultColors: ColorScheme = {
+    primary: '#3b82f6',
+    secondary: '#8b5cf6',
+    accent: '#ec4899',
+    background: '#000000',
+    heroBackground: '#000000',
+    text: '#ffffff',
+    headlineColor: '#ffffff',
+    subheadlineColor: '#d1d5db',
+    featuresColor: '#ffffff',
+    featuresTextColor: '#d1d5db',
+    aboutColor: '#ffffff',
+    aboutTextColor: '#d1d5db',
+    contactColor: '#ffffff',
+    contactTextColor: '#d1d5db'
+  };
+
+  const colors = currentColors || defaultColors;
 
   const renderHeroContent = () => (
     <div className="container mx-auto px-6 relative z-20">
@@ -88,7 +108,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           
           <EmotionalButtons 
             buttons={emotionalButtons}
-            currentColors={currentColors}
+            currentColors={colors}
             content={content}
           />
         </div>
