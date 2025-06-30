@@ -22,11 +22,19 @@ const GeneratedLandingPage = () => {
       console.log("Setting formData from navigation:", location.state.formData);
       state.setFormData(location.state.formData);
     }
+    if (location.state?.selectedTemplate && location.state.formData) {
+      const updatedFormData = {
+        ...location.state.formData,
+        selectedTemplate: location.state.selectedTemplate
+      };
+      console.log("Setting formData with selected template:", updatedFormData);
+      state.setFormData(updatedFormData);
+    }
   }, [location.state, state.formData]);
 
-  // Generate content when formData is available
+  // Generate content when formData is available and no template is selected
   useEffect(() => {
-    if (state.formData && !state.content) {
+    if (state.formData && !state.content && !state.formData.selectedTemplate) {
       console.log("Generating content for formData:", state.formData);
       const newContent = generateCreativeContent();
       console.log("Generated content:", newContent);
@@ -54,8 +62,8 @@ const GeneratedLandingPage = () => {
         </Button>
       )}
 
-      {/* Content Editor - Fixed Left Side */}
-      {isEditorVisible && (
+      {/* Content Editor - Fixed Left Side - Only show if no template is selected */}
+      {isEditorVisible && !state.formData?.selectedTemplate && (
         <div className="fixed top-0 left-0 w-80 h-full bg-black/95 backdrop-blur-sm border-r border-gray-800 z-50 overflow-y-auto">
           <div className="p-4">
             <div className="flex items-center justify-between mb-4">
@@ -85,7 +93,9 @@ const GeneratedLandingPage = () => {
       {/* Main Preview - With Dynamic Left Padding */}
       <div 
         className="w-full min-h-screen transition-all duration-300" 
-        style={{ paddingLeft: isEditorVisible ? '320px' : '0px' }}
+        style={{ 
+          paddingLeft: (isEditorVisible && !state.formData?.selectedTemplate) ? '320px' : '0px' 
+        }}
       >
         <LandingPagePreview 
           content={state.content}

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { ColorScheme } from "@/types/colors";
 import HeroSection from "@/components/HeroSection";
+import { LandingPageTemplate } from "@/components/templates/LandingPageTemplate";
 
 interface LandingPagePreviewProps {
   content: any;
@@ -24,6 +25,23 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     );
   }
 
+  // If there's a selected template, show it
+  if (formData.selectedTemplate) {
+    return (
+      <div className="w-full h-full" style={{ 
+        maxHeight: '100vh', 
+        overflowY: 'auto', 
+        overflowX: 'hidden',
+        scrollBehavior: 'smooth'
+      }}>
+        <div className="w-full min-h-screen" style={{ position: 'relative' }}>
+          <LandingPageTemplate template={formData.selectedTemplate} />
+        </div>
+      </div>
+    );
+  }
+
+  // Fallback to original hero section
   return (
     <div className="w-full h-full" style={{ 
       maxHeight: '100vh', 
@@ -32,7 +50,6 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       scrollBehavior: 'smooth'
     }}>
       <div className="w-full min-h-screen" style={{ position: 'relative' }}>
-        {/* Main Site Hero Section Only */}
         <HeroSection onStartQuestionnaire={() => {}} />
       </div>
     </div>
