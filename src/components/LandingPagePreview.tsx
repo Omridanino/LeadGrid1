@@ -77,21 +77,13 @@ const LandingPagePreview = ({
 
       {elements.includes('features') && (
         <div ref={featuresRef}>
-          <ModernFeaturesSection 
-            content={content?.featuresSection}
-            currentColors={currentColors}
-            formData={formData}
-          />
+          <ModernFeaturesSection />
         </div>
       )}
 
       {elements.includes('testimonials') && (
         <div ref={testimonialsRef}>
-          <TestimonialsSection 
-            content={content?.testimonialsSection}
-            currentColors={currentColors}
-            formData={formData}
-          />
+          <TestimonialsSection />
         </div>
       )}
 
