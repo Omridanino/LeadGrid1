@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { TemplateData } from '@/types/template';
 import { ColorPicker } from './ColorPicker';
+import IconSelector from '../IconSelector';
 
 interface EmotionalEditorProps {
   template: TemplateData;
@@ -49,8 +50,8 @@ export const EmotionalEditor = ({ template, onUpdate, onStyleUpdate }: Emotional
           />
         </div>
         
-        <div className="grid grid-cols-2 gap-2">
-          <div>
+        <div className="grid grid-cols-1 gap-4">
+          <div className="space-y-2">
             <Label className="text-white text-sm font-medium">כפתור 1</Label>
             <Input
               value={template.emotional.button1Text}
@@ -58,8 +59,16 @@ export const EmotionalEditor = ({ template, onUpdate, onStyleUpdate }: Emotional
               className="bg-gray-800 border-gray-700 text-white text-right"
               placeholder="טקסט כפתור..."
             />
+            <div>
+              <Label className="text-white text-xs font-medium mb-1 block">אייקון כפתור 1</Label>
+              <IconSelector
+                selectedIcon={template.emotional.button1Icon || ''}
+                onIconSelect={(icon) => onUpdate({ button1Icon: icon })}
+                triggerClassName="w-full bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
           </div>
-          <div>
+          <div className="space-y-2">
             <Label className="text-white text-sm font-medium">כפתור 2</Label>
             <Input
               value={template.emotional.button2Text}
@@ -67,6 +76,14 @@ export const EmotionalEditor = ({ template, onUpdate, onStyleUpdate }: Emotional
               className="bg-gray-800 border-gray-700 text-white text-right"
               placeholder="טקסט כפתור..."
             />
+            <div>
+              <Label className="text-white text-xs font-medium mb-1 block">אייקון כפתור 2</Label>
+              <IconSelector
+                selectedIcon={template.emotional.button2Icon || ''}
+                onIconSelect={(icon) => onUpdate({ button2Icon: icon })}
+                triggerClassName="w-full bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
           </div>
         </div>
       </div>

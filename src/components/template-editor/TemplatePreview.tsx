@@ -32,10 +32,12 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
             {template.hero.description}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-white" style={{ backgroundColor: template.styles.accentColor }}>
+            <Button size="lg" className="text-white flex items-center gap-2" style={{ backgroundColor: template.styles.accentColor }}>
+              {template.hero.button1Icon && <i className={`ri-${template.hero.button1Icon}`}></i>}
               {template.hero.button1Text}
             </Button>
-            <Button size="lg" className="text-white" style={{ backgroundColor: template.styles.primaryColor }}>
+            <Button size="lg" className="text-white flex items-center gap-2" style={{ backgroundColor: template.styles.primaryColor }}>
+              {template.hero.button2Icon && <i className={`ri-${template.hero.button2Icon}`}></i>}
               {template.hero.button2Text}
             </Button>
           </div>
@@ -57,10 +59,12 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
             {template.emotional.description}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
+            <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
+              {template.emotional.button1Icon && <i className={`ri-${template.emotional.button1Icon}`}></i>}
               {template.emotional.button1Text}
             </Button>
-            <Button size="lg" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
+            <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
+              {template.emotional.button2Icon && <i className={`ri-${template.emotional.button2Icon}`}></i>}
               {template.emotional.button2Text}
             </Button>
           </div>
@@ -97,10 +101,12 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
+            <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
+              {template.features.button1Icon && <i className={`ri-${template.features.button1Icon}`}></i>}
               {template.features.button1Text}
             </Button>
-            <Button size="lg" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
+            <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
+              {template.features.button2Icon && <i className={`ri-${template.features.button2Icon}`}></i>}
               {template.features.button2Text}
             </Button>
           </div>
@@ -139,10 +145,12 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
+            <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
+              {template.testimonials.button1Icon && <i className={`ri-${template.testimonials.button1Icon}`}></i>}
               {template.testimonials.button1Text}
             </Button>
-            <Button size="lg" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
+            <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
+              {template.testimonials.button2Icon && <i className={`ri-${template.testimonials.button2Icon}`}></i>}
               {template.testimonials.button2Text}
             </Button>
           </div>
@@ -180,10 +188,12 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
           )}
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
+            <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
+              {template.about.button1Icon && <i className={`ri-${template.about.button1Icon}`}></i>}
               {template.about.button1Text}
             </Button>
-            <Button size="lg" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
+            <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
+              {template.about.button2Icon && <i className={`ri-${template.about.button2Icon}`}></i>}
               {template.about.button2Text}
             </Button>
           </div>
@@ -233,10 +243,12 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
+            <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
+              {template.pricing.button1Icon && <i className={`ri-${template.pricing.button1Icon}`}></i>}
               {template.pricing.button1Text}
             </Button>
-            <Button size="lg" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
+            <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
+              {template.pricing.button2Icon && <i className={`ri-${template.pricing.button2Icon}`}></i>}
               {template.pricing.button2Text}
             </Button>
           </div>
@@ -267,10 +279,12 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
+            <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
+              {template.faq.button1Icon && <i className={`ri-${template.faq.button1Icon}`}></i>}
               {template.faq.button1Text}
             </Button>
-            <Button size="lg" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
+            <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
+              {template.faq.button2Icon && <i className={`ri-${template.faq.button2Icon}`}></i>}
               {template.faq.button2Text}
             </Button>
           </div>
@@ -292,10 +306,12 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
             {template.finalCta.description}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-white" style={{ backgroundColor: template.styles.accentColor }}>
+            <Button size="lg" className="text-white flex items-center gap-2" style={{ backgroundColor: template.styles.accentColor }}>
+              {template.finalCta.button1Icon && <i className={`ri-${template.finalCta.button1Icon}`}></i>}
               {template.finalCta.button1Text}
             </Button>
-            <Button size="lg" className="text-white" style={{ backgroundColor: template.styles.secondaryColor }}>
+            <Button size="lg" className="text-white flex items-center gap-2" style={{ backgroundColor: template.styles.secondaryColor }}>
+              {template.finalCta.button2Icon && <i className={`ri-${template.finalCta.button2Icon}`}></i>}
               {template.finalCta.button2Text}
             </Button>
           </div>
