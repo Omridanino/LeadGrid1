@@ -1,5 +1,4 @@
 
-@import url('./components/animations.css');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -31,10 +30,6 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    
-    /* New brand colors */
-    --brand: 210 100% 50%;
-    --brand-foreground: 213 100% 60%;
   }
 
   .dark {
@@ -62,10 +57,6 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    
-    /* Dark mode brand colors */
-    --brand: 213 100% 60%;
-    --brand-foreground: 210 100% 50%;
   }
 }
 
@@ -75,146 +66,5 @@
   }
   body {
     @apply bg-background text-foreground;
-  }
-}
-
-/* New animations */
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes appear {
-  0% { 
-    opacity: 0; 
-    transform: translateY(10px); 
-  }
-  100% { 
-    opacity: 1; 
-    transform: translateY(0); 
-  }
-}
-
-@keyframes appear-zoom {
-  0% { 
-    opacity: 0; 
-    transform: scale(0.98); 
-  }
-  100% { 
-    opacity: 1; 
-    transform: scale(1); 
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.8s ease-out forwards;
-}
-
-.animate-appear {
-  animation: appear 0.5s ease-out forwards;
-}
-
-.animate-appear-zoom {
-  animation: appear-zoom 0.8s ease-out forwards;
-}
-
-/* Custom scrollbar styles */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.5);
-}
-
-/* RTL support with mobile center alignment */
-[dir="rtl"] {
-  direction: rtl;
-}
-
-/* Mobile-first center alignment */
-@media (max-width: 768px) {
-  [dir="rtl"] {
-    direction: ltr;
-    text-align: center;
-  }
-  
-  .container {
-    text-align: center;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    text-align: center !important;
-  }
-  
-  p {
-    text-align: center !important;
-  }
-  
-  .flex {
-    justify-content: center !important;
-  }
-  
-  nav {
-    text-align: center !important;
-  }
-  
-  .card {
-    text-align: center !important;
-  }
-  
-  .dialog-content {
-    text-align: center !important;
-  }
-}
-
-/* Responsive design improvements */
-@media (max-width: 640px) {
-  .container {
-    padding-left: 1rem;
-    padding-right: 1rem;
-    text-align: center;
-  }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .bg-gray-900 {
-    background-color: #000;
-  }
-  
-  .text-gray-300 {
-    color: #fff;
-  }
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* Utility classes */
-@layer utilities {
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-b from-foreground via-foreground/90 to-muted-foreground;
   }
 }
