@@ -300,7 +300,10 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           case 'cosmic-geometry':
             return <HeroCosmicGeometry />;
           default:
-            return <GradientHero />;
+            return <GradientHero 
+              title={content?.headline || formData?.businessName || 'העסק שלכם'}
+              subtitle={content?.subheadline || content?.description || `פתרונות מקצועיים ל${formData?.targetAudience || 'הלקוחות שלכם'}`}
+            />;
         }
     }
   };
