@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight, Palette, Zap, Sparkles, Building, Leaf, Cpu, Check } from "lucide-react";
+import { ChevronRight, ChevronLeft, Palette, Zap, Sparkles, Building, Leaf, Cpu, Check } from "lucide-react";
 import TemplateSelector from "./TemplateSelector";
 
 interface StyleQuestionnaireProps {
@@ -171,7 +170,6 @@ const StyleQuestionnaire = ({ isOpen, onClose, onStyleSelect }: StyleQuestionnai
   ];
 
   const styleRecommendations = {
-    // Business type + Design preference combinations
     "creative-artistic": "artistic",
     "creative-colorful": "artistic", 
     "creative-natural": "organic",
@@ -282,16 +280,20 @@ const StyleQuestionnaire = ({ isOpen, onClose, onStyleSelect }: StyleQuestionnai
     const newAnswers = [...selectedAnswers];
     newAnswers[currentStep] = answerId;
     setSelectedAnswers(newAnswers);
+  };
 
-    // Auto-advance after selection with slight delay for better UX
-    setTimeout(() => {
-      if (currentStep < questions.length - 1) {
-        setCurrentStep(currentStep + 1);
-      } else {
-        // Calculate recommendation and show styles
-        setCurrentStep(questions.length);
-      }
-    }, 300);
+  const handleNext = () => {
+    if (currentStep < questions.length - 1) {
+      setCurrentStep(currentStep + 1);
+    } else {
+      setCurrentStep(questions.length);
+    }
+  };
+
+  const handleBack = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
   };
 
   const handleStyleSelect = (styleId: string) => {
@@ -415,6 +417,43 @@ const StyleQuestionnaire = ({ isOpen, onClose, onStyleSelect }: StyleQuestionnai
                       </motion.div>
                     ))}
                   </div>
+
+                  {/* Navigation Buttons */}
+                  <div className="flex justify-between items-center max-w-3xl mx-auto pt-8">
+                    <Button
+                      onClick={handleBack}
+                      disabled={currentStep === 0}
+                      variant="outline"
+                      className="flex items-center gap-2"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                      חזור
+                    </Button>
+                    
+                    <div className="flex gap-2">
+                      {questions.map((_, index) => (
+                        <div
+                          key={index}
+                          className={`w-2 h-2 rounded-full transition-colors ${
+                            index === currentStep 
+                              ? 'bg-purple-600' 
+                              : index < currentStep 
+                                ? 'bg-green-500' 
+                                : 'bg-gray-300'
+                          }`}
+                        />
+                      ))}
+                    </div>
+
+                    <Button
+                      onClick={handleNext}
+                      disabled={!selectedAnswers[currentStep]}
+                      className="flex items-center gap-2"
+                    >
+                      {currentStep === questions.length - 1 ? 'סיים' : 'הבא'}
+                      <ChevronRight className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </motion.div>
               ) : (
                 // Style Selection
@@ -423,6 +462,18 @@ const StyleQuestionnaire = ({ isOpen, onClose, onStyleSelect }: StyleQuestionnai
                   animate={{ opacity: 1, y: 0 }}
                   className="space-y-8"
                 >
+                  {/* Back button for style selection */}
+                  <div className="flex justify-start">
+                    <Button
+                      onClick={handleBack}
+                      variant="outline"
+                      className="flex items-center gap-2"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                      חזור לשאלון
+                    </Button>
+                  </div>
+
                   <div className="text-center mb-8">
                     <div className="mb-4">
                       <Badge className="bg-green-100 text-green-800 px-4 py-2 text-lg">
@@ -519,4 +570,3 @@ const StyleQuestionnaire = ({ isOpen, onClose, onStyleSelect }: StyleQuestionnai
 };
 
 export default StyleQuestionnaire;
-
