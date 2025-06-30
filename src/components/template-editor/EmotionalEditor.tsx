@@ -1,9 +1,8 @@
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { TemplateData } from '@/types/template';
-import { ColorPicker } from './ColorPicker';
+import { BackgroundSelector } from './BackgroundSelector';
 import IconSelector from '../IconSelector';
 
 interface EmotionalEditorProps {
@@ -88,14 +87,16 @@ export const EmotionalEditor = ({ template, onUpdate, onStyleUpdate }: Emotional
         </div>
       </div>
 
-      {/* Colors Section */}
+      {/* Colors and Background Section */}
       <div className="space-y-4">
-        <h3 className="text-white text-lg font-semibold border-b border-gray-700 pb-2">צבעים</h3>
+        <h3 className="text-white text-lg font-semibold border-b border-gray-700 pb-2">עיצוב רקע</h3>
         
-        <ColorPicker
+        <BackgroundSelector
           label="רקע הסקשן"
-          value={template.styles.emotionalBackground}
-          onChange={(value) => onStyleUpdate({ emotionalBackground: value })}
+          colorValue={template.styles.emotionalBackground}
+          imageValue={template.styles.emotionalBackgroundImage}
+          onColorChange={(value) => onStyleUpdate({ emotionalBackground: value })}
+          onImageChange={(value) => onStyleUpdate({ emotionalBackgroundImage: value })}
         />
         
         <ColorPicker

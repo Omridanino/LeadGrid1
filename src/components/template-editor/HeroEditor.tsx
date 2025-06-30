@@ -1,9 +1,8 @@
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { TemplateData } from '@/types/template';
-import { ColorPicker } from './ColorPicker';
+import { BackgroundSelector } from './BackgroundSelector';
 import IconSelector from '../IconSelector';
 
 interface HeroEditorProps {
@@ -98,14 +97,16 @@ export const HeroEditor = ({ template, onUpdate, onStyleUpdate }: HeroEditorProp
         </div>
       </div>
 
-      {/* Colors Section */}
+      {/* Colors and Background Section */}
       <div className="space-y-4">
-        <h3 className="text-white text-lg font-semibold border-b border-gray-700 pb-2">צבעים</h3>
+        <h3 className="text-white text-lg font-semibold border-b border-gray-700 pb-2">עיצוב רקע</h3>
         
-        <ColorPicker
+        <BackgroundSelector
           label="רקע הסקשן"
-          value={template.styles.heroBackground}
-          onChange={(value) => onStyleUpdate({ heroBackground: value })}
+          colorValue={template.styles.heroBackground}
+          imageValue={template.styles.heroBackgroundImage}
+          onColorChange={(value) => onStyleUpdate({ heroBackground: value })}
+          onImageChange={(value) => onStyleUpdate({ heroBackgroundImage: value })}
         />
         
         <ColorPicker

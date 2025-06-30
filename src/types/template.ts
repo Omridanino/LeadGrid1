@@ -1,4 +1,3 @@
-
 export interface TemplateStyles {
   // Background colors for each section
   backgroundColor: string;
@@ -12,6 +11,18 @@ export interface TemplateStyles {
   finalCtaBackground: string;
   contactBackground: string;
   footerBackground: string;
+  
+  // Background images for each section (optional)
+  heroBackgroundImage?: string;
+  emotionalBackgroundImage?: string;
+  featuresBackgroundImage?: string;
+  testimonialsBackgroundImage?: string;
+  aboutBackgroundImage?: string;
+  pricingBackgroundImage?: string;
+  faqBackgroundImage?: string;
+  finalCtaBackgroundImage?: string;
+  contactBackgroundImage?: string;
+  footerBackgroundImage?: string;
   
   // Text and accent colors
   textColor: string;
