@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { ColorScheme } from "@/types/colors";
-import { HeroSection } from "@/components/HeroSection";
+import HeroSection from "@/components/HeroSection";
 
 interface LandingPagePreviewProps {
   content: any;
