@@ -52,6 +52,74 @@ interface HeroSectionProps {
 export const HeroSection = ({ content, currentColors, formData, heroImage }: HeroSectionProps) => {
   const designStyle = formData?.designStyle || 'basic';
   const [selectedHeroDesign, setSelectedHeroDesign] = useState<string>('');
+  const [heroBackground, setHeroBackground] = useState<any>({});
+
+  // Helper function to get hero background style
+  const getHeroBackgroundStyle = () => {
+    // Basic designs
+    if (designStyle === 'basic' || designStyle.startsWith('hero-section-')) {
+      switch (selectedHeroDesign) {
+        case 'hero-section-clean':
+        case 'hero-section-minimal':
+          return { backgroundColor: 'black' };
+        case 'hero-section-modern':
+          return { backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' };
+        case 'hero-section-lamp':
+          return { 
+            backgroundImage: 'radial-gradient(ellipse 80% 80% at 50% -20%, rgba(120, 119, 198, 0.3), rgba(255, 255, 255, 0))',
+            backgroundColor: '#0a0a0a'
+          };
+        case 'hero-section-retro':
+          return { backgroundImage: 'linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1)' };
+        case 'hero-section-classic':
+          return { 
+            backgroundColor: 'black',
+            backgroundImage: 'linear-gradient(to right,#4f4f4f2e 1px,transparent 1px),linear-gradient(to bottom,#4f4f4f2e 1px,transparent 1px)',
+            backgroundSize: '14px 24px'
+          };
+        case 'hero-section-elegant':
+          return { backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' };
+        default:
+          return { backgroundColor: 'black' };
+      }
+    }
+    
+    // Gradient designs
+    if (designStyle === 'gradient') {
+      return { backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' };
+    }
+    
+    // Glass designs
+    if (designStyle === 'glass') {
+      return { 
+        backgroundColor: 'rgba(255,255,255,0.1)',
+        backdropFilter: 'blur(20px)'
+      };
+    }
+    
+    // Metal designs
+    if (designStyle === 'metal') {
+      return { backgroundImage: 'linear-gradient(135deg, #2c3e50, #34495e, #2c3e50)' };
+    }
+    
+    // Geometric designs
+    if (designStyle === 'geometric') {
+      return { backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' };
+    }
+    
+    // Image designs
+    if (designStyle === 'image') {
+      return { backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' };
+    }
+    
+    return { backgroundColor: currentColors.heroBackground || '#1e1e2e' };
+  };
+
+  // Update hero background when design changes
+  useEffect(() => {
+    const newBackground = getHeroBackgroundStyle();
+    setHeroBackground(newBackground);
+  }, [selectedHeroDesign, designStyle, currentColors]);
 
   // Helper function to get inline style for text colors with gradient support
   const getTextStyle = (colorKey: string) => {
@@ -261,7 +329,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               </div>
             </div>
           </section>
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -277,7 +345,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             currentColors={currentColors}
             content={customContentProps}
           />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -290,7 +358,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             currentColors={currentColors}
             content={customContentProps}
           />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -303,7 +371,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             currentColors={currentColors}
             content={customContentProps}
           />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -316,7 +384,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             currentColors={currentColors}
             content={customContentProps}
           />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -368,7 +436,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               </div>
             </div>
           </section>
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -420,7 +488,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               </div>
             </div>
           </section>
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -469,7 +537,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             </div>
           </div>
         </section>
-        <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+        <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
       </>
     );
   }
@@ -504,7 +572,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               onClick: () => {}
             }}
           />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -523,7 +591,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               onClick: () => {}
             }}
           />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -537,7 +605,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             title1={content?.headline || formData?.businessName || 'העתיד'}
             title2={content?.subheadline || 'דיגיטלי'}
           />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -546,7 +614,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroNeonCyber formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -554,7 +622,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroFloatingCubes formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -562,7 +630,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroHolographic formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -570,7 +638,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroMorphingShapes formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -578,7 +646,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroLiquidMetal formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -586,7 +654,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroGlassRefraction formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -594,7 +662,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroParticleStorm formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -602,7 +670,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -610,7 +678,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroDigitalWaves formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -618,7 +686,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroNeonGridPortal formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -626,7 +694,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroQuantumBubbles formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -634,7 +702,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroCosmicGeometry formData={formData} currentColors={currentColors} content={getCustomContentProps()} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -662,7 +730,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroGlassRefraction formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -670,7 +738,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroLiquidMetal formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -678,7 +746,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroFluidBlobs formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -686,7 +754,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroQuantumBubbles formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -694,7 +762,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroHolographic formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -702,7 +770,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroNeumorphism formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -710,7 +778,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroMinimalTech formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -718,7 +786,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -726,7 +794,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -741,7 +809,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               onClick: () => {}
             }}
           />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -760,7 +828,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
               onClick: () => {}
             }}
           />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -771,7 +839,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             title={content?.headline || formData?.businessName || 'זכוכית נוזלית'}
             description={content?.subheadline || content?.description || 'עיצוב מתקדם וחדשני'}
           />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -799,7 +867,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroGeometricShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -807,7 +875,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroCosmicGeometry formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -819,7 +887,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
             title1={content?.headline || formData?.businessName || 'העתיד'}
             title2={content?.subheadline || 'דיגיטלי'}
           />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -827,7 +895,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroFloatingCubes formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -835,7 +903,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroIsometricIllustration formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -843,7 +911,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -851,7 +919,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroNeonGridPortal formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -859,7 +927,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -867,7 +935,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroParticleStorm formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -875,7 +943,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroNeonCyber formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -883,7 +951,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroMinimalTech formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -891,7 +959,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroDigitalWaves formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -919,7 +987,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroLiquidMetal formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -927,7 +995,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroMinimalTech formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -935,7 +1003,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroNeumorphism formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -943,7 +1011,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -951,7 +1019,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroNeonCyber formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -959,7 +1027,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroFloatingCubes formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -967,7 +1035,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroGeometricShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -975,7 +1043,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroCosmicGeometry formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -983,7 +1051,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroParticleStorm formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -991,7 +1059,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroDigitalWaves formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -999,7 +1067,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroHolographic formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -1007,7 +1075,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -1035,7 +1103,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroIsometricIllustration formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -1043,7 +1111,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroHolographic formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -1051,7 +1119,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroFluidBlobs formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -1059,7 +1127,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroFloatingCubes formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -1067,7 +1135,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroMorphingShapes formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -1075,7 +1143,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroQuantumBubbles formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -1083,7 +1151,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroParticleStorm formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -1091,7 +1159,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroCrystalMatrix formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -1099,7 +1167,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroDigitalWaves formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -1107,7 +1175,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroNeonGridPortal formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -1115,7 +1183,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroGlassRefraction formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -1123,7 +1191,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
       return (
         <>
           <HeroFluidBlobs formData={formData} currentColors={currentColors} content={customContentProps} />
-          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} />
+          <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign={selectedHeroDesign} heroBackground={heroBackground} />
         </>
       );
     }
@@ -1176,7 +1244,7 @@ export const HeroSection = ({ content, currentColors, formData, heroImage }: Her
           </div>
         </div>
       </section>
-      <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign="fallback" />
+      <EmotionalSection content={content} currentColors={currentColors} formData={formData} selectedHeroDesign="fallback" heroBackground={heroBackground} />
     </>
   );
 };

@@ -8,11 +8,12 @@ interface EmotionalSectionProps {
   currentColors: ColorScheme;
   formData: any;
   selectedHeroDesign?: string;
+  heroBackground?: any;
 }
 
-export const EmotionalSection = ({ content, currentColors, formData, selectedHeroDesign }: EmotionalSectionProps) => {
+export const EmotionalSection = ({ content, currentColors, formData, selectedHeroDesign, heroBackground }: EmotionalSectionProps) => {
   console.log('EmotionalSection - selectedHeroDesign:', selectedHeroDesign);
-  console.log('EmotionalSection - formData.designStyle:', formData?.designStyle);
+  console.log('EmotionalSection - heroBackground:', heroBackground);
   
   const emotionalContent = content?.emotionalSection || {};
   
@@ -142,72 +143,21 @@ export const EmotionalSection = ({ content, currentColors, formData, selectedHer
       return { backgroundColor: backgroundColor === 'default' ? '#1e1e2e' : backgroundColor };
     }
 
-    console.log('Copying hero background for design:', selectedHeroDesign);
+    console.log('Using hero background:', heroBackground);
 
-    // העתק את הרקע המדויק של ההירו לפי ה-selectedHeroDesign
-    if (!selectedHeroDesign) {
-      return { backgroundColor: '#1e1e2e', color: '#ffffff' };
+    // השתמש ברקע שהועבר מההירו
+    if (heroBackground && Object.keys(heroBackground).length > 0) {
+      return {
+        ...heroBackground,
+        color: '#ffffff' // וודא שהטקסט יהיה לבן
+      };
     }
 
-    // קריאה ישירה לקומפוננט ההירו כדי לקבל את הסגנון המדויק
-    const heroElement = document.querySelector('[class*="hero"]');
-    if (heroElement) {
-      const computedStyle = window.getComputedStyle(heroElement);
-      const bgImage = computedStyle.backgroundImage;
-      const bgColor = computedStyle.backgroundColor;
-      
-      console.log('Found hero element with bgImage:', bgImage, 'bgColor:', bgColor);
-      
-      if (bgImage && bgImage !== 'none') {
-        return { 
-          backgroundImage: bgImage,
-          backgroundColor: bgColor || '#1e1e2e',
-          color: '#ffffff' 
-        };
-      } else if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)') {
-        return { 
-          backgroundColor: bgColor,
-          color: '#ffffff' 
-        };
-      }
-    }
-
-    // אם לא מצאנו אלמנט הירו, נשתמש בהגדרות ברירת מחדל לפי הסגנון
-    switch (selectedHeroDesign) {
-      case 'hero-section-clean':
-        return { 
-          backgroundColor: 'black',
-          color: '#ffffff'
-        };
-      case 'hero-section-modern':
-        return { 
-          backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: '#ffffff'
-        };
-      case 'hero-section-lamp':
-        return { 
-          backgroundImage: 'radial-gradient(ellipse 80% 80% at 50% -20%, rgba(120, 119, 198, 0.3), rgba(255, 255, 255, 0))',
-          backgroundColor: '#0a0a0a',
-          color: '#ffffff'
-        };
-      case 'hero-section-retro':
-        return { 
-          backgroundImage: 'linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1)',
-          color: '#ffffff'
-        };
-      case 'hero-section-classic':
-        return { 
-          backgroundColor: 'black',
-          backgroundImage: 'linear-gradient(to right,#4f4f4f2e 1px,transparent 1px),linear-gradient(to bottom,#4f4f4f2e 1px,transparent 1px)',
-          backgroundSize: '14px 24px',
-          color: '#ffffff'
-        };
-      default:
-        return { 
-          backgroundColor: '#1e1e2e',
-          color: '#ffffff'
-        };
-    }
+    // ברירת מחדל אם אין רקע הירו
+    return { 
+      backgroundColor: '#1e1e2e',
+      color: '#ffffff'
+    };
   };
 
   const getHeroBasedClasses = () => {
