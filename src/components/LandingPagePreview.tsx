@@ -32,7 +32,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       scrollBehavior: 'smooth'
     }}>
       <div className="w-full min-h-screen" style={{ position: 'relative' }}>
-        {/* Hero Section with Integrated Emotional Section */}
+        {/* Hero Section Only */}
         <HeroSection 
           content={content}
           currentColors={currentColors}
