@@ -11,6 +11,7 @@ export interface TemplateStyles {
   faqBackground: string;
   finalCtaBackground: string;
   contactBackground: string;
+  footerBackground: string;
   
   // Text and accent colors
   textColor: string;
@@ -133,10 +134,34 @@ export interface ContactSection {
   title: string;
   subtitle?: string;
   buttonText: string;
+  fields?: {
+    name: string;
+    type: string;
+    placeholder: string;
+    required: boolean;
+  }[];
 }
 
 export interface FooterSection {
   companyName: string;
+  description?: string;
+  links?: {
+    category: string;
+    items: {
+      name: string;
+      href: string;
+    }[];
+  }[];
+  socialMedia?: {
+    name: string;
+    href: string;
+    icon: string;
+  }[];
+  contactInfo?: {
+    address: string;
+    phone: string;
+    email: string;
+  };
 }
 
 export interface TemplateData {

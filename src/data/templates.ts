@@ -1,10 +1,9 @@
-
 import { TemplateData } from "@/types/template";
 
 export const templates: TemplateData[] = [
   // ===== MINIMAL & MODERN (15 templates) =====
   {
-    id: 1,
+    id: "1",
     name: "זן מינימלי",
     category: "minimal",
     hero: {
@@ -125,13 +124,13 @@ export const templates: TemplateData[] = [
     contact: {
       title: "בוא נתחיל לעבוד יחד",
       subtitle: "נשמח לשמוע על הפרויקט שלך",
+      buttonText: "שלח הודעה",
       fields: [
         { name: "name", type: "text", placeholder: "השם שלך", required: true },
         { name: "email", type: "email", placeholder: "כתובת המייל", required: true },
         { name: "phone", type: "tel", placeholder: "מספר טלפון", required: false },
         { name: "message", type: "textarea", placeholder: "ספר לנו על הפרויקט", required: true }
-      ],
-      buttonText: "שלח הודעה"
+      ]
     },
     footer: {
       companyName: "זן מינימלי",
@@ -184,10 +183,8 @@ export const templates: TemplateData[] = [
     }
   },
 
-  // Continue with remaining templates... 
-  // Adding 14 more minimal templates with unique content
   {
-    id: 2,
+    id: "2",
     name: "לבן טהור",
     category: "minimal",
     hero: {
@@ -308,13 +305,13 @@ export const templates: TemplateData[] = [
     contact: {
       title: "נשמח לשמוע ממך",
       subtitle: "ספר לנו על החזון שלך",
+      buttonText: "שלח הודעה",
       fields: [
         { name: "name", type: "text", placeholder: "השם המלא", required: true },
         { name: "email", type: "email", placeholder: "דוא״ל", required: true },
         { name: "company", type: "text", placeholder: "שם החברה", required: false },
         { name: "message", type: "textarea", placeholder: "איך נוכל לעזור?", required: true }
-      ],
-      buttonText: "שלח הודעה"
+      ]
     },
     footer: {
       companyName: "לבן טהור",
@@ -367,9 +364,7 @@ export const templates: TemplateData[] = [
     }
   }
 
-  // Due to length constraints, showing pattern for first 2 templates
-  // The remaining 68 templates follow the same comprehensive structure
-  // with unique content, colors, and styling for each category
+  // Continue with remaining templates...
 ];
 
 // Generate remaining 68 templates programmatically
@@ -379,7 +374,7 @@ const generateTemplates = () => {
   // Generate 13 more minimal templates (ids 3-15)
   for (let i = 3; i <= 15; i++) {
     additionalTemplates.push({
-      id: i,
+      id: i.toString(),
       name: `מינימל ${i}`,
       category: "minimal",
       hero: {
@@ -391,7 +386,6 @@ const generateTemplates = () => {
         button2Text: "למד עוד",
         image: `photo-${1451187580459 + i}`
       },
-      // ... (all other sections with unique content)
       emotional: {
         badge: "רגש",
         title: `כותרת רגשית ${i}`,
@@ -481,12 +475,12 @@ const generateTemplates = () => {
       contact: {
         title: "יצירת קשר",
         subtitle: "נשמח לעזור",
+        buttonText: "שלח",
         fields: [
           { name: "name", type: "text", placeholder: "שם", required: true },
           { name: "email", type: "email", placeholder: "מייל", required: true },
           { name: "message", type: "textarea", placeholder: "הודעה", required: true }
-        ],
-        buttonText: "שלח"
+        ]
       },
       footer: {
         companyName: `חברה ${i}`,
@@ -533,7 +527,7 @@ const generateTemplates = () => {
   // Generate 15 colorful templates (ids 16-30)
   for (let i = 16; i <= 30; i++) {
     additionalTemplates.push({
-      id: i,
+      id: i.toString(),
       name: `צבעוני ${i - 15}`,
       category: "colorful",
       hero: {
@@ -633,13 +627,13 @@ const generateTemplates = () => {
       contact: {
         title: "בוא נדבר בצבעים",
         subtitle: "ספר לנו איזה צבע אתה אוהב",
+        buttonText: "שלח בצבע",
         fields: [
           { name: "name", type: "text", placeholder: "השם שלך", required: true },
           { name: "email", type: "email", placeholder: "המייל שלך", required: true },
           { name: "favorite_color", type: "text", placeholder: "הצבע המועדף עליך", required: false },
           { name: "message", type: "textarea", placeholder: "איך נוכל לצבוע את הפרויקט שלך?", required: true }
-        ],
-        buttonText: "שלח בצבע"
+        ]
       },
       footer: {
         companyName: `צבעוני ${i - 15}`,
@@ -686,7 +680,7 @@ const generateTemplates = () => {
   // Generate 15 artistic templates (ids 31-45)
   for (let i = 31; i <= 45; i++) {
     additionalTemplates.push({
-      id: i,
+      id: i.toString(),
       name: `אמנותי ${i - 30}`,
       category: "artistic",
       hero: {
@@ -786,13 +780,13 @@ const generateTemplates = () => {
       contact: {
         title: "בוא נדבר על יצירה",
         subtitle: "ספר לנו על החזון היצירתי שלך",
+        buttonText: "שלח השראה",
         fields: [
           { name: "name", type: "text", placeholder: "השם שלך", required: true },
           { name: "email", type: "email", placeholder: "המייל שלך", required: true },
           { name: "creative_field", type: "text", placeholder: "התחום היצירתי שלך", required: false },
           { name: "message", type: "textarea", placeholder: "איך נוכל לעזור לך ליצור?", required: true }
-        ],
-        buttonText: "שלח השראה"
+        ]
       },
       footer: {
         companyName: `אמנות ${i - 30}`,
@@ -839,7 +833,7 @@ const generateTemplates = () => {
   // Generate 15 corporate templates (ids 46-60)
   for (let i = 46; i <= 60; i++) {
     additionalTemplates.push({
-      id: i,
+      id: i.toString(),
       name: `עסקי ${i - 45}`,
       category: "corporate",
       hero: {
@@ -954,14 +948,14 @@ const generateTemplates = () => {
       contact: {
         title: "בוא נדבר עסקים",
         subtitle: "נשמח לשמוע על האתגרים העסקיים שלכם",
+        buttonText: "שלח בקשה",
         fields: [
           { name: "name", type: "text", placeholder: "שם מלא", required: true },
           { name: "email", type: "email", placeholder: "מייל עסקי", required: true },
           { name: "company", type: "text", placeholder: "שם החברה", required: true },
           { name: "phone", type: "tel", placeholder: "טלפון", required: false },
           { name: "message", type: "textarea", placeholder: "ספר לנו על העסק ואיך נוכל לעזור", required: true }
-        ],
-        buttonText: "שלח בקשה"
+        ]
       },
       footer: {
         companyName: `פתרונות ${i - 45}`,
@@ -1017,7 +1011,7 @@ const generateTemplates = () => {
   // Generate 5 organic templates (ids 61-65)
   for (let i = 61; i <= 65; i++) {
     additionalTemplates.push({
-      id: i,
+      id: i.toString(),
       name: `אורגני ${i - 60}`,
       category: "organic",
       hero: {
@@ -1121,13 +1115,13 @@ const generateTemplates = () => {
       contact: {
         title: "בוא נדבר על טבע",
         subtitle: "נשמח לשמוע על המסע הטבעי שלך",
+        buttonText: "שלח הודעה טבעית",
         fields: [
           { name: "name", type: "text", placeholder: "השם שלך", required: true },
           { name: "email", type: "email", placeholder: "המייל שלך", required: true },
           { name: "lifestyle", type: "text", placeholder: "סגנון החיים שלך", required: false },
           { name: "message", type: "textarea", placeholder: "איך נוכל לעזור לך לחיות טבעי יותר?", required: true }
-        ],
-        buttonText: "שלח הודעה טבעית"
+        ]
       },
       footer: {
         companyName: `טבע ${i - 60}`,
@@ -1184,7 +1178,7 @@ const generateTemplates = () => {
   // Generate 5 tech templates (ids 66-70)
   for (let i = 66; i <= 70; i++) {
     additionalTemplates.push({
-      id: i,
+      id: i.toString(),
       name: `טכנולוגי ${i - 65}`,
       category: "tech",
       hero: {
@@ -1299,14 +1293,14 @@ const generateTemplates = () => {
       contact: {
         title: "בוא נדבר טכנולוגיה",
         subtitle: "נשמח לשמוע על הפרויקט הטכנולוגי שלך",
+        buttonText: "שלח בקשה טכנית",
         fields: [
           { name: "name", type: "text", placeholder: "השם שלך", required: true },
           { name: "email", type: "email", placeholder: "מייל", required: true },
           { name: "company", type: "text", placeholder: "חברה/סטארטאפ", required: false },
           { name: "tech_stack", type: "text", placeholder: "הטכנולוגיות שלך", required: false },
           { name: "message", type: "textarea", placeholder: "ספר לנו על הפרויקט הטכנולוגי", required: true }
-        ],
-        buttonText: "שלח בקשה טכנית"
+        ]
       },
       footer: {
         companyName: `טכנולוגיה ${i - 65}`,
@@ -1365,4 +1359,3 @@ const generateTemplates = () => {
 
 // Add all generated templates to the main array
 templates.push(...generateTemplates());
-
