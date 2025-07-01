@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,7 +11,7 @@ import {
   ArrowRight,
   Sparkles
 } from 'lucide-react';
-import { PublishingWizard } from './PublishingWizard';
+import { NewPublishingWizard } from './publishing/NewPublishingWizard';
 import { TemplateData } from '@/types/template';
 
 interface LaunchButtonProps {
@@ -111,14 +112,14 @@ export const LaunchButton = ({ template, className = '' }: LaunchButtonProps) =>
           <div className="flex items-center justify-between">
             <CardTitle className="text-white flex items-center gap-2">
               <Rocket className="w-6 h-6 text-blue-400" />
-              פרסם את האתר שלך
+              פרסם את האתר שלך עכשיו
             </CardTitle>
             <Badge className="bg-yellow-500 text-black">חדש!</Badge>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-gray-300 text-sm">
-            הפוך את האתר שלך לחי ופעיל באינטרנט תוך מספר דקות
+            הפוך את האתר שלך לחי ופעיל באינטרנט תוך מספר דקות - הכל בעברית ופשוט
           </p>
           
           <div className="space-y-3">
@@ -126,21 +127,21 @@ export const LaunchButton = ({ template, className = '' }: LaunchButtonProps) =>
               <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
                 <CheckCircle className="w-3 h-3 text-white" />
               </div>
-              <span className="text-gray-300">דומיין חינם או מותאם</span>
+              <span className="text-gray-300">דומיין חינמי או מותאם (.com, .co.il)</span>
             </div>
             
             <div className="flex items-center gap-2 text-sm">
               <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
                 <CheckCircle className="w-3 h-3 text-white" />
               </div>
-              <span className="text-gray-300">SSL ואבטחה מלאה</span>
+              <span className="text-gray-300">SSL פרימיום ואבטחה מתקדמת</span>
             </div>
             
             <div className="flex items-center gap-2 text-sm">
               <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
                 <CheckCircle className="w-3 h-3 text-white" />
               </div>
-              <span className="text-gray-300">אנליטיקה ואינטגרציות</span>
+              <span className="text-gray-300">תמיכה בכל אמצעי התשלום הישראליים</span>
             </div>
           </div>
 
@@ -158,20 +159,20 @@ export const LaunchButton = ({ template, className = '' }: LaunchButtonProps) =>
               className="bg-blue-600 hover:bg-blue-700 text-white"
             >
               <Sparkles className="w-4 h-4 ml-1" />
-              מתקדם
+              דומיין מותאם
             </Button>
           </div>
 
           <div className="pt-2 border-t border-gray-700">
             <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
               <Clock className="w-3 h-3" />
-              <span>ממוצע 3-5 דקות להשקה מלאה</span>
+              <span>התהליך חייב להיות פשוט, מהיר וברור — הכל בעברית</span>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <PublishingWizard
+      <NewPublishingWizard
         template={currentTemplate}
         isOpen={isWizardOpen}
         onClose={() => setIsWizardOpen(false)}

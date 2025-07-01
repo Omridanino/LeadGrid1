@@ -21,15 +21,15 @@ export const PublishingProgress = ({ progress, isPublishing, isExpressMode }: Pu
   const getProgressMessage = () => {
     if (isExpressMode) {
       if (progress <= 20) return 'מכין את האתר לפרסום...';
-      if (progress <= 40) return 'מגדיר דומיין אוטומטי...';
+      if (progress <= 40) return 'מגדיר דומיין זמני חינם...';
       if (progress <= 60) return 'מפרסם את האתר לאוויר...';
-      if (progress <= 80) return 'מגדיר אבטחת SSL...';
-      return 'האתר חי באינטרנט! 🎉';
+      if (progress <= 80) return 'בודקים את כל החיבורים והאבטחה... עוד רגע וזה מוכן!';
+      return 'האתר שלך באוויר! 🎉';
     } else {
-      if (progress <= 25) return 'בונה את האתר...';
-      if (progress <= 50) return 'מגדיר את הדומיין...';
-      if (progress <= 75) return 'מתקין אינטגרציות...';
-      return 'מפרסם לאוויר...';
+      if (progress <= 25) return 'מעבד את התשלום... זה ייקח מספר שניות.';
+      if (progress <= 50) return 'מגדיר את הדומיין המותאם...';
+      if (progress <= 75) return 'מפרסם את האתר שלך... זה יכול להימשך עד 60 שניות.';
+      return 'בודקים את כל החיבורים והאבטחה... עוד רגע וזה מוכן!';
     }
   };
 
@@ -37,16 +37,16 @@ export const PublishingProgress = ({ progress, isPublishing, isExpressMode }: Pu
     if (isExpressMode) {
       return [
         { name: 'הכנת האתר', icon: Rocket, completed: progress > 20 },
-        { name: 'דומיין אוטומטי', icon: Globe, completed: progress > 40 },
+        { name: 'דומיין זמני חינם', icon: Globe, completed: progress > 40 },
         { name: 'פרסום לאוויר', icon: Zap, completed: progress > 60 },
-        { name: 'הגדרת SSL', icon: Shield, completed: progress > 80 },
+        { name: 'אבטחת SSL', icon: Shield, completed: progress > 80 },
       ];
     } else {
       return [
-        { name: 'בניית האתר', icon: Rocket, completed: progress > 25 },
-        { name: 'הגדרת דומיין', icon: Globe, completed: progress > 50 },
-        { name: 'התקנת אינטגרציות', icon: Settings, completed: progress > 75 },
-        { name: 'פרסום לאוויר', icon: CheckCircle, completed: progress === 100 },
+        { name: 'עיבוד תשלום', icon: Rocket, completed: progress > 25 },
+        { name: 'הגדרת דומיין מותאם', icon: Globe, completed: progress > 50 },
+        { name: 'פרסום לאוויר', icon: Settings, completed: progress > 75 },
+        { name: 'בדיקות אבטחה', icon: CheckCircle, completed: progress === 100 },
       ];
     }
   };
@@ -82,7 +82,7 @@ export const PublishingProgress = ({ progress, isPublishing, isExpressMode }: Pu
           <div className="text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-yellow-500/20 rounded-full border border-yellow-500/30">
               <Zap className="w-4 h-4 text-yellow-400" />
-              <span className="text-yellow-300 text-sm font-medium">מצב אקספרס פעיל</span>
+              <span className="text-yellow-300 text-sm font-medium">מצב אקספרס פעיל - 60 שניות</span>
             </div>
           </div>
         )}
@@ -122,8 +122,8 @@ export const PublishingProgress = ({ progress, isPublishing, isExpressMode }: Pu
             <h4 className="text-blue-300 font-medium mb-2">💡 ידעת?</h4>
             <p className="text-blue-200 text-sm">
               {isExpressMode 
-                ? 'באקספרס, האתר שלך יהיה מוכן תוך פחות מדקה!'
-                : 'האתר שלך יכלול אבטחת SSL חינם ושירות CDN מהיר בכל העולם'
+                ? 'באקספרס, האתר שלך יהיה מוכן תוך פחות מדקה עם דומיין חינמי!'
+                : 'האתר שלך יכלול SSL פרימיום, תמיכה בעברית ושירות CDN מהיר בכל העולם'
               }
             </p>
           </div>
@@ -134,7 +134,9 @@ export const PublishingProgress = ({ progress, isPublishing, isExpressMode }: Pu
         <div className="text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-600/20 rounded-lg border border-green-600/30">
             <CheckCircle className="w-5 h-5 text-green-400" />
-            <span className="text-green-300 font-medium">הפרסום הושלם בהצלחה!</span>
+            <span className="text-green-300 font-medium">
+              {isExpressMode ? 'האתר באוויר תוך 60 שניות!' : 'הפרסום הושלם בהצלחה!'}
+            </span>
           </div>
         </div>
       )}
