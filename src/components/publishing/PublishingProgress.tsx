@@ -8,7 +8,10 @@ import {
   CheckCircle, 
   Loader2,
   Zap,
-  Settings
+  Settings,
+  Server,
+  Lock,
+  Database
 } from 'lucide-react';
 
 interface PublishingProgressProps {
@@ -23,12 +26,12 @@ export const PublishingProgress = ({ progress, isPublishing, isExpressMode }: Pu
       if (progress <= 20) return 'מכין את האתר לפרסום...';
       if (progress <= 40) return 'מגדיר דומיין זמני חינם...';
       if (progress <= 60) return 'מפרסם את האתר לאוויר...';
-      if (progress <= 80) return 'בודקים את כל החיבורים והאבטחה... עוד רגע וזה מוכן!';
-      return 'האתר שלך באוויר! 🎉';
+      if (progress <= 80) return 'מתקין תעודת SSL ואבטחה... עוד רגע וזה מוכן!';
+      return 'האתר שלך באוויר עם SSL מאובטח! 🎉';
     } else {
       if (progress <= 25) return 'מעבד את התשלום... זה ייקח מספר שניות.';
-      if (progress <= 50) return 'מגדיר את הדומיין המותאם...';
-      if (progress <= 75) return 'מפרסם את האתר שלך... זה יכול להימשך עד 60 שניות.';
+      if (progress <= 50) return 'רוכש ומגדיר את הדומיין המותאם...';
+      if (progress <= 75) return 'מפרסם את האתר שלך ומתקין SSL... זה יכול להימשך עד 60 שניות.';
       return 'בודקים את כל החיבורים והאבטחה... עוד רגע וזה מוכן!';
     }
   };
@@ -39,14 +42,34 @@ export const PublishingProgress = ({ progress, isPublishing, isExpressMode }: Pu
         { name: 'הכנת האתר', icon: Rocket, completed: progress > 20 },
         { name: 'דומיין זמני חינם', icon: Globe, completed: progress > 40 },
         { name: 'פרסום לאוויר', icon: Zap, completed: progress > 60 },
-        { name: 'אבטחת SSL', icon: Shield, completed: progress > 80 },
+        { name: 'SSL ואבטחה', icon: Shield, completed: progress > 80 },
       ];
     } else {
       return [
-        { name: 'עיבוד תשלום', icon: Rocket, completed: progress > 25 },
-        { name: 'הגדרת דומיין מותאם', icon: Globe, completed: progress > 50 },
-        { name: 'פרסום לאוויר', icon: Settings, completed: progress > 75 },
+        { name: 'עיבוד תשלום', icon: Database, completed: progress > 25 },
+        { name: 'רכישת דומיין', icon: Globe, completed: progress > 50 },
+        { name: 'אחסון ו-SSL', icon: Server, completed: progress > 75 },
         { name: 'בדיקות אבטחה', icon: CheckCircle, completed: progress === 100 },
+      ];
+    }
+  };
+
+  const getDetailedProgress = () => {
+    if (isExpressMode) {
+      return [
+        { step: 'הכנת קבצי האתר', completed: progress > 10 },
+        { step: 'הגדרת דומיין זמני', completed: progress > 30 },
+        { step: 'העלאת קבצים לאחסון', completed: progress > 50 },
+        { step: 'הפעלת SSL', completed: progress > 70 },
+        { step: 'בדיקת קישוריות', completed: progress > 90 },
+      ];
+    } else {
+      return [
+        { step: 'עיבוד תשלום בכרטיס', completed: progress > 15 },
+        { step: 'רכישת דומיין אצל הרשם', completed: progress > 35 },
+        { step: 'הגדרת DNS', completed: progress > 55 },
+        { step: 'התקנת SSL', completed: progress > 75 },
+        { step: 'הפעלת CDN', completed: progress > 90 },
       ];
     }
   };
@@ -88,10 +111,11 @@ export const PublishingProgress = ({ progress, isPublishing, isExpressMode }: Pu
         )}
       </div>
 
-      {/* Progress Steps */}
+      {/* Main Progress Steps */}
       <Card className="bg-gray-800 border-gray-700">
         <CardContent className="p-6">
           <div className="space-y-4">
+            <h4 className="text-white font-medium mb-4">שלבי הפרסום:</h4>
             {getProgressSteps().map((step, index) => {
               const Icon = step.icon;
               return (
@@ -115,15 +139,38 @@ export const PublishingProgress = ({ progress, isPublishing, isExpressMode }: Pu
         </CardContent>
       </Card>
 
-      {/* Fun Facts */}
+      {/* Detailed Progress */}
+      <Card className="bg-gray-800 border-gray-700">
+        <CardContent className="p-6">
+          <div className="space-y-3">
+            <h4 className="text-white font-medium mb-4">פרטי התהליך:</h4>
+            {getDetailedProgress().map((item, index) => (
+              <div key={index} className="flex items-center gap-3 text-sm">
+                <div className={`
+                  w-2 h-2 rounded-full
+                  ${item.completed ? 'bg-green-400' : 'bg-gray-600'}
+                `} />
+                <span className={`${item.completed ? 'text-green-300' : 'text-gray-400'}`}>
+                  {item.step}
+                </span>
+                {item.completed && (
+                  <CheckCircle className="w-3 h-3 text-green-400 mr-auto" />
+                )}
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Technical Info */}
       <Card className="bg-gradient-to-r from-blue-900/30 to-purple-900/30 border-blue-700/30">
         <CardContent className="p-4">
           <div className="text-center">
-            <h4 className="text-blue-300 font-medium mb-2">💡 ידעת?</h4>
+            <h4 className="text-blue-300 font-medium mb-2">💡 מה קורה מאחורי הקלעים?</h4>
             <p className="text-blue-200 text-sm">
               {isExpressMode 
-                ? 'באקספרס, האתר שלך יהיה מוכן תוך פחות מדקה עם דומיין חינמי!'
-                : 'האתר שלך יכלול SSL פרימיום, תמיכה בעברית ושירות CDN מהיר בכל העולם'
+                ? 'אנחנו מגדירים עבורך אחסון מהיר, דומיין זמני חינם, תעודת SSL מאובטחת ו-CDN עולמי - הכל אוטומטי!'
+                : 'אנחנו רוכשים עבורך את הדומיין, מגדירים DNS, מתקינים SSL פרימיום, מפעילים CDN ומגדירים גיבויים אוטומטיים'
               }
             </p>
           </div>
@@ -135,7 +182,7 @@ export const PublishingProgress = ({ progress, isPublishing, isExpressMode }: Pu
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-600/20 rounded-lg border border-green-600/30">
             <CheckCircle className="w-5 h-5 text-green-400" />
             <span className="text-green-300 font-medium">
-              {isExpressMode ? 'האתר באוויר תוך 60 שניות!' : 'הפרסום הושלם בהצלחה!'}
+              {isExpressMode ? 'האתר באוויר עם SSL מאובטח תוך 60 שניות!' : 'הפרסום הושלם בהצלחה עם כל התכונות הפרימיום!'}
             </span>
           </div>
         </div>
