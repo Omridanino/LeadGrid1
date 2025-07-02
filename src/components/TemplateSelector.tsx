@@ -1,289 +1,252 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Filter, Grid, List, Sparkles, Palette, Zap, Building, Leaf, Cpu, Eye } from "lucide-react";
-import { templates } from "@/data/templates";
-import { TemplateData } from "@/types/template";
-import TemplateEditor from "./TemplateEditor";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ArrowLeft, ArrowRight, X, Sparkles, Palette, Layout, Zap, Eye } from 'lucide-react';
+import { templates } from '@/data/templates';
+import { TemplateData } from '@/types/template';
+import { TemplateEditor } from './template-editor/TemplatePreview';
+import { LaunchSection } from './LaunchSection';
 
 interface TemplateSelectorProps {
   isOpen: boolean;
   onClose: () => void;
-  selectedStyle?: string;
 }
 
-const TemplateSelector = ({ isOpen, onClose, selectedStyle }: TemplateSelectorProps) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string>(selectedStyle || "all");
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [selectedTemplate, setSelectedTemplate] = useState<TemplateData | null>(null);
-  const [isEditorOpen, setIsEditorOpen] = useState(false);
+type Step = 'category' | 'template' | 'customize' | 'launch';
 
+const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
+  const [currentStep, setCurrentStep] = useState<Step>('category');
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateData | null>(null);
+  const [editingTemplate, setEditingTemplate] = useState<TemplateData | null>(null);
+  
   const categories = [
-    { id: "all", name: "הכל", icon: Grid, count: templates.length },
-    { id: "minimal", name: "מינימלי", icon: Sparkles, count: templates.filter(t => t.category === "minimal").length },
-    { id: "colorful", name: "צבעוני", icon: Palette, count: templates.filter(t => t.category === "colorful").length },
-    { id: "artistic", name: "אמנותי", icon: Zap, count: templates.filter(t => t.category === "artistic").length },
-    { id: "corporate", name: "עסקי", icon: Building, count: templates.filter(t => t.category === "corporate").length },
-    { id: "organic", name: "אורגני", icon: Leaf, count: templates.filter(t => t.category === "organic").length },
-    { id: "tech", name: "טכנולוגי", icon: Cpu, count: templates.filter(t => t.category === "tech").length }
+    { id: 'business', name: 'עסקים ושירותים', icon: '💼', description: 'מתאים לעסקים, משרדים ונותני שירותים' },
+    { id: 'creative', name: 'יצירתי ועיצוב', icon: '🎨', description: 'לאמנים, מעצבים ויוצרי תוכן' },
+    { id: 'tech', name: 'טכנולוגיה וחדשנות', icon: '💻', description: 'חברות טכנולוגיה וסטארטאפים' },
+    { id: 'health', name: 'בריאות ורפואה', icon: '🏥', description: 'רופאים, מטפלים ומוסדות בריאות' },
+    { id: 'education', name: 'חינוך והכשרה', icon: '📚', description: 'מוסדות חינוך ומרכזי הכשרה' },
+    { id: 'ecommerce', name: 'מסחר אלקטרוני', icon: '🛒', description: 'חנויות ומכירות אונליין' }
   ];
 
-  const filteredTemplates = templates.filter(template => {
-    const matchesSearch = template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         template.hero.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || template.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+  const steps = [
+    { id: 'category', name: 'קטגוריה', icon: Layout },
+    { id: 'template', name: 'תבנית', icon: Palette },
+    { id: 'customize', name: 'עיצוב', icon: Sparkles },
+    { id: 'launch', name: 'פרסום', icon: Zap }
+  ];
+
+  const getCurrentStepIndex = () => steps.findIndex(step => step.id === currentStep);
+
+  const nextStep = () => {
+    const currentIndex = getCurrentStepIndex();
+    if (currentIndex < steps.length - 1) {
+      const nextStepId = steps[currentIndex + 1].id as Step;
+      
+      if (nextStepId === 'customize' && selectedTemplate) {
+        setEditingTemplate({ ...selectedTemplate });
+      }
+      
+      setCurrentStep(nextStepId);
+    }
+  };
+
+  const prevStep = () => {
+    const currentIndex = getCurrentStepIndex();
+    if (currentIndex > 0) {
+      setCurrentStep(steps[currentIndex - 1].id as Step);
+    }
+  };
 
   const handleTemplateSelect = (template: TemplateData) => {
-    console.log("Template selected:", template.name);
     setSelectedTemplate(template);
-    setIsEditorOpen(true);
+    nextStep();
   };
 
-  const handleEditorClose = () => {
-    console.log("Editor closing");
-    setIsEditorOpen(false);
-    setSelectedTemplate(null);
+  const handleCustomizationComplete = (customizedTemplate: TemplateData) => {
+    setEditingTemplate(customizedTemplate);
+    setSelectedTemplate(customizedTemplate);
+    nextStep();
   };
 
-  const handleTemplateChange = (updatedTemplate: TemplateData) => {
-    console.log("Template updated:", updatedTemplate);
-    setSelectedTemplate(updatedTemplate);
-  };
-
-  useEffect(() => {
-    if (selectedStyle && selectedStyle !== "all") {
-      setSelectedCategory(selectedStyle);
-    }
-  }, [selectedStyle]);
+  const filteredTemplates = selectedCategory 
+    ? templates.filter(template => template.category === selectedCategory)
+    : templates;
 
   if (!isOpen) return null;
 
   return (
-    <>
-      {/* Template Selector Modal */}
-      {!isEditorOpen && (
-        <div className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4" dir="rtl">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="w-full max-w-7xl bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[95vh] flex flex-col"
-          >
-            {/* Header */}
-            <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 p-6 text-white">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h2 className="text-3xl font-bold mb-2">🎨 בחר את התבנית המושלמת</h2>
-                  <p className="text-blue-100 text-lg">
-                    {filteredTemplates.length} תבניות פרימיום • עיצוב מקצועי לכל עסק
-                  </p>
-                </div>
-                <button
-                  onClick={onClose}
-                  className="text-white/80 hover:text-white transition-colors text-2xl font-bold bg-white/10 rounded-full w-10 h-10 flex items-center justify-center"
-                >
-                  ✕
-                </button>
-              </div>
-
-              {/* Filters */}
-              <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-                <div className="flex items-center gap-4 flex-1 w-full sm:w-auto">
-                  <div className="relative flex-1 max-w-md">
-                    <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <Input
-                      placeholder="חפש תבניות..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pr-10 bg-white/20 border-white/30 text-white placeholder:text-white/70"
-                    />
-                  </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant={viewMode === "grid" ? "secondary" : "ghost"}
-                      size="sm"
-                      onClick={() => setViewMode("grid")}
-                      className="text-white border-white/30"
-                    >
-                      <Grid className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant={viewMode === "list" ? "secondary" : "ghost"}
-                      size="sm"
-                      onClick={() => setViewMode("list")}
-                      className="text-white border-white/30"
-                    >
-                      <List className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-6xl h-[90vh] bg-gray-900 border-gray-800 text-white">
+        <DialogHeader className="border-b border-gray-800 pb-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <DialogTitle className="text-2xl font-bold text-white">
+                {currentStep === 'category' && 'בחר קטגוריה'}
+                {currentStep === 'template' && 'בחר תבנית'}
+                {currentStep === 'customize' && 'עצב את האתר שלך'}
+                {currentStep === 'launch' && 'פרסם את האתר שלך'}
+              </DialogTitle>
+              <DialogDescription className="text-gray-400 mt-1">
+                {currentStep === 'category' && 'בחר את הקטגוריה המתאימה לעסק שלך'}
+                {currentStep === 'template' && 'בחר את התבנית שהכי מתאימה לך'}
+                {currentStep === 'customize' && 'התאם את התוכן והעיצוב לפי הצרכים שלך'}
+                {currentStep === 'launch' && 'האתר שלך מוכן לפרסום!'}
+              </DialogDescription>
             </div>
+            <Button
+              onClick={onClose}
+              size="sm"
+              className="bg-gray-700 hover:bg-gray-600 text-white"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
 
-            {/* Categories */}
-            <div className="p-4 border-b border-gray-200 bg-gray-50">
-              <div className="flex gap-2 overflow-x-auto pb-2">
-                {categories.map((category) => {
-                  const Icon = category.icon;
-                  return (
-                    <Button
+          {/* Progress Steps */}
+          <div className="mt-6">
+            <div className="flex items-center justify-between">
+              {steps.map((step, index) => {
+                const Icon = step.icon;
+                const isActive = step.id === currentStep;
+                const isCompleted = getCurrentStepIndex() > index;
+                
+                return (
+                  <div key={step.id} className="flex items-center">
+                    <div className={`
+                      flex items-center justify-center w-10 h-10 rounded-full border-2
+                      ${isActive ? 'bg-blue-600 border-blue-600 text-white' : 
+                        isCompleted ? 'bg-green-600 border-green-600 text-white' : 
+                        'border-gray-600 text-gray-400'}
+                    `}>
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <div className="mr-3">
+                      <div className={`text-sm font-medium ${isActive ? 'text-white' : isCompleted ? 'text-green-400' : 'text-gray-400'}`}>
+                        {step.name}
+                      </div>
+                    </div>
+                    {index < steps.length - 1 && (
+                      <div className={`w-12 h-0.5 mx-4 ${isCompleted ? 'bg-green-600' : 'bg-gray-600'}`} />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </DialogHeader>
+
+        <div className="flex-1 overflow-hidden">
+          <ScrollArea className="h-full">
+            <div className="p-6">
+              {currentStep === 'category' && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {categories.map((category) => (
+                    <Card
                       key={category.id}
-                      variant={selectedCategory === category.id ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setSelectedCategory(category.id)}
-                      className="flex items-center gap-2 whitespace-nowrap"
+                      className={`
+                        cursor-pointer transition-all bg-gray-800 border-gray-700 hover:bg-gray-700
+                        ${selectedCategory === category.id ? 'ring-2 ring-blue-500 bg-blue-900/20' : ''}
+                      `}
+                      onClick={() => {
+                        setSelectedCategory(category.id);
+                        nextStep();
+                      }}
                     >
-                      <Icon className="w-4 h-4" />
-                      {category.name}
-                      <Badge variant="secondary" className="ml-1">
-                        {category.count}
-                      </Badge>
-                    </Button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Templates Grid */}
-            <div className="flex-1 overflow-y-auto p-6">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={`${selectedCategory}-${searchTerm}-${viewMode}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className={viewMode === "grid" 
-                    ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" 
-                    : "space-y-4"
-                  }
-                >
-                  {filteredTemplates.map((template) => (
-                    <motion.div
-                      key={template.id}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.3 }}
-                      whileHover={{ scale: 1.02 }}
-                      className="cursor-pointer"
-                    >
-                      <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300 border-2 hover:border-blue-200">
-                        {/* Template Preview */}
-                        <div className="aspect-[4/3] relative overflow-hidden">
-                          <div 
-                            className="absolute inset-0 p-4 text-white text-xs"
-                            style={{ 
-                              background: template.styles.heroBackground || template.styles.primaryColor,
-                              color: template.styles.textColor 
-                            }}
-                          >
-                            <div className="space-y-2">
-                              <div className="text-lg font-bold truncate">
-                                {template.hero.title}
-                              </div>
-                              <div className="text-sm opacity-80 truncate">
-                                {template.hero.subtitle}
-                              </div>
-                              <div className="flex gap-1 mt-2">
-                                <div className="h-2 w-8 bg-white/30 rounded"></div>
-                                <div className="h-2 w-6 bg-white/20 rounded"></div>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          {/* Overlay */}
-                          <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100">
-                            <Button
-                              size="sm"
-                              className="bg-white text-gray-900 hover:bg-gray-100"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleTemplateSelect(template);
-                              }}
-                            >
-                              <Eye className="w-4 h-4 ml-1" />
-                              תצוגה מקדימה
-                            </Button>
-                          </div>
-                        </div>
-                        
-                        <CardContent className="p-4">
-                          <div className="flex items-center justify-between mb-2">
-                            <h3 className="font-bold text-lg truncate">{template.name}</h3>
-                            <Badge 
-                              variant="outline" 
-                              className="text-xs"
-                              style={{ 
-                                borderColor: template.styles.primaryColor,
-                                color: template.styles.primaryColor 
-                              }}
-                            >
-                              {template.category}
-                            </Badge>
-                          </div>
-                          
-                          <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                            {template.hero.description}
-                          </p>
-                          
-                          <div className="flex gap-2">
-                            <Button
-                              size="sm"
-                              className="flex-1"
-                              style={{ backgroundColor: template.styles.primaryColor }}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleTemplateSelect(template);
-                              }}
-                            >
-                              בחר תבנית
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleTemplateSelect(template);
-                              }}
-                            >
-                              <Eye className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
+                      <CardHeader className="text-center">
+                        <div className="text-4xl mb-2">{category.icon}</div>
+                        <CardTitle className="text-white">{category.name}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-gray-400 text-sm text-center">
+                          {category.description}
+                        </p>
+                      </CardContent>
+                    </Card>
                   ))}
-                </motion.div>
-              </AnimatePresence>
-              
-              {filteredTemplates.length === 0 && (
-                <div className="text-center py-12">
-                  <div className="text-gray-400 text-6xl mb-4">🔍</div>
-                  <h3 className="text-xl font-bold text-gray-700 mb-2">לא נמצאו תבניות</h3>
-                  <p className="text-gray-500">נסה לשנות את החיפוש או הקטגוריה</p>
                 </div>
               )}
-            </div>
-          </motion.div>
-        </div>
-      )}
 
-      {/* Template Editor */}
-      {isEditorOpen && selectedTemplate && (
-        <TemplateEditor
-          template={selectedTemplate}
-          onTemplateChange={handleTemplateChange}
-          onClose={handleEditorClose}
-        />
-      )}
-    </>
+              {currentStep === 'template' && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredTemplates.map((template) => (
+                    <Card
+                      key={template.id}
+                      className="cursor-pointer transition-all bg-gray-800 border-gray-700 hover:bg-gray-700"
+                      onClick={() => handleTemplateSelect(template)}
+                    >
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <CardTitle className="text-white">{template.name}</CardTitle>
+                          <Badge className="bg-blue-600 text-white">{template.category}</Badge>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="bg-gray-900 p-4 rounded-lg mb-4">
+                          <h4 className="text-white font-medium mb-2">{template.hero.title}</h4>
+                          <p className="text-gray-400 text-sm">{template.hero.subtitle}</p>
+                        </div>
+                        <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                          <Eye className="w-4 h-4 ml-2" />
+                          בחר תבנית זו
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+
+              {currentStep === 'customize' && editingTemplate && (
+                <TemplateEditor
+                  template={editingTemplate}
+                  onSave={handleCustomizationComplete}
+                />
+              )}
+
+              {currentStep === 'launch' && selectedTemplate && (
+                <LaunchSection
+                  template={selectedTemplate}
+                  onBack={prevStep}
+                />
+              )}
+            </div>
+          </ScrollArea>
+        </div>
+
+        {/* Footer Navigation */}
+        {currentStep !== 'launch' && (
+          <div className="border-t border-gray-800 p-6 flex justify-between">
+            <Button
+              onClick={prevStep}
+              variant="outline"
+              className="border-gray-600 text-white hover:bg-gray-700"
+              disabled={getCurrentStepIndex() === 0}
+            >
+              <ArrowLeft className="w-4 h-4 ml-2" />
+              קודם
+            </Button>
+            
+            <Button
+              onClick={nextStep}
+              className="bg-blue-600 hover:bg-blue-700"
+              disabled={
+                (currentStep === 'category' && !selectedCategory) ||
+                (currentStep === 'template' && !selectedTemplate) ||
+                (currentStep === 'customize' && !editingTemplate)
+              }
+            >
+              {currentStep === 'customize' ? 'המשך לפרסום' : 'הבא'}
+              <ArrowRight className="w-4 h-4 mr-2" />
+            </Button>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 };
 
