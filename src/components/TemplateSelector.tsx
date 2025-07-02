@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -74,9 +75,19 @@ const TemplateSelector = ({ isOpen, onClose, selectedStyle }: TemplateSelectorPr
     nextStep();
   };
 
+  // תיקון הסינון - נוודא שיש תבניות לכל קטגוריה
   const filteredTemplates = selectedCategory 
     ? templates.filter(template => template.category === selectedCategory)
     : templates;
+
+  // במקרה שאין תבניות לקטגוריה, נציג את כל התבניות
+  const templatesToShow = filteredTemplates.length > 0 ? filteredTemplates : templates;
+
+  console.log('Current step:', currentStep);
+  console.log('Selected category:', selectedCategory);
+  console.log('All templates:', templates);
+  console.log('Filtered templates:', filteredTemplates);
+  console.log('Templates to show:', templatesToShow);
 
   if (!isOpen) return null;
 
@@ -173,31 +184,55 @@ const TemplateSelector = ({ isOpen, onClose, selectedStyle }: TemplateSelectorPr
               )}
 
               {currentStep === 'template' && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredTemplates.map((template) => (
-                    <Card
-                      key={template.id}
-                      className="cursor-pointer transition-all bg-gray-800 border-gray-700 hover:bg-gray-700"
-                      onClick={() => handleTemplateSelect(template)}
-                    >
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <CardTitle className="text-white">{template.name}</CardTitle>
-                          <Badge className="bg-blue-600 text-white">{template.category}</Badge>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="bg-gray-900 p-4 rounded-lg mb-4">
-                          <h4 className="text-white font-medium mb-2">{template.hero.title}</h4>
-                          <p className="text-gray-400 text-sm">{template.hero.subtitle}</p>
-                        </div>
-                        <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                          <Eye className="w-4 h-4 ml-2" />
-                          בחר תבנית זו
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
+                <div>
+                  {/* הודעת דיבוג זמנית */}
+                  <div className="mb-4 p-3 bg-yellow-900/30 border border-yellow-600 rounded-lg">
+                    <p className="text-yellow-200 text-sm">
+                      דיבוג: נמצאו {templatesToShow.length} תבניות עבור קטגוריה "{selectedCategory}"
+                    </p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {templatesToShow.map((template) => (
+                      <Card
+                        key={template.id}
+                        className="cursor-pointer transition-all bg-gray-800 border-gray-700 hover:bg-gray-700"
+                        onClick={() => handleTemplateSelect(template)}
+                      >
+                        <CardHeader>
+                          <div className="flex items-center justify-between">
+                            <CardTitle className="text-white">{template.name}</CardTitle>
+                            <Badge className="bg-blue-600 text-white">{template.category}</Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="bg-gray-900 p-4 rounded-lg mb-4">
+                            <h4 className="text-white font-medium mb-2">{template.hero.title}</h4>
+                            <p className="text-gray-400 text-sm">{template.hero.subtitle}</p>
+                          </div>
+                          <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                            <Eye className="w-4 h-4 ml-2" />
+                            בחר תבנית זו
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                  
+                  {templatesToShow.length === 0 && (
+                    <div className="text-center py-12">
+                      <p className="text-gray-400 text-lg mb-4">
+                        לא נמצאו תבניות עבור קטגוריה זו
+                      </p>
+                      <Button
+                        onClick={() => setCurrentStep('category')}
+                        variant="outline"
+                        className="border-gray-600 text-white hover:bg-gray-700"
+                      >
+                        חזור לבחירת קטגוריה
+                      </Button>
+                    </div>
+                  )}
                 </div>
               )}
 
