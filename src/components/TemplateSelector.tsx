@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,17 +8,18 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { ArrowLeft, ArrowRight, X, Sparkles, Palette, Layout, Zap, Eye } from 'lucide-react';
 import { templates } from '@/data/templates';
 import { TemplateData } from '@/types/template';
-import { TemplateEditor } from './template-editor/TemplatePreview';
+import { TemplateEditor } from './template-editor/TemplateEditor';
 import { LaunchSection } from './LaunchSection';
 
 interface TemplateSelectorProps {
   isOpen: boolean;
   onClose: () => void;
+  selectedStyle?: string;
 }
 
 type Step = 'category' | 'template' | 'customize' | 'launch';
 
-const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
+const TemplateSelector = ({ isOpen, onClose, selectedStyle }: TemplateSelectorProps) => {
   const [currentStep, setCurrentStep] = useState<Step>('category');
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateData | null>(null);
