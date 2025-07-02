@@ -17,25 +17,14 @@ interface TemplateSelectorProps {
   selectedStyle?: string;
 }
 
-type Step = 'category' | 'template' | 'customize' | 'launch';
+type Step = 'template' | 'customize' | 'launch';
 
 const TemplateSelector = ({ isOpen, onClose, selectedStyle }: TemplateSelectorProps) => {
-  const [currentStep, setCurrentStep] = useState<Step>('category');
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [currentStep, setCurrentStep] = useState<Step>('template');
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateData | null>(null);
   const [editingTemplate, setEditingTemplate] = useState<TemplateData | null>(null);
   
-  const categories = [
-    { id: 'business', name: 'עסקים ושירותים', icon: '💼', description: 'מתאים לעסקים, משרדים ונותני שירותים' },
-    { id: 'creative', name: 'יצירתי ועיצוב', icon: '🎨', description: 'לאמנים, מעצבים ויוצרי תוכן' },
-    { id: 'tech', name: 'טכנולוגיה וחדשנות', icon: '💻', description: 'חברות טכנולוגיה וסטארטאפים' },
-    { id: 'health', name: 'בריאות ורפואה', icon: '🏥', description: 'רופאים, מטפלים ומוסדות בריאות' },
-    { id: 'education', name: 'חינוך והכשרה', icon: '📚', description: 'מוסדות חינוך ומרכזי הכשרה' },
-    { id: 'ecommerce', name: 'מסחר אלקטרוני', icon: '🛒', description: 'חנויות ומכירות אונליין' }
-  ];
-
   const steps = [
-    { id: 'category', name: 'קטגוריה', icon: Layout },
     { id: 'template', name: 'תבנית', icon: Palette },
     { id: 'customize', name: 'עיצוב', icon: Sparkles },
     { id: 'launch', name: 'פרסום', icon: Zap }
@@ -74,10 +63,13 @@ const TemplateSelector = ({ isOpen, onClose, selectedStyle }: TemplateSelectorPr
     nextStep();
   };
 
-  // תיקון הסינון - הצגת כל התבניות
-  const filteredTemplates = templates.filter(template => 
-    !selectedCategory || template.category === selectedCategory
-  );
+  // סינון תבניות לפי סגנון שנבחר
+  const filteredTemplates = selectedStyle 
+    ? templates.filter(template => template.style === selectedStyle)
+    : templates;
+
+  // אם אין תבניות מתאימות לסגנון שנבחר, נציג את כל התבניות
+  const templatesToShow = filteredTemplates.length > 0 ? filteredTemplates : templates;
 
   if (!isOpen) return null;
 
@@ -88,14 +80,12 @@ const TemplateSelector = ({ isOpen, onClose, selectedStyle }: TemplateSelectorPr
           <div className="flex items-center justify-between">
             <div>
               <DialogTitle className="text-2xl font-bold text-white">
-                {currentStep === 'category' && 'בחר קטגוריה'}
                 {currentStep === 'template' && 'בחר תבנית'}
                 {currentStep === 'customize' && 'עצב את האתר שלך'}
                 {currentStep === 'launch' && 'פרסם את האתר שלך'}
               </DialogTitle>
               <DialogDescription className="text-gray-400 mt-1">
-                {currentStep === 'category' && 'בחר את הקטגוריה המתאימה לעסק שלך'}
-                {currentStep === 'template' && 'בחר את התבנית שהכי מתאימה לך'}
+                {currentStep === 'template' && 'בחר את התבנית שהכי מתאימה לעסק שלך'}
                 {currentStep === 'customize' && 'התאם את התוכן והעיצוב לפי הצרכים שלך'}
                 {currentStep === 'launch' && 'האתר שלך מוכן לפרסום!'}
               </DialogDescription>
@@ -145,60 +135,55 @@ const TemplateSelector = ({ isOpen, onClose, selectedStyle }: TemplateSelectorPr
         <div className="flex-1 overflow-hidden">
           <ScrollArea className="h-full">
             <div className="p-6">
-              {currentStep === 'category' && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {categories.map((category) => (
-                    <Card
-                      key={category.id}
-                      className={`
-                        cursor-pointer transition-all bg-gray-800 border-gray-700 hover:bg-gray-700
-                        ${selectedCategory === category.id ? 'ring-2 ring-blue-500 bg-blue-900/20' : ''}
-                      `}
-                      onClick={() => {
-                        setSelectedCategory(category.id);
-                        nextStep();
-                      }}
-                    >
-                      <CardHeader className="text-center">
-                        <div className="text-4xl mb-2">{category.icon}</div>
-                        <CardTitle className="text-white">{category.name}</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-400 text-sm text-center">
-                          {category.description}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              )}
-
               {currentStep === 'template' && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredTemplates.map((template) => (
-                    <Card
-                      key={template.id}
-                      className="cursor-pointer transition-all bg-gray-800 border-gray-700 hover:bg-gray-700"
-                      onClick={() => handleTemplateSelect(template)}
-                    >
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <CardTitle className="text-white">{template.name}</CardTitle>
-                          <Badge className="bg-blue-600 text-white">{template.category}</Badge>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="bg-gray-900 p-4 rounded-lg mb-4">
-                          <h4 className="text-white font-medium mb-2">{template.hero.title}</h4>
-                          <p className="text-gray-400 text-sm">{template.hero.subtitle}</p>
-                        </div>
-                        <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                          <Eye className="w-4 h-4 ml-2" />
-                          בחר תבנית זו
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
+                <div className="space-y-6">
+                  {selectedStyle && (
+                    <div className="text-center mb-6">
+                      <Badge className="bg-blue-600 text-white px-4 py-2">
+                        {selectedStyle === 'minimal' && 'סגנון מינימלי'}
+                        {selectedStyle === 'colorful' && 'סגנון צבעוני'}
+                        {selectedStyle === 'artistic' && 'סגנון אמנותי'}
+                        {selectedStyle === 'corporate' && 'סגנון עסקי'}
+                        {selectedStyle === 'organic' && 'סגנון אורגני'}
+                        {selectedStyle === 'tech' && 'סגנון טכנולוגי'}
+                      </Badge>
+                    </div>
+                  )}
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {templatesToShow.map((template) => (
+                      <Card
+                        key={template.id}
+                        className="cursor-pointer transition-all bg-gray-800 border-gray-700 hover:bg-gray-700 hover:scale-105"
+                        onClick={() => handleTemplateSelect(template)}
+                      >
+                        <CardHeader>
+                          <div className="flex items-center justify-between">
+                            <CardTitle className="text-white text-lg">{template.name}</CardTitle>
+                            <Badge className="bg-blue-600 text-white text-xs">{template.category}</Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="bg-gray-900 p-4 rounded-lg mb-4">
+                            <h4 className="text-white font-medium mb-2">{template.hero.title}</h4>
+                            <p className="text-gray-400 text-sm mb-3">{template.hero.subtitle}</p>
+                            <div className="flex gap-2">
+                              <div className="px-2 py-1 bg-blue-600 text-white text-xs rounded">
+                                {template.hero.button1Text}
+                              </div>
+                              <div className="px-2 py-1 bg-gray-600 text-white text-xs rounded">
+                                {template.hero.button2Text}
+                              </div>
+                            </div>
+                          </div>
+                          <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                            <Eye className="w-4 h-4 ml-2" />
+                            בחר תבנית זו
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
                 </div>
               )}
 
@@ -236,7 +221,6 @@ const TemplateSelector = ({ isOpen, onClose, selectedStyle }: TemplateSelectorPr
               onClick={nextStep}
               className="bg-blue-600 hover:bg-blue-700"
               disabled={
-                (currentStep === 'category' && !selectedCategory) ||
                 (currentStep === 'template' && !selectedTemplate) ||
                 (currentStep === 'customize' && !editingTemplate)
               }
