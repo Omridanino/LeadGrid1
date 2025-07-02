@@ -63,13 +63,8 @@ const TemplateSelector = ({ isOpen, onClose, selectedStyle }: TemplateSelectorPr
     nextStep();
   };
 
-  // סינון תבניות לפי סגנון שנבחר
-  const filteredTemplates = selectedStyle 
-    ? templates.filter(template => template.style === selectedStyle)
-    : templates;
-
-  // אם אין תבניות מתאימות לסגנון שנבחר, נציג את כל התבניות
-  const templatesToShow = filteredTemplates.length > 0 ? filteredTemplates : templates;
+  // נציג את כל התבניות
+  const templatesToShow = templates;
 
   if (!isOpen) return null;
 
