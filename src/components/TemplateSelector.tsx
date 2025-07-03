@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,15 +15,15 @@ import {
 import { FormData, initialFormData } from '@/utils/questionnaireUtils';
 import { TemplateData } from '@/types/template';
 import { templates } from '@/data/templates';
-import { generateContent } from '@/utils/contentGenerator';
+import { generateRichContent } from '@/utils/contentGenerator';
 import { RealPublishingService } from '@/services/realPublishingService';
 import { PublishingProgress } from './publishing/PublishingProgress';
 
 // קומפוננטים קיימים של השאלון
-import BusinessInfoStep from './questionnaire/BusinessInfoStep';
-import GoalsAndFeaturesStep from './questionnaire/GoalsAndFeaturesStep';
-import DesignStyleStep from './questionnaire/DesignStyleStep';
-import ElementsSelectionStep from './questionnaire/ElementsSelectionStep';
+import { BusinessInfoStep } from './questionnaire/BusinessInfoStep';
+import { GoalsAndFeaturesStep } from './questionnaire/GoalsAndFeaturesStep';
+import { DesignStyleStep } from './questionnaire/DesignStyleStep';
+import { ElementsSelectionStep } from './questionnaire/ElementsSelectionStep';
 
 interface TemplateSelectorProps {
   isOpen: boolean;
@@ -81,6 +82,13 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
     }));
   };
 
+  const updateFormData = (field: string, value: string | string[]) => {
+    setFormData(prevState => ({
+      ...prevState,
+      [field]: value
+    }));
+  };
+
   const handleGenerate = async () => {
     setIsGenerating(true);
     setIsPublishing(true);
@@ -96,16 +104,23 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
 
       // שלב 2: יצירת תוכן מותאם אישית
       setPublishingProgress(50);
+      const richContent = generateRichContent(formData);
+      
       const generatedTemplate: TemplateData = {
         ...selectedTemplate,
-        hero: generateContent('hero', formData, selectedTemplate.hero),
-        about: generateContent('about', formData, selectedTemplate.about),
-        features: generateContent('features', formData, selectedTemplate.features),
-        testimonials: generateContent('testimonials', formData, selectedTemplate.testimonials),
-        contact: generateContent('contact', formData, selectedTemplate.contact),
-        pricing: generateContent('pricing', formData, selectedTemplate.pricing),
-        faq: generateContent('faq', formData, selectedTemplate.faq),
-        finalCta: generateContent('finalCta', formData, selectedTemplate.finalCta),
+        hero: {
+          ...selectedTemplate.hero,
+          title: formData.businessName || richContent.about.title,
+          subtitle: richContent.services.subtitle,
+          description: richContent.about.description
+        },
+        about: richContent.about,
+        features: richContent.features,
+        testimonials: richContent.testimonials,
+        contact: richContent.contact,
+        pricing: selectedTemplate.pricing,
+        faq: richContent.faq,
+        finalCta: selectedTemplate.finalCta,
       };
 
       // שלב 3: פרסום האתר
@@ -184,7 +199,7 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
                         <ArrowRight className="w-4 h-4 mr-2" />
                       </Button>
                       <div className="text-green-400 text-xs mt-2 font-medium">
-                        ✅ זמין לצפייה עכשיו!
+                        ✅ זמين לצפייה עכשיו!
                       </div>
                     </div>
                   </CardContent>
@@ -210,17 +225,16 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
               {currentStep === 1 && (
                 <BusinessInfoStep
                   formData={formData}
-                  setFormData={setFormData}
-                  onNext={() => setCurrentStep(2)}
+                  updateFormData={updateFormData}
+                  open={false}
+                  setOpen={() => {}}
                 />
               )}
               
               {currentStep === 2 && (
                 <GoalsAndFeaturesStep
                   formData={formData}
-                  setFormData={setFormData}
-                  onNext={() => setCurrentStep(3)}
-                  onPrev={() => setCurrentStep(1)}
+                  updateFormData={updateFormData}
                 />
               )}
               
@@ -236,12 +250,40 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
               {currentStep === 4 && (
                 <ElementsSelectionStep
                   formData={formData}
-                  setFormData={setFormData}
-                  onGenerate={handleGenerate}
-                  onPrev={() => setCurrentStep(3)}
-                  isGenerating={isGenerating}
+                  updateFormData={updateFormData}
                 />
               )}
+              
+              {/* Navigation Buttons */}
+              <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-700">
+                {currentStep > 1 && (
+                  <Button
+                    onClick={handlePrev}
+                    variant="outline"
+                    className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                  >
+                    חזור
+                  </Button>
+                )}
+                
+                {currentStep < 4 ? (
+                  <Button
+                    onClick={handleNext}
+                    className="bg-blue-600 hover:bg-blue-700 mr-auto"
+                  >
+                    המשך
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleGenerate}
+                    disabled={isGenerating}
+                    className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 mr-auto"
+                  >
+                    {isGenerating ? 'יוצר אתר...' : 'צור את האתר שלי'}
+                    <Rocket className="w-4 h-4 mr-2" />
+                  </Button>
+                )}
+              </div>
             </div>
           )}
         </div>
