@@ -21,6 +21,14 @@ export class RealPublishingService {
   private static generateHTMLFromTemplate(template: TemplateData): string {
     const { styles } = template;
     
+    // Helper function to get background style (color or image)
+    const getBackgroundStyle = (color: string, image?: string): string => {
+      if (image) {
+        return `background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('${image}') center/cover no-repeat;`;
+      }
+      return `background: ${color};`;
+    };
+    
     return `<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -43,8 +51,7 @@ export class RealPublishingService {
         }
         
         .hero-section { 
-            background: ${styles.heroBackground};
-            background: linear-gradient(135deg, ${styles.heroBackground} 0%, ${styles.primaryColor} 100%);
+            ${getBackgroundStyle(styles.heroBackground, styles.heroBackgroundImage)}
             color: white;
             min-height: 100vh;
             display: flex;
@@ -126,42 +133,42 @@ export class RealPublishingService {
         }
         
         .section-emotional {
-            background: ${styles.emotionalBackground};
+            ${getBackgroundStyle(styles.emotionalBackground, styles.emotionalBackgroundImage)}
             color: ${styles.textColor};
         }
         
         .section-features {
-            background: ${styles.featuresBackground};
+            ${getBackgroundStyle(styles.featuresBackground, styles.featuresBackgroundImage)}
             color: ${styles.textColor};
         }
         
         .section-testimonials {
-            background: ${styles.testimonialsBackground};
+            ${getBackgroundStyle(styles.testimonialsBackground, styles.testimonialsBackgroundImage)}
             color: ${styles.textColor};
         }
         
         .section-about {
-            background: ${styles.aboutBackground};
+            ${getBackgroundStyle(styles.aboutBackground, styles.aboutBackgroundImage)}
             color: ${styles.textColor};
         }
         
         .section-pricing {
-            background: ${styles.pricingBackground};
+            ${getBackgroundStyle(styles.pricingBackground, styles.pricingBackgroundImage)}
             color: ${styles.textColor};
         }
         
         .section-faq {
-            background: ${styles.faqBackground};
+            ${getBackgroundStyle(styles.faqBackground, styles.faqBackgroundImage)}
             color: ${styles.textColor};
         }
         
         .section-final-cta {
-            background: ${styles.finalCtaBackground};
+            ${getBackgroundStyle(styles.finalCtaBackground, styles.finalCtaBackgroundImage)}
             color: white;
         }
         
         .section-contact {
-            background: ${styles.contactBackground};
+            ${getBackgroundStyle(styles.contactBackground, styles.contactBackgroundImage)}
             color: ${styles.textColor};
         }
         
@@ -275,10 +282,21 @@ export class RealPublishingService {
         }
         
         footer {
-            background: ${styles.footerBackground};
+            ${getBackgroundStyle(styles.footerBackground, styles.footerBackgroundImage)}
             color: white;
             padding: 2rem;
             text-align: center;
+        }
+        
+        .badge {
+            background: ${styles.accentColor};
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 1rem;
         }
         
         @media (max-width: 768px) {
@@ -291,6 +309,7 @@ export class RealPublishingService {
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="container">
+            ${template.hero.badge ? `<div class="badge">${template.hero.badge}</div>` : ''}
             <h1 style="font-size: 3.5rem; font-weight: bold; margin-bottom: 1.5rem;">${template.hero.title}</h1>
             <p style="font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.9;">${template.hero.subtitle}</p>
             ${template.hero.description ? `<p style="font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.8;">${template.hero.description}</p>` : ''}
@@ -305,6 +324,7 @@ export class RealPublishingService {
     ${template.emotional?.title ? `
     <section id="emotional" class="section section-emotional">
         <div class="container">
+            ${template.emotional.badge ? `<div class="badge">${template.emotional.badge}</div>` : ''}
             <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 2rem;">${template.emotional.title}</h2>
             <p style="font-size: 1.125rem; max-width: 800px; margin: 0 auto 3rem;">${template.emotional.description}</p>
             <div>
@@ -318,6 +338,7 @@ export class RealPublishingService {
     <!-- Features Section -->
     <section id="features" class="section section-features">
         <div class="container">
+            ${template.features?.badge ? `<div class="badge">${template.features.badge}</div>` : ''}
             <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 3rem;">${template.features?.title || 'השירותים שלנו'}</h2>
             <div class="grid grid-auto">
                 ${template.features?.items?.map(item => `
@@ -351,6 +372,7 @@ export class RealPublishingService {
     <!-- Testimonials Section -->
     <section id="testimonials" class="section section-testimonials">
         <div class="container">
+            ${template.testimonials.badge ? `<div class="badge">${template.testimonials.badge}</div>` : ''}
             <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 3rem;">${template.testimonials.title}</h2>
             <div class="grid grid-auto">
                 ${template.testimonials.testimonials.map(testimonial => `
@@ -375,8 +397,19 @@ export class RealPublishingService {
     <!-- About Section -->
     <section id="about" class="section section-about">
         <div class="container">
+            ${template.about?.badge ? `<div class="badge">${template.about.badge}</div>` : ''}
             <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 2rem;">${template.about?.title || 'אודותינו'}</h2>
             <p style="font-size: 1.125rem; max-width: 800px; margin: 0 auto 3rem;">${template.about?.description || 'אנחנו מספקים שירותים מקצועיים ואיכותיים ללקוחותינו.'}</p>
+            ${template.about?.stats?.length ? `
+            <div class="stats-grid">
+                ${template.about.stats.map(stat => `
+                    <div class="stat-item">
+                        <div class="stat-number">${stat.number}</div>
+                        <div class="stat-label">${stat.label}</div>
+                    </div>
+                `).join('')}
+            </div>
+            ` : ''}
             <div>
                 <a href="#contact" class="btn-primary">${template.about?.button1Text || 'צור קשר'}</a>
                 <a href="#features" class="btn-secondary">${template.about?.button2Text || 'השירותים שלנו'}</a>
@@ -388,6 +421,7 @@ export class RealPublishingService {
     <!-- Pricing Section -->
     <section id="pricing" class="section section-pricing">
         <div class="container">
+            ${template.pricing.badge ? `<div class="badge">${template.pricing.badge}</div>` : ''}
             <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 3rem;">${template.pricing.title}</h2>
             <div class="grid grid-auto">
                 ${template.pricing.plans.map(plan => `
@@ -414,6 +448,7 @@ export class RealPublishingService {
     <!-- FAQ Section -->
     <section id="faq" class="section section-faq">
         <div class="container">
+            ${template.faq.badge ? `<div class="badge">${template.faq.badge}</div>` : ''}
             <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 3rem;">${template.faq.title}</h2>
             <div style="max-width: 800px; margin: 0 auto;">
                 ${template.faq.questions.map(faq => `
@@ -434,6 +469,7 @@ export class RealPublishingService {
     <!-- Final CTA Section -->
     <section id="final-cta" class="section section-final-cta">
         <div class="container">
+            ${template.finalCta?.badge ? `<div class="badge">${template.finalCta.badge}</div>` : ''}
             <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 2rem;">${template.finalCta?.title || 'מוכנים להתחיל?'}</h2>
             <p style="font-size: 1.125rem; margin-bottom: 3rem; opacity: 0.9;">${template.finalCta?.description || 'בואו נתחיל לעבוד יחד עוד היום!'}</p>
             <div>
