@@ -75,9 +75,18 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
   };
 
   const handleAuthenticate = () => {
-    // Simple direct navigation to WordPress.com login
-    const wpLoginUrl = 'https://wordpress.com/log-in?redirect_to=https://leadgrid.design/auth/wordpress/callback';
-    window.location.href = wpLoginUrl;
+    try {
+      // Direct WordPress.com OAuth URL without any proxies
+      const authUrl = `https://public-api.wordpress.com/oauth2/authorize?client_id=120329&redirect_uri=${encodeURIComponent('https://leadgrid.design/auth/wordpress/callback')}&response_type=code&scope=auth`;
+      
+      console.log('🔗 Direct redirect to:', authUrl);
+      
+      // Try setting location directly
+      document.location = authUrl;
+    } catch (error) {
+      console.error('❌ Authentication failed:', error);
+      alert(`שגיאה באימות: ${error.message}`);
+    }
   };
 
   return (
