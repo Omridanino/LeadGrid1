@@ -121,51 +121,63 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
 
         <CardContent className="space-y-6">
           
-          {/* Authentication Status */}
-          <Card className={`${isAuthenticated ? 'bg-gradient-to-br from-green-900/30 to-blue-900/30 border-green-700/50' : 'bg-gradient-to-br from-yellow-900/30 to-orange-900/30 border-yellow-700/50'}`}>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                {isAuthenticated ? (
-                  <>
-                    <CheckCircle className="w-5 h-5 text-green-400" />
+          {/* WordPress Account Setup Instructions */}
+          <Card className="bg-gradient-to-br from-blue-900/30 to-purple-900/30 border-blue-700/50">
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                <h4 className="text-white font-semibold text-lg">📝 הוראות ליצירת אתר WordPress</h4>
+                
+                <div className="space-y-3 text-gray-300">
+                  <div className="flex items-start gap-3">
+                    <span className="bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">1</span>
                     <div>
-                      <h4 className="text-white font-semibold">מחובר ל-WordPress.com ✓</h4>
-                      <p className="text-gray-300 text-sm">
-                        מוכן ליצירת אתרי WordPress.com אמיתיים
-                      </p>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <AlertTriangle className="w-5 h-5 text-yellow-400" />
-                    <div className="flex-1">
-                      <h4 className="text-white font-semibold">נדרש אימות WordPress.com</h4>
-                      <p className="text-gray-300 text-sm">
-                        התחבר ל-WordPress.com כדי ליצור אתרים אמיתיים
-                      </p>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        onClick={handleAuthenticate}
-                        size="sm"
-                        className="bg-blue-600 hover:bg-blue-700"
+                      <p className="font-medium">צור חשבון WordPress.com (חינם)</p>
+                      <p className="text-sm text-gray-400">לך ל-WordPress.com וצור חשבון חדש</p>
+                      <Button 
+                        onClick={() => window.open('https://wordpress.com/start', '_blank')}
+                        size="sm" 
+                        className="mt-2 bg-blue-600 hover:bg-blue-700"
                       >
-                        התחבר עכשיו
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          console.log('🔄 בודק אימות...');
-                          checkAuthentication();
-                        }}
-                        size="sm"
-                        variant="outline"
-                        className="border-gray-600 text-white hover:bg-gray-700"
-                      >
-                        בדוק אימות
+                        פתח WordPress.com
                       </Button>
                     </div>
-                  </>
-                )}
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <span className="bg-green-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">2</span>
+                    <div>
+                      <p className="font-medium">בחר דומיין לאתר שלך</p>
+                      <p className="text-sm text-gray-400">תוכל לבחור דומיין חינם (example.wordpress.com) או קנות דומיין מותאם</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <span className="bg-purple-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">3</span>
+                    <div>
+                      <p className="font-medium">התאם את האתר שלך</p>
+                      <p className="text-sm text-gray-400">השתמש בכלי העריכה של WordPress להוספת התוכן והעיצוב שלך</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <span className="bg-orange-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">4</span>
+                    <div>
+                      <p className="font-medium">האתר שלך מוכן!</p>
+                      <p className="text-sm text-gray-400">האתר יהיה זמין מיד ותוכל לשתף אותו עם לקוחות</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-green-900/30 border border-green-700/50 rounded-lg p-4 mt-4">
+                  <h5 className="text-green-400 font-medium mb-2">💡 יתרונות של הדרך הזו:</h5>
+                  <ul className="text-green-300 text-sm space-y-1">
+                    <li>• אתר WordPress אמיתי ומלא</li>
+                    <li>• שליטה מלאה על האתר</li>
+                    <li>• אין צורך באימותים מורכבים</li>
+                    <li>• תמיכה מלאה של WordPress.com</li>
+                    <li>• אפשרות לשדרוג לתכניות בתשלום</li>
+                  </ul>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -296,38 +308,39 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-4 pt-6">
-                <Button
-                  type="submit"
-                  disabled={isLoading || !isAuthenticated}
-                  className={`flex-1 ${isAuthenticated ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-500 cursor-not-allowed'} text-white`}
-                >
-                  {isLoading ? (
-                    <>
-                      <Rocket className="w-4 h-4 ml-2 animate-spin" />
-                      יוצר אתר WordPress.com אמיתי...
-                    </>
-                  ) : !isAuthenticated ? (
-                    <>
-                      <AlertTriangle className="w-4 h-4 ml-2" />
-                      נדרש אימות WordPress.com קודם
-                    </>
-                  ) : (
-                    <>
-                      <CheckCircle className="w-4 h-4 ml-2" />
-                      צור אתר WordPress.com אמיתי
-                    </>
-                  )}
-                </Button>
+              <div className="space-y-4 pt-6">
+                <div className="flex gap-4">
+                  <Button
+                    type="button"
+                    onClick={() => window.open('https://wordpress.com/start', '_blank')}
+                    className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                  >
+                    <Globe className="w-4 h-4 ml-2" />
+                    צור אתר WordPress אמיתי
+                  </Button>
+                  
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      // יצירת אתר דמו פשוט
+                      const demoSiteUrl = `${window.location.origin}/demo-wordpress-site?siteId=demo_${Date.now()}`;
+                      window.open(demoSiteUrl, '_blank');
+                    }}
+                    variant="outline"
+                    className="flex-1 border-blue-600 text-blue-400 hover:bg-blue-600 hover:text-white"
+                  >
+                    <CheckCircle className="w-4 h-4 ml-2" />
+                    ראה דמו לדוגמה
+                  </Button>
+                </div>
                 
                 <Button
                   type="button"
                   onClick={onCancel}
-                  disabled={isLoading}
                   variant="outline"
-                  className="border-gray-600 text-white hover:bg-gray-700"
+                  className="w-full border-gray-600 text-white hover:bg-gray-700"
                 >
-                  ביטול
+                  חזור
                 </Button>
               </div>
             </form>
