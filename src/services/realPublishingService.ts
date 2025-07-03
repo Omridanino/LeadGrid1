@@ -1,4 +1,3 @@
-
 import { TemplateData } from '@/types/template';
 
 export class RealPublishingService {
@@ -7,15 +6,44 @@ export class RealPublishingService {
       // Generate HTML content from template
       const htmlContent = this.generateHTMLFromTemplate(template);
       
-      // Create a blob URL that can be opened in browser
+      // Create a more user-friendly filename
+      const siteName = template.hero.title.replace(/[^a-zA-Z0-9\u0590-\u05FF]/g, '-').toLowerCase();
+      const timestamp = Date.now().toString().slice(-6); // Last 6 digits for uniqueness
+      const filename = `${siteName}-${timestamp}.html`;
+      
+      // Create a blob URL with a better name
       const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
       const url = URL.createObjectURL(blob);
+      
+      // Try to create a more user-friendly URL by using the filename
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
       
       return url;
     } catch (error) {
       console.error('Publishing failed:', error);
       throw new Error('פרסום נכשל - נסה שוב');
     }
+  }
+
+  private static getIconSvg(iconName: string): string {
+    // Map of common icon names to their SVG paths
+    const iconMap: { [key: string]: string } = {
+      'phone': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>',
+      'mail': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m4 4 7.07 17 2.51-7.39L21 11.07z"></path></svg>',
+      'user': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>',
+      'home': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="9,22 9,12 15,12 15,22"></polyline></svg>',
+      'star': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon></svg>',
+      'heart': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>',
+      'rocket': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.5-2 4.5-2 4.5s3-0.5 4.5-2c0.08-0.11 0.17-0.23 0.25-0.36l-2.39-2.39c-0.13 0.08-0.25 0.17-0.36 0.25z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path></svg>',
+      'arrow-right': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12,5 19,12 12,19"></polyline></svg>',
+      'check': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"></polyline></svg>',
+      'play': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5,3 19,12 5,21"></polygon></svg>',
+      'download': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7,10 12,15 17,10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>',
+    };
+    
+    return iconMap[iconName] || '';
   }
 
   private static generateHTMLFromTemplate(template: TemplateData): string {
@@ -27,6 +55,13 @@ export class RealPublishingService {
         return `background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('${image}') center/cover no-repeat;`;
       }
       return `background: ${color};`;
+    };
+
+    // Helper function to create button with icon
+    const createButtonWithIcon = (text: string, iconName?: string, isPrimary: boolean = true) => {
+      const iconSvg = iconName ? this.getIconSvg(iconName) : '';
+      const buttonClass = isPrimary ? 'btn-primary' : 'btn-secondary';
+      return `<a href="#contact" class="${buttonClass}">${iconSvg}${text}</a>`;
     };
     
     return `<!DOCTYPE html>
@@ -93,7 +128,9 @@ export class RealPublishingService {
             padding: 1rem 2rem;
             border-radius: 0.75rem;
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             margin: 0.5rem;
             transition: all 0.3s ease;
             border: none;
@@ -113,7 +150,9 @@ export class RealPublishingService {
             padding: 1rem 2rem;
             border-radius: 0.75rem;
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             margin: 0.5rem;
             transition: all 0.3s ease;
             border: 2px solid ${styles.secondaryColor};
@@ -126,7 +165,7 @@ export class RealPublishingService {
             color: ${styles.secondaryColor};
             transform: translateY(-2px);
         }
-        
+
         .section {
             padding: 4rem 2rem;
             text-align: center;
@@ -314,8 +353,8 @@ export class RealPublishingService {
             <p style="font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.9;">${template.hero.subtitle}</p>
             ${template.hero.description ? `<p style="font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.8;">${template.hero.description}</p>` : ''}
             <div style="margin-bottom: 3rem;">
-                <a href="#contact" class="btn-primary">${template.hero.button1Text}</a>
-                <a href="#about" class="btn-secondary">${template.hero.button2Text}</a>
+                ${createButtonWithIcon(template.hero.button1Text, template.hero.button1Icon, true)}
+                ${createButtonWithIcon(template.hero.button2Text, template.hero.button2Icon, false)}
             </div>
         </div>
     </section>
@@ -328,8 +367,8 @@ export class RealPublishingService {
             <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 2rem;">${template.emotional.title}</h2>
             <p style="font-size: 1.125rem; max-width: 800px; margin: 0 auto 3rem;">${template.emotional.description}</p>
             <div>
-                <a href="#contact" class="btn-primary">${template.emotional.button1Text}</a>
-                <a href="#features" class="btn-secondary">${template.emotional.button2Text}</a>
+                ${createButtonWithIcon(template.emotional.button1Text, template.emotional.button1Icon, true)}
+                ${createButtonWithIcon(template.emotional.button2Text, template.emotional.button2Icon, false)}
             </div>
         </div>
     </section>
@@ -362,8 +401,8 @@ export class RealPublishingService {
                 `}
             </div>
             <div style="margin-top: 3rem;">
-                <a href="#contact" class="btn-primary">${template.features?.button1Text || 'התחל עכשיו'}</a>
-                <a href="#about" class="btn-secondary">${template.features?.button2Text || 'למד עוד'}</a>
+                ${createButtonWithIcon(template.features?.button1Text || 'התחל עכשיו', template.features?.button1Icon, true)}
+                ${createButtonWithIcon(template.features?.button2Text || 'למד עוד', template.features?.button2Icon, false)}
             </div>
         </div>
     </section>
@@ -387,8 +426,8 @@ export class RealPublishingService {
                 `).join('')}
             </div>
             <div style="margin-top: 3rem;">
-                <a href="#contact" class="btn-primary">${template.testimonials.button1Text}</a>
-                <a href="#features" class="btn-secondary">${template.testimonials.button2Text}</a>
+                ${createButtonWithIcon(template.testimonials.button1Text, template.testimonials.button1Icon, true)}
+                ${createButtonWithIcon(template.testimonials.button2Text, template.testimonials.button2Icon, false)}
             </div>
         </div>
     </section>
@@ -411,8 +450,8 @@ export class RealPublishingService {
             </div>
             ` : ''}
             <div>
-                <a href="#contact" class="btn-primary">${template.about?.button1Text || 'צור קשר'}</a>
-                <a href="#features" class="btn-secondary">${template.about?.button2Text || 'השירותים שלנו'}</a>
+                ${createButtonWithIcon(template.about?.button1Text || 'צור קשר', template.about?.button1Icon, true)}
+                ${createButtonWithIcon(template.about?.button2Text || 'השירותים שלנו', template.about?.button2Icon, false)}
             </div>
         </div>
     </section>
@@ -437,8 +476,8 @@ export class RealPublishingService {
                 `).join('')}
             </div>
             <div style="margin-top: 3rem;">
-                <a href="#contact" class="btn-primary">${template.pricing.button1Text}</a>
-                <a href="#about" class="btn-secondary">${template.pricing.button2Text}</a>
+                ${createButtonWithIcon(template.pricing.button1Text, template.pricing.button1Icon, true)}
+                ${createButtonWithIcon(template.pricing.button2Text, template.pricing.button2Icon, false)}
             </div>
         </div>
     </section>
@@ -459,8 +498,8 @@ export class RealPublishingService {
                 `).join('')}
             </div>
             <div style="margin-top: 3rem;">
-                <a href="#contact" class="btn-primary">${template.faq.button1Text}</a>
-                <a href="#about" class="btn-secondary">${template.faq.button2Text}</a>
+                ${createButtonWithIcon(template.faq.button1Text, template.faq.button1Icon, true)}
+                ${createButtonWithIcon(template.faq.button2Text, template.faq.button2Icon, false)}
             </div>
         </div>
     </section>
@@ -473,8 +512,8 @@ export class RealPublishingService {
             <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 2rem;">${template.finalCta?.title || 'מוכנים להתחיל?'}</h2>
             <p style="font-size: 1.125rem; margin-bottom: 3rem; opacity: 0.9;">${template.finalCta?.description || 'בואו נתחיל לעבוד יחד עוד היום!'}</p>
             <div>
-                <a href="#contact" class="btn-primary">${template.finalCta?.button1Text || 'התחל עכשיו'}</a>
-                <a href="#about" class="btn-secondary">${template.finalCta?.button2Text || 'למד עוד'}</a>
+                ${createButtonWithIcon(template.finalCta?.button1Text || 'התחל עכשיו', template.finalCta?.button1Icon, true)}
+                ${createButtonWithIcon(template.finalCta?.button2Text || 'למד עוד', template.finalCta?.button2Icon, false)}
             </div>
         </div>
     </section>
