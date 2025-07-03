@@ -76,14 +76,13 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
 
   const handleAuthenticate = () => {
     try {
-      // מעבר ישיר לדף האימות בטאב זה
-      const currentOrigin = window.location.origin;
-      const authUrl = `https://public-api.wordpress.com/oauth2/authorize?client_id=120329&redirect_uri=${encodeURIComponent(`${currentOrigin}/auth/wordpress/callback`)}&response_type=code&scope=auth`;
+      console.log('🔗 מעבר לאימות דרך Edge Function...');
       
-      console.log('🔗 מעבר לאימות WordPress:', authUrl);
+      // שימוש ב-Edge Function שעושה redirect
+      const edgeFunctionUrl = 'https://crkgabcjxkdpnhipvugu.supabase.co/functions/v1/wordpress-auth?action=redirect-to-auth';
       
-      // מעבר ישיר בחלון הנוכחי
-      window.location.href = authUrl;
+      // מעבר ישיר דרך ה-Edge Function
+      window.location.href = edgeFunctionUrl;
       
     } catch (error) {
       console.error('❌ Authentication failed:', error);
