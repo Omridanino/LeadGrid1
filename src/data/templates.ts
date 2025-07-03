@@ -28,9 +28,9 @@ export const templates: TemplateData[] = [
     features: {
       title: 'היתרונות שלנו',
       items: [
-        { title: 'טכנולוגיה מתקדמת', description: 'פתרונות חדשניים ומתקדמים', icon: 'zap' },
-        { title: 'תמיכה 24/7', description: 'תמיכה טכנית מלאה בכל עת', icon: 'shield' },
-        { title: 'ביטחון מתקדם', description: 'אבטחת מידע ברמה הגבוהה ביותר', icon: 'lock' }
+        { title: 'טכנולוגיה מתקדמת', description: 'פתרונות חדשניים ומתקדמים', icon: 'flashlight-line' },
+        { title: 'תמיכה 24/7', description: 'תמיכה טכנית מלאה בכל עת', icon: 'shield-check-line' },
+        { title: 'ביטחון מתקדם', description: 'אבטחת מידע ברמה הגבוהה ביותר', icon: 'lock-line' }
       ],
       button1Text: 'גלה עוד',
       button2Text: 'התחל עכשיו'
@@ -123,9 +123,9 @@ export const templates: TemplateData[] = [
     features: {
       title: 'תכונות מתקדמות',
       items: [
-        { title: 'בינה מלאכותית', description: 'טכנולוגיית AI מתקדמת', icon: 'brain' },
-        { title: 'אוטומציה מלאה', description: 'תהליכים אוטומטיים חכמים', icon: 'cog' },
-        { title: 'ניתוח נתונים', description: 'תובנות עמוקות מהנתונים שלך', icon: 'chart' }
+        { title: 'בינה מלאכותית', description: 'טכנולוגיית AI מתקדמת', icon: 'brain-line' },
+        { title: 'אוטומציה מלאה', description: 'תהליכים אוטומטיים חכמים', icon: 'settings-line' },
+        { title: 'ניתוח נתונים', description: 'תובנות עמוקות מהנתונים שלך', icon: 'bar-chart-line' }
       ],
       button1Text: 'גלה יכולות',
       button2Text: 'נסה עכשיו'
@@ -218,9 +218,9 @@ export const templates: TemplateData[] = [
     features: {
       title: 'יכולות קוונטיות',
       items: [
-        { title: 'מחשוב קוונטי', description: 'עוצמת חישוב שלא הכרתם', icon: 'cpu' },
-        { title: 'אלגוריתמים מתקדמים', description: 'פתרונות מתמטיים מהפכניים', icon: 'formula' },
-        { title: 'הצפנה קוונטית', description: 'אבטחה ברמה הגבוהה ביותר', icon: 'shield' }
+        { title: 'מחשוב קוונטי', description: 'עוצמת חישוב שלא הכרתם', icon: 'cpu-line' },
+        { title: 'אלגוריתמים מתקדמים', description: 'פתרונות מתמטיים מהפכניים', icon: 'function-line' },
+        { title: 'הצפנה קוונטית', description: 'אבטחה ברמה הגבוהה ביותר', icon: 'shield-line' }
       ],
       button1Text: 'מדע וטכנולוגיה',
       button2Text: 'התחל עכשיו'
@@ -313,9 +313,9 @@ export const templates: TemplateData[] = [
     features: {
       title: 'כוחות יצירתיים',
       items: [
-        { title: 'עיצוב חדשני', description: 'עיצובים שמדברים לנשמה', icon: 'palette' },
-        { title: 'אנימציה מתקדמת', description: 'תנועה שמחיה את הרעיונות', icon: 'play' },
-        { title: 'חוויית משתמש', description: 'ממשקים אינטואיטיביים ויפים', icon: 'user' }
+        { title: 'עיצוב חדשני', description: 'עיצובים שמדברים לנשמה', icon: 'palette-line' },
+        { title: 'אנימציה מתקדמת', description: 'תנועה שמחיה את הרעיונות', icon: 'play-circle-line' },
+        { title: 'חוויית משתמש', description: 'ממשקים אינטואיטיביים ויפים', icon: 'user-line' }
       ],
       button1Text: 'הפורטפוליו',
       button2Text: 'התחל פרויקט'
@@ -408,9 +408,9 @@ export const templates: TemplateData[] = [
     features: {
       title: 'כנפי הצמיחה',
       items: [
-        { title: 'אסטרטגיה עסקית', description: 'תוכניות מותאמות לצמיחה', icon: 'target' },
-        { title: 'טרנספורמציה דיגיטלית', description: 'מעבר חלק לעידן הדיגיטלי', icon: 'transform' },
-        { title: 'ליווי מקצועי', description: 'תמיכה בכל שלב של המסע', icon: 'handshake' }
+        { title: 'אסטרטגיה עסקית', description: 'תוכניות מותאמות לצמיחה', icon: 'target-line' },
+        { title: 'טרנספורמציה דיגיטלית', description: 'מעבר חלק לעידן הדיגיטלי', icon: 'refresh-line' },
+        { title: 'ליווי מקצועי', description: 'תמיכה בכל שלב של המסע', icon: 'handshake-line' }
       ],
       button1Text: 'שירותים',
       button2Text: 'התחל עכשיו'
@@ -503,9 +503,9 @@ export const templates: TemplateData[] = [
     features: {
       title: 'תכונות הזרמה',
       items: [
-        { title: 'איכות 4K', description: 'חוויית צפייה בחדות מקסימלית', icon: 'monitor' },
-        { title: 'תוכן מקורי', description: 'סדרות וסרטים בלעדיים', icon: 'film' },
-        { title: 'צפייה אישית', description: 'המלצות מותאמות אישית', icon: 'user-check' }
+        { title: 'איכות 4K', description: 'חוויית צפייה בחדות מקסימלית', icon: 'monitor-line' },
+        { title: 'תוכן מקורי', description: 'סדרות וסרטים בלעדיים', icon: 'film-line' },
+        { title: 'צפייה אישית', description: 'המלצות מותאמות אישית', icon: 'user-heart-line' }
       ],
       button1Text: 'כל התכונות',
       button2Text: 'התחל לצפות'

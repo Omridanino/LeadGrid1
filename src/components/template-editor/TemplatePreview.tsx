@@ -1,3 +1,4 @@
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -205,7 +206,11 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             {template.features.items.map((item, index) => (
               <Card key={index} className={`text-center p-6 border-0 shadow-lg hover:shadow-xl transition-shadow ${template.effects?.features === 'glass-morph' ? 'glass-effect' : ''}`}>
-                <div className="text-4xl mb-4">{item.icon}</div>
+                <div className="flex justify-center mb-4">
+                  <div className="w-16 h-16 flex items-center justify-center rounded-full" style={{ backgroundColor: template.styles.primaryColor + '20', border: `2px solid ${template.styles.primaryColor}` }}>
+                    <i className={`ri-${item.icon} text-2xl`} style={{ color: template.styles.primaryColor }}></i>
+                  </div>
+                </div>
                 <h3 className="text-xl font-bold mb-2" style={{ color: template.styles.textColor }}>{item.title}</h3>
                 <p className="opacity-80" style={{ color: template.styles.textColor }}>{item.description}</p>
               </Card>

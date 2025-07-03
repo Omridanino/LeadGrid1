@@ -7,6 +7,7 @@ import { Plus, Trash2 } from "lucide-react";
 import { TemplateData } from '@/types/template';
 import { BackgroundSelector } from './BackgroundSelector';
 import { ColorPicker } from './ColorPicker';
+import IconSelector from '../IconSelector';
 
 interface FeaturesEditorProps {
   template: TemplateData;
@@ -62,16 +63,20 @@ export const FeaturesEditor = ({ template, onUpdate, onStyleUpdate }: FeaturesEd
               <Card key={index} className="bg-gray-800 border-gray-700">
                 <CardContent className="p-3 space-y-2">
                   <div className="flex items-center gap-2">
-                    <Input
-                      value={item.icon}
-                      onChange={(e) => {
-                        const newItems = [...template.features.items];
-                        newItems[index] = { ...item, icon: e.target.value };
-                        updateItems(newItems);
-                      }}
-                      className="bg-gray-700 border-gray-600 text-white w-16 text-center"
-                      placeholder="🎯"
-                    />
+                    <div className="flex flex-col items-center gap-1">
+                      <div className="flex items-center justify-center w-10 h-10 bg-gray-700 rounded border border-gray-600">
+                        <i className={`ri-${item.icon} text-lg text-white`}></i>
+                      </div>
+                      <IconSelector
+                        selectedIcon={item.icon}
+                        onIconSelect={(icon) => {
+                          const newItems = [...template.features.items];
+                          newItems[index] = { ...item, icon };
+                          updateItems(newItems);
+                        }}
+                        triggerClassName="text-xs px-2 py-1"
+                      />
+                    </div>
                     <Input
                       value={item.title}
                       onChange={(e) => {
@@ -112,7 +117,7 @@ export const FeaturesEditor = ({ template, onUpdate, onStyleUpdate }: FeaturesEd
                 const newItems = [...template.features.items, {
                   title: 'תכונה חדשה',
                   description: 'תיאור התכונה',
-                  icon: '⭐'
+                  icon: 'star-line'
                 }];
                 updateItems(newItems);
               }}
