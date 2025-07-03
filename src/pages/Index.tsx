@@ -1,90 +1,40 @@
 
-import { useState } from 'react';
-import { LandingPageQuestionnaire, QuestionnaireData } from '@/components/LandingPageQuestionnaire';
-import TemplateSelector from '@/components/TemplateSelector';
-import { TemplateEditor } from '@/components/template-editor/TemplateEditor';
-import { LaunchSection } from '@/components/LaunchSection';
-import { TemplateData } from '@/types/template';
-
-type AppState = 'questionnaire' | 'template-selection' | 'editing' | 'launch';
+import { useState } from "react";
+import Header from "@/components/Header";
+import ModernHeroSection from "@/components/ModernHeroSection";
+import ModernFeaturesSection from "@/components/ModernFeaturesSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import Footer from "@/components/Footer";
+import LandingPageQuestionnaire from "@/components/LandingPageQuestionnaire";
 
 const Index = () => {
-  const [currentState, setCurrentState] = useState<AppState>('questionnaire');
-  const [questionnaireData, setQuestionnaireData] = useState<QuestionnaireData | null>(null);
-  const [selectedTemplate, setSelectedTemplate] = useState<TemplateData | null>(null);
+  const [isQuestionnaireOpen, setIsQuestionnaireOpen] = useState(false);
 
-  const handleQuestionnaireComplete = (data: QuestionnaireData) => {
-    setQuestionnaireData(data);
-    setCurrentState('template-selection');
+  const handleOpenQuestionnaire = () => {
+    console.log("Index: Opening questionnaire");
+    setIsQuestionnaireOpen(true);
   };
 
-  const handleTemplateSelect = (template: TemplateData) => {
-    if (!questionnaireData) return;
-    
-    // Apply basic customization based on questionnaire
-    const customizedTemplate: TemplateData = {
-      ...template,
-      styles: {
-        ...template.styles,
-        primaryColor: questionnaireData.branding.primaryColor,
-        secondaryColor: questionnaireData.branding.secondaryColor,
-      }
-    };
-    
-    setSelectedTemplate(customizedTemplate);
-    setCurrentState('editing');
+  const handleCloseQuestionnaire = () => {
+    console.log("Index: Closing questionnaire");
+    setIsQuestionnaireOpen(false);
   };
 
-  const handleEditComplete = (editedTemplate: TemplateData) => {
-    setSelectedTemplate(editedTemplate);
-    setCurrentState('launch');
-  };
-
-  const handleBackToQuestionnaire = () => {
-    setCurrentState('questionnaire');
-    setQuestionnaireData(null);
-    setSelectedTemplate(null);
-  };
-
-  const handleBackToTemplateSelection = () => {
-    setCurrentState('template-selection');
-  };
-
-  const handleBackToEditing = () => {
-    setCurrentState('editing');
-  };
+  console.log("Index render - isQuestionnaireOpen:", isQuestionnaireOpen);
 
   return (
-    <div className="min-h-screen">
-      {currentState === 'questionnaire' && (
-        <LandingPageQuestionnaire 
-          onComplete={handleQuestionnaireComplete}
-          onBack={handleBackToQuestionnaire}
-        />
-      )}
+    <div className="min-h-screen bg-black text-white md:text-right text-center" dir="rtl">
+      <Header onStartQuestionnaire={handleOpenQuestionnaire} />
+      <ModernHeroSection onStartQuestionnaire={handleOpenQuestionnaire} />
+      <ModernFeaturesSection />
+      <TestimonialsSection />
+      <Footer />
       
-      {currentState === 'template-selection' && (
-        <TemplateSelector 
-          onSelect={handleTemplateSelect}
-          onBack={handleBackToQuestionnaire}
-        />
-      )}
-      
-      {currentState === 'editing' && selectedTemplate && (
-        <TemplateEditor 
-          template={selectedTemplate}
-          onSave={handleEditComplete}
-        />
-      )}
-      
-      {currentState === 'launch' && selectedTemplate && (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 p-4">
-          <LaunchSection 
-            template={selectedTemplate}
-            onBack={handleBackToEditing}
-          />
-        </div>
-      )}
+      {/* Questionnaire Modal */}
+      <LandingPageQuestionnaire 
+        isOpen={isQuestionnaireOpen} 
+        onClose={handleCloseQuestionnaire} 
+      />
     </div>
   );
 };

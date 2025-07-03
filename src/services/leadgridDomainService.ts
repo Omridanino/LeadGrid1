@@ -1,23 +1,18 @@
 
 // LEADGRID Domain Registration & Hosting Service
-// Third-party service connecting to Israeli domain registrars with profit margins
-
 export interface DomainAvailabilityResult {
   domain: string;
   available: boolean;
-  ourPrice: number;        // LEADGRID price (with margin)
-  costPrice: number;       // Registrar cost price
+  price: number;
   currency: string;
-  registrar: 'isoc' | 'namecheap' | 'godaddy';
+  registrar: 'namecheap' | 'godaddy' | 'leadgrid';
   renewable: boolean;
-  profit: number;          // Our profit margin
 }
 
 export interface HostingPlan {
   id: string;
   name: string;
-  ourPrice: number;        // LEADGRID price
-  costPrice: number;       // Our hosting costs
+  price: number;
   currency: string;
   features: string[];
   storage: string;
@@ -26,7 +21,6 @@ export interface HostingPlan {
   ssl: boolean;
   backup: boolean;
   support: string;
-  profit: number;          // Our profit margin
   recommended?: boolean;
 }
 
@@ -46,7 +40,7 @@ export interface DomainPurchaseRequest {
     zipCode: string;
   };
   payment: {
-    method: 'credit_card' | 'paypal' | 'bit' | 'bank_transfer';
+    method: 'credit_card' | 'paypal' | 'bank_transfer';
     years: number;
     autoRenew: boolean;
     whoisPrivacy: boolean;
@@ -58,75 +52,34 @@ export interface PurchaseResult {
   orderId?: string;
   domain?: string;
   siteUrl?: string;
-  invoiceUrl?: string;    // Receipt URL
   error?: string;
   nextSteps?: string[];
-  totalPaid?: number;
-  leadgridProfit?: number; // Our total profit from this sale
 }
 
 export class LeadgridDomainService {
   private static readonly API_BASE = 'https://api.leadgrid.co.il';
-  
-  // Israeli registrar connections
-  private static readonly ISOC_API_KEY = process.env.ISOC_API_KEY;
   private static readonly NAMECHEAP_API_KEY = process.env.NAMECHEAP_API_KEY;
-  
-  // TLD prices with our profit margins
+  private static readonly GODADDY_API_KEY = process.env.GODADDY_API_KEY;
+
+  // Hebrew TLD prices
   private static readonly TLD_PRICES = {
-    '.co.il': { 
-      ourPrice: 49,      // What we charge
-      costPrice: 25,     // What we pay to ISOC
-      profit: 24,        // Our profit
-      registrar: 'isoc',
-      hebrew: 'דוט-קו-איל' 
-    },
-    '.com': { 
-      ourPrice: 79,      // What we charge
-      costPrice: 45,     // What we pay to registrar
-      profit: 34,        // Our profit
-      registrar: 'namecheap',
-      hebrew: 'דוט-קום' 
-    },
-    '.net': { 
-      ourPrice: 69, 
-      costPrice: 40, 
-      profit: 29, 
-      registrar: 'namecheap',
-      hebrew: 'דוט-נט' 
-    },
-    '.org': { 
-      ourPrice: 65, 
-      costPrice: 35, 
-      profit: 30, 
-      registrar: 'namecheap',
-      hebrew: 'דוט-אורג' 
-    },
-    '.info': { 
-      ourPrice: 55, 
-      costPrice: 25, 
-      profit: 30, 
-      registrar: 'namecheap',
-      hebrew: 'דוט-אינפו' 
-    },
-    '.biz': { 
-      ourPrice: 59, 
-      costPrice: 30, 
-      profit: 29, 
-      registrar: 'namecheap',
-      hebrew: 'דוט-ביז' 
-    }
+    '.com': { price: 65, hebrew: 'דוט-קום' },
+    '.co.il': { price: 35, hebrew: 'דוט-קו-איל' },
+    '.net': { price: 45, hebrew: 'דוט-נט' },
+    '.org': { price: 40, hebrew: 'דוט-אורג' },
+    '.info': { price: 30, hebrew: 'דוט-אינפו' },
+    '.biz': { price: 35, hebrew: 'דוט-ביז' },
+    '.me': { price: 55, hebrew: 'דוט-מי' },
+    '.online': { price: 25, hebrew: 'דוט-אונליין' }
   };
 
-  // LEADGRID Hosting Plans with profit margins
+  // LEADGRID Hosting Plans
   static getHostingPlans(): HostingPlan[] {
     return [
       {
         id: 'starter',
         name: 'התחלה',
-        ourPrice: 89,
-        costPrice: 35,      // Our hosting costs
-        profit: 54,         // Our profit
+        price: 89,
         currency: 'ILS',
         features: [
           'דומיין חינם לשנה ראשונה',
@@ -146,9 +99,7 @@ export class LeadgridDomainService {
       {
         id: 'professional',
         name: 'מקצועי',
-        ourPrice: 189,
-        costPrice: 75,      // Our hosting costs
-        profit: 114,        // Our profit
+        price: 189,
         currency: 'ILS',
         features: [
           'דומיין חינם לשנה ראשונה',
@@ -171,9 +122,7 @@ export class LeadgridDomainService {
       {
         id: 'enterprise',
         name: 'ארגוני',
-        ourPrice: 399,
-        costPrice: 150,     // Our hosting costs
-        profit: 249,        // Our profit
+        price: 399,
         currency: 'ILS',
         features: [
           'דומיין חינם לשנה ראשונה',
@@ -196,7 +145,7 @@ export class LeadgridDomainService {
     ];
   }
 
-  // Check domain availability with profit calculations
+  // Check domain availability across multiple TLDs
   static async checkDomainAvailability(searchTerm: string): Promise<DomainAvailabilityResult[]> {
     const results: DomainAvailabilityResult[] = [];
     
@@ -204,7 +153,7 @@ export class LeadgridDomainService {
       const domain = `${searchTerm.toLowerCase().replace(/\s+/g, '')}${tld}`;
       
       try {
-        // Simulate API call to Israeli registrars
+        // Simulate API call to registrar
         await new Promise(resolve => setTimeout(resolve, Math.random() * 1000 + 500));
         
         const available = Math.random() > 0.3; // 70% availability rate
@@ -212,11 +161,9 @@ export class LeadgridDomainService {
         results.push({
           domain,
           available,
-          ourPrice: info.ourPrice,
-          costPrice: info.costPrice,
-          profit: info.profit,
+          price: info.price,
           currency: 'ILS',
-          registrar: info.registrar as any,
+          registrar: 'leadgrid',
           renewable: true
         });
       } catch (error) {
@@ -224,11 +171,9 @@ export class LeadgridDomainService {
         results.push({
           domain,
           available: false,
-          ourPrice: info.ourPrice,
-          costPrice: info.costPrice,
-          profit: 0,
+          price: info.price,
           currency: 'ILS',
-          registrar: info.registrar as any,
+          registrar: 'leadgrid',
           renewable: false
         });
       }
@@ -239,74 +184,53 @@ export class LeadgridDomainService {
       if (a.available !== b.available) {
         return b.available ? 1 : -1;
       }
-      return a.ourPrice - b.ourPrice;
+      return a.price - b.price;
     });
   }
 
-  // Purchase domain and hosting with full profit tracking
+  // Purchase domain and hosting
   static async purchaseDomainAndHosting(request: DomainPurchaseRequest): Promise<PurchaseResult> {
     try {
       console.log('Starting LEADGRID domain purchase process...', request);
       
-      // Calculate total profits
-      const domainTld = request.domain.substring(request.domain.lastIndexOf('.'));
-      const domainProfit = this.TLD_PRICES[domainTld]?.profit || 0;
-      const hostingProfit = request.plan.profit;
-      const privacyProfit = request.payment.whoisPrivacy ? 10 : 0; // ₪15 charge, ₪5 cost, ₪10 profit
-      const totalProfit = (domainProfit + hostingProfit + privacyProfit) * request.payment.years;
-      
-      const totalPrice = this.calculateTotalPrice(request);
-      
-      // Step 1: Validate payment with Israeli payment processors
-      const paymentValid = await this.validateIsraeliPayment(request.payment);
+      // Step 1: Validate payment
+      const paymentValid = await this.validatePayment(request.payment);
       if (!paymentValid) {
-        throw new Error('תשלום לא תקין. אנא בדוק את פרטي התשלום');
+        throw new Error('תשלום לא תקין. אנא בדוק את פרטי התשלום');
       }
 
-      // Step 2: Purchase domain from Israeli registrar
-      const domainPurchased = await this.purchaseFromRegistrar(request.domain, request.customer);
-      if (!domainPurchased.success) {
-        throw new Error('שגיאה ברכישת הדומיין. אנא נסה שוב');
+      // Step 2: Reserve domain
+      const domainReserved = await this.reserveDomain(request.domain);
+      if (!domainReserved) {
+        throw new Error('הדומיין כבר לא זמין. אנא בחר דומיין אחר');
       }
 
-      // Step 3: Setup hosting account on our servers
-      const hostingAccount = await this.setupLeadgridHosting(request);
+      // Step 3: Setup hosting account
+      const hostingAccount = await this.setupHostingAccount(request);
       
       // Step 4: Configure DNS and SSL
       await this.configureDNSAndSSL(request.domain);
       
-      // Step 5: Deploy website
+      // Step 5: Deploy site
       const siteUrl = await this.deploySite(request.domain, hostingAccount.accountId);
       
-      // Step 6: Generate Israeli invoice/receipt
-      const invoiceUrl = await this.generateIsraeliInvoice(request, totalPrice, totalProfit);
-      
-      // Step 7: Send welcome email in Hebrew
+      // Step 6: Send welcome email
       await this.sendWelcomeEmail(request.customer.email, {
         domain: request.domain,
         siteUrl,
-        accountId: hostingAccount.accountId,
-        invoiceUrl
+        accountId: hostingAccount.accountId
       });
-
-      // Step 8: Record transaction in our CRM
-      await this.recordTransaction(request, totalPrice, totalProfit);
 
       return {
         success: true,
         orderId: `LG_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         domain: request.domain,
         siteUrl,
-        invoiceUrl,
-        totalPaid: totalPrice,
-        leadgridProfit: totalProfit,
         nextSteps: [
-          `האתר שלך פעיל וזמין בכתובת: ${siteUrl}`,
-          'קבלה וחשבונית נשלחו למייל שלך',
-          'פרטי הגישה לפאנל הניהול נשלחו במייל נפרד',
-          'ניתן לערוך את האתר בכל עת דרך הפאנל',
-          `הדומיין יחודש אוטומטית ב-${request.payment.autoRenew ? 'כן' : 'לא'}`,
-          'תמיכה טכנית זמינה 24/7 בעברית'
+          'האתר שלך פעיל וזמין בכתובת: ' + siteUrl,
+          'פרטי הגישה נשלחו לאימייל שלך',
+          'ניתן לערוך את האתר דרך הפאנל הניהול',
+          'הדומיין יחודש אוטומטיות מדי שנה'
         ]
       };
     } catch (error) {
@@ -318,85 +242,67 @@ export class LeadgridDomainService {
     }
   }
 
-  private static calculateTotalPrice(request: DomainPurchaseRequest): number {
-    const domainTld = request.domain.substring(request.domain.lastIndexOf('.'));
-    const domainPrice = this.TLD_PRICES[domainTld]?.ourPrice || 0;
-    const hostingPrice = request.plan.ourPrice;
-    const privacyPrice = request.payment.whoisPrivacy ? 15 : 0;
-    return (domainPrice + hostingPrice + privacyPrice) * request.payment.years;
-  }
-
-  private static async validateIsraeliPayment(payment: any): Promise<boolean> {
-    // Integrate with Israeli payment processors (Tranzila, etc.)
+  private static async validatePayment(payment: any): Promise<boolean> {
+    // Simulate payment validation
     await new Promise(resolve => setTimeout(resolve, 2000));
     return Math.random() > 0.05; // 95% success rate
   }
 
-  private static async purchaseFromRegistrar(domain: string, customer: any): Promise<{ success: boolean }> {
-    // Purchase from ISOC (.co.il) or international registrars
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    return { success: Math.random() > 0.1 }; // 90% success rate
+  private static async reserveDomain(domain: string): Promise<boolean> {
+    // Simulate domain reservation
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    return Math.random() > 0.1; // 90% success rate
   }
 
-  private static async setupLeadgridHosting(request: DomainPurchaseRequest): Promise<{ accountId: string }> {
-    // Setup hosting on our infrastructure
-    await new Promise(resolve => setTimeout(resolve, 2000));
+  private static async setupHostingAccount(request: DomainPurchaseRequest): Promise<{ accountId: string }> {
+    // Simulate hosting account creation
+    await new Promise(resolve => setTimeout(resolve, 3000));
     return {
-      accountId: `LEADGRID_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+      accountId: `HOST_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
     };
   }
 
   private static async configureDNSAndSSL(domain: string): Promise<void> {
-    // Configure DNS and SSL on our servers
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    console.log(`DNS and SSL configured for ${domain} on LEADGRID servers`);
+    // Simulate DNS and SSL configuration
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    console.log(`DNS and SSL configured for ${domain}`);
   }
 
   private static async deploySite(domain: string, accountId: string): Promise<string> {
-    // Deploy the generated website
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    // Simulate site deployment
+    await new Promise(resolve => setTimeout(resolve, 4000));
     return `https://${domain}`;
   }
 
-  private static async generateIsraeliInvoice(request: any, total: number, profit: number): Promise<string> {
-    // Generate proper Israeli invoice with VAT
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    const invoiceId = `INV_${Date.now()}`;
-    return `https://invoices.leadgrid.co.il/${invoiceId}`;
-  }
-
   private static async sendWelcomeEmail(email: string, details: any): Promise<void> {
-    // Send Hebrew welcome email with all details
+    // Simulate welcome email
     await new Promise(resolve => setTimeout(resolve, 500));
-    console.log(`Hebrew welcome email sent to ${email}`, details);
+    console.log(`Welcome email sent to ${email}`, details);
   }
 
-  private static async recordTransaction(request: any, total: number, profit: number): Promise<void> {
-    // Record in our CRM/accounting system
-    await new Promise(resolve => setTimeout(resolve, 300));
-    console.log(`Transaction recorded: Total ₪${total}, Profit ₪${profit}`);
-  }
-
-  // Get domain suggestions based on business
+  // Get domain suggestions based on business type
   static getDomainSuggestions(businessName: string, businessType: string): string[] {
     const cleanName = businessName.toLowerCase().replace(/\s+/g, '');
     const suggestions = [
       cleanName,
       `${cleanName}il`,
-      `${cleanName}israel`,
       `${cleanName}pro`,
-      `${cleanName}center`
+      `${cleanName}hub`,
+      `${cleanName}center`,
+      `get${cleanName}`,
+      `${cleanName}online`,
+      `${cleanName}store`
     ];
 
     // Add business type specific suggestions
     if (businessType.includes('משפט')) {
       suggestions.push(`${cleanName}law`, `${cleanName}legal`);
     } else if (businessType.includes('רפואה')) {
-      suggestions.push(`${cleanName}clinic`, `${cleanName}health`);
+      suggestions.push(`${cleanName}health`, `${cleanName}clinic`);
     } else if (businessType.includes('חינוך')) {
-      suggestions.push(`${cleanName}academy`, `${cleanName}edu`);
+      suggestions.push(`${cleanName}edu`, `${cleanName}academy`);
     }
 
-    return suggestions.slice(0, 6);
+    return suggestions.slice(0, 8);
   }
 }
