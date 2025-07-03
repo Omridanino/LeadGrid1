@@ -1,3 +1,4 @@
+
 // Real Domain and Hosting Service Integration
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -62,43 +63,42 @@ export interface PurchaseResult {
   paymentStatus?: string;
 }
 
-// החלף את הפרטים האלה לפרטים שלך!
+// פרטי החברה האמיתיים
 export const COMPANY_DETAILS = {
-  name: "החברה שלך", // שם החברה שלך
-  phone: "XX-XXXXXXX", // מספר הטלפון שלך לקבלת פניות
-  whatsapp: "05X-XXXXXXX", // מספר הווטסאפ שלך
-  email: "your-email@example.com", // האימיל שלך לתשלומים
-  supportEmail: "support@example.com", // אימיל התמיכה שלך
-  website: "https://your-website.com", // האתר שלך
-  bitPhone: "05XXXXXXXX" // המספר שלך לביט (ללא מקפים)
+  name: "Leadgrid",
+  phone: "054-486-6116",
+  whatsapp: "0544866116",
+  email: "info.Leadgrid@gmail.com",
+  supportEmail: "info.Leadgrid@gmail.com",
+  website: "https://leadgrid.co.il",
+  bitPhone: "0544866116"
 };
 
-// החלף לפרטי החשבון בנק שלך!
+// פרטי החשבון בנק האמיתיים
 export const BANK_ACCOUNTS = [
   {
-    bank: "בנק XXX", // שם הבנק שלך
-    branch: "XXX", // מספר סניף
-    account: "XXX-XXXXX-XX", // מספר חשבון שלך
-    accountName: "השם שלך או החברה", // שם בעל החשבון
-    swift: "XXXXXXXX", // קוד SWIFT אם יש
-    iban: "ILXXXXXXXXXXXXXXXXXXXXXXX" // מספר IBAN שלך
+    bank: "בנק מזרחי טפחות",
+    branch: "420",
+    account: "614438",
+    accountName: "Leadgrid",
+    swift: "",
+    iban: ""
   }
-  // אתה יכול להוסיף חשבונות נוספים כאן
 ];
 
-// פרטי תשלום - החלף למזהים שלך!
+// פרטי תשלום אמיתיים
 export const PAYMENT_CONFIGS = {
   bit: {
-    merchantPhone: COMPANY_DETAILS.bitPhone, // המספר שלך לביט
-    merchantName: COMPANY_DETAILS.name,
+    merchantPhone: "0544866116",
+    merchantName: "Leadgrid",
     enabled: true
   },
   paybox: {
-    merchantId: "YOUR_PAYBOX_MERCHANT_ID", // המזהה שלך בפייבוקס
+    merchantId: "0544866116",
     enabled: true
   },
   paypal: {
-    merchantEmail: "your-paypal@email.com", // האימיל שלך בפייפאל
+    merchantEmail: "info.Leadgrid@gmail.com",
     enabled: true
   }
 };
@@ -202,14 +202,14 @@ export class RealDomainService {
     ];
   }
 
-  // Generate REAL Bit payment link with YOUR phone number
+  // Generate REAL Bit payment link with Leadgrid phone number
   static async generateBitPayment(amount: number, orderId: string, customerInfo: any): Promise<{link: string, qrCode: string}> {
     try {
-      // Create REAL Bit payment URL with YOUR phone number
+      // Create REAL Bit payment URL with Leadgrid phone number
       const bitUrl = new URL('https://bit.ly/pay');
-      bitUrl.searchParams.set('to', COMPANY_DETAILS.bitPhone); // המספר שלך!
+      bitUrl.searchParams.set('to', COMPANY_DETAILS.bitPhone);
       bitUrl.searchParams.set('amount', amount.toString());
-      bitUrl.searchParams.set('reason', `דומיין ואחסון - הזמנה ${orderId}`);
+      bitUrl.searchParams.set('reason', `דומיין ואחסון Leadgrid - הזמנה ${orderId}`);
       bitUrl.searchParams.set('contact', customerInfo.name);
       
       // Create the secure Bit link
@@ -230,12 +230,12 @@ export class RealDomainService {
     }
   }
 
-  // Generate REAL PayBox payment session with YOUR merchant ID
+  // Generate REAL PayBox payment session with Leadgrid merchant ID
   static async generatePayBoxPayment(amount: number, orderId: string, customerInfo: any): Promise<{url: string, sessionId: string}> {
     try {
-      // יצירת URL תשלום אמיתי לפייבוקס עם המזהה שלך
+      // יצירת URL תשלום אמיתי לפייבוקס עם מספר הטלפון של Leadgrid
       const payboxUrl = new URL('https://pay.payboxapp.com/pay');
-      payboxUrl.searchParams.set('merchant', PAYMENT_CONFIGS.paybox.merchantId); // המזהה שלך!
+      payboxUrl.searchParams.set('merchant', PAYMENT_CONFIGS.paybox.merchantId);
       payboxUrl.searchParams.set('amount', (amount * 100).toString()); // PayBox expects agrot
       payboxUrl.searchParams.set('currency', 'ILS');
       payboxUrl.searchParams.set('order_id', orderId);
@@ -258,11 +258,11 @@ export class RealDomainService {
     }
   }
 
-  // Generate REAL PayPal payment session with YOUR email
+  // Generate REAL PayPal payment session with Leadgrid email
   static async generatePayPalPayment(amount: number, orderId: string, customerInfo: any): Promise<{url: string, sessionId: string}> {
     try {
-      // יצירת URL תשלום אמיתי לפייפאל עם האימיל שלך
-      const paypalUrl = new URL('https://www.paypal.com/paypalme/' + PAYMENT_CONFIGS.paypal.merchantEmail.replace('@', ''));
+      // יצירת URL תשלום אמיתי לפייפאל עם האימיל של Leadgrid
+      const paypalUrl = new URL('https://www.paypal.com/paypalme/' + PAYMENT_CONFIGS.paypal.merchantEmail.replace('@', '').replace('.', ''));
       paypalUrl.pathname += `/${amount}ILS`;
       paypalUrl.searchParams.set('locale.x', 'he_IL');
       paypalUrl.searchParams.set('country.x', 'IL');
@@ -344,7 +344,7 @@ export class RealDomainService {
               bankAccounts: BANK_ACCOUNTS,
               transferReference: orderId,
               amount,
-              instructions: `העבר ${amount}₪ לאחד מהחשבונות הבאים וציין באסמכתא: ${orderId}`
+              instructions: `העבר ${amount}₪ לחשבון הבנק וציין באסמכתא: ${orderId}`
             }
           };
           break;
@@ -356,7 +356,7 @@ export class RealDomainService {
             paymentUrl: undefined,
             paymentData: {
               contactInfo: COMPANY_DETAILS,
-              message: `נציג יצור קשר תוך 30 דקות לעיבוד תשלום של ${amount}₪`,
+              message: `נציג מ-Leadgrid יצור קשר תוך 30 דקות לעיבוד תשלום של ${amount}₪`,
               whatsappLink: `https://wa.me/972${COMPANY_DETAILS.whatsapp.substring(1)}?text=שלום, אני מעוניין לשלם ${amount}₪ עבור הזמנה ${orderId}`
             }
           };
@@ -400,7 +400,7 @@ export class RealDomainService {
       if (request.payment.method === 'bank_transfer') {
         paymentStatus = 'ממתין לאישור העברה בנקאית';
       } else if (request.payment.method === 'credit_card') {
-        paymentStatus = 'ממתין לקשר מנציג השירות';
+        paymentStatus = 'ממתין לקשר מנציג Leadgrid';
       } else if (request.payment.method === 'bit') {
         paymentStatus = 'ממתין לתשלום ביט';
       } else if (request.payment.method === 'paybox' || request.payment.method === 'paypal') {
