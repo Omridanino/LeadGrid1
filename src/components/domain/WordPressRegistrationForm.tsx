@@ -1,14 +1,13 @@
-
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Globe, User, CheckCircle, Rocket, AlertTriangle } from 'lucide-react';
-import { RealWordPressService } from '@/services/realWordPressService';
+import { Globe, CheckCircle, AlertTriangle, Loader2, ExternalLink } from 'lucide-react';
+import { WordPressIntegrationService } from '@/services/wordpressIntegrationService';
+import { toast } from '@/components/ui/use-toast';
 
 interface WordPressRegistrationFormProps {
   onSubmit: (userData: any) => void;
@@ -18,88 +17,137 @@ interface WordPressRegistrationFormProps {
 }
 
 export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, isLoading }: WordPressRegistrationFormProps) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [formData, setFormData] = useState({
+  const [wpConnection, setWpConnection] = useState({
+    siteUrl: '',
     username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    displayName: '',
-    firstName: '',
-    lastName: '',
-    phone: '',
-    company: '',
-    address: '',
-    city: '',
-    country: 'Israel',
-    zipCode: '',
-    websiteTitle: '',
-    websiteDescription: ''
+    password: ''
   });
+  const [isConnecting, setIsConnecting] = useState(false);
+  const [connectionStatus, setConnectionStatus] = useState<'idle' | 'testing' | 'success' | 'error'>('idle');
+  const [statusMessage, setStatusMessage] = useState('');
 
-  useEffect(() => {
-    // ניקוי טוקנים ישנים
-    localStorage.removeItem('wp_access_token');
-    checkAuthentication();
-  }, []);
-
-  const checkAuthentication = async () => {
-    try {
-      const authenticated = await RealWordPressService.isAuthenticated();
-      setIsAuthenticated(authenticated);
-    } catch (error) {
-      console.error('Authentication check failed:', error);
-      setIsAuthenticated(false);
-    }
-  };
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
+  const handleWpInputChange = (field: string, value: string) => {
+    setWpConnection(prev => ({
       ...prev,
       [field]: value
     }));
+    // Reset status when user changes input
+    if (connectionStatus !== 'idle') {
+      setConnectionStatus('idle');
+      setStatusMessage('');
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (formData.password !== formData.confirmPassword) {
-      alert('הסיסמאות אינן תואמות');
+  const testWordPressConnection = async () => {
+    if (!wpConnection.siteUrl || !wpConnection.username || !wpConnection.password) {
+      toast({
+        title: "שדות חסרים",
+        description: "אנא מלא את כל השדות",
+        variant: "destructive"
+      });
       return;
     }
 
-    if (!isAuthenticated) {
-      alert('נדרש אימות WordPress.com לפני יצירת אתר. אנא לחץ על "התחבר עכשיו" קודם.');
-      return;
-    }
+    setIsConnecting(true);
+    setConnectionStatus('testing');
+    setStatusMessage('בודק חיבור לאתר WordPress...');
 
-    onSubmit(formData);
-  };
-
-  const handleAuthenticate = () => {
     try {
-      console.log('🔗 מתחיל אימות WordPress.com...');
+      // Format the URL properly
+      const formattedUrl = WordPressIntegrationService.formatWordPressUrl(wpConnection.siteUrl);
       
-      // נשתמש ב-Edge Function רק לקבלת ה-URL
-      fetch('https://crkgabcjxkdpnhipvugu.supabase.co/functions/v1/wordpress-auth?action=get-auth-url')
-        .then(response => response.json())
-        .then(data => {
-          if (data.authUrl) {
-            console.log('🔗 פותח חלון אימות WordPress.com...');
-            // פתיחה בטאב חדש
-            window.open(data.authUrl, '_blank');
-            // הצגת הוראות למשתמש
-            alert('נפתח טאב חדש לאימות WordPress.com. אחרי ההתחברות, חזור לכאן ולחץ על "בדוק אימות" למטה.');
-          }
-        })
-        .catch(error => {
-          console.error('❌ שגיאה בקבלת URL אימות:', error);
-          alert('שגיאה בתהליך האימות. נסה שוב.');
+      const result = await WordPressIntegrationService.testConnection({
+        ...wpConnection,
+        siteUrl: formattedUrl
+      });
+
+      if (result.success) {
+        setConnectionStatus('success');
+        setStatusMessage(result.message);
+        toast({
+          title: "חיבור הצליח!",
+          description: result.message,
         });
-      
+      } else {
+        setConnectionStatus('error');
+        setStatusMessage(result.error || 'שגיאה בחיבור');
+        toast({
+          title: "שגיאה בחיבור",
+          description: result.error,
+          variant: "destructive"
+        });
+      }
     } catch (error) {
-      console.error('❌ Authentication failed:', error);
-      alert(`שגיאה באימות: ${error.message}`);
+      setConnectionStatus('error');
+      setStatusMessage('שגיאה בחיבור לאתר');
+      toast({
+        title: "שגיאה",
+        description: "שגיאה בחיבור לאתר WordPress",
+        variant: "destructive"
+      });
+    } finally {
+      setIsConnecting(false);
+    }
+  };
+
+  const addLandingPageToWordPress = async () => {
+    if (connectionStatus !== 'success') {
+      toast({
+        title: "נדרש חיבור תקין",
+        description: "אנא בדוק תחילה את החיבור לאתר WordPress",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsConnecting(true);
+    setStatusMessage('מוסיף את דף הנחיתה לאתר...');
+
+    try {
+      // Get the landing page data from localStorage or props
+      const landingPageData = JSON.parse(localStorage.getItem('generatedPageData') || '{}');
+      
+      const formattedUrl = WordPressIntegrationService.formatWordPressUrl(wpConnection.siteUrl);
+      
+      const result = await WordPressIntegrationService.addLandingPage({
+        ...wpConnection,
+        siteUrl: formattedUrl
+      }, landingPageData);
+
+      if (result.success) {
+        toast({
+          title: "דף הנחיתה נוסף בהצלחה!",
+          description: "הדף זמין עכשיו באתר שלך",
+        });
+        
+        // Show success with links
+        setStatusMessage(`דף הנחיתה נוסף בהצלחה!`);
+        
+        // Optionally call onSubmit with the result
+        onSubmit({
+          success: true,
+          pageUrl: result.pageUrl,
+          editUrl: result.editUrl,
+          wordpressConnection: wpConnection
+        });
+        
+      } else {
+        toast({
+          title: "שגיאה בהוספת הדף",
+          description: result.error,
+          variant: "destructive"
+        });
+        setStatusMessage(result.error || 'שגיאה בהוספת דף הנחיתה');
+      }
+    } catch (error) {
+      toast({
+        title: "שגיאה",
+        description: "שגיאה בהוספת דף הנחיתה",
+        variant: "destructive"
+      });
+      setStatusMessage('שגיאה בהוספת דף הנחיתה');
+    } finally {
+      setIsConnecting(false);
     }
   };
 
@@ -109,79 +157,119 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
         <CardHeader className="text-center">
           <CardTitle className="text-white text-2xl flex items-center justify-center gap-2">
             <Globe className="w-6 h-6" />
-            יצירת אתר WordPress.com אמיתי
+            הוספת דף נחיתה לאתר WordPress קיים
           </CardTitle>
           <p className="text-gray-300">
-            צור אתר WordPress.com אמיתי ופונקציונלי מלא
+            חבר את האתר שלך והוסף את דף הנחיתה אוטומטית
           </p>
-          <Badge className="bg-blue-600 text-white">
-            דומיין: {selectedDomain}
-          </Badge>
         </CardHeader>
 
         <CardContent className="space-y-6">
           
-          {/* WordPress Login Instructions */}
+          {/* WordPress Connection Form */}
           <Card className="bg-gradient-to-br from-blue-900/30 to-purple-900/30 border-blue-700/50">
             <CardContent className="p-6">
               <div className="space-y-4">
                 <h4 className="text-white font-semibold text-lg flex items-center gap-2">
                   <Globe className="w-5 h-5" />
-                  חיבור לחשבון WordPress קיים
+                  חיבור לאתר WordPress קיים
                 </h4>
                 
-                <div className="space-y-3 text-gray-300">
-                  <p className="text-sm">
-                    יש לך כבר אתר WordPress? מעולה! פשוט הכנס את פרטי ההתחברות שלך ונוסיף את דף הנחיתה החדש לאתר שלך אוטומטית.
-                  </p>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="wpUrl" className="text-gray-300">כתובת האתר</Label>
-                      <Input
-                        id="wpUrl"
-                        placeholder="https://yourdomain.com"
-                        className="bg-gray-700 border-gray-600 text-white"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="wpUsername" className="text-gray-300">שם משתמש WordPress</Label>
-                      <Input
-                        id="wpUsername"
-                        placeholder="admin"
-                        className="bg-gray-700 border-gray-600 text-white"
-                      />
-                    </div>
-                  </div>
-                  
+                <div className="space-y-3">
                   <div>
-                    <Label htmlFor="wpPassword" className="text-gray-300">סיסמת WordPress</Label>
+                    <Label htmlFor="wpUrl" className="text-gray-300">כתובת האתר שלך</Label>
                     <Input
-                      id="wpPassword"
-                      type="password"
-                      placeholder="סיסמת הניהול שלך"
+                      id="wpUrl"
+                      value={wpConnection.siteUrl}
+                      onChange={(e) => handleWpInputChange('siteUrl', e.target.value)}
+                      placeholder="https://yourdomain.com"
                       className="bg-gray-700 border-gray-600 text-white"
                     />
                   </div>
                   
-                  <Button 
-                    onClick={() => {
-                      alert('בודק חיבור לאתר WordPress ומוסיף את דף הנחיתה...');
-                      // כאן נוסיף את הלוגיקה לחיבור לאתר WordPress
-                    }}
-                    className="w-full bg-green-600 hover:bg-green-700"
-                  >
-                    <CheckCircle className="w-4 h-4 ml-2" />
-                    הוסף את דף הנחיתה לאתר שלי
-                  </Button>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="wpUsername" className="text-gray-300">שם משתמש WordPress</Label>
+                      <Input
+                        id="wpUsername"
+                        value={wpConnection.username}
+                        onChange={(e) => handleWpInputChange('username', e.target.value)}
+                        placeholder="admin"
+                        className="bg-gray-700 border-gray-600 text-white"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="wpPassword" className="text-gray-300">סיסמת WordPress</Label>
+                      <Input
+                        id="wpPassword"
+                        type="password"
+                        value={wpConnection.password}
+                        onChange={(e) => handleWpInputChange('password', e.target.value)}
+                        placeholder="סיסמת הניהול שלך"
+                        className="bg-gray-700 border-gray-600 text-white"
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* Connection Status */}
+                  {statusMessage && (
+                    <Alert className={`${
+                      connectionStatus === 'success' ? 'bg-green-900/30 border-green-700/50' : 
+                      connectionStatus === 'error' ? 'bg-red-900/30 border-red-700/50' : 
+                      'bg-blue-900/30 border-blue-700/50'
+                    }`}>
+                      <AlertDescription className="text-white">
+                        {statusMessage}
+                      </AlertDescription>
+                    </Alert>
+                  )}
+                  
+                  {/* Action Buttons */}
+                  <div className="flex gap-3 pt-4">
+                    <Button 
+                      onClick={testWordPressConnection}
+                      disabled={isConnecting || !wpConnection.siteUrl || !wpConnection.username || !wpConnection.password}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700"
+                    >
+                      {isConnecting && connectionStatus === 'testing' ? (
+                        <>
+                          <Loader2 className="w-4 h-4 ml-2 animate-spin" />
+                          בודק חיבור...
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle className="w-4 h-4 ml-2" />
+                          בדוק חיבור
+                        </>
+                      )}
+                    </Button>
+                    
+                    <Button 
+                      onClick={addLandingPageToWordPress}
+                      disabled={isConnecting || connectionStatus !== 'success'}
+                      className="flex-1 bg-green-600 hover:bg-green-700"
+                    >
+                      {isConnecting && connectionStatus === 'success' ? (
+                        <>
+                          <Loader2 className="w-4 h-4 ml-2 animate-spin" />
+                          מוסיף דף...
+                        </>
+                      ) : (
+                        <>
+                          <Globe className="w-4 h-4 ml-2" />
+                          הוסף דף נחיתה
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </div>
                 
                 <div className="bg-blue-900/30 border border-blue-700/50 rounded-lg p-4 mt-4">
                   <h5 className="text-blue-400 font-medium mb-2">💡 מה יקרה:</h5>
                   <ul className="text-blue-300 text-sm space-y-1">
-                    <li>• נתחבר לאתר WordPress שלך</li>
-                    <li>• ניצור דף חדש עם התוכן שיצרת</li>
-                    <li>• נגדיר את העיצוב שבחרת</li>
+                    <li>• נתחבר לאתר WordPress שלך בבטחה</li>
+                    <li>• ניצור דף חדש עם התוכן שיצרת ב-LeadGrid</li>
+                    <li>• נגדיר את העיצוב והסגנון שבחרת</li>
                     <li>• הדף יהיה זמין מיד באתר שלך</li>
                   </ul>
                 </div>
@@ -189,147 +277,29 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
             </CardContent>
           </Card>
 
-          {/* Show form always but disable submit until authenticated */}
-          {true && (
-            <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Alternative Options */}
+          <Card className="bg-gradient-to-br from-green-900/30 to-blue-900/30 border-green-700/50">
+            <CardContent className="p-6">
+              <h4 className="text-white font-semibold text-lg mb-4">
+                אין לך עדיין אתר WordPress?
+              </h4>
               
-              {/* Basic User Info */}
-              <div className="space-y-4">
-                <h3 className="text-white font-semibold flex items-center gap-2">
-                  <User className="w-5 h-5" />
-                  פרטים אישיים
-                </h3>
+              <div className="space-y-3">
+                <p className="text-gray-300 text-sm">
+                  אם אין לך עדיין אתר WordPress, תוכל ליצור אחד חינם:
+                </p>
                 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="username" className="text-gray-300">שם משתמש *</Label>
-                    <Input
-                      id="username"
-                      type="text"
-                      value={formData.username}
-                      onChange={(e) => handleInputChange('username', e.target.value)}
-                      required
-                      className="bg-gray-700 border-gray-600 text-white"
-                      placeholder="username123"
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="email" className="text-gray-300">אימייל *</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => handleInputChange('email', e.target.value)}
-                      required
-                      className="bg-gray-700 border-gray-600 text-white"
-                      placeholder="user@example.com"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="password" className="text-gray-300">סיסמה *</Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      value={formData.password}
-                      onChange={(e) => handleInputChange('password', e.target.value)}
-                      required
-                      className="bg-gray-700 border-gray-600 text-white"
-                      placeholder="סיסמה חזקה"
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="confirmPassword" className="text-gray-300">אימות סיסמה *</Label>
-                    <Input
-                      id="confirmPassword"
-                      type="password"
-                      value={formData.confirmPassword}
-                      onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                      required
-                      className="bg-gray-700 border-gray-600 text-white"
-                      placeholder="אימות סיסמה"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="firstName" className="text-gray-300">שם פרטי</Label>
-                    <Input
-                      id="firstName"
-                      type="text"
-                      value={formData.firstName}
-                      onChange={(e) => handleInputChange('firstName', e.target.value)}
-                      className="bg-gray-700 border-gray-600 text-white"
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="lastName" className="text-gray-300">שם משפחה</Label>
-                    <Input
-                      id="lastName"
-                      type="text"
-                      value={formData.lastName}
-                      onChange={(e) => handleInputChange('lastName', e.target.value)}
-                      className="bg-gray-700 border-gray-600 text-white"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Website Details */}
-              <div className="space-y-4">
-                <h3 className="text-white font-semibold flex items-center gap-2">
-                  <Globe className="w-5 h-5" />
-                  פרטי האתר
-                </h3>
-                
-                <div>
-                  <Label htmlFor="websiteTitle" className="text-gray-300">כותרת האתר *</Label>
-                  <Input
-                    id="websiteTitle"
-                    type="text"
-                    value={formData.websiteTitle}
-                    onChange={(e) => handleInputChange('websiteTitle', e.target.value)}
-                    required
-                    className="bg-gray-700 border-gray-600 text-white"
-                    placeholder="שם האתר שלי"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="websiteDescription" className="text-gray-300">תיאור האתר</Label>
-                  <Textarea
-                    id="websiteDescription"
-                    value={formData.websiteDescription}
-                    onChange={(e) => handleInputChange('websiteDescription', e.target.value)}
-                    className="bg-gray-700 border-gray-600 text-white"
-                    placeholder="תיאור קצר על האתר..."
-                    rows={3}
-                  />
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="space-y-4 pt-6">
-                <div className="flex gap-4">
-                  <Button
-                    type="button"
+                <div className="flex gap-3">
+                  <Button 
                     onClick={() => window.open('https://wordpress.com/start', '_blank')}
-                    className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                    className="flex-1 bg-green-600 hover:bg-green-700"
                   >
-                    <Globe className="w-4 h-4 ml-2" />
-                    צור אתר WordPress אמיתי
+                    <ExternalLink className="w-4 h-4 ml-2" />
+                    צור אתר WordPress חינם
                   </Button>
                   
-                  <Button
-                    type="button"
+                  <Button 
                     onClick={() => {
-                      // יצירת אתר דמו פשוט
                       const demoSiteUrl = `${window.location.origin}/demo-wordpress-site?siteId=demo_${Date.now()}`;
                       window.open(demoSiteUrl, '_blank');
                     }}
@@ -337,21 +307,21 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
                     className="flex-1 border-blue-600 text-blue-400 hover:bg-blue-600 hover:text-white"
                   >
                     <CheckCircle className="w-4 h-4 ml-2" />
-                    ראה דמו לדוגמה
+                    ראה דמו
                   </Button>
                 </div>
-                
-                <Button
-                  type="button"
-                  onClick={onCancel}
-                  variant="outline"
-                  className="w-full border-gray-600 text-white hover:bg-gray-700"
-                >
-                  חזור
-                </Button>
               </div>
-            </form>
-          )}
+            </CardContent>
+          </Card>
+
+          {/* Back Button */}
+          <Button
+            onClick={onCancel}
+            variant="outline"
+            className="w-full border-gray-600 text-white hover:bg-gray-700"
+          >
+            חזור
+          </Button>
 
         </CardContent>
       </Card>
