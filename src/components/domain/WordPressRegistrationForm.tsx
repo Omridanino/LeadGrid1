@@ -74,17 +74,10 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
     onSubmit(formData);
   };
 
-  const handleAuthenticate = async () => {
-    try {
-      console.log('🔄 Starting WordPress authentication...');
-      
-      // Simple direct redirect to Edge Function
-      window.location.href = 'https://crkgabcjxkdpnhipvugu.supabase.co/functions/v1/wordpress-auth?action=redirect-to-auth';
-      
-    } catch (error) {
-      console.error('❌ Authentication error:', error);
-      alert(`שגיאה באימות: ${error.message}`);
-    }
+  const handleAuthenticate = () => {
+    // Simple direct navigation to WordPress.com login
+    const wpLoginUrl = 'https://wordpress.com/log-in?redirect_to=https://leadgrid.design/auth/wordpress/callback';
+    window.location.href = wpLoginUrl;
   };
 
   return (
