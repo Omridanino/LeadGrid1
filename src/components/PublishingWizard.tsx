@@ -89,7 +89,28 @@ export const PublishingWizard = ({ template, isOpen, onClose }: PublishingWizard
       setPublishingProgress(step.progress);
     }
 
-    setPublishedUrl(`https://${selectedDomain || template.name.toLowerCase().replace(/\s+/g, '-')}.netlify.app`);
+    // Create clean Netlify subdomain (only letters, numbers, hyphens)
+    const timestamp = Date.now();
+    
+    // Clean the template name more thoroughly - remove ALL special chars and dots
+    const templateSlug = template.name
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, '') // Remove ALL special characters including dots
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .replace(/-+/g, '-') // Replace multiple hyphens with single
+      .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
+      .substring(0, 20); // Limit length
+    
+    // Ensure we have a valid subdomain name
+    const cleanSlug = templateSlug || 'site';
+    const netlifySubdomain = `${cleanSlug}-${timestamp}`;
+    
+    console.log('Generated subdomain:', netlifySubdomain);
+    
+    // Set the final published URL - ONLY standard Netlify format (no extra dots!)
+    const finalUrl = `https://${netlifySubdomain}.netlify.app`;
+    console.log('Final URL:', finalUrl);
+    setPublishedUrl(finalUrl);
     setCurrentStep('complete');
     setIsPublishing(false);
   };
