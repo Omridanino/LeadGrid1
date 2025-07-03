@@ -146,24 +146,32 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
                   <div className="flex items-start gap-3">
                     <span className="bg-green-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">2</span>
                     <div>
-                      <p className="font-medium">בחר דומיין לאתר שלך</p>
-                      <p className="text-sm text-gray-400">תוכל לבחור דומיין חינם (example.wordpress.com) או קנות דומיין מותאם</p>
+                      <p className="font-medium">צור אתר חדש</p>
+                      <p className="text-sm text-gray-400">לחץ על "Create a new site" ובחר דומיין (כמו example.wordpress.com)</p>
                     </div>
                   </div>
                   
                   <div className="flex items-start gap-3">
                     <span className="bg-purple-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">3</span>
                     <div>
-                      <p className="font-medium">התאם את האתר שלך</p>
-                      <p className="text-sm text-gray-400">השתמש בכלי העריכה של WordPress להוספת התוכן והעיצוב שלך</p>
+                      <p className="font-medium">הוסף תוכן לאתר</p>
+                      <p className="text-sm text-gray-400">כתוב על העסק שלך, הוסף תמונות, צור דפים (כמו "אודות", "צור קשר")</p>
                     </div>
                   </div>
                   
                   <div className="flex items-start gap-3">
                     <span className="bg-orange-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">4</span>
                     <div>
-                      <p className="font-medium">האתר שלך מוכן!</p>
-                      <p className="text-sm text-gray-400">האתר יהיה זמין מיד ותוכל לשתף אותו עם לקוחות</p>
+                      <p className="font-medium">בחר עיצוב</p>
+                      <p className="text-sm text-gray-400">בחר תבנית עיצוב (Theme) שמתאימה לעסק שלך, שנה צבעים ופונטים</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <span className="bg-green-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">5</span>
+                    <div>
+                      <p className="font-medium">פרסם את האתר</p>
+                      <p className="text-sm text-gray-400">לחץ על "Publish" והאתר שלך יהיה חי באינטרנט!</p>
                     </div>
                   </div>
                 </div>
