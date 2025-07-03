@@ -30,6 +30,17 @@ export const WordPressAuthCallback = () => {
       }
 
       try {
+        console.log('🔄 Processing WordPress.com callback with code:', code);
+        
+        // Store the code temporarily and close popup if this is in a popup
+        if (window.opener) {
+          // This is a popup window
+          localStorage.setItem('wp_auth_code', code);
+          window.opener.postMessage({ type: 'WORDPRESS_AUTH_SUCCESS', code }, '*');
+          window.close();
+          return;
+        }
+        
         // Exchange code for access token
         const token = await RealWordPressService.exchangeCodeForToken(code);
         
@@ -53,6 +64,27 @@ export const WordPressAuthCallback = () => {
 
     handleCallback();
   }, [searchParams, navigate]);
+
+  // Listen for popup messages
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data.type === 'WORDPRESS_AUTH_SUCCESS') {
+        const code = event.data.code;
+        if (code) {
+          localStorage.setItem('wp_auth_code', code);
+          setStatus('success');
+          setMessage('האימות הושלם בהצלחה! כעת תוכל ליצור אתרי וורדפרס אמיתיים.');
+          
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        }
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center" dir="rtl">

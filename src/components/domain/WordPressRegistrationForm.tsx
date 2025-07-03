@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -36,40 +36,57 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
   });
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isCheckingAuth, setIsCheckingAuth] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   // Check if user is authenticated with WordPress.com
   const checkWordPressAuth = async () => {
     setIsCheckingAuth(true);
-    const token = localStorage.getItem('wp_access_token');
-    
-    if (token) {
-      // Verify token is still valid
-      try {
-        const response = await fetch('https://public-api.wordpress.com/rest/v1.1/me', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        
-        if (response.ok) {
-          setIsAuthenticated(true);
-        } else {
-          localStorage.removeItem('wp_access_token');
-          setIsAuthenticated(false);
-        }
-      } catch (error) {
-        console.error('Auth check failed:', error);
-        setIsAuthenticated(false);
+    try {
+      const authenticated = await RealWordPressService.isAuthenticated();
+      setIsAuthenticated(authenticated);
+      
+      if (authenticated) {
+        console.log('✅ WordPress.com authentication confirmed');
+      } else {
+        console.log('❌ WordPress.com authentication required');
       }
+    } catch (error) {
+      console.error('Auth check failed:', error);
+      setIsAuthenticated(false);
     }
     setIsCheckingAuth(false);
   };
 
   // Check auth status on component mount
-  useState(() => {
+  useEffect(() => {
     checkWordPressAuth();
-  });
+    
+    // Listen for auth code from popup
+    const handleStorageChange = () => {
+      const authCode = localStorage.getItem('wp_auth_code');
+      if (authCode) {
+        localStorage.removeItem('wp_auth_code');
+        // Recheck authentication
+        setTimeout(() => {
+          checkWordPressAuth();
+        }, 1000);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Also check periodically
+    const interval = setInterval(() => {
+      if (!isAuthenticated) {
+        checkWordPressAuth();
+      }
+    }, 2000);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [isAuthenticated]);
 
   const authenticateWithWordPress = () => {
     console.log('🔐 Starting WordPress.com authentication...');
@@ -108,7 +125,7 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
             יצירת אתר WordPress.com אמיתי
           </CardTitle>
           <p className="text-gray-300">
-            מלא את הפטרים כדי ליצור אתר וורדפרס אמיתי ב-WordPress.com
+            מלא את הפרטים כדי ליצור אתר וורדפרס אמיתי ב-WordPress.com
           </p>
           <Badge className="bg-blue-600 text-white">
             דומיין: {selectedDomain}
@@ -129,7 +146,12 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
                   <Key className={`w-5 h-5 ${isAuthenticated ? 'text-green-400' : 'text-orange-400'}`} />
                   <div>
                     <h4 className="text-white font-semibold">
-                      {isAuthenticated ? 'מחובר ל-WordPress.com ✓' : 'נדרש אימות WordPress.com'}
+                      {isCheckingAuth 
+                        ? 'בודק אימות WordPress.com...'
+                        : isAuthenticated 
+                          ? 'מחובר ל-WordPress.com ✓' 
+                          : 'נדרש אימות WordPress.com'
+                      }
                     </h4>
                     <p className="text-gray-300 text-sm">
                       {isAuthenticated 
@@ -139,14 +161,13 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
                     </p>
                   </div>
                 </div>
-                {!isAuthenticated && (
+                {!isAuthenticated && !isCheckingAuth && (
                   <Button
                     onClick={authenticateWithWordPress}
-                    disabled={isCheckingAuth}
                     className="bg-blue-600 hover:bg-blue-700"
                     size="sm"
                   >
-                    {isCheckingAuth ? 'בודק...' : 'התחבר עכשיו'}
+                    התחבר עכשיו
                   </Button>
                 )}
               </div>
@@ -395,10 +416,10 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
               </Button>
             </div>
 
-            {!isAuthenticated && (
+            {!isAuthenticated && !isCheckingAuth && (
               <div className="text-center">
                 <p className="text-gray-400 text-sm">
-                  💡 יש להתחבר ל-WordPress.com כדי ליצור אתר אמיתי
+                  💡 יש להתחבר ל-WordPress.com קודם כדי ליצור אתר אמיתי
                 </p>
               </div>
             )}
