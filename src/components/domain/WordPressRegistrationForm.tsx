@@ -76,13 +76,16 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
 
   const handleAuthenticate = () => {
     try {
-      console.log('🔗 מעבר לאימות דרך Edge Function...');
+      console.log('🔗 מתחיל תהליך אימות מקומי...');
       
-      // שימוש ב-Edge Function שעושה redirect
-      const edgeFunctionUrl = 'https://crkgabcjxkdpnhipvugu.supabase.co/functions/v1/wordpress-auth?action=redirect-to-auth';
+      // סימולציה של אימות מוצלח
+      alert('מדמה אימות WordPress.com מוצלח!');
       
-      // מעבר ישיר דרך ה-Edge Function
-      window.location.href = edgeFunctionUrl;
+      // שמירת טוקן מדומה
+      localStorage.setItem('wp_access_token', 'demo_token_' + Date.now());
+      
+      // עדכון סטטוס האימות
+      setIsAuthenticated(true);
       
     } catch (error) {
       console.error('❌ Authentication failed:', error);
@@ -116,9 +119,9 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
                   <>
                     <CheckCircle className="w-5 h-5 text-green-400" />
                     <div>
-                      <h4 className="text-white font-semibold">מחובר ל-WordPress.com ✓</h4>
+                      <h4 className="text-white font-semibold">מחובר למערכת ✓</h4>
                       <p className="text-gray-300 text-sm">
-                        מוכן ליצירת אתרי WordPress.com אמיתיים
+                        מוכן ליצירת אתרי WordPress (דמו)
                       </p>
                     </div>
                   </>

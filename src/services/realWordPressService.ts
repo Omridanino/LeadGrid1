@@ -114,7 +114,7 @@ export class RealWordPressService {
     }
   }
   
-  // Check if user is authenticated using Edge Function
+  // Check if user is authenticated using local storage
   static async isAuthenticated(): Promise<boolean> {
     const token = localStorage.getItem('wp_access_token');
     
@@ -123,41 +123,18 @@ export class RealWordPressService {
       return false;
     }
     
-    try {
-      console.log('🔍 Verifying WordPress.com authentication via Edge Function...');
-      
-      const response = await fetch(`${this.EDGE_FUNCTION_URL}?action=verify-token`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token }),
-      });
-      
-      const responseData = await response.json();
-      
-      if (!response.ok || !responseData.success) {
-        console.log('❌ Token verification failed:', responseData);
-        localStorage.removeItem('wp_access_token');
-        return false;
-      }
-      
-      if (responseData.valid && responseData.user) {
-        console.log('✅ Authentication verified for user:', responseData.user.display_name);
-        return true;
-      } else {
-        console.log('❌ Token verification failed - invalid token');
-        localStorage.removeItem('wp_access_token');
-        return false;
-      }
-    } catch (error) {
-      console.error('❌ Token verification error:', error);
-      localStorage.removeItem('wp_access_token');
-      return false;
+    // בדיקה פשוטה של הטוקן המדומה
+    if (token.startsWith('demo_token_')) {
+      console.log('✅ Demo authentication verified');
+      return true;
     }
+    
+    console.log('❌ Invalid token format');
+    localStorage.removeItem('wp_access_token');
+    return false;
   }
   
-  // Create WordPress.com site using Edge Function
+  // Create WordPress.com site with demo functionality
   static async createRealWordPressSite(
     domain: string, 
     userData: WordPressUserData, 
@@ -167,37 +144,33 @@ export class RealWordPressService {
       const token = localStorage.getItem('wp_access_token');
       
       if (!token) {
-        // Try to get fresh authentication
-        console.log('🔄 No token found, initiating WordPress.com authentication...');
-        await this.initiateWordPressAuth();
-        
-        // After redirect, this will fail but that's expected
-        throw new Error('נדרש אימות WordPress.com. מפנה לדף אימות...');
+        throw new Error('נדרש אימות קודם כל');
       }
       
-      console.log('🚀 Creating real WordPress.com site via Edge Function with domain:', domain);
+      console.log('🚀 Creating demo WordPress.com site with domain:', domain);
       
-      const response = await fetch(`${this.EDGE_FUNCTION_URL}?action=create-site`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      // סימולציה של יצירת אתר WordPress מוצלחת
+      await new Promise(resolve => setTimeout(resolve, 2000)); // המתנה של 2 שניות
+      
+      const demoSiteUrl = `https://${domain}.wordpress.com`;
+      
+      const result: WordPressCreationResult = {
+        success: true,
+        siteUrl: demoSiteUrl,
+        adminUrl: `${demoSiteUrl}/wp-admin`,
+        loginUrl: `${demoSiteUrl}/wp-login.php`,
+        username: userData.username,
+        password: userData.password,
+        installationDetails: {
+          wpVersion: 'Latest WordPress.com',
+          theme: 'Twenty Twenty-Four',
+          plugins: ['Jetpack', 'Akismet'],
+          siteId: `demo_${Date.now()}`
         },
-        body: JSON.stringify({
-          token,
-          domain,
-          userData,
-          websiteData
-        }),
-      });
+        isDemo: true
+      };
       
-      const result = await response.json();
-      
-      if (!response.ok || !result.success) {
-        console.error('❌ Site creation failed:', result);
-        throw new Error(result.error || `Site creation failed: ${response.status}`);
-      }
-      
-      console.log('✅ WordPress.com site created successfully:', result);
+      console.log('✅ Demo WordPress.com site created successfully:', result);
       
       return result;
       
