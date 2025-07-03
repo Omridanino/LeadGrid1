@@ -5,16 +5,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
   Rocket, 
-  Zap, 
-  Clock, 
   CheckCircle,
   ArrowRight,
   ArrowLeft,
-  Sparkles,
   Globe,
   Shield,
   Server,
-  Lock
+  Lock,
+  CreditCard
 } from 'lucide-react';
 import { NewPublishingWizard } from './publishing/NewPublishingWizard';
 import { TemplateData } from '@/types/template';
@@ -40,7 +38,7 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
             האתר שלך מוכן לפרסום! 🎉
           </h2>
           <p className="text-xl text-gray-400 mb-2">
-            עכשיו בואו נפרסם אותו לאוויר ונעשה אותו זמין לכולם
+            עכשיו בואו נפרסם אותו לאוויר עם דומיין מקצועי ואחסון מתקדם
           </p>
           <p className="text-sm text-gray-500">
             תוכל לערוך ולעדכן את האתר שלך בכל עת גם אחרי הפרסום
@@ -52,7 +50,7 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Globe className="w-5 h-5 text-blue-400" />
-              תצוגה מקדימה של האתר שלך
+              תצוגה מקדימה של האתר שלך - {template.name}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -69,143 +67,77 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
               </div>
             </div>
             <p className="text-gray-500 text-sm text-center">
-              זו רק תצוגה מקדימה - האתר המלא יכלול את כל הקטעים שבחרת
+              זו רק תצוגה מקדימה - האתר המלא יכלול את כל הקטעים שערכת
             </p>
           </CardContent>
         </Card>
 
-        {/* Launch Options */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {/* Express Mode */}
-          <Card className="bg-gradient-to-br from-blue-900/50 to-purple-900/50 border-blue-700/50 hover:from-blue-800/60 hover:to-purple-800/60 transition-all">
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Zap className="w-6 h-6 text-yellow-400" />
-                <CardTitle className="text-white">פרסום אקספרס</CardTitle>
-                <Badge className="bg-yellow-500 text-black">מומלץ להתחלה</Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-gray-300 text-sm">
-                האתר שלך יהיה חי תוך 60 שניות עם דומיין חינמי זמני. מושלם להתחלה!
-              </p>
-              
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2 text-green-300">
-                  <CheckCircle className="w-4 h-4" />
-                  <span>דומיין חינמי (.lovable.app)</span>
+        {/* Publishing Info */}
+        <Card className="bg-gradient-to-r from-blue-900/50 to-purple-900/50 border-blue-700/50 max-w-4xl mx-auto">
+          <CardHeader>
+            <CardTitle className="text-white text-center text-xl">
+              מה כלול בפרסום המקצועי?
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 text-blue-200">
+                  <Globe className="w-6 h-6 text-blue-400" />
+                  <div>
+                    <div className="font-medium">דומיין מותאם אישית</div>
+                    <div className="text-sm text-blue-300">yourbusiness.com או .co.il</div>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 text-green-300">
-                  <Lock className="w-4 h-4" />
-                  <span>SSL אוטומטי ומאובטח</span>
-                </div>
-                <div className="flex items-center gap-2 text-green-300">
-                  <Server className="w-4 h-4" />
-                  <span>אחסון מהיר בענן</span>
-                </div>
-                <div className="flex items-center gap-2 text-green-300">
-                  <Clock className="w-4 h-4" />
-                  <span>תוך 60 שניות בלבד</span>
+                <div className="flex items-center gap-3 text-blue-200">
+                  <Lock className="w-6 h-6 text-green-400" />
+                  <div>
+                    <div className="font-medium">SSL מאובטח</div>
+                    <div className="text-sm text-blue-300">תעודת אבטחה מתקדמת</div>
+                  </div>
                 </div>
               </div>
-
-              <div className="bg-blue-900/30 p-3 rounded-lg border border-blue-700/30">
-                <div className="text-blue-300 text-xs font-medium mb-1">חינם לחלוטין!</div>
-                <div className="text-blue-200 text-xs">
-                  תוכל לשדרג לדומיין מותאם אישית בכל עת
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 text-blue-200">
+                  <Server className="w-6 h-6 text-purple-400" />
+                  <div>
+                    <div className="font-medium">אחסון מהיר CDN</div>
+                    <div className="text-sm text-blue-300">זמני טעינה מהירים בכל העולם</div>
+                  </div>
                 </div>
-              </div>
-              
-              <Button 
-                onClick={() => setIsWizardOpen(true)}
-                className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-medium"
-              >
-                <Zap className="w-4 h-4 ml-2" />
-                פרסם תוך 60 שניות
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Premium Mode */}
-          <Card className="bg-gray-800 border-gray-700 hover:bg-gray-750 transition-all">
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Globe className="w-6 h-6 text-blue-400" />
-                <CardTitle className="text-white">פרסום מותאם אישית</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-gray-300 text-sm">
-                בחר דומיין חדש או חבר דומיין קיים. כולל תמיכה מלאה ב-.co.il
-              </p>
-              
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2 text-blue-300">
-                  <Globe className="w-4 h-4" />
-                  <span>דומיין מותאם (.com, .co.il, .net)</span>
-                </div>
-                <div className="flex items-center gap-2 text-blue-300">
-                  <Shield className="w-4 h-4" />
-                  <span>SSL פרימיום ואבטחה מתקדמת</span>
-                </div>
-                <div className="flex items-center gap-2 text-blue-300">
-                  <Server className="w-4 h-4" />
-                  <span>אחסון פרימיום + גיבויים</span>
-                </div>
-                <div className="flex items-center gap-2 text-blue-300">
-                  <CheckCircle className="w-4 h-4" />
-                  <span>תמיכה טכנית מלאה</span>
-                </div>
-              </div>
-
-              <div className="bg-gray-700 p-3 rounded-lg">
-                <div className="text-white text-xs font-medium mb-1">החל מ-₪89/שנה</div>
-                <div className="text-gray-400 text-xs">
-                  כולל דומיין + אחסון + SSL + תמיכה
-                </div>
-              </div>
-              
-              <Button 
-                onClick={() => setIsWizardOpen(true)}
-                variant="outline"
-                className="w-full border-gray-600 text-white hover:bg-gray-700"
-              >
-                <Sparkles className="w-4 h-4 ml-2" />
-                בחר דומיין מותאם
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Additional Info */}
-        <Card className="bg-gradient-to-r from-green-900/30 to-blue-900/30 border-green-700/30 max-w-2xl mx-auto">
-          <CardContent className="p-6">
-            <div className="text-center">
-              <h4 className="text-green-300 font-medium mb-3 flex items-center justify-center gap-2">
-                <Shield className="w-5 h-5" />
-                מה כלול בכל האפשרויות?
-              </h4>
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div className="flex items-center gap-2 text-green-200">
-                  <CheckCircle className="w-4 h-4" />
-                  <span>אבטחה מתקדמת</span>
-                </div>
-                <div className="flex items-center gap-2 text-green-200">
-                  <CheckCircle className="w-4 h-4" />
-                  <span>עדכונים אוטומטיים</span>
-                </div>
-                <div className="flex items-center gap-2 text-green-200">
-                  <CheckCircle className="w-4 h-4" />
-                  <span>מהירות טעינה גבוהה</span>
-                </div>
-                <div className="flex items-center gap-2 text-green-200">
-                  <CheckCircle className="w-4 h-4" />
-                  <span>תמיכה בעברית</span>
+                <div className="flex items-center gap-3 text-blue-200">
+                  <Shield className="w-6 h-6 text-green-400" />
+                  <div>
+                    <div className="font-medium">גיבויים אוטומטיים</div>
+                    <div className="text-sm text-blue-300">הגנה מלאה על המידע שלך</div>
+                  </div>
                 </div>
               </div>
             </div>
+
+            <div className="text-center pt-4 border-t border-blue-700/30">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <CreditCard className="w-5 h-5 text-yellow-400" />
+                <span className="text-yellow-300 font-medium">החל מ-₪89/שנה</span>
+              </div>
+              <p className="text-blue-200 text-sm">
+                כולל דומיין + אחסון + SSL + תמיכה טכנית מלאה
+              </p>
+            </div>
           </CardContent>
         </Card>
+
+        {/* Launch Button */}
+        <div className="text-center">
+          <Button 
+            onClick={() => setIsWizardOpen(true)}
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-12 py-4 text-lg font-semibold"
+          >
+            <Rocket className="w-6 h-6 ml-3" />
+            פרסם את האתר שלי
+            <ArrowRight className="w-6 h-6 mr-3" />
+          </Button>
+        </div>
 
         {/* Navigation */}
         <div className="flex justify-between items-center max-w-2xl mx-auto pt-6">
