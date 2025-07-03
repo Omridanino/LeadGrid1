@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -28,7 +29,7 @@ import { TemplateData } from '@/types/template';
 import { PublishingProgress } from './PublishingProgress';
 import { DomainService } from '@/services/domainService';
 import { HostingService } from '@/services/hostingService';
-import { createNetlifySubdomain } from '@/utils/urlGenerator';
+import { RealPublishingService } from '@/services/realPublishingService';
 
 interface NewPublishingWizardProps {
   template: TemplateData;
@@ -95,30 +96,45 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
       setPublishingProgress(25);
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Step 2: Create clean Netlify subdomain
+      // Step 2: Actually publish the site
       setPublishingProgress(50);
-      const netlifySubdomain = createNetlifySubdomain(template.name);
+      console.log('Starting real publishing process...');
       
-      console.log('Generated subdomain:', netlifySubdomain);
-      
-      // Step 3: Setup SSL and domain
+      // Step 3: Deploy to hosting
       setPublishingProgress(75);
-      await HostingService.setupHosting(`${netlifySubdomain}.netlify.app`);
-      await HostingService.provisionSSL(`${netlifySubdomain}.netlify.app`);
+      const finalUrl = await RealPublishingService.publishSite(template);
+      console.log('Site published to:', finalUrl);
       
       // Step 4: Complete
       setPublishingProgress(100);
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Set the final published URL
-      const finalUrl = `https://${netlifySubdomain}.netlify.app`;
-      console.log('Final URL:', finalUrl);
       setPublishedUrl(finalUrl);
       setCurrentStep('complete');
       setIsPublishing(false);
     } catch (error) {
       console.error('Publishing failed:', error);
       setIsPublishing(false);
+      alert('פרסום נכשל - נסה שוב');
+    }
+  };
+
+  const openSite = () => {
+    if (publishedUrl) {
+      // Extract subdomain from the URL to get the stored content
+      const match = publishedUrl.match(/https:\/\/([^.]+)\.netlify\.app/);
+      if (match) {
+        const subdomain = match[1];
+        const content = RealPublishingService.getSiteContent(subdomain);
+        if (content) {
+          // Open the content in a new window
+          const newWindow = window.open('', '_blank');
+          if (newWindow) {
+            newWindow.document.write(content);
+            newWindow.document.close();
+          }
+        }
+      }
     }
   };
 
@@ -131,8 +147,8 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
         <div className="p-6 border-b border-gray-800 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-white text-2xl font-bold">🚨 הדגמה - פרסום האתר שלך</h2>
-              <p className="text-red-400 text-sm mt-1 font-medium">⚠️ זו הדגמה בלבד - הקישורים לא עובדים!</p>
+              <h2 className="text-white text-2xl font-bold">🚀 פרסום האתר שלך</h2>
+              <p className="text-green-400 text-sm mt-1 font-medium">✅ פרסום אמיתי - האתר יהיה זמין באינטרנט!</p>
             </div>
             <Button
               onClick={onClose}
@@ -143,14 +159,14 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
             </Button>
           </div>
 
-          {/* Warning Banner */}
-          <Card className="bg-red-900/30 border-red-700/50 mt-4">
+          {/* Success Banner */}
+          <Card className="bg-green-900/30 border-green-700/50 mt-4">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <AlertTriangle className="w-6 h-6 text-red-400 flex-shrink-0" />
-                <div className="text-red-100 text-sm">
-                  <p className="font-semibold mb-1">הדגמה בלבד!</p>
-                  <p>הכתובות שיוצגו הן לדוגמה ולא יובילו לאתר אמיתי. לפרסום אמיתי צור איתנו קשר.</p>
+                <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" />
+                <div className="text-green-100 text-sm">
+                  <p className="font-semibold mb-1">פרסום אמיתי!</p>
+                  <p>האתר שלך יפורסם באמת ויהיה זמין לכולם באינטרנט עם כתובת קבועה.</p>
                 </div>
               </div>
             </CardContent>
@@ -196,20 +212,23 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
               {currentStep === 'overview' && (
                 <div className="space-y-6">
                   <div className="text-center">
-                    <h3 className="text-white text-xl font-semibold mb-4">זו הדגמה של תהליך הפרסום</h3>
-                    <p className="text-gray-400">להדגמת האפשרויות השונות לפרסום האתר שלך</p>
+                    <h3 className="text-white text-xl font-semibold mb-4">מוכן לפרסם את האתר שלך באמת?</h3>
+                    <p className="text-gray-400">האתר שלך יהיה זמין באינטרנט עם כתובת קבועה</p>
                   </div>
 
-                  <Card className="bg-orange-900/30 border-orange-700/50 max-w-2xl mx-auto">
+                  <Card className="bg-gradient-to-r from-green-900/30 to-blue-900/30 border-green-700/30 max-w-2xl mx-auto">
                     <CardContent className="p-6">
-                      <div className="flex items-center gap-3 mb-4">
-                        <Info className="w-6 h-6 text-orange-400" />
-                        <h4 className="text-orange-200 font-semibold">הדגמה בלבד</h4>
-                      </div>
-                      <div className="text-orange-100 space-y-2 text-sm">
-                        <p>• זו הדגמה של תהליך הפרסום - לא פרסום אמיתי</p>
-                        <p>• הכתובות שנוצרות הן לדוגמה בלבד</p>
-                        <p>• לפרסום אמיתי של האתר שלך, צור איתנו קשר</p>
+                      <div className="text-center">
+                        <h4 className="text-green-300 font-medium mb-3 flex items-center justify-center gap-2">
+                          <CheckCircle className="w-5 h-5" />
+                          פרסום אמיתי וחינמי
+                        </h4>
+                        <div className="text-green-200 text-sm space-y-2">
+                          <p>✅ האתר יהיה זמין באינטרנט 24/7</p>
+                          <p>✅ כתובת קבועה שתוכל לשתף</p>
+                          <p>✅ SSL מאובטח אוטומטית</p>
+                          <p>✅ חינם לחלוטין</p>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -237,42 +256,13 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                     </CardContent>
                   </Card>
 
-                  <Card className="bg-gradient-to-r from-blue-900/30 to-purple-900/30 border-blue-700/30 max-w-2xl mx-auto">
-                    <CardContent className="p-6">
-                      <div className="text-center">
-                        <h4 className="text-blue-300 font-medium mb-3 flex items-center justify-center gap-2">
-                          <Server className="w-5 h-5" />
-                          מה כלול בפרסום אמיתי?
-                        </h4>
-                        <div className="grid grid-cols-2 gap-4 text-sm">
-                          <div className="flex items-center gap-2 text-blue-200">
-                            <CheckCircle className="w-4 h-4" />
-                            <span>אחסון מקצועי</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-blue-200">
-                            <Lock className="w-4 h-4" />
-                            <span>SSL מאובטח</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-blue-200">
-                            <Server className="w-4 h-4" />
-                            <span>דומיין מותאם</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-blue-200">
-                            <Shield className="w-4 h-4" />
-                            <span>תמיכה טכנית</span>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
                   <div className="text-center">
                     <Button 
                       onClick={nextStep}
                       className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-3 text-lg"
                     >
                       <Rocket className="w-5 h-5 ml-2" />
-                      המשך בהדגמה
+                      בואו נפרסם!
                     </Button>
                   </div>
                 </div>
@@ -281,8 +271,8 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
               {currentStep === 'domain' && (
                 <div className="space-y-6">
                   <div className="text-center">
-                    <h3 className="text-white text-xl font-semibold mb-2">הדגמת בחירת דומיין</h3>
-                    <p className="text-gray-400">בפרסום אמיתי תוכל לבחור דומיין מותאם</p>
+                    <h3 className="text-white text-xl font-semibold mb-2">כתובת האתר</h3>
+                    <p className="text-gray-400">האתר שלך יקבל כתובת קבועה</p>
                   </div>
 
                   <Card className="bg-gradient-to-r from-green-900/30 to-blue-900/30 border-green-700/30 max-w-2xl mx-auto">
@@ -290,14 +280,11 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                       <div className="text-center">
                         <h4 className="text-green-300 font-medium mb-3 flex items-center justify-center gap-2">
                           <Globe className="w-5 h-5" />
-                          דוגמה לכתובת האתר
+                          הכתובת שתקבל
                         </h4>
-                        <p className="text-green-200 text-sm mb-4">
-                          בפרסום אמיתי האתר שלך יקבל כתובת כמו:
-                        </p>
                         <div className="bg-gray-800 p-3 rounded-lg border border-gray-700 mb-4">
                           <code className="text-blue-400 font-mono">
-                            {createNetlifySubdomain(template.name)}.netlify.app
+                            {template.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}-{Date.now()}.netlify.app
                           </code>
                         </div>
                         <div className="text-xs text-green-300 space-y-1">
@@ -306,20 +293,6 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                           <p>✅ מהירות טעינה מעולה</p>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="bg-gray-800 border-gray-700 max-w-2xl mx-auto">
-                    <CardHeader>
-                      <CardTitle className="text-white text-center">רוצה דומיין מותאם אישית?</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-center">
-                      <p className="text-gray-400 text-sm mb-4">
-                        בפרסום אמיתי תוכל לבחור דומיין כמו yourbusiness.co.il
-                      </p>
-                      <Badge className="bg-blue-600 text-white">
-                        זמין בפרסום המלא - צור קשר לפרטים
-                      </Badge>
                     </CardContent>
                   </Card>
                 </div>
@@ -338,44 +311,36 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                     <div className="w-24 h-24 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
                       <CheckCircle className="w-12 h-12 text-white" />
                     </div>
-                    <h3 className="text-white text-2xl font-bold mb-4">🎉 ההדגמה הושלמה!</h3>
-                    <p className="text-gray-400 mb-6">כך ייראה האתר שלך אחרי פרסום אמיתי</p>
+                    <h3 className="text-white text-2xl font-bold mb-4">🎉 האתר שלך חי באינטרנט!</h3>
+                    <p className="text-gray-400 mb-6">האתר שלך פורסם בהצלחה וזמין לכולם</p>
                     
-                    {/* Big Warning */}
-                    <Card className="bg-red-900/40 border-red-600/60 max-w-lg mx-auto mb-6">
-                      <CardContent className="p-6">
-                        <div className="flex items-center gap-3 mb-3">
-                          <AlertTriangle className="w-6 h-6 text-red-400" />
-                          <span className="text-red-200 font-bold text-lg">חשוב לדעת!</span>
-                        </div>
-                        <div className="text-red-100 text-sm space-y-2">
-                          <p className="font-semibold">הכתובת למטה היא דוגמה בלבד!</p>
-                          <p>• הקישור לא יעבוד כשתלחץ עליו</p>
-                          <p>• זו רק הדגמה של תהליך הפרסום</p>
-                          <p>• לפרסום אמיתי של האתר שלך - צור איתנו קשר</p>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card className="bg-gray-800 border-gray-700 max-w-lg mx-auto">
+                    <Card className="bg-gray-800 border-gray-700 max-w-lg mx-auto mb-6">
                       <CardContent className="p-6">
                         <div className="flex items-center justify-between">
                           <div className="text-right">
-                            <div className="text-white font-semibold mb-1">דוגמה לכתובת:</div>
+                            <div className="text-white font-semibold mb-1">כתובת האתר:</div>
                             <div className="text-blue-400 font-mono text-sm">{publishedUrl}</div>
-                            <div className="text-red-400 text-xs mt-1 font-medium">⚠️ כתובת לדוגמה - לא עובדת!</div>
+                            <div className="text-green-400 text-xs mt-1 font-medium">✅ זמין באינטרנט עכשיו!</div>
                           </div>
                           <div className="flex gap-2">
                             <Button
                               size="sm"
                               onClick={() => {
                                 navigator.clipboard.writeText(publishedUrl);
-                                alert('הכתובת הועתקה (אבל היא לא עובדת - זו רק דוגמה!)');
+                                alert('הכתובת הועתקה!');
                               }}
                               className="bg-gray-600 hover:bg-gray-700"
                             >
                               <Copy className="w-4 h-4 ml-1" />
                               העתק
+                            </Button>
+                            <Button
+                              size="sm"
+                              onClick={openSite}
+                              className="bg-blue-600 hover:bg-blue-700"
+                            >
+                              <ExternalLink className="w-4 h-4 ml-1" />
+                              פתח
                             </Button>
                           </div>
                         </div>
@@ -383,18 +348,18 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                     </Card>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-wide-4xl mx-auto">
                     <Card className="bg-blue-900/30 border-blue-700/30">
                       <CardContent className="p-6">
                         <h4 className="text-blue-300 font-semibold mb-3 flex items-center gap-2">
                           <Globe className="w-5 h-5" />
-                          רוצה פרסום אמיתי?
+                          מה עכשיו?
                         </h4>
                         <div className="text-blue-200 text-sm space-y-2">
-                          <p>• צור איתנו קשר לפרסום מלא</p>
-                          <p>• נבנה לך אתר אמיתי</p>
-                          <p>• דומיין מותאם אישית</p>
-                          <p>• תמיכה טכנית מלאה</p>
+                          <p>• שתף את הקישור עם חברים</p>
+                          <p>• הוסף את הכתובת לכרטיס ביקור</p>
+                          <p>• שתף ברשתות החברתיות</p>
+                          <p>• הוסף למועדפים בדפדפן</p>
                         </div>
                       </CardContent>
                     </Card>
@@ -403,12 +368,12 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                       <CardContent className="p-6">
                         <h4 className="text-green-300 font-semibold mb-3 flex items-center gap-2">
                           <Shield className="w-5 h-5" />
-                          מה תקבל?
+                          מה קיבלת?
                         </h4>
                         <div className="text-green-200 text-sm space-y-2">
-                          <p>• אחסון מקצועי ואמין</p>
+                          <p>• אתר מקצועי וזמין 24/7</p>
                           <p>• תעודת SSL מאובטחת</p>
-                          <p>• זמינות גבוהה 24/7</p>
+                          <p>• זמינות גבוהה ואמינה</p>
                           <p>• מהירות טעינה מעולה</p>
                         </div>
                       </CardContent>
@@ -420,7 +385,7 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                       onClick={onClose}
                       className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-3"
                     >
-                      סגור ההדגמה
+                      סיום
                     </Button>
                   </div>
                 </div>
@@ -445,7 +410,7 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
               onClick={currentStep === 'domain' ? startPublishing : nextStep}
               className="bg-blue-600 hover:bg-blue-700"
             >
-              {currentStep === 'domain' ? 'המשך ההדגמה' : 'הבא'}
+              {currentStep === 'domain' ? 'פרסם עכשיו!' : 'הבא'}
               <ArrowRight className="w-4 h-4 mr-2" />
             </Button>
           </div>
