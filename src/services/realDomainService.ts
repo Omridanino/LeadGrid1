@@ -1,3 +1,4 @@
+
 // Real Domain and Hosting Service Integration
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -469,18 +470,19 @@ export class RealDomainService {
       // Create website (WordPress or static)
       const websiteType = request.websiteData.websiteType || 'static';
       let siteUrl = '';
-      let hostingDetails = {};
+      let hostingDetails = {
+        username: request.customerInfo.email,
+        password: this.generatePassword(),
+        cpanelUrl: `https://cpanel.leadgrid.co.il`,
+        nameservers: ['ns1.leadgrid.co.il', 'ns2.leadgrid.co.il']
+      };
 
       if (websiteType === 'wordpress') {
         // Setup WordPress site
         siteUrl = `https://${request.domain}`;
         hostingDetails = {
-          type: 'wordpress',
-          username: request.customerInfo.email,
-          password: this.generatePassword(),
+          ...hostingDetails,
           wpAdminUrl: `https://${request.domain}/wp-admin`,
-          cpanelUrl: `https://cpanel.leadgrid.co.il`,
-          nameservers: ['ns1.leadgrid.co.il', 'ns2.leadgrid.co.il'],
           ftpDetails: {
             host: 'ftp.leadgrid.co.il',
             username: request.customerInfo.email,
@@ -490,13 +492,6 @@ export class RealDomainService {
       } else {
         // Deploy static website
         siteUrl = `https://${request.domain}`;
-        hostingDetails = {
-          type: 'static',
-          username: request.customerInfo.email,
-          password: this.generatePassword(),
-          cpanelUrl: `https://cpanel.leadgrid.co.il`,
-          nameservers: ['ns1.leadgrid.co.il', 'ns2.leadgrid.co.il']
-        };
       }
 
       // Simulate domain registration and hosting setup
@@ -514,7 +509,12 @@ export class RealDomainService {
         success: true,
         orderId: request.orderId,
         domain: request.domain,
-        hostingAccount: hostingDetails,
+        hostingAccount: {
+          username: hostingDetails.username,
+          password: hostingDetails.password,
+          cpanelUrl: hostingDetails.cpanelUrl,
+          nameservers: hostingDetails.nameservers
+        },
         siteUrl,
         paymentMethod: request.payment.method,
         paymentStatus: 'completed'
