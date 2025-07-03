@@ -18,7 +18,8 @@ import {
   Loader2,
   Code,
   Server,
-  Shield
+  Shield,
+  Key
 } from 'lucide-react';
 import { RealWordPressService, WordPressUserData, WordPressCreationResult } from '@/services/realWordPressService';
 
@@ -28,6 +29,7 @@ export const WordPressLandingPage = () => {
   const [wordpressData, setWordpressData] = useState<WordPressCreationResult | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   
   const demo = searchParams.get('demo');
   const user = searchParams.get('user');
@@ -36,6 +38,10 @@ export const WordPressLandingPage = () => {
   useEffect(() => {
     const loadWordPressData = async () => {
       try {
+        // Check if user is authenticated with WordPress.com
+        const token = localStorage.getItem('wp_access_token');
+        setIsAuthenticated(!!token);
+        
         if (isDemo) {
           // Load demo content from localStorage
           const demoContent = localStorage.getItem(`demo_content_${user}`);
@@ -69,8 +75,18 @@ export const WordPressLandingPage = () => {
     loadWordPressData();
   }, [demo, user, isDemo]);
 
+  const authenticateWithWordPress = () => {
+    console.log('🔐 Starting WordPress.com authentication...');
+    RealWordPressService.initiateWordPressAuth();
+  };
+
   const createRealWordPressSite = async () => {
     if (!isDemo || !user) return;
+    
+    if (!isAuthenticated) {
+      alert('יש להתחבר ל-WordPress.com קודם כדי ליצור אתר אמיתי');
+      return;
+    }
     
     setIsCreating(true);
     setError(null);
@@ -85,20 +101,20 @@ export const WordPressLandingPage = () => {
       const userData: WordPressUserData = content.userData;
       const websiteData = content.websiteData;
       
-      console.log('🚀 Creating REAL WordPress site for user:', userData.username);
+      console.log('🚀 Creating REAL WordPress.com site for user:', userData.username);
       
       const result = await RealWordPressService.createRealWordPressSite(
-        `${userData.username}.leadgrid.co.il`,
+        `${userData.username}-site`,
         userData,
         websiteData
       );
       
       if (result.success) {
         setWordpressData(result);
-        console.log('✅ Real WordPress site created successfully!');
+        console.log('✅ Real WordPress.com site created successfully!');
         
         if (!result.isDemo) {
-          alert('🎉 אתר וורדפרס אמיתי נוצר בהצלחה! תוכל כעת להיכנס למנהל האתר עם הפרטים המוצגים.');
+          alert('🎉 אתר וורדפרס אמיתי נוצר בהצלחה ב-WordPress.com! תוכל כעת להיכנס למנהל האתר.');
         }
       } else {
         throw new Error(result.error || 'Failed to create WordPress site');
@@ -177,20 +193,57 @@ export const WordPressLandingPage = () => {
             </div>
             <div>
               <h1 className="text-white text-3xl font-bold">
-                {wordpressData.isDemo ? 'אתר דמו - וורדפרס' : 'אתר וורדפרס אמיתי'}
+                {wordpressData.isDemo ? 'אתר דמו - וורדפרס' : 'אתר WordPress.com אמיתי'}
               </h1>
               <Badge className={wordpressData.isDemo ? "bg-blue-600" : "bg-green-600"}>
-                {wordpressData.isDemo ? 'מצב דמו' : 'אתר אמיתי'}
+                {wordpressData.isDemo ? 'מצב דמו' : 'WordPress.com אמיתי'}
               </Badge>
             </div>
           </div>
           <p className="text-gray-300">
             {wordpressData.isDemo 
-              ? 'זהו אתר דמו המדמה פונקציונליות וורדפרס. תוכל ליצור אתר אמיתי בלחיצה על הכפתור למטה.'
-              : 'אתר וורדפרס אמיתי עם התקנה מלאה ובסיס נתונים. תוכל להיכנס ולנהל את האתר.'
+              ? 'זהו אתר דמו המדמה פונקציונליות וורדפרס. תוכל ליצור אתר אמיתי ב-WordPress.com בלחיצה על הכפתור למטה.'
+              : 'אתר וורדפרס אמיתי ב-WordPress.com עם מנהל אמיתי. תוכל להיכנס ולנהל את האתר.'
             }
           </p>
         </div>
+
+        {/* Authentication Status */}
+        {wordpressData.isDemo && (
+          <Card className={`mb-6 ${
+            isAuthenticated 
+              ? 'bg-gradient-to-br from-green-900/30 to-blue-900/30 border-green-700/50'
+              : 'bg-gradient-to-br from-orange-900/30 to-red-900/30 border-orange-700/50'
+          }`}>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Key className={`w-5 h-5 ${isAuthenticated ? 'text-green-400' : 'text-orange-400'}`} />
+                  <div>
+                    <h4 className="text-white font-semibold">
+                      {isAuthenticated ? 'מחובר ל-WordPress.com' : 'נדרש אימות WordPress.com'}
+                    </h4>
+                    <p className="text-gray-300 text-sm">
+                      {isAuthenticated 
+                        ? 'יכול ליצור אתרי WordPress.com אמיתיים' 
+                        : 'יש להתחבר כדי ליצור אתרים אמיתיים'
+                      }
+                    </p>
+                  </div>
+                </div>
+                {!isAuthenticated && (
+                  <Button
+                    onClick={authenticateWithWordPress}
+                    className="bg-blue-600 hover:bg-blue-700"
+                    size="sm"
+                  >
+                    התחבר עכשיו
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Site Details */}
         <Card className={`mb-6 ${
@@ -240,7 +293,7 @@ export const WordPressLandingPage = () => {
             }`}>
               <h4 className="text-purple-200 font-semibold mb-3 flex items-center gap-2">
                 <Lock className="w-5 h-5" />
-                {wordpressData.isDemo ? 'ניהול דמו (מדמה wp-admin)' : 'ניהול וורדפרס אמיתי'}
+                {wordpressData.isDemo ? 'ניהול דמו (מדמה wp-admin)' : 'ניהול WordPress.com אמיתי'}
               </h4>
               
               <div className="space-y-3">
@@ -343,28 +396,38 @@ export const WordPressLandingPage = () => {
         {wordpressData.isDemo && (
           <Card className="bg-gradient-to-br from-green-900/30 to-blue-900/30 border-green-700/50 mb-6">
             <CardContent className="p-6 text-center">
-              <h3 className="text-white text-xl font-semibold mb-2">רוצה אתר וורדפרס אמיתי?</h3>
+              <h3 className="text-white text-xl font-semibold mb-2">רוצה אתר WordPress.com אמיתי?</h3>
               <p className="text-gray-300 mb-4">
-                צור אתר וורדפרס אמיתי עם התקנה מלאה, בסיס נתונים ופאנל ניהול אמיתי
+                צור אתר וורדפרס אמיתי ב-WordPress.com עם מנהל אמיתי ופונקציונליות מלאה
               </p>
               <Button
                 onClick={createRealWordPressSite}
-                disabled={isCreating}
+                disabled={isCreating || !isAuthenticated}
                 className="bg-green-600 hover:bg-green-700 px-8 py-3"
                 size="lg"
               >
                 {isCreating ? (
                   <>
                     <Loader2 className="w-5 h-5 ml-2 animate-spin" />
-                    יוצר אתר אמיתי...
+                    יוצר אתר WordPress.com...
+                  </>
+                ) : !isAuthenticated ? (
+                  <>
+                    <Key className="w-5 h-5 ml-2" />
+                    נדרש אימות WordPress.com
                   </>
                 ) : (
                   <>
                     <Server className="w-5 h-5 ml-2" />
-                    צור אתר וורדפרס אמיתי
+                    צור אתר WordPress.com אמיתי
                   </>
                 )}
               </Button>
+              {!isAuthenticated && (
+                <p className="text-gray-400 text-sm mt-2">
+                  יש להתחבר ל-WordPress.com קודם
+                </p>
+              )}
             </CardContent>
           </Card>
         )}
@@ -381,13 +444,13 @@ export const WordPressLandingPage = () => {
                 <>
                   <p>• זהו אתר דמו המדמה פונקציונליות וורדפרס</p>
                   <p>• לחץ על "צפה באתר" כדי לראות את האתר שלך</p>
-                  <p>• כדי לקבל אתר וורדפרס אמיתי, לחץ על הכפתור הירוק למעלה</p>
+                  <p>• התחבר ל-WordPress.com כדי ליצור אתר אמיתי</p>
                   <p>• האתר האמיתי יכלול את כל התכנים והעיצובים שיצרת</p>
                 </>
               ) : (
                 <>
-                  <p>• זהו אתר וורדפרס אמיתי עם התקנה מלאה</p>
-                  <p>• השתמש בפרטי ההתחברות למעלה כדי להיכנס לממשק הניהול</p>
+                  <p>• זהו אתר WordPress.com אמיתי עם מנהל מלא</p>
+                  <p>• השתמש בפרטי ההתחברות למעלה כדי להיכנס למנהל</p>
                   <p>• תוכל לערוך תכנים, להוסיף עמודים ולנהל את האתר במלואו</p>
                   <p>• האתר זמין באינטרנט וניתן לגישה מכל מקום</p>
                 </>
