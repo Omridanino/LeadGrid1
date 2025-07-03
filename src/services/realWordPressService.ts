@@ -149,16 +149,25 @@ export class RealWordPressService {
       
       console.log('🚀 Creating demo WordPress.com site with domain:', domain);
       
-      // סימולציה של יצירת אתר WordPress מוצלחת
-      await new Promise(resolve => setTimeout(resolve, 2000)); // המתנה של 2 שניות
+      // שמירת נתוני האתר בזיכרון מקומי
+      const siteData = {
+        userData,
+        websiteData,
+        domain,
+        createdAt: new Date().toISOString()
+      };
       
-      const demoSiteUrl = `https://${domain}.wordpress.com`;
+      const siteId = `demo_${Date.now()}`;
+      localStorage.setItem(`demo_site_${siteId}`, JSON.stringify(siteData));
+      
+      // יצירת URL לדמו שלנו עם המידע הנכון
+      const demoSiteUrl = `${window.location.origin}/demo-wordpress-site?siteId=${siteId}`;
       
       const result: WordPressCreationResult = {
         success: true,
         siteUrl: demoSiteUrl,
-        adminUrl: `${demoSiteUrl}/wp-admin`,
-        loginUrl: `${demoSiteUrl}/wp-login.php`,
+        adminUrl: `${demoSiteUrl}&view=admin`,
+        loginUrl: `${demoSiteUrl}&view=login`,
         username: userData.username,
         password: userData.password,
         installationDetails: {

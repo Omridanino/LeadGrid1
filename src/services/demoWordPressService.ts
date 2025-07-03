@@ -70,7 +70,14 @@ export class DemoWordPressService {
   }
   
   static getDemoSiteData(siteId: string) {
-    const data = localStorage.getItem(`demo_wp_site_${siteId}`);
+    // נסה קודם לטעון מהפורמט החדש
+    let data = localStorage.getItem(`demo_site_${siteId}`);
+    if (data) {
+      return JSON.parse(data);
+    }
+    
+    // נסה לטעון מהפורמט הישן
+    data = localStorage.getItem(`demo_wp_site_${siteId}`);
     return data ? JSON.parse(data) : null;
   }
   
