@@ -78,7 +78,7 @@ export class RealWordPressService {
       window.location.href = data.authUrl;
     } catch (error) {
       console.error('❌ Failed to initiate WordPress.com OAuth:', error);
-      throw new Error(`OAuth initiation failed: ${error.message}`);
+      throw new Error(`OAuth initiation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
   
@@ -198,7 +198,7 @@ export class RealWordPressService {
       
     } catch (error) {
       console.error('❌ WordPress.com site creation failed:', error);
-      throw new Error(`Failed to create WordPress.com site: ${error.message}`);
+      throw new Error(`Failed to create WordPress.com site: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
   

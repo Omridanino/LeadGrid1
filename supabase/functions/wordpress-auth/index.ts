@@ -30,7 +30,8 @@ serve(async (req) => {
     };
 
     console.log('WordPress Auth Function called with action:', action);
-    console.log('Current URL:', req.url);
+    console.log('Request method:', req.method);
+    console.log('Request origin:', req.headers.get('origin'));
 
     switch (action) {
       case 'get-auth-url':
@@ -46,8 +47,12 @@ serve(async (req) => {
         return await handleCreateSite(req);
       
       default:
+        console.error('Invalid action:', action);
         return new Response(
-          JSON.stringify({ error: 'Invalid action parameter. Expected: get-auth-url, exchange-token, verify-token, or create-site' }),
+          JSON.stringify({ 
+            error: 'Invalid action parameter. Expected: get-auth-url, exchange-token, verify-token, or create-site',
+            success: false 
+          }),
           { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
     }
@@ -55,8 +60,9 @@ serve(async (req) => {
     console.error('WordPress Auth Function error:', error);
     return new Response(
       JSON.stringify({ 
-        error: error.message,
-        details: 'Check function logs for more information'
+        error: error instanceof Error ? error.message : 'Unknown error occurred',
+        details: 'Check function logs for more information',
+        success: false
       }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
@@ -71,7 +77,7 @@ function handleGetAuthUrl(config: WordPressOAuthConfig) {
     authUrl.searchParams.set('response_type', 'code');
     authUrl.searchParams.set('scope', 'auth global:manage');
 
-    console.log('Generated auth URL:', authUrl.toString());
+    console.log('Generated auth URL successfully');
 
     return new Response(
       JSON.stringify({ 
@@ -83,7 +89,10 @@ function handleGetAuthUrl(config: WordPressOAuthConfig) {
   } catch (error) {
     console.error('Error generating auth URL:', error);
     return new Response(
-      JSON.stringify({ error: 'Failed to generate auth URL' }),
+      JSON.stringify({ 
+        error: 'Failed to generate auth URL',
+        success: false 
+      }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
@@ -91,13 +100,14 @@ function handleGetAuthUrl(config: WordPressOAuthConfig) {
 
 async function handleTokenExchange(req: Request, config: WordPressOAuthConfig) {
   try {
-    const { code } = await req.json();
+    const requestData = await req.json();
+    const { code } = requestData;
     
     if (!code) {
       throw new Error('Authorization code is required');
     }
     
-    console.log('Exchanging code for token:', code);
+    console.log('Exchanging code for token...');
 
     const tokenPayload = new URLSearchParams({
       client_id: config.clientId,
@@ -107,32 +117,34 @@ async function handleTokenExchange(req: Request, config: WordPressOAuthConfig) {
       redirect_uri: config.redirectUri,
     });
 
-    console.log('Token exchange payload:', Object.fromEntries(tokenPayload));
+    console.log('Making token request to WordPress.com...');
 
     const tokenResponse = await fetch('https://public-api.wordpress.com/oauth2/token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'User-Agent': 'LeadGrid/1.0',
+        'Accept': 'application/json',
       },
       body: tokenPayload,
     });
 
     const responseText = await tokenResponse.text();
     console.log('WordPress.com token response status:', tokenResponse.status);
-    console.log('WordPress.com token response:', responseText);
-
+    
     if (!tokenResponse.ok) {
+      console.error('WordPress.com token response error:', responseText);
       throw new Error(`Token exchange failed: ${tokenResponse.status} - ${responseText}`);
     }
 
     const tokenData = JSON.parse(responseText);
     
     if (!tokenData.access_token) {
+      console.error('No access token in response:', tokenData);
       throw new Error('No access token received from WordPress.com');
     }
 
-    console.log('Token received successfully');
+    console.log('Token exchange successful');
 
     return new Response(
       JSON.stringify({ 
@@ -145,7 +157,7 @@ async function handleTokenExchange(req: Request, config: WordPressOAuthConfig) {
     console.error('Token exchange error:', error);
     return new Response(
       JSON.stringify({ 
-        error: `Token exchange failed: ${error.message}`,
+        error: `Token exchange failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
         success: false 
       }),
       { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -155,18 +167,20 @@ async function handleTokenExchange(req: Request, config: WordPressOAuthConfig) {
 
 async function handleTokenVerification(req: Request) {
   try {
-    const { token } = await req.json();
+    const requestData = await req.json();
+    const { token } = requestData;
 
     if (!token) {
       throw new Error('Access token is required');
     }
 
-    console.log('Verifying WordPress.com token');
+    console.log('Verifying WordPress.com token...');
 
     const response = await fetch('https://public-api.wordpress.com/rest/v1.1/me', {
       headers: {
         'Authorization': `Bearer ${token}`,
         'User-Agent': 'LeadGrid/1.0',
+        'Accept': 'application/json',
       },
     });
 
@@ -175,7 +189,7 @@ async function handleTokenVerification(req: Request) {
 
     if (response.ok) {
       const userData = JSON.parse(responseText);
-      console.log('Token verified for user:', userData.display_name);
+      console.log('Token verified successfully for user:', userData.display_name);
       
       return new Response(
         JSON.stringify({ 
@@ -202,7 +216,7 @@ async function handleTokenVerification(req: Request) {
     return new Response(
       JSON.stringify({ 
         valid: false,
-        error: error.message,
+        error: error instanceof Error ? error.message : 'Unknown error',
         success: false 
       }),
       { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -212,7 +226,8 @@ async function handleTokenVerification(req: Request) {
 
 async function handleCreateSite(req: Request) {
   try {
-    const { token, domain, userData, websiteData } = await req.json();
+    const requestData = await req.json();
+    const { token, domain, userData, websiteData } = requestData;
 
     if (!token) {
       throw new Error('Access token is required');
@@ -238,6 +253,7 @@ async function handleCreateSite(req: Request) {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
         'User-Agent': 'LeadGrid/1.0',
+        'Accept': 'application/json',
       },
       body: JSON.stringify(sitePayload),
     });
@@ -264,6 +280,7 @@ async function handleCreateSite(req: Request) {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
           'User-Agent': 'LeadGrid/1.0',
+          'Accept': 'application/json',
         },
         body: JSON.stringify({
           blogdescription: userData.websiteDescription || 'אתר חדש שנוצר עם LeadGrid',
@@ -288,6 +305,7 @@ async function handleCreateSite(req: Request) {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
             'User-Agent': 'LeadGrid/1.0',
+            'Accept': 'application/json',
           },
           body: JSON.stringify({
             type: 'page',
@@ -325,7 +343,7 @@ async function handleCreateSite(req: Request) {
     return new Response(
       JSON.stringify({ 
         success: false,
-        error: `Site creation failed: ${error.message}` 
+        error: `Site creation failed: ${error instanceof Error ? error.message : 'Unknown error'}` 
       }),
       { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
