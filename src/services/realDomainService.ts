@@ -1,4 +1,3 @@
-
 // Real Domain and Hosting Service Integration
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -470,18 +469,21 @@ export class RealDomainService {
       // Create website (WordPress or static)
       const websiteType = request.websiteData.websiteType || 'static';
       let siteUrl = '';
-      let hostingDetails = {
+      
+      // Base hosting account details
+      const baseHostingDetails = {
         username: request.customerInfo.email,
         password: this.generatePassword(),
         cpanelUrl: `https://cpanel.leadgrid.co.il`,
         nameservers: ['ns1.leadgrid.co.il', 'ns2.leadgrid.co.il']
       };
 
+      let additionalHostingInfo = {};
+
       if (websiteType === 'wordpress') {
         // Setup WordPress site
         siteUrl = `https://${request.domain}`;
-        hostingDetails = {
-          ...hostingDetails,
+        additionalHostingInfo = {
           wpAdminUrl: `https://${request.domain}/wp-admin`,
           ftpDetails: {
             host: 'ftp.leadgrid.co.il',
@@ -501,7 +503,7 @@ export class RealDomainService {
       if (paymentStatus) {
         paymentStatus.status = 'completed';
         paymentStatus.websiteUrl = siteUrl;
-        paymentStatus.hostingDetails = hostingDetails;
+        paymentStatus.hostingDetails = { ...baseHostingDetails, ...additionalHostingInfo };
         this.purchaseStatuses.set(orderId, paymentStatus);
       }
       
@@ -509,12 +511,7 @@ export class RealDomainService {
         success: true,
         orderId: request.orderId,
         domain: request.domain,
-        hostingAccount: {
-          username: hostingDetails.username,
-          password: hostingDetails.password,
-          cpanelUrl: hostingDetails.cpanelUrl,
-          nameservers: hostingDetails.nameservers
-        },
+        hostingAccount: baseHostingDetails,
         siteUrl,
         paymentMethod: request.payment.method,
         paymentStatus: 'completed'
