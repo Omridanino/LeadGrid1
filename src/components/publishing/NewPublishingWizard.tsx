@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -93,10 +92,16 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
       setPublishingProgress(25);
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Step 2: Create unique Netlify subdomain
+      // Step 2: Create unique Netlify subdomain (only alphanumeric and hyphens)
       setPublishingProgress(50);
       const timestamp = Date.now();
-      const templateSlug = template.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+      const templateSlug = template.name
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, '') // Remove special characters
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .replace(/-+/g, '-') // Replace multiple hyphens with single
+        .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+      
       const netlifySubdomain = `${templateSlug}-${timestamp}`;
       
       // Step 3: Setup SSL and domain
@@ -108,7 +113,7 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
       setPublishingProgress(100);
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      // Set the final published URL
+      // Set the final published URL - only standard Netlify format
       setPublishedUrl(`https://${netlifySubdomain}.netlify.app`);
       setCurrentStep('complete');
       setIsPublishing(false);
@@ -271,7 +276,7 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                         </p>
                         <div className="bg-gray-800 p-3 rounded-lg border border-gray-700 mb-4">
                           <code className="text-blue-400 font-mono">
-                            {template.name.toLowerCase().replace(/\s+/g, '-')}-[id].netlify.app
+                            {template.name.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '-')}-[מזהה].netlify.app
                           </code>
                         </div>
                         <div className="text-xs text-green-300 space-y-1">
