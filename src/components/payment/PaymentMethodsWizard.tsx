@@ -19,8 +19,12 @@ import {
   X,
   ArrowLeft,
   ArrowRight,
-  Loader2
+  Loader2,
+  ExternalLink,
+  Phone,
+  Mail
 } from 'lucide-react';
+import { RealDomainService, COMPANY_DETAILS, BANK_ACCOUNTS } from '@/services/realDomainService';
 
 interface PaymentMethodsWizardProps {
   isOpen: boolean;
@@ -37,31 +41,6 @@ interface PaymentMethodsWizardProps {
 type PaymentMethod = 'bit' | 'paybox' | 'paypal' | 'bank_transfer' | 'credit_card';
 type PaymentStep = 'select' | 'payment' | 'confirmation';
 
-interface BankDetails {
-  bank: string;
-  branch: string;
-  account: string;
-  accountName: string;
-  swift?: string;
-}
-
-const BANK_ACCOUNTS: BankDetails[] = [
-  {
-    bank: "בנק לאומי",
-    branch: "123",
-    account: "12-345-67890",
-    accountName: "Leadgrid Solutions Ltd",
-    swift: "LUMIILIT"
-  },
-  {
-    bank: "בנק הפועלים",
-    branch: "456",
-    account: "12-345-67891",
-    accountName: "Leadgrid Solutions Ltd",
-    swift: "POALILIT"
-  }
-];
-
 export const PaymentMethodsWizard = ({ 
   isOpen, 
   onClose, 
@@ -74,6 +53,7 @@ export const PaymentMethodsWizard = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingMessage, setProcessingMessage] = useState('');
   const [paymentData, setPaymentData] = useState<any>({});
+  const [orderId] = useState(`ORDER_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
 
   const paymentMethods = [
     {
@@ -123,104 +103,42 @@ export const PaymentMethodsWizard = ({
     setCurrentStep('payment');
   };
 
-  const handleBitPayment = async () => {
-    setIsProcessing(true);
-    setProcessingMessage('מכין קישור ביט...');
-    
-    try {
-      // Simulate Bit payment link generation
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      const bitLink = `bit://pay?amount=${totalAmount}&recipient=Leadgrid&reference=ORDER_${Date.now()}`;
-      
-      setPaymentData({
-        bitLink,
-        qrCode: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`
-      });
-      
-      setCurrentStep('confirmation');
-    } catch (error) {
-      console.error('Bit payment failed:', error);
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const handlePayBoxPayment = async () => {
-    setIsProcessing(true);
-    setProcessingMessage('מעביר ל-PayBox...');
-    
-    try {
-      // Simulate PayBox integration
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      const payboxUrl = `https://pay.payboxapp.com/checkout?amount=${totalAmount}&merchant=leadgrid&order=${Date.now()}`;
-      window.open(payboxUrl, '_blank');
-      
-      setPaymentData({ payboxUrl });
-      setCurrentStep('confirmation');
-    } catch (error) {
-      console.error('PayBox payment failed:', error);
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const handlePayPalPayment = async () => {
-    setIsProcessing(true);
-    setProcessingMessage('מעביר ל-PayPal...');
-    
-    try {
-      // Simulate PayPal integration
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      const paypalUrl = `https://www.paypal.com/checkout?amount=${totalAmount}&currency=ILS&item=Domain+Hosting`;
-      window.open(paypalUrl, '_blank');
-      
-      setPaymentData({ paypalUrl });
-      setCurrentStep('confirmation');
-    } catch (error) {
-      console.error('PayPal payment failed:', error);
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const handleCreditCardPayment = async () => {
-    setCurrentStep('confirmation');
-    setPaymentData({ 
-      requiresManualProcessing: true,
-      message: 'נא המתן לקשר מצוות השירות לביצוע התשלום'
-    });
-  };
-
-  const handleBankTransfer = () => {
-    setCurrentStep('confirmation');
-    setPaymentData({ 
-      bankAccounts: BANK_ACCOUNTS,
-      transferReference: `LEADGRID-${Date.now()}`
-    });
+  const customerInfo = {
+    name: 'לקוח לדוגמה',
+    email: 'customer@example.com',
+    phone: '050-1234567'
   };
 
   const processPayment = async () => {
     if (!selectedMethod) return;
+    
+    setIsProcessing(true);
+    setProcessingMessage('מעבד תשלום...');
 
-    switch (selectedMethod) {
-      case 'bit':
-        await handleBitPayment();
-        break;
-      case 'paybox':
-        await handlePayBoxPayment();
-        break;
-      case 'paypal':
-        await handlePayPalPayment();
-        break;
-      case 'credit_card':
-        await handleCreditCardPayment();
-        break;
-      case 'bank_transfer':
-        handleBankTransfer();
-        break;
+    try {
+      const result = await RealDomainService.processPayment(
+        totalAmount, 
+        selectedMethod, 
+        {}, 
+        orderId, 
+        customerInfo
+      );
+
+      setPaymentData(result.paymentData);
+      
+      // Handle different payment methods
+      if (selectedMethod === 'paybox' || selectedMethod === 'paypal') {
+        if (result.paymentUrl) {
+          window.open(result.paymentUrl, '_blank');
+        }
+      }
+      
+      setCurrentStep('confirmation');
+    } catch (error) {
+      console.error('Payment processing failed:', error);
+      alert(`תשלום נכשל: ${error.message}`);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -331,7 +249,7 @@ export const PaymentMethodsWizard = ({
 
               {currentStep === 'confirmation' && selectedMethod && (
                 <div className="space-y-6">
-                  {selectedMethod === 'bit' && paymentData.bitLink && (
+                  {selectedMethod === 'bit' && paymentData.link && (
                     <Card className="bg-gray-800 border-gray-700">
                       <CardHeader>
                         <CardTitle className="text-white text-center">תשלום ביט</CardTitle>
@@ -339,12 +257,25 @@ export const PaymentMethodsWizard = ({
                       <CardContent className="space-y-4">
                         <div className="text-center">
                           <p className="text-gray-300 mb-4">לחץ על הקישור או סרוק את הקוד:</p>
-                          <Button
-                            onClick={() => window.open(paymentData.bitLink, '_blank')}
-                            className="bg-blue-600 hover:bg-blue-700 mb-4"
-                          >
-                            פתח ביט לתשלום
-                          </Button>
+                          <div className="space-y-4">
+                            <Button
+                              onClick={() => window.open(paymentData.link, '_blank')}
+                              className="bg-blue-600 hover:bg-blue-700 w-full"
+                            >
+                              <ExternalLink className="w-4 h-4 ml-2" />
+                              פתח ביט לתשלום
+                            </Button>
+                            
+                            {paymentData.qrCode && (
+                              <div className="flex justify-center">
+                                <img 
+                                  src={paymentData.qrCode} 
+                                  alt="QR Code לתשלום ביט" 
+                                  className="w-48 h-48 border border-gray-600 rounded-lg"
+                                />
+                              </div>
+                            )}
+                          </div>
                         </div>
                         
                         <div className="border-t border-gray-700 pt-4">
@@ -367,7 +298,7 @@ export const PaymentMethodsWizard = ({
                             <AlertCircle className="w-5 h-5" />
                             <span className="font-medium">חשוב לציין בהעברה:</span>
                           </div>
-                          <p className="text-blue-200">
+                          <p className="text-blue-200 font-mono text-lg">
                             אסמכתא: {paymentData.transferReference}
                           </p>
                           <Button
@@ -380,14 +311,24 @@ export const PaymentMethodsWizard = ({
                           </Button>
                         </div>
 
-                        {paymentData.bankAccounts.map((bank: BankDetails, index: number) => (
+                        {BANK_ACCOUNTS.map((bank, index) => (
                           <Card key={index} className="bg-gray-700 border-gray-600">
                             <CardContent className="p-4">
-                              <h4 className="text-white font-semibold mb-2">{bank.bank}</h4>
-                              <div className="space-y-1 text-sm">
-                                <div className="flex justify-between">
+                              <h4 className="text-white font-semibold mb-3 text-lg">{bank.bank}</h4>
+                              <div className="space-y-2 text-sm">
+                                <div className="flex justify-between items-center">
                                   <span className="text-gray-400">מספר חשבון:</span>
-                                  <span className="text-white">{bank.account}</span>
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-white font-mono">{bank.account}</span>
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      onClick={() => copyToClipboard(bank.account)}
+                                      className="h-6 w-6 p-0"
+                                    >
+                                      <Copy className="w-3 h-3" />
+                                    </Button>
+                                  </div>
                                 </div>
                                 <div className="flex justify-between">
                                   <span className="text-gray-400">שם המוטב:</span>
@@ -397,16 +338,43 @@ export const PaymentMethodsWizard = ({
                                   <span className="text-gray-400">מספר סניף:</span>
                                   <span className="text-white">{bank.branch}</span>
                                 </div>
+                                {bank.iban && (
+                                  <div className="flex justify-between items-center">
+                                    <span className="text-gray-400">IBAN:</span>
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-white font-mono text-xs">{bank.iban}</span>
+                                      <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        onClick={() => copyToClipboard(bank.iban)}
+                                        className="h-6 w-6 p-0"
+                                      >
+                                        <Copy className="w-3 h-3" />
+                                      </Button>
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                             </CardContent>
                           </Card>
                         ))}
 
                         <div className="bg-yellow-900/20 p-4 rounded-lg border border-yellow-700/30">
-                          <p className="text-yellow-200 text-sm">
-                            לאחר ביצוע ההעברה, אנא שלח אלינו צילום מסך של האישור ל-support@leadgrid.com
-                            או דרך ווטסאפ: 050-1234567
-                          </p>
+                          <div className="space-y-2">
+                            <p className="text-yellow-200 text-sm font-medium">
+                              לאחר ביצוע ההעברה, אנא שלח אישור לאחד מהכתובות הבאות:
+                            </p>
+                            <div className="space-y-1 text-yellow-200 text-sm">
+                              <div className="flex items-center gap-2">
+                                <Mail className="w-4 h-4" />
+                                <span>{COMPANY_DETAILS.supportEmail}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Phone className="w-4 h-4" />
+                                <span>ווטסאפ: {COMPANY_DETAILS.whatsapp}</span>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
@@ -417,17 +385,26 @@ export const PaymentMethodsWizard = ({
                       <CardContent className="p-6 text-center">
                         <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
                         <h3 className="text-white text-xl font-semibold mb-2">העברה לתשלום</h3>
-                        <p className="text-gray-300">
+                        <p className="text-gray-300 mb-4">
                           נפתח חלון חדש עם מערכת התשלום. אנא השלם את התשלום שם.
                         </p>
-                        <p className="text-gray-400 text-sm mt-4">
+                        {paymentData.url && (
+                          <Button
+                            onClick={() => window.open(paymentData.url, '_blank')}
+                            className="bg-green-600 hover:bg-green-700 mb-4"
+                          >
+                            <ExternalLink className="w-4 h-4 ml-2" />
+                            פתח חלון תשלום חדש
+                          </Button>
+                        )}
+                        <p className="text-gray-400 text-sm">
                           לאחר ביצוע התשלום בהצלחה, תקבל מייל אישור ונתחיל להגדיר את האתר שלך.
                         </p>
                       </CardContent>
                     </Card>
                   )}
 
-                  {selectedMethod === 'credit_card' && paymentData.requiresManualProcessing && (
+                  {selectedMethod === 'credit_card' && paymentData.contactInfo && (
                     <Card className="bg-gray-800 border-gray-700">
                       <CardContent className="p-6 text-center">
                         <CreditCard className="w-16 h-16 text-blue-400 mx-auto mb-4" />
@@ -436,11 +413,20 @@ export const PaymentMethodsWizard = ({
                           נציג שירות יצור איתך קשר תוך 30 דקות לביצוע התשלום הבטוח
                         </p>
                         <div className="bg-blue-900/20 p-4 rounded-lg border border-blue-700/30">
-                          <p className="text-blue-200 text-sm">
-                            📞 טלפון: 03-1234567<br/>
-                            📧 אימייל: payments@leadgrid.com<br/>
-                            💬 ווטסאפ: 050-1234567
-                          </p>
+                          <div className="space-y-2 text-blue-200 text-sm">
+                            <div className="flex items-center justify-center gap-2">
+                              <Phone className="w-4 h-4" />
+                              <span>טלפון: {COMPANY_DETAILS.phone}</span>
+                            </div>
+                            <div className="flex items-center justify-center gap-2">
+                              <Mail className="w-4 h-4" />
+                              <span>אימייל: {COMPANY_DETAILS.email}</span>
+                            </div>
+                            <div className="flex items-center justify-center gap-2">
+                              <Smartphone className="w-4 h-4" />
+                              <span>ווטסאפ: {COMPANY_DETAILS.whatsapp}</span>
+                            </div>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
