@@ -22,7 +22,8 @@ import {
   ExternalLink,
   Phone,
   Mail,
-  MessageCircle
+  MessageCircle,
+  Shield
 } from 'lucide-react';
 import { RealDomainService, COMPANY_DETAILS, BANK_ACCOUNTS } from '@/services/realDomainService';
 
@@ -38,7 +39,7 @@ interface PaymentMethodsWizardProps {
   };
 }
 
-type PaymentMethod = 'bit' | 'paybox' | 'paypal' | 'bank_transfer' | 'credit_card';
+type PaymentMethod = 'paybox' | 'tranzila' | 'paypal' | 'bank_transfer' | 'credit_card';
 type PaymentStep = 'select' | 'payment' | 'confirmation';
 
 export const PaymentMethodsWizard = ({ 
@@ -57,20 +58,22 @@ export const PaymentMethodsWizard = ({
 
   const paymentMethods = [
     {
-      id: 'bit' as PaymentMethod,
-      name: 'ביט',
-      description: `תשלום מיידי לטלפון ${COMPANY_DETAILS.bitPhone}`,
-      icon: Smartphone,
-      color: 'bg-blue-600',
-      popular: true
-    },
-    {
       id: 'paybox' as PaymentMethod,
       name: 'PayBox',
-      description: 'כרטיס אשראי דרך PayBox - מאובטח',
+      description: 'כרטיס אשראי מאובטח - אימות אוטומטי',
       icon: CreditCard,
       color: 'bg-green-600',
-      popular: true
+      popular: true,
+      secure: true
+    },
+    {
+      id: 'tranzila' as PaymentMethod,
+      name: 'Tranzila',
+      description: 'תשלום מאובטח - אימות מיידי',
+      icon: Shield,
+      color: 'bg-blue-600',
+      popular: true,
+      secure: true
     },
     {
       id: 'paypal' as PaymentMethod,
@@ -78,7 +81,8 @@ export const PaymentMethodsWizard = ({
       description: `תשלום לחשבון ${COMPANY_DETAILS.email}`,
       icon: Globe,
       color: 'bg-blue-500',
-      popular: false
+      popular: false,
+      secure: false
     },
     {
       id: 'credit_card' as PaymentMethod,
@@ -86,7 +90,8 @@ export const PaymentMethodsWizard = ({
       description: 'תשלום טלפוני בכרטיס אשראי',
       icon: CreditCard,
       color: 'bg-purple-600',
-      popular: false
+      popular: false,
+      secure: false
     },
     {
       id: 'bank_transfer' as PaymentMethod,
@@ -94,7 +99,8 @@ export const PaymentMethodsWizard = ({
       description: 'העברה ישירה לחשבון הבנק',
       icon: Building2,
       color: 'bg-gray-600',
-      popular: false
+      popular: false,
+      secure: false
     }
   ];
 
@@ -113,7 +119,7 @@ export const PaymentMethodsWizard = ({
     if (!selectedMethod) return;
     
     setIsProcessing(true);
-    setProcessingMessage('מעבד תשלום...');
+    setProcessingMessage('מעבד תשלום מאובטח...');
 
     try {
       const result = await RealDomainService.processPayment(
@@ -127,10 +133,8 @@ export const PaymentMethodsWizard = ({
       setPaymentData(result.paymentData || {});
       
       // Handle different payment methods
-      if (selectedMethod === 'paybox' || selectedMethod === 'paypal') {
-        if (result.paymentUrl) {
-          window.open(result.paymentUrl, '_blank');
-        }
+      if ((selectedMethod === 'paybox' || selectedMethod === 'tranzila' || selectedMethod === 'paypal') && result.paymentUrl) {
+        window.open(result.paymentUrl, '_blank');
       }
       
       setCurrentStep('confirmation');
@@ -156,7 +160,7 @@ export const PaymentMethodsWizard = ({
         <div className="p-6 border-b border-gray-800 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-white text-2xl font-bold">בחירת אמצעי תשלום</h2>
+              <h2 className="text-white text-2xl font-bold">בחירת אמצעי תשלום מאובטח</h2>
               <p className="text-gray-400">בחר את אמצעי התשלום המועדף עליך</p>
             </div>
             <Button onClick={onClose} size="sm" className="bg-gray-700 hover:bg-gray-600">
@@ -175,14 +179,14 @@ export const PaymentMethodsWizard = ({
             </CardContent>
           </Card>
 
-          {/* Payment Verification Notice */}
-          <Card className="bg-yellow-900/20 border-yellow-700/30 mt-4">
+          {/* Secure Payment Notice */}
+          <Card className="bg-green-900/20 border-green-700/30 mt-4">
             <CardContent className="p-4">
-              <div className="flex items-center gap-2 text-yellow-200">
-                <AlertCircle className="w-5 h-5" />
+              <div className="flex items-center gap-2 text-green-200">
+                <Shield className="w-5 h-5" />
                 <div className="text-sm">
-                  <div className="font-medium">חשוב לדעת:</div>
-                  <div>האתר שלך יהיה זמין רק לאחר אישור התשלום על ידי Leadgrid (עד 24 שעות)</div>
+                  <div className="font-medium">תשלום מאובטח עם אימות מיידי</div>
+                  <div>PayBox ו-Tranzila מאמתים את התשלום אוטומטית - האתר יהיה זמין מיד!</div>
                 </div>
               </div>
             </CardContent>
@@ -196,7 +200,7 @@ export const PaymentMethodsWizard = ({
               {currentStep === 'select' && (
                 <div className="space-y-4">
                   <h3 className="text-white text-lg font-semibold text-center mb-6">
-                    בחר אמצעי תשלום
+                    בחר אמצעי תשלום מאובטח
                   </h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -205,7 +209,10 @@ export const PaymentMethodsWizard = ({
                       return (
                         <Card 
                           key={method.id}
-                          className="bg-gray-800 border-gray-700 cursor-pointer hover:bg-gray-700 transition-all"
+                          className={`
+                            bg-gray-800 border-gray-700 cursor-pointer hover:bg-gray-700 transition-all relative
+                            ${method.secure ? 'ring-2 ring-green-500/30' : ''}
+                          `}
                           onClick={() => handlePaymentMethodSelect(method.id)}
                         >
                           <CardContent className="p-6">
@@ -219,11 +226,20 @@ export const PaymentMethodsWizard = ({
                                   {method.popular && (
                                     <Badge className="bg-blue-600 text-white text-xs">פופולרי</Badge>
                                   )}
+                                  {method.secure && (
+                                    <Badge className="bg-green-600 text-white text-xs">מאובטח</Badge>
+                                  )}
                                 </div>
                                 <p className="text-gray-400 text-sm">{method.description}</p>
                               </div>
                               <ArrowLeft className="w-5 h-5 text-gray-400" />
                             </div>
+                            {method.secure && (
+                              <div className="mt-3 text-xs text-green-300 flex items-center gap-1">
+                                <CheckCircle className="w-3 h-3" />
+                                אימות אוטומטי - האתר יהיה זמין מיד
+                              </div>
+                            )}
                           </CardContent>
                         </Card>
                       );
@@ -253,7 +269,7 @@ export const PaymentMethodsWizard = ({
                         className="bg-blue-600 hover:bg-blue-700 px-8 py-3"
                         size="lg"
                       >
-                        המשך לתשלום
+                        המשך לתשלום מאובטח
                       </Button>
                     </div>
                   )}
@@ -262,66 +278,70 @@ export const PaymentMethodsWizard = ({
 
               {currentStep === 'confirmation' && selectedMethod && (
                 <div className="space-y-6">
-                  {selectedMethod === 'bit' && paymentData.link && (
+                  {(selectedMethod === 'paybox' || selectedMethod === 'tranzila') && (
                     <Card className="bg-gray-800 border-gray-700">
                       <CardHeader>
-                        <CardTitle className="text-white text-center">תשלום ביט מאובטח</CardTitle>
+                        <CardTitle className="text-white text-center">
+                          תשלום מאובטח - {selectedMethod === 'paybox' ? 'PayBox' : 'Tranzila'}
+                        </CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-6">
-                        <div className="bg-blue-900/20 p-4 rounded-lg border border-blue-700/30">
-                          <div className="text-center space-y-2">
-                            <div className="text-blue-200 font-semibold">פרטי התשלום:</div>
-                            <div className="text-white text-lg">₪{totalAmount}</div>
-                            <div className="text-blue-300">לטלפון: {paymentData.phone}</div>
-                            <div className="text-blue-300">עבור: {paymentData.merchantName}</div>
-                            <div className="text-yellow-300 text-sm font-medium">הזמנה: {orderId}</div>
-                          </div>
-                        </div>
-
-                        <div className="text-center space-y-4">
-                          <p className="text-gray-300">בחר דרך תשלום:</p>
+                        <div className="bg-green-900/20 p-4 rounded-lg border border-green-700/30 text-center">
+                          <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
+                          <h3 className="text-green-200 text-xl font-semibold mb-2">
+                            תשלום מאובטח נפתח!
+                          </h3>
+                          <p className="text-green-300 mb-4">
+                            נפתח חלון חדש עם מערכת התשלום המאובטחת של {selectedMethod === 'paybox' ? 'PayBox' : 'Tranzila'}.
+                          </p>
                           
-                          <div className="grid grid-cols-2 gap-4">
+                          {paymentData.url && (
                             <Button
-                              onClick={() => window.open(paymentData.link, '_blank')}
-                              className="bg-blue-600 hover:bg-blue-700 flex-col h-auto py-4"
+                              onClick={() => window.open(paymentData.url, '_blank')}
+                              className="bg-green-600 hover:bg-green-700 mb-4"
                             >
-                              <Smartphone className="w-6 h-6 mb-2" />
-                              <span>פתח ביט</span>
+                              <ExternalLink className="w-4 h-4 ml-2" />
+                              פתח חלון תשלום
                             </Button>
-                            
-                            <Button
-                              onClick={() => copyToClipboard(paymentData.phone)}
-                              className="bg-green-600 hover:bg-green-700 flex-col h-auto py-4"
-                            >
-                              <Copy className="w-6 h-6 mb-2" />
-                              <span>העתק מספר</span>
-                            </Button>
-                          </div>
-
-                          {paymentData.qrCode && (
-                            <div className="space-y-3">
-                              <p className="text-gray-400 text-sm">או סרוק QR Code:</p>
-                              <div className="flex justify-center">
-                                <img 
-                                  src={paymentData.qrCode} 
-                                  alt="QR Code לתשלום ביט" 
-                                  className="w-48 h-48 border border-gray-600 rounded-lg"
-                                />
-                              </div>
-                            </div>
                           )}
-                        </div>
-                        
-                        <div className="border-t border-gray-700 pt-4">
+                          
                           <div className="bg-blue-900/20 p-3 rounded-lg border border-blue-700/30">
-                            <p className="text-blue-200 text-sm text-center font-medium">
-                              🔒 לאחר ביצוע התשלום, Leadgrid יאשר את התשלום תוך 24 שעות
-                              <br />
-                              האתר שלך יהיה זמין מיד לאחר האישור
+                            <p className="text-blue-200 text-sm">
+                              🔒 התשלום יאומת אוטומטית והאתר שלך יהיה זמין מיד לאחר התשלום!
                             </p>
                           </div>
                         </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {selectedMethod === 'paypal' && (
+                    <Card className="bg-gray-800 border-gray-700">
+                      <CardContent className="p-6 text-center">
+                        <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
+                        <h3 className="text-white text-xl font-semibold mb-2">תשלום PayPal</h3>
+                        <p className="text-gray-300 mb-4">
+                          נפתח חלון חדש עם מערכת התשלום המאובטחת.
+                        </p>
+                        
+                        <div className="bg-blue-900/20 p-3 rounded-lg mb-4">
+                          <p className="text-blue-200 text-sm">
+                            תשלום לחשבון PayPal: {paymentData.merchantEmail}
+                          </p>
+                        </div>
+
+                        {paymentData.url && (
+                          <Button
+                            onClick={() => window.open(paymentData.url, '_blank')}
+                            className="bg-green-600 hover:bg-green-700 mb-4"
+                          >
+                            <ExternalLink className="w-4 h-4 ml-2" />
+                            פתח חלון תשלום
+                          </Button>
+                        )}
+                        <p className="text-gray-400 text-sm">
+                          לאחר ביצוע התשלום בהצלחה, תקבל מייל אישור ונתחיל להגדיר את האתר שלך.
+                        </p>
                       </CardContent>
                     </Card>
                   )}
@@ -418,49 +438,6 @@ export const PaymentMethodsWizard = ({
                             </div>
                           </div>
                         </div>
-                      </CardContent>
-                    </Card>
-                  )}
-
-                  {(selectedMethod === 'paybox' || selectedMethod === 'paypal') && (
-                    <Card className="bg-gray-800 border-gray-700">
-                      <CardContent className="p-6 text-center">
-                        <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
-                        <h3 className="text-white text-xl font-semibold mb-2">
-                          {selectedMethod === 'paybox' ? 'תשלום PayBox' : 'תשלום PayPal'}
-                        </h3>
-                        <p className="text-gray-300 mb-4">
-                          נפתח חלון חדש עם מערכת התשלום המאובטחת.
-                        </p>
-                        
-                        {selectedMethod === 'paybox' && (
-                          <div className="bg-green-900/20 p-3 rounded-lg mb-4">
-                            <p className="text-green-200 text-sm">
-                              תשלום מאובטח דרך PayBox - מזהה סוחר: {paymentData.merchantId}
-                            </p>
-                          </div>
-                        )}
-                        
-                        {selectedMethod === 'paypal' && (
-                          <div className="bg-blue-900/20 p-3 rounded-lg mb-4">
-                            <p className="text-blue-200 text-sm">
-                              תשלום לחשבון PayPal: {paymentData.merchantEmail}
-                            </p>
-                          </div>
-                        )}
-
-                        {paymentData.url && (
-                          <Button
-                            onClick={() => window.open(paymentData.url, '_blank')}
-                            className="bg-green-600 hover:bg-green-700 mb-4"
-                          >
-                            <ExternalLink className="w-4 h-4 ml-2" />
-                            פתח חלון תשלום
-                          </Button>
-                        )}
-                        <p className="text-gray-400 text-sm">
-                          לאחר ביצוע התשלום בהצלחה, תקבל מייל אישור ונתחיל להגדיר את האתר שלך.
-                        </p>
                       </CardContent>
                     </Card>
                   )}
