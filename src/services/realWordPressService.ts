@@ -74,8 +74,12 @@ export class RealWordPressService {
       
       console.log('🔗 Redirecting to WordPress.com OAuth:', data.authUrl);
       
-      // Open OAuth in current window
-      window.location.href = data.authUrl;
+      // Open OAuth in new tab to avoid browser warnings
+      const authWindow = window.open(data.authUrl, '_blank', 'width=600,height=700,scrollbars=yes,resizable=yes');
+      
+      if (!authWindow) {
+        throw new Error('נכשל בפתיחת חלון האימות. אנא הפעל pop-ups לאתר זה.');
+      }
     } catch (error) {
       console.error('❌ Failed to initiate WordPress.com OAuth:', error);
       throw new Error(`OAuth initiation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
