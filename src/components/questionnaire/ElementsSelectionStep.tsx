@@ -4,33 +4,32 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { elementOptions } from "@/constants/questionnaireElements";
 import { Badge } from "@/components/ui/badge";
 import { useEffect } from "react";
+import { QuestionnaireData } from '../LandingPageQuestionnaire';
 
 interface ElementsSelectionStepProps {
-  formData: {
-    selectedElements: string[];
-  };
-  updateFormData: (field: string, value: string[]) => void;
+  data: QuestionnaireData;
+  onUpdate: (section: keyof QuestionnaireData, data: any) => void;
 }
 
-export const ElementsSelectionStep = ({ formData, updateFormData }: ElementsSelectionStepProps) => {
+export const ElementsSelectionStep = ({ data, onUpdate }: ElementsSelectionStepProps) => {
   useEffect(() => {
     const recommendedElements = elementOptions
       .filter(element => element.recommended)
       .map(element => element.id);
     
-    if (formData.selectedElements.length === 0) {
-      updateFormData('selectedElements', recommendedElements);
+    if (data.elements.length === 0) {
+      onUpdate('elements', recommendedElements);
     }
   }, []);
 
   const handleElementToggle = (elementId: string) => {
-    const currentElements = formData.selectedElements;
+    const currentElements = data.elements;
     const isSelected = currentElements.includes(elementId);
     
     if (isSelected) {
-      updateFormData('selectedElements', currentElements.filter(id => id !== elementId));
+      onUpdate('elements', currentElements.filter(id => id !== elementId));
     } else {
-      updateFormData('selectedElements', [...currentElements, elementId]);
+      onUpdate('elements', [...currentElements, elementId]);
     }
   };
 
@@ -56,14 +55,14 @@ export const ElementsSelectionStep = ({ formData, updateFormData }: ElementsSele
             <div 
               key={element.id}
               className={`flex items-start space-x-3 space-x-reverse p-4 rounded-lg border cursor-pointer transition-all hover:scale-[1.02] ${
-                formData.selectedElements.includes(element.id)
+                data.elements.includes(element.id)
                   ? 'border-green-500 bg-green-900/20 shadow-green-500/20 shadow-lg'
                   : 'border-gray-600 bg-gray-800/50 hover:border-gray-500 hover:bg-gray-700/50'
               }`}
               onClick={() => handleElementToggle(element.id)}
             >
               <Checkbox
-                checked={formData.selectedElements.includes(element.id)}
+                checked={data.elements.includes(element.id)}
                 onChange={() => {}}
                 className="mt-1 data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600"
               />
@@ -88,14 +87,14 @@ export const ElementsSelectionStep = ({ formData, updateFormData }: ElementsSele
             <div 
               key={element.id}
               className={`flex items-start space-x-3 space-x-reverse p-4 rounded-lg border cursor-pointer transition-all hover:scale-[1.02] ${
-                formData.selectedElements.includes(element.id)
+                data.elements.includes(element.id)
                   ? 'border-purple-500 bg-purple-900/20 shadow-purple-500/20 shadow-lg'
                   : 'border-gray-600 bg-gray-800/50 hover:border-gray-500 hover:bg-gray-700/50'
               }`}
               onClick={() => handleElementToggle(element.id)}
             >
               <Checkbox
-                checked={formData.selectedElements.includes(element.id)}
+                checked={data.elements.includes(element.id)}
                 onChange={() => {}}
                 className="mt-1 data-[state=checked]:bg-purple-600 data-[state=checked]:border-purple-600"
               />
@@ -110,7 +109,7 @@ export const ElementsSelectionStep = ({ formData, updateFormData }: ElementsSele
       
       <div className="text-center p-4 bg-gray-800 rounded-lg border border-gray-700">
         <p className="text-gray-300">
-          נבחרו {formData.selectedElements.length} אלמנטים
+          נבחרו {data.elements.length} אלמנטים
         </p>
         <p className="text-blue-400 text-sm mt-1">
           האלמנטים המומלצים יבטיחו דף נחיתה מושלם לעסק שלכם
