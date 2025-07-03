@@ -66,49 +66,20 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
       return;
     }
 
-    // Continue without WordPress.com authentication for now
+    if (!isAuthenticated) {
+      alert('נדרש אימות WordPress.com לפני יצירת אתר. אנא לחץ על "התחבר עכשיו" קודם.');
+      return;
+    }
+
     onSubmit(formData);
   };
 
   const handleAuthenticate = async () => {
     try {
-      console.log('🔄 Starting WordPress authentication with popup...');
+      console.log('🔄 Starting WordPress authentication...');
       
-      // Get auth URL from Edge Function
-      const response = await fetch('https://crkgabcjxkdpnhipvugu.supabase.co/functions/v1/wordpress-auth?action=get-auth-url');
-      const data = await response.json();
-      
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to get auth URL');
-      }
-      
-      console.log('🔗 Opening WordPress.com OAuth in popup...');
-      
-      // Open in popup with specific settings to avoid blocking
-      const popup = window.open(
-        data.authUrl,
-        'wordpress-auth',
-        'width=600,height=700,scrollbars=yes,resizable=yes,status=yes,location=yes,toolbar=no,menubar=no'
-      );
-      
-      if (!popup) {
-        // Fallback: redirect in current window
-        console.log('Popup blocked, falling back to current window redirect');
-        window.location.href = data.authUrl;
-        return;
-      }
-      
-      // Monitor popup for completion
-      const checkClosed = setInterval(() => {
-        if (popup.closed) {
-          clearInterval(checkClosed);
-          console.log('Popup closed, checking authentication status...');
-          // Refresh authentication status
-          setTimeout(() => {
-            checkAuthentication();
-          }, 1000);
-        }
-      }, 1000);
+      // Simple direct redirect to Edge Function
+      window.location.href = 'https://crkgabcjxkdpnhipvugu.supabase.co/functions/v1/wordpress-auth?action=redirect-to-auth';
       
     } catch (error) {
       console.error('❌ Authentication error:', error);
@@ -170,8 +141,8 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
             </CardContent>
           </Card>
 
-          {/* Always show form - authentication is optional for now */}
-          {true && (
+          {/* Only show form if authenticated */}
+          {isAuthenticated && (
             <form onSubmit={handleSubmit} className="space-y-6">
               
               {/* Basic User Info */}

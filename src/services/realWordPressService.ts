@@ -167,26 +167,12 @@ export class RealWordPressService {
       const token = localStorage.getItem('wp_access_token');
       
       if (!token) {
-        console.log('⚠️ No WordPress.com authentication - creating demo site instead');
+        // Try to get fresh authentication
+        console.log('🔄 No token found, initiating WordPress.com authentication...');
+        await this.initiateWordPressAuth();
         
-        // Fallback to demo site with realistic data
-        const demoSiteUrl = `/demo-wordpress-client?data=${encodeURIComponent(JSON.stringify(websiteData))}`;
-        
-        return {
-          success: true,
-          siteUrl: `${window.location.origin}${demoSiteUrl}`,
-          adminUrl: `${window.location.origin}${demoSiteUrl}`,
-          loginUrl: `${window.location.origin}${demoSiteUrl}`,
-          username: userData.username,
-          password: userData.password,
-          isDemo: true,
-          installationDetails: {
-            wpVersion: 'WordPress 6.4 (Demo)',
-            theme: 'Custom Theme with Client Content',
-            plugins: ['Demo Plugins'],
-            siteId: `demo-${Date.now()}`
-          }
-        };
+        // After redirect, this will fail but that's expected
+        throw new Error('נדרש אימות WordPress.com. מפנה לדף אימות...');
       }
       
       console.log('🚀 Creating real WordPress.com site via Edge Function with domain:', domain);
