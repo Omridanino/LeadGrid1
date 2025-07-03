@@ -22,7 +22,8 @@ import {
   Loader2,
   ExternalLink,
   Phone,
-  Mail
+  Mail,
+  MessageCircle
 } from 'lucide-react';
 import { RealDomainService, COMPANY_DETAILS, BANK_ACCOUNTS } from '@/services/realDomainService';
 
@@ -59,7 +60,7 @@ export const PaymentMethodsWizard = ({
     {
       id: 'bit' as PaymentMethod,
       name: 'ביט',
-      description: 'תשלום מיידי דרך אפליקציית ביט',
+      description: `תשלום מיידי לטלפון ${COMPANY_DETAILS.bitPhone}`,
       icon: Smartphone,
       color: 'bg-blue-600',
       popular: true
@@ -67,7 +68,7 @@ export const PaymentMethodsWizard = ({
     {
       id: 'paybox' as PaymentMethod,
       name: 'PayBox',
-      description: 'כרטיס אשראי דרך PayBox',
+      description: 'כרטיס אשראי דרך PayBox - מאובטח',
       icon: CreditCard,
       color: 'bg-green-600',
       popular: true
@@ -75,7 +76,7 @@ export const PaymentMethodsWizard = ({
     {
       id: 'paypal' as PaymentMethod,
       name: 'PayPal',
-      description: 'תשלום בינלאומי דרך PayPal',
+      description: `תשלום לחשבון ${COMPANY_DETAILS.email}`,
       icon: Globe,
       color: 'bg-blue-500',
       popular: false
@@ -83,7 +84,7 @@ export const PaymentMethodsWizard = ({
     {
       id: 'credit_card' as PaymentMethod,
       name: 'כרטיס אשראי',
-      description: 'תשלום ישיר בכרטיס אשראי',
+      description: 'תשלום טלפוני בכרטיס אשראי',
       icon: CreditCard,
       color: 'bg-purple-600',
       popular: false
@@ -124,7 +125,7 @@ export const PaymentMethodsWizard = ({
         customerInfo
       );
 
-      setPaymentData(result.paymentData);
+      setPaymentData(result.paymentData || {});
       
       // Handle different payment methods
       if (selectedMethod === 'paybox' || selectedMethod === 'paypal') {
@@ -252,21 +253,43 @@ export const PaymentMethodsWizard = ({
                   {selectedMethod === 'bit' && paymentData.link && (
                     <Card className="bg-gray-800 border-gray-700">
                       <CardHeader>
-                        <CardTitle className="text-white text-center">תשלום ביט</CardTitle>
+                        <CardTitle className="text-white text-center">תשלום ביט מאובטח</CardTitle>
                       </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="text-center">
-                          <p className="text-gray-300 mb-4">לחץ על הקישור או סרוק את הקוד:</p>
-                          <div className="space-y-4">
+                      <CardContent className="space-y-6">
+                        <div className="bg-blue-900/20 p-4 rounded-lg border border-blue-700/30">
+                          <div className="text-center space-y-2">
+                            <div className="text-blue-200 font-semibold">פרטי התשלום:</div>
+                            <div className="text-white text-lg">₪{totalAmount}</div>
+                            <div className="text-blue-300">לטלפון: {paymentData.phone}</div>
+                            <div className="text-blue-300">עבור: {paymentData.merchantName}</div>
+                            <div className="text-yellow-300 text-sm font-medium">הזמנה: {orderId}</div>
+                          </div>
+                        </div>
+
+                        <div className="text-center space-y-4">
+                          <p className="text-gray-300">בחר דרך תשלום:</p>
+                          
+                          <div className="grid grid-cols-2 gap-4">
                             <Button
                               onClick={() => window.open(paymentData.link, '_blank')}
-                              className="bg-blue-600 hover:bg-blue-700 w-full"
+                              className="bg-blue-600 hover:bg-blue-700 flex-col h-auto py-4"
                             >
-                              <ExternalLink className="w-4 h-4 ml-2" />
-                              פתח ביט לתשלום
+                              <Smartphone className="w-6 h-6 mb-2" />
+                              <span>פתח ביט</span>
                             </Button>
                             
-                            {paymentData.qrCode && (
+                            <Button
+                              onClick={() => copyToClipboard(paymentData.phone)}
+                              className="bg-green-600 hover:bg-green-700 flex-col h-auto py-4"
+                            >
+                              <Copy className="w-6 h-6 mb-2" />
+                              <span>העתק מספר</span>
+                            </Button>
+                          </div>
+
+                          {paymentData.qrCode && (
+                            <div className="space-y-3">
+                              <p className="text-gray-400 text-sm">או סרוק QR Code:</p>
                               <div className="flex justify-center">
                                 <img 
                                   src={paymentData.qrCode} 
@@ -274,8 +297,8 @@ export const PaymentMethodsWizard = ({
                                   className="w-48 h-48 border border-gray-600 rounded-lg"
                                 />
                               </div>
-                            )}
-                          </div>
+                            </div>
+                          )}
                         </div>
                         
                         <div className="border-t border-gray-700 pt-4">
@@ -300,6 +323,9 @@ export const PaymentMethodsWizard = ({
                           </div>
                           <p className="text-blue-200 font-mono text-lg">
                             אסמכתא: {paymentData.transferReference}
+                          </p>
+                          <p className="text-blue-200 text-sm mt-1">
+                            סכום: ₪{paymentData.amount}
                           </p>
                           <Button
                             onClick={() => copyToClipboard(paymentData.transferReference)}
@@ -370,7 +396,7 @@ export const PaymentMethodsWizard = ({
                                 <span>{COMPANY_DETAILS.supportEmail}</span>
                               </div>
                               <div className="flex items-center gap-2">
-                                <Phone className="w-4 h-4" />
+                                <MessageCircle className="w-4 h-4" />
                                 <span>ווטסאפ: {COMPANY_DETAILS.whatsapp}</span>
                               </div>
                             </div>
@@ -384,17 +410,36 @@ export const PaymentMethodsWizard = ({
                     <Card className="bg-gray-800 border-gray-700">
                       <CardContent className="p-6 text-center">
                         <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
-                        <h3 className="text-white text-xl font-semibold mb-2">העברה לתשלום</h3>
+                        <h3 className="text-white text-xl font-semibold mb-2">
+                          {selectedMethod === 'paybox' ? 'תשלום PayBox' : 'תשלום PayPal'}
+                        </h3>
                         <p className="text-gray-300 mb-4">
-                          נפתח חלון חדש עם מערכת התשלום. אנא השלם את התשלום שם.
+                          נפתח חלון חדש עם מערכת התשלום המאובטחת.
                         </p>
+                        
+                        {selectedMethod === 'paybox' && (
+                          <div className="bg-green-900/20 p-3 rounded-lg mb-4">
+                            <p className="text-green-200 text-sm">
+                              תשלום מאובטח דרך PayBox - מזהה סוחר: {paymentData.merchantId}
+                            </p>
+                          </div>
+                        )}
+                        
+                        {selectedMethod === 'paypal' && (
+                          <div className="bg-blue-900/20 p-3 rounded-lg mb-4">
+                            <p className="text-blue-200 text-sm">
+                              תשלום לחשבון PayPal: {paymentData.merchantEmail}
+                            </p>
+                          </div>
+                        )}
+
                         {paymentData.url && (
                           <Button
                             onClick={() => window.open(paymentData.url, '_blank')}
                             className="bg-green-600 hover:bg-green-700 mb-4"
                           >
                             <ExternalLink className="w-4 h-4 ml-2" />
-                            פתח חלון תשלום חדש
+                            פתח חלון תשלום
                           </Button>
                         )}
                         <p className="text-gray-400 text-sm">
@@ -410,10 +455,10 @@ export const PaymentMethodsWizard = ({
                         <CreditCard className="w-16 h-16 text-blue-400 mx-auto mb-4" />
                         <h3 className="text-white text-xl font-semibold mb-2">תשלום בכרטיס אשראי</h3>
                         <p className="text-gray-300 mb-4">
-                          נציג שירות יצור איתך קשר תוך 30 דקות לביצוע התשלום הבטוח
+                          {paymentData.message}
                         </p>
-                        <div className="bg-blue-900/20 p-4 rounded-lg border border-blue-700/30">
-                          <div className="space-y-2 text-blue-200 text-sm">
+                        <div className="bg-blue-900/20 p-4 rounded-lg border border-blue-700/30 space-y-3">
+                          <div className="text-blue-200 text-sm space-y-2">
                             <div className="flex items-center justify-center gap-2">
                               <Phone className="w-4 h-4" />
                               <span>טלפון: {COMPANY_DETAILS.phone}</span>
@@ -423,10 +468,20 @@ export const PaymentMethodsWizard = ({
                               <span>אימייל: {COMPANY_DETAILS.email}</span>
                             </div>
                             <div className="flex items-center justify-center gap-2">
-                              <Smartphone className="w-4 h-4" />
+                              <MessageCircle className="w-4 h-4" />
                               <span>ווטסאפ: {COMPANY_DETAILS.whatsapp}</span>
                             </div>
                           </div>
+                          
+                          {paymentData.whatsappLink && (
+                            <Button
+                              onClick={() => window.open(paymentData.whatsappLink, '_blank')}
+                              className="bg-green-600 hover:bg-green-700 w-full"
+                            >
+                              <MessageCircle className="w-4 h-4 ml-2" />
+                              שלח הודעה בווטסאפ
+                            </Button>
+                          )}
                         </div>
                       </CardContent>
                     </Card>
