@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,17 +14,20 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <BrowserRouter>
-      <QueryClient client={queryClient}>
-        <Toaster />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/generated-landing-page" element={<GeneratedLandingPage />} />
-          <Route path="/wordpress-site" element={<WordPressLandingPage />} />
-          <Route path="/wordpress-admin" element={<WordPressLandingPage />} />
-          <Route path="/wordpress-login" element={<WordPressLandingPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </QueryClient>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/generated-landing-page" element={<GeneratedLandingPage />} />
+            <Route path="/wordpress-site" element={<WordPressLandingPage />} />
+            <Route path="/wordpress-admin" element={<WordPressLandingPage />} />
+            <Route path="/wordpress-login" element={<WordPressLandingPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </TooltipProvider>
+      </QueryClientProvider>
     </BrowserRouter>
   );
 }
