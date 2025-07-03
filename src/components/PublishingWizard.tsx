@@ -43,7 +43,6 @@ type PublishingStep = 'overview' | 'domain' | 'integrations' | 'publish' | 'comp
 
 export const PublishingWizard = ({ template, isOpen, onClose }: PublishingWizardProps) => {
   const [currentStep, setCurrentStep] = useState<PublishingStep>('overview');
-  const [isExpressMode, setIsExpressMode] = useState(false);
   const [publishingProgress, setPublishingProgress] = useState(0);
   const [isPublishing, setIsPublishing] = useState(false);
   const [publishedUrl, setPublishedUrl] = useState('');
@@ -74,32 +73,9 @@ export const PublishingWizard = ({ template, isOpen, onClose }: PublishingWizard
     }
   };
 
-  const startExpressPublishing = async () => {
-    setIsExpressMode(true);
-    setIsPublishing(true);
-    setCurrentStep('publish');
-    
-    // Simulate express publishing process
-    const steps = [
-      { message: 'מכין את האתר...', progress: 20 },
-      { message: 'מגדיר דומיין אוטומטי...', progress: 40 },
-      { message: 'מפרסם לאוויר...', progress: 60 },
-      { message: 'מגדיר SSL...', progress: 80 },
-      { message: 'האתר חי!', progress: 100 }
-    ];
-
-    for (const step of steps) {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setPublishingProgress(step.progress);
-    }
-
-    setPublishedUrl(`https://${template.name.toLowerCase().replace(/\s+/g, '-')}.lovable.app`);
-    setCurrentStep('complete');
-    setIsPublishing(false);
-  };
-
   const startRegularPublishing = async () => {
     setIsPublishing(true);
+    setCurrentStep('publish');
     
     const steps = [
       { message: 'בונה את האתר...', progress: 25 },
@@ -113,7 +89,7 @@ export const PublishingWizard = ({ template, isOpen, onClose }: PublishingWizard
       setPublishingProgress(step.progress);
     }
 
-    setPublishedUrl(`https://${selectedDomain || template.name.toLowerCase().replace(/\s+/g, '-')}.com`);
+    setPublishedUrl(`https://${selectedDomain || template.name.toLowerCase().replace(/\s+/g, '-')}.netlify.app`);
     setCurrentStep('complete');
     setIsPublishing(false);
   };
@@ -179,84 +155,45 @@ export const PublishingWizard = ({ template, isOpen, onClose }: PublishingWizard
               {currentStep === 'overview' && (
                 <div className="space-y-6">
                   <div className="text-center">
-                    <h3 className="text-white text-xl font-semibold mb-4">בחר איך להפוך את האתר לחי</h3>
+                    <h3 className="text-white text-xl font-semibold mb-4">מוכן לפרסם את האתר שלך?</h3>
+                    <p className="text-gray-400">נפרסם את האתר שלך עם אחסון מקצועי חינם ב-Netlify</p>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Express Mode */}
-                    <Card className="bg-gradient-to-br from-blue-900/50 to-purple-900/50 border-blue-700/50">
-                      <CardHeader>
+                  <Card className="bg-gradient-to-br from-blue-900/50 to-purple-900/50 border-blue-700/50 max-w-2xl mx-auto">
+                    <CardHeader>
+                      <div className="flex items-center gap-2">
+                        <Rocket className="w-6 h-6 text-blue-400" />
+                        <CardTitle className="text-white">פרסום מקצועי</CardTitle>
+                        <Badge className="bg-green-500 text-black">חינם</Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <p className="text-gray-300 text-sm">
+                        האתר שלך יפורסם עם אחסון מקצועי, SSL מאובטח וכתובת קבועה
+                      </p>
+                      <div className="space-y-2 text-sm text-gray-400">
                         <div className="flex items-center gap-2">
-                          <Zap className="w-6 h-6 text-yellow-400" />
-                          <CardTitle className="text-white">מצב אקספרס</CardTitle>
-                          <Badge className="bg-yellow-500 text-black">מומלץ</Badge>
+                          <CheckCircle className="w-4 h-4 text-green-400" />
+                          <span>אחסון חינם ב-Netlify</span>
                         </div>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <p className="text-gray-300 text-sm">
-                          האתר שלך יהיה חי תוך 60 שניות עם הגדרות אוטומטיות מוכנות
-                        </p>
-                        <div className="space-y-2 text-sm text-gray-400">
-                          <div className="flex items-center gap-2">
-                            <CheckCircle className="w-4 h-4 text-green-400" />
-                            <span>דומיין אוטומטי (.lovable.app)</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <CheckCircle className="w-4 h-4 text-green-400" />
-                            <span>SSL אוטומטי</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <CheckCircle className="w-4 h-4 text-green-400" />
-                            <span>אנליטיקה בסיסית</span>
-                          </div>
-                        </div>
-                        <Button 
-                          onClick={startExpressPublishing}
-                          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                        >
-                          <Zap className="w-4 h-4 ml-2" />
-                          פרסם תוך 60 שניות
-                        </Button>
-                      </CardContent>
-                    </Card>
-
-                    {/* Advanced Mode */}
-                    <Card className="bg-gray-800 border-gray-700">
-                      <CardHeader>
                         <div className="flex items-center gap-2">
-                          <Settings className="w-6 h-6 text-blue-400" />
-                          <CardTitle className="text-white">מצב מתקדם</CardTitle>
+                          <CheckCircle className="w-4 h-4 text-green-400" />
+                          <span>SSL אוטומטי</span>
                         </div>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <p className="text-gray-300 text-sm">
-                          בחר דומיין מותאם, הוסף אינטגרציות, והגדר הכל בדיוק כמו שאתה רוצה
-                        </p>
-                        <div className="space-y-2 text-sm text-gray-400">
-                          <div className="flex items-center gap-2">
-                            <Globe className="w-4 h-4 text-blue-400" />
-                            <span>דומיין מותאם אישית</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <BarChart3 className="w-4 h-4 text-blue-400" />
-                            <span>אנליטיקה מתקדמת</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Mail className="w-4 h-4 text-blue-400" />
-                            <span>אינטגרציות שיווק</span>
-                          </div>
+                        <div className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-400" />
+                          <span>כתובת קבועה (.netlify.app)</span>
                         </div>
-                        <Button 
-                          onClick={nextStep}
-                          variant="outline"
-                          className="w-full border-gray-600 text-white hover:bg-gray-700"
-                        >
-                          <Settings className="w-4 h-4 ml-2" />
-                          התקדם להגדרות
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  </div>
+                      </div>
+                      <Button 
+                        onClick={nextStep}
+                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                      >
+                        <Rocket className="w-4 h-4 ml-2" />
+                        בואו נתחיל!
+                      </Button>
+                    </CardContent>
+                  </Card>
                 </div>
               )}
 
@@ -278,7 +215,6 @@ export const PublishingWizard = ({ template, isOpen, onClose }: PublishingWizard
                 <PublishingProgress 
                   progress={publishingProgress}
                   isPublishing={isPublishing}
-                  isExpressMode={isExpressMode}
                 />
               )}
 
@@ -341,7 +277,7 @@ export const PublishingWizard = ({ template, isOpen, onClose }: PublishingWizard
         </div>
 
         {/* Footer Navigation */}
-        {currentStep !== 'overview' && currentStep !== 'complete' && (
+        {currentStep !== 'overview' && currentStep !== 'complete' && currentStep !== 'publish' && (
           <div className="p-6 border-t border-gray-800 flex justify-between">
             <Button
               onClick={prevStep}
