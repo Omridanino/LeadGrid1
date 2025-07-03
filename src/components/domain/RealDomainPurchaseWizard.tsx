@@ -41,6 +41,7 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
   const [selectedDomain, setSelectedDomain] = useState<string>('');
   const [selectedPlan, setSelectedPlan] = useState<RealHostingPlan | null>(null);
   const [showPaymentWizard, setShowPaymentWizard] = useState(false);
+  const [orderId] = useState(`ORDER_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
   
   const [customerInfo, setCustomerInfo] = useState({
     name: '',
@@ -82,6 +83,7 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
     const purchaseRequest: PurchaseRequest = {
       domain: selectedDomain,
       hostingPlan: selectedPlan!,
+      orderId: orderId,
       customerInfo,
       payment: {
         stripeToken: '', // Not used for Israeli payment methods
