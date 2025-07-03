@@ -29,6 +29,7 @@ import { PublishingProgress } from './PublishingProgress';
 import { DomainService } from '@/services/domainService';
 import { HostingService } from '@/services/hostingService';
 import { RealPublishingService } from '@/services/realPublishingService';
+import { RealDomainPurchaseWizard } from '@/components/domain/RealDomainPurchaseWizard';
 
 interface NewPublishingWizardProps {
   template: TemplateData;
@@ -36,7 +37,7 @@ interface NewPublishingWizardProps {
   onClose: () => void;
 }
 
-type PublishingStep = 'overview' | 'domain' | 'publish' | 'complete';
+type PublishingStep = 'overview' | 'platform-choice' | 'domain' | 'publish' | 'complete';
 
 export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishingWizardProps) => {
   const [currentStep, setCurrentStep] = useState<PublishingStep>('overview');
@@ -48,6 +49,8 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
   const [existingDomain, setExistingDomain] = useState('');
   const [domainSuggestions, setDomainSuggestions] = useState<any[]>([]);
   const [isCheckingDomain, setIsCheckingDomain] = useState(false);
+  const [selectedPlatform, setSelectedPlatform] = useState<'static' | 'wordpress'>('static');
+  const [showWordPressWizard, setShowWordPressWizard] = useState(false);
 
   const steps = [
     { id: 'overview', name: 'סקירה', icon: Sparkles },
@@ -243,13 +246,62 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                     </CardContent>
                   </Card>
 
-                  <div className="text-center">
+                  <div className="text-center space-y-4">
+                    <h4 className="text-white text-lg font-semibold mb-4">איך תרצה לפרסם את האתר?</h4>
+                    
+                    <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+                      {/* Static Site Option */}
+                      <Card 
+                        className={`cursor-pointer transition-all ${
+                          selectedPlatform === 'static' 
+                            ? 'ring-2 ring-blue-500 bg-blue-900/20 border-blue-500' 
+                            : 'bg-gray-800 border-gray-700 hover:border-blue-500/50'
+                        }`}
+                        onClick={() => setSelectedPlatform('static')}
+                      >
+                        <CardContent className="p-4 text-center">
+                          <Globe className="w-8 h-8 text-blue-400 mx-auto mb-2" />
+                          <h5 className="text-white font-semibold mb-1">אתר רגיל</h5>
+                          <p className="text-gray-400 text-xs">מהיר וקל לצפייה</p>
+                          {selectedPlatform === 'static' && (
+                            <div className="text-blue-400 text-xs mt-2">✓ נבחר</div>
+                          )}
+                        </CardContent>
+                      </Card>
+
+                      {/* WordPress Option */}
+                      <Card 
+                        className={`cursor-pointer transition-all ${
+                          selectedPlatform === 'wordpress' 
+                            ? 'ring-2 ring-purple-500 bg-purple-900/20 border-purple-500' 
+                            : 'bg-gray-800 border-gray-700 hover:border-purple-500/50'
+                        }`}
+                        onClick={() => setSelectedPlatform('wordpress')}
+                      >
+                        <CardContent className="p-4 text-center">
+                          <Server className="w-8 h-8 text-purple-400 mx-auto mb-2" />
+                          <h5 className="text-white font-semibold mb-1">WordPress אמיתי</h5>
+                          <p className="text-gray-400 text-xs">ניהול מלא + לקוח אמיתי</p>
+                          {selectedPlatform === 'wordpress' && (
+                            <div className="text-purple-400 text-xs mt-2">✓ נבחר</div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </div>
+
                     <Button 
-                      onClick={nextStep}
+                      onClick={() => {
+                        if (selectedPlatform === 'wordpress') {
+                          setShowWordPressWizard(true);
+                          onClose();
+                        } else {
+                          nextStep();
+                        }
+                      }}
                       className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-3 text-lg"
                     >
                       <Rocket className="w-5 h-5 ml-2" />
-                      בואו נפרסם!
+                      {selectedPlatform === 'wordpress' ? 'ליצירת WordPress אמיתי' : 'בואו נפרסם!'}
                     </Button>
                   </div>
                 </div>
@@ -387,6 +439,17 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
           </div>
         )}
       </div>
+      
+      {/* WordPress Wizard */}
+      <RealDomainPurchaseWizard
+        isOpen={showWordPressWizard}
+        onClose={() => setShowWordPressWizard(false)}
+        onComplete={(result) => {
+          console.log('WordPress site created:', result);
+          setShowWordPressWizard(false);
+        }}
+        template={template}
+      />
     </div>
   );
 };
