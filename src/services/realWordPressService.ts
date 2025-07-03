@@ -114,7 +114,7 @@ export class RealWordPressService {
     }
   }
   
-  // Check if user is authenticated using local storage
+  // Check if user is authenticated using Edge Function
   static async isAuthenticated(): Promise<boolean> {
     const token = localStorage.getItem('wp_access_token');
     
@@ -123,18 +123,41 @@ export class RealWordPressService {
       return false;
     }
     
-    // בדיקה פשוטה של הטוקן המדומה
-    if (token.startsWith('demo_token_')) {
-      console.log('✅ Demo authentication verified');
-      return true;
+    try {
+      console.log('🔍 Verifying WordPress.com authentication via Edge Function...');
+      
+      const response = await fetch(`${this.EDGE_FUNCTION_URL}?action=verify-token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      });
+      
+      const responseData = await response.json();
+      
+      if (!response.ok || !responseData.success) {
+        console.log('❌ Token verification failed:', responseData);
+        localStorage.removeItem('wp_access_token');
+        return false;
+      }
+      
+      if (responseData.valid && responseData.user) {
+        console.log('✅ Authentication verified for user:', responseData.user.display_name);
+        return true;
+      } else {
+        console.log('❌ Token verification failed - invalid token');
+        localStorage.removeItem('wp_access_token');
+        return false;
+      }
+    } catch (error) {
+      console.error('❌ Token verification error:', error);
+      localStorage.removeItem('wp_access_token');
+      return false;
     }
-    
-    console.log('❌ Invalid token format');
-    localStorage.removeItem('wp_access_token');
-    return false;
   }
   
-  // Create WordPress.com site with demo functionality
+  // Create WordPress.com site using Edge Function
   static async createRealWordPressSite(
     domain: string, 
     userData: WordPressUserData, 
@@ -144,42 +167,32 @@ export class RealWordPressService {
       const token = localStorage.getItem('wp_access_token');
       
       if (!token) {
-        throw new Error('נדרש אימות קודם כל');
+        throw new Error('נדרש אימות WordPress.com קודם כל');
       }
       
-      console.log('🚀 Creating demo WordPress.com site with domain:', domain);
+      console.log('🚀 Creating real WordPress.com site via Edge Function with domain:', domain);
       
-      // שמירת נתוני האתר בזיכרון מקומי
-      const siteData = {
-        userData,
-        websiteData,
-        domain,
-        createdAt: new Date().toISOString()
-      };
-      
-      const siteId = `demo_${Date.now()}`;
-      localStorage.setItem(`demo_site_${siteId}`, JSON.stringify(siteData));
-      
-      // יצירת URL לדמו שלנו עם המידע הנכון
-      const demoSiteUrl = `${window.location.origin}/demo-wordpress-site?siteId=${siteId}`;
-      
-      const result: WordPressCreationResult = {
-        success: true,
-        siteUrl: demoSiteUrl,
-        adminUrl: `${demoSiteUrl}&view=admin`,
-        loginUrl: `${demoSiteUrl}&view=login`,
-        username: userData.username,
-        password: userData.password,
-        installationDetails: {
-          wpVersion: 'Latest WordPress.com',
-          theme: 'Twenty Twenty-Four',
-          plugins: ['Jetpack', 'Akismet'],
-          siteId: `demo_${Date.now()}`
+      const response = await fetch(`${this.EDGE_FUNCTION_URL}?action=create-site`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        isDemo: true
-      };
+        body: JSON.stringify({
+          token,
+          domain,
+          userData,
+          websiteData
+        }),
+      });
       
-      console.log('✅ Demo WordPress.com site created successfully:', result);
+      const result = await response.json();
+      
+      if (!response.ok || !result.success) {
+        console.error('❌ Site creation failed:', result);
+        throw new Error(result.error || `Site creation failed: ${response.status}`);
+      }
+      
+      console.log('✅ WordPress.com site created successfully:', result);
       
       return result;
       

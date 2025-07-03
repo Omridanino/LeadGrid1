@@ -76,16 +76,24 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
 
   const handleAuthenticate = () => {
     try {
-      console.log('🔗 מתחיל תהליך אימות מקומי...');
+      console.log('🔗 מתחיל אימות WordPress.com...');
       
-      // סימולציה של אימות מוצלח
-      alert('מדמה אימות WordPress.com מוצלח!');
-      
-      // שמירת טוקן מדומה
-      localStorage.setItem('wp_access_token', 'demo_token_' + Date.now());
-      
-      // עדכון סטטוס האימות
-      setIsAuthenticated(true);
+      // נשתמש ב-Edge Function רק לקבלת ה-URL
+      fetch('https://crkgabcjxkdpnhipvugu.supabase.co/functions/v1/wordpress-auth?action=get-auth-url')
+        .then(response => response.json())
+        .then(data => {
+          if (data.authUrl) {
+            console.log('🔗 פותח חלון אימות WordPress.com...');
+            // פתיחה בטאב חדש
+            window.open(data.authUrl, '_blank');
+            // הצגת הוראות למשתמש
+            alert('נפתח טאב חדש לאימות WordPress.com. אחרי ההתחברות, חזור לכאן ולחץ על "בדוק אימות" למטה.');
+          }
+        })
+        .catch(error => {
+          console.error('❌ שגיאה בקבלת URL אימות:', error);
+          alert('שגיאה בתהליך האימות. נסה שוב.');
+        });
       
     } catch (error) {
       console.error('❌ Authentication failed:', error);
@@ -119,9 +127,9 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
                   <>
                     <CheckCircle className="w-5 h-5 text-green-400" />
                     <div>
-                      <h4 className="text-white font-semibold">מחובר למערכת ✓</h4>
+                      <h4 className="text-white font-semibold">מחובר ל-WordPress.com ✓</h4>
                       <p className="text-gray-300 text-sm">
-                        מוכן ליצירת אתרי WordPress (דמו)
+                        מוכן ליצירת אתרי WordPress.com אמיתיים
                       </p>
                     </div>
                   </>
@@ -134,13 +142,23 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
                         התחבר ל-WordPress.com כדי ליצור אתרים אמיתיים
                       </p>
                     </div>
-                    <Button
-                      onClick={handleAuthenticate}
-                      size="sm"
-                      className="bg-blue-600 hover:bg-blue-700"
-                    >
-                      התחבר עכשיו
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={handleAuthenticate}
+                        size="sm"
+                        className="bg-blue-600 hover:bg-blue-700"
+                      >
+                        התחבר עכשיו
+                      </Button>
+                      <Button
+                        onClick={checkAuthentication}
+                        size="sm"
+                        variant="outline"
+                        className="border-gray-600 text-white hover:bg-gray-700"
+                      >
+                        בדוק אימות
+                      </Button>
+                    </div>
                   </>
                 )}
               </div>
