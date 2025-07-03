@@ -139,6 +139,7 @@ export interface WordPressUserData {
   websiteDescription: string;
 }
 
+// Updated to match the RealWordPressService interface
 export interface WordPressCreationResult {
   success: boolean;
   siteUrl: string;
@@ -153,7 +154,6 @@ export interface WordPressCreationResult {
     plugins: string[];
     siteId: string;
   };
-  actualSiteUrl: string;
   isDemo: boolean;
 }
 
@@ -303,11 +303,14 @@ export class RealDomainService {
     try {
       console.log('🚀 Creating REAL WordPress site via new service for domain:', domain);
       
-      return await RealWordPressService.createRealWordPressSite(
+      const result = await RealWordPressService.createRealWordPressSite(
         domain,
         wordpressUserData,
         websiteData
       );
+      
+      // The result already matches our interface, just return it
+      return result;
       
     } catch (error) {
       console.error('Real WordPress site creation failed:', error);
@@ -317,7 +320,7 @@ export class RealDomainService {
     }
   }
   
-  // Keep the demo creation as fallback
+  // Keep the demo creation as fallback - but remove actualSiteUrl since it's not in the interface
   static async createDemoWordPressSite(
     domain: string, 
     wordpressUserData: WordPressUserData, 
@@ -353,7 +356,6 @@ export class RealDomainService {
       loginUrl,
       username: wordpressUserData.username,
       password: wordpressUserData.password,
-      actualSiteUrl: demoSiteUrl,
       isDemo: true,
       installationDetails: {
         wpVersion: '6.4.2 (Demo)',
@@ -777,7 +779,7 @@ export class RealDomainService {
             wpUsername: wpResult.username,
             wpPassword: wpResult.password,
             demoSiteUrl: wpResult.siteUrl,
-            actualSiteUrl: wpResult.actualSiteUrl,
+            actualSiteUrl: wpResult.siteUrl,
             isDemo: wpResult.isDemo
           };
           
