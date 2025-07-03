@@ -1,4 +1,3 @@
-
 // Real Domain and Hosting Service Integration
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -63,6 +62,20 @@ export interface PurchaseResult {
   paymentStatus?: string;
 }
 
+export interface PurchaseStatus {
+  orderId: string;
+  status: 'pending' | 'awaiting_payment' | 'payment_verified' | 'completed' | 'failed';
+  paymentMethod: string;
+  domain: string;
+  hostingPlan: string;
+  totalAmount: number;
+  paymentProof?: string;
+  createdAt: Date;
+  completedAt?: Date;
+  websiteUrl?: string;
+  hostingDetails?: any;
+}
+
 // פרטי החברה האמיתיים
 export const COMPANY_DETAILS = {
   name: "Leadgrid",
@@ -105,6 +118,7 @@ export const PAYMENT_CONFIGS = {
 
 export class RealDomainService {
   private static readonly API_BASE = 'https://api.leadgrid.co.il';
+  private static purchaseStatuses = new Map<string, PurchaseStatus>();
 
   // Simulated domain availability check for demo purposes
   static async checkDomainAvailability(searchTerm: string): Promise<RealDomainAvailabilityResult[]> {
@@ -281,10 +295,21 @@ export class RealDomainService {
     }
   }
 
-  // Process payments with REAL integration
+  // Process payments with REAL integration - NO WEBSITE ACCESS UNTIL PAYMENT VERIFIED
   static async processPayment(amount: number, method: string, paymentData: any, orderId: string, customerInfo: any): Promise<{sessionId: string, status: string, paymentUrl?: string, paymentData?: any}> {
     try {
-      console.log('Processing REAL payment:', { amount, method, orderId, customerInfo });
+      console.log('Processing REAL payment - NO SITE ACCESS UNTIL VERIFIED:', { amount, method, orderId, customerInfo });
+      
+      // Store purchase status as pending
+      this.purchaseStatuses.set(orderId, {
+        orderId,
+        status: 'pending',
+        paymentMethod: method,
+        domain: paymentData.domain || '',
+        hostingPlan: paymentData.hostingPlan || '',
+        totalAmount: amount,
+        createdAt: new Date()
+      });
       
       let result = { 
         sessionId: '', 
@@ -304,7 +329,9 @@ export class RealDomainService {
               ...bitPayment,
               phone: COMPANY_DETAILS.bitPhone,
               merchantName: COMPANY_DETAILS.name,
-              instructions: `תשלום של ${amount}₪ לטלפון ${COMPANY_DETAILS.bitPhone} (${COMPANY_DETAILS.name})`
+              instructions: `תשלום של ${amount}₪ לטלפון ${COMPANY_DETAILS.bitPhone} (${COMPANY_DETAILS.name})`,
+              paymentVerificationRequired: true,
+              message: 'לאחר ביצוע התשלום, צור קשר עם Leadgrid לאישור התשלום וקבלת האתר'
             }
           };
           break;
@@ -313,11 +340,13 @@ export class RealDomainService {
           const payboxPayment = await this.generatePayBoxPayment(amount, orderId, customerInfo);
           result = {
             sessionId: payboxPayment.sessionId,
-            status: 'redirect_required',
+            status: 'awaiting_payment',
             paymentUrl: payboxPayment.url,
             paymentData: { 
               url: payboxPayment.url,
-              merchantId: PAYMENT_CONFIGS.paybox.merchantId
+              merchantId: PAYMENT_CONFIGS.paybox.merchantId,
+              paymentVerificationRequired: true,
+              message: 'לאחר השלמת התשלום, האתר יהיה זמין תוך 24 שעות'
             }
           };
           break;
@@ -326,11 +355,13 @@ export class RealDomainService {
           const paypalPayment = await this.generatePayPalPayment(amount, orderId, customerInfo);
           result = {
             sessionId: paypalPayment.sessionId,
-            status: 'redirect_required',
+            status: 'awaiting_payment',
             paymentUrl: paypalPayment.url,
             paymentData: { 
               url: paypalPayment.url,
-              merchantEmail: PAYMENT_CONFIGS.paypal.merchantEmail
+              merchantEmail: PAYMENT_CONFIGS.paypal.merchantEmail,
+              paymentVerificationRequired: true,
+              message: 'לאחר השלמת התשלום, האתר יהיה זמין תוך 24 שעות'
             }
           };
           break;
@@ -338,13 +369,15 @@ export class RealDomainService {
         case 'bank_transfer':
           result = {
             sessionId: `bank_${orderId}`,
-            status: 'awaiting_transfer',
+            status: 'awaiting_payment',
             paymentUrl: undefined,
             paymentData: {
               bankAccounts: BANK_ACCOUNTS,
               transferReference: orderId,
               amount,
-              instructions: `העבר ${amount}₪ לחשבון הבנק וציין באסמכתא: ${orderId}`
+              instructions: `העבר ${amount}₪ לחשבון הבנק וציין באסמכתא: ${orderId}`,
+              paymentVerificationRequired: true,
+              message: 'לאחר ביצוע ההעברה, שלח אישור ל-Leadgrid לקבלת האתר'
             }
           };
           break;
@@ -352,18 +385,26 @@ export class RealDomainService {
         case 'credit_card':
           result = {
             sessionId: `cc_${orderId}`,
-            status: 'manual_processing',
+            status: 'awaiting_payment',
             paymentUrl: undefined,
             paymentData: {
               contactInfo: COMPANY_DETAILS,
               message: `נציג מ-Leadgrid יצור קשר תוך 30 דקות לעיבוד תשלום של ${amount}₪`,
-              whatsappLink: `https://wa.me/972${COMPANY_DETAILS.whatsapp.substring(1)}?text=שלום, אני מעוניין לשלם ${amount}₪ עבור הזמנה ${orderId}`
+              whatsappLink: `https://wa.me/972${COMPANY_DETAILS.whatsapp.substring(1)}?text=שלום, אני מעוניין לשלם ${amount}₪ עבור הזמנה ${orderId}`,
+              paymentVerificationRequired: true
             }
           };
           break;
           
         default:
           throw new Error('אמצעי תשלום לא נתמך');
+      }
+      
+      // Update status to awaiting payment
+      const currentStatus = this.purchaseStatuses.get(orderId);
+      if (currentStatus) {
+        currentStatus.status = 'awaiting_payment';
+        this.purchaseStatuses.set(orderId, currentStatus);
       }
       
       return result;
@@ -374,52 +415,109 @@ export class RealDomainService {
     }
   }
 
-  // Purchase domain and hosting with Israeli payment support
+  // Check payment status - REQUIRED BEFORE WEBSITE ACCESS
+  static async verifyPaymentStatus(orderId: string): Promise<PurchaseStatus | null> {
+    const status = this.purchaseStatuses.get(orderId);
+    if (!status) {
+      return null;
+    }
+    
+    // In a real implementation, this would check with payment providers
+    // For now, this simulates payment verification that requires manual confirmation
+    console.log('Checking payment status for order:', orderId, status);
+    
+    return status;
+  }
+
+  // Admin function to manually verify payment (would be called by Leadgrid staff)
+  static async confirmPaymentReceived(orderId: string, paymentProof?: string): Promise<boolean> {
+    const status = this.purchaseStatuses.get(orderId);
+    if (!status) {
+      return false;
+    }
+    
+    status.status = 'payment_verified';
+    status.paymentProof = paymentProof;
+    status.completedAt = new Date();
+    
+    this.purchaseStatuses.set(orderId, status);
+    
+    console.log('Payment confirmed for order:', orderId);
+    return true;
+  }
+
+  // Purchase domain and hosting - ONLY AFTER PAYMENT VERIFICATION
   static async purchaseDomainAndHosting(request: PurchaseRequest): Promise<PurchaseResult> {
     try {
-      console.log('Starting purchase process with REAL Israeli payments...', request);
+      console.log('Starting purchase process - PAYMENT VERIFICATION REQUIRED...', request);
+
+      const orderId = request.orderId;
+      const paymentStatus = await this.verifyPaymentStatus(orderId);
+      
+      if (!paymentStatus || paymentStatus.status !== 'payment_verified') {
+        return {
+          success: false,
+          error: 'התשלום טרם אושר. אנא המתן לאישור התשלום או צור קשר עם Leadgrid.',
+          paymentStatus: paymentStatus?.status || 'unknown'
+        };
+      }
 
       // Calculate total amount
       const domainPrice = 65; // Default domain price
       const totalAmount = domainPrice + (request.hostingPlan.price * request.payment.years);
 
-      // Step 1: Process payment with selected method
-      const paymentResult = await this.processPayment(
-        totalAmount,
-        request.payment.method || 'credit_card',
-        request.payment.data,
-        request.orderId,
-        request.customerInfo
-      );
-      
+      // Create website (WordPress or static)
+      const websiteType = request.websiteData.websiteType || 'static';
+      let siteUrl = '';
+      let hostingDetails = {};
+
+      if (websiteType === 'wordpress') {
+        // Setup WordPress site
+        siteUrl = `https://${request.domain}`;
+        hostingDetails = {
+          type: 'wordpress',
+          username: request.customerInfo.email,
+          password: this.generatePassword(),
+          wpAdminUrl: `https://${request.domain}/wp-admin`,
+          cpanelUrl: `https://cpanel.leadgrid.co.il`,
+          nameservers: ['ns1.leadgrid.co.il', 'ns2.leadgrid.co.il'],
+          ftpDetails: {
+            host: 'ftp.leadgrid.co.il',
+            username: request.customerInfo.email,
+            password: this.generatePassword()
+          }
+        };
+      } else {
+        // Deploy static website
+        siteUrl = `https://${request.domain}`;
+        hostingDetails = {
+          type: 'static',
+          username: request.customerInfo.email,
+          password: this.generatePassword(),
+          cpanelUrl: `https://cpanel.leadgrid.co.il`,
+          nameservers: ['ns1.leadgrid.co.il', 'ns2.leadgrid.co.il']
+        };
+      }
+
       // Simulate domain registration and hosting setup
       await new Promise(resolve => setTimeout(resolve, 3000));
       
-      // Determine payment status message
-      let paymentStatus = 'הושלם';
-      if (request.payment.method === 'bank_transfer') {
-        paymentStatus = 'ממתין לאישור העברה בנקאית';
-      } else if (request.payment.method === 'credit_card') {
-        paymentStatus = 'ממתין לקשר מנציג Leadgrid';
-      } else if (request.payment.method === 'bit') {
-        paymentStatus = 'ממתין לתשלום ביט';
-      } else if (request.payment.method === 'paybox' || request.payment.method === 'paypal') {
-        paymentStatus = 'ממתין לתשלום במערכת החיצונית';
+      // Update purchase status to completed
+      if (paymentStatus) {
+        paymentStatus.status = 'completed';
+        paymentStatus.websiteUrl = siteUrl;
+        paymentStatus.hostingDetails = hostingDetails;
+        this.purchaseStatuses.set(orderId, paymentStatus);
       }
       
       return {
         success: true,
         orderId: request.orderId,
         domain: request.domain,
-        hostingAccount: {
-          username: request.customerInfo.email,
-          password: this.generatePassword(),
-          cpanelUrl: `https://cpanel.leadgrid.co.il`,
-          nameservers: ['ns1.leadgrid.co.il', 'ns2.leadgrid.co.il']
-        },
-        siteUrl: `https://${request.domain}`,
+        hostingAccount: hostingDetails,
+        siteUrl,
         paymentMethod: request.payment.method,
-        paymentStatus
+        paymentStatus: 'completed'
       };
 
     } catch (error) {
@@ -432,12 +530,22 @@ export class RealDomainService {
   }
 
   // Deploy website to purchased hosting
-  static async deployWebsite(websiteData: any, hostingAccount: any): Promise<boolean> {
+  static async deployWebsite(websiteData: any, hostingAccount: any, websiteType: 'static' | 'wordpress' = 'static'): Promise<boolean> {
     try {
-      console.log('Deploying website...', hostingAccount.domain);
+      console.log(`Deploying ${websiteType} website...`, hostingAccount.domain);
       
-      // Simulate deployment
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      if (websiteType === 'wordpress') {
+        // WordPress deployment simulation
+        console.log('Setting up WordPress installation...');
+        await new Promise(resolve => setTimeout(resolve, 8000));
+        
+        // Would integrate with cPanel/WordPress auto-installer here
+        console.log('WordPress installed successfully');
+      } else {
+        // Static site deployment
+        console.log('Deploying static website...');
+        await new Promise(resolve => setTimeout(resolve, 5000));
+      }
       
       return true;
     } catch (error) {
@@ -469,5 +577,10 @@ export class RealDomainService {
       console.error('Failed to send confirmation email:', error);
       return false;
     }
+  }
+
+  // Get all purchase statuses (for admin panel)
+  static getAllPurchaseStatuses(): PurchaseStatus[] {
+    return Array.from(this.purchaseStatuses.values());
   }
 }

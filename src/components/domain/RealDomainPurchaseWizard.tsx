@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { 
   Globe, 
   Search, 
@@ -18,7 +19,10 @@ import {
   ArrowLeft,
   X,
   Check,
-  Star
+  Star,
+  Zap,
+  Code,
+  Palette
 } from 'lucide-react';
 import { RealDomainService, RealDomainAvailabilityResult, RealHostingPlan, PurchaseRequest } from '@/services/realDomainService';
 import { TemplateData } from '@/types/template';
@@ -31,7 +35,7 @@ interface RealDomainPurchaseWizardProps {
   template: TemplateData;
 }
 
-type WizardStep = 'search' | 'hosting' | 'details' | 'payment' | 'processing';
+type WizardStep = 'search' | 'website-type' | 'hosting' | 'details' | 'payment' | 'processing';
 
 export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template }: RealDomainPurchaseWizardProps) => {
   const [currentStep, setCurrentStep] = useState<WizardStep>('search');
@@ -39,6 +43,7 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<RealDomainAvailabilityResult[]>([]);
   const [selectedDomain, setSelectedDomain] = useState<string>('');
+  const [websiteType, setWebsiteType] = useState<'static' | 'wordpress'>('static');
   const [selectedPlan, setSelectedPlan] = useState<RealHostingPlan | null>(null);
   const [showPaymentWizard, setShowPaymentWizard] = useState(false);
   const [orderId] = useState(`ORDER_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
@@ -60,6 +65,37 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
   });
 
   const hostingPlans = RealDomainService.getHostingPlans();
+
+  const websiteTypeOptions = [
+    {
+      id: 'static' as const,
+      name: 'אתר סטטי מהיר',
+      description: 'האתר שיצרת - מהיר וקל לניהול',
+      features: [
+        'טעינה מהירה במיוחד',
+        'אבטחה גבוהה',
+        'קל לעדכון',
+        'מתאים לאתרי תדמית'
+      ],
+      icon: Zap,
+      color: 'bg-blue-600',
+      recommended: true
+    },
+    {
+      id: 'wordpress' as const,
+      name: 'אתר WordPress',
+      description: 'פלטפורמה מתקדמת עם אפשרויות ניהול מלא',
+      features: [
+        'ממשק ניהול מתקדם',
+        'תוספים ועיצובים',
+        'בלוג וחנות מובנים',
+        'גמישות מקסימלית'
+      ],
+      icon: Code,
+      color: 'bg-purple-600',
+      recommended: false
+    }
+  ];
 
   const searchDomains = async () => {
     if (!searchTerm.trim()) return;
@@ -92,22 +128,32 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
         method: paymentMethod,
         data: paymentData
       },
-      websiteData: template
+      websiteData: {
+        ...template,
+        websiteType
+      }
     };
 
     try {
-      const result = await RealDomainService.purchaseDomainAndHosting(purchaseRequest);
-      
-      if (result.success) {
-        onComplete({
-          ...result,
-          paymentMethod,
-          paymentData
-        });
-      } else {
-        alert(`רכישה נכשלה: ${result.error}`);
-        setCurrentStep('payment');
-      }
+      // First process the payment
+      const paymentResult = await RealDomainService.processPayment(
+        getTotalPrice(),
+        paymentMethod,
+        paymentData,
+        orderId,
+        customerInfo
+      );
+
+      // Since payment verification is required, inform user
+      onComplete({
+        success: true,
+        orderId,
+        domain: selectedDomain,
+        paymentMethod,
+        paymentData: paymentResult.paymentData,
+        status: 'awaiting_payment_verification',
+        message: 'התשלום נשלח בהצלחה. האתר יהיה זמין לאחר אישור התשלום.'
+      });
     } catch (error) {
       console.error('Purchase failed:', error);
       alert('הרכישה נכשלה. אנא נסה שוב.');
@@ -218,6 +264,63 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                         ))}
                       </div>
                     )}
+                  </div>
+                )}
+
+                {currentStep === 'website-type' && (
+                  <div className="space-y-6">
+                    <div className="text-center">
+                      <h3 className="text-white text-xl font-semibold mb-2">בחירת סוג האתר</h3>
+                      <p className="text-gray-400">בחר את הפלטפורמה המתאימה לך</p>
+                    </div>
+
+                    <RadioGroup value={websiteType} onValueChange={(value) => setWebsiteType(value as 'static' | 'wordpress')}>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {websiteTypeOptions.map((option) => {
+                          const Icon = option.icon;
+                          return (
+                            <Card 
+                              key={option.id}
+                              className={`bg-gray-800 border-gray-700 cursor-pointer transition-all relative ${
+                                websiteType === option.id ? 'ring-2 ring-blue-500' : 'hover:bg-gray-700'
+                              }`}
+                              onClick={() => setWebsiteType(option.id)}
+                            >
+                              {option.recommended && (
+                                <div className="absolute -top-2 right-4">
+                                  <Badge className="bg-green-600 text-white flex items-center gap-1">
+                                    <Star className="w-3 h-3" />
+                                    מומלץ
+                                  </Badge>
+                                </div>
+                              )}
+                              <CardHeader>
+                                <div className="flex items-center gap-3">
+                                  <div className={`${option.color} p-3 rounded-lg`}>
+                                    <Icon className="w-6 h-6 text-white" />
+                                  </div>
+                                  <div className="flex-1">
+                                    <CardTitle className="text-white flex items-center gap-2">
+                                      <RadioGroupItem value={option.id} />
+                                      {option.name}
+                                    </CardTitle>
+                                    <p className="text-gray-400 text-sm">{option.description}</p>
+                                  </div>
+                                </div>
+                              </CardHeader>
+                              <CardContent className="space-y-2">
+                                {option.features.map((feature, index) => (
+                                  <div key={index} className="flex items-center gap-2 text-gray-300">
+                                    <Check className="w-4 h-4 text-green-400" />
+                                    <span className="text-sm">{feature}</span>
+                                  </div>
+                                ))}
+                              </CardContent>
+                            </Card>
+                          );
+                        })}
+                      </div>
+                    </RadioGroup>
                   </div>
                 )}
 
@@ -409,6 +512,9 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                     <div className="text-center">
                       <h3 className="text-white text-xl font-semibold mb-2">מעבד רכישה</h3>
                       <p className="text-gray-400">מגדיר את הדומיין והאחסון שלך...</p>
+                      <p className="text-yellow-300 text-sm mt-2">
+                        💳 התשלום ממתין לאישור - האתר יהיה זמין לאחר אישור התשלום
+                      </p>
                     </div>
                   </div>
                 )}
@@ -421,7 +527,8 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
             <div className="p-6 border-t border-gray-800 flex justify-between">
               <Button
                 onClick={() => {
-                  if (currentStep === 'hosting') setCurrentStep('search');
+                  if (currentStep === 'website-type') setCurrentStep('search');
+                  else if (currentStep === 'hosting') setCurrentStep('website-type');
                   else if (currentStep === 'details') setCurrentStep('hosting');
                   else if (currentStep === 'payment') setCurrentStep('details');
                 }}
@@ -435,7 +542,8 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
               
               <Button
                 onClick={() => {
-                  if (currentStep === 'search' && selectedDomain) setCurrentStep('hosting');
+                  if (currentStep === 'search' && selectedDomain) setCurrentStep('website-type');
+                  else if (currentStep === 'website-type') setCurrentStep('hosting');
                   else if (currentStep === 'hosting' && selectedPlan) setCurrentStep('details');
                   else if (currentStep === 'details') setCurrentStep('payment');
                 }}

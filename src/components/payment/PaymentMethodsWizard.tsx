@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -175,6 +174,19 @@ export const PaymentMethodsWizard = ({
               </div>
             </CardContent>
           </Card>
+
+          {/* Payment Verification Notice */}
+          <Card className="bg-yellow-900/20 border-yellow-700/30 mt-4">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2 text-yellow-200">
+                <AlertCircle className="w-5 h-5" />
+                <div className="text-sm">
+                  <div className="font-medium">חשוב לדעת:</div>
+                  <div>האתר שלך יהיה זמין רק לאחר אישור התשלום על ידי Leadgrid (עד 24 שעות)</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Content */}
@@ -302,9 +314,13 @@ export const PaymentMethodsWizard = ({
                         </div>
                         
                         <div className="border-t border-gray-700 pt-4">
-                          <p className="text-gray-400 text-sm text-center">
-                            לאחר ביצוע התשלום, נקבל אישור אוטומטי ונתחיל להגדיר את האתר שלך
-                          </p>
+                          <div className="bg-blue-900/20 p-3 rounded-lg border border-blue-700/30">
+                            <p className="text-blue-200 text-sm text-center font-medium">
+                              🔒 לאחר ביצוע התשלום, Leadgrid יאשר את התשלום תוך 24 שעות
+                              <br />
+                              האתר שלך יהיה זמין מיד לאחר האישור
+                            </p>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
