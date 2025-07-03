@@ -36,62 +36,15 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
   });
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-
-  // Check if user is authenticated with WordPress.com
-  const checkWordPressAuth = async () => {
-    setIsCheckingAuth(true);
-    try {
-      const authenticated = await RealWordPressService.isAuthenticated();
-      setIsAuthenticated(authenticated);
-      
-      if (authenticated) {
-        console.log('✅ WordPress.com authentication confirmed');
-      } else {
-        console.log('❌ WordPress.com authentication required');
-      }
-    } catch (error) {
-      console.error('Auth check failed:', error);
-      setIsAuthenticated(false);
-    }
-    setIsCheckingAuth(false);
-  };
 
   // Check auth status on component mount
   useEffect(() => {
-    checkWordPressAuth();
-    
-    // Listen for auth code from popup
-    const handleStorageChange = () => {
-      const authCode = localStorage.getItem('wp_auth_code');
-      if (authCode) {
-        localStorage.removeItem('wp_auth_code');
-        // Recheck authentication
-        setTimeout(() => {
-          checkWordPressAuth();
-        }, 1000);
-      }
+    const checkAuth = async () => {
+      const authenticated = await RealWordPressService.isAuthenticated();
+      setIsAuthenticated(authenticated);
     };
-
-    window.addEventListener('storage', handleStorageChange);
-    
-    // Also check periodically
-    const interval = setInterval(() => {
-      if (!isAuthenticated) {
-        checkWordPressAuth();
-      }
-    }, 2000);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      clearInterval(interval);
-    };
-  }, [isAuthenticated]);
-
-  const authenticateWithWordPress = () => {
-    console.log('🔐 Starting WordPress.com authentication...');
-    RealWordPressService.initiateWordPressAuth();
-  };
+    checkAuth();
+  }, []);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
@@ -103,11 +56,6 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!isAuthenticated) {
-      alert('יש להתחבר ל-WordPress.com קודם כדי ליצור אתר אמיתי');
-      return;
-    }
-
     if (formData.password !== formData.confirmPassword) {
       alert('הסיסמאות אינן תואמות');
       return;
@@ -122,10 +70,10 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
         <CardHeader className="text-center">
           <CardTitle className="text-white text-2xl flex items-center justify-center gap-2">
             <Globe className="w-6 h-6" />
-            יצירת אתר WordPress.com אמיתי
+            יצירת אתר WordPress.com
           </CardTitle>
           <p className="text-gray-300">
-            מלא את הפרטים כדי ליצור אתר וורדפרס אמיתי ב-WordPress.com
+            מלא את הפרטים כדי ליצור אתר וורדפרס
           </p>
           <Badge className="bg-blue-600 text-white">
             דומיין: {selectedDomain}
@@ -134,42 +82,17 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
 
         <CardContent className="space-y-6">
           
-          {/* WordPress.com Authentication Status */}
-          <Card className={`${
-            isAuthenticated 
-              ? 'bg-gradient-to-br from-green-900/30 to-blue-900/30 border-green-700/50'
-              : 'bg-gradient-to-br from-orange-900/30 to-red-900/30 border-orange-700/50'
-          }`}>
+          {/* WordPress.com Status */}
+          <Card className="bg-gradient-to-br from-green-900/30 to-blue-900/30 border-green-700/50">
             <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Key className={`w-5 h-5 ${isAuthenticated ? 'text-green-400' : 'text-orange-400'}`} />
-                  <div>
-                    <h4 className="text-white font-semibold">
-                      {isCheckingAuth 
-                        ? 'בודק אימות WordPress.com...'
-                        : isAuthenticated 
-                          ? 'מחובר ל-WordPress.com ✓' 
-                          : 'נדרש אימות WordPress.com'
-                      }
-                    </h4>
-                    <p className="text-gray-300 text-sm">
-                      {isAuthenticated 
-                        ? 'יכול ליצור אתרי WordPress.com אמיתיים' 
-                        : 'יש להתחבר כדי ליצור אתרים אמיתיים'
-                      }
-                    </p>
-                  </div>
+              <div className="flex items-center gap-3">
+                <CheckCircle className="w-5 h-5 text-green-400" />
+                <div>
+                  <h4 className="text-white font-semibold">מוכן ליצירת אתר WordPress ✓</h4>
+                  <p className="text-gray-300 text-sm">
+                    האתר ייווצר עם התוכן שלך
+                  </p>
                 </div>
-                {!isAuthenticated && !isCheckingAuth && (
-                  <Button
-                    onClick={authenticateWithWordPress}
-                    className="bg-blue-600 hover:bg-blue-700"
-                    size="sm"
-                  >
-                    התחבר עכשיו
-                  </Button>
-                )}
               </div>
             </CardContent>
           </Card>
@@ -384,23 +307,18 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
             <div className="flex gap-4 pt-6">
               <Button
                 type="submit"
-                disabled={isLoading || !isAuthenticated}
+                disabled={isLoading}
                 className="flex-1 bg-green-600 hover:bg-green-700 text-white"
               >
                 {isLoading ? (
                   <>
                     <CreditCard className="w-4 h-4 ml-2 animate-spin" />
-                    יוצר אתר WordPress.com...
-                  </>
-                ) : !isAuthenticated ? (
-                  <>
-                    <AlertCircle className="w-4 h-4 ml-2" />
-                    נדרש אימות WordPress.com
+                    יוצר אתר WordPress...
                   </>
                 ) : (
                   <>
                     <CheckCircle className="w-4 h-4 ml-2" />
-                    צור אתר WordPress.com אמיתי
+                    צור אתר WordPress
                   </>
                 )}
               </Button>
@@ -415,14 +333,6 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
                 ביטול
               </Button>
             </div>
-
-            {!isAuthenticated && !isCheckingAuth && (
-              <div className="text-center">
-                <p className="text-gray-400 text-sm">
-                  💡 יש להתחבר ל-WordPress.com קודם כדי ליצור אתר אמיתי
-                </p>
-              </div>
-            )}
           </form>
         </CardContent>
       </Card>
