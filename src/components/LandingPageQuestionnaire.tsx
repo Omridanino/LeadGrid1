@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,6 +27,7 @@ export interface QuestionnaireData {
     primaryColor: string;
     secondaryColor: string;
     brandingStyle: string;
+    contactInfo?: string;
   };
   domain: {
     wantDomain: boolean;
