@@ -23,7 +23,8 @@ import {
   Phone,
   Mail,
   MessageCircle,
-  Shield
+  Shield,
+  Play
 } from 'lucide-react';
 import { RealDomainService, COMPANY_DETAILS, BANK_ACCOUNTS } from '@/services/realDomainService';
 
@@ -39,7 +40,7 @@ interface PaymentMethodsWizardProps {
   };
 }
 
-type PaymentMethod = 'paybox' | 'tranzila' | 'paypal' | 'bank_transfer' | 'credit_card';
+type PaymentMethod = 'paybox' | 'tranzila' | 'paypal' | 'bank_transfer' | 'credit_card' | 'demo';
 type PaymentStep = 'select' | 'payment' | 'confirmation';
 
 export const PaymentMethodsWizard = ({ 
@@ -58,11 +59,21 @@ export const PaymentMethodsWizard = ({
 
   const paymentMethods = [
     {
+      id: 'demo' as PaymentMethod,
+      name: 'תשלום דמו',
+      description: 'מצב דמו - ליצירת אתר ללא תשלום אמיתי',
+      icon: Play,
+      color: 'bg-green-600',
+      popular: true,
+      secure: true,
+      demo: true
+    },
+    {
       id: 'paybox' as PaymentMethod,
       name: 'PayBox',
       description: 'כרטיס אשראי מאובטח - אימות אוטומטי',
       icon: CreditCard,
-      color: 'bg-green-600',
+      color: 'bg-blue-600',
       popular: true,
       secure: true
     },
@@ -71,7 +82,7 @@ export const PaymentMethodsWizard = ({
       name: 'Tranzila',
       description: 'תשלום מאובטח - אימות מיידי',
       icon: Shield,
-      color: 'bg-blue-600',
+      color: 'bg-purple-600',
       popular: true,
       secure: true
     },
@@ -89,7 +100,7 @@ export const PaymentMethodsWizard = ({
       name: 'כרטיס אשראי',
       description: 'תשלום טלפוני בכרטיס אשראי',
       icon: CreditCard,
-      color: 'bg-purple-600',
+      color: 'bg-gray-600',
       popular: false,
       secure: false
     },
@@ -98,7 +109,7 @@ export const PaymentMethodsWizard = ({
       name: 'העברה בנקאית',
       description: 'העברה ישירה לחשבון הבנק',
       icon: Building2,
-      color: 'bg-gray-600',
+      color: 'bg-orange-600',
       popular: false,
       secure: false
     }
@@ -119,7 +130,12 @@ export const PaymentMethodsWizard = ({
     if (!selectedMethod) return;
     
     setIsProcessing(true);
-    setProcessingMessage('מעבד תשלום מאובטח...');
+    
+    if (selectedMethod === 'demo') {
+      setProcessingMessage('מצב דמו - מדמה תשלום מוצלח...');
+    } else {
+      setProcessingMessage('מעבד תשלום מאובטח...');
+    }
 
     try {
       const result = await RealDomainService.processPayment(
@@ -148,7 +164,6 @@ export const PaymentMethodsWizard = ({
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    // Could add toast notification here
   };
 
   if (!isOpen) return null;
@@ -160,7 +175,7 @@ export const PaymentMethodsWizard = ({
         <div className="p-6 border-b border-gray-800 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-white text-2xl font-bold">בחירת אמצעי תשלום מאובטח</h2>
+              <h2 className="text-white text-2xl font-bold">בחירת אמצעי תשלום</h2>
               <p className="text-gray-400">בחר את אמצעי התשלום המועדף עליך</p>
             </div>
             <Button onClick={onClose} size="sm" className="bg-gray-700 hover:bg-gray-600">
@@ -179,14 +194,14 @@ export const PaymentMethodsWizard = ({
             </CardContent>
           </Card>
 
-          {/* Secure Payment Notice */}
-          <Card className="bg-green-900/20 border-green-700/30 mt-4">
+          {/* Demo Mode Notice */}
+          <Card className="bg-blue-900/20 border-blue-700/30 mt-4">
             <CardContent className="p-4">
-              <div className="flex items-center gap-2 text-green-200">
-                <Shield className="w-5 h-5" />
+              <div className="flex items-center gap-2 text-blue-200">
+                <Play className="w-5 h-5" />
                 <div className="text-sm">
-                  <div className="font-medium">תשלום מאובטח עם אימות מיידי</div>
-                  <div>PayBox ו-Tranzila מאמתים את התשלום אוטומטית - האתר יהיה זמין מיד!</div>
+                  <div className="font-medium">מצב דמו פעיל</div>
+                  <div>ניתן לבחור "תשלום דמו" ליצירת אתר וורדפרס אמיתי ללא תשלום</div>
                 </div>
               </div>
             </CardContent>
@@ -200,7 +215,7 @@ export const PaymentMethodsWizard = ({
               {currentStep === 'select' && (
                 <div className="space-y-4">
                   <h3 className="text-white text-lg font-semibold text-center mb-6">
-                    בחר אמצעי תשלום מאובטח
+                    בחר אמצעי תשלום
                   </h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -212,6 +227,7 @@ export const PaymentMethodsWizard = ({
                           className={`
                             bg-gray-800 border-gray-700 cursor-pointer hover:bg-gray-700 transition-all relative
                             ${method.secure ? 'ring-2 ring-green-500/30' : ''}
+                            ${method.demo ? 'ring-2 ring-blue-500/50' : ''}
                           `}
                           onClick={() => handlePaymentMethodSelect(method.id)}
                         >
@@ -223,8 +239,11 @@ export const PaymentMethodsWizard = ({
                               <div className="flex-1">
                                 <div className="flex items-center gap-2">
                                   <h4 className="text-white font-semibold">{method.name}</h4>
-                                  {method.popular && (
-                                    <Badge className="bg-blue-600 text-white text-xs">פופולרי</Badge>
+                                  {method.demo && (
+                                    <Badge className="bg-blue-600 text-white text-xs">דמו</Badge>
+                                  )}
+                                  {method.popular && !method.demo && (
+                                    <Badge className="bg-orange-600 text-white text-xs">פופולרי</Badge>
                                   )}
                                   {method.secure && (
                                     <Badge className="bg-green-600 text-white text-xs">מאובטח</Badge>
@@ -234,7 +253,13 @@ export const PaymentMethodsWizard = ({
                               </div>
                               <ArrowLeft className="w-5 h-5 text-gray-400" />
                             </div>
-                            {method.secure && (
+                            {method.demo && (
+                              <div className="mt-3 text-xs text-blue-300 flex items-center gap-1">
+                                <CheckCircle className="w-3 h-3" />
+                                יוצר אתר וורדפרס אמיתי עם התוכן שלך ללא תשלום
+                              </div>
+                            )}
+                            {method.secure && !method.demo && (
                               <div className="mt-3 text-xs text-green-300 flex items-center gap-1">
                                 <CheckCircle className="w-3 h-3" />
                                 אימות אוטומטי - האתר יהיה זמין מיד
@@ -254,22 +279,27 @@ export const PaymentMethodsWizard = ({
                     <h3 className="text-white text-xl font-semibold mb-2">
                       {paymentMethods.find(m => m.id === selectedMethod)?.name}
                     </h3>
-                    <p className="text-gray-400">סכום לתשלום: ₪{totalAmount}</p>
+                    <p className="text-gray-400">
+                      {selectedMethod === 'demo' ? 'מצב דמו - ללא תשלום אמיתי' : `סכום לתשלום: ₪${totalAmount}`}
+                    </p>
                   </div>
 
                   {isProcessing ? (
                     <div className="flex flex-col items-center justify-center py-12 space-y-4">
                       <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
                       <p className="text-white">{processingMessage}</p>
+                      {selectedMethod === 'demo' && (
+                        <p className="text-blue-300 text-sm">יוצר עבורך אתר וורדפרס אמיתי...</p>
+                      )}
                     </div>
                   ) : (
                     <div className="flex justify-center">
                       <Button
                         onClick={processPayment}
-                        className="bg-blue-600 hover:bg-blue-700 px-8 py-3"
+                        className={selectedMethod === 'demo' ? "bg-green-600 hover:bg-green-700 px-8 py-3" : "bg-blue-600 hover:bg-blue-700 px-8 py-3"}
                         size="lg"
                       >
-                        המשך לתשלום מאובטח
+                        {selectedMethod === 'demo' ? 'יצירת אתר דמו' : 'המשך לתשלום מאובטח'}
                       </Button>
                     </div>
                   )}
@@ -278,6 +308,33 @@ export const PaymentMethodsWizard = ({
 
               {currentStep === 'confirmation' && selectedMethod && (
                 <div className="space-y-6">
+                  {selectedMethod === 'demo' && (
+                    <Card className="bg-gray-800 border-gray-700">
+                      <CardHeader>
+                        <CardTitle className="text-white text-center">
+                          תשלום דמו - הושלם בהצלחה!
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-6">
+                        <div className="bg-green-900/20 p-4 rounded-lg border border-green-700/30 text-center">
+                          <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
+                          <h3 className="text-green-200 text-xl font-semibold mb-2">
+                            אתר וורדפרס נוצר בהצלחה!
+                          </h3>
+                          <p className="text-green-300 mb-4">
+                            המערכת יצרה עבורך אתר וורדפרס אמיתי עם כל התכנים שהגדרת.
+                          </p>
+                          
+                          <div className="bg-blue-900/20 p-3 rounded-lg border border-blue-700/30">
+                            <p className="text-blue-200 text-sm">
+                              🚀 האתר שלך מוכן! בוא נראה את התוצאה...
+                            </p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
                   {(selectedMethod === 'paybox' || selectedMethod === 'tranzila') && (
                     <Card className="bg-gray-800 border-gray-700">
                       <CardHeader>
@@ -486,7 +543,7 @@ export const PaymentMethodsWizard = ({
                       className="bg-green-600 hover:bg-green-700 px-8"
                     >
                       <CheckCircle className="w-4 h-4 ml-2" />
-                      אישור והמשך
+                      {selectedMethod === 'demo' ? 'צפה באתר שנוצר' : 'אישור והמשך'}
                     </Button>
                   </div>
                 </div>
