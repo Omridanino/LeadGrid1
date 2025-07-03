@@ -586,8 +586,22 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                             >
                               <ExternalLink className="w-4 h-4" />
                             </Button>
-                          </div>
-                        </div>
+                           </div>
+                         </div>
+
+                         {/* WordPress Login Instructions */}
+                         <div className="bg-yellow-900/30 border-yellow-700/30 p-4 rounded-lg">
+                           <h4 className="text-yellow-200 font-semibold mb-2">🔑 כיצד להתחבר לאתר החדש</h4>
+                           <div className="text-sm text-gray-300 space-y-2">
+                             <p><strong>1.</strong> לך לכתובת: <code>{completionResult.wordpressDetails.actualSiteUrl}/wp-login.php</code></p>
+                             <p><strong>2.</strong> השתמש בפרטי הכניסה הבאים:</p>
+                             <div className="bg-gray-800/50 p-2 rounded text-xs">
+                               <p>שם משתמש: <strong>{completionResult.wordpressDetails.username}</strong></p>
+                               <p>סיסמה: <strong>{completionResult.wordpressDetails.password}</strong></p>
+                             </div>
+                             <p><strong>3.</strong> אחרי ההתחברות תוכל לעדכן את התוכן ולנהל את האתר</p>
+                           </div>
+                         </div>
 
                         {/* WordPress Admin Access */}
                         <div className={`p-4 rounded-lg border ${

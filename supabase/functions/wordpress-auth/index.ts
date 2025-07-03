@@ -327,11 +327,13 @@ async function handleCreateSite(req: Request) {
       console.log('Warning: Failed to configure site settings:', error);
     }
 
-    // Step 3: Update site ownership to client and create client as admin
+    // Step 3: Create a completely NEW WordPress.com account for the client
     if (userData.username && userData.password && userData.email) {
       try {
-        // First, create a WordPress.com account for the client (invitation method)
-        const inviteResponse = await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/users/new`, {
+        console.log('Creating new WordPress.com account for client...');
+        
+        // Use WordPress.com signup API to create a new account for the client
+        const signupResponse = await fetch('https://public-api.wordpress.com/rest/v1.1/users/new', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -340,25 +342,24 @@ async function handleCreateSite(req: Request) {
             'Accept': 'application/json',
           },
           body: JSON.stringify({
-            user_login: userData.username,
-            user_email: userData.email,
-            role: 'administrator',
-            user_pass: userData.password,
-            display_name: userData.displayName || `${userData.firstName} ${userData.lastName}`,
+            username: userData.username,
+            password: userData.password,
+            email: userData.email,
             first_name: userData.firstName,
             last_name: userData.lastName,
-            send_confirmation: false
+            display_name: userData.displayName || `${userData.firstName} ${userData.lastName}`,
+            locale: 'he'
           }),
         });
 
-        const inviteResult = await inviteResponse.text();
-        console.log('Client admin user creation result:', inviteResult);
+        const signupResult = await signupResponse.text();
+        console.log('Client signup attempt result:', signupResult);
         
-        if (!inviteResponse.ok) {
-          console.log('Warning: Could not create admin user directly, trying invitation method');
+        if (signupResponse.ok) {
+          console.log('✅ New WordPress.com account created for client');
           
-          // Try invitation method as fallback
-          const fallbackResponse = await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/users/new`, {
+          // Now transfer site ownership to the new user
+          const transferResponse = await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/users/${userData.username}/roles`, {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -367,22 +368,36 @@ async function handleCreateSite(req: Request) {
               'Accept': 'application/json',
             },
             body: JSON.stringify({
-              user_login: userData.email, // Use email as username fallback
+              role: 'administrator'
+            }),
+          });
+          
+          if (transferResponse.ok) {
+            console.log('✅ Site ownership transferred to client');
+          }
+        } else {
+          console.log('⚠️ Could not create new account, trying to add as user to existing site');
+          
+          // Fallback: Add user to the site as administrator
+          await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/users/new`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+              'User-Agent': 'LeadGrid/1.0',
+              'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+              user_login: userData.username,
               user_email: userData.email,
               role: 'administrator',
               send_confirmation: true
             }),
           });
-          
-          if (fallbackResponse.ok) {
-            console.log('Client invited as admin successfully');
-          }
-        } else {
-          console.log('Client admin user created successfully');
         }
         
       } catch (error) {
-        console.log('Warning: Failed to setup client admin user:', error);
+        console.log('Warning: Failed to setup client account:', error);
       }
     }
 
