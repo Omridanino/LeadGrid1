@@ -26,7 +26,7 @@ serve(async (req) => {
     const config: WordPressOAuthConfig = {
       clientId: '120329',
       clientSecret: Deno.env.get('WORDPRESS_CLIENT_SECRET') || 'imbzp7yTZvC3uRrwUW51f3ndO81dVJXlqN39Pi4qNyz3G3HkxWpDteo8hwGJGxkh',
-      redirectUri: `${req.headers.get('origin') || 'https://leadgrid.design'}/auth/wordpress/callback`
+      redirectUri: 'https://leadgrid.design/auth/wordpress/callback'
     };
 
     console.log('WordPress Auth Function called with action:', action);
