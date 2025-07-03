@@ -68,7 +68,37 @@ async function handleTestConnection(req: Request) {
     // בדיקה ראשונית שהאתר תקין
     const baseUrl = siteUrl.replace(/\/$/, '');
     
+    // בדוק תחילה אם האתר בכלל מגיב
+    console.log('Step 1: Checking if site responds...');
+    try {
+      const basicResponse = await fetch(baseUrl, {
+        method: 'HEAD',
+        headers: {
+          'User-Agent': 'LeadGrid WordPress Integration'
+        }
+      });
+      console.log('Basic site check response:', basicResponse.status);
+    } catch (error) {
+      console.error('Basic site check failed:', error);
+      throw new Error(`האתר ${baseUrl} לא מגיב. בדוק שהכתובת נכונה ושהאתר פעיל`);
+    }
+    
+    // בדוק אם יש WordPress
+    console.log('Step 2: Checking for WordPress...');
+    try {
+      const wpResponse = await fetch(`${baseUrl}/wp-admin/`, {
+        method: 'HEAD',
+        headers: {
+          'User-Agent': 'LeadGrid WordPress Integration'
+        }
+      });
+      console.log('WordPress admin check response:', wpResponse.status);
+    } catch (error) {
+      console.log('WordPress admin not accessible, continuing with REST API check...');
+    }
+    
     // בדוק אם ה-REST API זמין
+    console.log('Step 3: Checking REST API...');
     const apiCheckUrl = `${baseUrl}/wp-json/wp/v2/`;
     
     try {
@@ -76,24 +106,39 @@ async function handleTestConnection(req: Request) {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'User-Agent': 'LeadGrid WordPress Integration'
         },
       });
       
+      console.log('REST API check response:', apiCheckResponse.status);
+      console.log('REST API response headers:', Object.fromEntries(apiCheckResponse.headers.entries()));
+      
       if (!apiCheckResponse.ok) {
-        throw new Error(`האתר לא מגיב או שה-REST API לא פעיל (${apiCheckResponse.status})`);
+        if (apiCheckResponse.status === 404) {
+          throw new Error(`לא נמצא REST API באתר. האתר צריך להיות WordPress עם REST API פעיל. נסה: ${baseUrl}/wp-json/wp/v2/`);
+        } else {
+          throw new Error(`ה-REST API מחזיר שגיאה ${apiCheckResponse.status}. בדוק שה-REST API פעיל בהגדרות WordPress`);
+        }
       }
+      
+      const responseText = await apiCheckResponse.text();
+      console.log('REST API response preview:', responseText.substring(0, 200));
       
       const contentType = apiCheckResponse.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
-        throw new Error('האתר לא מחזיר תגובת JSON - בדוק שזה באמת אתר WordPress עם REST API פעיל');
+        throw new Error(`האתר מחזיר ${contentType} במקום JSON. בדוק שזה באמת אתר WordPress עם REST API פעיל`);
       }
       
     } catch (error) {
       console.error('API check failed:', error);
-      throw new Error('לא ניתן להתחבר לאתר WordPress - בדוק שהכתובת נכונה ושה-REST API פעיל');
+      if (error.message.includes('fetch')) {
+        throw new Error(`שגיאת רשת בחיבור ל-${baseUrl}. בדוק שהכתובת נכונה והאתר זמין`);
+      }
+      throw error;
     }
     
     // נסה להתחבר ל-WordPress REST API
+    console.log('Step 4: Testing user authentication...');
     const apiUrl = `${baseUrl}/wp-json/wp/v2/users/me`;
     
     // יצירת Basic Auth header
@@ -105,21 +150,24 @@ async function handleTestConnection(req: Request) {
       headers: {
         'Authorization': `Basic ${encodedCredentials}`,
         'Content-Type': 'application/json',
+        'User-Agent': 'LeadGrid WordPress Integration'
       },
     });
+    
+    console.log('User auth response:', response.status);
     
     if (!response.ok) {
       const errorText = await response.text();
       console.error('WordPress connection failed:', response.status, errorText);
       
       if (response.status === 401) {
-        throw new Error('שם המשתמש או הסיסמה שגויים');
+        throw new Error('שם המשתמש או הסיסמה שגויים. בדוק את פרטי ההתחברות');
       } else if (response.status === 403) {
-        throw new Error('המשתמש לא מורשה לגשת ל-REST API');
+        throw new Error('המשתמש לא מורשה לגשת ל-REST API. בדוק הרשאות משתמש או פלאגינים שחוסמים');
       } else if (response.status === 404) {
-        throw new Error('לא ניתן למצוא את ה-REST API. בדוק שהכתובת נכונה');
+        throw new Error('לא ניתן למצוא את נתיב המשתמש ב-REST API');
       } else {
-        throw new Error(`שגיאה בחיבור לאתר: ${response.status}`);
+        throw new Error(`שגיאה בחיבור לאתר: ${response.status} - ${errorText}`);
       }
     }
     
