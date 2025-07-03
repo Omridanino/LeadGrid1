@@ -1,4 +1,3 @@
-
 // Real Domain and Hosting Service Integration - DEMO MODE WITH REAL WORDPRESS
 export interface RealDomainAvailabilityResult {
   domain: string;
@@ -254,7 +253,7 @@ export class RealDomainService {
       console.log('💳 [DEMO] Processing payment simulation:', { amount, method, orderId });
       
       // Simulate payment processing delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
       // DEMO: Always successful payment - Set the status BEFORE returning
       this.purchaseStatuses.set(orderId, {
@@ -309,15 +308,15 @@ export class RealDomainService {
       
       // Step 1: Create WordPress installation
       console.log('🔧 [REAL] Installing WordPress...');
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
-      const siteUrl = `https://demo.leadgrid.co.il/${domain}`;
+      const siteUrl = `https://demo.leadgrid.co.il/${domain.replace(/\./g, '-')}`;
       const adminUrl = `${siteUrl}/wp-admin`;
       const loginUrl = `${siteUrl}/wp-login.php`;
       
       // Step 2: Create WordPress user account
       console.log('👤 [REAL] Creating WordPress user account...');
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
       const wpUser = {
         username: wordpressUserData.username,
@@ -331,7 +330,7 @@ export class RealDomainService {
       
       // Step 3: Configure site settings
       console.log('⚙️ [REAL] Configuring WordPress site...');
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
       const siteSettings = {
         blogname: wordpressUserData.websiteTitle,
@@ -347,7 +346,7 @@ export class RealDomainService {
       
       // Step 4: Install and configure theme
       console.log('🎨 [REAL] Installing custom theme...');
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
       // Step 5: Deploy website content from template
       console.log('📝 [REAL] Deploying website content...');
@@ -800,7 +799,7 @@ export class RealDomainService {
       }
 
       // Simulate domain registration and hosting setup
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Update purchase status to completed
       if (paymentStatus) {

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,7 +23,11 @@ import {
   Star,
   Zap,
   Code,
-  User
+  User,
+  ExternalLink,
+  Copy,
+  Eye,
+  Lock
 } from 'lucide-react';
 import { RealDomainService, RealDomainAvailabilityResult, RealHostingPlan, PurchaseRequest, WordPressUserData } from '@/services/realDomainService';
 import { TemplateData } from '@/types/template';
@@ -36,7 +41,7 @@ interface RealDomainPurchaseWizardProps {
   template: TemplateData;
 }
 
-type WizardStep = 'search' | 'website-type' | 'hosting' | 'wordpress-registration' | 'payment' | 'processing';
+type WizardStep = 'search' | 'website-type' | 'hosting' | 'wordpress-registration' | 'payment' | 'processing' | 'complete';
 
 export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template }: RealDomainPurchaseWizardProps) => {
   const [currentStep, setCurrentStep] = useState<WizardStep>('search');
@@ -50,6 +55,7 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
   const [showPaymentWizard, setShowPaymentWizard] = useState(false);
   const [isCreatingWordPress, setIsCreatingWordPress] = useState(false);
   const [orderId] = useState(`ORDER_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
+  const [completionResult, setCompletionResult] = useState<any>(null);
   
   const [paymentInfo, setPaymentInfo] = useState({
     years: 1,
@@ -171,7 +177,7 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
           console.log('✅ WordPress site created successfully!');
           console.log('🌐 Site details:', result.wordpressDetails);
           
-          onComplete({
+          const completionData = {
             success: true,
             orderId,
             domain: selectedDomain,
@@ -179,8 +185,13 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
             paymentData,
             wordpressDetails: result.wordpressDetails,
             status: 'completed',
-            message: 'אתר וורדפרס נוצר בהצלחה! האתר שלך מוכן.'
-          });
+            message: 'אתר וורדפרס נוצר בהצלחה! האתר שלך מוכן.',
+            customerInfo: purchaseRequest.customerInfo
+          };
+          
+          setCompletionResult(completionData);
+          setCurrentStep('complete');
+          
         } else {
           throw new Error(result.error || 'יצירת אתר וורדפרס נכשלה');
         }
@@ -199,6 +210,11 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
     const domainPrice = searchResults.find(r => r.domain === selectedDomain)?.price || 0;
     const hostingPrice = selectedPlan?.price || 0;
     return (domainPrice + hostingPrice) * paymentInfo.years;
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    alert('הועתק ללוח!');
   };
 
   if (!isOpen) return null;
@@ -495,12 +511,169 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                     </div>
                   </div>
                 )}
+
+                {currentStep === 'complete' && completionResult && (
+                  <div className="space-y-6">
+                    <div className="text-center">
+                      <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <CheckCircle className="w-10 h-10 text-white" />
+                      </div>
+                      <h3 className="text-white text-2xl font-bold mb-2">האתר שלך מוכן! 🎉</h3>
+                      <p className="text-gray-400">אתר וורדפרס נוצר בהצלחה עם התוכן שלך</p>
+                    </div>
+
+                    {/* WordPress Site Details */}
+                    <Card className="bg-gradient-to-br from-green-900/50 to-blue-900/50 border-green-700/50">
+                      <CardHeader>
+                        <CardTitle className="text-white flex items-center justify-center gap-2">
+                          <Globe className="w-6 h-6" />
+                          פרטי האתר שלך
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {/* Live Site URL */}
+                        <div className="bg-gray-800/50 p-4 rounded-lg">
+                          <Label className="text-gray-300 text-sm">🌐 האתר החי שלך:</Label>
+                          <div className="flex items-center gap-2 mt-2">
+                            <Input
+                              value={completionResult.wordpressDetails.siteUrl}
+                              readOnly
+                              className="bg-gray-700 border-gray-600 text-white text-sm"
+                            />
+                            <Button
+                              size="sm"
+                              onClick={() => copyToClipboard(completionResult.wordpressDetails.siteUrl)}
+                              className="bg-blue-600 hover:bg-blue-700"
+                            >
+                              <Copy className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              onClick={() => window.open(completionResult.wordpressDetails.siteUrl, '_blank')}
+                              className="bg-green-600 hover:bg-green-700"
+                            >
+                              <ExternalLink className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+
+                        {/* WordPress Admin Access */}
+                        <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-700/30">
+                          <h4 className="text-purple-200 font-semibold mb-3 flex items-center gap-2">
+                            <Lock className="w-5 h-5" />
+                            גישה לניהול וורדפרס
+                          </h4>
+                          
+                          <div className="space-y-3">
+                            <div>
+                              <Label className="text-gray-300 text-sm">📱 כתובת ניהול:</Label>
+                              <div className="flex items-center gap-2 mt-1">
+                                <Input
+                                  value={completionResult.wordpressDetails.wpAdminUrl}
+                                  readOnly
+                                  className="bg-gray-700 border-gray-600 text-white text-sm"
+                                />
+                                <Button
+                                  size="sm"
+                                  onClick={() => copyToClipboard(completionResult.wordpressDetails.wpAdminUrl)}
+                                  className="bg-purple-600 hover:bg-purple-700"
+                                >
+                                  <Copy className="w-4 h-4" />
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  onClick={() => window.open(completionResult.wordpressDetails.wpAdminUrl, '_blank')}
+                                  className="bg-green-600 hover:bg-green-700"
+                                >
+                                  <Eye className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3">
+                              <div>
+                                <Label className="text-gray-300 text-sm">👤 שם משתמש:</Label>
+                                <div className="flex items-center gap-2 mt-1">
+                                  <Input
+                                    value={completionResult.wordpressDetails.wpUsername}
+                                    readOnly
+                                    className="bg-gray-700 border-gray-600 text-white text-sm"
+                                  />
+                                  <Button
+                                    size="sm"
+                                    onClick={() => copyToClipboard(completionResult.wordpressDetails.wpUsername)}
+                                    className="bg-gray-600 hover:bg-gray-700"
+                                  >
+                                    <Copy className="w-4 h-4" />
+                                  </Button>
+                                </div>
+                              </div>
+
+                              <div>
+                                <Label className="text-gray-300 text-sm">🔑 סיסמה:</Label>
+                                <div className="flex items-center gap-2 mt-1">
+                                  <Input
+                                    value={completionResult.wordpressDetails.wpPassword}
+                                    readOnly
+                                    className="bg-gray-700 border-gray-600 text-white text-sm"
+                                  />
+                                  <Button
+                                    size="sm"
+                                    onClick={() => copyToClipboard(completionResult.wordpressDetails.wpPassword)}
+                                    className="bg-gray-600 hover:bg-gray-700"
+                                  >
+                                    <Copy className="w-4 h-4" />
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Instructions */}
+                        <div className="bg-blue-900/20 p-4 rounded-lg border border-blue-700/30">
+                          <h4 className="text-blue-200 font-semibold mb-2">📋 הוראות שימוש:</h4>
+                          <div className="text-blue-300 text-sm space-y-1">
+                            <p>1. לחץ על "צפה באתר" כדי לראות את האתר החי</p>
+                            <p>2. לחץ על "כניסה לניהול" כדי להיכנס לוורדפרס</p>
+                            <p>3. השתמש בשם המשתמש והסיסמה להתחברות</p>
+                            <p>4. כעת תוכל לערוך ולנהל את האתר שלך!</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Action Buttons */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <Button
+                        onClick={() => {
+                          onComplete(completionResult);
+                          onClose();
+                        }}
+                        className="bg-green-600 hover:bg-green-700"
+                        size="lg"
+                      >
+                        <CheckCircle className="w-5 h-5 ml-2" />
+                        סיום ושמירה
+                      </Button>
+                      <Button
+                        onClick={() => window.open(completionResult.wordpressDetails.siteUrl, '_blank')}
+                        variant="outline"
+                        className="border-green-600 text-green-400 hover:bg-green-600 hover:text-white"
+                        size="lg"
+                      >
+                        <Globe className="w-5 h-5 ml-2" />
+                        צפה באתר
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
             </ScrollArea>
           </div>
 
           {/* Footer Navigation */}
-          {currentStep !== 'processing' && (
+          {currentStep !== 'processing' && currentStep !== 'complete' && (
             <div className="p-6 border-t border-gray-800 flex justify-between">
               <Button
                 onClick={() => {
@@ -538,7 +711,7 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                 }
               >
                 {currentStep === 'payment' ? (
-                  <>ממתין לבחירת תשלום</>
+                  <>ממתין לبחירת תשלום</>
                 ) : (
                   <>
                     הבא
