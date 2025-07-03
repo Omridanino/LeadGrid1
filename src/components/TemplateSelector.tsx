@@ -1,14 +1,11 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
   X, 
-  Rocket, 
   CheckCircle, 
   ExternalLink,
-  ArrowRight,
   Globe,
   Sparkles,
   Edit,
@@ -18,7 +15,6 @@ import {
 import { TemplateData } from '@/types/template';
 import { templates } from '@/data/templates';
 import TemplateEditor from './TemplateEditor';
-import { RealPublishingService } from '@/services/realPublishingService';
 
 interface TemplateSelectorProps {
   isOpen: boolean;
@@ -29,7 +25,6 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateData | null>(null);
   const [editingTemplate, setEditingTemplate] = useState<TemplateData | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [isPublishing, setIsPublishing] = useState(false);
   const [publishedUrl, setPublishedUrl] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -48,20 +43,10 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
     setEditingTemplate(updatedTemplate);
   };
 
-  const handlePublishNow = async () => {
-    if (editingTemplate) {
-      setIsPublishing(true);
-      try {
-        const url = await RealPublishingService.publishSite(editingTemplate);
-        setPublishedUrl(url);
-        setShowSuccess(true);
-        setIsPublishing(false);
-      } catch (error) {
-        console.error('Publishing failed:', error);
-        setIsPublishing(false);
-        alert('פרסום נכשל - נסה שוב');
-      }
-    }
+  const handlePublishSuccess = (url: string) => {
+    setPublishedUrl(url);
+    setShowSuccess(true);
+    setIsEditing(false);
   };
 
   const openSite = () => {
@@ -172,6 +157,7 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
         template={editingTemplate}
         onTemplateChange={handleTemplateChange}
         onClose={() => setIsEditing(false)}
+        onPublishSuccess={handlePublishSuccess}
       />
     );
   }
@@ -184,7 +170,7 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-white text-2xl font-bold">🚀 בחר תבנית לאתר שלך</h2>
-              <p className="text-green-400 text-sm mt-1">תבניות מקצועיות מוכנות לפרסום מיידי!</p>
+              <p className="text-green-400 text-sm mt-1">תבניות מקצועיות מוכנות לעריכה!</p>
             </div>
             <Button
               onClick={onClose}
@@ -207,10 +193,10 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
                 </Badge>
                 <Badge className="bg-green-600 text-white px-4 py-2">
                   <Globe className="w-4 h-4 ml-2" />
-                  פרסום מיידי
+                  מוכן לעריכה
                 </Badge>
               </div>
-              <p className="text-gray-400">בחר תבנית שמתאימה לעסק שלך ונפרסם אותה מיד</p>
+              <p className="text-gray-400">בחר תבנית שמתאימה לעסק שלך ותוכל לערוך אותה לפי הצרכים שלך</p>
             </div>
 
             {/* Templates Grid */}
@@ -263,37 +249,18 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
               ))}
             </div>
 
-            {/* Action Buttons */}
+            {/* Action Button */}
             {selectedTemplate && (
               <div className="text-center space-y-4">
-                <div className="flex justify-center gap-4">
-                  <Button
-                    onClick={handleEditTemplate}
-                    className="bg-blue-600 hover:bg-blue-700 px-8 py-3 text-lg font-bold"
-                  >
-                    <Edit className="w-5 h-5 ml-2" />
-                    ערוך את התבנית
-                  </Button>
-                  <Button
-                    onClick={handlePublishNow}
-                    disabled={isPublishing}
-                    className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 px-8 py-3 text-lg font-bold"
-                  >
-                    {isPublishing ? (
-                      <>
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin ml-2" />
-                        מפרסם...
-                      </>
-                    ) : (
-                      <>
-                        פרסם מיד
-                        <Rocket className="w-5 h-5 mr-2" />
-                      </>
-                    )}
-                  </Button>
-                </div>
+                <Button
+                  onClick={handleEditTemplate}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-12 py-4 text-lg font-bold"
+                >
+                  <Edit className="w-5 h-5 ml-2" />
+                  התחל לערוך את התבנית
+                </Button>
                 <p className="text-gray-500 text-sm">
-                  תוכל לערוך את התבנית לפני הפרסום או לפרסם מיד כמו שהיא
+                  תוכל לערוך את התבנית ולהתאים אותה לצרכים שלך לפני הפרסום
                 </p>
               </div>
             )}
