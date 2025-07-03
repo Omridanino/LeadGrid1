@@ -37,12 +37,16 @@ export const WordPressAuthCallback = () => {
         
         if (success) {
           setStatus('success');
-          setMessage('האימות הושלם בהצלחה! כעת תוכל ליצור אתרי WordPress.com אמיתיים.');
+          setMessage('האימות הושלם בהצלחה! חוזר לאשף יצירת האתר...');
           
-          // Redirect back to the main app after 3 seconds
+          // Redirect back to the previous page immediately
           setTimeout(() => {
-            navigate('/');
-          }, 3000);
+            if (window.history.length > 1) {
+              window.history.back();
+            } else {
+              navigate('/');
+            }
+          }, 1500);
         } else {
           setStatus('error');
           setMessage('שגיאה בעיבוד האימות. אנא נסה שוב.');
