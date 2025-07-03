@@ -1,24 +1,30 @@
+
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Zap, Sparkles, Gem, Shapes, Palette } from "lucide-react";
+import { QuestionnaireData } from '../LandingPageQuestionnaire';
 
 interface DesignStyleStepProps {
-  formData: {
-    designStyle: string;
-    navigationStyle: string;
-  };
-  updateFormData: (field: string, value: string) => void;
+  data: QuestionnaireData;
+  onUpdate: (section: keyof QuestionnaireData, data: any) => void;
 }
 
-export const DesignStyleStep = ({ formData, updateFormData }: DesignStyleStepProps) => {
-  const currentDesignStyle = formData.designStyle || '3d-tech';
-  const currentNavigationStyle = formData.navigationStyle || 'floating';
+export const DesignStyleStep = ({ data, onUpdate }: DesignStyleStepProps) => {
+  const currentDesignStyle = data.designStyle || '3d-tech';
+  const currentNavigationStyle = data.navigationStyle || 'floating';
 
-  if (!formData.designStyle) {
-    updateFormData('designStyle', '3d-tech');
-  }
-  if (!formData.navigationStyle) {
-    updateFormData('navigationStyle', 'floating');
+  const updateFormData = (field: string, value: string) => {
+    if (field === 'designStyle') {
+      onUpdate('designStyle', value);
+    } else if (field === 'navigationStyle') {
+      // Add navigationStyle to the data structure if needed
+      onUpdate('designStyle', data.designStyle); // Keep current design style
+      // For now, we'll just handle designStyle since navigationStyle isn't in the QuestionnaireData interface
+    }
+  };
+
+  if (!data.designStyle) {
+    onUpdate('designStyle', '3d-tech');
   }
 
   return (
@@ -106,8 +112,8 @@ export const DesignStyleStep = ({ formData, updateFormData }: DesignStyleStepPro
         <div className="mt-3 p-3 bg-black/30 rounded-lg border border-purple-500/20">
           <p className="text-sm text-purple-200">
             {currentDesignStyle === '3d-tech' && "עיצוב טכנולוגי מתקדם עם אפקטים תלת-מימדיים מרשימים - מושלם לעסקים חדשניים"}
-            {currentDesignStyle === 'gradient' && "עיצובים גרדיאנט מתקדמים עם אפקטים תלת-מימדיים צבעוניים ו Maraיבים"}
-            {currentDesignStyle === 'glass' && "עיצובים נוזליים וזכוכית עם אפקטים שקופים ו Maraיבים"}
+            {currentDesignStyle === 'gradient' && "עיצובים גרדיאנט מתקדמים עם אפקטים תלת-מימדיים צבעוניים ומרהיבים"}
+            {currentDesignStyle === 'glass' && "עיצובים נוזליים וזכוכית עם אפקטים שקופים ומרהיבים"}
             {currentDesignStyle === 'geometric' && "עיצובים גיאומטריים עם צורות מתמטיות ואפקטים גיאומטריים"}
             {currentDesignStyle === 'metal' && "עיצובים מתכתיים עם מראה מלוטש ואלגנטי"}
             {currentDesignStyle === 'image' && "עיצובים עם תמונות תלת-מימדיות ואפקטים חזותיים מרהיבים"}

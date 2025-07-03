@@ -67,12 +67,10 @@ const Index = () => {
       )}
       
       {currentState === 'template-selection' && (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-          <TemplateSelector 
-            onSelect={handleTemplateSelect}
-            onBack={handleBackToQuestionnaire}
-          />
-        </div>
+        <TemplateSelector 
+          onSelect={handleTemplateSelect}
+          onBack={handleBackToQuestionnaire}
+        />
       )}
       
       {currentState === 'editing' && selectedTemplate && (
