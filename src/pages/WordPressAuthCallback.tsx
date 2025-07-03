@@ -37,16 +37,24 @@ export const WordPressAuthCallback = () => {
         
         if (success) {
           setStatus('success');
-          setMessage('האימות הושלם בהצלחה! חוזר לאשף יצירת האתר...');
+          setMessage('האימות הושלם בהצלחה! סוגר חלון...');
           
-          // Redirect back to the previous page immediately
-          setTimeout(() => {
-            if (window.history.length > 1) {
-              window.history.back();
-            } else {
-              navigate('/');
-            }
-          }, 1500);
+          // If opened in popup, close it and notify parent
+          if (window.opener) {
+            // Notify parent window and close popup
+            setTimeout(() => {
+              window.close();
+            }, 1000);
+          } else {
+            // If not in popup, redirect back
+            setTimeout(() => {
+              if (window.history.length > 1) {
+                window.history.back();
+              } else {
+                navigate('/');
+              }
+            }, 1500);
+          }
         } else {
           setStatus('error');
           setMessage('שגיאה בעיבוד האימות. אנא נסה שוב.');

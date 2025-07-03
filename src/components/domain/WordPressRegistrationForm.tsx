@@ -76,14 +76,44 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
 
   const handleAuthenticate = async () => {
     try {
-      console.log('🔄 Starting WordPress authentication...');
+      console.log('🔄 Starting WordPress authentication with popup...');
       
-      // Instead of trying to redirect via JavaScript, 
-      // directly navigate to the Edge Function redirect
-      const edgeFunctionUrl = 'https://crkgabcjxkdpnhipvugu.supabase.co/functions/v1/wordpress-auth?action=redirect-to-auth';
-      console.log('🔗 Redirecting to Edge Function:', edgeFunctionUrl);
+      // Get auth URL from Edge Function
+      const response = await fetch('https://crkgabcjxkdpnhipvugu.supabase.co/functions/v1/wordpress-auth?action=get-auth-url');
+      const data = await response.json();
       
-      window.location.href = edgeFunctionUrl;
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to get auth URL');
+      }
+      
+      console.log('🔗 Opening WordPress.com OAuth in popup...');
+      
+      // Open in popup with specific settings to avoid blocking
+      const popup = window.open(
+        data.authUrl,
+        'wordpress-auth',
+        'width=600,height=700,scrollbars=yes,resizable=yes,status=yes,location=yes,toolbar=no,menubar=no'
+      );
+      
+      if (!popup) {
+        // Fallback: redirect in current window
+        console.log('Popup blocked, falling back to current window redirect');
+        window.location.href = data.authUrl;
+        return;
+      }
+      
+      // Monitor popup for completion
+      const checkClosed = setInterval(() => {
+        if (popup.closed) {
+          clearInterval(checkClosed);
+          console.log('Popup closed, checking authentication status...');
+          // Refresh authentication status
+          setTimeout(() => {
+            checkAuthentication();
+          }, 1000);
+        }
+      }, 1000);
+      
     } catch (error) {
       console.error('❌ Authentication error:', error);
       alert(`שגיאה באימות: ${error.message}`);
