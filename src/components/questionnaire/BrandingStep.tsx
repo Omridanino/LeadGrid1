@@ -2,24 +2,31 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { QuestionnaireData } from '../LandingPageQuestionnaire';
 
 interface BrandingStepProps {
-  formData: {
-    brandColors: string;
-    contactInfo: string;
-  };
-  updateFormData: (field: string, value: string) => void;
+  data: QuestionnaireData;
+  onUpdate: (section: keyof QuestionnaireData, data: any) => void;
 }
 
-export const BrandingStep = ({ formData, updateFormData }: BrandingStepProps) => {
+export const BrandingStep = ({ data, onUpdate }: BrandingStepProps) => {
+  const updateField = (field: string, value: string) => {
+    // For now, we'll add these to the branding section or create a new section
+    const updatedBranding = {
+      ...data.branding,
+      [field]: value
+    };
+    onUpdate('branding', updatedBranding);
+  };
+
   return (
     <div className="space-y-6">
       <div>
         <Label htmlFor="brandColors" className="text-white font-semibold">צבעי המותג המועדפים *</Label>
         <Input
           id="brandColors"
-          value={formData.brandColors}
-          onChange={(e) => updateFormData('brandColors', e.target.value)}
+          value={data.branding.primaryColor || ''}
+          onChange={(e) => updateField('primaryColor', e.target.value)}
           className="bg-gray-700 border-gray-600 text-white"
           placeholder="לדוגמה: כחול וכסף, אדום ולבן, ירוק וזהב, ורוד וסגול..."
         />
@@ -30,8 +37,8 @@ export const BrandingStep = ({ formData, updateFormData }: BrandingStepProps) =>
         <Label htmlFor="contactInfo" className="text-white font-semibold">פרטי יצירת קשר</Label>
         <Textarea
           id="contactInfo"
-          value={formData.contactInfo}
-          onChange={(e) => updateFormData('contactInfo', e.target.value)}
+          value={data.branding.contactInfo || ''}
+          onChange={(e) => updateField('contactInfo', e.target.value)}
           className="bg-gray-700 border-gray-600 text-white"
           placeholder="טלפון: 050-1234567&#10;אימייל: info@business.co.il&#10;כתובת: רחוב הדוגמה 123, תל אביב"
           rows={3}
