@@ -3,3 +3,6 @@ project_id = "crkgabcjxkdpnhipvugu"
 
 [functions.wordpress-auth]
 verify_jwt = false
+
+[functions.wordpress-integration]
+verify_jwt = false

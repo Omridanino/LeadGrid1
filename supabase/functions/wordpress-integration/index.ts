@@ -68,12 +68,14 @@ async function handleTestConnection(req: Request) {
     // נסה להתחבר ל-WordPress REST API
     const apiUrl = `${siteUrl.replace(/\/$/, '')}/wp-json/wp/v2/users/me`;
     
-    const auth = btoa(`${username}:${password}`);
+    // יצירת Basic Auth header
+    const credentials = `${username}:${password}`;
+    const encodedCredentials = btoa(unescape(encodeURIComponent(credentials)));
     
     const response = await fetch(apiUrl, {
       method: 'GET',
       headers: {
-        'Authorization': `Basic ${auth}`,
+        'Authorization': `Basic ${encodedCredentials}`,
         'Content-Type': 'application/json',
       },
     });
@@ -131,7 +133,10 @@ async function handleAddLandingPage(req: Request) {
     
     // הוספת הדף ל-WordPress
     const apiUrl = `${siteUrl.replace(/\/$/, '')}/wp-json/wp/v2/pages`;
-    const auth = btoa(`${username}:${password}`);
+    
+    // יצירת Basic Auth header
+    const credentials = `${username}:${password}`;
+    const encodedCredentials = btoa(unescape(encodeURIComponent(credentials)));
     
     const pageData = {
       title: landingPageData.title || 'דף נחיתה חדש',
@@ -143,7 +148,7 @@ async function handleAddLandingPage(req: Request) {
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
-        'Authorization': `Basic ${auth}`,
+        'Authorization': `Basic ${encodedCredentials}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(pageData),
