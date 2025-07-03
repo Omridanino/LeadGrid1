@@ -38,6 +38,8 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
   });
 
   useEffect(() => {
+    // ניקוי טוקנים ישנים
+    localStorage.removeItem('wp_access_token');
     checkAuthentication();
   }, []);
 
@@ -151,7 +153,10 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
                         התחבר עכשיו
                       </Button>
                       <Button
-                        onClick={checkAuthentication}
+                        onClick={() => {
+                          console.log('🔄 בודק אימות...');
+                          checkAuthentication();
+                        }}
                         size="sm"
                         variant="outline"
                         className="border-gray-600 text-white hover:bg-gray-700"
@@ -334,8 +339,36 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
               <Alert>
                 <AlertTriangle className="h-4 w-4" />
                 <AlertDescription className="text-right">
-                  <strong>חשוב:</strong> נדרש אימות WordPress.com כדי ליצור אתרים אמיתיים.
-                  לחץ על "התחבר עכשיו" למעלה כדי להתחיל.
+                  <strong>הוראות:</strong><br/>
+                  1. לחץ על "התחבר עכשיו" - יפתח טאב חדש<br/>
+                  2. התחבר ל-WordPress.com בטאב החדש<br/>
+                  3. אחרי ההתחברות, העתק את כל ה-URL מהדפדפן<br/>
+                  4. הדבק אותו כאן ולחץ "אמת":
+                  <div className="mt-3 flex gap-2">
+                    <Input
+                      placeholder="הדבק כאן את ה-URL עם קוד האימות..."
+                      onChange={(e) => {
+                        const url = e.target.value;
+                        const match = url.match(/code=([^&]+)/);
+                        if (match) {
+                          const code = match[1];
+                          console.log('🔑 נמצא קוד אימות:', code);
+                          RealWordPressService.handleOAuthCallback(code).then(success => {
+                            if (success) {
+                              checkAuthentication();
+                              alert('אימות הושלם בהצלחה!');
+                            } else {
+                              alert('שגיאה בעיבוד הקוד');
+                            }
+                          });
+                        }
+                      }}
+                      className="bg-gray-700 border-gray-600 text-white"
+                    />
+                    <Button size="sm" onClick={() => alert('הדבק את ה-URL בשדה ולחץ Enter')}>
+                      אמת
+                    </Button>
+                  </div>
                 </AlertDescription>
               </Alert>
             </div>
