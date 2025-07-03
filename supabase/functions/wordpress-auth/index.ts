@@ -37,6 +37,9 @@ serve(async (req) => {
       case 'get-auth-url':
         return handleGetAuthUrl(config);
       
+      case 'redirect-to-auth':
+        return handleRedirectToAuth(config);
+      
       case 'exchange-token':
         return await handleTokenExchange(req, config);
       
@@ -50,7 +53,7 @@ serve(async (req) => {
         console.error('Invalid action:', action);
         return new Response(
           JSON.stringify({ 
-            error: 'Invalid action parameter. Expected: get-auth-url, exchange-token, verify-token, or create-site',
+            error: 'Invalid action parameter. Expected: get-auth-url, redirect-to-auth, exchange-token, verify-token, or create-site',
             success: false 
           }),
           { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -91,6 +94,36 @@ function handleGetAuthUrl(config: WordPressOAuthConfig) {
     return new Response(
       JSON.stringify({ 
         error: 'Failed to generate auth URL',
+        success: false 
+      }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+}
+
+function handleRedirectToAuth(config: WordPressOAuthConfig) {
+  try {
+    const authUrl = new URL('https://public-api.wordpress.com/oauth2/authorize');
+    authUrl.searchParams.set('client_id', config.clientId);
+    authUrl.searchParams.set('redirect_uri', config.redirectUri);
+    authUrl.searchParams.set('response_type', 'code');
+    authUrl.searchParams.set('scope', 'auth');
+
+    console.log('Redirecting to WordPress.com OAuth via Edge Function');
+
+    // Return a redirect response
+    return new Response(null, {
+      status: 302,
+      headers: {
+        ...corsHeaders,
+        'Location': authUrl.toString()
+      }
+    });
+  } catch (error) {
+    console.error('Error redirecting to auth:', error);
+    return new Response(
+      JSON.stringify({ 
+        error: 'Failed to redirect to auth',
         success: false 
       }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

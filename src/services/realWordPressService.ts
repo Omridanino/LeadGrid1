@@ -72,10 +72,10 @@ export class RealWordPressService {
         throw new Error('No auth URL received from server');
       }
       
-      console.log('🔗 Redirecting to WordPress.com OAuth:', data.authUrl);
+      console.log('🔗 Redirecting to WordPress.com OAuth via Edge Function...');
       
-      // Redirect in current window (not popup)
-      window.location.href = data.authUrl;
+      // Use Edge Function redirect to avoid CORS issues
+      window.location.href = `${this.EDGE_FUNCTION_URL}?action=redirect-to-auth`;
     } catch (error) {
       console.error('❌ Failed to initiate WordPress.com OAuth:', error);
       throw new Error(`OAuth initiation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
