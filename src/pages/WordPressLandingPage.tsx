@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -12,8 +12,14 @@ import {
   Star,
   CheckCircle,
   ArrowRight,
-  ExternalLink
+  ExternalLink,
+  Settings,
+  Edit,
+  Eye,
+  Loader2
 } from 'lucide-react';
+import { WordPressApiService } from '@/services/wordpressApiService';
+import { useToast } from "@/hooks/use-toast";
 
 interface DemoContent {
   userData: any;
@@ -23,34 +29,99 @@ interface DemoContent {
 
 export const WordPressLandingPage = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [content, setContent] = useState<DemoContent | null>(null);
   const [loading, setLoading] = useState(true);
+  const [wpSiteData, setWpSiteData] = useState<any>(null);
+  const [isCreatingWordPress, setIsCreatingWordPress] = useState(false);
   
   const demo = searchParams.get('demo');
   const user = searchParams.get('user');
   const t = searchParams.get('t');
 
   useEffect(() => {
-    if (user) {
-      // Try to load demo content from localStorage
-      const storedContent = localStorage.getItem(`demo_content_${user}`);
-      if (storedContent) {
-        try {
-          const parsedContent = JSON.parse(storedContent);
-          setContent(parsedContent);
-        } catch (error) {
-          console.error('Failed to parse demo content:', error);
+    const loadDemoContent = () => {
+      if (user) {
+        // Try to load demo content from localStorage
+        const storedContent = localStorage.getItem(`demo_content_${user}`);
+        if (storedContent) {
+          try {
+            const parsedContent = JSON.parse(storedContent);
+            setContent(parsedContent);
+            
+            // Check if we have WordPress site data
+            const wpData = localStorage.getItem(`wp_site_${user}`);
+            if (wpData) {
+              setWpSiteData(JSON.parse(wpData));
+            }
+          } catch (error) {
+            console.error('Failed to parse demo content:', error);
+          }
         }
       }
-    }
-    setLoading(false);
+      setLoading(false);
+    };
+
+    loadDemoContent();
   }, [user]);
+
+  const createRealWordPressSite = async () => {
+    if (!content || !user) return;
+    
+    setIsCreatingWordPress(true);
+    
+    try {
+      console.log('🚀 Creating real WordPress site for user:', user);
+      
+      const wpConfig = {
+        domain: demo || `site-${user}`,
+        siteTitle: content.userData.websiteTitle || content.userData.businessName || 'האתר שלי',
+        adminUser: 'admin',
+        adminPassword: 'SecurePass123!',
+        adminEmail: content.userData.email || 'admin@example.com',
+        language: 'he_IL'
+      };
+
+      const result = await WordPressApiService.createWordPressSite(wpConfig);
+      
+      if (result.success) {
+        // Save WordPress site data
+        localStorage.setItem(`wp_site_${user}`, JSON.stringify(result));
+        setWpSiteData(result);
+        
+        toast({
+          title: "🎉 אתר וורדפרס נוצר!",
+          description: "האתר שלך מוכן לשימוש עם וורדפרס אמיתי",
+        });
+
+        // Deploy template content to WordPress
+        if (result.siteUrl) {
+          await WordPressApiService.deployTemplateContent(
+            result.siteUrl,
+            result.wpConfig,
+            content
+          );
+        }
+      } else {
+        throw new Error(result.error || 'Failed to create WordPress site');
+      }
+    } catch (error) {
+      console.error('WordPress creation failed:', error);
+      toast({
+        title: "❌ שגיאה ביצירת האתר",
+        description: "לא הצלחנו ליצור את אתר הוורדפרס. אנא נסה שוב.",
+      });
+    } finally {
+      setIsCreatingWordPress(false);
+    }
+  };
 
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <Loader2 className="w-12 h-12 text-blue-500 animate-spin mx-auto mb-4" />
           <p className="text-white">טוען את האתר שלך...</p>
         </div>
       </div>
@@ -63,14 +134,16 @@ export const WordPressLandingPage = () => {
         <Card className="bg-gray-800 border-gray-700 max-w-md">
           <CardContent className="p-8 text-center">
             <Globe className="w-16 h-16 text-blue-400 mx-auto mb-4" />
-            <h1 className="text-white text-xl font-bold mb-2">אתר וורדפרס אמיתי</h1>
+            <h1 className="text-white text-xl font-bold mb-2">לא נמצא תוכן</h1>
             <p className="text-gray-400 mb-4">
-              זהו אתר וורדפרס אמיתי שנוצר עבור הדומיין: <strong>{demo}</strong>
+              לא נמצא תוכן עבור האתר הזה
             </p>
-            <Badge className="bg-green-600 mb-4">אתר פעיל</Badge>
-            <p className="text-gray-300 text-sm">
-              האתר מוכן לשימוש עם כל התכנים שיצרת!
-            </p>
+            <Button 
+              onClick={() => navigate('/')}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              חזור לעמוד הבית
+            </Button>
           </CardContent>
         </Card>
       </div>
@@ -82,6 +155,82 @@ export const WordPressLandingPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900" dir="rtl">
+      {/* WordPress Management Bar */}
+      <div className="bg-black/80 backdrop-blur-sm border-b border-white/10 p-4">
+        <div className="container mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Globe className="w-6 h-6 text-blue-400" />
+              <span className="text-white font-semibold">ניהול אתר וורדפרס</span>
+            </div>
+            {wpSiteData ? (
+              <Badge className="bg-green-600 text-white">אתר פעיל</Badge>
+            ) : (
+              <Badge className="bg-orange-600 text-white">דמו</Badge>
+            )}
+          </div>
+          
+          <div className="flex items-center gap-3">
+            {wpSiteData ? (
+              <>
+                <Button
+                  onClick={() => window.open(wpSiteData.siteUrl, '_blank')}
+                  size="sm"
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
+                  <Eye className="w-4 h-4 ml-2" />
+                  צפה באתר
+                </Button>
+                <Button
+                  onClick={() => window.open(wpSiteData.adminUrl, '_blank')}
+                  size="sm"
+                  className="bg-purple-600 hover:bg-purple-700"
+                >
+                  <Settings className="w-4 h-4 ml-2" />
+                  ניהול וורדפרס
+                </Button>
+              </>
+            ) : (
+              <Button
+                onClick={createRealWordPressSite}
+                disabled={isCreatingWordPress}
+                size="sm"
+                className="bg-green-600 hover:bg-green-700"
+              >
+                {isCreatingWordPress ? (
+                  <Loader2 className="w-4 h-4 ml-2 animate-spin" />
+                ) : (
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                )}
+                {isCreatingWordPress ? 'יוצר אתר...' : 'צור אתר וורדפרס אמיתי'}
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Site Information */}
+      {wpSiteData && (
+        <div className="bg-green-900/20 border-b border-green-500/20 p-4">
+          <div className="container mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+              <div>
+                <span className="text-green-400 font-semibold">כתובת האתר:</span>
+                <p className="text-white">{wpSiteData.siteUrl}</p>
+              </div>
+              <div>
+                <span className="text-green-400 font-semibold">משתמש ניהול:</span>
+                <p className="text-white">{wpSiteData.wpConfig?.username}</p>
+              </div>
+              <div>
+                <span className="text-green-400 font-semibold">סיסמה:</span>
+                <p className="text-white font-mono">{wpSiteData.wpConfig?.password}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header/Navigation */}
       <header className="bg-black/20 backdrop-blur-sm border-b border-white/10">
         <div className="container mx-auto px-4 py-4">
@@ -91,7 +240,9 @@ export const WordPressLandingPage = () => {
               <h1 className="text-white text-xl font-bold">
                 {userData.websiteTitle || 'האתר שלי'}
               </h1>
-              <Badge className="bg-green-600 text-white">WordPress</Badge>
+              <Badge className="bg-blue-600 text-white">
+                {wpSiteData ? 'WordPress אמיתי' : 'דמו WordPress'}
+              </Badge>
             </div>
             <nav className="hidden md:flex items-center gap-6">
               <a href="#hero" className="text-white hover:text-blue-400 transition-colors">בית</a>
@@ -109,7 +260,7 @@ export const WordPressLandingPage = () => {
           <div className="max-w-4xl mx-auto">
             <Badge className="bg-blue-600 text-white mb-6 inline-flex items-center gap-2">
               <CheckCircle className="w-4 h-4" />
-              אתר וורדפרס אמיתי פעיל
+              {wpSiteData ? 'אתר וורדפרס אמיתי פעיל' : 'אתר דמו - יכול להפוך לאמיתי'}
             </Badge>
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
               {sections.hero?.title || userData.websiteTitle || 'ברוכים הבאים לאתר שלנו'}
@@ -122,9 +273,14 @@ export const WordPressLandingPage = () => {
                 <ArrowRight className="w-5 h-5 ml-2" />
                 {sections.hero?.ctaText || 'בואו נתחיל'}
               </Button>
-              <Button variant="outline" className="border-white/20 text-white hover:bg-white/10" size="lg">
+              <Button 
+                variant="outline" 
+                className="border-white/20 text-white hover:bg-white/10" 
+                size="lg"
+                onClick={() => navigate('/')}
+              >
                 <ExternalLink className="w-5 h-5 ml-2" />
-                לחזור לבונה האתרים
+                חזור לבונה האתרים
               </Button>
             </div>
           </div>
@@ -171,7 +327,7 @@ export const WordPressLandingPage = () => {
                 {sections.about.title || 'אודותינו'}
               </h2>
               <p className="text-gray-300 text-lg leading-relaxed">
-                {sections.about.description || sections.about.content || 'אנחנו חברה מובילה בתחומנו עם ניסיון רב ומחויבות לשירות מעולה.'}
+                {sections.about.description || sections.about.content || 'אנחנו חברה מובילה בתחומنו עם ניסיון רב ומחויבות לשירות מעולה.'}
               </p>
             </div>
           </div>
@@ -225,13 +381,15 @@ export const WordPressLandingPage = () => {
           <div className="flex items-center justify-center gap-2 mb-4">
             <Globe className="w-6 h-6 text-blue-400" />
             <span className="text-white font-semibold">{userData.websiteTitle}</span>
-            <Badge className="bg-green-600 text-white">WordPress</Badge>
+            <Badge className="bg-blue-600 text-white">
+              {wpSiteData ? 'WordPress' : 'דמו'}
+            </Badge>
           </div>
           <p className="text-gray-400">
             © 2024 {userData.company || userData.displayName || 'האתר שלנו'}. כל הזכויות שמורות.
           </p>
           <p className="text-gray-500 text-sm mt-2">
-            אתר זה נבנה עם Leadgrid WordPress Builder
+            {wpSiteData ? 'אתר וורדפרס אמיתי' : 'אתר דמו'} - נבנה עם Leadgrid WordPress Builder
           </p>
         </div>
       </footer>
