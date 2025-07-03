@@ -19,7 +19,7 @@ import { generateRichContent } from '@/utils/contentGenerator';
 import { RealPublishingService } from '@/services/realPublishingService';
 import { PublishingProgress } from './publishing/PublishingProgress';
 
-// קומפוננטים קיימים של השאלון
+// קומפוננטים של השאלון החדש
 import { BusinessInfoStep } from './questionnaire/BusinessInfoStep';
 import { GoalsAndFeaturesStep } from './questionnaire/GoalsAndFeaturesStep';
 import { DesignStyleStep } from './questionnaire/DesignStyleStep';
@@ -45,41 +45,6 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
 
   const handlePrev = () => {
     setCurrentStep((prevStep) => prevStep - 1);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
-
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    setFormData(prevState => {
-      let selectedElements = [...prevState.selectedElements];
-      if (checked) {
-        selectedElements.push(name);
-      } else {
-        selectedElements = selectedElements.filter(item => item !== name);
-      }
-      return { ...prevState, selectedElements };
-    });
-  };
-
-  const handleDesignStyleChange = (style: string) => {
-    setFormData(prevState => ({
-      ...prevState,
-      designStyle: style
-    }));
-  };
-
-  const handleNavigationStyleChange = (style: string) => {
-    setFormData(prevState => ({
-      ...prevState,
-      navigationStyle: style
-    }));
   };
 
   const updateFormData = (field: string, value: string | string[]) => {
