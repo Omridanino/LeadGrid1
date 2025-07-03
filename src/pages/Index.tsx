@@ -1,12 +1,10 @@
 
 import { useState } from 'react';
 import { LandingPageQuestionnaire, QuestionnaireData } from '@/components/LandingPageQuestionnaire';
-import { TemplateSelector } from '@/components/TemplateSelector';
+import TemplateSelector from '@/components/TemplateSelector';
 import { TemplateEditor } from '@/components/template-editor/TemplateEditor';
 import { LaunchSection } from '@/components/LaunchSection';
 import { TemplateData } from '@/types/template';
-import { generateContentFromQuestionnaire } from '@/utils/contentGenerator';
-import { getDesignVariation } from '@/utils/designVariations';
 
 type AppState = 'questionnaire' | 'template-selection' | 'editing' | 'launch';
 
@@ -24,24 +22,18 @@ const Index = () => {
   const handleTemplateSelect = (template: TemplateData) => {
     if (!questionnaireData) return;
     
-    // Generate content based on questionnaire
-    const generatedContent = generateContentFromQuestionnaire(questionnaireData, template);
-    
-    // Apply design variations
-    const designVariation = getDesignVariation(questionnaireData.designStyle);
-    const finalTemplate: TemplateData = {
-      ...generatedContent,
+    // Apply basic customization based on questionnaire
+    const customizedTemplate: TemplateData = {
+      ...template,
       styles: {
-        ...generatedContent.styles,
-        ...designVariation.styles,
+        ...template.styles,
         primaryColor: questionnaireData.branding.primaryColor,
         secondaryColor: questionnaireData.branding.secondaryColor,
-      },
-      effects: designVariation.effects
+      }
     };
     
-    console.log('Template selected and customized:', finalTemplate);
-    setSelectedTemplate(finalTemplate);
+    console.log('Template selected and customized:', customizedTemplate);
+    setSelectedTemplate(customizedTemplate);
     setCurrentState('editing');
   };
 
@@ -86,7 +78,6 @@ const Index = () => {
       {currentState === 'editing' && selectedTemplate && (
         <TemplateEditor 
           template={selectedTemplate}
-          questionnaireData={questionnaireData}
           onComplete={handleEditComplete}
           onBack={handleBackToTemplateSelection}
         />

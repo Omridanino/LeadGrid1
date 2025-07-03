@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -144,8 +143,8 @@ export const LeadgridDomainWizard = ({ isOpen, onClose, onComplete, template }: 
   };
 
   const getTotalPrice = () => {
-    const domainPrice = searchResults.find(r => r.domain === selectedDomain)?.price || 0;
-    const hostingPrice = selectedPlan?.price || 0;
+    const domainPrice = searchResults.find(r => r.domain === selectedDomain)?.ourPrice || 0;
+    const hostingPrice = selectedPlan?.ourPrice || 0;
     const privacyPrice = paymentDetails.whoisPrivacy ? 15 : 0;
     const yearlyMultiplier = paymentDetails.years;
     
@@ -274,7 +273,7 @@ export const LeadgridDomainWizard = ({ isOpen, onClose, onComplete, template }: 
                               
                               {result.available && (
                                 <div className="text-left">
-                                  <div className="text-white font-semibold text-lg">₪{result.price}/שנה</div>
+                                  <div className="text-white font-semibold text-lg">₪{result.ourPrice}/שנה</div>
                                   <Button
                                     size="sm"
                                     onClick={() => setSelectedDomain(result.domain)}
@@ -327,7 +326,7 @@ export const LeadgridDomainWizard = ({ isOpen, onClose, onComplete, template }: 
                         <CardHeader className="text-center">
                           <CardTitle className="text-white text-xl">{plan.name}</CardTitle>
                           <div className="text-center">
-                            <div className="text-4xl font-bold text-white">₪{plan.price}</div>
+                            <div className="text-4xl font-bold text-white">₪{plan.ourPrice}</div>
                             <div className="text-gray-400">לשנה</div>
                           </div>
                         </CardHeader>
@@ -514,13 +513,13 @@ export const LeadgridDomainWizard = ({ isOpen, onClose, onComplete, template }: 
                           <div className="flex justify-between items-center">
                             <span className="text-gray-300">דומיין: {selectedDomain}</span>
                             <span className="text-white font-semibold">
-                              ₪{searchResults.find(r => r.domain === selectedDomain)?.price || 0}
+                              ₪{searchResults.find(r => r.domain === selectedDomain)?.ourPrice || 0}
                             </span>
                           </div>
                           
                           <div className="flex justify-between items-center">
                             <span className="text-gray-300">תוכנית: {selectedPlan?.name}</span>
-                            <span className="text-white font-semibold">₪{selectedPlan?.price || 0}</span>
+                            <span className="text-white font-semibold">₪{selectedPlan?.ourPrice || 0}</span>
                           </div>
                           
                           {paymentDetails.whoisPrivacy && (
