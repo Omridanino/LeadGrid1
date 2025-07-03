@@ -1,3 +1,4 @@
+
 // Real WordPress.com API Service - Production Ready
 export interface WordPressUserData {
   username: string;
@@ -40,23 +41,11 @@ export interface WordPressOAuthConfig {
 }
 
 export class RealWordPressService {
-  private static readonly WP_COM_API_BASE = 'https://public-api.wordpress.com/rest/v1.1';
-  private static readonly WP_COM_OAUTH_BASE = 'https://public-api.wordpress.com/oauth2';
   private static readonly EDGE_FUNCTION_URL = 'https://crkgabcjxkdpnhipvugu.supabase.co/functions/v1/wordpress-auth';
-  
-  // Real WordPress.com API credentials
-  private static getOAuthConfig(): WordPressOAuthConfig {
-    return {
-      clientId: '120329',
-      clientSecret: 'imbzp7yTZvC3uRrwUW51f3ndO81dVJXlqN39Pi4qNyz3G3HkxWpDteo8hwGJGxkh',
-      redirectUri: 'https://leadgrid.design/auth/wordpress/callback'
-    };
-  }
   
   // Check if OAuth is properly configured
   static isConfigured(): boolean {
-    const config = this.getOAuthConfig();
-    return !!(config.clientId && config.clientSecret);
+    return true; // Always configured since we use Edge Function
   }
   
   // Initiate WordPress.com OAuth flow using Edge Function
@@ -72,14 +61,21 @@ export class RealWordPressService {
       });
       
       if (!response.ok) {
-        throw new Error(`Failed to get auth URL: ${response.status}`);
+        const errorText = await response.text();
+        console.error('❌ Failed to get auth URL:', response.status, errorText);
+        throw new Error(`Failed to get auth URL: ${response.status} - ${errorText}`);
       }
       
-      const { authUrl } = await response.json();
-      console.log('🔗 Redirecting to WordPress.com OAuth:', authUrl);
+      const data = await response.json();
+      
+      if (!data.authUrl) {
+        throw new Error('No auth URL received from server');
+      }
+      
+      console.log('🔗 Redirecting to WordPress.com OAuth:', data.authUrl);
       
       // Open OAuth in current window
-      window.location.href = authUrl;
+      window.location.href = data.authUrl;
     } catch (error) {
       console.error('❌ Failed to initiate WordPress.com OAuth:', error);
       throw new Error(`OAuth initiation failed: ${error.message}`);
@@ -99,15 +95,19 @@ export class RealWordPressService {
         body: JSON.stringify({ code }),
       });
       
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('❌ Token exchange failed:', errorText);
-        throw new Error(`Token exchange failed: ${response.status} ${errorText}`);
+      const responseData = await response.json();
+      
+      if (!response.ok || !responseData.success) {
+        console.error('❌ Token exchange failed:', responseData);
+        throw new Error(responseData.error || `Token exchange failed: ${response.status}`);
       }
       
-      const { accessToken } = await response.json();
+      if (!responseData.accessToken) {
+        throw new Error('No access token received');
+      }
+      
       console.log('✅ Token received successfully');
-      return accessToken;
+      return responseData.accessToken;
     } catch (error) {
       console.error('❌ Token exchange error:', error);
       throw error;
@@ -134,19 +134,19 @@ export class RealWordPressService {
         body: JSON.stringify({ token }),
       });
       
-      if (!response.ok) {
-        console.log('❌ Token verification request failed:', response.status);
+      const responseData = await response.json();
+      
+      if (!response.ok || !responseData.success) {
+        console.log('❌ Token verification failed:', responseData);
         localStorage.removeItem('wp_access_token');
         return false;
       }
       
-      const { valid, user } = await response.json();
-      
-      if (valid && user) {
-        console.log('✅ Authentication verified for user:', user.display_name);
+      if (responseData.valid && responseData.user) {
+        console.log('✅ Authentication verified for user:', responseData.user.display_name);
         return true;
       } else {
-        console.log('❌ Token verification failed');
+        console.log('❌ Token verification failed - invalid token');
         localStorage.removeItem('wp_access_token');
         return false;
       }
@@ -185,13 +185,13 @@ export class RealWordPressService {
         }),
       });
       
-      if (!response.ok) {
-        const errorData = await response.text();
-        console.error('❌ Site creation failed:', errorData);
-        throw new Error(`Site creation failed: ${response.status} ${errorData}`);
+      const result = await response.json();
+      
+      if (!response.ok || !result.success) {
+        console.error('❌ Site creation failed:', result);
+        throw new Error(result.error || `Site creation failed: ${response.status}`);
       }
       
-      const result = await response.json();
       console.log('✅ WordPress.com site created successfully:', result);
       
       return result;

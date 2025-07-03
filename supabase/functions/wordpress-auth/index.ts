@@ -1,10 +1,10 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
 }
 
 interface WordPressOAuthConfig {
@@ -30,6 +30,7 @@ serve(async (req) => {
     };
 
     console.log('WordPress Auth Function called with action:', action);
+    console.log('Current URL:', req.url);
 
     switch (action) {
       case 'get-auth-url':
@@ -46,195 +47,289 @@ serve(async (req) => {
       
       default:
         return new Response(
-          JSON.stringify({ error: 'Invalid action' }),
+          JSON.stringify({ error: 'Invalid action parameter. Expected: get-auth-url, exchange-token, verify-token, or create-site' }),
           { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
     }
   } catch (error) {
     console.error('WordPress Auth Function error:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        details: 'Check function logs for more information'
+      }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });
 
 function handleGetAuthUrl(config: WordPressOAuthConfig) {
-  const authUrl = new URL('https://public-api.wordpress.com/oauth2/authorize');
-  authUrl.searchParams.set('client_id', config.clientId);
-  authUrl.searchParams.set('redirect_uri', config.redirectUri);
-  authUrl.searchParams.set('response_type', 'code');
-  authUrl.searchParams.set('scope', 'auth global:manage');
+  try {
+    const authUrl = new URL('https://public-api.wordpress.com/oauth2/authorize');
+    authUrl.searchParams.set('client_id', config.clientId);
+    authUrl.searchParams.set('redirect_uri', config.redirectUri);
+    authUrl.searchParams.set('response_type', 'code');
+    authUrl.searchParams.set('scope', 'auth global:manage');
 
-  console.log('Generated auth URL:', authUrl.toString());
+    console.log('Generated auth URL:', authUrl.toString());
 
-  return new Response(
-    JSON.stringify({ authUrl: authUrl.toString() }),
-    { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-  );
+    return new Response(
+      JSON.stringify({ 
+        authUrl: authUrl.toString(),
+        success: true 
+      }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  } catch (error) {
+    console.error('Error generating auth URL:', error);
+    return new Response(
+      JSON.stringify({ error: 'Failed to generate auth URL' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
 }
 
 async function handleTokenExchange(req: Request, config: WordPressOAuthConfig) {
-  const { code } = await req.json();
-  
-  console.log('Exchanging code for token:', code);
+  try {
+    const { code } = await req.json();
+    
+    if (!code) {
+      throw new Error('Authorization code is required');
+    }
+    
+    console.log('Exchanging code for token:', code);
 
-  const tokenResponse = await fetch('https://public-api.wordpress.com/oauth2/token', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: new URLSearchParams({
+    const tokenPayload = new URLSearchParams({
       client_id: config.clientId,
       client_secret: config.clientSecret,
       code: code,
       grant_type: 'authorization_code',
       redirect_uri: config.redirectUri,
-    }),
-  });
+    });
 
-  if (!tokenResponse.ok) {
-    const errorText = await tokenResponse.text();
-    console.error('Token exchange failed:', errorText);
-    throw new Error(`Token exchange failed: ${tokenResponse.status} ${errorText}`);
+    console.log('Token exchange payload:', Object.fromEntries(tokenPayload));
+
+    const tokenResponse = await fetch('https://public-api.wordpress.com/oauth2/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'User-Agent': 'LeadGrid/1.0',
+      },
+      body: tokenPayload,
+    });
+
+    const responseText = await tokenResponse.text();
+    console.log('WordPress.com token response status:', tokenResponse.status);
+    console.log('WordPress.com token response:', responseText);
+
+    if (!tokenResponse.ok) {
+      throw new Error(`Token exchange failed: ${tokenResponse.status} - ${responseText}`);
+    }
+
+    const tokenData = JSON.parse(responseText);
+    
+    if (!tokenData.access_token) {
+      throw new Error('No access token received from WordPress.com');
+    }
+
+    console.log('Token received successfully');
+
+    return new Response(
+      JSON.stringify({ 
+        accessToken: tokenData.access_token,
+        success: true 
+      }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  } catch (error) {
+    console.error('Token exchange error:', error);
+    return new Response(
+      JSON.stringify({ 
+        error: `Token exchange failed: ${error.message}`,
+        success: false 
+      }),
+      { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
   }
-
-  const tokenData = await tokenResponse.json();
-  console.log('Token received successfully');
-
-  return new Response(
-    JSON.stringify({ accessToken: tokenData.access_token }),
-    { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-  );
 }
 
 async function handleTokenVerification(req: Request) {
-  const { token } = await req.json();
+  try {
+    const { token } = await req.json();
 
-  console.log('Verifying WordPress.com token');
+    if (!token) {
+      throw new Error('Access token is required');
+    }
 
-  const response = await fetch('https://public-api.wordpress.com/rest/v1.1/me', {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    },
-  });
+    console.log('Verifying WordPress.com token');
 
-  if (response.ok) {
-    const userData = await response.json();
-    console.log('Token verified for user:', userData.display_name);
-    
+    const response = await fetch('https://public-api.wordpress.com/rest/v1.1/me', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'User-Agent': 'LeadGrid/1.0',
+      },
+    });
+
+    const responseText = await response.text();
+    console.log('WordPress.com verification response status:', response.status);
+
+    if (response.ok) {
+      const userData = JSON.parse(responseText);
+      console.log('Token verified for user:', userData.display_name);
+      
+      return new Response(
+        JSON.stringify({ 
+          valid: true, 
+          user: userData,
+          success: true 
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    } else {
+      console.log('Token verification failed:', response.status, responseText);
+      
+      return new Response(
+        JSON.stringify({ 
+          valid: false,
+          error: responseText,
+          success: false 
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+  } catch (error) {
+    console.error('Token verification error:', error);
     return new Response(
-      JSON.stringify({ valid: true, user: userData }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
-  } else {
-    console.log('Token verification failed:', response.status);
-    
-    return new Response(
-      JSON.stringify({ valid: false }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ 
+        valid: false,
+        error: error.message,
+        success: false 
+      }),
+      { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 }
 
 async function handleCreateSite(req: Request) {
-  const { token, domain, userData, websiteData } = await req.json();
-
-  console.log('Creating WordPress.com site with domain:', domain);
-
-  // Step 1: Create the site
-  const sitePayload = {
-    blog_name: domain,
-    blog_title: userData.websiteTitle,
-    lang_id: 40, // Hebrew
-    public: 1,
-    validate: false,
-    find_available_url: true
-  };
-
-  const siteResponse = await fetch('https://public-api.wordpress.com/rest/v1.1/sites/new', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(sitePayload),
-  });
-
-  if (!siteResponse.ok) {
-    const errorData = await siteResponse.text();
-    console.error('Site creation failed:', errorData);
-    throw new Error(`Site creation failed: ${siteResponse.status} ${errorData}`);
-  }
-
-  const siteData = await siteResponse.json();
-  console.log('WordPress.com site created:', siteData);
-
-  const siteUrl = siteData.blog_details?.url || `https://${domain}.wordpress.com`;
-  const siteId = siteData.blog_details?.blogid || siteData.blog_id;
-
-  // Step 2: Configure site settings
   try {
-    await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/settings`, {
+    const { token, domain, userData, websiteData } = await req.json();
+
+    if (!token) {
+      throw new Error('Access token is required');
+    }
+
+    console.log('Creating WordPress.com site with domain:', domain);
+
+    // Step 1: Create the site
+    const sitePayload = {
+      blog_name: domain,
+      blog_title: userData.websiteTitle || 'אתר חדש',
+      lang_id: 40, // Hebrew
+      public: 1,
+      validate: false,
+      find_available_url: true
+    };
+
+    console.log('Site creation payload:', sitePayload);
+
+    const siteResponse = await fetch('https://public-api.wordpress.com/rest/v1.1/sites/new', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
+        'User-Agent': 'LeadGrid/1.0',
       },
-      body: JSON.stringify({
-        blogdescription: userData.websiteDescription,
-        blog_public: 1,
-        default_comment_status: 'open',
-        default_ping_status: 'open',
-      }),
+      body: JSON.stringify(sitePayload),
     });
-    console.log('Site settings configured successfully');
-  } catch (error) {
-    console.log('Warning: Failed to configure site settings:', error);
-  }
 
-  // Step 3: Deploy template content
-  if (websiteData) {
+    const siteResponseText = await siteResponse.text();
+    console.log('WordPress.com site creation response status:', siteResponse.status);
+    console.log('WordPress.com site creation response:', siteResponseText);
+
+    if (!siteResponse.ok) {
+      throw new Error(`Site creation failed: ${siteResponse.status} - ${siteResponseText}`);
+    }
+
+    const siteData = JSON.parse(siteResponseText);
+    console.log('WordPress.com site created successfully:', siteData);
+
+    const siteUrl = siteData.blog_details?.url || `https://${domain}.wordpress.com`;
+    const siteId = siteData.blog_details?.blogid || siteData.blog_id;
+
+    // Step 2: Configure site settings (optional)
     try {
-      const homepageContent = generateWordPressContent(websiteData);
-      
-      await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts/new`, {
+      await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/settings`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
+          'User-Agent': 'LeadGrid/1.0',
         },
         body: JSON.stringify({
-          type: 'page',
-          title: websiteData.hero?.title || 'דף הבית',
-          content: homepageContent,
-          status: 'publish',
+          blogdescription: userData.websiteDescription || 'אתר חדש שנוצר עם LeadGrid',
+          blog_public: 1,
+          default_comment_status: 'open',
+          default_ping_status: 'open',
         }),
       });
-      console.log('Template content deployed successfully');
+      console.log('Site settings configured successfully');
     } catch (error) {
-      console.log('Warning: Failed to deploy template content:', error);
+      console.log('Warning: Failed to configure site settings:', error);
     }
-  }
 
-  return new Response(
-    JSON.stringify({
-      success: true,
-      siteUrl: siteUrl,
-      adminUrl: `${siteUrl}/wp-admin`,
-      loginUrl: `${siteUrl}/wp-login.php`,
-      username: userData.username,
-      password: userData.password,
-      isDemo: false,
-      installationDetails: {
-        wpVersion: 'Latest WordPress.com',
-        theme: 'Twenty Twenty-Four',
-        plugins: ['Jetpack', 'Akismet'],
-        siteId: siteId.toString()
+    // Step 3: Deploy template content (optional)
+    if (websiteData) {
+      try {
+        const homepageContent = generateWordPressContent(websiteData);
+        
+        await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts/new`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'User-Agent': 'LeadGrid/1.0',
+          },
+          body: JSON.stringify({
+            type: 'page',
+            title: websiteData.hero?.title || 'דף הבית',
+            content: homepageContent,
+            status: 'publish',
+          }),
+        });
+        console.log('Template content deployed successfully');
+      } catch (error) {
+        console.log('Warning: Failed to deploy template content:', error);
       }
-    }),
-    { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-  );
+    }
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        siteUrl: siteUrl,
+        adminUrl: `${siteUrl}/wp-admin`,
+        loginUrl: `${siteUrl}/wp-login.php`,
+        username: userData.username,
+        password: userData.password,
+        isDemo: false,
+        installationDetails: {
+          wpVersion: 'Latest WordPress.com',
+          theme: 'Twenty Twenty-Four',
+          plugins: ['Jetpack', 'Akismet'],
+          siteId: siteId.toString()
+        }
+      }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  } catch (error) {
+    console.error('Site creation error:', error);
+    return new Response(
+      JSON.stringify({ 
+        success: false,
+        error: `Site creation failed: ${error.message}` 
+      }),
+      { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
 }
 
 function generateWordPressContent(templateData: any): string {
