@@ -294,12 +294,40 @@ async function handleCreateSite(req: Request) {
       console.log('Warning: Failed to configure site settings:', error);
     }
 
-    // Step 3: Deploy template content (optional)
+    // Step 3: Create admin user if provided
+    if (userData.username && userData.password) {
+      try {
+        await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/users/new`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'User-Agent': 'LeadGrid/1.0',
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify({
+            username: userData.username,
+            email: userData.email,
+            password: userData.password,
+            display_name: userData.displayName || userData.firstName + ' ' + userData.lastName,
+            first_name: userData.firstName,
+            last_name: userData.lastName,
+            role: 'administrator'
+          }),
+        });
+        console.log('Admin user created successfully');
+      } catch (error) {
+        console.log('Warning: Failed to create admin user:', error);
+      }
+    }
+
+    // Step 4: Deploy template content and set as homepage
     if (websiteData) {
       try {
         const homepageContent = generateWordPressContent(websiteData);
         
-        await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts/new`, {
+        // Create the homepage
+        const pageResponse = await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts/new`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -312,8 +340,32 @@ async function handleCreateSite(req: Request) {
             title: websiteData.hero?.title || 'דף הבית',
             content: homepageContent,
             status: 'publish',
+            slug: 'homepage'
           }),
         });
+
+        if (pageResponse.ok) {
+          const pageData = await pageResponse.json();
+          const pageId = pageData.ID;
+
+          // Set this page as the homepage
+          await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/settings`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+              'User-Agent': 'LeadGrid/1.0',
+              'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+              show_on_front: 'page',
+              page_on_front: pageId
+            }),
+          });
+
+          console.log('Homepage set successfully');
+        }
+        
         console.log('Template content deployed successfully');
       } catch (error) {
         console.log('Warning: Failed to deploy template content:', error);

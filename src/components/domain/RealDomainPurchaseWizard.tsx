@@ -151,7 +151,16 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
       websiteData: {
         ...template,
         websiteType,
-        wordpressUserData
+        wordpressUserData,
+        // Add website data from localStorage (from the questionnaire)
+        formData: (() => {
+          const savedFormData = localStorage.getItem('formData');
+          return savedFormData ? JSON.parse(savedFormData) : null;
+        })(),
+        generatedContent: (() => {
+          const savedContent = localStorage.getItem('generatedContent');
+          return savedContent ? JSON.parse(savedContent) : null;
+        })()
       }
     };
 
