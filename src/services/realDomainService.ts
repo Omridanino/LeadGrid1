@@ -347,6 +347,7 @@ export class RealDomainService {
           result = {
             sessionId: `bank_${orderId}`,
             status: 'awaiting_transfer',
+            paymentUrl: undefined,
             paymentData: {
               bankAccounts: BANK_ACCOUNTS,
               transferReference: orderId,
@@ -360,6 +361,7 @@ export class RealDomainService {
           result = {
             sessionId: `cc_${orderId}`,
             status: 'manual_processing',
+            paymentUrl: undefined,
             paymentData: {
               contactInfo: COMPANY_DETAILS,
               message: `נציג יצור קשר תוך 30 דקות לעיבוד תשלום של ${amount}₪`,
