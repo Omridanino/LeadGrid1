@@ -76,7 +76,7 @@ const Index = () => {
       {currentState === 'editing' && selectedTemplate && (
         <TemplateEditor 
           template={selectedTemplate}
-          onComplete={handleEditComplete}
+          onSave={handleEditComplete}
           onBack={handleBackToTemplateSelection}
         />
       )}

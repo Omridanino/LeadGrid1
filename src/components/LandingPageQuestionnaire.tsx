@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,6 +17,7 @@ export interface QuestionnaireData {
     description: string;
   };
   designStyle: string;
+  navigationStyle?: string;
   elements: string[];
   goals: string[];
   features: string[];
@@ -49,6 +49,7 @@ export const LandingPageQuestionnaire = ({ onComplete, onBack }: LandingPageQues
       description: ''
     },
     designStyle: '',
+    navigationStyle: 'floating',
     elements: [],
     goals: [],
     features: [],
@@ -142,10 +143,21 @@ export const LandingPageQuestionnaire = ({ onComplete, onBack }: LandingPageQues
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <CurrentStepComponent 
-              data={formData}
-              onUpdate={updateFormData}
-            />
+            {currentStep === 3 ? (
+              <ElementsSelectionStep 
+                formData={{ selectedElements: formData.elements }}
+                updateFormData={(field: string, value: string[]) => {
+                  if (field === 'selectedElements') {
+                    updateFormData('elements', value);
+                  }
+                }}
+              />
+            ) : (
+              <CurrentStepComponent 
+                data={formData}
+                onUpdate={updateFormData}
+              />
+            )}
           </CardContent>
         </Card>
 
