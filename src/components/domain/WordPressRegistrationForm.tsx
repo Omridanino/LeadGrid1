@@ -131,14 +131,14 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
                   <div className="flex items-start gap-3">
                     <span className="bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">1</span>
                     <div>
-                      <p className="font-medium">צור חשבון WordPress.com (חינם)</p>
-                      <p className="text-sm text-gray-400">לך ל-WordPress.com וצור חשבון חדש</p>
+                      <p className="font-medium">יש לך כבר חשבון WordPress.com? מעולה!</p>
+                      <p className="text-sm text-gray-400">פשוט התחבר לחשבון שלך ב-WordPress.com</p>
                       <Button 
-                        onClick={() => window.open('https://wordpress.com/start', '_blank')}
+                        onClick={() => window.open('https://wordpress.com/log-in', '_blank')}
                         size="sm" 
                         className="mt-2 bg-blue-600 hover:bg-blue-700"
                       >
-                        פתח WordPress.com
+                        התחבר ל-WordPress.com
                       </Button>
                     </div>
                   </div>
@@ -346,46 +346,6 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
             </form>
           )}
 
-          {/* Instructions for non-authenticated state */}
-          {!isAuthenticated && (
-            <div className="text-center py-8">
-              <Alert>
-                <AlertTriangle className="h-4 w-4" />
-                <AlertDescription className="text-right">
-                  <strong>הוראות:</strong><br/>
-                  1. לחץ על "התחבר עכשיו" - יפתח טאב חדש<br/>
-                  2. התחבר ל-WordPress.com בטאב החדש<br/>
-                  3. אחרי ההתחברות, העתק את כל ה-URL מהדפדפן<br/>
-                  4. הדבק אותו כאן ולחץ "אמת":
-                  <div className="mt-3 flex gap-2">
-                    <Input
-                      placeholder="הדבק כאן את ה-URL עם קוד האימות..."
-                      onChange={(e) => {
-                        const url = e.target.value;
-                        const match = url.match(/code=([^&]+)/);
-                        if (match) {
-                          const code = match[1];
-                          console.log('🔑 נמצא קוד אימות:', code);
-                          RealWordPressService.handleOAuthCallback(code).then(success => {
-                            if (success) {
-                              checkAuthentication();
-                              alert('אימות הושלם בהצלחה!');
-                            } else {
-                              alert('שגיאה בעיבוד הקוד');
-                            }
-                          });
-                        }
-                      }}
-                      className="bg-gray-700 border-gray-600 text-white"
-                    />
-                    <Button size="sm" onClick={() => alert('הדבק את ה-URL בשדה ולחץ Enter')}>
-                      אמת
-                    </Button>
-                  </div>
-                </AlertDescription>
-              </Alert>
-            </div>
-          )}
         </CardContent>
       </Card>
     </div>
