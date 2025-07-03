@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { X, Eye } from 'lucide-react';
+import { X, Eye, Palette } from 'lucide-react';
 import { templates } from '@/data/templates';
 import { TemplateData } from '@/types/template';
 import TemplateEditor from './TemplateEditor';
@@ -85,7 +85,27 @@ const TemplateSelector = ({ isOpen, onClose, selectedStyle }: TemplateSelectorPr
                     <CardHeader>
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-white text-lg">{template.name}</CardTitle>
-                        <Badge className="bg-blue-600 text-white text-xs">{template.category}</Badge>
+                        <div className="flex items-center gap-2">
+                          <Badge className="bg-blue-600 text-white text-xs">{template.category}</Badge>
+                        </div>
+                      </div>
+                      
+                      {/* Color Palette Display */}
+                      <div className="flex items-center gap-2 mt-2">
+                        <Palette className="w-4 h-4 text-gray-400" />
+                        <div className="flex items-center gap-1">
+                          <div 
+                            className="w-6 h-6 rounded-full border-2 border-white/20 shadow-sm"
+                            style={{ backgroundColor: template.styles.primaryColor }}
+                            title={`צבע ראשי: ${template.styles.primaryColor}`}
+                          ></div>
+                          <div 
+                            className="w-6 h-6 rounded-full border-2 border-white/20 shadow-sm"
+                            style={{ backgroundColor: template.styles.secondaryColor }}
+                            title={`צבע משני: ${template.styles.secondaryColor}`}
+                          ></div>
+                          <span className="text-xs text-gray-400 mr-2">צבעי התבנית</span>
+                        </div>
                       </div>
                     </CardHeader>
                     <CardContent>
@@ -93,7 +113,10 @@ const TemplateSelector = ({ isOpen, onClose, selectedStyle }: TemplateSelectorPr
                         <h4 className="text-white font-medium mb-2">{template.hero.title}</h4>
                         <p className="text-gray-400 text-sm mb-3">{template.hero.subtitle}</p>
                         <div className="flex gap-2">
-                          <div className="px-2 py-1 bg-blue-600 text-white text-xs rounded">
+                          <div 
+                            className="px-2 py-1 text-white text-xs rounded"
+                            style={{ backgroundColor: template.styles.primaryColor }}
+                          >
                             {template.hero.button1Text}
                           </div>
                           <div className="px-2 py-1 bg-gray-600 text-white text-xs rounded">
