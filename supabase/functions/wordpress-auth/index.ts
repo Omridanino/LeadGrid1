@@ -103,27 +103,72 @@ function handleGetAuthUrl(config: WordPressOAuthConfig) {
 
 function handleRedirectToAuth(config: WordPressOAuthConfig) {
   try {
+    console.log('Creating WordPress.com OAuth redirect...');
+
+    // Generate the complete auth URL
     const authUrl = new URL('https://public-api.wordpress.com/oauth2/authorize');
     authUrl.searchParams.set('client_id', config.clientId);
     authUrl.searchParams.set('redirect_uri', config.redirectUri);
     authUrl.searchParams.set('response_type', 'code');
     authUrl.searchParams.set('scope', 'auth');
 
-    console.log('Redirecting to WordPress.com OAuth via Edge Function');
+    console.log('Auth URL generated:', authUrl.toString());
 
-    // Return a redirect response
-    return new Response(null, {
-      status: 302,
+    // Return HTML page that does the redirect client-side
+    const redirectHtml = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>מפנה ל-WordPress.com...</title>
+        <style>
+          body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            padding: 50px; 
+            background: #1a1a1a; 
+            color: white; 
+            direction: rtl;
+          }
+          .spinner { 
+            border: 4px solid #f3f3f3; 
+            border-top: 4px solid #3498db; 
+            border-radius: 50%; 
+            width: 40px; 
+            height: 40px; 
+            animation: spin 2s linear infinite; 
+            margin: 20px auto;
+          }
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        </style>
+      </head>
+      <body>
+        <h2>מתחבר ל-WordPress.com...</h2>
+        <div class="spinner"></div>
+        <p>מפנה אותך לדף האימות של WordPress.com</p>
+        <script>
+          // Redirect after a short delay
+          setTimeout(function() {
+            window.location.href = '${authUrl.toString()}';
+          }, 1000);
+        </script>
+      </body>
+      </html>
+    `;
+
+    return new Response(redirectHtml, {
       headers: {
         ...corsHeaders,
-        'Location': authUrl.toString()
+        'Content-Type': 'text/html; charset=utf-8'
       }
     });
   } catch (error) {
-    console.error('Error redirecting to auth:', error);
+    console.error('Error creating redirect:', error);
     return new Response(
       JSON.stringify({ 
-        error: 'Failed to redirect to auth',
+        error: 'Failed to create redirect',
         success: false 
       }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

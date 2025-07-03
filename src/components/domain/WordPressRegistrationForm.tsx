@@ -141,8 +141,8 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
             </CardContent>
           </Card>
 
-          {/* Only show form if authenticated */}
-          {isAuthenticated && (
+          {/* Show form always but disable submit until authenticated */}
+          {true && (
             <form onSubmit={handleSubmit} className="space-y-6">
               
               {/* Basic User Info */}
@@ -270,13 +270,18 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
               <div className="flex gap-4 pt-6">
                 <Button
                   type="submit"
-                  disabled={isLoading}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                  disabled={isLoading || !isAuthenticated}
+                  className={`flex-1 ${isAuthenticated ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-500 cursor-not-allowed'} text-white`}
                 >
                   {isLoading ? (
                     <>
                       <Rocket className="w-4 h-4 ml-2 animate-spin" />
                       יוצר אתר WordPress.com אמיתי...
+                    </>
+                  ) : !isAuthenticated ? (
+                    <>
+                      <AlertTriangle className="w-4 h-4 ml-2" />
+                      נדרש אימות WordPress.com קודם
                     </>
                   ) : (
                     <>
