@@ -66,11 +66,7 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
       return;
     }
 
-    if (!isAuthenticated) {
-      alert('נדרש אימות WordPress.com לפני יצירת אתר');
-      return;
-    }
-
+    // Continue without WordPress.com authentication for now
     onSubmit(formData);
   };
 
@@ -174,8 +170,8 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
             </CardContent>
           </Card>
 
-          {/* Only show form if authenticated */}
-          {isAuthenticated && (
+          {/* Always show form - authentication is optional for now */}
+          {true && (
             <form onSubmit={handleSubmit} className="space-y-6">
               
               {/* Basic User Info */}
@@ -303,7 +299,7 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
               <div className="flex gap-4 pt-6">
                 <Button
                   type="submit"
-                  disabled={isLoading || !isAuthenticated}
+                  disabled={isLoading}
                   className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
                 >
                   {isLoading ? (
