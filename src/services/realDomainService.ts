@@ -297,74 +297,23 @@ export class RealDomainService {
     wordpressUserData: WordPressUserData, 
     websiteData: any
   ): Promise<WordPressCreationResult> {
+    // Import the new service
+    const { RealWordPressService } = await import('./realWordPressService');
+    
     try {
-      console.log('🚀 Creating REAL WordPress site for domain:', domain);
-      console.log('👤 WordPress user data:', {
-        username: wordpressUserData.username,
-        email: wordpressUserData.email,
-        displayName: wordpressUserData.displayName,
-        websiteTitle: wordpressUserData.websiteTitle
-      });
+      console.log('🚀 Creating REAL WordPress site via new service for domain:', domain);
       
-      // Prepare WordPress installation configuration
-      const cleanDomain = domain.replace(/[^a-z0-9]/gi, '').toLowerCase();
-      const wpConfig: WordPressInstallationConfig = {
-        domain: cleanDomain,
-        siteTitle: wordpressUserData.websiteTitle,
-        adminUser: wordpressUserData.username,
-        adminPassword: wordpressUserData.password,
-        adminEmail: wordpressUserData.email,
-        language: 'he_IL'
-      };
-      
-      console.log('🔧 Installing WordPress with config:', wpConfig);
-      
-      // Create real WordPress installation
-      const installResult = await WordPressApiService.createWordPressSite(wpConfig);
-      
-      if (!installResult.success) {
-        throw new Error(installResult.error || 'WordPress installation failed');
-      }
-      
-      console.log('✅ WordPress site created successfully!');
-      console.log('🌐 Site URL:', installResult.siteUrl);
-      console.log('🔐 Admin URL:', installResult.adminUrl);
-      
-      // Deploy user's template content
-      console.log('📝 Deploying user template content...');
-      const contentDeployed = await WordPressApiService.deployTemplateContent(
-        installResult.siteUrl!,
-        installResult.wpConfig,
+      return await RealWordPressService.createRealWordPressSite(
+        domain,
+        wordpressUserData,
         websiteData
       );
-      
-      if (!contentDeployed) {
-        console.warn('⚠️ Content deployment failed, but site was created');
-      }
-      
-      return {
-        success: true,
-        siteUrl: installResult.siteUrl!,
-        adminUrl: installResult.adminUrl!,
-        loginUrl: `${installResult.adminUrl}/wp-login.php`,
-        username: wordpressUserData.username,
-        password: wordpressUserData.password,
-        actualSiteUrl: installResult.siteUrl!,
-        isDemo: false, // This is a REAL WordPress site
-        installationDetails: {
-          wpVersion: '6.4.2',
-          theme: 'leadgrid-custom',
-          plugins: ['leadgrid-seo', 'leadgrid-forms', 'leadgrid-cache'],
-          siteId: `wp_${Date.now()}`
-        }
-      };
       
     } catch (error) {
       console.error('Real WordPress site creation failed:', error);
       
-      // Fallback to demo mode if real creation fails
-      console.log('🔄 Falling back to demo mode...');
-      return await this.createDemoWordPressSite(domain, wordpressUserData, websiteData);
+      // No fallback to demo - return error
+      throw new Error(`יצירת אתר וורדפרס אמיתי נכשלה: ${error.message}`);
     }
   }
   
