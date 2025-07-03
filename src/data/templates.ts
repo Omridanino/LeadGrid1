@@ -38,7 +38,7 @@ export const templates: TemplateData[] = [
     testimonials: {
       title: 'מה הלקוחות אומרים',
       testimonials: [
-        { name: 'דוד כהן', role: 'מנכ"ל', content: 'שירות מעולה ופתרונות חדשניים שהפכו את העסק שלנו', rating: 5, company: 'טק קורפ' }
+        { name: 'דוד כהן', role: 'מנכ"ל', content: 'שירות מעולה ופתרונות חדשניים שהפכו את העסק שלנו', rating: 5 }
       ],
       button1Text: 'ראה עוד עדויות',
       button2Text: 'הצטרף אלינו'
@@ -133,7 +133,7 @@ export const templates: TemplateData[] = [
     testimonials: {
       title: 'לקוחות מרוצים',
       testimonials: [
-        { name: 'שרה לוי', role: 'מנהלת פיתוח', content: 'טכנולוגיה מהפכנית שחסכה לנו זמן רב והגדילה את היעילות', rating: 5, company: 'אינובייט' }
+        { name: 'שרה לוי', role: 'מנהלת פיתוח', content: 'טכנולוגיה מהפכנית שחסכה לנו זמן רב והגדילה את היעילות', rating: 5 }
       ],
       button1Text: 'עוד סיפורים',
       button2Text: 'הצטרף אלינו'
@@ -228,7 +228,7 @@ export const templates: TemplateData[] = [
     testimonials: {
       title: 'מה המדענים אומרים',
       testimonials: [
-        { name: 'פרופ\' יוסי כהן', role: 'חוקר בכיר', content: 'פריצת דרך בתחום המחשוב הקוונטי שמובילה לחדשנות מדעית', rating: 5, company: 'מכון ויצמן' }
+        { name: 'פרופ\' יוסי כהן', role: 'חוקר בכיר', content: 'פריצת דרך בתחום המחשוב הקוונטי שמובילה לחדשנות מדעית', rating: 5 }
       ],
       button1Text: 'מחקרים נוספים',
       button2Text: 'הצטרף למחקר'
@@ -323,7 +323,7 @@ export const templates: TemplateData[] = [
     testimonials: {
       title: 'יצירות מוערכות',
       testimonials: [
-        { name: 'מיכל רוזן', role: 'מנהלת אמנותית', content: 'יצירה דיגיטלית שמבטאת את החזון שלנו בצורה מושלמת ומעבירה את המסר בדיוק', rating: 5, company: 'ארט סטודיו' }
+        { name: 'מיכל רוזן', role: 'מנהלת אמנותית', content: 'יצירה דיגיטלית שמבטאת את החזון שלנו בצורה מושלמת ומעבירה את המסר בדיוק', rating: 5 }
       ],
       button1Text: 'עוד יצירות',
       button2Text: 'הצטרף אלינו'
@@ -418,7 +418,7 @@ export const templates: TemplateData[] = [
     testimonials: {
       title: 'סיפורי התחדשות',
       testimonials: [
-        { name: 'אבי גולד', role: 'מנכ"ל', content: 'החברה שלנו קמה לתחייה והגיעה לשיאים חדשים בזכות הליווי המקצועי', rating: 5, company: 'גולד אנטרפרייז' }
+        { name: 'אבי גולד', role: 'מנכ"ל', content: 'החברה שלנו קמה לתחייה והגיעה לשיאים חדשים בזכות הליווי המקצועי', rating: 5 }
       ],
       button1Text: 'עוד סיפורים',
       button2Text: 'הצטרף למסע'
@@ -513,7 +513,7 @@ export const templates: TemplateData[] = [
     testimonials: {
       title: 'צופים מרוצים',
       testimonials: [
-        { name: 'רונית ברק', role: 'צופה קבועה', content: 'התוכן הכי טוב ברשת, איכות מעולה וחוויה מדהימה שמשפרת כל ערב', rating: 5, company: 'משפחת ברק' }
+        { name: 'רונית ברק', role: 'צופה קבועה', content: 'התוכן הכי טוב ברשת, איכות מעולה וחוויה מדהימה שמשפרת כל ערב', rating: 5 }
       ],
       button1Text: 'עוד ביקורות',
       button2Text: 'הצטרף אלינו'
