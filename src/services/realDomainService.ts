@@ -68,70 +68,6 @@ export interface PurchaseResult {
   };
 }
 
-// Real Domain and Hosting Service Integration
-import { loadStripe } from '@stripe/stripe-js';
-
-export interface RealDomainAvailabilityResult {
-  domain: string;
-  available: boolean;
-  price: number;
-  currency: string;
-  registrar: string;
-  tld: string;
-}
-
-export interface RealHostingPlan {
-  id: string;
-  name: string;
-  price: number;
-  currency: string;
-  features: string[];
-  storage: string;
-  bandwidth: string;
-  cpanelAccess: boolean;
-  sslIncluded: boolean;
-}
-
-export interface PurchaseRequest {
-  domain: string;
-  hostingPlan: RealHostingPlan;
-  orderId: string;
-  customerInfo: {
-    name: string;
-    email: string;
-    phone: string;
-    company?: string;
-    address: string;
-    city: string;
-    country: string;
-    zipCode: string;
-  };
-  payment: {
-    stripeToken?: string;
-    years: number;
-    autoRenew: boolean;
-    method?: string;
-    data?: any;
-  };
-  websiteData: any;
-}
-
-export interface PurchaseResult {
-  success: boolean;
-  orderId?: string;
-  domain?: string;
-  hostingAccount?: {
-    username: string;
-    password: string;
-    cpanelUrl: string;
-    nameservers: string[];
-  };
-  siteUrl?: string;
-  error?: string;
-  paymentMethod?: string;
-  paymentStatus?: string;
-}
-
 export interface PurchaseStatus {
   orderId: string;
   status: 'pending' | 'awaiting_payment' | 'payment_verified' | 'completed' | 'failed';
@@ -280,7 +216,7 @@ export class RealDomainService {
     ];
   }
 
-  // DEMO: Simulate payment processing - always succeeds
+  // DEMO: Simulate payment processing - always succeeds for demo
   static async processPayment(amount: number, method: string, paymentData: any, orderId: string, customerInfo: any): Promise<{sessionId: string, status: string, paymentUrl?: string, paymentData?: any}> {
     try {
       console.log('💳 [DEMO] Processing payment simulation:', { amount, method, orderId });
@@ -288,7 +224,7 @@ export class RealDomainService {
       // Simulate payment processing delay
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // DEMO: Always successful payment
+      // DEMO: Always successful payment for testing WordPress creation
       this.purchaseStatuses.set(orderId, {
         orderId,
         status: 'payment_verified',
