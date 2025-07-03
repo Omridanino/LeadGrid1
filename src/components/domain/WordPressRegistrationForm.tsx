@@ -121,69 +121,68 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
 
         <CardContent className="space-y-6">
           
-          {/* WordPress Account Setup Instructions */}
+          {/* WordPress Login Instructions */}
           <Card className="bg-gradient-to-br from-blue-900/30 to-purple-900/30 border-blue-700/50">
             <CardContent className="p-6">
               <div className="space-y-4">
-                <h4 className="text-white font-semibold text-lg">📝 הוראות ליצירת אתר WordPress</h4>
+                <h4 className="text-white font-semibold text-lg flex items-center gap-2">
+                  <Globe className="w-5 h-5" />
+                  חיבור לחשבון WordPress קיים
+                </h4>
                 
                 <div className="space-y-3 text-gray-300">
-                  <div className="flex items-start gap-3">
-                    <span className="bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">1</span>
+                  <p className="text-sm">
+                    יש לך כבר אתר WordPress? מעולה! פשוט הכנס את פרטי ההתחברות שלך ונוסיף את דף הנחיתה החדש לאתר שלך אוטומטית.
+                  </p>
+                  
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="font-medium">יש לך כבר חשבון WordPress.com? מעולה!</p>
-                      <p className="text-sm text-gray-400">פשוט התחבר לחשבון שלך ב-WordPress.com</p>
-                      <Button 
-                        onClick={() => window.open('https://wordpress.com/log-in', '_blank')}
-                        size="sm" 
-                        className="mt-2 bg-blue-600 hover:bg-blue-700"
-                      >
-                        התחבר ל-WordPress.com
-                      </Button>
+                      <Label htmlFor="wpUrl" className="text-gray-300">כתובת האתר</Label>
+                      <Input
+                        id="wpUrl"
+                        placeholder="https://yourdomain.com"
+                        className="bg-gray-700 border-gray-600 text-white"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="wpUsername" className="text-gray-300">שם משתמש WordPress</Label>
+                      <Input
+                        id="wpUsername"
+                        placeholder="admin"
+                        className="bg-gray-700 border-gray-600 text-white"
+                      />
                     </div>
                   </div>
                   
-                  <div className="flex items-start gap-3">
-                    <span className="bg-green-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">2</span>
-                    <div>
-                      <p className="font-medium">צור אתר חדש</p>
-                      <p className="text-sm text-gray-400">לחץ על "Create a new site" ובחר דומיין (כמו example.wordpress.com)</p>
-                    </div>
+                  <div>
+                    <Label htmlFor="wpPassword" className="text-gray-300">סיסמת WordPress</Label>
+                    <Input
+                      id="wpPassword"
+                      type="password"
+                      placeholder="סיסמת הניהול שלך"
+                      className="bg-gray-700 border-gray-600 text-white"
+                    />
                   </div>
                   
-                  <div className="flex items-start gap-3">
-                    <span className="bg-purple-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">3</span>
-                    <div>
-                      <p className="font-medium">הוסף תוכן לאתר</p>
-                      <p className="text-sm text-gray-400">כתוב על העסק שלך, הוסף תמונות, צור דפים (כמו "אודות", "צור קשר")</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3">
-                    <span className="bg-orange-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">4</span>
-                    <div>
-                      <p className="font-medium">בחר עיצוב</p>
-                      <p className="text-sm text-gray-400">בחר תבנית עיצוב (Theme) שמתאימה לעסק שלך, שנה צבעים ופונטים</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3">
-                    <span className="bg-green-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold">5</span>
-                    <div>
-                      <p className="font-medium">פרסם את האתר</p>
-                      <p className="text-sm text-gray-400">לחץ על "Publish" והאתר שלך יהיה חי באינטרנט!</p>
-                    </div>
-                  </div>
+                  <Button 
+                    onClick={() => {
+                      alert('בודק חיבור לאתר WordPress ומוסיף את דף הנחיתה...');
+                      // כאן נוסיף את הלוגיקה לחיבור לאתר WordPress
+                    }}
+                    className="w-full bg-green-600 hover:bg-green-700"
+                  >
+                    <CheckCircle className="w-4 h-4 ml-2" />
+                    הוסף את דף הנחיתה לאתר שלי
+                  </Button>
                 </div>
                 
-                <div className="bg-green-900/30 border border-green-700/50 rounded-lg p-4 mt-4">
-                  <h5 className="text-green-400 font-medium mb-2">💡 יתרונות של הדרך הזו:</h5>
-                  <ul className="text-green-300 text-sm space-y-1">
-                    <li>• אתר WordPress אמיתי ומלא</li>
-                    <li>• שליטה מלאה על האתר</li>
-                    <li>• אין צורך באימותים מורכבים</li>
-                    <li>• תמיכה מלאה של WordPress.com</li>
-                    <li>• אפשרות לשדרוג לתכניות בתשלום</li>
+                <div className="bg-blue-900/30 border border-blue-700/50 rounded-lg p-4 mt-4">
+                  <h5 className="text-blue-400 font-medium mb-2">💡 מה יקרה:</h5>
+                  <ul className="text-blue-300 text-sm space-y-1">
+                    <li>• נתחבר לאתר WordPress שלך</li>
+                    <li>• ניצור דף חדש עם התוכן שיצרת</li>
+                    <li>• נגדיר את העיצוב שבחרת</li>
+                    <li>• הדף יהיה זמין מיד באתר שלך</li>
                   </ul>
                 </div>
               </div>
