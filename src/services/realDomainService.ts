@@ -1,4 +1,3 @@
-
 // Real Domain and Hosting Service Integration
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -37,9 +36,11 @@ export interface PurchaseRequest {
     zipCode: string;
   };
   payment: {
-    stripeToken: string;
+    stripeToken?: string;
     years: number;
     autoRenew: boolean;
+    method?: string;
+    data?: any;
   };
   websiteData: any;
 }
@@ -56,10 +57,11 @@ export interface PurchaseResult {
   };
   siteUrl?: string;
   error?: string;
+  paymentMethod?: string;
+  paymentStatus?: string;
 }
 
 export class RealDomainService {
-  private static readonly STRIPE_PUBLIC_KEY = 'pk_test_your_stripe_public_key_here';
   private static readonly API_BASE = 'https://your-backend-api.com';
 
   // Simulated domain availability check for demo purposes
@@ -115,7 +117,7 @@ export class RealDomainService {
     }
   }
 
-  // Real hosting plans
+  // Real hosting plans with updated Israeli pricing
   static getHostingPlans(): RealHostingPlan[] {
     return [
       {
@@ -158,17 +160,37 @@ export class RealDomainService {
     ];
   }
 
-  // Process real payment with Stripe (demo version)
-  static async processPayment(amount: number, currency: string = 'ILS'): Promise<{sessionId: string}> {
+  // Process payments with Israeli payment methods
+  static async processPayment(amount: number, method: string, paymentData: any): Promise<{sessionId: string, status: string}> {
     try {
-      console.log('Processing payment for amount:', amount, currency);
+      console.log('Processing payment:', { amount, method, paymentData });
       
-      // Simulate payment session creation
+      // Simulate payment processing based on method
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // For demo purposes, return a mock session ID
+      let status = 'pending';
+      
+      switch (method) {
+        case 'bit':
+          status = 'completed'; // Bit payments are usually instant
+          break;
+        case 'paybox':
+        case 'paypal':
+          status = 'completed'; // These redirect to external processors
+          break;
+        case 'bank_transfer':
+          status = 'pending'; // Bank transfers need manual verification
+          break;
+        case 'credit_card':
+          status = 'pending'; // Manual credit card processing
+          break;
+        default:
+          status = 'pending';
+      }
+      
       return { 
-        sessionId: `cs_test_${Date.now()}_${Math.random().toString(36).substr(2, 9)}` 
+        sessionId: `session_${method}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        status
       };
       
     } catch (error) {
@@ -177,20 +199,30 @@ export class RealDomainService {
     }
   }
 
-  // Purchase domain and hosting
+  // Purchase domain and hosting with Israeli payment support
   static async purchaseDomainAndHosting(request: PurchaseRequest): Promise<PurchaseResult> {
     try {
-      console.log('Starting purchase process...', request);
+      console.log('Starting purchase process with Israeli payments...', request);
 
-      // Step 1: Process payment
+      // Step 1: Process payment with selected method
       const paymentResult = await this.processPayment(
-        request.hostingPlan.price * request.payment.years
+        request.hostingPlan.price * request.payment.years,
+        request.payment.method || 'credit_card',
+        request.payment.data
       );
       
-      // For demo purposes, simulate successful purchase
+      // Simulate domain registration and hosting setup
       await new Promise(resolve => setTimeout(resolve, 3000));
       
       const orderId = `ORDER_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      
+      // Determine payment status message
+      let paymentStatus = 'הושלם';
+      if (request.payment.method === 'bank_transfer') {
+        paymentStatus = 'ממתין לאישור העברה בנקאית';
+      } else if (request.payment.method === 'credit_card') {
+        paymentStatus = 'ממתין לקשר מנציג השירות';
+      }
       
       return {
         success: true,
@@ -199,10 +231,12 @@ export class RealDomainService {
         hostingAccount: {
           username: request.customerInfo.email,
           password: this.generatePassword(),
-          cpanelUrl: 'https://cpanel.yourhost.com',
-          nameservers: ['ns1.yourhost.com', 'ns2.yourhost.com']
+          cpanelUrl: 'https://cpanel.leadgrid.com',
+          nameservers: ['ns1.leadgrid.com', 'ns2.leadgrid.com']
         },
-        siteUrl: `https://${request.domain}`
+        siteUrl: `https://${request.domain}`,
+        paymentMethod: request.payment.method,
+        paymentStatus
       };
 
     } catch (error) {
@@ -236,5 +270,21 @@ export class RealDomainService {
       password += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     return password;
+  }
+
+  // Send payment confirmation emails (would integrate with actual email service)
+  static async sendPaymentConfirmation(customerEmail: string, orderDetails: any, paymentMethod: string): Promise<boolean> {
+    try {
+      console.log('Sending payment confirmation email...', { customerEmail, orderDetails, paymentMethod });
+      
+      // This would integrate with your email service (e.g., SendGrid, AWS SES)
+      // For demo purposes, we'll just simulate the email sending
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      return true;
+    } catch (error) {
+      console.error('Failed to send confirmation email:', error);
+      return false;
+    }
   }
 }
