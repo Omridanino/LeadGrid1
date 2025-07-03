@@ -76,13 +76,31 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
 
   const handleAuthenticate = () => {
     try {
-      // Direct WordPress.com OAuth URL without any proxies
+      // WordPress.com OAuth URL
       const authUrl = `https://public-api.wordpress.com/oauth2/authorize?client_id=120329&redirect_uri=${encodeURIComponent('https://leadgrid.design/auth/wordpress/callback')}&response_type=code&scope=auth`;
       
-      console.log('🔗 Direct redirect to:', authUrl);
+      console.log('🔗 Opening WordPress auth in new window:', authUrl);
       
-      // Try setting location directly
-      document.location = authUrl;
+      // Open in new window - this bypasses most blocking
+      const authWindow = window.open(authUrl, 'wordpress-auth', 'width=600,height=700,scrollbars=yes,resizable=yes');
+      
+      if (!authWindow) {
+        alert('נחסם popup - אנא אפשר popups לאתר זה ונסה שוב');
+        return;
+      }
+      
+      // Monitor the popup
+      const checkClosed = setInterval(() => {
+        if (authWindow.closed) {
+          clearInterval(checkClosed);
+          console.log('Auth window closed, checking authentication...');
+          // Refresh auth status
+          setTimeout(() => {
+            checkAuthentication();
+          }, 1000);
+        }
+      }, 1000);
+      
     } catch (error) {
       console.error('❌ Authentication failed:', error);
       alert(`שגיאה באימות: ${error.message}`);
