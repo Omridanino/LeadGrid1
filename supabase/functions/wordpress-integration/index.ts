@@ -65,8 +65,36 @@ async function handleTestConnection(req: Request) {
     
     console.log('Testing connection to WordPress site:', siteUrl);
     
+    // בדיקה ראשונית שהאתר תקין
+    const baseUrl = siteUrl.replace(/\/$/, '');
+    
+    // בדוק אם ה-REST API זמין
+    const apiCheckUrl = `${baseUrl}/wp-json/wp/v2/`;
+    
+    try {
+      const apiCheckResponse = await fetch(apiCheckUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!apiCheckResponse.ok) {
+        throw new Error(`האתר לא מגיב או שה-REST API לא פעיל (${apiCheckResponse.status})`);
+      }
+      
+      const contentType = apiCheckResponse.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('האתר לא מחזיר תגובת JSON - בדוק שזה באמת אתר WordPress עם REST API פעיל');
+      }
+      
+    } catch (error) {
+      console.error('API check failed:', error);
+      throw new Error('לא ניתן להתחבר לאתר WordPress - בדוק שהכתובת נכונה ושה-REST API פעיל');
+    }
+    
     // נסה להתחבר ל-WordPress REST API
-    const apiUrl = `${siteUrl.replace(/\/$/, '')}/wp-json/wp/v2/users/me`;
+    const apiUrl = `${baseUrl}/wp-json/wp/v2/users/me`;
     
     // יצירת Basic Auth header
     const credentials = `${username}:${password}`;
@@ -86,11 +114,19 @@ async function handleTestConnection(req: Request) {
       
       if (response.status === 401) {
         throw new Error('שם המשתמש או הסיסמה שגויים');
+      } else if (response.status === 403) {
+        throw new Error('המשתמש לא מורשה לגשת ל-REST API');
       } else if (response.status === 404) {
         throw new Error('לא ניתן למצוא את ה-REST API. בדוק שהכתובת נכונה');
       } else {
         throw new Error(`שגיאה בחיבור לאתר: ${response.status}`);
       }
+    }
+    
+    // בדוק שהתגובה היא JSON
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      throw new Error('האתר מחזיר תשובה לא תקינה - בדוק שזה אתר WordPress עם REST API פעיל');
     }
     
     const userData = await response.json();
