@@ -4,8 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
   Rocket, 
-  Zap, 
-  Clock, 
   CheckCircle,
   ArrowRight,
   Sparkles,
@@ -27,12 +25,12 @@ export const LaunchButton = ({ template, className = '' }: LaunchButtonProps) =>
   // Default template for demo purposes
   const defaultTemplate: TemplateData = {
     id: 'leadgrid-launch',
-    name: 'LEADGRID השקה מהירה',
+    name: 'LEADGRID פרסום מקצועי',
     category: 'מקצועי',
     hero: {
-      title: 'האתר שלך מוכן להשקה עם LEADGRID!',
-      subtitle: 'פתרון מלא לפרסום מקצועי',
-      description: 'בואו נפרסם את האתר שלך לאוויר עם דומיין מותאם ואחסון ישראלי',
+      title: 'האתר שלך מוכן לפרסום עם LEADGRID!',
+      subtitle: 'פתרון מלא לאחסון חינמי ומקצועי',
+      description: 'בואו נפרסם את האתר שלך לאוויר עם אחסון חינם איכותי',
       button1Text: 'התחל עכשיו',
       button2Text: 'למד עוד'
     },
@@ -118,12 +116,12 @@ export const LaunchButton = ({ template, className = '' }: LaunchButtonProps) =>
               </div>
               LEADGRID - פרסם את האתר שלך
             </CardTitle>
-            <Badge className="bg-yellow-500 text-black font-medium">הפתרון הישראלי</Badge>
+            <Badge className="bg-green-500 text-black font-medium">חינם לחלוטין</Badge>
           </div>
         </CardHeader>
         <CardContent className="space-y-6">
           <p className="text-gray-300 text-sm">
-            הפתרון המלא לפרסום האתר שלך באינטרנט - דומיין ישראלי, אחסון מקומי, תמיכה בעברית
+            הפתרון המלא לפרסום האתר שלך באינטרנט - אחסון חינמי, SSL מאובטח, ותמיכה מלאה
           </p>
           
           <div className="space-y-3">
@@ -131,35 +129,35 @@ export const LaunchButton = ({ template, className = '' }: LaunchButtonProps) =>
               <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
                 <Globe className="w-3 h-3 text-white" />
               </div>
-              <span className="text-gray-300">דומיינים .co.il ו-.com במחירים הטובים בישראל</span>
+              <span className="text-gray-300">אחסון חינם ב-Netlify - ללא הגבלת זמן</span>
             </div>
             
             <div className="flex items-center gap-2 text-sm">
               <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
                 <Server className="w-3 h-3 text-white" />
               </div>
-              <span className="text-gray-300">אחסון מקומי במרכזי נתונים בישראל</span>
+              <span className="text-gray-300">כתובת אתר קבועה עם SSL מאובטח</span>
             </div>
             
             <div className="flex items-center gap-2 text-sm">
               <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
                 <Shield className="w-3 h-3 text-white" />
               </div>
-              <span className="text-gray-300">SSL פרימיום ותמיכה טכנית מלאה בעברית</span>
+              <span className="text-gray-300">זמינות גבוהה 24/7 ומהירות מעולה</span>
             </div>
 
             <div className="flex items-center gap-2 text-sm">
               <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
                 <CheckCircle className="w-3 h-3 text-white" />
               </div>
-              <span className="text-gray-300">תשלום בכל אמצעי התשלום הישראליים</span>
+              <span className="text-gray-300">אפשרות להוסיף דומיין משלך מאוחר יותר</span>
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-blue-900/30 to-purple-900/30 p-4 rounded-lg border border-blue-700/30">
+          <div className="bg-gradient-to-r from-green-900/30 to-blue-900/30 p-4 rounded-lg border border-green-700/30">
             <div className="text-center">
-              <div className="text-blue-300 font-semibold mb-2">💝 מבצע השקה מיוחד</div>
-              <div className="text-white text-sm">דומיין .co.il חינם + אחסון שנה ב-₪89 בלבד!</div>
+              <div className="text-green-300 font-semibold mb-2">🎉 פרסום חינמי מלא</div>
+              <div className="text-white text-sm">אחסון מקצועי ללא עלות - האתר שלך יהיה חי תוך דקות!</div>
             </div>
           </div>
 
@@ -169,15 +167,15 @@ export const LaunchButton = ({ template, className = '' }: LaunchButtonProps) =>
               className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-3 text-base"
             >
               <Rocket className="w-5 h-5 ml-2" />
-              פרסם את האתר שלי עכשיו
+              פרסם את האתר שלי חינם עכשיו
               <ArrowRight className="w-5 h-5 mr-2" />
             </Button>
           </div>
 
           <div className="pt-2 border-t border-gray-700">
             <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
-              <Clock className="w-3 h-3" />
-              <span>תהליך פשוט של 5 דקות - הכל בעברית ובשקיפות מלאה</span>
+              <Sparkles className="w-3 h-3" />
+              <span>תהליך פשוט של 3 דקות - הכל אוטומטי וחינם</span>
             </div>
           </div>
         </CardContent>
