@@ -41,7 +41,7 @@ export interface PurchaseRequest {
     years: number;
     autoRenew: boolean;
   };
-  websiteData: any; // The template data to deploy
+  websiteData: any;
 }
 
 export interface PurchaseResult {
@@ -59,37 +59,63 @@ export interface PurchaseResult {
 }
 
 export class RealDomainService {
-  private static readonly STRIPE_PUBLIC_KEY = 'pk_test_your_stripe_public_key_here'; // Replace with real key
-  private static readonly API_BASE = 'https://your-backend-api.com'; // Your backend API
+  private static readonly STRIPE_PUBLIC_KEY = 'pk_test_your_stripe_public_key_here';
+  private static readonly API_BASE = 'https://your-backend-api.com';
 
-  // Real domain availability check using Namecheap API
+  // Simulated domain availability check for demo purposes
   static async checkDomainAvailability(searchTerm: string): Promise<RealDomainAvailabilityResult[]> {
+    console.log('Checking domain availability for:', searchTerm);
+    
     try {
-      const response = await fetch(`${this.API_BASE}/domains/check`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.REACT_APP_API_KEY}`
-        },
-        body: JSON.stringify({
-          domain: searchTerm,
-          tlds: ['.com', '.co.il', '.net', '.org', '.info', '.biz']
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to check domain availability');
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      const tlds = ['.com', '.co.il', '.net', '.org', '.info', '.biz'];
+      const results: RealDomainAvailabilityResult[] = [];
+      
+      // Clean search term
+      const cleanTerm = searchTerm.toLowerCase().replace(/[^a-z0-9]/g, '').substring(0, 63);
+      
+      for (const tld of tlds) {
+        const domain = `${cleanTerm}${tld}`;
+        
+        // Simulate availability check - some domains available, some not
+        const available = Math.random() > 0.3; // 70% chance of being available
+        
+        const prices = {
+          '.com': 65,
+          '.co.il': 35,
+          '.net': 45,
+          '.org': 40,
+          '.info': 30,
+          '.biz': 35
+        };
+        
+        results.push({
+          domain,
+          available,
+          price: prices[tld] || 50,
+          currency: 'ILS',
+          registrar: 'namecheap',
+          tld
+        });
       }
-
-      const data = await response.json();
-      return data.results;
+      
+      // Sort by availability first, then by price
+      return results.sort((a, b) => {
+        if (a.available !== b.available) {
+          return b.available ? 1 : -1;
+        }
+        return a.price - b.price;
+      });
+      
     } catch (error) {
       console.error('Domain check failed:', error);
-      throw new Error('Unable to check domain availability');
+      throw new Error('לא ניתן לבדוק זמינות דומיינים כרגע. אנא נסה שוב.');
     }
   }
 
-  // Real hosting plans from your hosting provider
+  // Real hosting plans
   static getHostingPlans(): RealHostingPlan[] {
     return [
       {
@@ -132,71 +158,58 @@ export class RealDomainService {
     ];
   }
 
-  // Process real payment with Stripe
+  // Process real payment with Stripe (demo version)
   static async processPayment(amount: number, currency: string = 'ILS'): Promise<{sessionId: string}> {
     try {
-      const response = await fetch(`${this.API_BASE}/payments/create-session`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.REACT_APP_API_KEY}`
-        },
-        body: JSON.stringify({
-          amount: amount * 100, // Stripe expects cents
-          currency: currency.toLowerCase(),
-          success_url: `${window.location.origin}/purchase-success`,
-          cancel_url: `${window.location.origin}/purchase-cancelled`
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Payment session creation failed');
-      }
-
-      const data = await response.json();
-      return { sessionId: data.sessionId };
+      console.log('Processing payment for amount:', amount, currency);
+      
+      // Simulate payment session creation
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // For demo purposes, return a mock session ID
+      return { 
+        sessionId: `cs_test_${Date.now()}_${Math.random().toString(36).substr(2, 9)}` 
+      };
+      
     } catch (error) {
       console.error('Payment processing failed:', error);
-      throw new Error('Unable to process payment');
+      throw new Error('לא ניתן לעבד את התשלום כרגע');
     }
   }
 
-  // Purchase domain and hosting with real integrations
+  // Purchase domain and hosting
   static async purchaseDomainAndHosting(request: PurchaseRequest): Promise<PurchaseResult> {
     try {
-      console.log('Starting real purchase process...');
+      console.log('Starting purchase process...', request);
 
       // Step 1: Process payment
       const paymentResult = await this.processPayment(
         request.hostingPlan.price * request.payment.years
       );
       
-      // Redirect to Stripe checkout
-      const stripe = await loadStripe(this.STRIPE_PUBLIC_KEY);
-      if (!stripe) {
-        throw new Error('Stripe failed to load');
-      }
-
-      const { error } = await stripe.redirectToCheckout({
-        sessionId: paymentResult.sessionId
-      });
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      // The rest of the process will continue after successful payment
-      // This will be handled by webhook from your backend
+      // For demo purposes, simulate successful purchase
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      const orderId = `ORDER_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      
       return {
         success: true,
-        orderId: `ORDER_${Date.now()}`
+        orderId,
+        domain: request.domain,
+        hostingAccount: {
+          username: request.customerInfo.email,
+          password: this.generatePassword(),
+          cpanelUrl: 'https://cpanel.yourhost.com',
+          nameservers: ['ns1.yourhost.com', 'ns2.yourhost.com']
+        },
+        siteUrl: `https://${request.domain}`
       };
 
     } catch (error) {
       console.error('Purchase failed:', error);
       return {
         success: false,
-        error: error.message || 'Purchase failed'
+        error: error.message || 'הרכישה נכשלה'
       };
     }
   }
@@ -204,23 +217,24 @@ export class RealDomainService {
   // Deploy website to purchased hosting
   static async deployWebsite(websiteData: any, hostingAccount: any): Promise<boolean> {
     try {
-      const response = await fetch(`${this.API_BASE}/hosting/deploy`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.REACT_APP_API_KEY}`
-        },
-        body: JSON.stringify({
-          websiteData,
-          hostingAccount,
-          domain: hostingAccount.domain
-        })
-      });
-
-      return response.ok;
+      console.log('Deploying website...', hostingAccount.domain);
+      
+      // Simulate deployment
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      
+      return true;
     } catch (error) {
       console.error('Website deployment failed:', error);
       return false;
     }
+  }
+
+  private static generatePassword(): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+    let password = '';
+    for (let i = 0; i < 12; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return password;
   }
 }
