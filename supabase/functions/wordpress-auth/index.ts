@@ -75,7 +75,7 @@ function handleGetAuthUrl(config: WordPressOAuthConfig) {
     authUrl.searchParams.set('client_id', config.clientId);
     authUrl.searchParams.set('redirect_uri', config.redirectUri);
     authUrl.searchParams.set('response_type', 'code');
-    authUrl.searchParams.set('scope', 'auth global:manage');
+    authUrl.searchParams.set('scope', 'auth');
 
     console.log('Generated auth URL successfully');
 
