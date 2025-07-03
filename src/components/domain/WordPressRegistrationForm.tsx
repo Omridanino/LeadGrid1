@@ -7,9 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Globe, User, CheckCircle, ExternalLink, Rocket, Settings, AlertTriangle } from 'lucide-react';
+import { Globe, User, CheckCircle, Rocket, AlertTriangle } from 'lucide-react';
 import { RealWordPressService } from '@/services/realWordPressService';
-import { WordPressConfigWizard } from '@/components/WordPressConfigWizard';
 
 interface WordPressRegistrationFormProps {
   onSubmit: (userData: any) => void;
@@ -19,9 +18,7 @@ interface WordPressRegistrationFormProps {
 }
 
 export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, isLoading }: WordPressRegistrationFormProps) => {
-  const [isConfigured, setIsConfigured] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showConfigWizard, setShowConfigWizard] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -41,28 +38,8 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
   });
 
   useEffect(() => {
-    checkConfiguration();
     checkAuthentication();
   }, []);
-
-  const checkConfiguration = () => {
-    const configured = RealWordPressService.isConfigured();
-    setIsConfigured(configured);
-    
-    if (!configured) {
-      // Try to load from localStorage (temporary solution)
-      const clientId = localStorage.getItem('WORDPRESS_CLIENT_ID');
-      const clientSecret = localStorage.getItem('WORDPRESS_CLIENT_SECRET');
-      
-      if (clientId && clientSecret) {
-        // Set them in process.env for the session
-        (window as any).process = { env: {} };
-        (window as any).process.env.WORDPRESS_CLIENT_ID = clientId;
-        (window as any).process.env.WORDPRESS_CLIENT_SECRET = clientSecret;
-        setIsConfigured(true);
-      }
-    }
-  };
 
   const checkAuthentication = async () => {
     try {
@@ -105,22 +82,6 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
     }
   };
 
-  const handleConfigComplete = () => {
-    setShowConfigWizard(false);
-    checkConfiguration();
-  };
-
-  if (showConfigWizard) {
-    return (
-      <div className="max-w-4xl mx-auto p-6" dir="rtl">
-        <WordPressConfigWizard 
-          onComplete={handleConfigComplete}
-          onSkip={() => setShowConfigWizard(false)}
-        />
-      </div>
-    );
-  }
-
   return (
     <div className="max-w-2xl mx-auto p-6" dir="rtl">
       <Card className="bg-gray-800 border-gray-700">
@@ -139,65 +100,44 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
 
         <CardContent className="space-y-6">
           
-          {/* Configuration Status */}
-          {!isConfigured && (
-            <Alert>
-              <Settings className="h-4 w-4" />
-              <AlertDescription className="text-right">
-                <div className="flex items-center justify-between">
-                  <span>WordPress.com API לא מוגדר. נדרש Client ID ו-Client Secret.</span>
-                  <Button
-                    onClick={() => setShowConfigWizard(true)}
-                    size="sm"
-                    className="bg-yellow-600 hover:bg-yellow-700 mr-3"
-                  >
-                    הגדר עכשיו
-                  </Button>
-                </div>
-              </AlertDescription>
-            </Alert>
-          )}
-
           {/* Authentication Status */}
-          {isConfigured && (
-            <Card className={`${isAuthenticated ? 'bg-gradient-to-br from-green-900/30 to-blue-900/30 border-green-700/50' : 'bg-gradient-to-br from-yellow-900/30 to-orange-900/30 border-yellow-700/50'}`}>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  {isAuthenticated ? (
-                    <>
-                      <CheckCircle className="w-5 h-5 text-green-400" />
-                      <div>
-                        <h4 className="text-white font-semibold">מחובר ל-WordPress.com ✓</h4>
-                        <p className="text-gray-300 text-sm">
-                          מוכן ליצירת אתרי WordPress.com אמיתיים
-                        </p>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <AlertTriangle className="w-5 h-5 text-yellow-400" />
-                      <div className="flex-1">
-                        <h4 className="text-white font-semibold">נדרש אימות WordPress.com</h4>
-                        <p className="text-gray-300 text-sm">
-                          התחבר ל-WordPress.com כדי ליצור אתרים אמיתיים
-                        </p>
-                      </div>
-                      <Button
-                        onClick={handleAuthenticate}
-                        size="sm"
-                        className="bg-blue-600 hover:bg-blue-700"
-                      >
-                        התחבר עכשיו
-                      </Button>
-                    </>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          )}
+          <Card className={`${isAuthenticated ? 'bg-gradient-to-br from-green-900/30 to-blue-900/30 border-green-700/50' : 'bg-gradient-to-br from-yellow-900/30 to-orange-900/30 border-yellow-700/50'}`}>
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                {isAuthenticated ? (
+                  <>
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <div>
+                      <h4 className="text-white font-semibold">מחובר ל-WordPress.com ✓</h4>
+                      <p className="text-gray-300 text-sm">
+                        מוכן ליצירת אתרי WordPress.com אמיתיים
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <AlertTriangle className="w-5 h-5 text-yellow-400" />
+                    <div className="flex-1">
+                      <h4 className="text-white font-semibold">נדרש אימות WordPress.com</h4>
+                      <p className="text-gray-300 text-sm">
+                        התחבר ל-WordPress.com כדי ליצור אתרים אמיתיים
+                      </p>
+                    </div>
+                    <Button
+                      onClick={handleAuthenticate}
+                      size="sm"
+                      className="bg-blue-600 hover:bg-blue-700"
+                    >
+                      התחבר עכשיו
+                    </Button>
+                  </>
+                )}
+              </div>
+            </CardContent>
+          </Card>
 
-          {/* Only show form if configured and authenticated */}
-          {isConfigured && isAuthenticated && (
+          {/* Only show form if authenticated */}
+          {isAuthenticated && (
             <form onSubmit={handleSubmit} className="space-y-6">
               
               {/* Basic User Info */}
@@ -354,18 +294,16 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
             </form>
           )}
 
-          {/* Instructions for non-configured state */}
-          {!isConfigured && (
+          {/* Instructions for non-authenticated state */}
+          {!isAuthenticated && (
             <div className="text-center py-8">
-              <p className="text-gray-400 mb-4">
-                כדי ליצור אתרי WordPress.com אמיתיים, נדרש להגדיר את ה-API תחילה
-              </p>
-              <Button
-                onClick={() => setShowConfigWizard(true)}
-                className="bg-blue-600 hover:bg-blue-700"
-              >
-                התחל הגדרה
-              </Button>
+              <Alert>
+                <AlertTriangle className="h-4 w-4" />
+                <AlertDescription className="text-right">
+                  <strong>חשוב:</strong> נדרש אימות WordPress.com כדי ליצור אתרים אמיתיים.
+                  לחץ על "התחבר עכשיו" למעלה כדי להתחיל.
+                </AlertDescription>
+              </Alert>
             </div>
           )}
         </CardContent>
