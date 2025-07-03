@@ -9,9 +9,13 @@ import { TemplateData } from '@/types/template';
 type AppState = 'questionnaire' | 'template-selection' | 'editing' | 'launch';
 
 const Index = () => {
+  console.log('Index component rendering...');
+  
   const [currentState, setCurrentState] = useState<AppState>('questionnaire');
   const [questionnaireData, setQuestionnaireData] = useState<QuestionnaireData | null>(null);
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateData | null>(null);
+
+  console.log('Current state:', currentState);
 
   const handleQuestionnaireComplete = (data: QuestionnaireData) => {
     console.log('Questionnaire completed:', data);
@@ -57,12 +61,16 @@ const Index = () => {
     setCurrentState('editing');
   };
 
+  console.log('About to render, currentState:', currentState);
+
   return (
     <div className="min-h-screen">
       {currentState === 'questionnaire' && (
         <LandingPageQuestionnaire 
           onComplete={handleQuestionnaireComplete}
-          onBack={() => {}} // No back from questionnaire
+          onBack={() => {
+            console.log('Back button clicked from questionnaire');
+          }}
         />
       )}
       

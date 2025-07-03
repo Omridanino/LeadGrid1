@@ -42,6 +42,8 @@ interface LandingPageQuestionnaireProps {
 }
 
 export const LandingPageQuestionnaire = ({ onComplete, onBack }: LandingPageQuestionnaireProps) => {
+  console.log('LandingPageQuestionnaire rendering...');
+  
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<QuestionnaireData>({
     businessInfo: {
@@ -64,6 +66,9 @@ export const LandingPageQuestionnaire = ({ onComplete, onBack }: LandingPageQues
       wantDomain: false
     }
   });
+
+  console.log('Current step:', currentStep);
+  console.log('Form data:', formData);
 
   const steps = [
     { title: 'פרטי העסק', component: BusinessInfoStep },
@@ -91,6 +96,7 @@ export const LandingPageQuestionnaire = ({ onComplete, onBack }: LandingPageQues
   };
 
   const updateFormData = (section: keyof QuestionnaireData, data: any) => {
+    console.log('Updating form data:', section, data);
     setFormData(prev => ({
       ...prev,
       [section]: data
@@ -117,6 +123,8 @@ export const LandingPageQuestionnaire = ({ onComplete, onBack }: LandingPageQues
   };
 
   const CurrentStepComponent = steps[currentStep - 1].component;
+
+  console.log('About to render LandingPageQuestionnaire UI');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 p-4">
