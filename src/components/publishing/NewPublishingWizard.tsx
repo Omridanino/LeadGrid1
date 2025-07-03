@@ -92,17 +92,24 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
       setPublishingProgress(25);
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Step 2: Create unique Netlify subdomain (only alphanumeric and hyphens)
+      // Step 2: Create clean Netlify subdomain (only letters, numbers, hyphens)
       setPublishingProgress(50);
       const timestamp = Date.now();
+      
+      // Clean the template name more thoroughly - remove ALL special chars and dots
       const templateSlug = template.name
         .toLowerCase()
-        .replace(/[^a-z0-9\s]/g, '') // Remove special characters
+        .replace(/[^a-z0-9\s]/g, '') // Remove ALL special characters including dots
         .replace(/\s+/g, '-') // Replace spaces with hyphens
         .replace(/-+/g, '-') // Replace multiple hyphens with single
-        .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+        .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
+        .substring(0, 20); // Limit length
       
-      const netlifySubdomain = `${templateSlug}-${timestamp}`;
+      // Ensure we have a valid subdomain name
+      const cleanSlug = templateSlug || 'site';
+      const netlifySubdomain = `${cleanSlug}-${timestamp}`;
+      
+      console.log('Generated subdomain:', netlifySubdomain);
       
       // Step 3: Setup SSL and domain
       setPublishingProgress(75);
@@ -113,8 +120,10 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
       setPublishingProgress(100);
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      // Set the final published URL - only standard Netlify format
-      setPublishedUrl(`https://${netlifySubdomain}.netlify.app`);
+      // Set the final published URL - ONLY standard Netlify format (no extra dots!)
+      const finalUrl = `https://${netlifySubdomain}.netlify.app`;
+      console.log('Final URL:', finalUrl);
+      setPublishedUrl(finalUrl);
       setCurrentStep('complete');
       setIsPublishing(false);
     } catch (error) {
@@ -276,7 +285,7 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                         </p>
                         <div className="bg-gray-800 p-3 rounded-lg border border-gray-700 mb-4">
                           <code className="text-blue-400 font-mono">
-                            {template.name.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '-')}-[מזהה].netlify.app
+                            {template.name.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '-').substring(0, 20)}-[מזהה].netlify.app
                           </code>
                         </div>
                         <div className="text-xs text-green-300 space-y-1">
