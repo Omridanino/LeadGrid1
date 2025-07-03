@@ -1,6 +1,5 @@
-// Real Domain and Hosting Service Integration - DEMO MODE WITH REAL WORDPRESS
-import { loadStripe } from '@stripe/stripe-js';
 
+// Real Domain and Hosting Service Integration - DEMO MODE WITH REAL WORDPRESS
 export interface RealDomainAvailabilityResult {
   domain: string;
   available: boolean;
@@ -249,7 +248,7 @@ export class RealDomainService {
     ];
   }
 
-  // DEMO: Simulate payment processing - always succeeds for demo
+  // DEMO: Process payment and set status - always succeeds for demo
   static async processPayment(amount: number, method: string, paymentData: any, orderId: string, customerInfo: any): Promise<{sessionId: string, status: string, paymentUrl?: string, paymentData?: any}> {
     try {
       console.log('💳 [DEMO] Processing payment simulation:', { amount, method, orderId });
@@ -257,31 +256,29 @@ export class RealDomainService {
       // Simulate payment processing delay
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // DEMO: Always successful payment for testing WordPress creation
+      // DEMO: Always successful payment - Set the status BEFORE returning
       this.purchaseStatuses.set(orderId, {
         orderId,
         status: 'payment_verified',
         paymentMethod: method,
-        domain: paymentData.domain || '',
-        hostingPlan: paymentData.hostingPlan || '',
+        domain: paymentData.domain || customerInfo.name || '',
+        hostingPlan: paymentData.hostingPlan || 'starter',
         totalAmount: amount,
         createdAt: new Date(),
         completedAt: new Date()
       });
       
-      let result = { 
+      console.log('✅ [DEMO] Payment status set successfully for order:', orderId);
+      
+      return { 
         sessionId: `demo_${orderId}`, 
         status: 'payment_verified',
-        paymentUrl: undefined as string | undefined, 
         paymentData: {
           demoMode: true,
           message: 'תשלום דמו - הצליח בהצלחה! האתר יווצר כעת...',
           paymentVerificationRequired: false
-        } as any 
+        }
       };
-      
-      console.log('✅ [DEMO] Payment simulation completed successfully');
-      return result;
       
     } catch (error) {
       console.error('Demo payment processing failed:', error);
@@ -314,7 +311,7 @@ export class RealDomainService {
       console.log('🔧 [REAL] Installing WordPress...');
       await new Promise(resolve => setTimeout(resolve, 3000));
       
-      const siteUrl = `https://${domain}`;
+      const siteUrl = `https://demo.leadgrid.co.il/${domain}`;
       const adminUrl = `${siteUrl}/wp-admin`;
       const loginUrl = `${siteUrl}/wp-login.php`;
       
@@ -367,6 +364,9 @@ export class RealDomainService {
       }
       
       console.log('✅ [REAL] WordPress site created successfully!');
+      console.log('🌐 Live site URL:', siteUrl);
+      console.log('🔐 WordPress admin URL:', adminUrl);
+      console.log('👤 WordPress login:', wpUser.username, '/', wpUser.password);
       
       return {
         success: true,
@@ -740,6 +740,8 @@ export class RealDomainService {
       const orderId = request.orderId;
       let paymentStatus = await this.verifyPaymentStatus(orderId);
       
+      console.log('💳 Payment verification result:', paymentStatus);
+      
       if (!paymentStatus || paymentStatus.status !== 'payment_verified') {
         return {
           success: false,
@@ -832,7 +834,7 @@ export class RealDomainService {
   // Verify payment status - DEMO mode always returns verified
   static async verifyPaymentStatus(orderId: string): Promise<any> {
     const status = this.purchaseStatuses.get(orderId);
-    console.log('🔍 [DEMO] Checking payment status for order:', orderId, status);
+    console.log('🔍 [DEMO] Checking payment status for order:', orderId, status?.status || 'not found');
     return status;
   }
 

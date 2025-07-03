@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -150,23 +149,45 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
     };
 
     try {
-      // Process the purchase with real WordPress creation
-      const result = await RealDomainService.purchaseDomainAndHosting(purchaseRequest);
+      console.log('🚀 Starting WordPress site creation process...');
       
-      if (result.success && result.wordpressDetails) {
-        onComplete({
-          success: true,
-          orderId,
-          domain: selectedDomain,
-          paymentMethod,
-          paymentData,
-          wordpressDetails: result.wordpressDetails,
-          status: 'completed',
-          message: 'אתר וורדפרס נוצר בהצלחה! בדוק את האימיל שלך לפרטי הגישה.'
-        });
+      // Process payment first (DEMO mode - always succeeds)
+      const paymentResult = await RealDomainService.processPayment(
+        getTotalPrice(),
+        paymentMethod,
+        paymentData,
+        orderId,
+        purchaseRequest.customerInfo
+      );
+      
+      console.log('💳 Payment processed:', paymentResult);
+      
+      if (paymentResult.status === 'payment_verified') {
+        // Now create the actual WordPress site
+        console.log('🔨 Creating WordPress site...');
+        const result = await RealDomainService.purchaseDomainAndHosting(purchaseRequest);
+        
+        if (result.success && result.wordpressDetails) {
+          console.log('✅ WordPress site created successfully!');
+          console.log('🌐 Site details:', result.wordpressDetails);
+          
+          onComplete({
+            success: true,
+            orderId,
+            domain: selectedDomain,
+            paymentMethod,
+            paymentData,
+            wordpressDetails: result.wordpressDetails,
+            status: 'completed',
+            message: 'אתר וורדפרס נוצר בהצלחה! האתר שלך מוכן.'
+          });
+        } else {
+          throw new Error(result.error || 'יצירת אתר וורדפרס נכשלה');
+        }
       } else {
-        throw new Error(result.error || 'יצירת אתר וורדפרס נכשלה');
+        throw new Error('התשלום לא אושר');
       }
+      
     } catch (error) {
       console.error('Purchase failed:', error);
       alert('הרכישה נכשלה: ' + error.message);
