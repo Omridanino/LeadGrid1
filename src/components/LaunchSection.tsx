@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,6 +18,7 @@ import {
   Gift
 } from 'lucide-react';
 import { LeadgridDomainWizard } from './domain/LeadgridDomainWizard';
+import { RealDomainPurchaseWizard } from './domain/RealDomainPurchaseWizard';
 import { TemplateData } from '@/types/template';
 
 interface LaunchSectionProps {
@@ -101,13 +101,13 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
             </div>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            🎯 הפוך את האתר שלך לאמיתי עם LEADGRID!
+            🎯 קנה דומיין ואחסון אמיתיים עכשיו!
           </h2>
           <p className="text-xl text-gray-400 mb-2">
-            הפתרון הישראלי המלא - דומיין, אחסון ותמיכה בעברית
+            רכישה אמיתית - דומין ואחסון מקצועיים עם תשלום מאובטח
           </p>
           <p className="text-sm text-gray-500">
-            עריכה וניהול גם אחרי הפרסום + תמיכה טכנית 24/7
+            האתר שלך יהיה חי באינטרנט תוך דקות!
           </p>
         </div>
 
@@ -304,14 +304,14 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-12 py-6 text-xl font-bold shadow-2xl transform hover:scale-105 transition-all"
           >
             <Rocket className="w-7 h-7 ml-3" />
-            התחל עם LEADGRID עכשיו!
+            רכוש דומיין ואחסון אמיתיים!
             <ArrowRight className="w-7 h-7 mr-3" />
           </Button>
           <p className="text-gray-400 text-sm mt-3">
-            תהליך של 5 דקות בלבד - הכל בעברית ושקוף
+            תשלום מאובטח דרך Stripe - דומיין ואחסון אמיתיים
           </p>
           <p className="text-yellow-400 text-xs mt-1 font-medium">
-            💰 30 יום החזר כספי מלא - בלי שאלות!
+            💳 תשלום מאובטח + האתר חי באינטרנט מיד!
           </p>
         </div>
 
@@ -334,13 +334,14 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
         </div>
       </div>
 
-      <LeadgridDomainWizard
+      <RealDomainPurchaseWizard
         template={template}
         isOpen={isWizardOpen}
         onClose={() => setIsWizardOpen(false)}
         onComplete={(result) => {
-          console.log('LEADGRID domain purchase completed:', result);
+          console.log('Real domain purchase completed:', result);
           setIsWizardOpen(false);
+          // Navigate to success page or show success message
         }}
       />
     </>
