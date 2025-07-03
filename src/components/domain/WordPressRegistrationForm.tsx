@@ -74,10 +74,18 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
     onSubmit(formData);
   };
 
-  const handleAuthenticate = () => {
+  const handleAuthenticate = async () => {
     try {
-      RealWordPressService.initiateWordPressAuth();
+      console.log('🔄 Starting WordPress authentication...');
+      
+      // Instead of trying to redirect via JavaScript, 
+      // directly navigate to the Edge Function redirect
+      const edgeFunctionUrl = 'https://crkgabcjxkdpnhipvugu.supabase.co/functions/v1/wordpress-auth?action=redirect-to-auth';
+      console.log('🔗 Redirecting to Edge Function:', edgeFunctionUrl);
+      
+      window.location.href = edgeFunctionUrl;
     } catch (error) {
+      console.error('❌ Authentication error:', error);
       alert(`שגיאה באימות: ${error.message}`);
     }
   };
