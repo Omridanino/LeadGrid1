@@ -430,6 +430,7 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
 
                     <WordPressRegistrationForm
                       onSubmit={handleWordPressRegistration}
+                      onCancel={() => setCurrentStep('hosting')}
                       isLoading={isCreatingWordPress}
                       selectedDomain={selectedDomain}
                     />
