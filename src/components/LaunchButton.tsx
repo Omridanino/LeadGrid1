@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,7 +12,7 @@ import {
   Shield,
   Server
 } from 'lucide-react';
-import { LeadgridDomainWizard } from './domain/LeadgridDomainWizard';
+import { NewPublishingWizard } from './publishing/NewPublishingWizard';
 import { TemplateData } from '@/types/template';
 
 interface LaunchButtonProps {
@@ -181,14 +182,10 @@ export const LaunchButton = ({ template, className = '' }: LaunchButtonProps) =>
         </CardContent>
       </Card>
 
-      <LeadgridDomainWizard
+      <NewPublishingWizard
         template={currentTemplate}
         isOpen={isWizardOpen}
         onClose={() => setIsWizardOpen(false)}
-        onComplete={(result) => {
-          console.log('Domain purchase completed:', result);
-          setIsWizardOpen(false);
-        }}
       />
     </>
   );
