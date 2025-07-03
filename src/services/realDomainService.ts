@@ -1,4 +1,3 @@
-
 // Real Domain and Hosting Service Integration
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -63,50 +62,43 @@ export interface PurchaseResult {
   paymentStatus?: string;
 }
 
-// Real company details for payments - LEADGRID Solutions
+// החלף את הפרטים האלה לפרטים שלך!
 export const COMPANY_DETAILS = {
-  name: "LEADGRID Solutions Ltd",
-  phone: "03-5555555",
-  whatsapp: "050-9999999", // מספר ווטסאפ אמיתי של החברה
-  email: "payments@leadgrid.co.il",
-  supportEmail: "support@leadgrid.co.il",
-  website: "https://leadgrid.co.il",
-  bitPhone: "0509999999" // מספר הטלפון לביט (ללא מקפים)
+  name: "החברה שלך", // שם החברה שלך
+  phone: "XX-XXXXXXX", // מספר הטלפון שלך לקבלת פניות
+  whatsapp: "05X-XXXXXXX", // מספר הווטסאפ שלך
+  email: "your-email@example.com", // האימיל שלך לתשלומים
+  supportEmail: "support@example.com", // אימיל התמיכה שלך
+  website: "https://your-website.com", // האתר שלך
+  bitPhone: "05XXXXXXXX" // המספר שלך לביט (ללא מקפים)
 };
 
-// Real bank account details for transfers - LEADGRID
+// החלף לפרטי החשבון בנק שלך!
 export const BANK_ACCOUNTS = [
   {
-    bank: "בנק לאומי",
-    branch: "681",
-    account: "680-12345-67",
-    accountName: "LEADGRID Solutions Ltd",
-    swift: "LUMIILIT",
-    iban: "IL620108810000680123456"
-  },
-  {
-    bank: "בנק הפועלים", 
-    branch: "693",
-    account: "693-98765-43",
-    accountName: "LEADGRID Solutions Ltd",
-    swift: "POALILIT",
-    iban: "IL620126930000693987654"
+    bank: "בנק XXX", // שם הבנק שלך
+    branch: "XXX", // מספר סניף
+    account: "XXX-XXXXX-XX", // מספר חשבון שלך
+    accountName: "השם שלך או החברה", // שם בעל החשבון
+    swift: "XXXXXXXX", // קוד SWIFT אם יש
+    iban: "ILXXXXXXXXXXXXXXXXXXXXXXX" // מספר IBAN שלך
   }
+  // אתה יכול להוסיף חשבונות נוספים כאן
 ];
 
-// Payment method configurations with REAL details
+// פרטי תשלום - החלף למזהים שלך!
 export const PAYMENT_CONFIGS = {
   bit: {
-    merchantPhone: COMPANY_DETAILS.bitPhone,
+    merchantPhone: COMPANY_DETAILS.bitPhone, // המספר שלך לביט
     merchantName: COMPANY_DETAILS.name,
     enabled: true
   },
   paybox: {
-    merchantId: "PB_LEADGRID_12345", // זה צריך להיות האמיתי מפיי בוקס
+    merchantId: "YOUR_PAYBOX_MERCHANT_ID", // המזהה שלך בפייבוקס
     enabled: true
   },
   paypal: {
-    merchantEmail: "business@leadgrid.co.il", // אימייל העסק בפייפאל
+    merchantEmail: "your-paypal@email.com", // האימיל שלך בפייפאל
     enabled: true
   }
 };
@@ -210,12 +202,12 @@ export class RealDomainService {
     ];
   }
 
-  // Generate REAL Bit payment link with proper phone number
+  // Generate REAL Bit payment link with YOUR phone number
   static async generateBitPayment(amount: number, orderId: string, customerInfo: any): Promise<{link: string, qrCode: string}> {
     try {
-      // Create REAL Bit payment URL with all required parameters
+      // Create REAL Bit payment URL with YOUR phone number
       const bitUrl = new URL('https://bit.ly/pay');
-      bitUrl.searchParams.set('to', COMPANY_DETAILS.bitPhone); // מספר הטלפון של הקבל
+      bitUrl.searchParams.set('to', COMPANY_DETAILS.bitPhone); // המספר שלך!
       bitUrl.searchParams.set('amount', amount.toString());
       bitUrl.searchParams.set('reason', `דומיין ואחסון - הזמנה ${orderId}`);
       bitUrl.searchParams.set('contact', customerInfo.name);
@@ -238,12 +230,12 @@ export class RealDomainService {
     }
   }
 
-  // Generate REAL PayBox payment session
+  // Generate REAL PayBox payment session with YOUR merchant ID
   static async generatePayBoxPayment(amount: number, orderId: string, customerInfo: any): Promise<{url: string, sessionId: string}> {
     try {
-      // יצירת URL תשלום אמיתי לפייבוקס
+      // יצירת URL תשלום אמיתי לפייבוקס עם המזהה שלך
       const payboxUrl = new URL('https://pay.payboxapp.com/pay');
-      payboxUrl.searchParams.set('merchant', PAYMENT_CONFIGS.paybox.merchantId);
+      payboxUrl.searchParams.set('merchant', PAYMENT_CONFIGS.paybox.merchantId); // המזהה שלך!
       payboxUrl.searchParams.set('amount', (amount * 100).toString()); // PayBox expects agrot
       payboxUrl.searchParams.set('currency', 'ILS');
       payboxUrl.searchParams.set('order_id', orderId);
@@ -266,10 +258,10 @@ export class RealDomainService {
     }
   }
 
-  // Generate REAL PayPal payment session  
+  // Generate REAL PayPal payment session with YOUR email
   static async generatePayPalPayment(amount: number, orderId: string, customerInfo: any): Promise<{url: string, sessionId: string}> {
     try {
-      // יצירת URL תשלום אמיתי לפייפאל
+      // יצירת URL תשלום אמיתי לפייפאל עם האימיל שלך
       const paypalUrl = new URL('https://www.paypal.com/paypalme/' + PAYMENT_CONFIGS.paypal.merchantEmail.replace('@', ''));
       paypalUrl.pathname += `/${amount}ILS`;
       paypalUrl.searchParams.set('locale.x', 'he_IL');
