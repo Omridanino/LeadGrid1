@@ -248,7 +248,7 @@ export class RealPublishingService {
             border-color: ${styles.primaryColor};
         }
         
-        .pricing-card.featured {
+        .pricing-card.recommended {
             border-color: ${styles.primaryColor};
             background: linear-gradient(135deg, ${styles.primaryColor}10 0%, ${styles.primaryColor}05 100%);
         }
@@ -391,14 +391,14 @@ export class RealPublishingService {
             <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 3rem;">${template.pricing.title}</h2>
             <div class="grid grid-auto">
                 ${template.pricing.plans.map(plan => `
-                    <div class="pricing-card ${plan.featured ? 'featured' : ''}">
+                    <div class="pricing-card ${plan.recommended ? 'recommended' : ''}">
                         <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: ${styles.primaryColor};">${plan.name}</h3>
-                        <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 1rem; color: ${styles.primaryColor};">₪${plan.price}</div>
-                        <p style="margin-bottom: 2rem; opacity: 0.8;">${plan.description}</p>
+                        <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 1rem; color: ${styles.primaryColor};">${plan.price}</div>
+                        <p style="margin-bottom: 2rem; opacity: 0.8;">${plan.period}</p>
                         <ul style="text-align: right; margin-bottom: 2rem;">
                             ${plan.features.map(feature => `<li style="margin: 0.5rem 0;">✓ ${feature}</li>`).join('')}
                         </ul>
-                        <a href="#contact" class="btn-primary" style="width: 100%; text-align: center;">בחר תוכנית</a>
+                        <a href="#contact" class="btn-primary" style="width: 100%; text-align: center;">${plan.buttonText}</a>
                     </div>
                 `).join('')}
             </div>
