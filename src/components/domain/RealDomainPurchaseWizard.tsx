@@ -67,14 +67,15 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
   const websiteTypeOptions = [
     {
       id: 'wordpress' as const,
-      name: 'אתר WordPress מלא',
-      description: 'אתר וורדפרס אמיתי עם הרשמה והתחברות אמיתית',
+      name: 'אתר WordPress אמיתי',
+      description: 'אתר וורדפרס אמיתי עם התקנה מלאה וגישה אמיתית',
       features: [
-        'ממשק ניהול מתקדם',
+        'התקנת וורדפרס אמיתית',
+        'בסיס נתונים אמיתי',
+        'ממשק ניהול מלא',
         'תוספים ועיצובים',
-        'בלוג וחנות מובנים',
-        'גמישות מקסימלית',
-        'הרשמה אמיתית ללקוח'
+        'גיבוי אוטומטי',
+        'תמיכה מלאה'
       ],
       icon: Code,
       color: 'bg-purple-600',
@@ -131,7 +132,7 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
       hostingPlan: selectedPlan!,
       orderId: orderId,
       customerInfo: {
-        name: wordpressUserData?.displayName || 'לקוח דמו',
+        name: wordpressUserData?.displayName || 'לקוח',
         email: wordpressUserData?.email || 'demo@example.com',
         phone: wordpressUserData?.phone || '050-0000000',
         company: wordpressUserData?.company,
@@ -155,7 +156,7 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
     };
 
     try {
-      console.log('🚀 Starting demo WordPress site creation process...');
+      console.log('🚀 Starting REAL WordPress site creation process...');
       
       // Process payment first (DEMO mode - always succeeds)
       const paymentResult = await RealDomainService.processPayment(
@@ -169,12 +170,12 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
       console.log('💳 Payment processed:', paymentResult);
       
       if (paymentResult.status === 'payment_verified') {
-        // Now create the working demo WordPress site
-        console.log('🔨 Creating working demo WordPress site...');
+        // Now create the REAL WordPress site
+        console.log('🔨 Creating REAL WordPress site...');
         const result = await RealDomainService.purchaseDomainAndHosting(purchaseRequest);
         
         if (result.success && result.wordpressDetails) {
-          console.log('✅ Demo WordPress site created successfully!');
+          console.log('✅ WordPress site created successfully!');
           console.log('🌐 Site details:', result.wordpressDetails);
           
           const completionData = {
@@ -185,7 +186,9 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
             paymentData,
             wordpressDetails: result.wordpressDetails,
             status: 'completed',
-            message: 'אתר דמו נוצר בהצלחה! האתר שלך מוכן.',
+            message: result.wordpressDetails.isDemo 
+              ? 'אתר דמו נוצר בהצלחה! (כ fallback)'
+              : 'אתר וורדפרס אמיתי נוצר בהצלחה!',
             customerInfo: purchaseRequest.customerInfo
           };
           
@@ -193,7 +196,7 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
           setCurrentStep('complete');
           
         } else {
-          throw new Error(result.error || 'יצירת אתר דמו נכשלה');
+          throw new Error(result.error || 'יצירת אתר וורדפרס נכשלה');
         }
       } else {
         throw new Error('התשלום לא אושר');
@@ -227,8 +230,8 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
           <div className="p-6 border-b border-gray-800 flex-shrink-0">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-white text-2xl font-bold">רכישת דומיין ויצירת אתר דמו</h2>
-                <p className="text-gray-400">יצירת אתר דמו עובד עם התוכן שלך</p>
+                <h2 className="text-white text-2xl font-bold">רכישת דומיין ויצירת אתר וורדפרס אמיתי</h2>
+                <p className="text-gray-400">יצירת אתר וורדפרס אמיתי עם התוכן שלך</p>
               </div>
               <Button onClick={onClose} size="sm" className="bg-gray-700 hover:bg-gray-600">
                 <X className="w-4 h-4" />
@@ -499,14 +502,14 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                 
                 {currentStep === 'processing' && (
                   <div className="flex flex-col items-center justify-center py-12 space-y-6">
-                    <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
+                    <div className="w-20 h-20 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
                       <Loader2 className="w-10 h-10 text-white animate-spin" />
                     </div>
                     <div className="text-center">
                       <h3 className="text-white text-xl font-semibold mb-2">יוצר אתר וורדפרס אמיתי</h3>
-                      <p className="text-gray-400">מגדיר את הדומיין, האחסון ויוצר את המשתמש שלך...</p>
+                      <p className="text-gray-400">מתקין וורדפרס, מגדיר בסיס נתונים ויוצר את המשתמש שלך...</p>
                       <p className="text-green-300 text-sm mt-2">
-                        🚀 האתר יהיה זמין תוך דקות ספורות!
+                        🚀 זהו אתר וורדפרס אמיתי - יהיה זמין תוך דקות ספורות!
                       </p>
                     </div>
                   </div>
@@ -518,22 +521,41 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                       <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
                         <CheckCircle className="w-10 h-10 text-white" />
                       </div>
-                      <h3 className="text-white text-2xl font-bold mb-2">האתר הדמו שלך מוכן! 🎉</h3>
-                      <p className="text-gray-400">אתר דמו עובד נוצר עם התוכן שלך</p>
+                      <h3 className="text-white text-2xl font-bold mb-2">
+                        {completionResult.wordpressDetails.isDemo 
+                          ? 'אתר דמו נוצר בהצלחה! 🎭' 
+                          : 'אתר וורדפרס אמיתי נוצר! 🎉'
+                        }
+                      </h3>
+                      <p className="text-gray-400">
+                        {completionResult.wordpressDetails.isDemo 
+                          ? 'אתר דמו עובד נוצר עם התוכן שלך (הפעלת fallback)'
+                          : 'אתר וורדפרס אמיתי עם התקנה מלאה ובסיס נתונים'
+                        }
+                      </p>
                     </div>
 
-                    {/* Demo Site Details */}
-                    <Card className="bg-gradient-to-br from-green-900/50 to-blue-900/50 border-green-700/50">
+                    {/* Site Details */}
+                    <Card className={`bg-gradient-to-br ${
+                      completionResult.wordpressDetails.isDemo 
+                        ? 'from-blue-900/50 to-purple-900/50 border-blue-700/50'
+                        : 'from-green-900/50 to-blue-900/50 border-green-700/50'
+                    }`}>
                       <CardHeader>
                         <CardTitle className="text-white flex items-center justify-center gap-2">
                           <Globe className="w-6 h-6" />
-                          פרטי האתר הדמו שלך
+                          {completionResult.wordpressDetails.isDemo 
+                            ? 'פרטי האתר הדמו שלך'
+                            : 'פרטי האתר האמיתי שלך'
+                          }
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-4">
-                        {/* Live Demo Site URL */}
+                        {/* Live Site URL */}
                         <div className="bg-gray-800/50 p-4 rounded-lg">
-                          <Label className="text-gray-300 text-sm">🌐 האתר הדמו שלך (עובד!):</Label>
+                          <Label className="text-gray-300 text-sm">
+                            🌐 {completionResult.wordpressDetails.isDemo ? 'האתר הדמו שלך:' : 'האתר האמיתי שלך:'}
+                          </Label>
                           <div className="flex items-center gap-2 mt-2">
                             <Input
                               value={completionResult.wordpressDetails.actualSiteUrl}
@@ -557,16 +579,25 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                           </div>
                         </div>
 
-                        {/* Demo WordPress Admin Access */}
-                        <div className="bg-purple-900/30 p-4 rounded-lg border border-purple-700/30">
+                        {/* WordPress Admin Access */}
+                        <div className={`p-4 rounded-lg border ${
+                          completionResult.wordpressDetails.isDemo 
+                            ? 'bg-blue-900/30 border-blue-700/30'
+                            : 'bg-purple-900/30 border-purple-700/30'
+                        }`}>
                           <h4 className="text-purple-200 font-semibold mb-3 flex items-center gap-2">
                             <Lock className="w-5 h-5" />
-                            ניהול אתר דמו (מדמה וורדפרס)
+                            {completionResult.wordpressDetails.isDemo 
+                              ? 'ניהול אתר דמו (מדמה וורדפרס)'
+                              : 'ניהול וורדפרס אמיתי'
+                            }
                           </h4>
                           
                           <div className="space-y-3">
                             <div>
-                              <Label className="text-gray-300 text-sm">📱 פאנל ניהול דמו:</Label>
+                              <Label className="text-gray-300 text-sm">
+                                📱 {completionResult.wordpressDetails.isDemo ? 'פאנל ניהול דמו:' : 'wp-admin אמיתי:'}
+                              </Label>
                               <div className="flex items-center gap-2 mt-1">
                                 <Input
                                   value={completionResult.wordpressDetails.wpAdminUrl}
@@ -631,13 +662,28 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                         </div>
 
                         {/* Instructions */}
-                        <div className="bg-blue-900/20 p-4 rounded-lg border border-blue-700/30">
+                        <div className={`p-4 rounded-lg border ${
+                          completionResult.wordpressDetails.isDemo 
+                            ? 'bg-blue-900/20 border-blue-700/30'
+                            : 'bg-green-900/20 border-green-700/30'
+                        }`}>
                           <h4 className="text-blue-200 font-semibold mb-2">📋 הוראות שימוש:</h4>
                           <div className="text-blue-300 text-sm space-y-1">
-                            <p>1. לחץ על "צפה באתר" כדי לראות את האתר הדמו שלך</p>
-                            <p>2. האתר כולל את כל התוכן שיצרת בשאלון</p>
-                            <p>3. זהו אתר דמו עובד המדמה פונקציונליות וורדפרס</p>
-                            <p>4. בגרסה האמיתית תקבל אתר וורדפרס מלא!</p>
+                            {completionResult.wordpressDetails.isDemo ? (
+                              <>
+                                <p>1. לחץ על "צפה באתר" כדי לראות את האתר הדמו שלך</p>
+                                <p>2. האתר כולל את כל התוכן שיצרת בשאלון</p>
+                                <p>3. זהו אתר דמו עובד המדמה פונקציונליות וורדפרס</p>
+                                <p>4. בגרסה האמיתית תקבל אתר וורדפרס מלא!</p>
+                              </>
+                            ) : (
+                              <>
+                                <p>1. לחץ על "צפה באתר" כדי לראות את האתר האמיתי שלך</p>
+                                <p>2. השתמש בפרטי ההתחברות לכניסה לממשק הניהול</p>
+                                <p>3. זהו אתר וורדפרס אמיתי עם כל הפונקציות</p>
+                                <p>4. תוכל לערוך, להוסיף תכנים ולנהל את האתר</p>
+                              </>
+                            )}
                           </div>
                         </div>
                       </CardContent>
