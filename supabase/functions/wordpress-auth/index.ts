@@ -294,10 +294,11 @@ async function handleCreateSite(req: Request) {
       console.log('Warning: Failed to configure site settings:', error);
     }
 
-    // Step 3: Create admin user if provided
-    if (userData.username && userData.password) {
+    // Step 3: Update site ownership to client and create client as admin
+    if (userData.username && userData.password && userData.email) {
       try {
-        await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/users/new`, {
+        // First, create a WordPress.com account for the client (invitation method)
+        const inviteResponse = await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/users/new`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -306,18 +307,49 @@ async function handleCreateSite(req: Request) {
             'Accept': 'application/json',
           },
           body: JSON.stringify({
-            username: userData.username,
-            email: userData.email,
-            password: userData.password,
-            display_name: userData.displayName || userData.firstName + ' ' + userData.lastName,
+            user_login: userData.username,
+            user_email: userData.email,
+            role: 'administrator',
+            user_pass: userData.password,
+            display_name: userData.displayName || `${userData.firstName} ${userData.lastName}`,
             first_name: userData.firstName,
             last_name: userData.lastName,
-            role: 'administrator'
+            send_confirmation: false
           }),
         });
-        console.log('Admin user created successfully');
+
+        const inviteResult = await inviteResponse.text();
+        console.log('Client admin user creation result:', inviteResult);
+        
+        if (!inviteResponse.ok) {
+          console.log('Warning: Could not create admin user directly, trying invitation method');
+          
+          // Try invitation method as fallback
+          const fallbackResponse = await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/users/new`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+              'User-Agent': 'LeadGrid/1.0',
+              'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+              user_login: userData.email, // Use email as username fallback
+              user_email: userData.email,
+              role: 'administrator',
+              send_confirmation: true
+            }),
+          });
+          
+          if (fallbackResponse.ok) {
+            console.log('Client invited as admin successfully');
+          }
+        } else {
+          console.log('Client admin user created successfully');
+        }
+        
       } catch (error) {
-        console.log('Warning: Failed to create admin user:', error);
+        console.log('Warning: Failed to setup client admin user:', error);
       }
     }
 
@@ -405,32 +437,40 @@ async function handleCreateSite(req: Request) {
 function generateWordPressContent(templateData: any): string {
   let content = '';
   
-  // Hero section
-  if (templateData.hero) {
+  // Extract data from formData and generatedContent
+  const formData = templateData.formData;
+  const generatedContent = templateData.generatedContent;
+  const hero = generatedContent?.hero || templateData.hero;
+  const features = generatedContent?.features || templateData.features;
+  const about = generatedContent?.about || templateData.about;
+  
+  // Hero section with real data from questionnaire
+  if (hero) {
     content += `
-      <div style="text-align: center; padding: 60px 20px; background: linear-gradient(135deg, ${templateData.styles?.primaryColor || '#1e40af'}, ${templateData.styles?.secondaryColor || '#7c3aed'}); color: white; margin-bottom: 40px;">
-        <h1 style="font-size: 3rem; margin-bottom: 1rem; color: white;">${templateData.hero.title}</h1>
-        <p style="font-size: 1.25rem; margin-bottom: 2rem; color: white;">${templateData.hero.subtitle}</p>
-        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-          <a href="#contact" style="background: rgba(255,255,255,0.2); color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; border: 2px solid white;">${templateData.hero.button1Text || 'צור קשר'}</a>
-          <a href="#about" style="background: white; color: #1e40af; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold;">${templateData.hero.button2Text || 'למד עוד'}</a>
+      <div style="text-align: center; padding: 60px 20px; background: linear-gradient(135deg, ${templateData.styles?.primaryColor || '#1e40af'}, ${templateData.styles?.secondaryColor || '#7c3aed'}); color: white; margin-bottom: 40px; border-radius: 12px;">
+        <h1 style="font-size: 3rem; margin-bottom: 1rem; color: white; font-weight: bold;">${hero.title || 'ברוכים הבאים לאתר שלנו'}</h1>
+        <p style="font-size: 1.25rem; margin-bottom: 2rem; color: white; max-width: 600px; margin-left: auto; margin-right: auto;">${hero.subtitle || 'אנחנו כאן כדי לעזור לכם להצליח'}</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+          <a href="#contact" style="background: rgba(255,255,255,0.2); color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; border: 2px solid white; transition: all 0.3s;">${hero.button1Text || 'צור קשר'}</a>
+          <a href="#about" style="background: white; color: #1e40af; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; transition: all 0.3s;">${hero.button2Text || 'למד עוד'}</a>
         </div>
       </div>
     `;
   }
   
-  // Features section
-  if (templateData.features?.items?.length > 0) {
+  // Features section with real data
+  if (features?.items?.length > 0) {
     content += `
-      <div style="padding: 60px 20px; background: #f9fafb;">
-        <h2 style="text-align: center; margin-bottom: 3rem; font-size: 2.5rem; color: #1e40af;">${templateData.features.title}</h2>
+      <div style="padding: 60px 20px; background: #f9fafb; border-radius: 12px; margin: 40px 0;">
+        <h2 style="text-align: center; margin-bottom: 3rem; font-size: 2.5rem; color: #1e40af; font-weight: bold;">${features.title || 'השירותים שלנו'}</h2>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto;">
     `;
     
-    templateData.features.items.forEach((feature: any) => {
+    features.items.forEach((feature: any) => {
       content += `
-        <div style="text-align: center; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-          <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: ${templateData.styles?.primaryColor || '#1e40af'};">${feature.title}</h3>
+        <div style="text-align: center; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">${feature.icon || '⭐'}</div>
+          <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: ${templateData.styles?.primaryColor || '#1e40af'}; font-weight: bold;">${feature.title}</h3>
           <p style="color: #6b7280; line-height: 1.6;">${feature.description}</p>
         </div>
       `;
@@ -441,6 +481,37 @@ function generateWordPressContent(templateData: any): string {
       </div>
     `;
   }
+  
+  // About section
+  if (about) {
+    content += `
+      <div style="padding: 60px 20px; background: white; border-radius: 12px; margin: 40px 0; text-align: center;">
+        <h2 style="font-size: 2.5rem; color: #1e40af; margin-bottom: 2rem; font-weight: bold;">${about.title || 'אודותינו'}</h2>
+        <p style="font-size: 1.2rem; color: #6b7280; line-height: 1.8; max-width: 800px; margin: 0 auto;">${about.description || 'אנחנו חברה מובילה בתחום שלנו עם ניסיון רב שנים.'}</p>
+      </div>
+    `;
+  }
+  
+  // Contact section
+  content += `
+    <div id="contact" style="padding: 60px 20px; background: linear-gradient(135deg, #1e40af, #7c3aed); color: white; border-radius: 12px; margin: 40px 0; text-align: center;">
+      <h2 style="font-size: 2.5rem; margin-bottom: 2rem; color: white; font-weight: bold;">צור קשר</h2>
+      <p style="font-size: 1.2rem; margin-bottom: 2rem; color: white;">נשמח לשמוע מכם ולעזור לכם</p>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+        ${formData?.email ? `<p style="color: white; font-size: 1.1rem;">📧 ${formData.email}</p>` : ''}
+        ${formData?.phone ? `<p style="color: white; font-size: 1.1rem;">📞 ${formData.phone}</p>` : ''}
+        ${formData?.businessName ? `<p style="color: white; font-size: 1.1rem;">🏢 ${formData.businessName}</p>` : ''}
+      </div>
+    </div>
+  `;
+  
+  // Footer
+  content += `
+    <div style="padding: 40px 20px; background: #1f2937; color: white; text-align: center; border-radius: 12px; margin-top: 40px;">
+      <p style="margin: 0; color: #9ca3af;">© ${new Date().getFullYear()} ${formData?.businessName || 'האתר שלנו'}. כל הזכויות שמורות.</p>
+      <p style="margin: 10px 0 0 0; color: #6b7280; font-size: 0.9rem;">נוצר באמצעות LeadGrid</p>
+    </div>
+  `;
   
   return content;
 }
