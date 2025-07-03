@@ -77,7 +77,6 @@ const Index = () => {
         <TemplateEditor 
           template={selectedTemplate}
           onSave={handleEditComplete}
-          onBack={handleBackToTemplateSelection}
         />
       )}
       

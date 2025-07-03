@@ -143,21 +143,10 @@ export const LandingPageQuestionnaire = ({ onComplete, onBack }: LandingPageQues
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {currentStep === 3 ? (
-              <ElementsSelectionStep 
-                formData={{ selectedElements: formData.elements }}
-                updateFormData={(field: string, value: string[]) => {
-                  if (field === 'selectedElements') {
-                    updateFormData('elements', value);
-                  }
-                }}
-              />
-            ) : (
-              <CurrentStepComponent 
-                data={formData}
-                onUpdate={updateFormData}
-              />
-            )}
+            <CurrentStepComponent 
+              data={formData}
+              onUpdate={updateFormData}
+            />
           </CardContent>
         </Card>
 
