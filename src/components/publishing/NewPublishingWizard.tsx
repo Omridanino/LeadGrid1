@@ -93,20 +93,23 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
       setPublishingProgress(25);
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Step 2: Upload to Netlify
+      // Step 2: Create unique Netlify subdomain
       setPublishingProgress(50);
-      const netlifyUrl = `${template.name.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}.netlify.app`;
+      const timestamp = Date.now();
+      const templateSlug = template.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+      const netlifySubdomain = `${templateSlug}-${timestamp}`;
       
       // Step 3: Setup SSL and domain
       setPublishingProgress(75);
-      await HostingService.setupHosting(netlifyUrl);
-      await HostingService.provisionSSL(netlifyUrl);
+      await HostingService.setupHosting(`${netlifySubdomain}.netlify.app`);
+      await HostingService.provisionSSL(`${netlifySubdomain}.netlify.app`);
       
       // Step 4: Complete
       setPublishingProgress(100);
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      setPublishedUrl(`https://${netlifyUrl}`);
+      // Set the final published URL
+      setPublishedUrl(`https://${netlifySubdomain}.netlify.app`);
       setCurrentStep('complete');
       setIsPublishing(false);
     } catch (error) {
@@ -268,7 +271,7 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                         </p>
                         <div className="bg-gray-800 p-3 rounded-lg border border-gray-700 mb-4">
                           <code className="text-blue-400 font-mono">
-                            {template.name.toLowerCase().replace(/\s+/g, '-')}.netlify.app
+                            {template.name.toLowerCase().replace(/\s+/g, '-')}-[id].netlify.app
                           </code>
                         </div>
                         <div className="text-xs text-green-300 space-y-1">
