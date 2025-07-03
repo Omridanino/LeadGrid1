@@ -63,6 +63,8 @@ export interface PurchaseResult {
     wpUsername: string;
     wpPassword: string;
     demoSiteUrl: string;
+    actualSiteUrl: string;
+    isDemo: boolean;
   };
 }
 
@@ -151,6 +153,8 @@ export interface WordPressCreationResult {
     plugins: string[];
     siteId: string;
   };
+  actualSiteUrl: string;
+  isDemo: boolean;
 }
 
 export class RealDomainService {
@@ -285,37 +289,38 @@ export class RealDomainService {
     }
   }
 
-  // Create REAL WordPress site with user registration
+  // Create REAL working demo site with user's content
   static async createRealWordPressSite(
     domain: string, 
     wordpressUserData: WordPressUserData, 
     websiteData: any
   ): Promise<WordPressCreationResult> {
     try {
-      console.log('🚀 [REAL] Creating WordPress site for domain:', domain);
-      console.log('👤 [REAL] WordPress user data:', {
+      console.log('🚀 [DEMO] Creating working demo site for domain:', domain);
+      console.log('👤 [DEMO] WordPress user data:', {
         username: wordpressUserData.username,
         email: wordpressUserData.email,
         displayName: wordpressUserData.displayName,
         websiteTitle: wordpressUserData.websiteTitle
       });
-      console.log('📄 Website template data:', {
-        businessName: websiteData.businessName,
-        businessType: websiteData.businessType,
-        sections: Object.keys(websiteData.sections || {}),
-        colors: websiteData.colors
-      });
       
-      // Step 1: Create WordPress installation
-      console.log('🔧 [REAL] Installing WordPress...');
+      // Step 1: Create working demo site URL
+      console.log('🔧 [DEMO] Setting up demo site URLs...');
+      const cleanDomain = domain.replace(/[^a-z0-9]/gi, '').toLowerCase();
+      const timestamp = Date.now();
+      
+      // Create working demo URLs that point to the current app
+      const currentUrl = window.location.origin;
+      const demoSiteUrl = `${currentUrl}/generated-landing-page?demo=${cleanDomain}&user=${wordpressUserData.username}&t=${timestamp}`;
+      const adminUrl = `${currentUrl}/wordpress-admin?demo=${cleanDomain}&user=${wordpressUserData.username}`;
+      const loginUrl = `${currentUrl}/wordpress-login?demo=${cleanDomain}&user=${wordpressUserData.username}`;
+      
+      // Step 2: Simulate WordPress installation
+      console.log('🔧 [DEMO] Installing WordPress demo...');
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      const siteUrl = `https://demo.leadgrid.co.il/${domain.replace(/\./g, '-')}`;
-      const adminUrl = `${siteUrl}/wp-admin`;
-      const loginUrl = `${siteUrl}/wp-login.php`;
-      
-      // Step 2: Create WordPress user account
-      console.log('👤 [REAL] Creating WordPress user account...');
+      // Step 3: Create WordPress user account (demo)
+      console.log('👤 [DEMO] Creating WordPress user account...');
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       const wpUser = {
@@ -328,62 +333,46 @@ export class RealDomainService {
         lastName: wordpressUserData.lastName
       };
       
-      // Step 3: Configure site settings
-      console.log('⚙️ [REAL] Configuring WordPress site...');
+      // Step 4: Configure site settings (demo)
+      console.log('⚙️ [DEMO] Configuring WordPress site...');
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      const siteSettings = {
-        blogname: wordpressUserData.websiteTitle,
-        blogdescription: wordpressUserData.websiteDescription || 'האתר החדש שלי',
-        admin_email: wordpressUserData.email,
-        users_can_register: 0,
-        default_role: 'subscriber',
-        timezone_string: 'Asia/Jerusalem',
-        date_format: 'd/m/Y',
-        time_format: 'H:i',
-        start_of_week: 0
-      };
-      
-      // Step 4: Install and configure theme
-      console.log('🎨 [REAL] Installing custom theme...');
+      // Step 5: Install and configure theme (demo)
+      console.log('🎨 [DEMO] Installing custom theme...');
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // Step 5: Deploy website content from template
-      console.log('📝 [REAL] Deploying website content...');
-      await this.deployWordPressContent(siteUrl, websiteData, wordpressUserData);
+      // Step 6: Deploy website content from template (demo)
+      console.log('📝 [DEMO] Deploying website content...');
+      await this.deployDemoContent(demoSiteUrl, websiteData, wordpressUserData);
       
-      // Step 6: Install essential plugins
-      console.log('🔌 [REAL] Installing WordPress plugins...');
-      const installedPlugins = await this.installWordPressPlugins(siteUrl);
+      // Step 7: Install essential plugins (demo)
+      console.log('🔌 [DEMO] Installing WordPress plugins...');
+      const installedPlugins = await this.installDemoPlugins();
       
-      // Step 7: Apply custom styling
-      if (websiteData.colors) {
-        console.log('🎨 [REAL] Applying custom colors to WordPress theme...');
-        await this.applyWordPressCustomColors(siteUrl, websiteData.colors);
-      }
-      
-      console.log('✅ [REAL] WordPress site created successfully!');
-      console.log('🌐 Live site URL:', siteUrl);
+      console.log('✅ [DEMO] WordPress demo site created successfully!');
+      console.log('🌐 Demo site URL:', demoSiteUrl);
       console.log('🔐 WordPress admin URL:', adminUrl);
       console.log('👤 WordPress login:', wpUser.username, '/', wpUser.password);
       
       return {
         success: true,
-        siteUrl,
+        siteUrl: demoSiteUrl,
         adminUrl,
         loginUrl,
         username: wpUser.username,
         password: wpUser.password,
+        actualSiteUrl: demoSiteUrl,
+        isDemo: true,
         installationDetails: {
           wpVersion: '6.4.2',
           theme: 'leadgrid-custom',
           plugins: installedPlugins,
-          siteId: `wp_${Date.now()}`
+          siteId: `demo_${timestamp}`
         }
       };
       
     } catch (error) {
-      console.error('WordPress site creation failed:', error);
+      console.error('WordPress demo site creation failed:', error);
       return {
         success: false,
         siteUrl: '',
@@ -391,7 +380,9 @@ export class RealDomainService {
         loginUrl: '',
         username: '',
         password: '',
-        error: 'יצירת אתר וורדפרס נכשלה: ' + error.message,
+        actualSiteUrl: '',
+        isDemo: true,
+        error: 'יצירת אתר דמו נכשלה: ' + error.message,
         installationDetails: {
           wpVersion: '',
           theme: '',
@@ -400,6 +391,41 @@ export class RealDomainService {
         }
       };
     }
+  }
+
+  // Deploy demo content (simplified version)
+  static async deployDemoContent(siteUrl: string, websiteData: any, userData: WordPressUserData): Promise<void> {
+    try {
+      console.log('📝 [DEMO] Deploying demo content...');
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Store demo content in localStorage for the demo site to use
+      const demoContent = {
+        userData,
+        websiteData,
+        timestamp: Date.now()
+      };
+      
+      localStorage.setItem(`demo_content_${userData.username}`, JSON.stringify(demoContent));
+      console.log('✅ [DEMO] Demo content stored successfully');
+      
+    } catch (error) {
+      console.error('Failed to deploy demo content:', error);
+      throw new Error('פריסת תכנים דמו נכשלה');
+    }
+  }
+
+  static async installDemoPlugins(): Promise<string[]> {
+    const demoPlugins = [
+      'leadgrid-seo',
+      'leadgrid-forms',
+      'leadgrid-cache',
+      'leadgrid-security',
+      'leadgrid-backup'
+    ];
+    
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return demoPlugins;
   }
 
   // Deploy the user's template content to WordPress
@@ -731,10 +757,10 @@ export class RealDomainService {
     console.log('✅ Custom theme styles applied successfully');
   }
 
-  // Main purchase function with real WordPress creation
+  // Main purchase function with working demo WordPress creation
   static async purchaseDomainAndHosting(request: PurchaseRequest): Promise<PurchaseResult> {
     try {
-      console.log('🚀 [DEMO+REAL] Starting purchase process...', request.orderId);
+      console.log('🚀 [DEMO] Starting purchase process...', request.orderId);
 
       const orderId = request.orderId;
       let paymentStatus = await this.verifyPaymentStatus(orderId);
@@ -760,11 +786,11 @@ export class RealDomainService {
       let siteUrl = '';
       let wordpressDetails = undefined;
 
-      // Create REAL WordPress site with user's content and registration
+      // Create working demo WordPress site
       const websiteType = request.websiteData.websiteType || 'wordpress';
       
       if (websiteType === 'wordpress' && request.websiteData.wordpressUserData) {
-        console.log('🔨 Creating REAL WordPress site with user registration...');
+        console.log('🔨 Creating working demo WordPress site...');
         const wpResult = await this.createRealWordPressSite(
           request.domain, 
           request.websiteData.wordpressUserData, 
@@ -779,23 +805,25 @@ export class RealDomainService {
             wpLoginUrl: wpResult.loginUrl,
             wpUsername: wpResult.username,
             wpPassword: wpResult.password,
-            siteUrl: wpResult.siteUrl,
-            installationDetails: wpResult.installationDetails
+            demoSiteUrl: wpResult.siteUrl,
+            actualSiteUrl: wpResult.actualSiteUrl,
+            isDemo: wpResult.isDemo
           };
           
-          console.log('✅ Real WordPress site created successfully!');
+          console.log('✅ Working demo WordPress site created successfully!');
           console.log('🌐 Site URL:', wpResult.siteUrl);
           console.log('🔐 WordPress admin:', wpResult.adminUrl);
           console.log('👤 WordPress user:', wpResult.username);
         } else {
-          console.error('❌ WordPress creation failed:', wpResult.error);
+          console.error('❌ WordPress demo creation failed:', wpResult.error);
           return {
             success: false,
-            error: wpResult.error || 'יצירת אתר וורדפרס נכשלה'
+            error: wpResult.error || 'יצירת אתר דמו נכשלה'
           };
         }
       } else {
-        siteUrl = `https://demo.leadgrid.co.il/${request.domain}`;
+        const currentUrl = window.location.origin;
+        siteUrl = `${currentUrl}/generated-landing-page?domain=${request.domain}`;
       }
 
       // Simulate domain registration and hosting setup
