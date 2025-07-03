@@ -10,12 +10,15 @@ import {
   ExternalLink,
   ArrowRight,
   Globe,
-  Sparkles
+  Sparkles,
+  Edit,
+  Eye
 } from 'lucide-react';
 import { TemplateData } from '@/types/template';
 import { templates } from '@/data/templates';
 import { RealPublishingService } from '@/services/realPublishingService';
 import { PublishingProgress } from './publishing/PublishingProgress';
+import TemplateEditor from './TemplateEditor';
 
 interface TemplateSelectorProps {
   isOpen: boolean;
@@ -24,6 +27,8 @@ interface TemplateSelectorProps {
 
 const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateData | null>(null);
+  const [editingTemplate, setEditingTemplate] = useState<TemplateData | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
   const [publishingProgress, setPublishingProgress] = useState(0);
@@ -32,10 +37,21 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
 
   const handleTemplateSelect = (template: TemplateData) => {
     setSelectedTemplate(template);
+    setEditingTemplate(template);
+  };
+
+  const handleEditTemplate = () => {
+    if (selectedTemplate) {
+      setIsEditing(true);
+    }
+  };
+
+  const handleTemplateChange = (updatedTemplate: TemplateData) => {
+    setEditingTemplate(updatedTemplate);
   };
 
   const handleGenerate = async () => {
-    if (!selectedTemplate) return;
+    if (!editingTemplate) return;
     
     setIsGenerating(true);
     setIsPublishing(true);
@@ -50,7 +66,7 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
       
       // שלב 3: פרסום האתר
       setPublishingProgress(75);
-      const siteUrl = await RealPublishingService.publishSite(selectedTemplate);
+      const siteUrl = await RealPublishingService.publishSite(editingTemplate);
       
       // שלב 4: סיום
       setPublishingProgress(100);
@@ -75,6 +91,17 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
   };
 
   if (!isOpen) return null;
+
+  // Show template editor
+  if (isEditing && editingTemplate) {
+    return (
+      <TemplateEditor
+        template={editingTemplate}
+        onTemplateChange={handleTemplateChange}
+        onClose={() => setIsEditing(false)}
+      />
+    );
+  }
 
   return (
     <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center" dir="rtl">
@@ -211,19 +238,28 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
                 ))}
               </div>
 
-              {/* Generate Button */}
+              {/* Action Buttons */}
               {selectedTemplate && (
-                <div className="text-center">
-                  <Button
-                    onClick={handleGenerate}
-                    disabled={isGenerating}
-                    className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 px-12 py-4 text-lg font-bold"
-                  >
-                    {isGenerating ? 'יוצר אתר...' : 'צור את האתר שלי עכשיו!'}
-                    <Rocket className="w-5 h-5 mr-3" />
-                  </Button>
-                  <p className="text-gray-500 text-sm mt-3">
-                    האתר יהיה מוכן תוך דקות ספורות
+                <div className="text-center space-y-4">
+                  <div className="flex justify-center gap-4">
+                    <Button
+                      onClick={handleEditTemplate}
+                      className="bg-blue-600 hover:bg-blue-700 px-8 py-3 text-lg font-bold"
+                    >
+                      <Edit className="w-5 h-5 ml-2" />
+                      ערוך את התבנית
+                    </Button>
+                    <Button
+                      onClick={handleGenerate}
+                      disabled={isGenerating}
+                      className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 px-8 py-3 text-lg font-bold"
+                    >
+                      {isGenerating ? 'יוצר אתר...' : 'פרסם מיד'}
+                      <Rocket className="w-5 h-5 mr-2" />
+                    </Button>
+                  </div>
+                  <p className="text-gray-500 text-sm">
+                    תוכל לערוך את התבנית לפני הפרסום או לפרסם מיד כמו שהיא
                   </p>
                 </div>
               )}
