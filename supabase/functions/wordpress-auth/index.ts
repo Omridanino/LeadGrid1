@@ -103,7 +103,7 @@ function handleGetAuthUrl(config: WordPressOAuthConfig) {
 
 function handleRedirectToAuth(config: WordPressOAuthConfig) {
   try {
-    console.log('Creating WordPress.com OAuth iframe...');
+    console.log('Creating WordPress.com OAuth redirect...');
 
     // Generate the complete auth URL
     const authUrl = new URL('https://public-api.wordpress.com/oauth2/authorize');
@@ -112,96 +112,21 @@ function handleRedirectToAuth(config: WordPressOAuthConfig) {
     authUrl.searchParams.set('response_type', 'code');
     authUrl.searchParams.set('scope', 'auth');
 
-    console.log('Auth URL generated:', authUrl.toString());
+    console.log('Redirecting to:', authUrl.toString());
 
-    // Return HTML page with iframe
-    const iframeHtml = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>אימות WordPress.com</title>
-        <style>
-          body { 
-            margin: 0; 
-            padding: 0; 
-            font-family: Arial, sans-serif; 
-            background: #1a1a1a; 
-            color: white; 
-            direction: rtl;
-          }
-          .header {
-            background: #2d3748;
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid #4a5568;
-          }
-          iframe {
-            width: 100%;
-            height: calc(100vh - 60px);
-            border: none;
-          }
-          .loading {
-            text-align: center;
-            padding: 50px;
-          }
-          .spinner { 
-            border: 4px solid #f3f3f3; 
-            border-top: 4px solid #3498db; 
-            border-radius: 50%; 
-            width: 40px; 
-            height: 40px; 
-            animation: spin 2s linear infinite; 
-            margin: 20px auto;
-          }
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-        </style>
-      </head>
-      <body>
-        <div class="header">
-          <h3>התחברות ל-WordPress.com</h3>
-          <p>התחבר עם החשבון שלך כדי ליצור אתרים</p>
-        </div>
-        <div class="loading" id="loading">
-          <div class="spinner"></div>
-          <p>טוען דף אימות WordPress.com...</p>
-        </div>
-        <iframe id="authFrame" src="${authUrl.toString()}" style="display: none;" onload="document.getElementById('loading').style.display='none'; this.style.display='block';"></iframe>
-        
-        <script>
-          // Listen for messages from iframe
-          window.addEventListener('message', function(event) {
-            console.log('Received message:', event);
-            if (event.origin.includes('wordpress.com')) {
-              // Handle successful authentication
-              if (event.data && event.data.type === 'auth_success') {
-                window.close();
-              }
-            }
-          });
-          
-          // Check if we're being loaded in the callback
-          if (window.location.search.includes('code=')) {
-            window.close();
-          }
-        </script>
-      </body>
-      </html>
-    `;
-
-    return new Response(iframeHtml, {
+    // Return a 302 redirect response
+    return new Response(null, {
+      status: 302,
       headers: {
         ...corsHeaders,
-        'Content-Type': 'text/html; charset=utf-8'
+        'Location': authUrl.toString()
       }
     });
   } catch (error) {
-    console.error('Error creating iframe:', error);
+    console.error('Error creating redirect:', error);
     return new Response(
       JSON.stringify({ 
-        error: 'Failed to create auth iframe',
+        error: 'Failed to create auth redirect',
         success: false 
       }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
