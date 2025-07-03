@@ -182,7 +182,7 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
                       id="wpUrl"
                       value={wpConnection.siteUrl}
                       onChange={(e) => handleWpInputChange('siteUrl', e.target.value)}
-                      placeholder="https://yourdomain.com"
+                      placeholder="https://yoursite.com"
                       className="bg-gray-700 border-gray-600 text-white"
                     />
                   </div>
