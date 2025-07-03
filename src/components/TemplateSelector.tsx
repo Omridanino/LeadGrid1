@@ -111,15 +111,44 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
         hero: {
           ...selectedTemplate.hero,
           title: formData.businessName || richContent.about.title,
-          subtitle: richContent.services.subtitle,
+          subtitle: richContent.services?.subtitle || selectedTemplate.hero.subtitle,
           description: richContent.about.description
         },
-        about: richContent.about,
-        features: richContent.features,
-        testimonials: richContent.testimonials,
-        contact: richContent.contact,
+        about: {
+          ...richContent.about,
+          button1Text: selectedTemplate.about.button1Text,
+          button2Text: selectedTemplate.about.button2Text
+        },
+        features: {
+          ...richContent.features,
+          button1Text: selectedTemplate.features.button1Text,
+          button2Text: selectedTemplate.features.button2Text
+        },
+        testimonials: {
+          ...richContent.testimonials,
+          testimonials: richContent.testimonials.items?.map(item => ({
+            name: item.name,
+            role: item.role,
+            content: item.text,
+            rating: item.rating
+          })) || [],
+          button1Text: selectedTemplate.testimonials.button1Text,
+          button2Text: selectedTemplate.testimonials.button2Text
+        },
+        contact: {
+          ...richContent.contact,
+          buttonText: richContent.contact.cta?.primary || selectedTemplate.contact.buttonText
+        },
         pricing: selectedTemplate.pricing,
-        faq: richContent.faq,
+        faq: {
+          ...richContent.faq,
+          questions: richContent.faq.items?.map(item => ({
+            question: item.question,
+            answer: item.answer
+          })) || [],
+          button1Text: selectedTemplate.faq.button1Text,
+          button2Text: selectedTemplate.faq.button2Text
+        },
         finalCta: selectedTemplate.finalCta,
       };
 
@@ -199,7 +228,7 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
                         <ArrowRight className="w-4 h-4 mr-2" />
                       </Button>
                       <div className="text-green-400 text-xs mt-2 font-medium">
-                        ✅ זמين לצפייה עכשיו!
+                        ✅ זמין לצפייה עכשיו!
                       </div>
                     </div>
                   </CardContent>
@@ -241,9 +270,7 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
               {currentStep === 3 && (
                 <DesignStyleStep
                   formData={formData}
-                  setFormData={setFormData}
-                  onNext={() => setCurrentStep(4)}
-                  onPrev={() => setCurrentStep(2)}
+                  updateFormData={updateFormData}
                 />
               )}
               
