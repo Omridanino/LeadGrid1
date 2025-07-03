@@ -6,8 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Globe, User, Mail, Phone, Building, MapPin, CreditCard, Key, CheckCircle, AlertCircle, ExternalLink } from 'lucide-react';
-import { RealWordPressService } from '@/services/realWordPressService';
+import { Globe, User, CheckCircle, ExternalLink, Rocket } from 'lucide-react';
 
 interface WordPressRegistrationFormProps {
   onSubmit: (userData: any) => void;
@@ -35,17 +34,6 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
     websiteDescription: ''
   });
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // Check auth status on component mount
-  useEffect(() => {
-    const checkAuth = async () => {
-      const authenticated = await RealWordPressService.isAuthenticated();
-      setIsAuthenticated(authenticated);
-    };
-    checkAuth();
-  }, []);
-
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
       ...prev,
@@ -70,10 +58,10 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
         <CardHeader className="text-center">
           <CardTitle className="text-white text-2xl flex items-center justify-center gap-2">
             <Globe className="w-6 h-6" />
-            יצירת אתר WordPress.com
+            יצירת אתר וורדפרס דמו פונקציונלי
           </CardTitle>
           <p className="text-gray-300">
-            מלא את הפרטים כדי ליצור אתר וורדפרס פונקציונלי
+            מלא את הפרטים כדי ליצור אתר וורדפרס דמו מלא ופונקציונלי
           </p>
           <Badge className="bg-blue-600 text-white">
             דומיין: {selectedDomain}
@@ -82,19 +70,19 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
 
         <CardContent className="space-y-6">
           
-          {/* WordPress.com Status */}
+          {/* WordPress Demo Status */}
           <Card className="bg-gradient-to-br from-green-900/30 to-blue-900/30 border-green-700/50">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-400" />
                 <div>
-                  <h4 className="text-white font-semibold">מוכן ליצירת אתר WordPress פונקציונלי ✓</h4>
+                  <h4 className="text-white font-semibold">מוכן ליצירת אתר וורדפרס דמו מלא! ✓</h4>
                   <p className="text-gray-300 text-sm">
-                    האתר יהיה זמין לצפייה והשימוש מיד
+                    האתר יכלול מנהל וורדפרס פונקציונלי עם כל התכונות
                   </p>
                   <div className="flex items-center gap-2 mt-2">
                     <ExternalLink className="w-4 h-4 text-blue-400" />
-                    <span className="text-blue-400 text-xs">leadgridai.wordpress.com</span>
+                    <span className="text-blue-400 text-xs">דמו מלא עם wp-admin פונקציונלי</span>
                   </div>
                 </div>
               </div>
@@ -224,89 +212,6 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
               </div>
             </div>
 
-            {/* Contact Info */}
-            <div className="space-y-4">
-              <h3 className="text-white font-semibold flex items-center gap-2">
-                <Phone className="w-5 h-5" />
-                פרטי יצירת קשר
-              </h3>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="phone" className="text-gray-300">טלפון</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => handleInputChange('phone', e.target.value)}
-                    className="bg-gray-700 border-gray-600 text-white"
-                    placeholder="05X-XXX-XXXX"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="company" className="text-gray-300">חברה</Label>
-                  <Input
-                    id="company"
-                    type="text"
-                    value={formData.company}
-                    onChange={(e) => handleInputChange('company', e.target.value)}
-                    className="bg-gray-700 border-gray-600 text-white"
-                    placeholder="שם החברה"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="address" className="text-gray-300">כתובת</Label>
-                <Input
-                  id="address"
-                  type="text"
-                  value={formData.address}
-                  onChange={(e) => handleInputChange('address', e.target.value)}
-                  className="bg-gray-700 border-gray-600 text-white"
-                  placeholder="רחוב ומספר בית"
-                />
-              </div>
-
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <Label htmlFor="city" className="text-gray-300">עיר</Label>
-                  <Input
-                    id="city"
-                    type="text"
-                    value={formData.city}
-                    onChange={(e) => handleInputChange('city', e.target.value)}
-                    className="bg-gray-700 border-gray-600 text-white"
-                    placeholder="תל אביב"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="country" className="text-gray-300">מדינה</Label>
-                  <Input
-                    id="country"
-                    type="text"
-                    value={formData.country}
-                    onChange={(e) => handleInputChange('country', e.target.value)}
-                    className="bg-gray-700 border-gray-600 text-white"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="zipCode" className="text-gray-300">מיקוד</Label>
-                  <Input
-                    id="zipCode"
-                    type="text"
-                    value={formData.zipCode}
-                    onChange={(e) => handleInputChange('zipCode', e.target.value)}
-                    className="bg-gray-700 border-gray-600 text-white"
-                    placeholder="12345"
-                  />
-                </div>
-              </div>
-            </div>
-
             {/* Action Buttons */}
             <div className="flex gap-4 pt-6">
               <Button
@@ -316,13 +221,13 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
               >
                 {isLoading ? (
                   <>
-                    <CreditCard className="w-4 h-4 ml-2 animate-spin" />
-                    יוצר אתר WordPress פונקציונלי...
+                    <Rocket className="w-4 h-4 ml-2 animate-spin" />
+                    יוצר אתר וורדפרס דמו מלא...
                   </>
                 ) : (
                   <>
                     <CheckCircle className="w-4 h-4 ml-2" />
-                    צור אתר WordPress פונקציונלי
+                    צור אתר וורדפרס דמו פונקציונלי
                   </>
                 )}
               </Button>

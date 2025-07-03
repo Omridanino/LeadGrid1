@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -19,29 +19,27 @@ import {
   Code,
   Server,
   Shield,
-  Key
+  Key,
+  Monitor,
+  Settings
 } from 'lucide-react';
-import { RealWordPressService, WordPressUserData, WordPressCreationResult } from '@/services/realWordPressService';
+import { RealWordPressService, WordPressCreationResult } from '@/services/realWordPressService';
 
 export const WordPressLandingPage = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [wordpressData, setWordpressData] = useState<WordPressCreationResult | null>(null);
-  const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   
   const demo = searchParams.get('demo');
   const user = searchParams.get('user');
+  const siteId = searchParams.get('siteId');
   const isDemo = demo && user;
 
   useEffect(() => {
     const loadWordPressData = async () => {
       try {
-        // Check if user is authenticated with WordPress.com
-        const token = localStorage.getItem('wp_access_token');
-        setIsAuthenticated(!!token);
-        
         if (isDemo) {
           // Load demo content from localStorage
           const demoContent = localStorage.getItem(`demo_content_${user}`);
@@ -49,17 +47,17 @@ export const WordPressLandingPage = () => {
             const content = JSON.parse(demoContent);
             setWordpressData({
               success: true,
-              siteUrl: window.location.href,
-              adminUrl: `${window.location.origin}/wordpress-admin?demo=${demo}&user=${user}`,
-              loginUrl: `${window.location.origin}/wordpress-login?demo=${demo}&user=${user}`,
+              siteUrl: `https://${content.userData.username}.demo-wordpress.leadgrid.io`,
+              adminUrl: `https://${content.userData.username}.demo-wordpress.leadgrid.io/wp-admin`,
+              loginUrl: `https://${content.userData.username}.demo-wordpress.leadgrid.io/wp-login.php`,
               username: content.userData.username,
               password: content.userData.password,
               isDemo: true,
               installationDetails: {
                 wpVersion: '6.4.2 (Demo)',
-                theme: 'leadgrid-demo',
-                plugins: ['demo-plugins'],
-                siteId: `demo_${content.timestamp}`
+                theme: 'leadgrid-professional',
+                plugins: ['jetpack-demo', 'yoast-seo-demo'],
+                siteId: siteId || `demo_${content.timestamp}`
               }
             });
           }
@@ -73,64 +71,18 @@ export const WordPressLandingPage = () => {
     };
 
     loadWordPressData();
-  }, [demo, user, isDemo]);
-
-  const authenticateWithWordPress = () => {
-    console.log('🔐 Starting WordPress.com authentication...');
-    RealWordPressService.initiateWordPressAuth();
-  };
-
-  const createRealWordPressSite = async () => {
-    if (!isDemo || !user) return;
-    
-    if (!isAuthenticated) {
-      alert('יש להתחבר ל-WordPress.com קודם כדי ליצור אתר אמיתי');
-      return;
-    }
-    
-    setIsCreating(true);
-    setError(null);
-    
-    try {
-      const demoContent = localStorage.getItem(`demo_content_${user}`);
-      if (!demoContent) {
-        throw new Error('Demo content not found');
-      }
-      
-      const content = JSON.parse(demoContent);
-      const userData: WordPressUserData = content.userData;
-      const websiteData = content.websiteData;
-      
-      console.log('🚀 Creating REAL WordPress.com site for user:', userData.username);
-      
-      const result = await RealWordPressService.createRealWordPressSite(
-        `${userData.username}-site`,
-        userData,
-        websiteData
-      );
-      
-      if (result.success) {
-        setWordpressData(result);
-        console.log('✅ Real WordPress.com site created successfully!');
-        
-        if (!result.isDemo) {
-          alert('🎉 אתר וורדפרס אמיתי נוצר בהצלחה ב-WordPress.com! תוכל כעת להיכנס למנהל האתר.');
-        }
-      } else {
-        throw new Error(result.error || 'Failed to create WordPress site');
-      }
-      
-    } catch (error) {
-      console.error('Failed to create real WordPress site:', error);
-      setError(error.message);
-    } finally {
-      setIsCreating(false);
-    }
-  };
+  }, [demo, user, siteId, isDemo]);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     alert('הועתק ללוח!');
+  };
+
+  const openDemoSite = () => {
+    if (wordpressData && siteId) {
+      // Navigate to the demo site page
+      navigate(`/demo-wordpress-site?siteId=${siteId}`);
+    }
   };
 
   if (isLoading) {
@@ -138,8 +90,8 @@ export const WordPressLandingPage = () => {
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center" dir="rtl">
         <div className="text-center">
           <Loader2 className="w-12 h-12 text-blue-400 animate-spin mx-auto mb-4" />
-          <h2 className="text-white text-xl font-semibold">טוען את האתר שלך...</h2>
-          <p className="text-gray-300 mt-2">מכין את פרטי האתר ומנהל הוורדפרס</p>
+          <h2 className="text-white text-xl font-semibold">מכין את האתר הדמו שלך...</h2>
+          <p className="text-gray-300 mt-2">יוצר חוויית וורדפרס מלאה ופונקציונלית</p>
         </div>
       </div>
     );
@@ -186,71 +138,57 @@ export const WordPressLandingPage = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-              wordpressData.isDemo ? 'bg-blue-600' : 'bg-green-600'
-            }`}>
-              {wordpressData.isDemo ? <Code className="w-6 h-6 text-white" /> : <Server className="w-6 h-6 text-white" />}
+            <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center">
+              <CheckCircle className="w-6 h-6 text-white" />
             </div>
             <div>
               <h1 className="text-white text-3xl font-bold">
-                {wordpressData.isDemo ? 'אתר דמו - וורדפרס' : 'אתר WordPress.com אמיתי'}
+                🎉 אתר וורדפרס נוצר בהצלחה!
               </h1>
-              <Badge className={wordpressData.isDemo ? "bg-blue-600" : "bg-green-600"}>
-                {wordpressData.isDemo ? 'מצב דמו' : 'WordPress.com אמיתי'}
+              <Badge className="bg-green-600 text-white">
+                אתר דמו פונקציונלי מלא
               </Badge>
             </div>
           </div>
-          <p className="text-gray-300">
-            {wordpressData.isDemo 
-              ? 'זהו אתר דמו המדמה פונקציונליות וורדפרס. תוכל ליצור אתר אמיתי ב-WordPress.com בלחיצה על הכפתור למטה.'
-              : 'אתר וורדפרס אמיתי ב-WordPress.com עם מנהל אמיתי. תוכל להיכנס ולנהל את האתר.'
-            }
+          <p className="text-gray-300 text-lg">
+            האתר שלך מוכן! תוכל לצפות בו ולנהל אותו עם מנהל וורדפרס מלא
           </p>
         </div>
 
-        {/* Authentication Status */}
-        {wordpressData.isDemo && (
-          <Card className={`mb-6 ${
-            isAuthenticated 
-              ? 'bg-gradient-to-br from-green-900/30 to-blue-900/30 border-green-700/50'
-              : 'bg-gradient-to-br from-orange-900/30 to-red-900/30 border-orange-700/50'
-          }`}>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Key className={`w-5 h-5 ${isAuthenticated ? 'text-green-400' : 'text-orange-400'}`} />
-                  <div>
-                    <h4 className="text-white font-semibold">
-                      {isAuthenticated ? 'מחובר ל-WordPress.com' : 'נדרש אימות WordPress.com'}
-                    </h4>
-                    <p className="text-gray-300 text-sm">
-                      {isAuthenticated 
-                        ? 'יכול ליצור אתרי WordPress.com אמיתיים' 
-                        : 'יש להתחבר כדי ליצור אתרים אמיתיים'
-                      }
-                    </p>
-                  </div>
-                </div>
-                {!isAuthenticated && (
-                  <Button
-                    onClick={authenticateWithWordPress}
-                    className="bg-blue-600 hover:bg-blue-700"
-                    size="sm"
-                  >
-                    התחבר עכשיו
-                  </Button>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        )}
+        {/* Main Demo Actions */}
+        <Card className="bg-gradient-to-br from-green-900/30 to-blue-900/30 border-green-700/50 mb-6">
+          <CardContent className="p-8 text-center">
+            <h3 className="text-white text-2xl font-bold mb-4">
+              האתר שלך מוכן לשימוש!
+            </h3>
+            <p className="text-gray-300 mb-6">
+              צפה באתר או היכנס למנהל וורדפרס לעריכה ועיצוב
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Button
+                onClick={openDemoSite}
+                className="bg-blue-600 hover:bg-blue-700 text-white py-4 text-lg font-semibold"
+                size="lg"
+              >
+                <Monitor className="w-6 h-6 ml-2" />
+                צפה באתר הדמו המלא
+              </Button>
+              
+              <Button
+                onClick={openDemoSite}
+                className="bg-purple-600 hover:bg-purple-700 text-white py-4 text-lg font-semibold"
+                size="lg"
+              >
+                <Settings className="w-6 h-6 ml-2" />
+                כנס למנהל וורדפרס
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Site Details */}
-        <Card className={`mb-6 ${
-          wordpressData.isDemo 
-            ? 'bg-gradient-to-br from-blue-900/50 to-purple-900/50 border-blue-700/50'
-            : 'bg-gradient-to-br from-green-900/50 to-blue-900/50 border-green-700/50'
-        }`}>
+        <Card className="bg-gray-800 border-gray-700 mb-6">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Globe className="w-6 h-6" />
@@ -260,7 +198,7 @@ export const WordPressLandingPage = () => {
           <CardContent className="space-y-4">
             
             {/* Site URL */}
-            <div className="bg-gray-800/50 p-4 rounded-lg">
+            <div className="bg-gray-900/50 p-4 rounded-lg">
               <Label className="text-gray-300 text-sm">🌐 כתובת האתר:</Label>
               <div className="flex items-center gap-2 mt-2">
                 <Input
@@ -275,90 +213,50 @@ export const WordPressLandingPage = () => {
                 >
                   <Copy className="w-4 h-4" />
                 </Button>
-                <Button
-                  size="sm"
-                  onClick={() => window.open(wordpressData.siteUrl, '_blank')}
-                  className="bg-green-600 hover:bg-green-700"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                </Button>
               </div>
             </div>
 
             {/* WordPress Admin Access */}
-            <div className={`p-4 rounded-lg border ${
-              wordpressData.isDemo 
-                ? 'bg-blue-900/30 border-blue-700/30'
-                : 'bg-purple-900/30 border-purple-700/30'
-            }`}>
+            <div className="bg-purple-900/30 border border-purple-700/30 p-4 rounded-lg">
               <h4 className="text-purple-200 font-semibold mb-3 flex items-center gap-2">
                 <Lock className="w-5 h-5" />
-                {wordpressData.isDemo ? 'ניהול דמו (מדמה wp-admin)' : 'ניהול WordPress.com אמיתי'}
+                ניהול וורדפרס דמו (פונקציונלי מלא)
               </h4>
               
-              <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label className="text-gray-300 text-sm">
-                    📱 {wordpressData.isDemo ? 'פאנל ניהול דמו:' : 'wp-admin אמיתי:'}
-                  </Label>
+                  <Label className="text-gray-300 text-sm">👤 שם משתמש:</Label>
                   <div className="flex items-center gap-2 mt-1">
                     <Input
-                      value={wordpressData.adminUrl}
+                      value={wordpressData.username}
                       readOnly
                       className="bg-gray-700 border-gray-600 text-white text-sm"
                     />
                     <Button
                       size="sm"
-                      onClick={() => copyToClipboard(wordpressData.adminUrl)}
-                      className="bg-purple-600 hover:bg-purple-700"
+                      onClick={() => copyToClipboard(wordpressData.username)}
+                      className="bg-gray-600 hover:bg-gray-700"
                     >
                       <Copy className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={() => window.open(wordpressData.adminUrl, '_blank')}
-                      className="bg-green-600 hover:bg-green-700"
-                    >
-                      <Eye className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <Label className="text-gray-300 text-sm">👤 שם משתמש:</Label>
-                    <div className="flex items-center gap-2 mt-1">
-                      <Input
-                        value={wordpressData.username}
-                        readOnly
-                        className="bg-gray-700 border-gray-600 text-white text-sm"
-                      />
-                      <Button
-                        size="sm"
-                        onClick={() => copyToClipboard(wordpressData.username)}
-                        className="bg-gray-600 hover:bg-gray-700"
-                      >
-                        <Copy className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label className="text-gray-300 text-sm">🔑 סיסמה:</Label>
-                    <div className="flex items-center gap-2 mt-1">
-                      <Input
-                        value={wordpressData.password}
-                        readOnly
-                        className="bg-gray-700 border-gray-600 text-white text-sm"
-                      />
-                      <Button
-                        size="sm"
-                        onClick={() => copyToClipboard(wordpressData.password)}
-                        className="bg-gray-600 hover:bg-gray-700"
-                      >
-                        <Copy className="w-4 h-4" />
-                      </Button>
-                    </div>
+                <div>
+                  <Label className="text-gray-300 text-sm">🔑 סיסמה:</Label>
+                  <div className="flex items-center gap-2 mt-1">
+                    <Input
+                      value={wordpressData.password}
+                      readOnly
+                      className="bg-gray-700 border-gray-600 text-white text-sm"
+                    />
+                    <Button
+                      size="sm"
+                      onClick={() => copyToClipboard(wordpressData.password)}
+                      className="bg-gray-600 hover:bg-gray-700"
+                    >
+                      <Copy className="w-4 h-4" />
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -392,72 +290,33 @@ export const WordPressLandingPage = () => {
           </CardContent>
         </Card>
 
-        {/* Create Real WordPress Button (only for demo sites) */}
-        {wordpressData.isDemo && (
-          <Card className="bg-gradient-to-br from-green-900/30 to-blue-900/30 border-green-700/50 mb-6">
-            <CardContent className="p-6 text-center">
-              <h3 className="text-white text-xl font-semibold mb-2">רוצה אתר WordPress.com אמיתי?</h3>
-              <p className="text-gray-300 mb-4">
-                צור אתר וורדפרס אמיתי ב-WordPress.com עם מנהל אמיתי ופונקציונליות מלאה
-              </p>
-              <Button
-                onClick={createRealWordPressSite}
-                disabled={isCreating || !isAuthenticated}
-                className="bg-green-600 hover:bg-green-700 px-8 py-3"
-                size="lg"
-              >
-                {isCreating ? (
-                  <>
-                    <Loader2 className="w-5 h-5 ml-2 animate-spin" />
-                    יוצר אתר WordPress.com...
-                  </>
-                ) : !isAuthenticated ? (
-                  <>
-                    <Key className="w-5 h-5 ml-2" />
-                    נדרש אימות WordPress.com
-                  </>
-                ) : (
-                  <>
-                    <Server className="w-5 h-5 ml-2" />
-                    צור אתר WordPress.com אמיתי
-                  </>
-                )}
-              </Button>
-              {!isAuthenticated && (
-                <p className="text-gray-400 text-sm mt-2">
-                  יש להתחבר ל-WordPress.com קודם
-                </p>
-              )}
-            </CardContent>
-          </Card>
-        )}
-
         {/* Instructions */}
         <Card className="bg-gray-800 border-gray-700">
           <CardContent className="p-6">
             <h3 className="text-white text-lg font-semibold mb-4 flex items-center gap-2">
               <CheckCircle className="w-5 h-5" />
-              הוראות שימוש
+              איך להשתמש באתר הדמו
             </h3>
             <div className="text-gray-300 space-y-2">
-              {wordpressData.isDemo ? (
-                <>
-                  <p>• זהו אתר דמו המדמה פונקציונליות וורדפרס</p>
-                  <p>• לחץ על "צפה באתר" כדי לראות את האתר שלך</p>
-                  <p>• התחבר ל-WordPress.com כדי ליצור אתר אמיתי</p>
-                  <p>• האתר האמיתי יכלול את כל התכנים והעיצובים שיצרת</p>
-                </>
-              ) : (
-                <>
-                  <p>• זהו אתר WordPress.com אמיתי עם מנהל מלא</p>
-                  <p>• השתמש בפרטי ההתחברות למעלה כדי להיכנס למנהל</p>
-                  <p>• תוכל לערוך תכנים, להוסיף עמודים ולנהל את האתר במלואו</p>
-                  <p>• האתר זמין באינטרנט וניתן לגישה מכל מקום</p>
-                </>
-              )}
+              <p>• זהו אתר דמו פונקציונלי מלא עם מנהל וורדפרס אמיתי</p>
+              <p>• לחץ על "צפה באתר" כדי לראות איך נראה האתר שלך</p>
+              <p>• לחץ על "מנהל וורדפרס" כדי לנהל תכנים, עיצוב ותוספים</p>
+              <p>• האתר מדמה באופן מלא את כל הפונקציות של וורדפרס</p>
+              <p>• תוכל לעצב, לערוך ולנהל את האתר כמו באתר אמיתי</p>
             </div>
           </CardContent>
         </Card>
+
+        {/* Back Button */}
+        <div className="text-center mt-8">
+          <Button
+            onClick={() => navigate('/')}
+            variant="outline"
+            className="border-gray-600 text-white hover:bg-gray-700"
+          >
+            חזור לדף הראשי
+          </Button>
+        </div>
       </div>
     </div>
   );

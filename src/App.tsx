@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import GeneratedLandingPage from "./pages/GeneratedLandingPage";
 import { WordPressLandingPage } from "./pages/WordPressLandingPage";
 import { WordPressAuthCallback } from "./pages/WordPressAuthCallback";
+import { DemoWordPressSite } from "./pages/DemoWordPressSite";
 import { PurchaseSuccessPage } from "./components/PurchaseSuccessPage";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/generated-landing-page" element={<GeneratedLandingPage />} />
           <Route path="/wordpress-landing-page" element={<WordPressLandingPage />} />
+          <Route path="/demo-wordpress-site" element={<DemoWordPressSite />} />
           <Route path="/auth/wordpress/callback" element={<WordPressAuthCallback />} />
           <Route path="/purchase-success" element={<PurchaseSuccessPage />} />
           <Route path="*" element={<NotFound />} />

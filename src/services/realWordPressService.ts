@@ -1,5 +1,7 @@
 
-// Real WordPress.com API Service - Using WordPress.com OAuth
+// Real WordPress.com API Service - Using Demo Mode for reliability
+import { DemoWordPressService } from './demoWordPressService';
+
 export interface WordPressUserData {
   username: string;
   email: string;
@@ -36,37 +38,35 @@ export interface WordPressCreationResult {
 
 export class RealWordPressService {
   
-  // Create WordPress.com site - Using a working demo URL
+  // Create WordPress.com site - Using fully functional demo
   static async createRealWordPressSite(
     domain: string, 
     userData: WordPressUserData, 
     websiteData: any
   ): Promise<WordPressCreationResult> {
     try {
-      console.log('🎭 Creating functional demo WordPress site for:', domain);
+      console.log('🚀 Creating fully functional demo WordPress site...');
       
-      // Simulate site creation delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Create demo site using the new demo service
+      const demoResult = await DemoWordPressService.createDemoSite(userData, websiteData);
       
-      const demoSiteId = `demo_${Date.now()}`;
-      // Use a real working WordPress.com site as demo
-      const demoSiteUrl = `https://leadgridai.wordpress.com`;
-      
-      console.log('✅ Demo WordPress site ready at working URL');
+      console.log('✅ Demo WordPress site created successfully!');
+      console.log(`🌐 Demo Site URL: ${demoResult.siteUrl}`);
+      console.log(`🔐 Demo Admin: ${demoResult.adminUrl}`);
       
       return {
         success: true,
-        siteUrl: demoSiteUrl,
-        adminUrl: `${demoSiteUrl}/wp-admin`,
-        loginUrl: `${demoSiteUrl}/wp-login.php`,
+        siteUrl: demoResult.siteUrl,
+        adminUrl: demoResult.adminUrl,
+        loginUrl: demoResult.loginUrl,
         username: userData.username,
         password: userData.password,
-        isDemo: true, // This is a functional DEMO WordPress.com site
+        isDemo: true,
         installationDetails: {
-          wpVersion: '6.4.2',
-          theme: 'twentytwentyfour',
-          plugins: ['jetpack'],
-          siteId: demoSiteId
+          wpVersion: demoResult.installationDetails.wpVersion,
+          theme: demoResult.installationDetails.theme,
+          plugins: demoResult.installationDetails.plugins,
+          siteId: demoResult.siteId
         }
       };
       
