@@ -19,6 +19,8 @@ export class RealPublishingService {
   }
 
   private static generateHTMLFromTemplate(template: TemplateData): string {
+    const { styles } = template;
+    
     return `<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -36,12 +38,13 @@ export class RealPublishingService {
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             line-height: 1.6;
-            color: #333;
-            background-color: #0f0f23;
+            color: ${styles.textColor};
+            background-color: ${styles.backgroundColor};
         }
         
         .hero-section { 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: ${styles.heroBackground};
+            background: linear-gradient(135deg, ${styles.heroBackground} 0%, ${styles.primaryColor} 100%);
             color: white;
             min-height: 100vh;
             display: flex;
@@ -60,7 +63,7 @@ export class RealPublishingService {
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%);
+            background: radial-gradient(circle at 20% 50%, ${styles.primaryColor}40 0%, transparent 50%);
             animation: pulse 4s ease-in-out infinite;
         }
         
@@ -78,7 +81,7 @@ export class RealPublishingService {
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            background: ${styles.primaryColor};
             color: white;
             padding: 1rem 2rem;
             border-radius: 0.75rem;
@@ -89,16 +92,16 @@ export class RealPublishingService {
             border: none;
             cursor: pointer;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+            box-shadow: 0 4px 15px ${styles.primaryColor}66;
         }
         
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.6);
+            box-shadow: 0 8px 25px ${styles.primaryColor}99;
         }
         
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
+            background: ${styles.secondaryColor};
             color: white;
             padding: 1rem 2rem;
             border-radius: 0.75rem;
@@ -106,14 +109,14 @@ export class RealPublishingService {
             display: inline-block;
             margin: 0.5rem;
             transition: all 0.3s ease;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 2px solid ${styles.secondaryColor};
             cursor: pointer;
             font-weight: 600;
-            backdrop-filter: blur(10px);
         }
         
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: transparent;
+            color: ${styles.secondaryColor};
             transform: translateY(-2px);
         }
         
@@ -122,14 +125,44 @@ export class RealPublishingService {
             text-align: center;
         }
         
-        .section-dark {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        .section-emotional {
+            background: ${styles.emotionalBackground};
+            color: ${styles.textColor};
+        }
+        
+        .section-features {
+            background: ${styles.featuresBackground};
+            color: ${styles.textColor};
+        }
+        
+        .section-testimonials {
+            background: ${styles.testimonialsBackground};
+            color: ${styles.textColor};
+        }
+        
+        .section-about {
+            background: ${styles.aboutBackground};
+            color: ${styles.textColor};
+        }
+        
+        .section-pricing {
+            background: ${styles.pricingBackground};
+            color: ${styles.textColor};
+        }
+        
+        .section-faq {
+            background: ${styles.faqBackground};
+            color: ${styles.textColor};
+        }
+        
+        .section-final-cta {
+            background: ${styles.finalCtaBackground};
             color: white;
         }
         
-        .section-light {
-            background: #f8fafc;
-            color: #1f2937;
+        .section-contact {
+            background: ${styles.contactBackground};
+            color: ${styles.textColor};
         }
         
         .card {
@@ -147,12 +180,6 @@ export class RealPublishingService {
             transform: translateY(-5px);
         }
         
-        .card-light {
-            background: white;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
         .grid {
             display: grid;
             gap: 2rem;
@@ -163,12 +190,8 @@ export class RealPublishingService {
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         }
         
-        .grid-3 {
-            grid-template-columns: repeat(3, 1fr);
-        }
-        
         .testimonial-stars {
-            color: #fbbf24;
+            color: ${styles.accentColor};
             font-size: 1.2rem;
             margin: 0.5rem 0;
         }
@@ -182,16 +205,9 @@ export class RealPublishingService {
             width: 100%;
             padding: 1rem;
             margin: 0.5rem 0;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid #ddd;
             border-radius: 0.5rem;
             font-size: 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            backdrop-filter: blur(10px);
-        }
-        
-        .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
         }
         
         .stats-grid {
@@ -209,6 +225,7 @@ export class RealPublishingService {
             font-size: 2.5rem;
             font-weight: bold;
             margin-bottom: 0.5rem;
+            color: ${styles.primaryColor};
         }
         
         .stat-label {
@@ -216,9 +233,56 @@ export class RealPublishingService {
             opacity: 0.8;
         }
         
+        .pricing-card {
+            background: white;
+            border: 2px solid #f0f0f0;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            border-color: ${styles.primaryColor};
+        }
+        
+        .pricing-card.featured {
+            border-color: ${styles.primaryColor};
+            background: linear-gradient(135deg, ${styles.primaryColor}10 0%, ${styles.primaryColor}05 100%);
+        }
+        
+        .faq-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            background: ${styles.primaryColor}10;
+            padding: 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .faq-answer {
+            padding: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        footer {
+            background: ${styles.footerBackground};
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
         @media (max-width: 768px) {
             .hero-section h1 { font-size: 2.5rem !important; }
-            .grid-3 { grid-template-columns: 1fr; }
             .section { padding: 2rem 1rem; }
         }
     </style>
@@ -234,91 +298,156 @@ export class RealPublishingService {
                 <a href="#contact" class="btn-primary">${template.hero.button1Text}</a>
                 <a href="#about" class="btn-secondary">${template.hero.button2Text}</a>
             </div>
-            
-            <!-- Stats -->
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">500+</div>
-                    <div class="stat-label">לקוחות מרוצים</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">98%</div>
-                    <div class="stat-label">שביעות רצון</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">10+</div>
-                    <div class="stat-label">שנות ניסיון</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">24/7</div>
-                    <div class="stat-label">זמינות</div>
-                </div>
+        </div>
+    </section>
+
+    <!-- Emotional Section -->
+    ${template.emotional?.title ? `
+    <section id="emotional" class="section section-emotional">
+        <div class="container">
+            <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 2rem;">${template.emotional.title}</h2>
+            <p style="font-size: 1.125rem; max-width: 800px; margin: 0 auto 3rem;">${template.emotional.description}</p>
+            <div>
+                <a href="#contact" class="btn-primary">${template.emotional.button1Text}</a>
+                <a href="#features" class="btn-secondary">${template.emotional.button2Text}</a>
             </div>
         </div>
     </section>
-
-    <!-- About Section -->
-    <section id="about" class="section section-light">
-        <div class="container">
-            <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 2rem;">${template.about?.title || 'אודותינו'}</h2>
-            <p style="font-size: 1.125rem; max-width: 800px; margin: 0 auto;">${template.about?.description || 'אנחנו מספקים שירותים מקצועיים ואיכותיים ללקוחותינו.'}</p>
-        </div>
-    </section>
+    ` : ''}
 
     <!-- Features Section -->
-    <section id="features" class="section section-dark">
+    <section id="features" class="section section-features">
         <div class="container">
             <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 3rem;">${template.features?.title || 'השירותים שלנו'}</h2>
             <div class="grid grid-auto">
                 ${template.features?.items?.map(item => `
                     <div class="card">
-                        <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">${item.title}</h3>
+                        <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: ${styles.primaryColor};">${item.title}</h3>
                         <p style="opacity: 0.8;">${item.description}</p>
                     </div>
                 `).join('') || `
                     <div class="card">
-                        <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">שירות איכותי</h3>
+                        <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: ${styles.primaryColor};">שירות איכותי</h3>
                         <p style="opacity: 0.8;">אנחנו מספקים שירות ברמה הגבוהה ביותר</p>
                     </div>
                     <div class="card">
-                        <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">מחירים הוגנים</h3>
+                        <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: ${styles.primaryColor};">מחירים הוגנים</h3>
                         <p style="opacity: 0.8;">מחירים תחרותיים וללא הפתעות</p>
                     </div>
                     <div class="card">
-                        <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">זמינות 24/7</h3>
+                        <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: ${styles.primaryColor};">זמינות 24/7</h3>
                         <p style="opacity: 0.8;">אנחנו כאן בשבילך בכל שעה</p>
                     </div>
                 `}
+            </div>
+            <div style="margin-top: 3rem;">
+                <a href="#contact" class="btn-primary">${template.features?.button1Text || 'התחל עכשיו'}</a>
+                <a href="#about" class="btn-secondary">${template.features?.button2Text || 'למד עוד'}</a>
             </div>
         </div>
     </section>
 
     ${template.testimonials?.testimonials?.length ? `
     <!-- Testimonials Section -->
-    <section id="testimonials" class="section section-light">
+    <section id="testimonials" class="section section-testimonials">
         <div class="container">
             <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 3rem;">${template.testimonials.title}</h2>
             <div class="grid grid-auto">
                 ${template.testimonials.testimonials.map(testimonial => `
-                    <div class="card card-light">
+                    <div class="card">
                         <div class="testimonial-stars">${'★'.repeat(testimonial.rating || 5)}</div>
                         <p style="font-size: 1.125rem; margin: 1rem 0; font-style: italic;">"${testimonial.content}"</p>
                         <div style="margin-top: 1rem;">
                             <strong>${testimonial.name}</strong>
-                            <span style="color: #6b7280; margin-right: 0.5rem;">- ${testimonial.role}</span>
+                            <span style="color: ${styles.secondaryColor}; margin-right: 0.5rem;">- ${testimonial.role}</span>
                         </div>
                     </div>
                 `).join('')}
+            </div>
+            <div style="margin-top: 3rem;">
+                <a href="#contact" class="btn-primary">${template.testimonials.button1Text}</a>
+                <a href="#features" class="btn-secondary">${template.testimonials.button2Text}</a>
             </div>
         </div>
     </section>
     ` : ''}
 
+    <!-- About Section -->
+    <section id="about" class="section section-about">
+        <div class="container">
+            <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 2rem;">${template.about?.title || 'אודותינו'}</h2>
+            <p style="font-size: 1.125rem; max-width: 800px; margin: 0 auto 3rem;">${template.about?.description || 'אנחנו מספקים שירותים מקצועיים ואיכותיים ללקוחותינו.'}</p>
+            <div>
+                <a href="#contact" class="btn-primary">${template.about?.button1Text || 'צור קשר'}</a>
+                <a href="#features" class="btn-secondary">${template.about?.button2Text || 'השירותים שלנו'}</a>
+            </div>
+        </div>
+    </section>
+
+    ${template.pricing?.plans?.length ? `
+    <!-- Pricing Section -->
+    <section id="pricing" class="section section-pricing">
+        <div class="container">
+            <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 3rem;">${template.pricing.title}</h2>
+            <div class="grid grid-auto">
+                ${template.pricing.plans.map(plan => `
+                    <div class="pricing-card ${plan.featured ? 'featured' : ''}">
+                        <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; color: ${styles.primaryColor};">${plan.name}</h3>
+                        <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 1rem; color: ${styles.primaryColor};">₪${plan.price}</div>
+                        <p style="margin-bottom: 2rem; opacity: 0.8;">${plan.description}</p>
+                        <ul style="text-align: right; margin-bottom: 2rem;">
+                            ${plan.features.map(feature => `<li style="margin: 0.5rem 0;">✓ ${feature}</li>`).join('')}
+                        </ul>
+                        <a href="#contact" class="btn-primary" style="width: 100%; text-align: center;">בחר תוכנית</a>
+                    </div>
+                `).join('')}
+            </div>
+            <div style="margin-top: 3rem;">
+                <a href="#contact" class="btn-primary">${template.pricing.button1Text}</a>
+                <a href="#about" class="btn-secondary">${template.pricing.button2Text}</a>
+            </div>
+        </div>
+    </section>
+    ` : ''}
+
+    ${template.faq?.questions?.length ? `
+    <!-- FAQ Section -->
+    <section id="faq" class="section section-faq">
+        <div class="container">
+            <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 3rem;">${template.faq.title}</h2>
+            <div style="max-width: 800px; margin: 0 auto;">
+                ${template.faq.questions.map(faq => `
+                    <div class="faq-item">
+                        <div class="faq-question">${faq.question}</div>
+                        <div class="faq-answer">${faq.answer}</div>
+                    </div>
+                `).join('')}
+            </div>
+            <div style="margin-top: 3rem;">
+                <a href="#contact" class="btn-primary">${template.faq.button1Text}</a>
+                <a href="#about" class="btn-secondary">${template.faq.button2Text}</a>
+            </div>
+        </div>
+    </section>
+    ` : ''}
+
+    <!-- Final CTA Section -->
+    <section id="final-cta" class="section section-final-cta">
+        <div class="container">
+            <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 2rem;">${template.finalCta?.title || 'מוכנים להתחיל?'}</h2>
+            <p style="font-size: 1.125rem; margin-bottom: 3rem; opacity: 0.9;">${template.finalCta?.description || 'בואו נתחיל לעבוד יחד עוד היום!'}</p>
+            <div>
+                <a href="#contact" class="btn-primary">${template.finalCta?.button1Text || 'התחל עכשיו'}</a>
+                <a href="#about" class="btn-secondary">${template.finalCta?.button2Text || 'למד עוד'}</a>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
-    <section id="contact" class="section section-dark">
+    <section id="contact" class="section section-contact">
         <div class="container">
             <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 2rem;">${template.contact?.title || 'צור קשר'}</h2>
-            <p style="font-size: 1.125rem; margin-bottom: 3rem; opacity: 0.9;">${template.contact?.subtitle || 'נשמח לשמוע ממך ולעזור לך'}</p>
+            <p style="font-size: 1.125rem; margin-bottom: 3rem; opacity: 0.9;">נשמח לשמוע ממך ולעזור לך</p>
             <div class="form-container">
                 <form onsubmit="handleSubmit(event)">
                     <input type="text" placeholder="שם מלא" class="form-input" required>
@@ -332,9 +461,9 @@ export class RealPublishingService {
     </section>
 
     <!-- Footer -->
-    <footer style="background: rgba(0,0,0,0.8); padding: 2rem; text-align: center; color: white;">
+    <footer>
         <div class="container">
-            <p>&copy; 2024 ${template.hero.title}. כל הזכויות שמורות.</p>
+            <p>&copy; 2024 ${template.footer?.companyName || template.hero.title}. כל הזכויות שמורות.</p>
             <p style="font-size: 0.875rem; margin-top: 0.5rem; opacity: 0.7;">נבנה באמצעות LEADGRID</p>
         </div>
     </footer>
@@ -363,7 +492,7 @@ export class RealPublishingService {
 
         // Add interactive effects
         document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.card');
+            const cards = document.querySelectorAll('.card, .pricing-card');
             cards.forEach(card => {
                 card.addEventListener('mouseenter', function() {
                     this.style.transform = 'translateY(-5px) scale(1.02)';
