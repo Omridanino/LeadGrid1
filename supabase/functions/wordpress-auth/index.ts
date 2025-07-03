@@ -386,12 +386,40 @@ async function handleCreateSite(req: Request) {
       }
     }
 
-    // Step 4: Deploy template content and set as homepage
+    // Step 4: Delete default "Hello World" post and create custom homepage
     if (websiteData) {
       try {
+        // First, delete the default "Hello World" post
+        const postsResponse = await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'User-Agent': 'LeadGrid/1.0',
+            'Accept': 'application/json',
+          },
+        });
+
+        if (postsResponse.ok) {
+          const posts = await postsResponse.json();
+          
+          // Delete default posts
+          for (const post of posts.posts || []) {
+            if (post.title === 'Hello world!' || post.slug === 'hello-world') {
+              await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts/${post.ID}/delete`, {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'User-Agent': 'LeadGrid/1.0',
+                  'Accept': 'application/json',
+                },
+              });
+              console.log('Deleted default Hello World post');
+            }
+          }
+        }
+
         const homepageContent = generateWordPressContent(websiteData);
         
-        // Create the homepage
+        // Create the custom homepage
         const pageResponse = await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/posts/new`, {
           method: 'POST',
           headers: {
@@ -402,18 +430,20 @@ async function handleCreateSite(req: Request) {
           },
           body: JSON.stringify({
             type: 'page',
-            title: websiteData.hero?.title || 'דף הבית',
+            title: websiteData.formData?.businessName || websiteData.hero?.title || 'דף הבית',
             content: homepageContent,
             status: 'publish',
-            slug: 'homepage'
+            slug: 'home'
           }),
         });
 
         if (pageResponse.ok) {
           const pageData = await pageResponse.json();
           const pageId = pageData.ID;
+          
+          console.log('Custom homepage created with ID:', pageId);
 
-          // Set this page as the homepage
+          // Set this page as the homepage and configure reading settings
           await fetch(`https://public-api.wordpress.com/rest/v1.1/sites/${siteId}/settings`, {
             method: 'POST',
             headers: {
@@ -424,16 +454,19 @@ async function handleCreateSite(req: Request) {
             },
             body: JSON.stringify({
               show_on_front: 'page',
-              page_on_front: pageId
+              page_on_front: pageId,
+              posts_per_page: 5,
+              blogname: websiteData.formData?.businessName || userData.websiteTitle,
+              blogdescription: websiteData.formData?.businessDescription || userData.websiteDescription || 'אתר עסקי מקצועי'
             }),
           });
 
-          console.log('Homepage set successfully');
+          console.log('Homepage settings configured successfully');
         }
         
-        console.log('Template content deployed successfully');
+        console.log('Custom template content deployed successfully');
       } catch (error) {
-        console.log('Warning: Failed to deploy template content:', error);
+        console.log('Warning: Failed to deploy custom template content:', error);
       }
     }
 
