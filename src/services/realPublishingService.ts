@@ -155,12 +155,6 @@ export class RealPublishingService {
   }
 
   private static async deployToNetlify(htmlContent: string, subdomain: string): Promise<string> {
-    // For now, we'll simulate deployment by creating a blob URL
-    // In a real implementation, this would call Netlify's API to deploy
-    
-    const blob = new Blob([htmlContent], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    
     // Store the content in localStorage so we can retrieve it later
     localStorage.setItem(`site_${subdomain}`, htmlContent);
     
@@ -168,7 +162,7 @@ export class RealPublishingService {
     return `https://${subdomain}.netlify.app`;
   }
 
-  static async getSiteContent(subdomain: string): Promise<string | null> {
+  static getSiteContent(subdomain: string): string | null {
     return localStorage.getItem(`site_${subdomain}`);
   }
 }
