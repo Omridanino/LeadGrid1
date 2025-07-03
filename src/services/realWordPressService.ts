@@ -1,4 +1,3 @@
-
 // Real WordPress.com API Service - Using WordPress.com OAuth
 export interface WordPressUserData {
   username: string;
@@ -38,7 +37,14 @@ export class RealWordPressService {
   // WordPress.com OAuth Configuration
   private static readonly WP_CLIENT_ID = '120329';
   private static readonly WP_CLIENT_SECRET = 'imbzp7yTZvC3uRrwUW51f3ndO81dVJXlqN39Pi4qNyz3G3HkxWpDteo8hwGJGxkh';
-  private static readonly WP_REDIRECT_URI = window.location.origin + '/auth/wordpress/callback';
+  
+  // Fixed redirect URI to match the actual URL
+  private static getRedirectUri(): string {
+    // Get the current origin (protocol + domain + port)
+    const origin = window.location.origin;
+    return `${origin}/auth/wordpress/callback`;
+  }
+  
   private static readonly WP_API_BASE = 'https://public-api.wordpress.com';
   
   // Create REAL WordPress.com site - FORCE REAL CREATION
@@ -101,15 +107,19 @@ export class RealWordPressService {
     }
   }
   
-  // Initiate WordPress.com OAuth flow - FIXED for CORS
+  // Initiate WordPress.com OAuth flow - FIXED for correct redirect URI
   static initiateWordPressAuth(): void {
+    const redirectUri = this.getRedirectUri();
+    console.log('🔐 Using redirect URI:', redirectUri);
+    
     const authUrl = new URL(`${this.WP_API_BASE}/oauth2/authorize`);
     authUrl.searchParams.append('client_id', this.WP_CLIENT_ID);
-    authUrl.searchParams.append('redirect_uri', this.WP_REDIRECT_URI);
+    authUrl.searchParams.append('redirect_uri', redirectUri);
     authUrl.searchParams.append('response_type', 'code');
     authUrl.searchParams.append('scope', 'sites auth');
     
     console.log('🔐 Opening WordPress.com OAuth popup...');
+    console.log('🔐 Full auth URL:', authUrl.toString());
     
     // Open in popup to avoid CORS issues
     const popup = window.open(
@@ -130,10 +140,13 @@ export class RealWordPressService {
     }, 1000);
   }
   
-  // Get access token from authorization code - FIXED for CORS
+  // Get access token from authorization code - FIXED for correct redirect URI
   static async exchangeCodeForToken(authCode: string): Promise<string | null> {
     try {
       console.log('🔄 Exchanging authorization code for access token...');
+      
+      const redirectUri = this.getRedirectUri();
+      console.log('🔄 Using redirect URI for token exchange:', redirectUri);
       
       // Use a CORS proxy or our own backend endpoint
       const tokenEndpoint = '/api/wordpress/token'; // We'll need to create this
@@ -141,7 +154,7 @@ export class RealWordPressService {
       const formData = new FormData();
       formData.append('client_id', this.WP_CLIENT_ID);
       formData.append('client_secret', this.WP_CLIENT_SECRET);
-      formData.append('redirect_uri', this.WP_REDIRECT_URI);
+      formData.append('redirect_uri', redirectUri);
       formData.append('grant_type', 'authorization_code');
       formData.append('code', authCode);
       
@@ -180,6 +193,8 @@ export class RealWordPressService {
       
       // Fallback: try direct API call with CORS headers
       try {
+        const redirectUri = this.getRedirectUri();
+        
         const response = await fetch(`${this.WP_API_BASE}/oauth2/token`, {
           method: 'POST',
           headers: {
@@ -189,7 +204,7 @@ export class RealWordPressService {
           body: new URLSearchParams({
             client_id: this.WP_CLIENT_ID,
             client_secret: this.WP_CLIENT_SECRET,
-            redirect_uri: this.WP_REDIRECT_URI,
+            redirect_uri: redirectUri,
             grant_type: 'authorization_code',
             code: authCode
           })
