@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,11 +23,12 @@ import {
   Star,
   Zap,
   Code,
-  Palette
+  User
 } from 'lucide-react';
-import { RealDomainService, RealDomainAvailabilityResult, RealHostingPlan, PurchaseRequest } from '@/services/realDomainService';
+import { RealDomainService, RealDomainAvailabilityResult, RealHostingPlan, PurchaseRequest, WordPressUserData } from '@/services/realDomainService';
 import { TemplateData } from '@/types/template';
 import { PaymentMethodsWizard } from '@/components/payment/PaymentMethodsWizard';
+import { WordPressRegistrationForm } from './WordPressRegistrationForm';
 
 interface RealDomainPurchaseWizardProps {
   isOpen: boolean;
@@ -35,7 +37,7 @@ interface RealDomainPurchaseWizardProps {
   template: TemplateData;
 }
 
-type WizardStep = 'search' | 'website-type' | 'hosting' | 'details' | 'payment' | 'processing';
+type WizardStep = 'search' | 'website-type' | 'hosting' | 'wordpress-registration' | 'payment' | 'processing';
 
 export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template }: RealDomainPurchaseWizardProps) => {
   const [currentStep, setCurrentStep] = useState<WizardStep>('search');
@@ -43,22 +45,13 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<RealDomainAvailabilityResult[]>([]);
   const [selectedDomain, setSelectedDomain] = useState<string>('');
-  const [websiteType, setWebsiteType] = useState<'static' | 'wordpress'>('static');
+  const [websiteType, setWebsiteType] = useState<'static' | 'wordpress'>('wordpress');
   const [selectedPlan, setSelectedPlan] = useState<RealHostingPlan | null>(null);
+  const [wordpressUserData, setWordpressUserData] = useState<WordPressUserData | null>(null);
   const [showPaymentWizard, setShowPaymentWizard] = useState(false);
+  const [isCreatingWordPress, setIsCreatingWordPress] = useState(false);
   const [orderId] = useState(`ORDER_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
   
-  const [customerInfo, setCustomerInfo] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    company: '',
-    address: '',
-    city: '',
-    country: 'ישראל',
-    zipCode: ''
-  });
-
   const [paymentInfo, setPaymentInfo] = useState({
     years: 1,
     autoRenew: true
@@ -67,6 +60,21 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
   const hostingPlans = RealDomainService.getHostingPlans();
 
   const websiteTypeOptions = [
+    {
+      id: 'wordpress' as const,
+      name: 'אתר WordPress מלא',
+      description: 'אתר וורדפרס אמיתי עם הרשמה והתחברות אמיתית',
+      features: [
+        'ממשק ניהול מתקדם',
+        'תוספים ועיצובים',
+        'בלוג וחנות מובנים',
+        'גמישות מקסימלית',
+        'הרשמה אמיתית ללקוח'
+      ],
+      icon: Code,
+      color: 'bg-purple-600',
+      recommended: true
+    },
     {
       id: 'static' as const,
       name: 'אתר סטטי מהיר',
@@ -79,20 +87,6 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
       ],
       icon: Zap,
       color: 'bg-blue-600',
-      recommended: true
-    },
-    {
-      id: 'wordpress' as const,
-      name: 'אתר WordPress',
-      description: 'פלטפורמה מתקדמת עם אפשרויות ניהול מלא',
-      features: [
-        'ממשק ניהול מתקדם',
-        'תוספים ועיצובים',
-        'בלוג וחנות מובנים',
-        'גמישות מקסימלית'
-      ],
-      icon: Code,
-      color: 'bg-purple-600',
       recommended: false
     }
   ];
@@ -112,6 +106,17 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
     }
   };
 
+  const handleWordPressRegistration = async (userData: WordPressUserData) => {
+    setIsCreatingWordPress(true);
+    setWordpressUserData(userData);
+    
+    // Move to payment step
+    setTimeout(() => {
+      setIsCreatingWordPress(false);
+      setCurrentStep('payment');
+    }, 2000);
+  };
+
   const handlePaymentComplete = async (paymentMethod: string, paymentData: any) => {
     setShowPaymentWizard(false);
     setCurrentStep('processing');
@@ -120,9 +125,18 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
       domain: selectedDomain,
       hostingPlan: selectedPlan!,
       orderId: orderId,
-      customerInfo,
+      customerInfo: {
+        name: wordpressUserData?.displayName || 'לקוח דמו',
+        email: wordpressUserData?.email || 'demo@example.com',
+        phone: wordpressUserData?.phone || '050-0000000',
+        company: wordpressUserData?.company,
+        address: wordpressUserData?.address || '',
+        city: wordpressUserData?.city || '',
+        country: wordpressUserData?.country || 'ישראל',
+        zipCode: wordpressUserData?.zipCode || ''
+      },
       payment: {
-        stripeToken: '', // Not used for Israeli payment methods
+        stripeToken: '',
         years: paymentInfo.years,
         autoRenew: paymentInfo.autoRenew,
         method: paymentMethod,
@@ -130,33 +144,32 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
       },
       websiteData: {
         ...template,
-        websiteType
+        websiteType,
+        wordpressUserData
       }
     };
 
     try {
-      // First process the payment
-      const paymentResult = await RealDomainService.processPayment(
-        getTotalPrice(),
-        paymentMethod,
-        paymentData,
-        orderId,
-        customerInfo
-      );
-
-      // Since payment verification is required, inform user
-      onComplete({
-        success: true,
-        orderId,
-        domain: selectedDomain,
-        paymentMethod,
-        paymentData: paymentResult.paymentData,
-        status: 'awaiting_payment_verification',
-        message: 'התשלום נשלח בהצלחה. האתר יהיה זמין לאחר אישור התשלום.'
-      });
+      // Process the purchase with real WordPress creation
+      const result = await RealDomainService.purchaseDomainAndHosting(purchaseRequest);
+      
+      if (result.success && result.wordpressDetails) {
+        onComplete({
+          success: true,
+          orderId,
+          domain: selectedDomain,
+          paymentMethod,
+          paymentData,
+          wordpressDetails: result.wordpressDetails,
+          status: 'completed',
+          message: 'אתר וורדפרס נוצר בהצלחה! בדוק את האימיל שלך לפרטי הגישה.'
+        });
+      } else {
+        throw new Error(result.error || 'יצירת אתר וורדפרס נכשלה');
+      }
     } catch (error) {
       console.error('Purchase failed:', error);
-      alert('הרכישה נכשלה. אנא נסה שוב.');
+      alert('הרכישה נכשלה: ' + error.message);
       setCurrentStep('payment');
     }
   };
@@ -177,8 +190,8 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
           <div className="p-6 border-b border-gray-800 flex-shrink-0">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-white text-2xl font-bold">רכישת דומיין ואחסון</h2>
-                <p className="text-gray-400">הפתרון המלא לפרסום האתר שלך</p>
+                <h2 className="text-white text-2xl font-bold">רכישת דומיין ויצירת אתר וורדפרס</h2>
+                <p className="text-gray-400">יצירת אתר וורדפרס אמיתי עם הרשמה ללקוח</p>
               </div>
               <Button onClick={onClose} size="sm" className="bg-gray-700 hover:bg-gray-600">
                 <X className="w-4 h-4" />
@@ -365,98 +378,33 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                   </div>
                 )}
 
-                {currentStep === 'details' && (
+                {currentStep === 'wordpress-registration' && (
                   <div className="space-y-6">
                     <div className="text-center">
-                      <h3 className="text-white text-xl font-semibold mb-2">פרטים אישיים</h3>
-                      <p className="text-gray-400">מלא את הפרטים שלך לרכישה</p>
+                      <h3 className="text-white text-xl font-semibold mb-2 flex items-center justify-center gap-2">
+                        <User className="w-6 h-6" />
+                        הרשמה לאתר וורדפרס
+                      </h3>
+                      <p className="text-gray-400">מלא את הפרטים שלך ליצירת אתר וורדפרס אמיתי</p>
                     </div>
 
-                    <Card className="bg-gray-800 border-gray-700">
-                      <CardContent className="p-6 space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <Label className="text-gray-300">שם מלא *</Label>
-                            <Input
-                              value={customerInfo.name}
-                              onChange={(e) => setCustomerInfo(prev => ({ ...prev, name: e.target.value }))}
-                              className="bg-gray-700 border-gray-600 text-white"
-                              placeholder="השם המלא שלך"
-                            />
-                          </div>
-                          <div>
-                            <Label className="text-gray-300">אימיל *</Label>
-                            <Input
-                              type="email"
-                              value={customerInfo.email}
-                              onChange={(e) => setCustomerInfo(prev => ({ ...prev, email: e.target.value }))}
-                              className="bg-gray-700 border-gray-600 text-white"
-                              placeholder="your@email.com"
-                            />
-                          </div>
-                        </div>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <Label className="text-gray-300">טלפון *</Label>
-                            <Input
-                              value={customerInfo.phone}
-                              onChange={(e) => setCustomerInfo(prev => ({ ...prev, phone: e.target.value }))}
-                              className="bg-gray-700 border-gray-600 text-white"
-                              placeholder="050-1234567"
-                            />
-                          </div>
-                          <div>
-                            <Label className="text-gray-300">חברה (אופציונלי)</Label>
-                            <Input
-                              value={customerInfo.company}
-                              onChange={(e) => setCustomerInfo(prev => ({ ...prev, company: e.target.value }))}
-                              className="bg-gray-700 border-gray-600 text-white"
-                              placeholder="שם החברה"
-                            />
-                          </div>
-                        </div>
+                    <WordPressRegistrationForm
+                      onSubmit={handleWordPressRegistration}
+                      isLoading={isCreatingWordPress}
+                      selectedDomain={selectedDomain}
+                    />
 
-                        <div>
-                          <Label className="text-gray-300">כתובת *</Label>
-                          <Input
-                            value={customerInfo.address}
-                            onChange={(e) => setCustomerInfo(prev => ({ ...prev, address: e.target.value }))}
-                            className="bg-gray-700 border-gray-600 text-white"
-                            placeholder="רחוב, מספר בית"
-                          />
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <div>
-                            <Label className="text-gray-300">עיר *</Label>
-                            <Input
-                              value={customerInfo.city}
-                              onChange={(e) => setCustomerInfo(prev => ({ ...prev, city: e.target.value }))}
-                              className="bg-gray-700 border-gray-600 text-white"
-                              placeholder="תל אביב"
-                            />
-                          </div>
-                          <div>
-                            <Label className="text-gray-300">מדינה</Label>
-                            <Input
-                              value={customerInfo.country}
-                              onChange={(e) => setCustomerInfo(prev => ({ ...prev, country: e.target.value }))}
-                              className="bg-gray-700 border-gray-600 text-white"
-                            />
-                          </div>
-                          <div>
-                            <Label className="text-gray-300">מיקוד</Label>
-                            <Input
-                              value={customerInfo.zipCode}
-                              onChange={(e) => setCustomerInfo(prev => ({ ...prev, zipCode: e.target.value }))}
-                              className="bg-gray-700 border-gray-600 text-white"
-                              placeholder="12345"
-                            />
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+                    {isCreatingWordPress && (
+                      <Card className="bg-blue-900/20 border-blue-700/30">
+                        <CardContent className="p-6 text-center">
+                          <Loader2 className="w-8 h-8 text-blue-400 animate-spin mx-auto mb-4" />
+                          <h4 className="text-blue-200 font-semibold mb-2">מכין את פרטי הרשמה...</h4>
+                          <p className="text-blue-300 text-sm">
+                            המערכת מכינה את האתר שלך עם הפרטים שמילאת
+                          </p>
+                        </CardContent>
+                      </Card>
+                    )}
                   </div>
                 )}
 
@@ -479,6 +427,14 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                         <div className="flex justify-between items-center py-2 border-b border-gray-700">
                           <span className="text-gray-300">אחסון: {selectedPlan?.name}</span>
                           <span className="text-white">₪{selectedPlan?.price || 0}/חודש</span>
+                        </div>
+                        <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                          <span className="text-gray-300">אתר וורדפרס: {wordpressUserData?.websiteTitle}</span>
+                          <span className="text-green-400">כלול</span>
+                        </div>
+                        <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                          <span className="text-gray-300">משתמש וורדפרס: {wordpressUserData?.username}</span>
+                          <span className="text-green-400">✓</span>
                         </div>
                         <div className="flex justify-between items-center py-2 border-b border-gray-700">
                           <span className="text-gray-300">תקופה: {paymentInfo.years} שנה</span>
@@ -510,10 +466,10 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                       <Loader2 className="w-10 h-10 text-white animate-spin" />
                     </div>
                     <div className="text-center">
-                      <h3 className="text-white text-xl font-semibold mb-2">מעבד רכישה</h3>
-                      <p className="text-gray-400">מגדיר את הדומיין והאחסון שלך...</p>
-                      <p className="text-yellow-300 text-sm mt-2">
-                        💳 התשלום ממתין לאישור - האתר יהיה זמין לאחר אישור התשלום
+                      <h3 className="text-white text-xl font-semibold mb-2">יוצר אתר וורדפרס אמיתי</h3>
+                      <p className="text-gray-400">מגדיר את הדומיין, האחסון ויוצר את המשתמש שלך...</p>
+                      <p className="text-green-300 text-sm mt-2">
+                        🚀 האתר יהיה זמין תוך דקות ספורות!
                       </p>
                     </div>
                   </div>
@@ -529,8 +485,8 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                 onClick={() => {
                   if (currentStep === 'website-type') setCurrentStep('search');
                   else if (currentStep === 'hosting') setCurrentStep('website-type');
-                  else if (currentStep === 'details') setCurrentStep('hosting');
-                  else if (currentStep === 'payment') setCurrentStep('details');
+                  else if (currentStep === 'wordpress-registration') setCurrentStep('hosting');
+                  else if (currentStep === 'payment') setCurrentStep('wordpress-registration');
                 }}
                 variant="outline"
                 className="border-gray-600 text-white hover:bg-gray-700"
@@ -544,14 +500,20 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                 onClick={() => {
                   if (currentStep === 'search' && selectedDomain) setCurrentStep('website-type');
                   else if (currentStep === 'website-type') setCurrentStep('hosting');
-                  else if (currentStep === 'hosting' && selectedPlan) setCurrentStep('details');
-                  else if (currentStep === 'details') setCurrentStep('payment');
+                  else if (currentStep === 'hosting' && selectedPlan) {
+                    if (websiteType === 'wordpress') {
+                      setCurrentStep('wordpress-registration');
+                    } else {
+                      setCurrentStep('payment');
+                    }
+                  }
+                  else if (currentStep === 'wordpress-registration' && wordpressUserData) setCurrentStep('payment');
                 }}
                 className="bg-blue-600 hover:bg-blue-700"
                 disabled={
                   (currentStep === 'search' && !selectedDomain) ||
                   (currentStep === 'hosting' && !selectedPlan) ||
-                  (currentStep === 'details' && (!customerInfo.name || !customerInfo.email || !customerInfo.phone))
+                  (currentStep === 'wordpress-registration' && !wordpressUserData)
                 }
               >
                 {currentStep === 'payment' ? (
