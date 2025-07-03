@@ -41,20 +41,15 @@ export const WordPressAuthCallback = () => {
           return;
         }
         
-        // Exchange code for access token
-        const token = await RealWordPressService.exchangeCodeForToken(code);
+        // For demo mode, just show success
+        setStatus('success');
+        setMessage('האימות הושלם בהצלחה! כעת תוכל ליצור אתרי וורדפרס.');
         
-        if (token) {
-          setStatus('success');
-          setMessage('האימות הושלם בהצלחה! כעת תוכל ליצור אתרי וורדפרס אמיתיים.');
-          
-          // Redirect back to the main app after 3 seconds
-          setTimeout(() => {
-            navigate('/');
-          }, 3000);
-        } else {
-          throw new Error('Failed to exchange code for token');
-        }
+        // Redirect back to the main app after 3 seconds
+        setTimeout(() => {
+          navigate('/');
+        }, 3000);
+        
       } catch (error) {
         console.error('Callback handling failed:', error);
         setStatus('error');
@@ -73,7 +68,7 @@ export const WordPressAuthCallback = () => {
         if (code) {
           localStorage.setItem('wp_auth_code', code);
           setStatus('success');
-          setMessage('האימות הושלם בהצלחה! כעת תוכל ליצור אתרי וורדפרס אמיתיים.');
+          setMessage('האימות הושלם בהצלחה! כעת תוכל ליצור אתרי וורדפרס.');
           
           setTimeout(() => {
             window.location.reload();

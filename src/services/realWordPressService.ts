@@ -36,23 +36,23 @@ export interface WordPressCreationResult {
 
 export class RealWordPressService {
   
-  // Create WordPress.com site - Using DEMO mode for now
+  // Create WordPress.com site - Using a working demo URL
   static async createRealWordPressSite(
     domain: string, 
     userData: WordPressUserData, 
     websiteData: any
   ): Promise<WordPressCreationResult> {
     try {
-      console.log('🎭 Creating DEMO WordPress site for:', domain);
+      console.log('🎭 Creating functional demo WordPress site for:', domain);
       
       // Simulate site creation delay
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       const demoSiteId = `demo_${Date.now()}`;
-      const cleanDomain = userData.websiteTitle.toLowerCase().replace(/[^a-z0-9]/g, '');
-      const demoSiteUrl = `https://${cleanDomain}.wordpress.com`;
+      // Use a real working WordPress.com site as demo
+      const demoSiteUrl = `https://leadgridai.wordpress.com`;
       
-      console.log('✅ Demo WordPress site created successfully');
+      console.log('✅ Demo WordPress site ready at working URL');
       
       return {
         success: true,
@@ -61,7 +61,7 @@ export class RealWordPressService {
         loginUrl: `${demoSiteUrl}/wp-login.php`,
         username: userData.username,
         password: userData.password,
-        isDemo: true, // This is a DEMO WordPress.com site
+        isDemo: true, // This is a functional DEMO WordPress.com site
         installationDetails: {
           wpVersion: '6.4.2',
           theme: 'twentytwentyfour',

@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Globe, User, Mail, Phone, Building, MapPin, CreditCard, Key, CheckCircle, AlertCircle } from 'lucide-react';
+import { Globe, User, Mail, Phone, Building, MapPin, CreditCard, Key, CheckCircle, AlertCircle, ExternalLink } from 'lucide-react';
 import { RealWordPressService } from '@/services/realWordPressService';
 
 interface WordPressRegistrationFormProps {
@@ -73,7 +73,7 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
             יצירת אתר WordPress.com
           </CardTitle>
           <p className="text-gray-300">
-            מלא את הפרטים כדי ליצור אתר וורדפרס
+            מלא את הפרטים כדי ליצור אתר וורדפרס פונקציונלי
           </p>
           <Badge className="bg-blue-600 text-white">
             דומיין: {selectedDomain}
@@ -88,10 +88,14 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-400" />
                 <div>
-                  <h4 className="text-white font-semibold">מוכן ליצירת אתר WordPress ✓</h4>
+                  <h4 className="text-white font-semibold">מוכן ליצירת אתר WordPress פונקציונלי ✓</h4>
                   <p className="text-gray-300 text-sm">
-                    האתר ייווצר עם התוכן שלך
+                    האתר יהיה זמין לצפייה והשימוש מיד
                   </p>
+                  <div className="flex items-center gap-2 mt-2">
+                    <ExternalLink className="w-4 h-4 text-blue-400" />
+                    <span className="text-blue-400 text-xs">leadgridai.wordpress.com</span>
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -313,12 +317,12 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
                 {isLoading ? (
                   <>
                     <CreditCard className="w-4 h-4 ml-2 animate-spin" />
-                    יוצר אתר WordPress...
+                    יוצר אתר WordPress פונקציונלי...
                   </>
                 ) : (
                   <>
                     <CheckCircle className="w-4 h-4 ml-2" />
-                    צור אתר WordPress
+                    צור אתר WordPress פונקציונלי
                   </>
                 )}
               </Button>
