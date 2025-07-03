@@ -5,51 +5,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { 
-  User, 
-  Mail, 
-  Phone, 
-  Lock, 
-  Building, 
-  MapPin,
-  Globe,
-  Info,
-  CheckCircle
-} from 'lucide-react';
-
-interface WordPressUser {
-  username: string;
-  email: string;
-  password: string;
-  displayName: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  company?: string;
-  address: string;
-  city: string;
-  country: string;
-  zipCode: string;
-  websiteTitle: string;
-  websiteDescription: string;
-}
+import { Badge } from "@/components/ui/badge";
+import { Globe, User, Mail, Phone, Building, MapPin, CreditCard, Key, CheckCircle, AlertCircle } from 'lucide-react';
+import { RealWordPressService } from '@/services/realWordPressService';
 
 interface WordPressRegistrationFormProps {
-  onSubmit: (userData: WordPressUser) => void;
-  isLoading?: boolean;
+  onSubmit: (userData: any) => void;
+  onCancel: () => void;
   selectedDomain: string;
+  isLoading?: boolean;
 }
 
-export const WordPressRegistrationForm = ({ 
-  onSubmit, 
-  isLoading = false,
-  selectedDomain 
-}: WordPressRegistrationFormProps) => {
-  const [formData, setFormData] = useState<WordPressUser>({
+export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, isLoading }: WordPressRegistrationFormProps) => {
+  const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
+    confirmPassword: '',
     displayName: '',
     firstName: '',
     lastName: '',
@@ -57,290 +29,379 @@ export const WordPressRegistrationForm = ({
     company: '',
     address: '',
     city: '',
-    country: 'ישראל',
+    country: 'Israel',
     zipCode: '',
     websiteTitle: '',
     websiteDescription: ''
   });
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(false);
 
-  const validateForm = () => {
-    const newErrors: {[key: string]: string} = {};
-
-    // Required fields validation
-    if (!formData.username.trim()) newErrors.username = 'שם משתמש נדרש';
-    if (!formData.email.trim()) newErrors.email = 'אימיל נדרש';
-    if (!formData.password.trim()) newErrors.password = 'סיסמה נדרשת';
-    if (!formData.firstName.trim()) newErrors.firstName = 'שם פרטי נדרש';
-    if (!formData.lastName.trim()) newErrors.lastName = 'שם משפחה נדרש';
-    if (!formData.phone.trim()) newErrors.phone = 'טלפון נדרש';
-    if (!formData.websiteTitle.trim()) newErrors.websiteTitle = 'כותרת האתר נדרשת';
-
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (formData.email && !emailRegex.test(formData.email)) {
-      newErrors.email = 'כתובת אימיל לא תקינה';
+  // Check if user is authenticated with WordPress.com
+  const checkWordPressAuth = async () => {
+    setIsCheckingAuth(true);
+    const token = localStorage.getItem('wp_access_token');
+    
+    if (token) {
+      // Verify token is still valid
+      try {
+        const response = await fetch('https://public-api.wordpress.com/rest/v1.1/me', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (response.ok) {
+          setIsAuthenticated(true);
+        } else {
+          localStorage.removeItem('wp_access_token');
+          setIsAuthenticated(false);
+        }
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        setIsAuthenticated(false);
+      }
     }
+    setIsCheckingAuth(false);
+  };
 
-    // Username validation (WordPress requirements)
-    if (formData.username && formData.username.length < 3) {
-      newErrors.username = 'שם המשתמש חייב להיות לפחות 3 תווים';
-    }
+  // Check auth status on component mount
+  useState(() => {
+    checkWordPressAuth();
+  });
 
-    // Password validation
-    if (formData.password && formData.password.length < 6) {
-      newErrors.password = 'הסיסמה חייבת להיות לפחות 6 תווים';
-    }
+  const authenticateWithWordPress = () => {
+    console.log('🔐 Starting WordPress.com authentication...');
+    RealWordPressService.initiateWordPressAuth();
+  };
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
-      onSubmit(formData);
+    
+    if (!isAuthenticated) {
+      alert('יש להתחבר ל-WordPress.com קודם כדי ליצור אתר אמיתי');
+      return;
     }
-  };
 
-  const generatePassword = () => {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
-    let password = '';
-    for (let i = 0; i < 12; i++) {
-      password += chars.charAt(Math.floor(Math.random() * chars.length));
+    if (formData.password !== formData.confirmPassword) {
+      alert('הסיסמאות אינן תואמות');
+      return;
     }
-    setFormData(prev => ({ ...prev, password }));
-  };
 
-  const suggestUsername = () => {
-    if (formData.firstName && formData.lastName) {
-      const suggested = `${formData.firstName.toLowerCase()}${formData.lastName.toLowerCase()}`;
-      setFormData(prev => ({ ...prev, username: suggested }));
-    } else if (formData.email) {
-      const suggested = formData.email.split('@')[0];
-      setFormData(prev => ({ ...prev, username: suggested }));
-    }
+    onSubmit(formData);
   };
 
   return (
-    <div className="space-y-6" dir="rtl">
+    <div className="max-w-2xl mx-auto p-6" dir="rtl">
       <Card className="bg-gray-800 border-gray-700">
-        <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
-            <Globe className="w-5 h-5" />
-            הרשמה לאתר וורדפרס - {selectedDomain}
+        <CardHeader className="text-center">
+          <CardTitle className="text-white text-2xl flex items-center justify-center gap-2">
+            <Globe className="w-6 h-6" />
+            יצירת אתר WordPress.com אמיתי
           </CardTitle>
+          <p className="text-gray-300">
+            מלא את הפטרים כדי ליצור אתר וורדפרס אמיתי ב-WordPress.com
+          </p>
+          <Badge className="bg-blue-600 text-white">
+            דומיין: {selectedDomain}
+          </Badge>
         </CardHeader>
-        <CardContent>
-          <Alert className="bg-blue-900/20 border-blue-700/30 mb-6">
-            <Info className="w-4 h-4" />
-            <AlertDescription className="text-blue-200">
-              אנחנו ניצור עבורך אתר וורדפרס אמיתי עם המשתמש שלך. 
-              תקבל גישה מלאה לניהול האתר ולוח הבקרה של וורדפרס.
-            </AlertDescription>
-          </Alert>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* WordPress User Details */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label className="text-gray-300">שם משתמש וורדפרס *</Label>
-                <div className="flex gap-2">
-                  <Input
-                    value={formData.username}
-                    onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
-                    className="bg-gray-700 border-gray-600 text-white"
-                    placeholder="username"
-                  />
-                  <Button
-                    type="button"
-                    onClick={suggestUsername}
-                    size="sm"
-                    className="bg-blue-600 hover:bg-blue-700"
-                    disabled={!formData.firstName || !formData.lastName}
-                  >
-                    הצע
-                  </Button>
+        <CardContent className="space-y-6">
+          
+          {/* WordPress.com Authentication Status */}
+          <Card className={`${
+            isAuthenticated 
+              ? 'bg-gradient-to-br from-green-900/30 to-blue-900/30 border-green-700/50'
+              : 'bg-gradient-to-br from-orange-900/30 to-red-900/30 border-orange-700/50'
+          }`}>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Key className={`w-5 h-5 ${isAuthenticated ? 'text-green-400' : 'text-orange-400'}`} />
+                  <div>
+                    <h4 className="text-white font-semibold">
+                      {isAuthenticated ? 'מחובר ל-WordPress.com ✓' : 'נדרש אימות WordPress.com'}
+                    </h4>
+                    <p className="text-gray-300 text-sm">
+                      {isAuthenticated 
+                        ? 'יכול ליצור אתרי WordPress.com אמיתיים' 
+                        : 'יש להתחבר כדי ליצור אתרים אמיתיים'
+                      }
+                    </p>
+                  </div>
                 </div>
-                {errors.username && <p className="text-red-400 text-sm mt-1">{errors.username}</p>}
+                {!isAuthenticated && (
+                  <Button
+                    onClick={authenticateWithWordPress}
+                    disabled={isCheckingAuth}
+                    className="bg-blue-600 hover:bg-blue-700"
+                    size="sm"
+                  >
+                    {isCheckingAuth ? 'בודק...' : 'התחבר עכשיו'}
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            
+            {/* Basic User Info */}
+            <div className="space-y-4">
+              <h3 className="text-white font-semibold flex items-center gap-2">
+                <User className="w-5 h-5" />
+                פרטים אישיים
+              </h3>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="username" className="text-gray-300">שם משתמש *</Label>
+                  <Input
+                    id="username"
+                    type="text"
+                    value={formData.username}
+                    onChange={(e) => handleInputChange('username', e.target.value)}
+                    required
+                    className="bg-gray-700 border-gray-600 text-white"
+                    placeholder="username123"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="email" className="text-gray-300">אימייל *</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    required
+                    className="bg-gray-700 border-gray-600 text-white"
+                    placeholder="user@example.com"
+                  />
+                </div>
               </div>
 
-              <div>
-                <Label className="text-gray-300">סיסמה *</Label>
-                <div className="flex gap-2">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="password" className="text-gray-300">סיסמה *</Label>
                   <Input
-                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    type="password"
                     value={formData.password}
-                    onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                    onChange={(e) => handleInputChange('password', e.target.value)}
+                    required
                     className="bg-gray-700 border-gray-600 text-white"
                     placeholder="סיסמה חזקה"
                   />
-                  <Button
-                    type="button"
-                    onClick={generatePassword}
-                    size="sm"
-                    className="bg-green-600 hover:bg-green-700"
-                  >
-                    <Lock className="w-4 h-4" />
-                  </Button>
                 </div>
-                {errors.password && <p className="text-red-400 text-sm mt-1">{errors.password}</p>}
-              </div>
-            </div>
-
-            {/* Personal Details */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label className="text-gray-300">שם פרטי *</Label>
-                <Input
-                  value={formData.firstName}
-                  onChange={(e) => setFormData(prev => ({ 
-                    ...prev, 
-                    firstName: e.target.value,
-                    displayName: `${e.target.value} ${prev.lastName}`.trim()
-                  }))}
-                  className="bg-gray-700 border-gray-600 text-white"
-                  placeholder="השם הפרטי שלך"
-                />
-                {errors.firstName && <p className="text-red-400 text-sm mt-1">{errors.firstName}</p>}
+                
+                <div>
+                  <Label htmlFor="confirmPassword" className="text-gray-300">אימות סיסמה *</Label>
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    value={formData.confirmPassword}
+                    onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                    required
+                    className="bg-gray-700 border-gray-600 text-white"
+                    placeholder="אימות סיסמה"
+                  />
+                </div>
               </div>
 
-              <div>
-                <Label className="text-gray-300">שם משפחה *</Label>
-                <Input
-                  value={formData.lastName}
-                  onChange={(e) => setFormData(prev => ({ 
-                    ...prev, 
-                    lastName: e.target.value,
-                    displayName: `${prev.firstName} ${e.target.value}`.trim()
-                  }))}
-                  className="bg-gray-700 border-gray-600 text-white"
-                  placeholder="שם המשפחה שלך"
-                />
-                {errors.lastName && <p className="text-red-400 text-sm mt-1">{errors.lastName}</p>}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label className="text-gray-300">אימיל *</Label>
-                <Input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                  className="bg-gray-700 border-gray-600 text-white"
-                  placeholder="your@email.com"
-                />
-                {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
-              </div>
-
-              <div>
-                <Label className="text-gray-300">טלפון *</Label>
-                <Input
-                  value={formData.phone}
-                  onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                  className="bg-gray-700 border-gray-600 text-white"
-                  placeholder="050-1234567"
-                />
-                {errors.phone && <p className="text-red-400 text-sm mt-1">{errors.phone}</p>}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="firstName" className="text-gray-300">שם פרטי</Label>
+                  <Input
+                    id="firstName"
+                    type="text"
+                    value={formData.firstName}
+                    onChange={(e) => handleInputChange('firstName', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="lastName" className="text-gray-300">שם משפחה</Label>
+                  <Input
+                    id="lastName"
+                    type="text"
+                    value={formData.lastName}
+                    onChange={(e) => handleInputChange('lastName', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                  />
+                </div>
               </div>
             </div>
 
             {/* Website Details */}
-            <div>
-              <Label className="text-gray-300">כותרת האתר *</Label>
-              <Input
-                value={formData.websiteTitle}
-                onChange={(e) => setFormData(prev => ({ ...prev, websiteTitle: e.target.value }))}
-                className="bg-gray-700 border-gray-600 text-white"
-                placeholder="השם של האתר שלך"
-              />
-              {errors.websiteTitle && <p className="text-red-400 text-sm mt-1">{errors.websiteTitle}</p>}
-            </div>
-
-            <div>
-              <Label className="text-gray-300">תיאור האתר</Label>
-              <Textarea
-                value={formData.websiteDescription}
-                onChange={(e) => setFormData(prev => ({ ...prev, websiteDescription: e.target.value }))}
-                className="bg-gray-700 border-gray-600 text-white"
-                placeholder="תיאור קצר של האתר שלך..."
-                rows={3}
-              />
-            </div>
-
-            {/* Additional Details */}
-            <div>
-              <Label className="text-gray-300">חברה (אופציונלי)</Label>
-              <Input
-                value={formData.company}
-                onChange={(e) => setFormData(prev => ({ ...prev, company: e.target.value }))}
-                className="bg-gray-700 border-gray-600 text-white"
-                placeholder="שם החברה"
-              />
-            </div>
-
-            <div>
-              <Label className="text-gray-300">כתובת</Label>
-              <Input
-                value={formData.address}
-                onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
-                className="bg-gray-700 border-gray-600 text-white"
-                placeholder="רחוב, מספר בית"
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="space-y-4">
+              <h3 className="text-white font-semibold flex items-center gap-2">
+                <Globe className="w-5 h-5" />
+                פרטי האתר
+              </h3>
+              
               <div>
-                <Label className="text-gray-300">עיר</Label>
+                <Label htmlFor="websiteTitle" className="text-gray-300">כותרת האתר *</Label>
                 <Input
-                  value={formData.city}
-                  onChange={(e) => setFormData(prev => ({ ...prev, city: e.target.value }))}
+                  id="websiteTitle"
+                  type="text"
+                  value={formData.websiteTitle}
+                  onChange={(e) => handleInputChange('websiteTitle', e.target.value)}
+                  required
                   className="bg-gray-700 border-gray-600 text-white"
-                  placeholder="תל אביב"
+                  placeholder="שם האתר שלי"
                 />
               </div>
+              
               <div>
-                <Label className="text-gray-300">מדינה</Label>
-                <Input
-                  value={formData.country}
-                  onChange={(e) => setFormData(prev => ({ ...prev, country: e.target.value }))}
+                <Label htmlFor="websiteDescription" className="text-gray-300">תיאור האתר</Label>
+                <Textarea
+                  id="websiteDescription"
+                  value={formData.websiteDescription}
+                  onChange={(e) => handleInputChange('websiteDescription', e.target.value)}
                   className="bg-gray-700 border-gray-600 text-white"
-                />
-              </div>
-              <div>
-                <Label className="text-gray-300">מיקוד</Label>
-                <Input
-                  value={formData.zipCode}
-                  onChange={(e) => setFormData(prev => ({ ...prev, zipCode: e.target.value }))}
-                  className="bg-gray-700 border-gray-600 text-white"
-                  placeholder="12345"
+                  placeholder="תיאור קצר על האתר..."
+                  rows={3}
                 />
               </div>
             </div>
 
-            <div className="flex justify-center pt-4">
+            {/* Contact Info */}
+            <div className="space-y-4">
+              <h3 className="text-white font-semibold flex items-center gap-2">
+                <Phone className="w-5 h-5" />
+                פרטי יצירת קשר
+              </h3>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="phone" className="text-gray-300">טלפון</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => handleInputChange('phone', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                    placeholder="05X-XXX-XXXX"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="company" className="text-gray-300">חברה</Label>
+                  <Input
+                    id="company"
+                    type="text"
+                    value={formData.company}
+                    onChange={(e) => handleInputChange('company', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                    placeholder="שם החברה"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="address" className="text-gray-300">כתובת</Label>
+                <Input
+                  id="address"
+                  type="text"
+                  value={formData.address}
+                  onChange={(e) => handleInputChange('address', e.target.value)}
+                  className="bg-gray-700 border-gray-600 text-white"
+                  placeholder="רחוב ומספר בית"
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <Label htmlFor="city" className="text-gray-300">עיר</Label>
+                  <Input
+                    id="city"
+                    type="text"
+                    value={formData.city}
+                    onChange={(e) => handleInputChange('city', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                    placeholder="תל אביב"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="country" className="text-gray-300">מדינה</Label>
+                  <Input
+                    id="country"
+                    type="text"
+                    value={formData.country}
+                    onChange={(e) => handleInputChange('country', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="zipCode" className="text-gray-300">מיקוד</Label>
+                  <Input
+                    id="zipCode"
+                    type="text"
+                    value={formData.zipCode}
+                    onChange={(e) => handleInputChange('zipCode', e.target.value)}
+                    className="bg-gray-700 border-gray-600 text-white"
+                    placeholder="12345"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-4 pt-6">
               <Button
                 type="submit"
-                className="bg-green-600 hover:bg-green-700 px-8 py-3"
-                size="lg"
-                disabled={isLoading}
+                disabled={isLoading || !isAuthenticated}
+                className="flex-1 bg-green-600 hover:bg-green-700 text-white"
               >
                 {isLoading ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    יוצר אתר וורדפרס...
-                  </div>
+                  <>
+                    <CreditCard className="w-4 h-4 ml-2 animate-spin" />
+                    יוצר אתר WordPress.com...
+                  </>
+                ) : !isAuthenticated ? (
+                  <>
+                    <AlertCircle className="w-4 h-4 ml-2" />
+                    נדרש אימות WordPress.com
+                  </>
                 ) : (
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5" />
-                    צור אתר וורדפרס אמיתי
-                  </div>
+                  <>
+                    <CheckCircle className="w-4 h-4 ml-2" />
+                    צור אתר WordPress.com אמיתי
+                  </>
                 )}
               </Button>
+              
+              <Button
+                type="button"
+                onClick={onCancel}
+                disabled={isLoading}
+                variant="outline"
+                className="border-gray-600 text-white hover:bg-gray-700"
+              >
+                ביטול
+              </Button>
             </div>
+
+            {!isAuthenticated && (
+              <div className="text-center">
+                <p className="text-gray-400 text-sm">
+                  💡 יש להתחבר ל-WordPress.com כדי ליצור אתר אמיתי
+                </p>
+              </div>
+            )}
           </form>
         </CardContent>
       </Card>

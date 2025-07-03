@@ -41,7 +41,7 @@ export class RealWordPressService {
   private static readonly WP_REDIRECT_URI = 'https://leadgrid.design/auth/wordpress/callback';
   private static readonly WP_API_BASE = 'https://public-api.wordpress.com';
   
-  // Create REAL WordPress.com site
+  // Create REAL WordPress.com site - FORCE REAL CREATION
   static async createRealWordPressSite(
     domain: string, 
     userData: WordPressUserData, 
@@ -50,22 +50,32 @@ export class RealWordPressService {
     try {
       console.log('🚀 Creating REAL WordPress.com site:', domain);
       
-      // Step 1: Get OAuth token from WordPress.com
+      // Step 1: FORCE authentication check
       const authToken = await this.getWordPressAuthToken();
       if (!authToken) {
-        console.warn('WordPress.com authentication required, using demo fallback');
-        return this.createDemoFallback(domain, userData, websiteData);
+        console.error('❌ WordPress.com authentication REQUIRED - redirecting to auth');
+        
+        // Instead of falling back to demo, FORCE authentication
+        this.initiateWordPressAuth();
+        
+        throw new Error('WordPress.com authentication required. Please authenticate first.');
       }
+      
+      console.log('✅ WordPress.com authentication confirmed');
       
       // Step 2: Create new WordPress.com site
       const siteResult = await this.createWordPressSite(authToken, userData, domain);
       if (!siteResult.success) {
-        console.warn('WordPress.com site creation failed, using demo fallback:', siteResult.error);
-        return this.createDemoFallback(domain, userData, websiteData);
+        console.error('❌ WordPress.com site creation failed:', siteResult.error);
+        throw new Error(`WordPress.com site creation failed: ${siteResult.error}`);
       }
+      
+      console.log('✅ WordPress.com site created successfully');
       
       // Step 3: Configure the site with user's content
       await this.configureWordPressSite(authToken, siteResult.siteId, websiteData);
+      
+      console.log('✅ WordPress.com site configured with user content');
       
       return {
         success: true,
@@ -74,7 +84,7 @@ export class RealWordPressService {
         loginUrl: `${siteResult.siteUrl}/wp-login.php`,
         username: userData.username,
         password: userData.password,
-        isDemo: false,
+        isDemo: false, // This is a REAL WordPress.com site
         installationDetails: {
           wpVersion: '6.4.2',
           theme: 'twentytwentyfour',
@@ -84,9 +94,10 @@ export class RealWordPressService {
       };
       
     } catch (error) {
-      console.error('Real WordPress.com creation failed:', error);
-      console.log('🎭 Falling back to demo site creation...');
-      return this.createDemoFallback(domain, userData, websiteData);
+      console.error('❌ Real WordPress.com creation failed:', error);
+      
+      // NO FALLBACK TO DEMO - throw the error
+      throw new Error(`Failed to create WordPress.com site: ${error.message}`);
     }
   }
   
@@ -105,6 +116,8 @@ export class RealWordPressService {
   // Get access token from authorization code
   static async exchangeCodeForToken(authCode: string): Promise<string | null> {
     try {
+      console.log('🔄 Exchanging authorization code for access token...');
+      
       const response = await fetch(`${this.WP_API_BASE}/oauth2/token`, {
         method: 'POST',
         headers: {
@@ -120,15 +133,27 @@ export class RealWordPressService {
       });
       
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Token exchange failed:', errorText);
         throw new Error(`Token exchange failed: ${response.statusText}`);
       }
       
       const data = await response.json();
       const accessToken = data.access_token;
       
+      if (!accessToken) {
+        throw new Error('No access token received');
+      }
+      
       // Store token for later use
       localStorage.setItem('wp_access_token', accessToken);
-      console.log('✅ WordPress.com access token obtained');
+      console.log('✅ WordPress.com access token obtained and stored');
+      
+      // Also store the token expiry if provided
+      if (data.expires_in) {
+        const expiryTime = Date.now() + (data.expires_in * 1000);
+        localStorage.setItem('wp_token_expiry', expiryTime.toString());
+      }
       
       return accessToken;
       
@@ -142,15 +167,30 @@ export class RealWordPressService {
   private static async getWordPressAuthToken(): Promise<string | null> {
     // Check if we have a stored token
     const storedToken = localStorage.getItem('wp_access_token');
+    const tokenExpiry = localStorage.getItem('wp_token_expiry');
+    
     if (storedToken) {
+      // Check if token is expired
+      if (tokenExpiry && Date.now() > parseInt(tokenExpiry)) {
+        console.log('🔄 WordPress.com token expired, removing...');
+        localStorage.removeItem('wp_access_token');
+        localStorage.removeItem('wp_token_expiry');
+        return null;
+      }
+      
       // Verify token is still valid
       const isValid = await this.verifyToken(storedToken);
       if (isValid) {
+        console.log('✅ WordPress.com token is valid');
         return storedToken;
+      } else {
+        console.log('❌ WordPress.com token is invalid, removing...');
+        localStorage.removeItem('wp_access_token');
+        localStorage.removeItem('wp_token_expiry');
       }
     }
     
-    // Need to authenticate - show auth modal or redirect
+    // Need to authenticate
     console.log('🔐 WordPress.com authentication required');
     return null;
   }
@@ -158,14 +198,20 @@ export class RealWordPressService {
   // Verify if token is still valid
   private static async verifyToken(token: string): Promise<boolean> {
     try {
+      console.log('🔍 Verifying WordPress.com token...');
+      
       const response = await fetch(`${this.WP_API_BASE}/rest/v1.1/me`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
       
-      return response.ok;
+      const isValid = response.ok;
+      console.log(`🔍 Token verification result: ${isValid ? 'VALID' : 'INVALID'}`);
+      
+      return isValid;
     } catch (error) {
+      console.error('Token verification failed:', error);
       return false;
     }
   }
@@ -177,7 +223,7 @@ export class RealWordPressService {
     domain: string
   ): Promise<{success: boolean, siteUrl?: string, siteId?: string, error?: string}> {
     try {
-      console.log('🏗️ Creating WordPress.com site...');
+      console.log('🏗️ Creating WordPress.com site with domain:', domain);
       
       const response = await fetch(`${this.WP_API_BASE}/rest/v1.1/sites/new`, {
         method: 'POST',
@@ -186,7 +232,7 @@ export class RealWordPressService {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          blog_name: domain,
+          blog_name: domain.replace(/[^a-z0-9]/gi, '').toLowerCase(),
           blog_title: userData.websiteTitle,
           lang_id: 'he',
           public: 1,
@@ -196,11 +242,12 @@ export class RealWordPressService {
       
       if (!response.ok) {
         const errorData = await response.json();
+        console.error('WordPress.com API error:', errorData);
         throw new Error(`WordPress.com API error: ${errorData.message || response.statusText}`);
       }
       
       const result = await response.json();
-      console.log('✅ WordPress.com site created successfully');
+      console.log('✅ WordPress.com site created:', result);
       
       return {
         success: true,
@@ -242,6 +289,18 @@ export class RealWordPressService {
         });
       }
       
+      // Create contact page if exists
+      if (websiteData?.content?.contact) {
+        await this.createWordPressPage(token, siteId, {
+          title: 'צור קשר',
+          content: `<p>ניתן ליצור איתנו קשר:</p>
+            <p>טלפון: ${websiteData.content.contact.phone || 'לא צוין'}</p>
+            <p>אימייל: ${websiteData.content.contact.email || 'לא צוין'}</p>`,
+          status: 'publish',
+          type: 'page'
+        });
+      }
+      
       console.log('✅ WordPress.com site configuration completed');
       
     } catch (error) {
@@ -262,7 +321,11 @@ export class RealWordPressService {
       });
       
       if (response.ok) {
-        console.log(`✅ Created WordPress page: ${pageData.title}`);
+        const result = await response.json();
+        console.log(`✅ Created WordPress page: ${pageData.title}`, result);
+      } else {
+        const error = await response.json();
+        console.warn(`Failed to create WordPress page: ${pageData.title}`, error);
       }
     } catch (error) {
       console.warn(`Failed to create WordPress page: ${pageData.title}`, error);
@@ -289,49 +352,9 @@ export class RealWordPressService {
     return content || '<p>תוכן האתר</p>';
   }
   
-  // Create demo WordPress site as fallback
-  private static async createDemoFallback(
-    domain: string, 
-    userData: WordPressUserData, 
-    websiteData: any
-  ): Promise<WordPressCreationResult> {
-    console.log('🎭 Creating demo WordPress site as fallback...');
-    
-    const cleanDomain = domain.replace(/[^a-z0-9]/gi, '').toLowerCase();
-    const timestamp = Date.now();
-    
-    // Create demo URLs that work within the current app
-    const currentUrl = window.location.origin;
-    const demoSiteUrl = `${currentUrl}/generated-landing-page?demo=${cleanDomain}&user=${userData.username}&t=${timestamp}`;
-    const adminUrl = `${currentUrl}/wordpress-admin?demo=${cleanDomain}&user=${userData.username}`;
-    const loginUrl = `${currentUrl}/wordpress-login?demo=${cleanDomain}&user=${userData.username}`;
-    
-    // Simulate WordPress installation process
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Save demo content for the demo site to use
-    const demoContent = {
-      userData,
-      websiteData,
-      timestamp
-    };
-    
-    localStorage.setItem(`demo_content_${userData.username}`, JSON.stringify(demoContent));
-    
-    return {
-      success: true,
-      siteUrl: demoSiteUrl,
-      adminUrl,
-      loginUrl,
-      username: userData.username,
-      password: userData.password,
-      isDemo: true,
-      installationDetails: {
-        wpVersion: '6.4.2 (Demo)',
-        theme: 'leadgrid-demo',
-        plugins: ['demo-plugins'],
-        siteId: `demo_${timestamp}`
-      }
-    };
+  // Check if user is authenticated
+  static async isAuthenticated(): Promise<boolean> {
+    const token = await this.getWordPressAuthToken();
+    return !!token;
   }
 }
