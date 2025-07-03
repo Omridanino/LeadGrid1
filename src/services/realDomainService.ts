@@ -1,3 +1,4 @@
+
 // Real Domain and Hosting Service Integration
 import { loadStripe } from '@stripe/stripe-js';
 
@@ -25,6 +26,7 @@ export interface RealHostingPlan {
 export interface PurchaseRequest {
   domain: string;
   hostingPlan: RealHostingPlan;
+  orderId: string;
   customerInfo: {
     name: string;
     email: string;
@@ -312,7 +314,7 @@ export class RealDomainService {
     try {
       console.log('Processing real payment:', { amount, method, orderId });
       
-      let result = { sessionId: '', status: 'pending', paymentUrl: '', paymentData: {} };
+      let result = { sessionId: '', status: 'pending', paymentUrl: undefined as string | undefined, paymentData: {} };
       
       switch (method) {
         case 'bit':
@@ -349,6 +351,7 @@ export class RealDomainService {
           result = {
             sessionId: `bank_${orderId}`,
             status: 'awaiting_transfer',
+            paymentUrl: undefined,
             paymentData: {
               bankAccounts: BANK_ACCOUNTS,
               transferReference: orderId,
@@ -362,6 +365,7 @@ export class RealDomainService {
           result = {
             sessionId: `cc_${orderId}`,
             status: 'manual_processing',
+            paymentUrl: undefined,
             paymentData: {
               contactInfo: COMPANY_DETAILS,
               message: 'נציג יצור קשר תוך 30 דקות לעיבוד התשלום'
@@ -398,7 +402,7 @@ export class RealDomainService {
       // Simulate domain registration and hosting setup
       await new Promise(resolve => setTimeout(resolve, 3000));
       
-      const orderId = `ORDER_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      const orderId = request.orderId || `ORDER_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       
       // Determine payment status message
       let paymentStatus = 'הושלם';
