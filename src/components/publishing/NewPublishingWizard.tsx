@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -22,7 +21,8 @@ import {
   Search,
   Server,
   Lock,
-  Info
+  Info,
+  AlertTriangle
 } from 'lucide-react';
 import { TemplateData } from '@/types/template';
 import { PublishingProgress } from './PublishingProgress';
@@ -131,8 +131,8 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
         <div className="p-6 border-b border-gray-800 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-white text-2xl font-bold">הדגמה - פרסום האתר שלך</h2>
-              <p className="text-gray-400 text-sm mt-1">זו הדגמה של תהליך הפרסום - לפרסום אמיתי צור איתנו קשר</p>
+              <h2 className="text-white text-2xl font-bold">🚨 הדגמה - פרסום האתר שלך</h2>
+              <p className="text-red-400 text-sm mt-1 font-medium">⚠️ זו הדגמה בלבד - הקישורים לא עובדים!</p>
             </div>
             <Button
               onClick={onClose}
@@ -142,6 +142,19 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
               <X className="w-4 h-4" />
             </Button>
           </div>
+
+          {/* Warning Banner */}
+          <Card className="bg-red-900/30 border-red-700/50 mt-4">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <AlertTriangle className="w-6 h-6 text-red-400 flex-shrink-0" />
+                <div className="text-red-100 text-sm">
+                  <p className="font-semibold mb-1">הדגמה בלבד!</p>
+                  <p>הכתובות שיוצגו הן לדוגמה ולא יובילו לאתר אמיתי. לפרסום אמיתי צור איתנו קשר.</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Progress Steps */}
           <div className="mt-6">
@@ -328,16 +341,19 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                     <h3 className="text-white text-2xl font-bold mb-4">🎉 ההדגמה הושלמה!</h3>
                     <p className="text-gray-400 mb-6">כך ייראה האתר שלך אחרי פרסום אמיתי</p>
                     
-                    <Card className="bg-orange-900/30 border-orange-700/50 max-w-lg mx-auto mb-6">
+                    {/* Big Warning */}
+                    <Card className="bg-red-900/40 border-red-600/60 max-w-lg mx-auto mb-6">
                       <CardContent className="p-6">
                         <div className="flex items-center gap-3 mb-3">
-                          <AlertCircle className="w-5 h-5 text-orange-400" />
-                          <span className="text-orange-200 font-medium">שים לב</span>
+                          <AlertTriangle className="w-6 h-6 text-red-400" />
+                          <span className="text-red-200 font-bold text-lg">חשוב לדעת!</span>
                         </div>
-                        <p className="text-orange-100 text-sm">
-                          הכתובת למטה היא לדוגמה בלבד ולא תעבוד באמת. 
-                          לפרסום אמיתי של האתר שלך, צור איתנו קשר.
-                        </p>
+                        <div className="text-red-100 text-sm space-y-2">
+                          <p className="font-semibold">הכתובת למטה היא דוגמה בלבד!</p>
+                          <p>• הקישור לא יעבוד כשתלחץ עליו</p>
+                          <p>• זו רק הדגמה של תהליך הפרסום</p>
+                          <p>• לפרסום אמיתי של האתר שלך - צור איתנו קשר</p>
+                        </div>
                       </CardContent>
                     </Card>
 
@@ -347,12 +363,15 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                           <div className="text-right">
                             <div className="text-white font-semibold mb-1">דוגמה לכתובת:</div>
                             <div className="text-blue-400 font-mono text-sm">{publishedUrl}</div>
-                            <div className="text-gray-500 text-xs mt-1">(כתובת לדוגמה - לא עובדת)</div>
+                            <div className="text-red-400 text-xs mt-1 font-medium">⚠️ כתובת לדוגמה - לא עובדת!</div>
                           </div>
                           <div className="flex gap-2">
                             <Button
                               size="sm"
-                              onClick={() => navigator.clipboard.writeText(publishedUrl)}
+                              onClick={() => {
+                                navigator.clipboard.writeText(publishedUrl);
+                                alert('הכתובת הועתקה (אבל היא לא עובדת - זו רק דוגמה!)');
+                              }}
                               className="bg-gray-600 hover:bg-gray-700"
                             >
                               <Copy className="w-4 h-4 ml-1" />
