@@ -133,7 +133,8 @@ const ButtonStyleEditor = ({ buttons, onButtonsChange }: ButtonStyleEditorProps)
         
         <Button
           onClick={addButton}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+          variant="default"
+          className="w-full"
           size="sm"
         >
           <Star className="w-4 h-4 mr-2" />

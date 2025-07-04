@@ -57,7 +57,8 @@ const EditPopup = ({ title, triggerText, icon: Icon = Edit, children, onSave }: 
           <div className="flex gap-3 pt-4 border-t border-gray-700">
             <Button 
               onClick={handleSave}
-              className="flex-1 bg-purple-600 hover:bg-purple-700 text-white rounded-xl"
+              variant="secondary"
+              className="flex-1 rounded-xl"
             >
               <Save className="w-4 h-4 ml-2" />
               שמור שינויים
