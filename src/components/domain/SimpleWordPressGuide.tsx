@@ -267,13 +267,13 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
         </div>
 
       {/* Progress Steps */}
-      <div className="flex justify-center mb-8">
-        <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-slate-700 shadow-2xl min-w-fit max-w-6xl">
-          <div className="flex items-center justify-between min-w-max">
+      <div className="flex justify-center mb-8 px-4">
+        <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-slate-700 shadow-2xl w-full max-w-6xl overflow-x-auto">
+          <div className="flex items-center justify-center md:justify-between min-w-max mx-auto gap-2 md:gap-0">
             {steps.map((step, index) => (
               <div key={step.number} className="flex items-center">
                 <div className={`
-                  relative w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-500 hover:scale-110
+                  relative w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-xs md:text-sm font-bold transition-all duration-500 hover:scale-110
                   ${currentStep >= step.number 
                     ? 'bg-gradient-to-br from-emerald-400 via-cyan-400 to-blue-500 text-white shadow-xl shadow-cyan-500/40' 
                     : currentStep === step.number 
@@ -282,15 +282,15 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
                   }
                 `}>
                   {currentStep > step.number ? (
-                    <CheckCircle className="w-6 h-6" />
+                    <CheckCircle className="w-4 h-4 md:w-6 md:h-6" />
                   ) : (
-                    <span className="font-bold text-lg">{step.number}</span>
+                    <span className="font-bold text-sm md:text-lg">{step.number}</span>
                   )}
                   
                 </div>
                 
                 {index < steps.length - 1 && (
-                  <div className={`w-16 h-2 mx-3 rounded-full transition-all duration-500 ${
+                  <div className={`w-8 md:w-16 h-2 mx-1 md:mx-3 rounded-full transition-all duration-500 ${
                     currentStep > step.number 
                       ? 'bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 shadow-lg shadow-cyan-500/30' 
                       : 'bg-gradient-to-r from-slate-700 to-slate-600'
@@ -305,7 +305,7 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
       {/* Current Step Card */}
       <Card className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border-slate-700/50 shadow-2xl backdrop-blur-sm animate-fade-in">
         <CardHeader className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-b border-slate-700/50">
-          <div className="flex items-center gap-6">
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6 text-center md:text-right">
             <div className="bg-gradient-to-br from-blue-500 via-purple-500 to-cyan-500 p-4 rounded-2xl shadow-xl shadow-blue-500/30 animate-fade-in">
               {steps[currentStep - 1].icon}
             </div>
@@ -497,21 +497,21 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
           )}
 
           {/* Navigation */}
-          <div className="flex justify-between items-center pt-6">
+          <div className="flex flex-col md:flex-row justify-center md:justify-between items-center gap-4 pt-6">
             <Button
               onClick={onBack}
               variant="outline"
-              className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white"
+              className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white w-full md:w-auto order-3 md:order-1"
             >
               חזור אחורה
             </Button>
             
-            <div className="flex gap-3">
+            <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto order-1 md:order-2">
               {currentStep > 1 && (
                 <Button
                   onClick={() => setCurrentStep(currentStep - 1)}
                   variant="outline"
-                  className="border-blue-500/50 text-blue-400 hover:bg-blue-500/10 hover:border-blue-500"
+                  className="border-blue-500/50 text-blue-400 hover:bg-blue-500/10 hover:border-blue-500 w-full md:w-auto"
                 >
                   שלב קודם
                 </Button>
@@ -520,7 +520,7 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
               {currentStep < steps.length ? (
                 <Button
                   onClick={() => setCurrentStep(currentStep + 1)}
-                  className="bg-blue-500 hover:bg-blue-600 text-white shadow-lg shadow-blue-500/30"
+                  className="bg-blue-500 hover:bg-blue-600 text-white shadow-lg shadow-blue-500/30 w-full md:w-auto"
                 >
                   שלב הבא
                   <ArrowRight className="w-4 h-4 ml-2" />
@@ -533,7 +533,7 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
                       description: "דף הנחיתה שלך מוכן ופעיל באתר WordPress",
                     });
                   }}
-                  className="bg-green-500 hover:bg-green-600 text-white shadow-lg shadow-green-500/30"
+                  className="bg-green-500 hover:bg-green-600 text-white shadow-lg shadow-green-500/30 w-full md:w-auto"
                 >
                   <CheckCircle className="w-4 h-4 mr-2" />
                   סיימתי בהצלחה!
