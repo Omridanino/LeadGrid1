@@ -92,6 +92,14 @@ const TemplateEditor = ({ template, onTemplateChange, onClose, onPublishSuccess 
   };
 
   const handleSaveAndPublish = () => {
+    if (!isSaved) {
+      toast({
+        title: "⚠️ יש לשמור קודם!",
+        description: "אנא שמור את הדף לפני הפרסום",
+        variant: "destructive"
+      });
+      return;
+    }
     setShowLaunchSection(true);
   };
 
@@ -231,11 +239,16 @@ const TemplateEditor = ({ template, onTemplateChange, onClose, onPublishSuccess 
               </Button>
               <Button 
                 size="sm" 
-                className="bg-green-600 hover:bg-green-700 text-white flex-1"
+                className={`text-white flex-1 ${
+                  isSaved 
+                    ? 'bg-green-600 hover:bg-green-700' 
+                    : 'bg-gray-600 hover:bg-gray-700 cursor-not-allowed opacity-50'
+                }`}
                 onClick={handleSaveAndPublish}
+                disabled={!isSaved}
               >
                 <Rocket className="w-4 h-4 ml-1" />
-                פרסם עם LEADGRID
+                {isSaved ? 'פרסם עם LEADGRID' : 'שמור קודם כדי לפרסם'}
               </Button>
             </div>
           </div>
@@ -315,14 +328,19 @@ const TemplateEditor = ({ template, onTemplateChange, onClose, onPublishSuccess 
               <Badge variant="secondary" className="text-xs">
                 {editedTemplate.category}
               </Badge>
-              <Button
-                size="sm"
-                className="bg-green-600 hover:bg-green-700 text-white"
-                onClick={handleSaveAndPublish}
-              >
-                <Rocket className="w-4 h-4 ml-1" />
-                פרסם עם LEADGRID
-              </Button>
+               <Button 
+                 size="sm" 
+                 className={`${
+                   isSaved 
+                     ? 'bg-green-600 hover:bg-green-700' 
+                     : 'bg-gray-600 hover:bg-gray-700 cursor-not-allowed opacity-50'
+                 } text-white`}
+                 onClick={handleSaveAndPublish}
+                 disabled={!isSaved}
+               >
+                 <Rocket className="w-4 h-4 mr-2" />
+                 {isSaved ? 'פרסם עם LEADGRID' : 'שמור קודם כדי לפרסם'}
+               </Button>
             </div>
           </div>
           

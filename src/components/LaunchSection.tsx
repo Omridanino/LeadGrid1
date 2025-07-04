@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Rocket, 
   CheckCircle,
@@ -22,6 +23,7 @@ interface LaunchSectionProps {
 
 export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectionProps) => {
   const [showWordPressForm, setShowWordPressForm] = useState(false);
+  const { toast } = useToast();
 
   // Save the template data to localStorage for later use
   const saveTemplateData = () => {
@@ -166,21 +168,48 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
               
               <Button 
                 onClick={() => {
-                  saveTemplateData();
-                  // Generate and download HTML file using new generator
-                  const { generatePageHTML } = require('@/utils/pageGenerator');
-                  const savedData = JSON.parse(localStorage.getItem('generatedPageData') || '{}');
-                  const htmlContent = generatePageHTML(savedData.template || template);
-                  
-                  const blob = new Blob([htmlContent], { type: 'text/html' });
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = `${template.hero.title.replace(/\s+/g, '-')}-landing-page.html`;
-                  document.body.appendChild(a);
-                  a.click();
-                  document.body.removeChild(a);
-                  URL.revokeObjectURL(url);
+                  try {
+                    // Get the saved HTML from localStorage (if exists) or generate new one
+                    let htmlContent = localStorage.getItem('generatedHTML');
+                    
+                    if (!htmlContent) {
+                      // Fallback: generate from template if no saved HTML
+                      const { generatePageHTML } = require('@/utils/pageGenerator');
+                      htmlContent = generatePageHTML(template);
+                    }
+                    
+                    if (!htmlContent) {
+                      toast({
+                        title: "❌ שגיאה",
+                        description: "לא ניתן היה ליצור את קובץ ה-HTML. אנא נסה שוב.",
+                        variant: "destructive"
+                      });
+                      return;
+                    }
+                    
+                    const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${template.hero.title.replace(/\s+/g, '-')}-landing-page.html`;
+                    a.style.display = 'none';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    toast({
+                      title: "📁 קובץ HTML הורד!",
+                      description: "הקובץ הורד בהצלחה - זהו דף הנחיתה המדויק שיצרת",
+                    });
+                  } catch (error) {
+                    console.error('Error downloading HTML:', error);
+                    toast({
+                      title: "❌ שגיאה בהורדה",
+                      description: "אירעה שגיאה בהורדת הקובץ. אנא נסה שוב.",
+                      variant: "destructive"
+                    });
+                  }
                 }}
                 className="w-full bg-green-500 hover:bg-green-600 text-white"
               >
