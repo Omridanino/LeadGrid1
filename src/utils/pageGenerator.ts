@@ -653,56 +653,43 @@ export const generatePageHTML = (templateData: any) => {
                             ${Array(5).fill(0).map((_, i) => `<span style="color: #fbbf24; font-size: 1.5rem;">★</span>`).join('')}
                         </div>
                         
-                        <!-- Featured testimonial content -->
-                        <p class="text-xl md:text-2xl text-blue-100/90 leading-relaxed italic max-w-3xl mx-auto">
-                            "${template.testimonials.testimonials[0]?.content || 'שירות מעולה ומקצועי'}"
-                        </p>
-                        
-                        <!-- Author info -->
-                        <div class="space-y-2">
-                            <!-- Avatar -->
-                            <div class="w-16 h-16 mx-auto bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg">
-                                ${template.testimonials.testimonials[0]?.name?.charAt(0) || 'א'}
-                            </div>
-                            
-                            <div>
-                                <h4 class="text-xl font-bold text-white">
-                                    ${template.testimonials.testimonials[0]?.name || 'לקוח מרוצה'}
-                                </h4>
-                                <p class="text-blue-200/70">
-                                    ${template.testimonials.testimonials[0]?.role || 'לקוח'}
-                                </p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Other testimonials grid -->
-            ${template.testimonials.testimonials.length > 1 ? `
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                    ${template.testimonials.testimonials.slice(1).map((testimonial: any) => `
-                        <div class="relative group">
-                            <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-white/2 backdrop-blur-lg rounded-2xl shadow-xl border border-white/10"></div>
-                            <div class="relative z-10 p-6 space-y-4">
-                                <div class="flex mb-3">
-                                    ${Array(testimonial.rating).fill(0).map(() => '<span style="color: #fbbf24; font-size: 1rem;">★</span>').join('')}
+            <!-- Testimonials grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                ${template.testimonials.testimonials.map((testimonial: any) => `
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20"></div>
+                        <div class="relative z-10 p-6 space-y-4">
+                            <!-- Quote icon -->
+                            <div class="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center mb-4">
+                                <span class="text-white text-sm">"</span>
+                            </div>
+                            
+                            <!-- Rating -->
+                            <div class="flex mb-3">
+                                ${Array(testimonial.rating || 5).fill(0).map(() => '<span style="color: #fbbf24; font-size: 1rem;">★</span>').join('')}
+                            </div>
+                            
+                            <!-- Content -->
+                            <p class="text-blue-100/90 italic leading-relaxed">"${testimonial.content}"</p>
+                            
+                            <!-- Author info -->
+                            <div class="flex items-center gap-3 pt-4">
+                                <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
+                                    ${testimonial.name?.charAt(0) || 'א'}
                                 </div>
-                                <p class="text-blue-100/80 italic text-sm leading-relaxed">"${testimonial.content}"</p>
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                                        ${testimonial.name.charAt(0)}
-                                    </div>
-                                    <div>
-                                        <p class="text-white font-semibold text-sm">${testimonial.name}</p>
-                                        <p class="text-blue-200/60 text-xs">${testimonial.role}</p>
-                                    </div>
+                                <div>
+                                    <p class="text-white font-semibold">${testimonial.name}</p>
+                                    <p class="text-blue-200/70 text-sm">${testimonial.role}</p>
                                 </div>
                             </div>
                         </div>
-                    `).join('')}
-                </div>
-            ` : ''}
+                    </div>
+                `).join('')}
+            </div>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.primaryColor};">
