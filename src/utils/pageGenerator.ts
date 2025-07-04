@@ -3,16 +3,7 @@ export const generatePageHTML = (templateData: any) => {
   const template = templateData;
   const isPremium = template.category.includes('פרימיום');
   
-  // Generate styling for each section based on template styles
-  const getSectionStyle = (bgColor: string, bgImage?: string) => {
-    let style = `background-color: ${bgColor};`;
-    if (bgImage) {
-      style += `background-image: url(${bgImage}); background-size: cover; background-position: center; background-repeat: no-repeat;`;
-    }
-    return style;
-  };
-
-  // Premium text colors for content
+  // Premium text colors for content (exact match to TemplatePreview)
   const getPremiumTextColor = (templateId: string) => {
     switch (templateId) {
       case 'tech-consultant-pro':
@@ -32,53 +23,62 @@ export const generatePageHTML = (templateData: any) => {
     }
   };
 
-  // Premium section backgrounds
+  // Generate styling for each section based on template styles
+  const getSectionStyle = (bgColor: string, bgImage?: string) => {
+    let style = `background-color: ${bgColor};`;
+    if (bgImage) {
+      style += `background-image: url(${bgImage}); background-size: cover; background-position: center; background-repeat: no-repeat;`;
+    }
+    return style;
+  };
+
+  // Premium section backgrounds (exact match to PremiumSection components)
   const getPremiumSectionBackground = (templateId: string, sectionType: string) => {
     switch (templateId) {
       case 'tech-consultant-pro':
-        return sectionType === 'hero' ? 'background: linear-gradient(135deg, #0f172a 0%, #374151 50%, #000000 100%);' :
-               sectionType === 'features' ? 'background: linear-gradient(135deg, #1f2937 0%, #374151 100%);' :
-               sectionType === 'pricing' ? 'background: linear-gradient(135deg, #374151 0%, #1f2937 100%);' :
-               sectionType === 'testimonials' ? 'background: linear-gradient(135deg, #1f2937 0%, #000000 100%);' :
-               'background: linear-gradient(135deg, #0f172a 0%, #1f2937 100%);';
+        return sectionType === 'hero' ? 'background: linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(55, 65, 81) 50%, rgb(0, 0, 0) 100%);' :
+               sectionType === 'features' ? 'background: linear-gradient(to bottom, rgb(30, 41, 59) 0%, rgb(55, 65, 81) 100%);' :
+               sectionType === 'pricing' ? 'background: linear-gradient(to bottom, rgb(55, 65, 81) 0%, rgb(30, 41, 59) 100%);' :
+               sectionType === 'testimonials' ? 'background: linear-gradient(to bottom, rgb(30, 41, 59) 0%, rgb(0, 0, 0) 100%);' :
+               'background: linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(30, 41, 59) 100%);';
       
       case 'neon-academy-pro':
-        return sectionType === 'hero' ? 'background: linear-gradient(135deg, #000000 0%, #7c3aed 50%, #000000 100%);' :
-               sectionType === 'features' ? 'background: linear-gradient(135deg, #000000 0%, #581c87 100%);' :
-               sectionType === 'pricing' ? 'background: linear-gradient(135deg, #581c87 0%, #000000 100%);' :
-               sectionType === 'testimonials' ? 'background: linear-gradient(135deg, #000000 0%, #581c87 100%);' :
-               'background: linear-gradient(135deg, #7c3aed 0%, #000000 100%);';
+        return sectionType === 'hero' ? 'background: linear-gradient(135deg, rgb(0, 0, 0) 0%, rgb(124, 58, 237) 50%, rgb(0, 0, 0) 100%);' :
+               sectionType === 'features' ? 'background: linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(88, 28, 135) 100%);' :
+               sectionType === 'pricing' ? 'background: linear-gradient(to bottom, rgb(88, 28, 135) 0%, rgb(0, 0, 0) 100%);' :
+               sectionType === 'testimonials' ? 'background: linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(88, 28, 135) 100%);' :
+               'background: linear-gradient(135deg, rgb(124, 58, 237) 0%, rgb(0, 0, 0) 100%);';
       
       case 'blockchain-tech-pro':
-        return sectionType === 'hero' ? 'background: linear-gradient(135deg, #1e1b4b 0%, #1e40af 50%, #7c2d12 100%);' :
-               sectionType === 'features' ? 'background: linear-gradient(135deg, #1e1b4b 0%, #1e40af 100%);' :
-               sectionType === 'pricing' ? 'background: linear-gradient(135deg, #1e40af 0%, #1e1b4b 100%);' :
-               sectionType === 'testimonials' ? 'background: linear-gradient(135deg, #1e1b4b 0%, #581c87 100%);' :
-               'background: linear-gradient(135deg, #312e81 0%, #1e40af 100%);';
+        return sectionType === 'hero' ? 'background: linear-gradient(135deg, rgb(30, 27, 75) 0%, rgb(30, 64, 175) 50%, rgb(124, 45, 18) 100%);' :
+               sectionType === 'features' ? 'background: linear-gradient(to bottom, rgb(30, 27, 75) 0%, rgb(30, 64, 175) 100%);' :
+               sectionType === 'pricing' ? 'background: linear-gradient(to bottom, rgb(30, 64, 175) 0%, rgb(30, 27, 75) 100%);' :
+               sectionType === 'testimonials' ? 'background: linear-gradient(to bottom, rgb(30, 27, 75) 0%, rgb(88, 28, 135) 100%);' :
+               'background: linear-gradient(135deg, rgb(49, 46, 129) 0%, rgb(30, 64, 175) 100%);';
       
       case 'creative-3d-pro':
-        return sectionType === 'hero' ? 'background: linear-gradient(135deg, #fed7aa 0%, #fca5a5 50%, #c084fc 100%);' :
-               sectionType === 'features' ? 'background: linear-gradient(135deg, #fed7aa 0%, #fca5a5 100%);' :
-               sectionType === 'pricing' ? 'background: linear-gradient(135deg, #fca5a5 0%, #c084fc 100%);' :
-               sectionType === 'testimonials' ? 'background: linear-gradient(135deg, #c084fc 0%, #fed7aa 100%);' :
-               'background: linear-gradient(135deg, #fdba74 0%, #fb7185 100%);';
+        return sectionType === 'hero' ? 'background: linear-gradient(135deg, rgb(254, 215, 170) 0%, rgb(252, 165, 165) 50%, rgb(192, 132, 252) 100%);' :
+               sectionType === 'features' ? 'background: linear-gradient(to bottom, rgb(254, 215, 170) 0%, rgb(252, 165, 165) 100%);' :
+               sectionType === 'pricing' ? 'background: linear-gradient(to bottom, rgb(252, 165, 165) 0%, rgb(192, 132, 252) 100%);' :
+               sectionType === 'testimonials' ? 'background: linear-gradient(to bottom, rgb(192, 132, 252) 0%, rgb(254, 215, 170) 100%);' :
+               'background: linear-gradient(135deg, rgb(253, 186, 116) 0%, rgb(251, 113, 133) 100%);';
       
       case 'authkit-tech-pro':
-        return sectionType === 'hero' ? 'background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e40af 100%);' :
-               sectionType === 'features' ? 'background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);' :
-               sectionType === 'pricing' ? 'background: linear-gradient(135deg, #1e293b 0%, #1e40af 100%);' :
-               sectionType === 'testimonials' ? 'background: linear-gradient(135deg, #1e40af 0%, #0f172a 100%);' :
-               'background: linear-gradient(135deg, #334155 0%, #1e40af 100%);';
+        return sectionType === 'hero' ? 'background: linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(30, 41, 59) 50%, rgb(30, 64, 175) 100%);' :
+               sectionType === 'features' ? 'background: linear-gradient(to bottom, rgb(15, 23, 42) 0%, rgb(30, 41, 59) 100%);' :
+               sectionType === 'pricing' ? 'background: linear-gradient(to bottom, rgb(30, 41, 59) 0%, rgb(30, 64, 175) 100%);' :
+               sectionType === 'testimonials' ? 'background: linear-gradient(to bottom, rgb(30, 64, 175) 0%, rgb(15, 23, 42) 100%);' :
+               'background: linear-gradient(135deg, rgb(51, 65, 85) 0%, rgb(30, 64, 175) 100%);';
       
       case 'nft-future-pro':
-        return sectionType === 'hero' ? 'background: linear-gradient(135deg, #581c87 0%, #be185d 50%, #1e40af 100%);' :
-               sectionType === 'features' ? 'background: linear-gradient(135deg, #581c87 0%, #be185d 100%);' :
-               sectionType === 'pricing' ? 'background: linear-gradient(135deg, #be185d 0%, #1e40af 100%);' :
-               sectionType === 'testimonials' ? 'background: linear-gradient(135deg, #1e40af 0%, #581c87 100%);' :
-               'background: linear-gradient(135deg, #7c2d12 0%, #be185d 100%);';
+        return sectionType === 'hero' ? 'background: linear-gradient(135deg, rgb(88, 28, 135) 0%, rgb(190, 24, 93) 50%, rgb(30, 64, 175) 100%);' :
+               sectionType === 'features' ? 'background: linear-gradient(to bottom, rgb(88, 28, 135) 0%, rgb(190, 24, 93) 100%);' :
+               sectionType === 'pricing' ? 'background: linear-gradient(to bottom, rgb(190, 24, 93) 0%, rgb(30, 64, 175) 100%);' :
+               sectionType === 'testimonials' ? 'background: linear-gradient(to bottom, rgb(30, 64, 175) 0%, rgb(88, 28, 135) 100%);' :
+               'background: linear-gradient(135deg, rgb(124, 45, 18) 0%, rgb(190, 24, 93) 100%);';
       
       default:
-        return 'background: linear-gradient(135deg, #374151 0%, #1e40af 100%);';
+        return 'background: linear-gradient(135deg, rgb(55, 65, 81) 0%, rgb(30, 64, 175) 100%);';
     }
   };
 
@@ -265,9 +265,9 @@ export const generatePageHTML = (templateData: any) => {
         }
         
         .container {
-            max-width: 1200px;
+            max-width: ${isPremium ? '1792px' : '1200px'};
             margin: 0 auto;
-            padding: 0 1rem;
+            padding: 0 1.5rem;
         }
         
         .btn {
@@ -326,10 +326,10 @@ export const generatePageHTML = (templateData: any) => {
 
         ${getPremiumStyles()}
         
-        /* Section Backgrounds */
+        /* Section Backgrounds - Exact match to TemplatePreview */
         .hero { 
             ${isPremium ? getPremiumSectionBackground(template.id, 'hero') : getSectionStyle(template.styles.heroBackground, template.styles.heroBackgroundImage)}
-            padding: 5rem 0;
+            padding: 5rem 1rem;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -339,65 +339,66 @@ export const generatePageHTML = (templateData: any) => {
         
         .emotional { 
             ${isPremium ? getPremiumSectionBackground(template.id, 'emotional') : getSectionStyle(template.styles.emotionalBackground, template.styles.emotionalBackgroundImage)}
-            padding: 4rem 0;
+            padding: 4rem 1rem;
             position: relative;
             overflow: hidden;
         }
         
         .features { 
             ${isPremium ? getPremiumSectionBackground(template.id, 'features') : getSectionStyle(template.styles.featuresBackground, template.styles.featuresBackgroundImage)}
-            padding: 4rem 0;
+            padding: ${isPremium ? '5rem 1rem' : '4rem 1rem'};
             position: relative;
             overflow: hidden;
         }
         
         .testimonials { 
             ${isPremium ? getPremiumSectionBackground(template.id, 'testimonials') : getSectionStyle(template.styles.testimonialsBackground, template.styles.testimonialsBackgroundImage)}
-            padding: 4rem 0;
+            padding: 4rem 1rem;
             position: relative;
             overflow: hidden;
         }
         
         .about { 
             ${isPremium ? getPremiumSectionBackground(template.id, 'about') : getSectionStyle(template.styles.aboutBackground, template.styles.aboutBackgroundImage)}
-            padding: 4rem 0;
+            padding: 4rem 1rem;
             position: relative;
             overflow: hidden;
         }
         
         .pricing { 
             ${isPremium ? getPremiumSectionBackground(template.id, 'pricing') : getSectionStyle(template.styles.pricingBackground, template.styles.pricingBackgroundImage)}
-            padding: 4rem 0;
+            padding: ${isPremium ? '5rem 1rem' : '4rem 1rem'};
             position: relative;
             overflow: hidden;
         }
         
         .faq { 
             ${isPremium ? getPremiumSectionBackground(template.id, 'faq') : getSectionStyle(template.styles.faqBackground, template.styles.faqBackgroundImage)}
-            padding: 4rem 0;
+            padding: 4rem 1rem;
             position: relative;
             overflow: hidden;
         }
         
         .final-cta { 
             ${isPremium ? getPremiumSectionBackground(template.id, 'final-cta') : getSectionStyle(template.styles.finalCtaBackground, template.styles.finalCtaBackgroundImage)}
-            padding: 4rem 0;
+            padding: 4rem 1rem;
             position: relative;
             overflow: hidden;
         }
         
         .contact { 
             ${isPremium ? getPremiumSectionBackground(template.id, 'contact') : getSectionStyle(template.styles.contactBackground, template.styles.contactBackgroundImage)}
-            padding: 4rem 0;
+            padding: 4rem 1rem;
             position: relative;
             overflow: hidden;
         }
         
         .footer { 
-            ${isPremium ? getPremiumSectionBackground(template.id, 'footer') : getSectionStyle(template.styles.footerBackground, template.styles.footerBackgroundImage)}
-            padding: 3rem 0;
+            ${isPremium ? 'background-color: ' + template.styles.primaryColor + ';' : getSectionStyle(template.styles.footerBackground, template.styles.footerBackgroundImage)}
+            padding: 2rem 1rem;
             position: relative;
             overflow: hidden;
+            text-align: center;
         }
         
         /* Background overlay for sections with images */
