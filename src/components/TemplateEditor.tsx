@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Save,
   Sparkles,
@@ -19,7 +20,8 @@ import {
   Plus,
   Palette,
   Rocket,
-  ArrowLeft
+  ArrowLeft,
+  CheckCircle
 } from 'lucide-react';
 import { TemplateData } from '@/types/template';
 import { TemplatePreview } from './template-editor/TemplatePreview';
@@ -34,6 +36,7 @@ import { FinalCtaEditor } from './template-editor/FinalCtaEditor';
 import { ContactEditor } from './template-editor/ContactEditor';
 import { EffectsEditor } from './template-editor/EffectsEditor';
 import { LaunchSection } from './LaunchSection';
+import { generateHtmlFile } from '@/utils/htmlGenerator';
 
 interface TemplateEditorProps {
   template: TemplateData;
@@ -48,10 +51,94 @@ const TemplateEditor = ({ template, onTemplateChange, onClose, onPublishSuccess 
   const [isEditorHidden, setIsEditorHidden] = useState(false);
   const [isTabsCollapsed, setIsTabsCollapsed] = useState(false);
   const [showLaunchSection, setShowLaunchSection] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     onTemplateChange(editedTemplate);
   }, [editedTemplate, onTemplateChange]);
+
+  
+  // Save current page and generate exact HTML
+  const handleSave = () => {
+    try {
+      // Create comprehensive data object with current template state
+      const currentPageData = {
+        formData: {
+          businessName: editedTemplate.hero.title,
+          businessDescription: editedTemplate.hero.subtitle,
+          businessType: editedTemplate.category,
+          email: 'info@example.com',
+          phone: '050-123-4567'
+        },
+        generatedContent: {
+          hero: {
+            title: editedTemplate.hero.title,
+            subtitle: editedTemplate.hero.subtitle,
+            button1Text: editedTemplate.hero.button1Text,
+            button2Text: editedTemplate.hero.button2Text
+          },
+          features: editedTemplate.features,
+          testimonials: editedTemplate.testimonials,
+          about: editedTemplate.about,
+          contact: editedTemplate.contact,
+          pricing: editedTemplate.pricing,
+          faq: editedTemplate.faq,
+          finalCta: editedTemplate.finalCta
+        },
+        styles: editedTemplate.styles,
+        heroImage: '',
+        template: editedTemplate
+      };
+      
+      // Create color scheme from template styles
+      const colorScheme = {
+        primary: editedTemplate.styles.primaryColor || '#1e40af',
+        secondary: editedTemplate.styles.secondaryColor || '#7c3aed',
+        accent: editedTemplate.styles.accentColor || '#3b82f6',
+        background: editedTemplate.styles.backgroundColor || '#ffffff',
+        heroBackground: editedTemplate.styles.primaryColor || '#1e40af',
+        text: editedTemplate.styles.textColor || '#000000',
+        headlineColor: editedTemplate.styles.textColor || '#ffffff',
+        subheadlineColor: editedTemplate.styles.textColor || '#e5e7eb',
+        featuresColor: editedTemplate.styles.primaryColor || '#1e40af',
+        featuresTextColor: editedTemplate.styles.textColor || '#374151',
+        aboutColor: editedTemplate.styles.secondaryColor || '#7c3aed',
+        aboutTextColor: editedTemplate.styles.textColor || '#374151',
+        contactColor: editedTemplate.styles.primaryColor || '#1e40af',
+        contactTextColor: editedTemplate.styles.textColor || '#ffffff'
+      };
+      
+      // Generate the exact HTML using the real generator
+      const htmlContent = generateHtmlFile(
+        currentPageData.generatedContent,
+        colorScheme,
+        currentPageData.formData,
+        currentPageData.heroImage
+      );
+      
+      // Save both the template data and generated HTML
+      localStorage.setItem('generatedPageData', JSON.stringify(currentPageData));
+      localStorage.setItem('generatedHTML', htmlContent);
+      
+      setIsSaved(true);
+      toast({
+        title: "✅ הדף נשמר בהצלחה!",
+        description: "הדף שלך נשמר וקוד ה-HTML מוכן להדבקה ב-WordPress",
+      });
+      
+      // Reset saved status after 3 seconds
+      setTimeout(() => setIsSaved(false), 3000);
+      
+    } catch (error) {
+      console.error('Error saving page:', error);
+      toast({
+        title: "❌ שגיאה בשמירה",
+        description: "אירעה שגיאה בשמירת הדף. אנא נסה שוב.",
+        variant: "destructive"
+      });
+    }
+  };
 
   const handleSaveAndPublish = () => {
     setShowLaunchSection(true);
@@ -174,9 +261,22 @@ const TemplateEditor = ({ template, onTemplateChange, onClose, onPublishSuccess 
             </div>
             
             <div className="flex gap-2">
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white flex-1">
-                <Save className="w-4 h-4 ml-1" />
-                שמור
+              <Button 
+                size="sm" 
+                className={`flex-1 ${isSaved ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'} text-white`}
+                onClick={handleSave}
+              >
+                {isSaved ? (
+                  <>
+                    <CheckCircle className="w-4 h-4 ml-1" />
+                    נשמר!
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4 ml-1" />
+                    שמור
+                  </>
+                )}
               </Button>
               <Button 
                 size="sm" 

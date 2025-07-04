@@ -15,12 +15,19 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
   const [currentStep, setCurrentStep] = useState(1);
   const { toast } = useToast();
 
-  // Generate the actual HTML from the user's data
+  // Get the saved HTML from localStorage
   const getGeneratedHTML = () => {
     try {
+      // First try to get the pre-generated HTML that was saved
+      const savedHTML = localStorage.getItem('generatedHTML');
+      if (savedHTML) {
+        return savedHTML;
+      }
+      
+      // Fallback: generate from template data if no saved HTML
       const landingPageData = JSON.parse(localStorage.getItem('generatedPageData') || '{}');
       
-      // Call the real HTML generator function
+      // Use the real HTML generator with actual data
       return generateHtmlFile(
         landingPageData?.generatedContent || {},
         landingPageData?.styles || { primary: '#1e40af', secondary: '#7c3aed' },
@@ -28,36 +35,84 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
         landingPageData?.heroImage || ''
       );
     } catch (error) {
-      console.error('Error generating HTML:', error);
-      // Fallback to a simple HTML if generation fails
-      const landingPageData = JSON.parse(localStorage.getItem('generatedPageData') || '{}');
+      console.error('Error getting HTML:', error);
       return `<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${landingPageData?.formData?.businessName || 'דף נחיתה'}</title>
+    <title>דף נחיתה</title>
     <style>
-        body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; line-height: 1.6; }
-        .hero { background: linear-gradient(135deg, #1e40af, #7c3aed); color: white; padding: 80px 20px; text-align: center; }
-        .hero h1 { font-size: 3rem; margin-bottom: 1rem; font-weight: bold; }
-        .hero p { font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.9; }
-        .btn { background: rgba(255,255,255,0.2); color: white; padding: 16px 32px; border: 2px solid white; border-radius: 8px; text-decoration: none; display: inline-block; margin: 0 10px; font-weight: bold; transition: all 0.3s; }
-        .btn:hover { background: white; color: #1e40af; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .contact { padding: 60px 20px; background: #f9fafb; text-align: center; }
-        .contact h2 { font-size: 2.5rem; color: #1e40af; margin-bottom: 2rem; }
-        footer { background: #1f2937; color: white; padding: 40px 20px; text-align: center; }
+        body { 
+            font-family: 'Arial', sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            line-height: 1.6; 
+            background: #f8fafc;
+        }
+        .hero { 
+            background: linear-gradient(135deg, #1e40af, #7c3aed); 
+            color: white; 
+            padding: 80px 20px; 
+            text-align: center; 
+        }
+        .hero h1 { 
+            font-size: 3rem; 
+            margin-bottom: 1rem; 
+            font-weight: bold; 
+        }
+        .hero p { 
+            font-size: 1.25rem; 
+            margin-bottom: 2rem; 
+            opacity: 0.9; 
+        }
+        .btn { 
+            background: rgba(255,255,255,0.2); 
+            color: white; 
+            padding: 16px 32px; 
+            border: 2px solid white; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            display: inline-block; 
+            margin: 0 10px; 
+            font-weight: bold; 
+            transition: all 0.3s; 
+        }
+        .btn:hover { 
+            background: white; 
+            color: #1e40af; 
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
+        }
+        .contact { 
+            padding: 60px 20px; 
+            background: #f9fafb; 
+            text-align: center; 
+        }
+        .contact h2 { 
+            font-size: 2.5rem; 
+            color: #1e40af; 
+            margin-bottom: 2rem; 
+        }
+        footer { 
+            background: #1f2937; 
+            color: white; 
+            padding: 40px 20px; 
+            text-align: center; 
+        }
     </style>
 </head>
 <body>
     <section class="hero">
         <div class="container">
-            <h1>${landingPageData?.generatedContent?.hero?.title || landingPageData?.formData?.businessName || 'ברוכים הבאים'}</h1>
-            <p>${landingPageData?.generatedContent?.hero?.subtitle || landingPageData?.formData?.businessDescription || 'פתרונות מתקדמים לעסק שלך'}</p>
+            <h1>ברוכים הבאים לעסק שלנו</h1>
+            <p>פתרונות מתקדמים ומקצועיים עבורכם</p>
             <div>
-                <a href="#contact" class="btn">${landingPageData?.generatedContent?.hero?.button1Text || 'צור קשר'}</a>
-                <a href="#about" class="btn">${landingPageData?.generatedContent?.hero?.button2Text || 'למד עוד'}</a>
+                <a href="#contact" class="btn">צור קשר</a>
+                <a href="#about" class="btn">למד עוד</a>
             </div>
         </div>
     </section>
@@ -66,15 +121,14 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
         <div class="container">
             <h2>צור קשר</h2>
             <p>נשמח לשמוע מכם ולעזור לכם</p>
-            ${landingPageData?.formData?.email ? `<p style="font-size: 1.1rem;">📧 ${landingPageData.formData.email}</p>` : ''}
-            ${landingPageData?.formData?.phone ? `<p style="font-size: 1.1rem;">📞 ${landingPageData.formData.phone}</p>` : ''}
-            ${landingPageData?.formData?.businessName ? `<p style="font-size: 1.1rem;">🏢 ${landingPageData.formData.businessName}</p>` : ''}
+            <p style="font-size: 1.1rem;">📧 info@example.com</p>
+            <p style="font-size: 1.1rem;">📞 050-123-4567</p>
         </div>
     </section>
     
     <footer>
         <div class="container">
-            <p>© ${new Date().getFullYear()} ${landingPageData?.formData?.businessName || 'העסק שלנו'}. כל הזכויות שמורות.</p>
+            <p>© ${new Date().getFullYear()} העסק שלנו. כל הזכויות שמורות.</p>
             <p style="color: #6b7280; font-size: 0.9rem; margin-top: 10px;">נוצר עם LeadGrid</p>
         </div>
     </footer>
