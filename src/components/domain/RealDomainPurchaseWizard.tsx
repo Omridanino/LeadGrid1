@@ -469,14 +469,24 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                 {currentStep === 'wordpress-guide' && (
                   <WordPressStepByStepGuide
                     htmlCode={(() => {
-                      // Generate HTML from localStorage data
-                      const landingPageData = JSON.parse(localStorage.getItem('generatedPageData') || '{}');
-                      return `<!DOCTYPE html>
+                      // Use the same HTML generation as download function
+                      let htmlContent = localStorage.getItem('generatedHTML');
+                      
+                      if (!htmlContent) {
+                        // Fallback: generate from template if no saved HTML
+                        const landingPageData = JSON.parse(localStorage.getItem('generatedPageData') || '{}');
+                        if (landingPageData.template) {
+                          const { generatePageHTML } = require('@/utils/pageGenerator');
+                          htmlContent = generatePageHTML(landingPageData.template);
+                        }
+                      }
+                      
+                      return htmlContent || `<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${landingPageData?.formData?.businessName || 'דף נחיתה'}</title>
+    <title>דף נחיתה</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
         .hero { background: linear-gradient(135deg, #1e40af, #7c3aed); color: white; padding: 60px 20px; text-align: center; }
@@ -489,10 +499,10 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
 <body>
     <section class="hero">
         <div class="container">
-            <h1>${landingPageData?.generatedContent?.hero?.title || landingPageData?.formData?.businessName || 'ברוכים הבאים'}</h1>
-            <p>${landingPageData?.generatedContent?.hero?.subtitle || landingPageData?.formData?.businessDescription || 'פתרונות מתקדמים לעסק שלך'}</p>
-            <a href="#contact" class="btn">${landingPageData?.generatedContent?.hero?.button1Text || 'צור קשר'}</a>
-            <a href="#about" class="btn">${landingPageData?.generatedContent?.hero?.button2Text || 'למד עוד'}</a>
+            <h1>ברוכים הבאים</h1>
+            <p>פתרונות מתקדמים לעסק שלך</p>
+            <a href="#contact" class="btn">צור קשר</a>
+            <a href="#about" class="btn">למד עוד</a>
         </div>
     </section>
     
@@ -500,13 +510,11 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
         <div class="container">
             <h2>צור קשר</h2>
             <p>נשמח לשמוע מכם ולעזור לכם</p>
-            ${landingPageData?.formData?.email ? `<p>📧 ${landingPageData.formData.email}</p>` : ''}
-            ${landingPageData?.formData?.phone ? `<p>📞 ${landingPageData.formData.phone}</p>` : ''}
         </div>
     </section>
     
     <footer style="background: #1f2937; color: white; padding: 40px 20px; text-align: center;">
-        <p>© ${new Date().getFullYear()} ${landingPageData?.formData?.businessName || 'העסק שלנו'}. כל הזכויות שמורות.</p>
+        <p>© ${new Date().getFullYear()} העסק שלנו. כל הזכויות שמורות.</p>
         <p style="color: #6b7280; font-size: 0.9rem;">נוצר עם LeadGrid</p>
     </footer>
 </body>
