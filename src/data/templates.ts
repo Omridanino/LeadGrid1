@@ -2,99 +2,367 @@
 import { TemplateData } from '@/types/template';
 
 export const templates: TemplateData[] = [
+  // Premium Template 1 - Tech Consulting (inspired by first image)
   {
-    id: 'nexus-pro',
-    name: 'Nexus Pro',
-    category: 'עסקי מתקדם',
+    id: 'tech-consultant-pro',
+    name: 'Tech Consultant Pro',
+    category: 'פרימיום - ייעוץ טכנולוגי',
     hero: {
-      title: 'פתרונות טכנולוגיים מתקדמים',
-      subtitle: 'המערכת החכמה ביותר לניהול העסק שלך',
-      description: 'פלטפורמה מתקדמת המשלבת בינה מלאכותית וטכנולוגיות חדשניות לניהול עסק יעיל ומקצועי',
-      button1Text: 'התחל עכשיו',
-      button2Text: 'למד עוד'
+      title: 'ייעוץ מקצועי לאפליקציות ותוכנה',
+      subtitle: 'המומחים המובילים בפיתוח ופריסת פתרונות טכנולוגיים',
+      description: 'אנחנו מתמחים בקידוד ופתרונות פריסה מתקדמים שיקחו את הפרויקט שלכם לרמה הבאה',
+      button1Text: 'בואו נתחיל',
+      button2Text: 'צפה במקרי בוחן'
     },
     emotional: {
-      title: 'שנה את הדרך שבה אתה מנהל את העסק',
-      description: 'עם פתרונות הטכנולוגיה המתקדמים שלנו, תוכל להגיע לרמות חדשות של יעילות ורווחיות',
+      title: 'פשוט הטוב ביותר עבור הפרויקט שלך',
+      description: 'הצטרפו לחברות הטכנולוגיה המובילות שבחרו בנו כשותפים לפיתוח',
       button1Text: 'גלה איך',
       button2Text: 'קבל ייעוץ חינם'
     },
     about: {
-      title: 'אודותינו',
-      description: 'אנחנו מספקים פתרונות טכנולוגיים מתקדמים לעסקים המעוניינים לצמוח ולהתפתח בעידן הדיגיטלי',
-      button1Text: 'קרא עוד',
+      title: 'הדברים שאנחנו עושים עבורכם',
+      description: 'פיתוח מותאם אישית, אינטגרציות מתקדמות וליווי מקצועי לאורך כל הדרך',
+      button1Text: 'כל השירותים',
       button2Text: 'פגוש את הצוות'
     },
     features: {
-      title: 'היתרונות שלנו',
+      title: 'הפתרונות שלנו',
       items: [
-        { title: 'טכנולוגיה מתקדמת', description: 'פתרונות חדשניים ומתקדמים', icon: 'flashlight-line' },
-        { title: 'תמיכה 24/7', description: 'תמיכה טכנית מלאה בכל עת', icon: 'shield-check-line' },
-        { title: 'ביטחון מתקדם', description: 'אבטחת מידע ברמה הגבוהה ביותר', icon: 'lock-line' }
+        { title: 'קוד כללי', description: 'פיתוח מותאם לכל פלטפורמה', icon: 'code-line' },
+        { title: 'מערכות קוד', description: 'ארכיטקטורה מתקדמת ויציבה', icon: 'database-line' },
+        { title: 'DevOps', description: 'פריסה אוטומטית ומתקדמת', icon: 'server-line' },
+        { title: 'ייעוץ אג\'יל', description: 'מתודולוגיות עבודה מתקדמות', icon: 'refresh-line' }
       ],
-      button1Text: 'גלה עוד',
-      button2Text: 'התחל עכשיו'
+      button1Text: 'למד עוד',
+      button2Text: 'התחל פרויקט'
     },
     testimonials: {
-      title: 'מה הלקוחות אומרים',
+      title: 'אל תקח רק את המילה שלי על זה',
       testimonials: [
-        { name: 'דוד כהן', role: 'מנכ"ל', content: 'שירות מעולה ופתרונות חדשניים שהפכו את העסק שלנו', rating: 5 }
+        { name: 'יוסי כהן', role: 'CTO סטארט-אפ', content: 'הצוות הזה פשוט יוצא מן הכלל, פתרו לנו בעיות מורכבות תוך זמן קצר', rating: 5 },
+        { name: 'שרה לוי', role: 'מנהלת מוצר', content: 'ליווי מקצועי ופתרונות יצירתיים שהובילו להצלחה גדולה', rating: 5 }
       ],
-      button1Text: 'ראה עוד עדויות',
+      button1Text: 'עוד עדויות',
       button2Text: 'הצטרף אלינו'
     },
     pricing: {
-      title: 'מחירים',
+      title: 'תהליך מוכח להצלחה',
       plans: [
         { 
-          name: 'בסיסי', 
-          price: '₪99', 
-          period: 'חודש',
-          features: ['תכונה 1', 'תכונה 2'],
-          buttonText: 'התחל עכשיו'
+          name: 'פרויקט בסיסי', 
+          price: '₪15,000', 
+          period: 'פרויקט',
+          features: ['ייעוץ ותכנון', 'פיתוח MVP', 'בדיקות איכות', 'פריסה בסיסית'],
+          buttonText: 'צור קשר'
+        },
+        { 
+          name: 'פרויקט מתקדם', 
+          price: '₪35,000', 
+          period: 'פרויקט',
+          features: ['ייעוץ מתקדם', 'פיתוח מלא', 'אינטגרציות', 'DevOps מלא', 'תמיכה 6 חודשים'],
+          buttonText: 'בחר תוכנית',
+          recommended: true
         }
       ],
       button1Text: 'השווה תוכניות',
-      button2Text: 'צור קשר'
+      button2Text: 'בקש הצעת מחיר'
     },
     contact: {
-      title: 'צור קשר',
-      subtitle: 'נשמח לשמוע ממך ולעזור לך להתחיל',
+      title: 'צור איתנו קשר',
+      subtitle: 'מוכנים להתחיל את הפרויקט הבא שלכם?',
       buttonText: 'שלח הודעה'
     },
     faq: {
       title: 'שאלות נפוצות',
       questions: [
-        { question: 'איך זה עובד?', answer: 'הסבר מפורט על האופן בו המערכת עובדת ומה היתרונות' }
+        { question: 'כמה זמן לוקח פרויקט ממוצע?', answer: 'פרויקט ממוצע לוקח בין 3-6 חודשים, תלוי במורכבות ובדרישות הלקוח' },
+        { question: 'איך מתבצע התשלום?', answer: 'התשלום מתבצע בשלבים לפי אבני דרך בפרויקט, עם מקדמה של 30%' }
       ],
-      button1Text: 'שאל אותנו',
-      button2Text: 'קבל תמיכה'
+      button1Text: 'שאלות נוספות',
+      button2Text: 'דבר איתנו'
     },
     finalCta: {
-      title: 'מוכן להתחיל?',
-      description: 'הצטרף לאלפי עסקים שכבר משתמשים בפתרונות שלנו',
+      title: 'מוכנים לקחת את הפרויקט שלכם לרמה הבאה?',
+      description: 'הצטרפו לעשרות לקוחות מרוצים שבחרו בפתרונות הטכנולוגיים שלנו',
+      button1Text: 'בואו נתחיל',
+      button2Text: 'קבל הצעת מחיר'
+    },
+    footer: {
+      companyName: 'Tech Consultant Pro'
+    },
+    styles: {
+      backgroundColor: '#0a0a0a',
+      heroBackground: 'linear-gradient(135deg, #1a1a1a 0%, #2d1b2e 100%)',
+      emotionalBackground: 'linear-gradient(135deg, #ff6b6b 0%, #ffa8a8 100%)',
+      featuresBackground: '#111111',
+      testimonialsBackground: '#0a0a0a',
+      aboutBackground: '#1a1a1a',
+      pricingBackground: '#111111',
+      faqBackground: '#0a0a0a',
+      finalCtaBackground: 'linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%)',
+      contactBackground: '#1a1a1a',
+      footerBackground: '#000000',
+      textColor: '#ffffff',
+      primaryColor: '#ff6b6b',
+      secondaryColor: '#ff8e8e',
+      accentColor: '#ffa8a8'
+    },
+    effects: {
+      hero: 'glass-refraction',
+      emotional: 'morphing-shapes',
+      features: 'neon-grid-portal',
+      testimonials: 'glass-refraction',
+      about: 'minimal-tech',
+      pricing: 'cosmic-geometry',
+      faq: 'glass-refraction',
+      finalCta: 'liquid-metal',
+      contact: 'minimal-tech'
+    }
+  },
+
+  // Premium Template 2 - Neon Education (inspired by second image)
+  {
+    id: 'neon-academy-pro',
+    name: 'Neon Academy Pro',
+    category: 'פרימיום - חינוך דיגיטלי',
+    hero: {
+      title: 'גלה את הכוח שמחבא בתוכך',
+      subtitle: 'קורסים דיגיטליים מתקדמים שישנו את הקריירה שלך לעד',
+      description: 'הצטרף לאלפי תלמידים שכבר שדרגו את הכישורים שלהם והגיעו לרמות חדשות של הצלחה מקצועית',
+      button1Text: 'התחל להתפתח',
+      button2Text: 'צפה בתוכנית הלימודים'
+    },
+    emotional: {
+      title: 'מה שאתה תלמד כאן',
+      description: 'כישורים מתקדמים, כלים מקצועיים ידע שיקח אותך הרבה קדימה בקריירה',
+      button1Text: 'רוצה להשתתף',
+      button2Text: 'למד עוד'
+    },
+    about: {
+      title: 'המסע שלך מתחיל כאן',
+      description: 'אנחנו מספקים חוויית למידה דיגיטלית מהפכנית עם מנטורים מקצועיים ותוכן מעודכן',
+      button1Text: 'הסיפור שלנו',
+      button2Text: 'פגוש את המרצים'
+    },
+    features: {
+      title: 'למה הקורס הזה שונה',
+      items: [
+        { title: 'למידה אינטראקטיבית', description: 'תרגול מעשי על פרויקטים אמיתיים', icon: 'play-circle-line' },
+        { title: 'מנטורים מקצועיים', description: 'ליווי אישי של מומחים בתחום', icon: 'user-star-line' },
+        { title: 'תעודת הסמכה', description: 'תעודה מוכרת בתעשייה', icon: 'award-line' },
+        { title: 'קהילת בוגרים', description: 'רשת מקצועית חזקה לקידום קריירה', icon: 'team-line' }
+      ],
+      button1Text: 'כל היתרונות',
+      button2Text: 'הירשם עכשיו'
+    },
+    testimonials: {
+      title: 'סיפורי הצלחה של הבוגרים',
+      testimonials: [
+        { name: 'מיכל רוזן', role: 'מפתחת Full Stack', content: 'הקורס שינה לי את החיים! מתכנתת מתחילה לתפקיד בכיר בחברת הייטק', rating: 5 },
+        { name: 'דני שלום', role: 'UX Designer', content: 'התוכן המעשי והמנטורינג האישי עזרו לי לעשות מעבר קריירה מוצלח', rating: 5 }
+      ],
+      button1Text: 'עוד סיפורים',
+      button2Text: 'הצטרף אלינו'
+    },
+    pricing: {
+      title: 'תוכניות הלימוד שלנו',
+      plans: [
+        { 
+          name: 'תוכנית בסיסית', 
+          price: '₪1,200', 
+          period: 'חודש',
+          features: ['גישה לכל הקורסים', 'מנטורינג קבוצתי', 'פרויקטים מעשיים', 'תעודת סיום'],
+          buttonText: 'התחל עכשיו'
+        },
+        { 
+          name: 'תוכנית פרימיום', 
+          price: '₪2,400', 
+          period: 'חודש',
+          features: ['כל התכנים', 'מנטור אישי', 'פרויקט גמר', 'תעודת הסמכה', 'שיבוץ עבודה'],
+          buttonText: 'בחר תוכנית',
+          recommended: true
+        }
+      ],
+      button1Text: 'השווה תוכניות',
+      button2Text: 'יעוץ אישי'
+    },
+    contact: {
+      title: 'יש שאלות? בואו נדבר',
+      subtitle: 'הצוות שלנו כאן כדי לעזור לך למצוא את התוכנית המתאימה',
+      buttonText: 'צור קשר'
+    },
+    faq: {
+      title: 'שאלות נפוצות',
+      questions: [
+        { question: 'האם צריך ידע קודם?', answer: 'לא! הקורסים מתחילים מהבסיס ומתקדמים בהדרגה לרמות מתקדמות' },
+        { question: 'כמה זמן לוקח הקורס?', answer: 'הקורס נמשך 6 חודשים עם אפשרות להאריך בהתאם לקצב האישי' }
+      ],
+      button1Text: 'עוד שאלות',
+      button2Text: 'דבר עם יועץ'
+    },
+    finalCta: {
+      title: 'הזמן שלך הגיע',
+      description: 'אל תחכה יותר - התחל את המסע שלך לקריירה חדשה כבר היום',
+      button1Text: 'הירשם עכשיו',
+      button2Text: 'שמור מקום'
+    },
+    footer: {
+      companyName: 'Neon Academy Pro'
+    },
+    styles: {
+      backgroundColor: '#0a0f1c',
+      heroBackground: 'linear-gradient(135deg, #0a0f1c 0%, #1a2b3d 100%)',
+      emotionalBackground: 'linear-gradient(135deg, #00d4ff 0%, #0099cc 100%)',
+      featuresBackground: '#111827',
+      testimonialsBackground: '#0a0f1c',
+      aboutBackground: '#1a2b3d',
+      pricingBackground: '#111827',
+      faqBackground: '#0a0f1c',
+      finalCtaBackground: 'linear-gradient(135deg, #00d4ff 0%, #00b3e6 100%)',
+      contactBackground: '#1a2b3d',
+      footerBackground: '#000000',
+      textColor: '#ffffff',
+      primaryColor: '#00d4ff',
+      secondaryColor: '#0099cc',
+      accentColor: '#33ddff'
+    },
+    effects: {
+      hero: 'neon-grid-portal',
+      emotional: 'digital-waves',
+      features: 'holographic',
+      testimonials: 'neon-grid-portal',
+      about: 'quantum-bubbles',
+      pricing: 'digital-waves',
+      faq: 'holographic',
+      finalCta: 'liquid-metal',
+      contact: 'neon-grid-portal'
+    }
+  },
+
+  // Premium Template 3 - Blockchain Tech (inspired by third image)
+  {
+    id: 'blockchain-tech-pro',
+    name: 'Blockchain Tech Pro',
+    category: 'פרימיום - בלוקצ\'יין',
+    hero: {
+      title: 'משחררים את הכוח של הבלוקצ\'יין',
+      subtitle: 'טכנולוגיה מתקדמת שמשנה תעשיות עם פתרונות מאובטחים ומבוזרים',
+      description: 'פלטפורמה חדשנית המציעה פתרונות בלוקצ\'יין מתקדמים לעסקים המחפשים חדשנות וביטחון',
+      button1Text: 'התחל עם הבלוקצ\'יין',
+      button2Text: 'גלה איך זה עובד'
+    },
+    emotional: {
+      title: 'למה בלוקצ\'יין?',
+      description: 'הבלוקצ\'יין מגדיר מחדש את הכללים בעולם הדיגיטלי - זה למה זה חשוב',
+      button1Text: 'למד עוד',
+      button2Text: 'התחל מסע'
+    },
+    about: {
+      title: 'למה הבלוקצ\'יין חשוב',
+      description: 'הבלוקצ\'יין מהפכה את האופן בו אנחנו מטפלים בנתונים, עסקאות ואמון באמצעות מערכות מבוזרות',
+      button1Text: 'קרא עוד',
+      button2Text: 'הטכנולוגיה שלנו'
+    },
+    features: {
+      title: 'היתרונות שלנו',
+      items: [
+        { title: 'ביזור מלא', description: 'אין ישות אחת שמשלטת במערכת', icon: 'share-line' },
+        { title: 'אבטחה מקסימלית', description: 'הצפנה מתקדמה עמידה בפני חדירות', icon: 'shield-line' },
+        { title: 'שקיפות מלאה', description: 'עסקאות פומביות ונגישות לכולם', icon: 'eye-line' },
+        { title: 'יעילות גבוהה', description: 'תהליכים חסכוניים ומהירים', icon: 'flashlight-line' }
+      ],
+      button1Text: 'כל היתרונות',
+      button2Text: 'נסה עכשיו'
+    },
+    testimonials: {
+      title: 'לקוחות מרוצים',
+      testimonials: [
+        { name: 'אבי טכנולוגיות', role: 'CTO חברת פינטק', content: 'הפתרון הבלוקצ\'יין שלהם שדרג לנו את האבטחה וההתנהלות העסקית', rating: 5 },
+        { name: 'שרה דיגיטל', role: 'מנהלת מוצר', content: 'יישום מהיר ויעיל שחסך לנו זמן רב ועלויות גבוהות', rating: 5 }
+      ],
+      button1Text: 'עוד עדויות',
+      button2Text: 'הצטרף אלינו'
+    },
+    pricing: {
+      title: 'תוכניות המחיר שלנו',
+      plans: [
+        { 
+          name: 'תוכנית מתחילים', 
+          price: '₪199', 
+          period: 'חודש',
+          features: ['גישה לרשת הבלוקצ\'יין', 'מדריכים בסיסיים', 'תמיכה טכנית'],
+          buttonText: 'התחל עכשיו'
+        },
+        { 
+          name: 'תוכנית מתקדמת', 
+          price: '₪349', 
+          period: 'חודש',
+          features: ['כל התוכן למתחילים', 'ידע מתקדם בבלוקצ\'יין', 'פיתוח חוזים חכמים'],
+          buttonText: 'בחר תוכנית',
+          recommended: true
+        },
+        { 
+          name: 'תוכנית מקצועית', 
+          price: '₪495', 
+          period: 'חודש',
+          features: ['כל התוכן', 'כלים מתקדמים ותובנות', 'ייעוץ אישי'],
+          buttonText: 'התחל עכשיו'
+        }
+      ],
+      button1Text: 'השווה תוכניות',
+      button2Text: 'יעוץ מותאם'
+    },
+    contact: {
+      title: 'צור איתנו קשר',
+      subtitle: 'מוכנים להתחיל את המסע שלכם בעולם הבלוקצ\'יין?',
+      buttonText: 'בואו נתחיל'
+    },
+    faq: {
+      title: 'שאלות נפוצות',
+      questions: [
+        { question: 'מה זה בלוקצ\'יין?', answer: 'בלוקצ\'יין היא מסד נתונים מבוזר המאפשר שמירה מאובטחת של מידע ללא צורך בגורם מתווך' },
+        { question: 'האם זה בטוח?', answer: 'כן, הבלוקצ\'יין משתמש בהצפנה מתקדמת וביזור שהופכים אותו לאחד הפתרונות הבטוחים ביותר' }
+      ],
+      button1Text: 'מדריך למתחילים',
+      button2Text: 'תמיכה טכנית'
+    },
+    finalCta: {
+      title: 'התחל את העתיד היום',
+      description: 'הצטרף לחברות המובילות שכבר מנצלות את הכוח של הבלוקצ\'יין',
       button1Text: 'התחל עכשיו',
       button2Text: 'קבל הדגמה'
     },
     footer: {
-      companyName: 'Nexus Pro'
+      companyName: 'Blockchain Tech Pro'
     },
     styles: {
-      backgroundColor: '#ffffff',
-      heroBackground: '#f8fafc',
-      emotionalBackground: '#1e40af',
-      featuresBackground: '#f1f5f9',
-      testimonialsBackground: '#ffffff',
-      aboutBackground: '#f8fafc',
-      pricingBackground: '#f1f5f9',
-      faqBackground: '#ffffff',
-      finalCtaBackground: '#3b82f6',
-      contactBackground: '#f8fafc',
-      footerBackground: '#1f2937',
-      textColor: '#1f2937',
-      primaryColor: '#3B82F6',
-      secondaryColor: '#1E40AF',
-      accentColor: '#60a5fa'
+      backgroundColor: '#0a0a0f',
+      heroBackground: 'linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%)',
+      emotionalBackground: 'linear-gradient(135deg, #00b4d8 0%, #0077b6 100%)',
+      featuresBackground: '#111122',
+      testimonialsBackground: '#0a0a0f',
+      aboutBackground: '#1a1a2e',
+      pricingBackground: '#111122',
+      faqBackground: '#0a0a0f',
+      finalCtaBackground: 'linear-gradient(135deg, #00b4d8 0%, #0096c7 100%)',
+      contactBackground: '#1a1a2e',
+      footerBackground: '#000000',
+      textColor: '#ffffff',
+      primaryColor: '#00b4d8',
+      secondaryColor: '#0077b6',
+      accentColor: '#48cae4'
+    },
+    effects: {
+      hero: 'cosmic-geometry',
+      emotional: 'quantum-bubbles',
+      features: 'crystal-matrix',
+      testimonials: 'digital-waves',
+      about: 'holographic',
+      pricing: 'neon-grid-portal',
+      faq: 'cosmic-geometry',
+      finalCta: 'liquid-metal',
+      contact: 'quantum-bubbles'
     }
   },
   {
@@ -570,6 +838,372 @@ export const templates: TemplateData[] = [
       primaryColor: '#8B5CF6',
       secondaryColor: '#7C3AED',
       accentColor: '#a78bfa'
+    }
+  },
+
+  // Premium Template 4 - NFT Futuristic (inspired by fourth image)
+  {
+    id: 'nft-future-pro',
+    name: 'NFT Future Pro',
+    category: 'פרימיום - NFT ומטאוורס',
+    hero: {
+      title: 'אסוף את דור העתיד של NFTs היום',
+      subtitle: 'הפלטפורמה המובילה לנכסים דיגיטליים שתוכל באמת להחזיק לעצמך',
+      description: 'חווה את עתיד הקולקטיבים הדיגיטליים עם טכנולוגיה מתקדמת ועיצובים מהפכניים',
+      button1Text: 'התחבר עכשיו',
+      button2Text: 'גלה את האוסף'
+    },
+    emotional: {
+      title: 'אוספי NFT באיכות מעולה',
+      description: 'החוויה הכי מתקדמת בעולם הNFT עם אמנות דיגיטלית ייחודית ופלטפורמה טכנולוגית מובילה',
+      button1Text: 'עוד אודותינו',
+      button2Text: 'למד עוד'
+    },
+    about: {
+      title: 'פתרונות מלאים לה-NFT שלך',
+      description: 'אנחנו מציעים חוויה שלמה לאספנים ויוצרים בעולם הNFT המתפתח',
+      button1Text: 'המומחיות שלנו',
+      button2Text: 'הצוות'
+    },
+    features: {
+      title: 'היכולות שלנו',
+      items: [
+        { title: 'אוסף ענק', description: 'אלפי NFTs ייחודיים באיכות גבוהה', icon: 'image-line' },
+        { title: 'איכות מעולה', description: 'יצירות אמנות ברמה הגבוהה ביותר', icon: 'award-line' },
+        { title: 'משאב עליון', description: 'כלים מתקדמים לניהול והשקעה', icon: 'bar-chart-line' },
+        { title: 'קהילה גדולה', description: 'רשת של אספנים ויוצרים פעילים', icon: 'team-line' }
+      ],
+      button1Text: 'כל המידע',
+      button2Text: 'רכוש עכשיו'
+    },
+    testimonials: {
+      title: 'הפך לשחקן ב-Cyfonii עכשיו',
+      testimonials: [
+        { name: 'אלכס כהן', role: 'אספן NFT', content: 'הפלטפורמה הכי מתקדמת שראיתי, אוסף מדהים ותמיכה מעולה', rating: 5 },
+        { name: 'מיה לוי', role: 'אמנית דיגיטלית', content: 'המקום המושלם להציג ולמכור את היצירות שלי לקהל רחב', rating: 5 }
+      ],
+      button1Text: 'עוד עדויות',
+      button2Text: 'הצטרף עכשיו'
+    },
+    pricing: {
+      title: 'תוכניות החברות',
+      plans: [
+        { 
+          name: 'אספן מתחיל', 
+          price: '₪0', 
+          period: 'חודש',
+          features: ['גישה לקטלוג', 'רכישות בסיסיות', 'ארנק דיגיטלי'],
+          buttonText: 'הצטרף חינם'
+        },
+        { 
+          name: 'אספן פרימיום', 
+          price: '₪149', 
+          period: 'חודש',
+          features: ['כל התכנים', 'גישה מוקדמת', 'ייעוץ השקעות', 'אירועים בלעדיים'],
+          buttonText: 'שדרג עכשיו',
+          recommended: true
+        }
+      ],
+      button1Text: 'השווה תוכניות',
+      button2Text: 'יעוץ אישי'
+    },
+    contact: {
+      title: 'צור איתנו קשר',
+      subtitle: 'מוכנים להיכנס לעולם הNFT המתקדם?',
+      buttonText: 'דבר איתנו'
+    },
+    faq: {
+      title: 'שאלות נפוצות',
+      questions: [
+        { question: 'מה זה NFT?', answer: 'NFT הוא נכס דיגיטלי ייחודי שמאומת על הבלוקצ\'יין ומעניק בעלות בלעדית על תוכן דיגיטלי' },
+        { question: 'איך קונים NFT?', answer: 'התהליך פשוט - פתח ארנק דיגיטלי, רכוש קריפטו ובחר את הNFT שמעניין אותך' }
+      ],
+      button1Text: 'מדריך למתחילים',
+      button2Text: 'תמיכה'
+    },
+    finalCta: {
+      title: 'התחל את המסע הדיגיטלי שלך',
+      description: 'הצטרף לאלפי אספנים שכבר מגלים את העתיד של האמנות הדיגיטלית',
+      button1Text: 'רכוש NFT ראשון',
+      button2Text: 'גלה את האוסף'
+    },
+    footer: {
+      companyName: 'NFT Future Pro'
+    },
+    styles: {
+      backgroundColor: '#0a0a1f',
+      heroBackground: 'linear-gradient(135deg, #1e1b4b 0%, #3730a3 100%)',
+      emotionalBackground: 'linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%)',
+      featuresBackground: '#1e1b4b',
+      testimonialsBackground: '#0a0a1f',
+      aboutBackground: '#312e81',
+      pricingBackground: '#1e1b4b',
+      faqBackground: '#0a0a1f',
+      finalCtaBackground: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
+      contactBackground: '#312e81',
+      footerBackground: '#000000',
+      textColor: '#ffffff',
+      primaryColor: '#8b5cf6',
+      secondaryColor: '#7c3aed',
+      accentColor: '#a78bfa'
+    },
+    effects: {
+      hero: 'holographic',
+      emotional: 'morphing-shapes',
+      features: 'neon-grid-portal',
+      testimonials: 'quantum-bubbles',
+      about: 'liquid-metal',
+      pricing: 'cosmic-geometry',
+      faq: 'holographic',
+      finalCta: 'digital-waves',
+      contact: 'morphing-shapes'
+    }
+  },
+
+  // Premium Template 5 - 3D Creative Agency (inspired by fifth image)
+  {
+    id: 'creative-3d-pro',
+    name: 'Creative 3D Pro',
+    category: 'פרימיום - סוכנות עיצוב',
+    hero: {
+      title: 'סוכנות עיצוב Web3',
+      subtitle: 'נתונים טובים יותר מובילים לביצועים טובים יותר',
+      description: 'מודלים ביצועיים מובילים לפיתוח מהיר יותר עם ניסיון שלא תשכחו',
+      button1Text: 'התחל עכשיו',
+      button2Text: 'הפורטפוליו שלנו'
+    },
+    emotional: {
+      title: 'השירותים שלנו',
+      description: 'מתמחים בפתרונות עיצוב מתקדמים לעידן הדיגיטלי החדש',
+      button1Text: 'למד עוד',
+      button2Text: 'פגוש את הצוות'
+    },
+    about: {
+      title: 'עיצוב UI/UX',
+      description: 'למידה מעשית ופרויקטים חדשניים, חסוך זמן R&D. קורס מעולה, ביקורת מעולה שבועית. הערכות מקצועיות של עיצוב UX שלך',
+      button1Text: 'הסיפור שלנו',
+      button2Text: 'הפרויקטים שלנו'
+    },
+    features: {
+      title: 'הסטטיסטיקות שלנו',
+      items: [
+        { title: '5M+ לקוחות', description: 'מיליוני לקוחות מרוצים ברחבי העולם', icon: 'user-line' },
+        { title: '450M+ כיסוי', description: 'הגעה לאוכלוסיות רחבות וגלובליות', icon: 'global-line' },
+        { title: '22% רווח', description: 'גידול עקבי ברווחיות הלקוחות', icon: 'trending-up-line' },
+        { title: '8.03% ריבית', description: 'תשואות מעולות על השקעות', icon: 'money-dollar-line' }
+      ],
+      button1Text: 'כל הנתונים',
+      button2Text: 'בקש הצעה'
+    },
+    testimonials: {
+      title: 'הלקוחות המרוצים שלנו',
+      testimonials: [
+        { name: 'רונן דיגיטל', role: 'מנכ"ל סטארט-אפ', content: 'העיצוב שיצרו לנו הוא פשוט מושלם, שדרג את כל חוויית המשתמש', rating: 5 },
+        { name: 'לינה קריאייטיב', role: 'מנהלת שיווק', content: 'צוות מקצועי ויצירתי שהביא לנו תוצאות מעל הציפיות', rating: 5 }
+      ],
+      button1Text: 'עוד פרויקטים',
+      button2Text: 'עבוד איתנו'
+    },
+    pricing: {
+      title: 'חבילות העיצוב שלנו',
+      plans: [
+        { 
+          name: 'עיצוב בסיסי', 
+          price: '₪5,000', 
+          period: 'פרויקט',
+          features: ['UI/UX Design', 'עיצוב ממשק משתמש', 'עיצוב אפליקציות מובייל', 'עיצוב desktop'],
+          buttonText: 'התחל פרויקט'
+        },
+        { 
+          name: 'עיצוב מתקדם', 
+          price: '₪12,000', 
+          period: 'פרויקט',
+          features: ['כל התכנים הבסיסיים', 'אנימציות ואינטראקציות', 'מערכת עיצוב שלמה', 'ייעוץ UX מתקדם'],
+          buttonText: 'בחר תוכנית',
+          recommended: true
+        }
+      ],
+      button1Text: 'השווה חבילות',
+      button2Text: 'ייעוץ מותאם'
+    },
+    contact: {
+      title: 'בואו ניצור ביחד',
+      subtitle: 'מוכנים להפוך את החזון שלכם למציאות עיצובית מדהימה?',
+      buttonText: 'צור קשר'
+    },
+    faq: {
+      title: 'שאלות נפוצות',
+      questions: [
+        { question: 'כמה זמן לוקח פרויקט עיצוב?', answer: 'פרויקט עיצוב ממוצע לוקח בין 4-8 שבועות, תלוי במורכבות ובהיקף הפרויקט' },
+        { question: 'האם אתם עובדים עם חברות קטנות?', answer: 'בהחלט! אנחנו עובדים עם חברות בכל הגדלים, מסטארט-אפים ועד תאגידים' }
+      ],
+      button1Text: 'עוד שאלות',
+      button2Text: 'יעוץ חינם'
+    },
+    finalCta: {
+      title: 'מוכנים לעיצוב מהפכני?',
+      description: 'הצטרפו לחברות מובילות שבחרו בנו ליצירת חוויות עיצוב מדהימות',
+      button1Text: 'התחל פרויקט',
+      button2Text: 'קבל הצעה'
+    },
+    footer: {
+      companyName: 'Creative 3D Pro'
+    },
+    styles: {
+      backgroundColor: '#0a0a0a',
+      heroBackground: 'linear-gradient(135deg, #1a1a1a 0%, #2a1810 100%)',
+      emotionalBackground: 'linear-gradient(135deg, #ff6b35 0%, #f7931e 100%)',
+      featuresBackground: '#111111',
+      testimonialsBackground: '#0a0a0a',
+      aboutBackground: '#1a1a1a',
+      pricingBackground: '#111111',
+      faqBackground: '#0a0a0a',
+      finalCtaBackground: 'linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%)',
+      contactBackground: '#1a1a1a',
+      footerBackground: '#000000',
+      textColor: '#ffffff',
+      primaryColor: '#ff6b35',
+      secondaryColor: '#f7931e',
+      accentColor: '#ffb380'
+    },
+    effects: {
+      hero: 'liquid-metal',
+      emotional: 'morphing-shapes',
+      features: 'isometric-illustration',
+      testimonials: 'glass-refraction',
+      about: 'cosmic-geometry',
+      pricing: 'neon-grid-portal',
+      faq: 'minimal-tech',
+      finalCta: 'digital-waves',
+      contact: 'holographic'
+    }
+  },
+
+  // Premium Template 6 - Dark Tech Grid (inspired by sixth image)
+  {
+    id: 'authkit-tech-pro',
+    name: 'AuthKit Tech Pro',
+    category: 'פרימיום - טכנולוגיה',
+    hero: {
+      title: 'מציגים AuthKit',
+      subtitle: 'תיבת הלוגין הטובה בעולם, מופעלת על ידי טכנולוגיה מתקדמת',
+      description: 'פלטפורמה טכנולוגית מתקדמת לאימות ואבטחה דיגיטלית ברמה הגבוהה ביותר',
+      button1Text: 'התחל עכשיו',
+      button2Text: 'צפה בתיעוד'
+    },
+    emotional: {
+      title: 'כל מה שאתה צריך. סוללות כלולות',
+      description: 'פתרון שלם ומלא לכל הצרכים הטכנולוגיים שלך עם תמיכה מקצועית',
+      button1Text: 'גלה עוד',
+      button2Text: 'דוגמאות שימוש'
+    },
+    about: {
+      title: 'התכונות המתקדמות שלנו',
+      description: 'מערכת אימות מושלמת עם כל הכלים הדרושים לפיתוח מהיר ובטוח',
+      button1Text: 'המפרט הטכני',
+      button2Text: 'התיעוד המלא'
+    },
+    features: {
+      title: 'היכולות הטכניות',
+      items: [
+        { title: 'כניסה יחידה', description: 'מערכת SSO מתקדמת ומאובטחת', icon: 'fingerprint-line' },
+        { title: 'ניהול סיסמאות', description: 'פתרון מתקדם לניהול סיסמאות', icon: 'lock-password-line' },
+        { title: 'אימות דו-שלבי', description: 'אבטחה מרבית עם MFA', icon: 'shield-check-line' },
+        { title: 'כניסה חברתית', description: 'אינטגרציה עם פלטפורמות גדולות', icon: 'share-line' },
+        { title: 'זיהוי ביומטרי', description: 'טכנולוגיית זיהוי מתקדמת', icon: 'fingerprint-2-line' },
+        { title: 'קישור קסם', description: 'כניסה ללא סיסמה בקליק אחד', icon: 'magic-line' }
+      ],
+      button1Text: 'כל התכונות',
+      button2Text: 'התחל אינטגרציה'
+    },
+    testimonials: {
+      title: 'מפתחים מרוצים',
+      testimonials: [
+        { name: 'אור טכנולוגיות', role: 'Lead Developer', content: 'מערכת האימות הכי טובה ופשוטה לשימוש שעבדתי איתה אי פעם', rating: 5 },
+        { name: 'רונן פרוטוקול', role: 'Security Engineer', content: 'רמת האבטחה והקלות בהטמעה פשוט מעולים', rating: 5 }
+      ],
+      button1Text: 'עוד ביקורות',
+      button2Text: 'הצטרף לקהילה'
+    },
+    pricing: {
+      title: 'תוכניות המחיר שלנו',
+      plans: [
+        { 
+          name: 'מפתח', 
+          price: '₪0', 
+          period: 'חודש',
+          features: ['עד 1,000 משתמשים', 'אימות בסיסי', 'תיעוד מלא', 'תמיכה קהילתית'],
+          buttonText: 'התחל חינם'
+        },
+        { 
+          name: 'מקצועי', 
+          price: '₪99', 
+          period: 'חודש',
+          features: ['עד 10,000 משתמשים', 'כל התכונות', 'תמיכה מקצועית', 'SLA מובטח'],
+          buttonText: 'בחר תוכנית',
+          recommended: true
+        },
+        { 
+          name: 'ארגוני', 
+          price: '₪299', 
+          period: 'חודש',
+          features: ['משתמשים ללא הגבלה', 'תכונות מתקדמות', 'תמיכה 24/7', 'התאמה אישית'],
+          buttonText: 'צור קשר'
+        }
+      ],
+      button1Text: 'השווה תוכניות',
+      button2Text: 'דבר עם מומחה'
+    },
+    contact: {
+      title: 'צור איתנו קשר',
+      subtitle: 'מוכנים להתחיל עם מערכת האימות המתקדמת ביותר?',
+      buttonText: 'התחל עכשיו'
+    },
+    faq: {
+      title: 'שאלות נפוצות',
+      questions: [
+        { question: 'כמה זמן לוקחת ההטמעה?', answer: 'הטמעה בסיסית לוקחת כמה דקות בלבד, עם כל התכונות המתקדמות תוך שעות' },
+        { question: 'האם זה בטוח?', answer: 'המערכת עומדת בכל תקני האבטחה הבינלאומיים ועוברת ביקורות אבטחה קבועות' }
+      ],
+      button1Text: 'מדריך מפתחים',
+      button2Text: 'תמיכה טכנית'
+    },
+    finalCta: {
+      title: 'מוכן לשדרג את מערכת האימות?',
+      description: 'הצטרף לאלפי מפתחים שכבר משתמשים בפתרון הטכנולוגי המתקדם ביותר',
+      button1Text: 'התחל עכשיו',
+      button2Text: 'הזמן דמו'
+    },
+    footer: {
+      companyName: 'AuthKit Tech Pro'
+    },
+    styles: {
+      backgroundColor: '#050814',
+      heroBackground: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+      emotionalBackground: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+      featuresBackground: '#0f172a',
+      testimonialsBackground: '#050814',
+      aboutBackground: '#1e293b',
+      pricingBackground: '#0f172a',
+      faqBackground: '#050814',
+      finalCtaBackground: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+      contactBackground: '#1e293b',
+      footerBackground: '#000000',
+      textColor: '#ffffff',
+      primaryColor: '#3b82f6',
+      secondaryColor: '#1d4ed8',
+      accentColor: '#60a5fa'
+    },
+    effects: {
+      hero: 'crystal-matrix',
+      emotional: 'neon-grid-portal',
+      features: 'minimal-tech',
+      testimonials: 'cosmic-geometry',
+      about: 'quantum-bubbles',
+      pricing: 'glass-refraction',
+      faq: 'digital-waves',
+      finalCta: 'holographic',
+      contact: 'crystal-matrix'
     }
   }
 ];
