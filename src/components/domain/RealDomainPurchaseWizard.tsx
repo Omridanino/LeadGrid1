@@ -33,6 +33,7 @@ import { RealDomainService, RealDomainAvailabilityResult, RealHostingPlan, Purch
 import { TemplateData } from '@/types/template';
 import { PaymentMethodsWizard } from '@/components/payment/PaymentMethodsWizard';
 import { WordPressRegistrationForm } from './WordPressRegistrationForm';
+import { WordPressStepByStepGuide } from '../WordPressStepByStepGuide';
 
 interface RealDomainPurchaseWizardProps {
   isOpen: boolean;
@@ -41,7 +42,7 @@ interface RealDomainPurchaseWizardProps {
   template: TemplateData;
 }
 
-type WizardStep = 'search' | 'website-type' | 'hosting' | 'wordpress-registration' | 'payment' | 'processing' | 'complete';
+type WizardStep = 'search' | 'website-type' | 'hosting' | 'wordpress-registration' | 'wordpress-guide' | 'payment' | 'processing' | 'complete';
 
 export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template }: RealDomainPurchaseWizardProps) => {
   const [currentStep, setCurrentStep] = useState<WizardStep>('search');
@@ -112,7 +113,14 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
     }
   };
 
-  const handleWordPressRegistration = async (userData: WordPressUserData) => {
+  const handleWordPressRegistration = async (userData: any) => {
+    // Check if this is the HTML guide method
+    if (userData.method === 'html-export' && userData.showGuide) {
+      setCurrentStep('wordpress-guide');
+      return;
+    }
+    
+    // Regular WordPress registration
     setIsCreatingWordPress(true);
     setWordpressUserData(userData);
     
@@ -457,6 +465,56 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                     )}
                   </div>
                 )}
+
+                {currentStep === 'wordpress-guide' && (
+                  <WordPressStepByStepGuide
+                    htmlCode={(() => {
+                      // Generate HTML from localStorage data
+                      const landingPageData = JSON.parse(localStorage.getItem('generatedPageData') || '{}');
+                      return `<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${landingPageData?.formData?.businessName || 'דף נחיתה'}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        .hero { background: linear-gradient(135deg, #1e40af, #7c3aed); color: white; padding: 60px 20px; text-align: center; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .hero p { font-size: 1.2rem; margin-bottom: 2rem; }
+        .btn { background: rgba(255,255,255,0.2); color: white; padding: 12px 24px; border: 2px solid white; border-radius: 6px; text-decoration: none; display: inline-block; margin: 0 10px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="container">
+            <h1>${landingPageData?.generatedContent?.hero?.title || landingPageData?.formData?.businessName || 'ברוכים הבאים'}</h1>
+            <p>${landingPageData?.generatedContent?.hero?.subtitle || landingPageData?.formData?.businessDescription || 'פתרונות מתקדמים לעסק שלך'}</p>
+            <a href="#contact" class="btn">${landingPageData?.generatedContent?.hero?.button1Text || 'צור קשר'}</a>
+            <a href="#about" class="btn">${landingPageData?.generatedContent?.hero?.button2Text || 'למד עוד'}</a>
+        </div>
+    </section>
+    
+    <section id="contact" style="padding: 60px 20px; background: #f9fafb; text-align: center;">
+        <div class="container">
+            <h2>צור קשר</h2>
+            <p>נשמח לשמוע מכם ולעזור לכם</p>
+            ${landingPageData?.formData?.email ? `<p>📧 ${landingPageData.formData.email}</p>` : ''}
+            ${landingPageData?.formData?.phone ? `<p>📞 ${landingPageData.formData.phone}</p>` : ''}
+        </div>
+    </section>
+    
+    <footer style="background: #1f2937; color: white; padding: 40px 20px; text-align: center;">
+        <p>© ${new Date().getFullYear()} ${landingPageData?.formData?.businessName || 'העסק שלנו'}. כל הזכויות שמורות.</p>
+        <p style="color: #6b7280; font-size: 0.9rem;">נוצר עם LeadGrid</p>
+    </footer>
+</body>
+</html>`;
+                    })()}
+                     onBack={() => setCurrentStep('wordpress-registration')}
+                   />
+                 )}
 
                 {currentStep === 'payment' && (
                   <div className="space-y-6">

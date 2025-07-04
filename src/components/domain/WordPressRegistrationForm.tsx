@@ -305,13 +305,14 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
                     const landingPageData = JSON.parse(localStorage.getItem('generatedPageData') || '{}');
                     onSubmit({
                       method: 'html-export',
-                      landingPageData
+                      landingPageData,
+                      showGuide: true
                     });
                   }}
                   className="w-full bg-green-600 hover:bg-green-700"
                 >
                   <CheckCircle className="w-4 h-4 ml-2" />
-                  קבל קוד HTML מוכן להדבקה
+                  קבל מדריך התקנה מפורט + קוד HTML
                 </Button>
               </div>
             </CardContent>
