@@ -710,7 +710,7 @@ export const generatePageHTML = (templateData: any) => {
         }
     </style>
 </head>
-<body class="bg-background text-foreground">
+<body style="background-color: ${template.styles.backgroundColor || template.styles.primaryColor}; color: ${template.styles.textColor};" class="text-foreground">
 
     <!-- Hero Section -->
     <section class="hero">
