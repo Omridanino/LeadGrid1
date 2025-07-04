@@ -32,7 +32,7 @@ export const generatePageHTML = (templateData: any) => {
     return style;
   };
 
-  // Premium animated backgrounds with CSS animations
+  // Premium animated backgrounds with CSS animations - match exact premium-section.tsx gradients
   const getPremiumAnimatedBackground = (templateId: string, sectionType: string) => {
     const baseStyles = {
       position: 'relative',
@@ -44,9 +44,9 @@ export const generatePageHTML = (templateData: any) => {
         return {
           ...baseStyles,
           background: sectionType === 'hero' ? 'linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(55, 65, 81) 50%, rgb(0, 0, 0) 100%)' :
-                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(30, 41, 59) 0%, rgb(55, 65, 81) 100%)' :
-                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(55, 65, 81) 0%, rgb(30, 41, 59) 100%)' :
-                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(30, 41, 59) 0%, rgb(0, 0, 0) 100%)' :
+                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(15, 23, 42), rgb(55, 65, 81))' :
+                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(55, 65, 81), rgb(15, 23, 42))' :
+                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(15, 23, 42), rgb(0, 0, 0))' :
                      'linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(30, 41, 59) 100%)',
           animationType: 'dynamicGradients'
         };
@@ -55,9 +55,9 @@ export const generatePageHTML = (templateData: any) => {
         return {
           ...baseStyles,
           background: sectionType === 'hero' ? 'linear-gradient(135deg, rgb(0, 0, 0) 0%, rgb(124, 58, 237) 50%, rgb(0, 0, 0) 100%)' :
-                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(88, 28, 135) 100%)' :
-                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(88, 28, 135) 0%, rgb(0, 0, 0) 100%)' :
-                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(88, 28, 135) 100%)' :
+                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(0, 0, 0), rgb(88, 28, 135))' :
+                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(88, 28, 135), rgb(0, 0, 0))' :
+                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(0, 0, 0), rgb(88, 28, 135))' :
                      'linear-gradient(135deg, rgb(124, 58, 237) 0%, rgb(0, 0, 0) 100%)',
           animationType: 'advancedSparkles'
         };
@@ -66,9 +66,9 @@ export const generatePageHTML = (templateData: any) => {
         return {
           ...baseStyles,
           background: sectionType === 'hero' ? 'linear-gradient(135deg, rgb(30, 27, 75) 0%, rgb(30, 64, 175) 50%, rgb(124, 45, 18) 100%)' :
-                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(30, 27, 75) 0%, rgb(30, 64, 175) 100%)' :
-                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(30, 64, 175) 0%, rgb(30, 27, 75) 100%)' :
-                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(30, 27, 75) 0%, rgb(88, 28, 135) 100%)' :
+                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(30, 27, 75), rgb(30, 64, 175))' :
+                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(30, 64, 175), rgb(30, 27, 75))' :
+                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(30, 27, 75), rgb(88, 28, 135))' :
                      'linear-gradient(135deg, rgb(49, 46, 129) 0%, rgb(30, 64, 175) 100%)',
           animationType: 'animatedPaths'
         };
@@ -77,9 +77,9 @@ export const generatePageHTML = (templateData: any) => {
         return {
           ...baseStyles,
           background: sectionType === 'hero' ? 'linear-gradient(135deg, rgb(254, 215, 170) 0%, rgb(252, 165, 165) 50%, rgb(192, 132, 252) 100%)' :
-                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(254, 215, 170) 0%, rgb(252, 165, 165) 100%)' :
-                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(252, 165, 165) 0%, rgb(192, 132, 252) 100%)' :
-                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(192, 132, 252) 0%, rgb(254, 215, 170) 100%)' :
+                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(254, 215, 170), rgb(252, 165, 165))' :
+                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(252, 165, 165), rgb(192, 132, 252))' :
+                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(192, 132, 252), rgb(254, 215, 170))' :
                      'linear-gradient(135deg, rgb(253, 186, 116) 0%, rgb(251, 113, 133) 100%)',
           animationType: 'fluidBlob'
         };
@@ -88,9 +88,9 @@ export const generatePageHTML = (templateData: any) => {
         return {
           ...baseStyles,
           background: sectionType === 'hero' ? 'linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(30, 41, 59) 50%, rgb(30, 64, 175) 100%)' :
-                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(15, 23, 42) 0%, rgb(30, 41, 59) 100%)' :
-                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(30, 41, 59) 0%, rgb(30, 64, 175) 100%)' :
-                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(30, 64, 175) 0%, rgb(15, 23, 42) 100%)' :
+                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(17, 24, 39), rgb(15, 23, 42))' :
+                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(15, 23, 42), rgb(30, 64, 175))' :
+                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(30, 64, 175), rgb(17, 24, 39))' :
                      'linear-gradient(135deg, rgb(51, 65, 85) 0%, rgb(30, 64, 175) 100%)',
           animationType: 'premium3D'
         };
@@ -99,9 +99,9 @@ export const generatePageHTML = (templateData: any) => {
         return {
           ...baseStyles,
           background: sectionType === 'hero' ? 'linear-gradient(135deg, rgb(88, 28, 135) 0%, rgb(190, 24, 93) 50%, rgb(30, 64, 175) 100%)' :
-                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(88, 28, 135) 0%, rgb(190, 24, 93) 100%)' :
-                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(190, 24, 93) 0%, rgb(30, 64, 175) 100%)' :
-                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(30, 64, 175) 0%, rgb(88, 28, 135) 100%)' :
+                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(88, 28, 135), rgb(190, 24, 93))' :
+                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(190, 24, 93), rgb(30, 64, 175))' :
+                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(30, 64, 175), rgb(88, 28, 135))' :
                      'linear-gradient(135deg, rgb(124, 45, 18) 0%, rgb(190, 24, 93) 100%)',
           animationType: 'dynamicGradients'
         };
@@ -975,6 +975,10 @@ export const generatePageHTML = (templateData: any) => {
 
     <!-- About Section -->
     <section id="about" class="about">
+        ${isPremium ? (() => {
+          const bgData = getPremiumAnimatedBackground(template.id, 'about');
+          return generatePremiumBackgroundHTML(bgData.animationType);
+        })() : ''}
         <div class="max-w-6xl mx-auto px-4 relative z-10">
             <div class="text-center mb-12">
                 ${template.about.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.secondaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.secondaryColor};">${template.about.badge}</div>` : ''}
@@ -1008,6 +1012,10 @@ export const generatePageHTML = (templateData: any) => {
 
     <!-- Pricing Section -->
     <section id="pricing" class="pricing">
+        ${isPremium ? (() => {
+          const bgData = getPremiumAnimatedBackground(template.id, 'pricing');
+          return generatePremiumBackgroundHTML(bgData.animationType);
+        })() : ''}
         <div class="max-w-7xl mx-auto px-6 relative z-10">
             ${isPremium ? `
             <!-- Animated liquid background -->
@@ -1144,6 +1152,10 @@ export const generatePageHTML = (templateData: any) => {
 
     <!-- Contact Section -->
     <section id="contact" class="contact">
+        ${isPremium ? (() => {
+          const bgData = getPremiumAnimatedBackground(template.id, 'contact');
+          return generatePremiumBackgroundHTML(bgData.animationType);
+        })() : ''}
         <div class="max-w-4xl mx-auto text-center px-4 relative z-10">
             <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.contact.title}</h2>
             ${template.contact.subtitle ? `<p class="text-xl mb-8 opacity-80" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.contact.subtitle}</p>` : ''}
