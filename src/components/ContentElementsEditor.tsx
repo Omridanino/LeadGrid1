@@ -302,7 +302,7 @@ const ContentElementsEditor = ({ content, onContentChange, onColorsChange, formD
                 <Button
                   onClick={addEmotionalButton}
                   size="sm"
-                  variant="success"
+                  className="bg-green-600 hover:bg-green-700"
                 >
                   <Plus className="w-4 h-4 ml-2" />
                   הוסף כפתור

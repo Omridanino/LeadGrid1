@@ -127,7 +127,7 @@ const AdvancedEditor = ({
                     const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
                     fileInput?.click();
                   }}
-                  variant="secondary"
+                  className="bg-purple-600 hover:bg-purple-700"
                 >
                   <Upload className="w-4 h-4 ml-2" />
                   העלה תמונה

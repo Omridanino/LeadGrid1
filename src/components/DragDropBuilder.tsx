@@ -52,7 +52,7 @@ const DragDropBuilder = () => {
                 key={tool.type}
                 draggable
                 onDragStart={() => handleDragStart(tool.type)}
-                className="bg-brand-primary hover:bg-hover-primary text-white p-2 rounded cursor-move flex items-center space-x-reverse space-x-2 transition-colors"
+                className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded cursor-move flex items-center space-x-reverse space-x-2 transition-colors"
               >
                 <tool.icon className="w-4 h-4" />
                 <span className="text-xs">{tool.label}</span>
