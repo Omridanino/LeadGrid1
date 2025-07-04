@@ -323,6 +323,34 @@ export const generatePageHTML = (templateData: any) => {
             direction: rtl;
         }
         
+        /* Premium Animations */
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.1; }
+          50% { transform: translateY(-20px) rotate(5deg); opacity: 0.3; }
+        }
+        
+        @keyframes float3d {
+          0%, 100% { transform: translateY(0px) rotateY(0deg) scale(1); }
+          50% { transform: translateY(-20px) rotateY(180deg) scale(1.1); }
+        }
+        
+        @keyframes neonGlow {
+          0%, 100% { box-shadow: 0 0 5px #8b5cf6, 0 0 10px #8b5cf6; }
+          50% { box-shadow: 0 0 20px #8b5cf6, 0 0 30px #8b5cf6, 0 0 40px #8b5cf6; }
+        }
+        
+        @keyframes particles {
+          0% { transform: translateY(0px) scale(1); opacity: 0.3; }
+          50% { transform: translateY(-30px) scale(1.2); opacity: 0.7; }
+          100% { transform: translateY(0px) scale(1); opacity: 0.3; }
+        }
+        
+        @keyframes matrixRain {
+          0% { transform: translateY(-100px); opacity: 0; }
+          50% { opacity: 1; }
+          100% { transform: translateY(400px); opacity: 0; }
+        }
+        
         /* Premium Effects */
         ${getPremiumStyles()}
         
@@ -405,6 +433,79 @@ export const generatePageHTML = (templateData: any) => {
     <!-- Hero Section -->
     <section class="hero">
         ${template.styles.heroBackgroundImage ? '<div class="absolute inset-0 bg-black/40 z-0"></div>' : ''}
+        ${isPremium ? `
+        <!-- Premium hero effects based on template -->
+        ${template.id === 'tech-consultant-pro' ? `
+        <!-- Floating glass panels -->
+        ${Array.from({length: 6}, (_, i) => `
+            <div class="absolute backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl" style="
+                width: ${80 + i * 20}px; 
+                height: ${60 + i * 15}px; 
+                left: ${10 + i * 15}%; 
+                top: ${15 + (i % 3) * 25}%; 
+                transform: rotate(${i * 30}deg);
+                animation: float ${15 + i * 2}s infinite ease-in-out;
+                animation-delay: ${i * 2}s;
+                opacity: 0.1;
+            "></div>
+        `).join('')}
+        ` : ''}
+        ${template.id === 'neon-academy-pro' ? `
+        <!-- Neon city skyline -->
+        <div class="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-purple-900/50 to-transparent">
+            ${Array.from({length: 20}, (_, i) => `
+                <div class="absolute bg-purple-600 opacity-30" style="
+                    width: ${20 + Math.random() * 30}px;
+                    height: ${100 + Math.random() * 100}px;
+                    left: ${i * 5}%;
+                    bottom: 0;
+                    animation: neonGlow 3s infinite ease-in-out;
+                    animation-delay: ${i * 0.1}s;
+                "></div>
+            `).join('')}
+        </div>
+        ` : ''}
+        ${template.id === 'blockchain-tech-pro' ? `
+        <!-- Particle network -->
+        <div class="absolute inset-0 opacity-30">
+            ${Array.from({length: 50}, (_, i) => `
+                <div class="absolute w-1 h-1 bg-blue-400 rounded-full" style="
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    animation: particles 4s infinite ease-in-out;
+                    animation-delay: ${i * 0.1}s;
+                "></div>
+            `).join('')}
+        </div>
+        ` : ''}
+        ${template.id === 'creative-3d-pro' ? `
+        <!-- 3D clay shapes -->
+        ${Array.from({length: 8}, (_, i) => `
+            <div class="absolute rounded-full opacity-80" style="
+                width: ${60 + i * 10}px;
+                height: ${60 + i * 10}px;
+                background: linear-gradient(135deg, ${['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#f38ba8', '#a8e6cf'][i]}, ${['#ff8e8e', '#6eddd6', '#67c3d7', '#a8d4ba', '#fed85d', '#ffb3f5', '#f5a3c7', '#b8ebd5'][i]});
+                left: ${5 + i * 11}%;
+                top: ${10 + (i % 4) * 20}%;
+                box-shadow: 0 ${10 + i * 2}px ${20 + i * 3}px rgba(0,0,0,0.1);
+                animation: float3d ${8 + i}s infinite ease-in-out;
+                animation-delay: ${i * 0.5}s;
+            "></div>
+        `).join('')}
+        ` : ''}
+        ${template.id === 'authkit-tech-pro' ? `
+        <!-- Matrix rain effect -->
+        <div class="absolute inset-0 opacity-20">
+            ${Array.from({length: 50}, (_, i) => `
+                <div class="absolute w-px h-20 bg-gradient-to-b from-transparent via-blue-400 to-transparent" style="
+                    left: ${i * 2}%;
+                    animation: matrixRain 3s infinite linear;
+                    animation-delay: ${i * 0.3}s;
+                "></div>
+            `).join('')}
+        </div>
+        ` : ''}
+        ` : ''}
         <div class="max-w-6xl mx-auto px-4 relative z-10">
             <div class="text-center">
                 ${template.hero.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : (template.styles.heroBackgroundImage ? 'white' : template.styles.accentColor)}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : (template.styles.heroBackgroundImage ? 'rgba(255,255,255,0.3)' : template.styles.accentColor)};">${template.hero.badge}</div>` : ''}
@@ -773,11 +874,11 @@ export const generatePageHTML = (templateData: any) => {
             <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.finalCta.title}</h2>
             <p class="text-lg mb-8 opacity-90" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.finalCta.description}</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.accentColor};">
+                <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}" style="background-color: ${template.styles.accentColor};">
                     ${template.finalCta.button1Icon ? `<i class="ri-${template.finalCta.button1Icon}"></i>` : ''}
                     ${template.finalCta.button1Text}
                 </a>
-                <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.secondaryColor};">
+                <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}" style="background-color: ${template.styles.secondaryColor};">
                     ${template.finalCta.button2Icon ? `<i class="ri-${template.finalCta.button2Icon}"></i>` : ''}
                     ${template.finalCta.button2Text}
                 </a>
@@ -796,7 +897,7 @@ export const generatePageHTML = (templateData: any) => {
                     <input type="email" placeholder="אימייל" class="w-full px-3 py-2 border border-input rounded-md text-right ${isPremium ? 'bg-white/10 border-white/20 text-white placeholder:text-white/70' : ''}" />
                     <input type="tel" placeholder="טלפון" class="w-full px-3 py-2 border border-input rounded-md text-right ${isPremium ? 'bg-white/10 border-white/20 text-white placeholder:text-white/70' : ''}" />
                     <textarea placeholder="הודעה" rows="4" class="w-full px-3 py-2 border border-input rounded-md text-right ${isPremium ? 'bg-white/10 border-white/20 text-white placeholder:text-white/70' : ''}"></textarea>
-                    <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 w-full text-white" style="background-color: ${template.styles.primaryColor};">
+                    <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 w-full text-white ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}" style="background-color: ${template.styles.primaryColor};">
                         ${template.contact.buttonText}
                     </button>
                 </form>
