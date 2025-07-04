@@ -98,11 +98,15 @@ export const generatePageHTML = (templateData: any) => {
       case 'nft-future-pro':
         return {
           ...baseStyles,
-          background: sectionType === 'hero' ? 'linear-gradient(135deg, rgb(88, 28, 135) 0%, rgb(190, 24, 93) 50%, rgb(30, 64, 175) 100%)' :
-                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(88, 28, 135), rgb(190, 24, 93))' :
-                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(190, 24, 93), rgb(30, 64, 175))' :
-                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(30, 64, 175), rgb(88, 28, 135))' :
-                     'linear-gradient(135deg, rgb(124, 45, 18) 0%, rgb(190, 24, 93) 100%)',
+          background: sectionType === 'hero' ? 'linear-gradient(135deg, rgb(30, 27, 75) 0%, rgb(55, 48, 163) 100%)' :
+                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(30, 27, 75), rgb(139, 92, 246))' :
+                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(30, 27, 75), rgb(124, 58, 237))' :
+                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(10, 10, 31), rgb(30, 27, 75))' :
+                     sectionType === 'about' ? 'linear-gradient(to bottom, rgb(49, 46, 129), rgb(30, 27, 75))' :
+                     sectionType === 'contact' ? 'linear-gradient(to bottom, rgb(49, 46, 129), rgb(30, 27, 75))' :
+                     sectionType === 'faq' ? 'linear-gradient(to bottom, rgb(10, 10, 31), rgb(30, 27, 75))' :
+                     sectionType === 'final-cta' ? 'linear-gradient(135deg, rgb(139, 92, 246) 0%, rgb(124, 58, 237) 100%)' :
+                     'linear-gradient(135deg, rgb(30, 27, 75) 0%, rgb(139, 92, 246) 100%)',
           animationType: 'dynamicGradients'
         };
       
@@ -710,7 +714,7 @@ export const generatePageHTML = (templateData: any) => {
         }
     </style>
 </head>
-<body style="background-color: ${template.styles.backgroundColor || template.styles.primaryColor}; color: ${template.styles.textColor};" class="text-foreground">
+<body style="background-color: ${isPremium && template.id === 'nft-future-pro' ? '#0a0a1f' : template.styles.backgroundColor || template.styles.primaryColor}; color: ${template.styles.textColor};" class="text-foreground">
 
     <!-- Hero Section -->
     <section class="hero">
