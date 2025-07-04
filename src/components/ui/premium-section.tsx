@@ -73,14 +73,14 @@ export const PremiumSection = ({ template, sectionType }: PremiumSectionProps) =
             icon: getIconComponent(item.icon)
           }));
           return (
-            <section className="py-20 bg-gradient-to-b from-gray-900 to-red-900">
+            <section className="py-20 bg-gradient-to-b from-slate-900 to-gray-900">
               <div className="max-w-7xl mx-auto px-6">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   className="text-center mb-16"
                 >
-                  <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-red-400 to-pink-400 bg-clip-text text-transparent">
+                  <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
                     {template.features.title}
                   </h2>
                 </motion.div>
@@ -88,15 +88,25 @@ export const PremiumSection = ({ template, sectionType }: PremiumSectionProps) =
               </div>
             </section>
           );
-        default:
+        case 'pricing':
           return (
             <LiquidPricing
               title={template.pricing.title}
               subtitle={template.pricing.subtitle}
               plans={template.pricing.plans}
-              className="bg-gradient-to-b from-red-900 to-gray-900"
+              className="bg-gradient-to-b from-gray-900 to-slate-900"
             />
           );
+        case 'testimonials':
+          return (
+            <MorphingTestimonials
+              title={template.testimonials.title}
+              testimonials={template.testimonials.testimonials}
+              className="bg-gradient-to-b from-slate-900 to-black"
+            />
+          );
+        default:
+          return null;
       }
 
     case 'neon-academy-pro':
@@ -119,7 +129,7 @@ export const PremiumSection = ({ template, sectionType }: PremiumSectionProps) =
             icon: getIconComponent(item.icon)
           }));
           return (
-            <section className="py-20 bg-gradient-to-b from-black to-blue-900">
+            <section className="py-20 bg-gradient-to-b from-black to-purple-900">
               <div className="max-w-7xl mx-auto px-6">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
@@ -134,15 +144,25 @@ export const PremiumSection = ({ template, sectionType }: PremiumSectionProps) =
               </div>
             </section>
           );
-        default:
+        case 'pricing':
           return (
             <LiquidPricing
               title={template.pricing.title}
               subtitle={template.pricing.subtitle}
               plans={template.pricing.plans}
-              className="bg-gradient-to-b from-blue-900 to-cyan-900"
+              className="bg-gradient-to-b from-purple-900 to-black"
             />
           );
+        case 'testimonials':
+          return (
+            <MorphingTestimonials
+              title={template.testimonials.title}
+              testimonials={template.testimonials.testimonials}
+              className="bg-gradient-to-b from-black to-purple-900"
+            />
+          );
+        default:
+          return null;
       }
 
     case 'blockchain-tech-pro':
@@ -158,15 +178,47 @@ export const PremiumSection = ({ template, sectionType }: PremiumSectionProps) =
               button2Text={template.hero.button2Text}
             />
           );
-        default:
+        case 'features':
+          const blockchainCards = template.features.items.map(item => ({
+            title: item.title,
+            description: item.description,
+            icon: getIconComponent(item.icon)
+          }));
+          return (
+            <section className="py-20 bg-gradient-to-b from-indigo-950 to-blue-950">
+              <div className="max-w-7xl mx-auto px-6">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  className="text-center mb-16"
+                >
+                  <h2 className="text-4xl md:text-5xl font-bold mb-4 text-blue-200">
+                    {template.features.title}
+                  </h2>
+                </motion.div>
+                <FloatingCardsGrid cards={blockchainCards} />
+              </div>
+            </section>
+          );
+        case 'pricing':
           return (
             <LiquidPricing
               title={template.pricing.title}
               subtitle={template.pricing.subtitle}
               plans={template.pricing.plans}
-              className="bg-gradient-to-b from-indigo-900 to-purple-900"
+              className="bg-gradient-to-b from-blue-950 to-indigo-950"
             />
           );
+        case 'testimonials':
+          return (
+            <MorphingTestimonials
+              title={template.testimonials.title}
+              testimonials={template.testimonials.testimonials}
+              className="bg-gradient-to-b from-indigo-950 to-purple-950"
+            />
+          );
+        default:
+          return null;
       }
 
     case 'nft-future-pro':
@@ -229,14 +281,14 @@ export const PremiumSection = ({ template, sectionType }: PremiumSectionProps) =
             icon: getIconComponent(item.icon)
           }));
           return (
-            <section className="py-20 bg-gradient-to-b from-orange-900 to-red-900">
+            <section className="py-20 bg-gradient-to-b from-orange-200 to-pink-200">
               <div className="max-w-7xl mx-auto px-6">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   className="text-center mb-16"
                 >
-                  <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-orange-200 to-red-200 bg-clip-text text-transparent">
+                  <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-800">
                     {template.features.title}
                   </h2>
                 </motion.div>
@@ -244,18 +296,25 @@ export const PremiumSection = ({ template, sectionType }: PremiumSectionProps) =
               </div>
             </section>
           );
-        default:
+        case 'pricing':
           return (
-            <HolographicHero
-              badge={template.hero.badge}
-              title={template.hero.title}
-              subtitle={template.hero.subtitle}
-              description={template.hero.description}
-              button1Text={template.hero.button1Text}
-              button2Text={template.hero.button2Text}
-              className="bg-gradient-to-br from-orange-900 via-red-900 to-yellow-900"
+            <LiquidPricing
+              title={template.pricing.title}
+              subtitle={template.pricing.subtitle}
+              plans={template.pricing.plans}
+              className="bg-gradient-to-b from-pink-200 to-purple-200"
             />
           );
+        case 'testimonials':
+          return (
+            <MorphingTestimonials
+              title={template.testimonials.title}
+              testimonials={template.testimonials.testimonials}
+              className="bg-gradient-to-b from-purple-200 to-orange-200"
+            />
+          );
+        default:
+          return null;
       }
 
     case 'authkit-tech-pro':
@@ -280,7 +339,7 @@ export const PremiumSection = ({ template, sectionType }: PremiumSectionProps) =
             icon: getIconComponent(item.icon)
           }));
           return (
-            <section className="py-20 bg-gradient-to-b from-slate-900 to-blue-900">
+            <section className="py-20 bg-gradient-to-b from-gray-950 to-slate-900">
               <div className="max-w-7xl mx-auto px-6">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
@@ -295,18 +354,25 @@ export const PremiumSection = ({ template, sectionType }: PremiumSectionProps) =
               </div>
             </section>
           );
-        default:
+        case 'pricing':
           return (
-            <HolographicHero
-              badge={template.hero.badge}
-              title={template.hero.title}
-              subtitle={template.hero.subtitle}
-              description={template.hero.description}
-              button1Text={template.hero.button1Text}
-              button2Text={template.hero.button2Text}
-              className="bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900"
+            <LiquidPricing
+              title={template.pricing.title}
+              subtitle={template.pricing.subtitle}
+              plans={template.pricing.plans}
+              className="bg-gradient-to-b from-slate-900 to-blue-950"
             />
           );
+        case 'testimonials':
+          return (
+            <MorphingTestimonials
+              title={template.testimonials.title}
+              testimonials={template.testimonials.testimonials}
+              className="bg-gradient-to-b from-blue-950 to-gray-950"
+            />
+          );
+        default:
+          return null;
       }
 
     // Default case - original holographic style
