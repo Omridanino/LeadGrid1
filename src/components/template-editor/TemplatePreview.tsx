@@ -1,4 +1,5 @@
 
+import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -6,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Star } from 'lucide-react';
 import { TemplateData } from '@/types/template';
+import { PremiumSection } from '../ui/premium-section';
 
 interface TemplatePreviewProps {
   template: TemplateData;
@@ -116,6 +118,126 @@ const getEffectClasses = (effectType: string | null) => {
 };
 
 export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
+  const isPremiumTemplate = template.category.includes('פרימיום');
+  
+  if (isPremiumTemplate) {
+    return (
+      <div className="min-h-full">
+        <PremiumSection template={template} sectionType="hero" />
+        
+        {/* Emotional Section */}
+        <section className="py-16 px-4 relative bg-gradient-to-br from-blue-900/50 to-purple-900/50">
+          <div className="max-w-4xl mx-auto text-center relative z-10">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+              {template.emotional.title}
+            </h2>
+            <p className="text-lg leading-relaxed opacity-90 mb-8 text-blue-100">
+              {template.emotional.description}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" className="bg-blue-500 hover:bg-blue-600 text-white">
+                {template.emotional.button1Text}
+              </Button>
+              <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10">
+                {template.emotional.button2Text}
+              </Button>
+            </div>
+          </div>
+        </section>
+        
+        <PremiumSection template={template} sectionType="features" />
+        <PremiumSection template={template} sectionType="testimonials" />
+        
+        {/* About Section */}
+        <section className="py-16 px-4 relative bg-gradient-to-br from-purple-900/50 to-gray-900/50">
+          <div className="max-w-6xl mx-auto relative z-10">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+                {template.about.title}
+              </h2>
+              <p className="text-lg max-w-4xl mx-auto opacity-90 text-blue-100">
+                {template.about.description}
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" className="bg-purple-500 hover:bg-purple-600 text-white">
+                {template.about.button1Text}
+              </Button>
+              <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10">
+                {template.about.button2Text}
+              </Button>
+            </div>
+          </div>
+        </section>
+        
+        <PremiumSection template={template} sectionType="pricing" />
+        
+        {/* FAQ Section */}
+        <section className="py-16 px-4 relative bg-gradient-to-br from-gray-900 to-blue-900">
+          <div className="max-w-4xl mx-auto relative z-10">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+                {template.faq.title}
+              </h2>
+            </div>
+            <div className="space-y-6">
+              {template.faq.questions.map((item, index) => (
+                <Card key={index} className="bg-white/10 backdrop-blur-sm border-white/20 p-6">
+                  <h3 className="text-xl font-bold mb-2 text-white">{item.question}</h3>
+                  <p className="text-blue-100/80">{item.answer}</p>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+        
+        {/* Final CTA */}
+        <section className="py-20 px-4 relative bg-gradient-to-br from-blue-500 to-purple-600">
+          <div className="max-w-4xl mx-auto text-center relative z-10">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+              {template.finalCta.title}
+            </h2>
+            <p className="text-xl mb-8 text-blue-100">
+              {template.finalCta.description}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+                {template.finalCta.button1Text}
+              </Button>
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                {template.finalCta.button2Text}
+              </Button>
+            </div>
+          </div>
+        </section>
+        
+        {/* Contact Section */}
+        <section className="py-16 px-4 relative bg-gradient-to-br from-gray-900 to-purple-900">
+          <div className="max-w-4xl mx-auto text-center relative z-10">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+              {template.contact.title}
+            </h2>
+            {template.contact.subtitle && (
+              <p className="text-xl mb-8 text-blue-100/80">
+                {template.contact.subtitle}
+              </p>
+            )}
+            <Button size="lg" className="bg-blue-500 hover:bg-blue-600 text-white">
+              {template.contact.buttonText}
+            </Button>
+          </div>
+        </section>
+        
+        {/* Footer */}
+        <footer className="bg-black text-white py-8 px-4">
+          <div className="max-w-6xl mx-auto text-center">
+            <p>&copy; 2024 {template.footer.companyName}. כל הזכויות שמורות.</p>
+          </div>
+        </footer>
+      </div>
+    );
+  }
+  
   return (
     <div className="min-h-full" style={{ backgroundColor: template.styles.backgroundColor, color: template.styles.textColor }}>
       {/* Hero Section */}
