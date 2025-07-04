@@ -191,49 +191,50 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
       title: "קנה דומיין והירשם לוורדפרס",
       icon: <Monitor className="w-5 h-5" />,
       description: "רכוש דומיין והרשם לשירות אחסון WordPress",
-      image: "/lovable-uploads/e6318e7c-02de-4dc9-9fb1-45b6ea0230a6.png"
+      image: null
     },
     {
       number: 2,
-      title: "הורד את תוסף Elementor",
+      title: "התקן את תוסף Elementor",
       icon: <Settings className="w-5 h-5" />,
-      description: "התקן את Elementor (בחינם) מספריית התוספים",
-      image: "/lovable-uploads/cace6f71-ada2-4b7e-91fc-365f03ced923.png"
+      description: "כנס לתוספים בצד ימין של האתר והתקן את Elementor (בחינם)",
+      image: "/lovable-uploads/305190b1-b45a-4d69-8f47-0d71f9dbbd5a.png"
     },
     {
       number: 3,
-      title: "צור עמוד חדש בוורדפרס",
+      title: "צור עמוד חדש",
       icon: <FileText className="w-5 h-5" />,
-      description: "כנס לוורדפרס → עמודים → הוסף עמוד חדש",
-      image: "/lovable-uploads/e6318e7c-02de-4dc9-9fb1-45b6ea0230a6.png"
+      description: "לחץ על עמודים ובחר Add Page להוספת עמוד חדש",
+      image: "/lovable-uploads/6b211bbc-a2b8-49f0-a525-60d79611a4c5.png"
     },
     {
       number: 4,
       title: "ערוך באלמנטור",
       icon: <Code className="w-5 h-5" />,
-      description: "לחץ על העמוד ובחר 'עריכה באמצעות אלמנטור'",
-      image: "/lovable-uploads/fc6b79e5-d0ae-4347-a64a-16726c82eee2.png"
+      description: "כנס לעמוד שיצרת, תן לו כותרת ולחץ 'עריכה באמצעות אלמנטור'",
+      image: "/lovable-uploads/6daad2c0-7e59-4299-b5c3-bbdf4c3b3d6d.png"
     },
     {
       number: 5,
       title: "שנה פריסה לקנבס",
       icon: <Settings className="w-5 h-5" />,
-      description: "לחץ על גלגל השיניים ושנה פריסה ל'אלמנטור קנבס'",
-      image: "/lovable-uploads/36692fc6-fedf-48eb-a2f4-9b4394dea231.png"
+      description: "לחץ על גלגל השיניים במרכז הדף, לך להגדרות ובחר 'אלמנטור קנבס'",
+      image: "/lovable-uploads/4d61cea5-72ca-4793-8f47-83cdff361c2d.png"
     },
     {
       number: 6,
       title: "הוסף רכיב HTML",
       icon: <Copy className="w-5 h-5" />,
-      description: "גרור רכיב HTML לאמצע המסך והדבק את הקוד",
-      image: "/lovable-uploads/355ad52c-63bd-4656-98c6-e68cb883501d.png"
+      description: "רשום HTML באיזור הווידג'טים, גרור את האלמנט HTML לאמצע והדבק את הקוד",
+      image: "/lovable-uploads/86dc32f3-db4c-45f2-9b31-14c0c0970e0c.png"
     },
     {
       number: 7,
       title: "כוונן הגדרות תצוגה",
       icon: <Settings className="w-5 h-5" />,
-      description: "שנה רוחב ושוליים מ-PX ל-VW ושים 100",
-      image: "/lovable-uploads/256cea30-a0fd-449d-b308-a0fe4767e2c4.png"
+      description: "לחץ על הכפתור האמצעי ברכיב HTML ושנה הגדרות פריסה ושוליים",
+      image: "/lovable-uploads/16b3b839-8703-45dc-a95d-04712f349cab.png",
+      additionalImage: "/lovable-uploads/bae5cc76-4270-4295-8d31-6b0ad094ad58.png"
     },
     {
       number: 8,
@@ -331,7 +332,7 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
 
           {/* Step Image */}
           {steps[currentStep - 1].image && (
-            <div className="bg-slate-900 border border-slate-600 rounded-xl p-6 shadow-lg">
+            <div className="bg-slate-900 border border-slate-600 rounded-xl p-6 shadow-lg space-y-4">
               <div className="relative overflow-hidden rounded-lg border border-slate-600 bg-slate-800">
                 <img 
                   src={steps[currentStep - 1].image} 
@@ -342,6 +343,20 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
               <p className="text-center text-gray-400 text-sm mt-3 font-medium">
                 📸 {steps[currentStep - 1].title}
               </p>
+              
+              {/* Additional image for step 7 */}
+              {currentStep === 7 && steps[currentStep - 1].additionalImage && (
+                <div className="relative overflow-hidden rounded-lg border border-slate-600 bg-slate-800">
+                  <img 
+                    src={steps[currentStep - 1].additionalImage} 
+                    alt={`${steps[currentStep - 1].title} - חלק 2`}
+                    className="w-full h-64 object-contain mx-auto bg-slate-800 rounded-lg hover:scale-105 transition-transform duration-300"
+                  />
+                  <p className="text-center text-gray-400 text-sm mt-3 font-medium">
+                    📸 הגדרות מתקדמות - שוליים
+                  </p>
+                </div>
+              )}
             </div>
           )}
 
@@ -450,13 +465,20 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
                     <p>• זה ייתן לך שליטה מלאה על העמוד</p>
                   </>
                 )}
-                {currentStep === 7 && (
-                  <>
-                    <p>• לחץ על הכפתור האמצעי ברכיב HTML</p>
-                    <p>• שנה את הרוחב מ-PX ל-VW ושים 100</p>
-                    <p>• לחץ על "מתקדם" ושנה שוליים פנימיים וחיצוניים ל-VW עם 0</p>
-                  </>
-                )}
+                 {currentStep === 6 && (
+                   <>
+                     <p>• רשום "HTML" באיזור הווידג'טים הימני</p>
+                     <p>• גרור את האלמנט HTML לאמצע האתר</p>
+                     <p>• הדבק את הקוד HTML שקיבלת מ-LeadGrid</p>
+                   </>
+                 )}
+                 {currentStep === 7 && (
+                   <>
+                     <p>• לחץ על הכפתור האמצעי ברכיב HTML (3 נקודות)</p>
+                     <p>• לחץ על "פריסה" ושנה רוחב מ-PX ל-VW ושים 100</p>
+                     <p>• לך ל"מתקדם" ושנה שוליים פנימיים וחיצוניים ל-VW ושים 100</p>
+                   </>
+                 )}
                 {currentStep === 8 && (
                   <>
                     <p>• לחץ "תצוגה מקדימה" לבדיקה</p>
