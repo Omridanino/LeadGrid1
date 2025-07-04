@@ -191,14 +191,14 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
       title: "קנה דומיין והירשם לוורדפרס",
       icon: <Monitor className="w-5 h-5" />,
       description: "רכוש דומיין והרשם לשירות אחסון WordPress",
-      image: "/lovable-uploads/cace6f71-ada2-4b7e-91fc-365f03ced923.png"
+      image: "/lovable-uploads/e6318e7c-02de-4dc9-9fb1-45b6ea0230a6.png"
     },
     {
       number: 2,
       title: "הורד את תוסף Elementor",
       icon: <Settings className="w-5 h-5" />,
       description: "התקן את Elementor (בחינם) מספריית התוספים",
-      image: "/lovable-uploads/fc6b79e5-d0ae-4347-a64a-16726c82eee2.png"
+      image: "/lovable-uploads/cace6f71-ada2-4b7e-91fc-365f03ced923.png"
     },
     {
       number: 3,
@@ -212,21 +212,21 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
       title: "ערוך באלמנטור",
       icon: <Code className="w-5 h-5" />,
       description: "לחץ על העמוד ובחר 'עריכה באמצעות אלמנטור'",
-      image: "/lovable-uploads/36692fc6-fedf-48eb-a2f4-9b4394dea231.png"
+      image: "/lovable-uploads/fc6b79e5-d0ae-4347-a64a-16726c82eee2.png"
     },
     {
       number: 5,
       title: "שנה פריסה לקנבס",
       icon: <Settings className="w-5 h-5" />,
       description: "לחץ על גלגל השיניים ושנה פריסה ל'אלמנטור קנבס'",
-      image: "/lovable-uploads/355ad52c-63bd-4656-98c6-e68cb883501d.png"
+      image: "/lovable-uploads/36692fc6-fedf-48eb-a2f4-9b4394dea231.png"
     },
     {
       number: 6,
       title: "הוסף רכיב HTML",
       icon: <Copy className="w-5 h-5" />,
       description: "גרור רכיב HTML לאמצע המסך והדבק את הקוד",
-      image: "/lovable-uploads/4df785c9-b78f-4c97-acbd-c2f06cd0ca01.png"
+      image: "/lovable-uploads/355ad52c-63bd-4656-98c6-e68cb883501d.png"
     },
     {
       number: 7,
@@ -244,59 +244,82 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
   ];
 
   return (
-    <div className="max-w-5xl mx-auto p-6 space-y-8" dir="rtl">
-      
-      {/* Header */}
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-          מדריך התקנה ב-WordPress
-        </h1>
-        <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-          8 שלבים פשוטים להעלאת דף הנחיתה שלך לאתר WordPress עם Elementor
-        </p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      <div className="max-w-5xl mx-auto p-6 space-y-8" dir="rtl">
+        
+        {/* Header */}
+        <div className="text-center space-y-6 py-8">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full shadow-2xl shadow-blue-500/25 mb-4">
+            <Code className="w-10 h-10 text-white" />
+          </div>
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            מדריך התקנה ב-WordPress
+          </h1>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            8 שלבים פשוטים להעלאת דף הנחיתה שלך לאתר WordPress עם Elementor
+          </p>
+          <div className="flex justify-center">
+            <Badge variant="outline" className="bg-blue-500/10 text-blue-400 border-blue-500/30 px-4 py-2 text-sm">
+              🚀 מדריך מפורט עם תמונות
+            </Badge>
+          </div>
+        </div>
 
       {/* Progress Steps */}
-      <div className="flex justify-center">
-        <div className="flex items-center space-x-2">
-          {steps.map((step, index) => (
-            <div key={step.number} className="flex items-center">
-              <div className={`
-                w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all
-                ${currentStep >= step.number 
-                  ? 'bg-green-500 text-white shadow-lg shadow-green-500/30' 
-                  : currentStep === step.number 
-                    ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30' 
-                    : 'bg-gray-700 text-gray-400'
-                }
-              `}>
-                {currentStep > step.number ? <CheckCircle className="w-5 h-5" /> : step.number}
+      <div className="flex justify-center mb-8">
+        <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-slate-700 shadow-2xl">
+          <div className="flex items-center justify-between max-w-4xl">
+            {steps.map((step, index) => (
+              <div key={step.number} className="flex items-center">
+                <div className={`
+                  relative w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-500 hover:scale-110
+                  ${currentStep >= step.number 
+                    ? 'bg-gradient-to-br from-green-400 to-green-600 text-white shadow-xl shadow-green-500/40 animate-pulse' 
+                    : currentStep === step.number 
+                      ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-xl shadow-blue-500/40 ring-4 ring-blue-500/30' 
+                      : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
+                  }
+                `}>
+                  {currentStep > step.number ? (
+                    <CheckCircle className="w-6 h-6" />
+                  ) : (
+                    <span className="font-bold text-lg">{step.number}</span>
+                  )}
+                  
+                  {/* Floating step name */}
+                  <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-gray-400 whitespace-nowrap">
+                    {step.title.slice(0, 15)}...
+                  </div>
+                </div>
+                
+                {index < steps.length - 1 && (
+                  <div className={`w-16 h-2 mx-3 rounded-full transition-all duration-500 ${
+                    currentStep > step.number 
+                      ? 'bg-gradient-to-r from-green-500 to-green-400 shadow-lg shadow-green-500/30' 
+                      : 'bg-gray-700'
+                  }`} />
+                )}
               </div>
-              {index < steps.length - 1 && (
-                <div className={`w-12 h-1 mx-2 transition-all ${
-                  currentStep > step.number ? 'bg-green-500' : 'bg-gray-700'
-                }`} />
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Current Step Card */}
-      <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 shadow-2xl">
-        <CardHeader>
-          <div className="flex items-center gap-4">
-            <div className="bg-blue-500 p-3 rounded-xl shadow-lg shadow-blue-500/30">
+      <Card className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border-slate-700/50 shadow-2xl backdrop-blur-sm animate-fade-in">
+        <CardHeader className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-b border-slate-700/50">
+          <div className="flex items-center gap-6">
+            <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-4 rounded-2xl shadow-xl shadow-blue-500/30 animate-pulse">
               {steps[currentStep - 1].icon}
             </div>
-            <div>
-              <Badge variant="outline" className="mb-2 bg-blue-500/10 text-blue-400 border-blue-500/30">
+            <div className="flex-1">
+              <Badge variant="outline" className="mb-3 bg-blue-500/20 text-blue-300 border-blue-500/40 px-3 py-1">
                 שלב {currentStep} מתוך {steps.length}
               </Badge>
-              <CardTitle className="text-2xl text-white">
+              <CardTitle className="text-3xl font-bold text-white mb-2 bg-gradient-to-r from-white to-gray-300 bg-clip-text">
                 {steps[currentStep - 1].title}
               </CardTitle>
-              <p className="text-gray-400 mt-1">
+              <p className="text-gray-300 text-lg leading-relaxed">
                 {steps[currentStep - 1].description}
               </p>
             </div>
@@ -308,12 +331,17 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
 
           {/* Step Image */}
           {steps[currentStep - 1].image && (
-            <div className="bg-slate-900 border border-slate-600 rounded-lg p-4">
-              <img 
-                src={steps[currentStep - 1].image} 
-                alt={steps[currentStep - 1].title}
-                className="w-full max-w-md mx-auto rounded-lg border border-slate-600"
-              />
+            <div className="bg-slate-900 border border-slate-600 rounded-xl p-6 shadow-lg">
+              <div className="relative overflow-hidden rounded-lg border border-slate-600 bg-slate-800">
+                <img 
+                  src={steps[currentStep - 1].image} 
+                  alt={steps[currentStep - 1].title}
+                  className="w-full h-64 object-contain mx-auto bg-slate-800 rounded-lg hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <p className="text-center text-gray-400 text-sm mt-3 font-medium">
+                📸 {steps[currentStep - 1].title}
+              </p>
             </div>
           )}
 
@@ -511,6 +539,7 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
         </CardContent>
       </Card>
 
+      </div>
     </div>
   );
 };
