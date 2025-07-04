@@ -287,10 +287,6 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
                     <span className="font-bold text-lg">{step.number}</span>
                   )}
                   
-                  {/* Floating step name */}
-                  <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-gray-400 whitespace-nowrap">
-                    {step.title.slice(0, 15)}...
-                  </div>
                 </div>
                 
                 {index < steps.length - 1 && (
