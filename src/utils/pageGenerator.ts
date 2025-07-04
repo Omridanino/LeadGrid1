@@ -450,11 +450,11 @@ export const generatePageHTML = (templateData: any) => {
             <div class="grid md:grid-cols-3 gap-8 mb-12">
                 ${template.features.items.map((feature: any) => `
                     <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 ${isPremium ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}">
-                        <div class="text-4xl mb-4" style="color: ${template.styles.primaryColor};">
-                            <i class="ri-${feature.icon}"></i>
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center mb-4 shadow-lg mx-auto">
+                            <i class="ri-${feature.icon} text-2xl text-white"></i>
                         </div>
-                        <h3 class="text-xl font-bold mb-2" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${feature.title}</h3>
-                        <p style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor}; opacity: 0.8;">${feature.description}</p>
+                        <h3 class="text-xl font-bold mb-2 text-center" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${feature.title}</h3>
+                        <p class="text-center" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor}; opacity: 0.8;">${feature.description}</p>
                     </div>
                 `).join('')}
             </div>
