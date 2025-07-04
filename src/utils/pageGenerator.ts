@@ -447,15 +447,39 @@ export const generatePageHTML = (templateData: any) => {
                 ${template.features.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor}; opacity: 0.8;">${template.features.subtitle}</p>` : ''}
             </div>
             
-            <div class="grid md:grid-cols-3 gap-8 mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                 ${template.features.items.map((feature: any) => `
-                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 ${isPremium ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}">
-                        <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center mb-4 shadow-lg mx-auto">
-                            <i class="ri-${feature.icon} text-2xl text-white"></i>
+                  <div class="relative group perspective-1000">
+                    <div class="relative transform-gpu transition-all duration-300 preserve-3d group-hover:rotateY-5">
+                      <!-- Floating background with glass effect -->
+                      <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20"></div>
+                      
+                      <!-- Glow effect -->
+                      <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"></div>
+                      
+                      <!-- Content -->
+                      <div class="relative z-10 p-8 space-y-4">
+                        <!-- Floating icon -->
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
+                          <i class="ri-${feature.icon} text-2xl text-white"></i>
                         </div>
-                        <h3 class="text-xl font-bold mb-2 text-center" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${feature.title}</h3>
-                        <p class="text-center" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor}; opacity: 0.8;">${feature.description}</p>
+                        
+                        <!-- Title -->
+                        <h3 class="text-xl font-bold text-white bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">
+                          ${feature.title}
+                        </h3>
+                        
+                        <!-- Description -->
+                        <p class="text-blue-100/80 leading-relaxed">
+                          ${feature.description}
+                        </p>
+                        
+                        <!-- Floating particles -->
+                        <div class="absolute top-4 right-4 w-2 h-2 bg-blue-400 rounded-full opacity-60 animate-pulse"></div>
+                        <div class="absolute bottom-6 left-6 w-1 h-1 bg-purple-400 rounded-full opacity-40 animate-pulse delay-500"></div>
+                      </div>
                     </div>
+                  </div>
                 `).join('')}
             </div>
 
