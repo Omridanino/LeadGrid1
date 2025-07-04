@@ -28,6 +28,29 @@ const getSectionStyle = (backgroundColor: string, backgroundImage?: string) => {
   return baseStyle;
 };
 
+const isPremiumTemplate = (template: TemplateData) => {
+  return template.category.includes('פרימיום');
+};
+
+const getPremiumTextColor = (templateId: string) => {
+  switch (templateId) {
+    case 'tech-consultant-pro':
+      return 'white';
+    case 'neon-academy-pro':
+      return '#00f5ff';
+    case 'blockchain-tech-pro':
+      return '#bfdbfe';
+    case 'creative-3d-pro':
+      return '#374151';
+    case 'authkit-tech-pro':
+      return '#bfdbfe';
+    case 'nft-future-pro':
+      return '#e879f9';
+    default:
+      return 'white';
+  }
+};
+
 const getEffectClasses = (effectType: string | null) => {
   if (!effectType) return '';
   
@@ -523,8 +546,12 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
           <div className="space-y-4 mb-12">
             {template.faq.questions.map((qa, index) => (
               <Card key={index} className={`p-6 ${template.effects?.faq === 'glass-morph' ? 'glass-effect' : ''}`}>
-                <h3 className="text-lg font-bold mb-2 text-right" style={{ color: template.styles.textColor }}>{qa.question}</h3>
-                <p className="opacity-80 text-right" style={{ color: template.styles.textColor }}>{qa.answer}</p>
+                <h3 className="text-lg font-bold mb-2 text-right" style={{ 
+                  color: template.category.includes('פרימיום') ? getPremiumTextColor(template.id) : template.styles.textColor 
+                }}>{qa.question}</h3>
+                <p className="opacity-80 text-right" style={{ 
+                  color: template.category.includes('פרימיום') ? getPremiumTextColor(template.id) : template.styles.textColor 
+                }}>{qa.answer}</p>
               </Card>
             ))}
           </div>

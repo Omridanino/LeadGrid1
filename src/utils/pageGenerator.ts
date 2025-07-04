@@ -371,13 +371,13 @@ export const generatePageHTML = (templateData: any) => {
         .badge {
             display: inline-block;
             padding: 0.5rem 1rem;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.3);
+            background: ${isPremium ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.1)'};
+            border: 1px solid ${isPremium ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.3)'};
             border-radius: 20px;
             font-size: 0.9rem;
             font-weight: 500;
             margin-bottom: 1rem;
-            ${isPremium ? 'backdrop-filter: blur(10px);' : ''}
+            backdrop-filter: blur(10px);
         }
         
         .card {
@@ -387,13 +387,34 @@ export const generatePageHTML = (templateData: any) => {
             padding: 2rem;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             transition: transform 0.3s ease;
-            ${isPremium ? 'position: relative; overflow: hidden;' : ''}
+            position: relative;
+            overflow: hidden;
         }
         
         .card:hover {
             transform: translateY(-5px);
-            ${isPremium ? 'box-shadow: 0 20px 40px rgba(0,0,0,0.2);' : ''}
+            box-shadow: ${isPremium ? '0 20px 40px rgba(0,0,0,0.2)' : '0 8px 25px rgba(0,0,0,0.15)'};
         }
+        
+        /* Add premium floating shapes to cards */
+        ${isPremium ? `
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+            opacity: 0;
+        }
+        
+        .card:hover::before {
+            opacity: 1;
+            transform: rotate(45deg) translate(50%, 50%);
+        }` : ''}
         
         .star {
             color: #fbbf24;
@@ -489,9 +510,9 @@ export const generatePageHTML = (templateData: any) => {
             z-index: 2;
         }
         
-        /* Premium Background Effects */
+        /* Premium Background Effects with Animations */
         ${isPremium && template.id === 'tech-consultant-pro' ? `
-        .hero::before, .features::before, .pricing::before, .testimonials::before {
+        .hero::before, .features::before, .pricing::before, .testimonials::before, .faq::before {
             content: '';
             position: absolute;
             top: 0;
@@ -499,16 +520,33 @@ export const generatePageHTML = (templateData: any) => {
             right: 0;
             bottom: 0;
             background-image: 
-                linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px),
-                linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
             background-size: 20px 20px;
             opacity: 0.3;
+            pointer-events: none;
+            z-index: 1;
+            animation: float 15s ease-in-out infinite;
+        }
+        
+        /* Add glassmorphism floating panels */
+        .hero::after, .features::after, .pricing::after, .testimonials::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 60px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            top: 20%;
+            left: 10%;
+            animation: float 8s ease-in-out infinite;
             pointer-events: none;
             z-index: 1;
         }` : ''}
         
         ${isPremium && template.id === 'neon-academy-pro' ? `
-        .hero::before, .features::before, .pricing::before, .testimonials::before {
+        .hero::before, .features::before, .pricing::before, .testimonials::before, .faq::before {
             content: '';
             position: absolute;
             top: 0;
@@ -522,7 +560,32 @@ export const generatePageHTML = (templateData: any) => {
             animation: grid-glow 4s ease-in-out infinite alternate;
             pointer-events: none;
             z-index: 1;
+        }
+        
+        /* Add cyberpunk city silhouette */
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to top, rgba(0, 245, 255, 0.2), transparent);
+            background-image: 
+                linear-gradient(90deg, 
+                    transparent 0%, transparent 5%, rgba(0, 245, 255, 0.3) 5%, rgba(0, 245, 255, 0.3) 7%, transparent 7%,
+                    transparent 12%, rgba(0, 245, 255, 0.2) 12%, rgba(0, 245, 255, 0.2) 15%, transparent 15%,
+                    transparent 20%, rgba(0, 245, 255, 0.4) 20%, rgba(0, 245, 255, 0.4) 22%, transparent 22%
+                );
+            animation: pulse 3s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
         }` : ''}
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
         
         ${isPremium && template.id === 'blockchain-tech-pro' ? `
         .hero::after, .features::after, .pricing::after, .testimonials::after {
