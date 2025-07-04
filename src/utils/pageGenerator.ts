@@ -448,39 +448,51 @@ export const generatePageHTML = (templateData: any) => {
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                ${template.features.items.map((feature: any) => `
-                  <div class="relative group perspective-1000">
-                    <div class="relative transform-gpu transition-all duration-300 preserve-3d group-hover:rotateY-5">
-                      <!-- Floating background with glass effect -->
-                      <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20"></div>
-                      
-                      <!-- Glow effect -->
-                      <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"></div>
-                      
-                      <!-- Content -->
-                      <div class="relative z-10 p-8 space-y-4">
-                        <!-- Floating icon -->
-                        <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
-                          <i class="ri-${feature.icon} text-2xl text-white"></i>
+                ${template.features.items.map((feature: any) => {
+                  if (isPremium) {
+                    return `
+                      <div class="relative group perspective-1000">
+                        <div class="relative transform-gpu transition-all duration-300 preserve-3d group-hover:rotateY-5">
+                          <!-- Floating background with glass effect -->
+                          <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20"></div>
+                          
+                          <!-- Glow effect -->
+                          <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"></div>
+                          
+                          <!-- Content -->
+                          <div class="relative z-10 p-8 space-y-4">
+                            <!-- Floating icon -->
+                            <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
+                              <i class="ri-${feature.icon} text-2xl text-white"></i>
+                            </div>
+                            
+                            <!-- Title -->
+                            <h3 class="text-xl font-bold text-white bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">
+                              ${feature.title}
+                            </h3>
+                            
+                            <!-- Description -->
+                            <p class="text-blue-100/80 leading-relaxed">
+                              ${feature.description}
+                            </p>
+                            
+                            <!-- Floating particles -->
+                            <div class="absolute top-4 right-4 w-2 h-2 bg-blue-400 rounded-full opacity-60 animate-pulse"></div>
+                            <div class="absolute bottom-6 left-6 w-1 h-1 bg-purple-400 rounded-full opacity-40 animate-pulse delay-500"></div>
+                          </div>
                         </div>
-                        
-                        <!-- Title -->
-                        <h3 class="text-xl font-bold text-white bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">
-                          ${feature.title}
-                        </h3>
-                        
-                        <!-- Description -->
-                        <p class="text-blue-100/80 leading-relaxed">
-                          ${feature.description}
-                        </p>
-                        
-                        <!-- Floating particles -->
-                        <div class="absolute top-4 right-4 w-2 h-2 bg-blue-400 rounded-full opacity-60 animate-pulse"></div>
-                        <div class="absolute bottom-6 left-6 w-1 h-1 bg-purple-400 rounded-full opacity-40 animate-pulse delay-500"></div>
-                      </div>
-                    </div>
-                  </div>
-                `).join('')}
+                      </div>`;
+                  } else {
+                    return `
+                      <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
+                        <div class="text-4xl mb-4" style="color: ${template.styles.primaryColor};">
+                          <i class="ri-${feature.icon}"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2" style="color: ${template.styles.textColor};">${feature.title}</h3>
+                        <p style="color: ${template.styles.textColor}; opacity: 0.8;">${feature.description}</p>
+                      </div>`;
+                  }
+                }).join('')}
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -498,17 +510,26 @@ export const generatePageHTML = (templateData: any) => {
 
     <!-- Testimonials Section -->
     <section id="testimonials" class="testimonials">
+        ${isPremium ? `
         <!-- Animated background particles -->
         <div class="absolute inset-0">
             ${Array.from({length: 20}, (_, i) => `
                 <div class="absolute w-2 h-2 bg-blue-400/20 rounded-full animate-pulse" style="left: ${Math.random() * 100}%; top: ${Math.random() * 100}%; animation-delay: ${i * 0.2}s;"></div>
             `).join('')}
         </div>
+        ` : ''}
         
         <div class="max-w-6xl mx-auto px-6 relative z-10">
+            ${isPremium ? `
             <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">
                 ${template.testimonials.title}
             </h2>
+            ` : `
+            <div class="text-center mb-12">
+                ${template.testimonials.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${template.styles.primaryColor}; border-color: ${template.styles.primaryColor};">${template.testimonials.badge}</div>` : ''}
+                <h2 class="text-3xl md:text-4xl font-bold" style="color: ${template.styles.textColor};">${template.testimonials.title}</h2>
+            </div>
+            `}
             
             <!-- Main testimonial card -->
             <div class="relative max-w-4xl mx-auto mb-16">
@@ -631,6 +652,7 @@ export const generatePageHTML = (templateData: any) => {
     <!-- Pricing Section -->
     <section id="pricing" class="pricing">
         <div class="max-w-7xl mx-auto px-6 relative z-10">
+            ${isPremium ? `
             <!-- Animated liquid background -->
             <div class="absolute inset-0 opacity-30">
                 <svg class="absolute inset-0 w-full h-full" viewBox="0 0 1000 1000">
@@ -646,10 +668,17 @@ export const generatePageHTML = (templateData: any) => {
             </div>
             
             <div class="text-center mb-16">
-                ${template.pricing.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.primaryColor};">${template.pricing.badge}</div>` : ''}
+                ${template.pricing.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${getPremiumTextColor(template.id)}; border-color: rgba(255,255,255,0.3);">${template.pricing.badge}</div>` : ''}
                 <h2 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">${template.pricing.title}</h2>
                 ${template.pricing.subtitle ? `<p class="text-xl text-blue-100/70 max-w-2xl mx-auto">${template.pricing.subtitle}</p>` : ''}
             </div>
+            ` : `
+            <div class="text-center mb-12">
+                ${template.pricing.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${template.styles.primaryColor}; border-color: ${template.styles.primaryColor};">${template.pricing.badge}</div>` : ''}
+                <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: ${template.styles.textColor};">${template.pricing.title}</h2>
+                ${template.pricing.subtitle ? `<p class="text-xl opacity-80" style="color: ${template.styles.textColor};">${template.pricing.subtitle}</p>` : ''}
+            </div>
+            `}
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
                 ${template.pricing.plans.map((plan: any, index: number) => `
