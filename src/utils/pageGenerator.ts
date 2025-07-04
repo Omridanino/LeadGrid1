@@ -256,8 +256,28 @@ export const generatePageHTML = (templateData: any) => {
             .text-4xl { font-size: 2rem; }
             .text-3xl { font-size: 1.5rem; }
             .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-            .flex { flex-direction: column; }
+            .flex { 
+                flex-direction: column; 
+                align-items: center;
+                gap: 1rem;
+            }
+            .flex .btn {
+                width: 100%;
+                max-width: 280px;
+                text-align: center;
+                justify-content: center;
+            }
             .hero { padding: 3rem 0; min-height: auto; }
+            .container { padding: 0 1.5rem; }
+            .text-center { text-align: center; }
+            
+            /* Center all content blocks in mobile */
+            .content > div {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
         }
     </style>
 </head>
