@@ -563,7 +563,7 @@ export const generatePageHTML = (templateData: any) => {
         ${template.styles.footerBackgroundImage ? '<div class="bg-overlay"></div>' : ''}
         <div class="container content">
             <div class="text-center">
-                <h3 class="text-xl font-bold mb-2" style="color: ${template.styles.footerBackgroundImage ? 'white' : template.styles.textColor};">${template.formData?.businessName || template.businessInfo?.companyName || template.hero?.title || 'העסק שלנו'}</h3>
+                <h3 class="text-xl font-bold mb-2" style="color: ${template.styles.footerBackgroundImage ? 'white' : template.styles.textColor};">${template.hero?.title || 'העסק שלנו'}</h3>
                 ${template.footer.description ? `<p class="mb-4" style="color: ${template.styles.footerBackgroundImage ? 'white' : template.styles.textColor}; opacity: 0.8;">${template.footer.description}</p>` : ''}
                 
                 ${template.footer.contactInfo ? `
