@@ -277,8 +277,48 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
             </CardContent>
           </Card>
 
-          {/* Alternative Options */}
+          {/* Simple HTML Export Option */}
           <Card className="bg-gradient-to-br from-green-900/30 to-blue-900/30 border-green-700/50">
+            <CardContent className="p-6">
+              <h4 className="text-white font-semibold text-lg mb-4 flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-green-400" />
+                דרך פשוטה - העתקה והדבקה
+              </h4>
+              
+              <div className="space-y-3">
+                <p className="text-gray-300 text-sm">
+                  הדרך הכי מהירה ומקצועית - קוד HTML מוכן להדבקה בעורך WordPress
+                </p>
+                
+                <div className="bg-green-900/30 border border-green-700/50 rounded-lg p-4">
+                  <h5 className="text-green-400 font-medium mb-2">✨ איך זה עובד:</h5>
+                  <ul className="text-green-300 text-sm space-y-1">
+                    <li>• נכין עבורך קוד HTML מוכן להדבקה</li>
+                    <li>• תעתיק ותדביק בעורך WordPress</li>
+                    <li>• הדף יראה בדיוק כמו בתצוגה המקדימה</li>
+                    <li>• אין צורך בהתקנות או הגדרות מורכבות</li>
+                  </ul>
+                </div>
+                
+                <Button 
+                  onClick={() => {
+                    const landingPageData = JSON.parse(localStorage.getItem('generatedPageData') || '{}');
+                    onSubmit({
+                      method: 'html-export',
+                      landingPageData
+                    });
+                  }}
+                  className="w-full bg-green-600 hover:bg-green-700"
+                >
+                  <CheckCircle className="w-4 h-4 ml-2" />
+                  קבל קוד HTML מוכן להדבקה
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Alternative Options */}
+          <Card className="bg-gradient-to-br from-purple-900/30 to-gray-900/30 border-purple-700/50">
             <CardContent className="p-6">
               <h4 className="text-white font-semibold text-lg mb-4">
                 אין לך עדיין אתר WordPress?
@@ -292,7 +332,7 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
                 <div className="flex gap-3">
                   <Button 
                     onClick={() => window.open('https://wordpress.com/start', '_blank')}
-                    className="flex-1 bg-green-600 hover:bg-green-700"
+                    className="flex-1 bg-purple-600 hover:bg-purple-700"
                   >
                     <ExternalLink className="w-4 h-4 ml-2" />
                     צור אתר WordPress חינם
@@ -304,7 +344,7 @@ export const WordPressRegistrationForm = ({ onSubmit, onCancel, selectedDomain, 
                       window.open(demoSiteUrl, '_blank');
                     }}
                     variant="outline"
-                    className="flex-1 border-blue-600 text-blue-400 hover:bg-blue-600 hover:text-white"
+                    className="flex-1 border-purple-600 text-purple-400 hover:bg-purple-600 hover:text-white"
                   >
                     <CheckCircle className="w-4 h-4 ml-2" />
                     ראה דמו
