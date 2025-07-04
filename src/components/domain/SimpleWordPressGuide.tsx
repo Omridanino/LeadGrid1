@@ -268,8 +268,8 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
 
       {/* Progress Steps */}
       <div className="flex justify-center mb-8">
-        <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-slate-700 shadow-2xl">
-          <div className="flex items-center justify-between max-w-4xl">
+        <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-slate-700 shadow-2xl min-w-fit max-w-6xl">
+          <div className="flex items-center justify-between min-w-max">
             {steps.map((step, index) => (
               <div key={step.number} className="flex items-center">
                 <div className={`
