@@ -322,7 +322,7 @@ export const generatePageHTML = (templateData: any) => {
                 ${template.features.items.map((item: any) => `
                     <div class="card text-center">
                         <div class="feature-icon">
-                            <i class="ri-${item.icon}"></i>
+                            <i class="ri-${item.icon === 'user-heart-line' ? 'heart-3-line' : item.icon === 'monitor-line' ? 'computer-line' : item.icon === 'film-line' ? 'film-line' : item.icon}"></i>
                         </div>
                         <h3 class="text-xl font-bold mb-2" style="color: ${template.styles.textColor};">${item.title}</h3>
                         <p style="color: ${template.styles.textColor}; opacity: 0.8;">${item.description}</p>
@@ -563,14 +563,12 @@ export const generatePageHTML = (templateData: any) => {
         ${template.styles.footerBackgroundImage ? '<div class="bg-overlay"></div>' : ''}
         <div class="container content">
             <div class="text-center">
-                <h3 class="text-xl font-bold mb-2" style="color: ${template.styles.footerBackgroundImage ? 'white' : template.styles.textColor};">${template.footer.companyName}</h3>
+                <h3 class="text-xl font-bold mb-2" style="color: ${template.styles.footerBackgroundImage ? 'white' : template.styles.textColor};">${template.businessInfo?.companyName || template.hero?.title || 'העסק שלנו'}</h3>
                 ${template.footer.description ? `<p class="mb-4" style="color: ${template.styles.footerBackgroundImage ? 'white' : template.styles.textColor}; opacity: 0.8;">${template.footer.description}</p>` : ''}
                 
                 ${template.footer.contactInfo ? `
                     <div class="flex gap-4 justify-center flex-wrap mb-4">
-                        ${template.footer.contactInfo.email ? `<span style="color: ${template.styles.footerBackgroundImage ? 'white' : template.styles.textColor}; opacity: 0.8;">📧 ${template.footer.contactInfo.email}</span>` : ''}
-                        ${template.footer.contactInfo.phone ? `<span style="color: ${template.styles.footerBackgroundImage ? 'white' : template.styles.textColor}; opacity: 0.8;">📞 ${template.footer.contactInfo.phone}</span>` : ''}
-                        ${template.footer.contactInfo.address ? `<span style="color: ${template.styles.footerBackgroundImage ? 'white' : template.styles.textColor}; opacity: 0.8;">📍 ${template.footer.contactInfo.address}</span>` : ''}
+                        <span style="color: ${template.styles.footerBackgroundImage ? 'white' : template.styles.textColor}; opacity: 0.8;">📧 info.Leadgrid@gmail.com</span>
                     </div>
                 ` : ''}
                 
@@ -586,7 +584,7 @@ export const generatePageHTML = (templateData: any) => {
                 
                 <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1rem; margin-top: 2rem;">
                     <p style="color: ${template.styles.footerBackgroundImage ? 'white' : template.styles.textColor}; opacity: 0.6; font-size: 0.875rem;">
-                        &copy; ${new Date().getFullYear()} ${template.footer.companyName}. כל הזכויות שמורות.
+                        &copy; ${new Date().getFullYear()} ${template.businessInfo?.companyName || template.hero?.title || 'העסק שלנו'}. כל הזכויות שמורות.
                     </p>
                     <p style="color: ${template.styles.footerBackgroundImage ? 'white' : template.styles.textColor}; opacity: 0.5; font-size: 0.75rem; margin-top: 0.5rem;">
                         נוצר עם LeadGrid

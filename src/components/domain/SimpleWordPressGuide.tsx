@@ -132,8 +132,7 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
         <div class="container">
             <h2>צור קשר</h2>
             <p>נשמח לשמוע מכם ולעזור לכם</p>
-            <p style="font-size: 1.1rem;">📧 info@example.com</p>
-            <p style="font-size: 1.1rem;">📞 050-123-4567</p>
+            <p style="font-size: 1.1rem;">📧 info.Leadgrid@gmail.com</p>
         </div>
     </section>
     
@@ -169,11 +168,12 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
   };
 
   const downloadHtml = () => {
-    const blob = new Blob([htmlCode], { type: 'text/html' });
+    const blob = new Blob([htmlCode], { type: 'text/html;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = 'landing-page-wordpress.html';
+    a.style.display = 'none';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -181,7 +181,7 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
     
     toast({
       title: "📁 קובץ HTML הורד!",
-      description: "הקובץ הורד בהצלחה למחשב שלך",
+      description: "הקובץ הורד בהצלחה למחשב שלכם",
     });
   };
 
@@ -390,15 +390,6 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
                   </div>
                   <div className="flex gap-2">
                     <Button
-                      onClick={downloadHtml}
-                      variant="outline"
-                      size="sm"
-                      className="border-green-500/50 text-green-400 hover:bg-green-500/10 hover:border-green-500"
-                    >
-                      <ExternalLink className="w-4 h-4 mr-2" />
-                      הורד קובץ
-                    </Button>
-                    <Button
                       onClick={copyToClipboard}
                       size="sm"
                       className={`${
@@ -412,7 +403,7 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
                       ) : (
                         <Copy className="w-4 h-4 mr-2" />
                       )}
-                      {copied ? 'הועתק!' : 'העתק קוד'}
+                      {copied ? 'הועתק!' : 'העתקו קוד'}
                     </Button>
                   </div>
                 </div>
