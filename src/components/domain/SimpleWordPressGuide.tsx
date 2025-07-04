@@ -275,10 +275,10 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
                 <div className={`
                   relative w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-500 hover:scale-110
                   ${currentStep >= step.number 
-                    ? 'bg-gradient-to-br from-green-400 to-green-600 text-white shadow-xl shadow-green-500/40' 
+                    ? 'bg-gradient-to-br from-emerald-400 via-cyan-400 to-blue-500 text-white shadow-xl shadow-cyan-500/40' 
                     : currentStep === step.number 
                       ? 'bg-gradient-to-br from-blue-500 via-purple-500 to-cyan-500 text-white shadow-xl shadow-blue-500/40 ring-4 ring-blue-500/30 bg-size-200 animate-gradient-xy' 
-                      : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
+                      : 'bg-gradient-to-br from-slate-700 to-slate-600 text-gray-400 hover:bg-gradient-to-br hover:from-slate-600 hover:to-slate-500'
                   }
                 `}>
                   {currentStep > step.number ? (
@@ -296,8 +296,8 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
                 {index < steps.length - 1 && (
                   <div className={`w-16 h-2 mx-3 rounded-full transition-all duration-500 ${
                     currentStep > step.number 
-                      ? 'bg-gradient-to-r from-green-500 to-green-400 shadow-lg shadow-green-500/30' 
-                      : 'bg-gray-700'
+                      ? 'bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 shadow-lg shadow-cyan-500/30' 
+                      : 'bg-gradient-to-r from-slate-700 to-slate-600'
                   }`} />
                 )}
               </div>
@@ -310,7 +310,7 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
       <Card className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border-slate-700/50 shadow-2xl backdrop-blur-sm animate-fade-in">
         <CardHeader className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-b border-slate-700/50">
           <div className="flex items-center gap-6">
-            <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-4 rounded-2xl shadow-xl shadow-blue-500/30 animate-pulse">
+            <div className="bg-gradient-to-br from-blue-500 via-purple-500 to-cyan-500 p-4 rounded-2xl shadow-xl shadow-blue-500/30 animate-fade-in">
               {steps[currentStep - 1].icon}
             </div>
             <div className="flex-1">
