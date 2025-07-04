@@ -82,17 +82,17 @@ export const generatePageHTML = (templateData: any) => {
     }
   };
 
-  // Premium styles for different templates
+  // Premium styles for different templates (exact match to components)
   const getPremiumStyles = () => {
     if (!isPremium) return '';
     
     switch (template.id) {
       case 'tech-consultant-pro':
         return `
-        /* Glassmorphism Effects */
+        /* Tech Consultant Effects */
         .glass-effect {
           backdrop-filter: blur(20px);
-          background: rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.1) !important;
           border: 1px solid rgba(255, 255, 255, 0.2);
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
@@ -104,21 +104,33 @@ export const generatePageHTML = (templateData: any) => {
         @keyframes float {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
           50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        .feature-icon {
+          background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.2)) !important;
+          border: 2px solid rgba(59, 130, 246, 0.5) !important;
+          box-shadow: 0 0 20px rgba(59, 130, 246, 0.3) !important;
         }`;
         
       case 'neon-academy-pro':
         return `
-        /* Neon Effects */
+        /* Neon Academy Effects */
         .neon-text {
           color: #00f5ff !important;
-          text-shadow: 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 30px #00f5ff;
+          text-shadow: 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 30px #00f5ff !important;
         }
         
-        .neon-glow {
-          box-shadow: 0 0 20px #00f5ff, 0 0 40px #00f5ff;
+        .glass-effect {
+          backdrop-filter: blur(20px);
+          background: rgba(0, 245, 255, 0.1) !important;
+          border: 1px solid rgba(0, 245, 255, 0.3);
+          box-shadow: 0 0 20px rgba(0, 245, 255, 0.2);
         }
         
-        .cyberpunk-grid {
+        .cyberpunk-grid::before {
+          content: '';
+          position: absolute;
+          inset: 0;
           background-image: 
             linear-gradient(90deg, rgba(0, 245, 255, 0.1) 1px, transparent 1px),
             linear-gradient(rgba(0, 245, 255, 0.1) 1px, transparent 1px);
@@ -129,12 +141,26 @@ export const generatePageHTML = (templateData: any) => {
         @keyframes grid-glow {
           0% { opacity: 0.3; }
           100% { opacity: 0.7; }
+        }
+        
+        .feature-icon {
+          background: linear-gradient(135deg, rgba(0, 245, 255, 0.2), rgba(147, 51, 234, 0.2)) !important;
+          border: 2px solid #00f5ff !important;
+          box-shadow: 0 0 20px #00f5ff !important;
         }`;
         
       case 'blockchain-tech-pro':
         return `
         /* Blockchain Effects */
-        .particle-network {
+        .glass-effect {
+          backdrop-filter: blur(20px);
+          background: rgba(59, 130, 246, 0.1) !important;
+          border: 1px solid rgba(59, 130, 246, 0.3);
+          box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+        }
+        
+        .particle-network::before {
+          content: '';
           position: absolute;
           inset: 0;
           background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
@@ -142,15 +168,24 @@ export const generatePageHTML = (templateData: any) => {
                       radial-gradient(circle at 40% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 50%);
         }
         
-        .crypto-glow {
-          box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+        .feature-icon {
+          background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(147, 51, 234, 0.2)) !important;
+          border: 2px solid rgba(59, 130, 246, 0.5) !important;
+          box-shadow: 0 0 20px rgba(59, 130, 246, 0.4) !important;
         }`;
         
       case 'nft-future-pro':
         return `
-        /* Holographic Effects */
+        /* NFT Future Effects */
+        .glass-effect {
+          backdrop-filter: blur(20px);
+          background: rgba(147, 51, 234, 0.1) !important;
+          border: 1px solid rgba(147, 51, 234, 0.3);
+          box-shadow: 0 0 30px rgba(147, 51, 234, 0.2);
+        }
+        
         .holographic {
-          background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
+          background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff) !important;
           background-size: 200% 200%;
           animation: holographic 3s ease infinite;
           -webkit-background-clip: text;
@@ -164,30 +199,23 @@ export const generatePageHTML = (templateData: any) => {
           100% { background-position: 0% 50%; }
         }
         
-        .card-3d {
-          transform-style: preserve-3d;
-          transition: transform 0.6s;
-        }
-        
-        .card-3d:hover {
-          transform: rotateY(15deg) rotateX(10deg) scale(1.05);
+        .feature-icon {
+          background: linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(236, 72, 153, 0.2)) !important;
+          border: 2px solid rgba(147, 51, 234, 0.5) !important;
+          box-shadow: 0 0 20px rgba(147, 51, 234, 0.4) !important;
         }`;
         
       case 'creative-3d-pro':
         return `
-        /* Clay Morphism */
-        .clay-button {
+        /* Creative 3D Effects */
+        .glass-effect {
+          backdrop-filter: blur(10px);
+          background: rgba(255, 255, 255, 0.2) !important;
+          border: 1px solid rgba(255, 255, 255, 0.3);
           border-radius: 25px;
           box-shadow: 
-            8px 8px 16px rgba(163, 177, 198, 0.6),
-            -8px -8px 16px rgba(255, 255, 255, 0.8);
-          transition: all 0.3s ease;
-        }
-        
-        .clay-button:hover {
-          box-shadow: 
-            4px 4px 8px rgba(163, 177, 198, 0.6),
-            -4px -4px 8px rgba(255, 255, 255, 0.8);
+            8px 8px 16px rgba(163, 177, 198, 0.3),
+            -8px -8px 16px rgba(255, 255, 255, 0.5);
         }
         
         .morphing-shape {
@@ -200,55 +228,54 @@ export const generatePageHTML = (templateData: any) => {
           25% { border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%; }
           50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; }
           75% { border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%; }
+        }
+        
+        .feature-icon {
+          background: linear-gradient(135deg, rgba(251, 113, 133, 0.3), rgba(192, 132, 252, 0.3)) !important;
+          border: 2px solid rgba(251, 113, 133, 0.5) !important;
+          box-shadow: 0 0 15px rgba(251, 113, 133, 0.3) !important;
         }`;
         
       case 'authkit-tech-pro':
         return `
-        /* Matrix Effects */
-        .matrix-rain {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          overflow: hidden;
-          pointer-events: none;
-        }
-        
-        .matrix-char {
-          position: absolute;
-          color: #0f0;
-          font-family: monospace;
-          font-size: 14px;
-          animation: matrix-fall 3s linear infinite;
-        }
-        
-        @keyframes matrix-fall {
-          0% { transform: translateY(-100vh); opacity: 1; }
-          100% { transform: translateY(100vh); opacity: 0; }
+        /* AuthKit Effects */
+        .glass-effect {
+          backdrop-filter: blur(20px);
+          background: rgba(30, 64, 175, 0.1) !important;
+          border: 1px solid rgba(30, 64, 175, 0.3);
+          box-shadow: 0 0 20px rgba(30, 64, 175, 0.2);
         }
         
         .tech-glow {
           box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+        
+        .feature-icon {
+          background: linear-gradient(135deg, rgba(30, 64, 175, 0.2), rgba(59, 130, 246, 0.2)) !important;
+          border: 2px solid rgba(59, 130, 246, 0.5) !important;
+          box-shadow: 0 0 20px rgba(59, 130, 246, 0.4) !important;
         }`;
         
       default:
         return `
-        /* Default Premium Effects */
-        .premium-glow {
-          box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+        .glass-effect {
+          backdrop-filter: blur(20px);
+          background: rgba(255, 255, 255, 0.1) !important;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }`;
     }
   };
 
-  // Generate complete HTML with all sections
+  // Generate complete HTML with all sections matching TemplatePreview exactly
   return `<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${template.hero.title}</title>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.0/dist/tailwind.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -257,11 +284,12 @@ export const generatePageHTML = (templateData: any) => {
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
             line-height: 1.6;
             color: ${template.styles.textColor};
             background-color: ${template.styles.backgroundColor};
             overflow-x: hidden;
+            direction: rtl;
         }
         
         .container {
@@ -580,15 +608,15 @@ export const generatePageHTML = (templateData: any) => {
         <div class="container content">
             <div class="text-center">
                 ${template.hero.badge ? `<div class="badge" style="color: ${isPremium ? getPremiumTextColor(template.id) : (template.styles.heroBackgroundImage ? 'white' : template.styles.accentColor)}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : (template.styles.heroBackgroundImage ? 'rgba(255,255,255,0.3)' : template.styles.accentColor)};">${template.hero.badge}</div>` : ''}
-                <h1 class="text-4xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; ${isPremium && template.id === 'neon-academy-pro' ? 'color: #ff00ff !important; text-shadow: 0 0 30px #ff00ff;' : ''} ${isPremium && (template.id === 'blockchain-tech-pro' || template.id === 'nft-future-pro') ? 'background: linear-gradient(45deg, #60a5fa, #a78bfa, #22d3ee); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;' : ''}">${template.hero.title}</h1>
+                <h1 class="text-4xl font-bold mb-4 ${isPremium && template.id === 'neon-academy-pro' ? 'neon-text' : ''}" style="color: ${isPremium ? getPremiumTextColor(template.id) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; ${isPremium && (template.id === 'blockchain-tech-pro' || template.id === 'nft-future-pro') ? 'background: linear-gradient(45deg, #60a5fa, #a78bfa, #22d3ee); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;' : ''}">${template.hero.title}</h1>
                 <h2 class="text-xl mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.9;">${template.hero.subtitle}</h2>
                 <p class="text-lg mb-8" style="color: ${isPremium ? getPremiumTextColor(template.id) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.8; max-width: 48rem; margin: 0 auto 2rem;">${template.hero.description}</p>
                 <div class="flex gap-2 justify-center flex-wrap">
-                    <a href="#contact" class="btn" style="background-color: ${template.styles.accentColor}; color: white;">
+                    <a href="#contact" class="btn ${isPremium ? 'glass-effect' : ''}" style="background-color: ${template.styles.accentColor}; color: white;">
                         ${template.hero.button1Icon ? `<i class="ri-${template.hero.button1Icon}"></i>` : ''}
                         ${template.hero.button1Text}
                     </a>
-                    <a href="#features" class="btn" style="background-color: ${template.styles.secondaryColor}; color: white;">
+                    <a href="#features" class="btn ${isPremium ? 'glass-effect' : ''}" style="background-color: ${template.styles.secondaryColor}; color: white;">
                         ${template.hero.button2Icon ? `<i class="ri-${template.hero.button2Icon}"></i>` : ''}
                         ${template.hero.button2Text}
                     </a>
