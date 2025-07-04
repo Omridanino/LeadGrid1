@@ -139,6 +139,18 @@ export const TemplatePreview: React.FC<TemplatePreviewProps> = ({ template }) =>
     return (
       <div className="min-h-full">
         <PremiumSection template={template} sectionType="hero" />
+        {template.emotional && <PremiumSection template={template} sectionType="emotional" />}
+        <PremiumSection template={template} sectionType="features" />
+        <PremiumSection template={template} sectionType="testimonials" />
+        <PremiumSection template={template} sectionType="about" />
+        <PremiumSection template={template} sectionType="pricing" />
+        <PremiumSection template={template} sectionType="faq" />
+        <PremiumSection template={template} sectionType="finalCta" />
+        <PremiumSection template={template} sectionType="contact" />
+        <PremiumSection template={template} sectionType="footer" />
+      </div>
+    );
+  }
         
         {/* Emotional Section */}
         {template.emotional && (
