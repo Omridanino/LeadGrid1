@@ -30,6 +30,7 @@ import { DomainService } from '@/services/domainService';
 import { HostingService } from '@/services/hostingService';
 import { RealPublishingService } from '@/services/realPublishingService';
 import { RealDomainPurchaseWizard } from '@/components/domain/RealDomainPurchaseWizard';
+import { CleanWordPressForm } from '@/components/domain/CleanWordPressForm';
 
 interface NewPublishingWizardProps {
   template: TemplateData;
@@ -50,7 +51,7 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
   const [domainSuggestions, setDomainSuggestions] = useState<any[]>([]);
   const [isCheckingDomain, setIsCheckingDomain] = useState(false);
   const [selectedPlatform, setSelectedPlatform] = useState<'static' | 'wordpress'>('static');
-  const [showWordPressWizard, setShowWordPressWizard] = useState(false);
+  const [showWordPressForm, setShowWordPressForm] = useState(false);
 
   const steps = [
     { id: 'overview', name: 'סקירה', icon: Sparkles },
@@ -292,7 +293,7 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                     <Button 
                       onClick={() => {
                         if (selectedPlatform === 'wordpress') {
-                          setShowWordPressWizard(true);
+                          setShowWordPressForm(true);
                           onClose();
                         } else {
                           nextStep();
@@ -440,16 +441,12 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
         )}
       </div>
       
-      {/* WordPress Wizard */}
-      <RealDomainPurchaseWizard
-        isOpen={showWordPressWizard}
-        onClose={() => setShowWordPressWizard(false)}
-        onComplete={(result) => {
-          console.log('WordPress site created:', result);
-          setShowWordPressWizard(false);
-        }}
-        template={template}
-      />
+      {/* Clean WordPress Form */}
+      {showWordPressForm && (
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-60">
+          <CleanWordPressForm onBack={() => setShowWordPressForm(false)} />
+        </div>
+      )}
     </div>
   );
 };
