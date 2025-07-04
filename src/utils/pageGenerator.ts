@@ -572,6 +572,37 @@ export const generatePageHTML = (templateData: any) => {
             z-index: 1;
         }` : ''}
         
+        /* FAQ Section Premium Color Overrides */
+        ${isPremium && template.id === 'tech-consultant-pro' ? `
+        .faq .accordion-header, .faq .accordion-content {
+          color: white !important;
+        }` : ''}
+        
+        ${isPremium && template.id === 'neon-academy-pro' ? `
+        .faq .accordion-header, .faq .accordion-content {
+          color: #00f5ff !important;
+        }` : ''}
+        
+        ${isPremium && template.id === 'blockchain-tech-pro' ? `
+        .faq .accordion-header, .faq .accordion-content {
+          color: #bfdbfe !important;
+        }` : ''}
+        
+        ${isPremium && template.id === 'creative-3d-pro' ? `
+        .faq .accordion-header, .faq .accordion-content {
+          color: #374151 !important;
+        }` : ''}
+        
+        ${isPremium && template.id === 'authkit-tech-pro' ? `
+        .faq .accordion-header, .faq .accordion-content {
+          color: #bfdbfe !important;
+        }` : ''}
+        
+        ${isPremium && template.id === 'nft-future-pro' ? `
+        .faq .accordion-header, .faq .accordion-content {
+          color: #e879f9 !important;
+        }` : ''}
+        
         /* Grid layouts */
         .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
@@ -827,10 +858,10 @@ export const generatePageHTML = (templateData: any) => {
                         <div class="stars-row">
                             ${Array(testimonial.rating).fill(0).map(() => '<span class="star">★</span>').join('')}
                         </div>
-                        <p class="mb-4" style="color: ${template.styles.textColor}; font-style: italic;">"${testimonial.content}"</p>
+                        <p class="mb-4" style="font-style: italic;">"${testimonial.content}"</p>
                         <div>
-                            <p class="font-bold" style="color: ${template.styles.textColor};">${testimonial.name}</p>
-                            <p class="text-sm" style="color: ${template.styles.textColor}; opacity: 0.8;">${testimonial.role}</p>
+                            <p class="font-bold">${testimonial.name}</p>
+                            <p class="text-sm" style="opacity: 0.8;">${testimonial.role}</p>
                         </div>
                     </div>
                 `).join('')}
@@ -864,7 +895,7 @@ export const generatePageHTML = (templateData: any) => {
                     ${template.about.stats.map((stat: any) => `
                         <div>
                             <div class="text-4xl font-bold mb-2" style="color: ${template.styles.primaryColor};">${stat.number}</div>
-                            <div class="text-lg" style="color: ${template.styles.aboutBackgroundImage ? 'white' : template.styles.textColor}; opacity: 0.8;">${stat.label}</div>
+                            <div class="text-lg" style="opacity: 0.8;">${stat.label}</div>
                         </div>
                     `).join('')}
                 </div>
@@ -893,17 +924,17 @@ export const generatePageHTML = (templateData: any) => {
                 ${template.pricing.subtitle ? `<p class="text-xl" style="color: ${template.styles.pricingBackgroundImage ? 'white' : template.styles.textColor}; opacity: 0.8;">${template.pricing.subtitle}</p>` : ''}
             </div>
             
-            <div class="grid-3 mb-12">
+                <div class="grid-3 mb-12">
                 ${template.pricing.plans.map((plan: any) => `
                     <div class="card text-center ${plan.recommended ? 'border: 2px solid ' + template.styles.primaryColor + '; transform: scale(1.05);' : ''}">
-                        <h3 class="text-2xl font-bold mb-4" style="color: ${template.styles.textColor};">${plan.name}</h3>
+                        <h3 class="text-2xl font-bold mb-4">${plan.name}</h3>
                         <div class="mb-6">
                             <span class="text-4xl font-bold" style="color: ${template.styles.primaryColor};">${plan.price}</span>
-                            <span style="color: ${template.styles.textColor}; opacity: 0.6;">/${plan.period}</span>
+                            <span style="opacity: 0.6;">/${plan.period}</span>
                         </div>
                         <ul class="text-right mb-6" style="list-style: none; padding: 0;">
                             ${plan.features.map((feature: string) => `
-                                <li class="flex items-center gap-2 mb-2" style="color: ${template.styles.textColor};">
+                                <li class="flex items-center gap-2 mb-2">
                                     <span style="color: ${template.styles.primaryColor};">✓</span>
                                     ${feature}
                                 </li>
@@ -940,11 +971,11 @@ export const generatePageHTML = (templateData: any) => {
             <div class="mb-12" style="max-width: 48rem; margin: 0 auto;">
                 ${template.faq.questions.map((faq: any, index: number) => `
                     <div class="accordion-item">
-                        <button class="accordion-header" onclick="toggleAccordion(${index})" style="color: ${template.styles.textColor};">
+                        <button class="accordion-header" onclick="toggleAccordion(${index})">
                             ${faq.question}
                             <span id="icon-${index}">+</span>
                         </button>
-                        <div id="content-${index}" class="accordion-content" style="display: none; color: ${template.styles.textColor};">
+                        <div id="content-${index}" class="accordion-content" style="display: none;">
                             ${faq.answer}
                         </div>
                     </div>
