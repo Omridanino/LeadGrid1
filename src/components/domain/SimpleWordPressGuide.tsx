@@ -197,50 +197,50 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
       number: 2,
       title: "התקן את תוסף Elementor",
       icon: <Settings className="w-5 h-5" />,
-      description: "כנס לתוספים בצד ימין של האתר והתקן את Elementor (בחינם)",
+      description: "עברו לתוספים בצד ימין של האתר והתקינו את Elementor (בחינם)",
       image: "/lovable-uploads/305190b1-b45a-4d69-8f47-0d71f9dbbd5a.png"
     },
     {
       number: 3,
-      title: "צור עמוד חדש",
+      title: "צרו עמוד חדש",
       icon: <FileText className="w-5 h-5" />,
-      description: "לחץ על עמודים ובחר Add Page להוספת עמוד חדש",
+      description: "לחצו על עמודים ובחרו Add Page להוספת עמוד חדש",
       image: "/lovable-uploads/6b211bbc-a2b8-49f0-a525-60d79611a4c5.png"
     },
     {
       number: 4,
-      title: "ערוך באלמנטור",
+      title: "ערכו באלמנטור",
       icon: <Code className="w-5 h-5" />,
-      description: "כנס לעמוד שיצרת, תן לו כותרת ולחץ 'עריכה באמצעות אלמנטור'",
+      description: "היכנסו לעמוד שיצרתם, תנו לו כותרת ולחצו 'עריכה באמצעות אלמנטור'",
       image: "/lovable-uploads/6daad2c0-7e59-4299-b5c3-bbdf4c3b3d6d.png"
     },
     {
       number: 5,
-      title: "שנה פריסה לקנבס",
+      title: "שנו פריסה לקנבס",
       icon: <Settings className="w-5 h-5" />,
-      description: "לחץ על גלגל השיניים במרכז הדף, לך להגדרות ובחר 'אלמנטור קנבס'",
+      description: "לחצו על גלגל השיניים במרכז הדף, עברו להגדרות ובחרו 'אלמנטור קנבס'",
       image: "/lovable-uploads/4d61cea5-72ca-4793-8f47-83cdff361c2d.png"
     },
     {
       number: 6,
-      title: "הוסף רכיב HTML",
+      title: "הוסיפו רכיב HTML",
       icon: <Copy className="w-5 h-5" />,
-      description: "רשום HTML באיזור הווידג'טים, גרור את האלמנט HTML לאמצע והדבק את הקוד",
+      description: "רשמו HTML באיזור הווידג'טים, גררו את האלמנט HTML לאמצע והדביקו את הקוד",
       image: "/lovable-uploads/86dc32f3-db4c-45f2-9b31-14c0c0970e0c.png"
     },
     {
       number: 7,
-      title: "כוונן הגדרות תצוגה",
+      title: "כווננו הגדרות תצוגה",
       icon: <Settings className="w-5 h-5" />,
-      description: "לחץ על הכפתור האמצעי ברכיב HTML ושנה הגדרות פריסה ושוליים",
+      description: "לחצו על הכפתור האמצעי ברכיב HTML ושנו הגדרות פריסה ושוליים",
       image: "/lovable-uploads/16b3b839-8703-45dc-a95d-04712f349cab.png",
       additionalImage: "/lovable-uploads/bae5cc76-4270-4295-8d31-6b0ad094ad58.png"
     },
     {
       number: 8,
-      title: "פרסם את הדף",
+      title: "פרסמו את הדף",
       icon: <Eye className="w-5 h-5" />,
-      description: "בדוק תצוגה מקדימה ולחץ פרסם"
+      description: "בדקו תצוגה מקדימה ולחצו פרסם"
     }
   ];
 
@@ -333,27 +333,46 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
           {/* Step Image */}
           {steps[currentStep - 1].image && (
             <div className="bg-slate-900 border border-slate-600 rounded-xl p-6 shadow-lg space-y-4">
-              <div className="relative overflow-hidden rounded-lg border border-slate-600 bg-slate-800">
-                <img 
-                  src={steps[currentStep - 1].image} 
-                  alt={steps[currentStep - 1].title}
-                  className="w-full h-64 object-contain mx-auto bg-slate-800 rounded-lg hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <p className="text-center text-gray-400 text-sm mt-3 font-medium">
-                📸 {steps[currentStep - 1].title}
-              </p>
-              
-              {/* Additional image for step 7 */}
-              {currentStep === 7 && steps[currentStep - 1].additionalImage && (
-                <div className="relative overflow-hidden rounded-lg border border-slate-600 bg-slate-800">
-                  <img 
-                    src={steps[currentStep - 1].additionalImage} 
-                    alt={`${steps[currentStep - 1].title} - חלק 2`}
-                    className="w-full h-64 object-contain mx-auto bg-slate-800 rounded-lg hover:scale-105 transition-transform duration-300"
-                  />
-                  <p className="text-center text-gray-400 text-sm mt-3 font-medium">
-                    📸 הגדרות מתקדמות - שוליים
+              {/* For step 7, show images side by side */}
+              {currentStep === 7 && steps[currentStep - 1].additionalImage ? (
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <div className="relative overflow-hidden rounded-lg border border-slate-600 bg-slate-800">
+                      <img 
+                        src={steps[currentStep - 1].image} 
+                        alt={steps[currentStep - 1].title}
+                        className="w-full h-64 object-contain mx-auto bg-slate-800 rounded-lg hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <p className="text-center text-gray-400 text-sm font-medium">
+                      📸 הגדרות פריסה - רוחב
+                    </p>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="relative overflow-hidden rounded-lg border border-slate-600 bg-slate-800">
+                      <img 
+                        src={steps[currentStep - 1].additionalImage} 
+                        alt={`${steps[currentStep - 1].title} - חלק 2`}
+                        className="w-full h-64 object-contain mx-auto bg-slate-800 rounded-lg hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <p className="text-center text-gray-400 text-sm font-medium">
+                      📸 הגדרות מתקדמות - שוליים
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                /* Single image for other steps */
+                <div className="space-y-3">
+                  <div className="relative overflow-hidden rounded-lg border border-slate-600 bg-slate-800">
+                    <img 
+                      src={steps[currentStep - 1].image} 
+                      alt={steps[currentStep - 1].title}
+                      className="w-full h-64 object-contain mx-auto bg-slate-800 rounded-lg hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <p className="text-center text-gray-400 text-sm font-medium">
+                    📸 {steps[currentStep - 1].title}
                   </p>
                 </div>
               )}
@@ -423,16 +442,16 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
               <div className="text-amber-100 text-sm space-y-1">
                 {currentStep === 1 && (
                   <>
-                    <p>• קנה דומיין מכל ספק דומיינים (Godaddy, Namecheap וכו')</p>
-                    <p>• הירשם לשירות אחסון WordPress (SiteGround, Bluehost וכו')</p>
-                    <p>• וודא שהדומיין מחובר לאחסון</p>
+                    <p>• רכשו דומיין מכל ספק דומיינים (Godaddy, Namecheap וכו')</p>
+                    <p>• הירשמו לשירות אחסון WordPress (SiteGround, Bluehost וכו')</p>
+                    <p>• וודאו שהדומיין מחובר לאחסון</p>
                   </>
                 )}
                 {currentStep === 2 && (
                   <>
-                    <p>• היכנס לפאנל הניהול של WordPress</p>
-                    <p>• לחץ על "תוספים" ← "הוסף תוסף חדש"</p>
-                    <p>• חפש "Elementor Website Builder" והתקן (בחינם!)</p>
+                    <p>• היכנסו לפאנל הניהול של WordPress</p>
+                    <p>• לחצו על "תוספים" ← "הוסיפו תוסף חדש"</p>
+                    <p>• חפשו "Elementor Website Builder" והתקינו (בחינם!)</p>
                     <Button 
                       onClick={() => window.open('https://wordpress.org/plugins/elementor/', '_blank')}
                       variant="outline"
@@ -440,50 +459,50 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
                       className="mt-2 border-purple-600 text-purple-400 hover:bg-purple-600/10"
                     >
                       <ExternalLink className="w-4 h-4 ml-1" />
-                      הורד Elementor
+                      הורידו Elementor
                     </Button>
                   </>
                 )}
                 {currentStep === 3 && (
                   <>
-                    <p>• במסך הראשי של WordPress, לחץ על "עמודים"</p>
-                    <p>• לחץ על "הוסף עמוד חדש"</p>
-                    <p>• תן שם לעמוד (למשל: "דף הבית")</p>
+                    <p>• במסך הראשי של WordPress, לחצו על "עמודים"</p>
+                    <p>• לחצו על "הוסיפו עמוד חדש"</p>
+                    <p>• תנו שם לעמוד (למשל: "דף הבית")</p>
                   </>
                 )}
                 {currentStep === 4 && (
                   <>
-                    <p>• לחץ על העמוד שיצרת</p>
-                    <p>• לחץ על "עריכה באמצעות אלמנטור"</p>
+                    <p>• לחצו על העמוד שיצרתם</p>
+                    <p>• לחצו על "עריכה באמצעות אלמנטור"</p>
                     <p>• העמוד ייפתח בעורך האלמנטור</p>
                   </>
                 )}
                 {currentStep === 5 && (
                   <>
-                    <p>• לחץ על גלגל השיניים (הגדרות עמוד)</p>
-                    <p>• בחר "פריסת עמוד" ← "אלמנטור קנבס"</p>
-                    <p>• זה ייתן לך שליטה מלאה על העמוד</p>
+                    <p>• לחצו על גלגל השיניים (הגדרות עמוד)</p>
+                    <p>• בחרו "פריסת עמוד" ← "אלמנטור קנבס"</p>
+                    <p>• זה ייתן לכם שליטה מלאה על העמוד</p>
                   </>
                 )}
                  {currentStep === 6 && (
                    <>
-                     <p>• רשום "HTML" באיזור הווידג'טים הימני</p>
-                     <p>• גרור את האלמנט HTML לאמצע האתר</p>
-                     <p>• הדבק את הקוד HTML שקיבלת מ-LeadGrid</p>
+                     <p>• רשמו "HTML" באיזור הווידג'טים הימני</p>
+                     <p>• גררו את האלמנט HTML לאמצע האתר</p>
+                     <p>• הדביקו את הקוד HTML שקיבלתם מ-LeadGrid</p>
                    </>
                  )}
                  {currentStep === 7 && (
                    <>
-                     <p>• לחץ על הכפתור האמצעי ברכיב HTML (3 נקודות)</p>
-                     <p>• לחץ על "פריסה" ושנה רוחב מ-PX ל-VW ושים 100</p>
-                     <p>• לך ל"מתקדם" ושנה שוליים פנימיים וחיצוניים ל-VW ושים 100</p>
+                     <p>• לחצו על הכפתור האמצעי ברכיב HTML (נראה כמו שלוש נקודות בצבע אפור)</p>
+                     <p>• לחצו על "פריסה" ושנו רוחב מ-PX ל-VW ושימו 100</p>
+                     <p>• עברו ל"מתקדם" ושנו שוליים פנימיים וחיצוניים ל-VW ושימו 100</p>
                    </>
                  )}
                 {currentStep === 8 && (
                   <>
-                    <p>• לחץ "תצוגה מקדימה" לבדיקה</p>
-                    <p>• וודא שהדף נראה תקין</p>
-                    <p>• לחץ "פרסם" או "עדכן"</p>
+                    <p>• לחצו "תצוגה מקדימה" לבדיקה</p>
+                    <p>• וודאו שהדף נראה תקין</p>
+                    <p>• לחצו "פרסמו" או "עדכנו"</p>
                   </>
                 )}
               </div>
