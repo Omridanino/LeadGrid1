@@ -32,53 +32,227 @@ export const generatePageHTML = (templateData: any) => {
     return style;
   };
 
-  // Premium section backgrounds (exact match to PremiumSection components)
-  const getPremiumSectionBackground = (templateId: string, sectionType: string) => {
+  // Premium animated backgrounds with CSS animations
+  const getPremiumAnimatedBackground = (templateId: string, sectionType: string) => {
+    const baseStyles = {
+      position: 'relative',
+      overflow: 'hidden',
+    };
+
     switch (templateId) {
       case 'tech-consultant-pro':
-        return sectionType === 'hero' ? 'background: linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(55, 65, 81) 50%, rgb(0, 0, 0) 100%);' :
-               sectionType === 'features' ? 'background: linear-gradient(to bottom, rgb(30, 41, 59) 0%, rgb(55, 65, 81) 100%);' :
-               sectionType === 'pricing' ? 'background: linear-gradient(to bottom, rgb(55, 65, 81) 0%, rgb(30, 41, 59) 100%);' :
-               sectionType === 'testimonials' ? 'background: linear-gradient(to bottom, rgb(30, 41, 59) 0%, rgb(0, 0, 0) 100%);' :
-               'background: linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(30, 41, 59) 100%);';
+        return {
+          ...baseStyles,
+          background: sectionType === 'hero' ? 'linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(55, 65, 81) 50%, rgb(0, 0, 0) 100%)' :
+                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(30, 41, 59) 0%, rgb(55, 65, 81) 100%)' :
+                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(55, 65, 81) 0%, rgb(30, 41, 59) 100%)' :
+                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(30, 41, 59) 0%, rgb(0, 0, 0) 100%)' :
+                     'linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(30, 41, 59) 100%)',
+          animationType: 'dynamicGradients'
+        };
       
       case 'neon-academy-pro':
-        return sectionType === 'hero' ? 'background: linear-gradient(135deg, rgb(0, 0, 0) 0%, rgb(124, 58, 237) 50%, rgb(0, 0, 0) 100%);' :
-               sectionType === 'features' ? 'background: linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(88, 28, 135) 100%);' :
-               sectionType === 'pricing' ? 'background: linear-gradient(to bottom, rgb(88, 28, 135) 0%, rgb(0, 0, 0) 100%);' :
-               sectionType === 'testimonials' ? 'background: linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(88, 28, 135) 100%);' :
-               'background: linear-gradient(135deg, rgb(124, 58, 237) 0%, rgb(0, 0, 0) 100%);';
+        return {
+          ...baseStyles,
+          background: sectionType === 'hero' ? 'linear-gradient(135deg, rgb(0, 0, 0) 0%, rgb(124, 58, 237) 50%, rgb(0, 0, 0) 100%)' :
+                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(88, 28, 135) 100%)' :
+                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(88, 28, 135) 0%, rgb(0, 0, 0) 100%)' :
+                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(0, 0, 0) 0%, rgb(88, 28, 135) 100%)' :
+                     'linear-gradient(135deg, rgb(124, 58, 237) 0%, rgb(0, 0, 0) 100%)',
+          animationType: 'advancedSparkles'
+        };
       
       case 'blockchain-tech-pro':
-        return sectionType === 'hero' ? 'background: linear-gradient(135deg, rgb(30, 27, 75) 0%, rgb(30, 64, 175) 50%, rgb(124, 45, 18) 100%);' :
-               sectionType === 'features' ? 'background: linear-gradient(to bottom, rgb(30, 27, 75) 0%, rgb(30, 64, 175) 100%);' :
-               sectionType === 'pricing' ? 'background: linear-gradient(to bottom, rgb(30, 64, 175) 0%, rgb(30, 27, 75) 100%);' :
-               sectionType === 'testimonials' ? 'background: linear-gradient(to bottom, rgb(30, 27, 75) 0%, rgb(88, 28, 135) 100%);' :
-               'background: linear-gradient(135deg, rgb(49, 46, 129) 0%, rgb(30, 64, 175) 100%);';
+        return {
+          ...baseStyles,
+          background: sectionType === 'hero' ? 'linear-gradient(135deg, rgb(30, 27, 75) 0%, rgb(30, 64, 175) 50%, rgb(124, 45, 18) 100%)' :
+                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(30, 27, 75) 0%, rgb(30, 64, 175) 100%)' :
+                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(30, 64, 175) 0%, rgb(30, 27, 75) 100%)' :
+                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(30, 27, 75) 0%, rgb(88, 28, 135) 100%)' :
+                     'linear-gradient(135deg, rgb(49, 46, 129) 0%, rgb(30, 64, 175) 100%)',
+          animationType: 'animatedPaths'
+        };
       
       case 'creative-3d-pro':
-        return sectionType === 'hero' ? 'background: linear-gradient(135deg, rgb(254, 215, 170) 0%, rgb(252, 165, 165) 50%, rgb(192, 132, 252) 100%);' :
-               sectionType === 'features' ? 'background: linear-gradient(to bottom, rgb(254, 215, 170) 0%, rgb(252, 165, 165) 100%);' :
-               sectionType === 'pricing' ? 'background: linear-gradient(to bottom, rgb(252, 165, 165) 0%, rgb(192, 132, 252) 100%);' :
-               sectionType === 'testimonials' ? 'background: linear-gradient(to bottom, rgb(192, 132, 252) 0%, rgb(254, 215, 170) 100%);' :
-               'background: linear-gradient(135deg, rgb(253, 186, 116) 0%, rgb(251, 113, 133) 100%);';
+        return {
+          ...baseStyles,
+          background: sectionType === 'hero' ? 'linear-gradient(135deg, rgb(254, 215, 170) 0%, rgb(252, 165, 165) 50%, rgb(192, 132, 252) 100%)' :
+                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(254, 215, 170) 0%, rgb(252, 165, 165) 100%)' :
+                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(252, 165, 165) 0%, rgb(192, 132, 252) 100%)' :
+                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(192, 132, 252) 0%, rgb(254, 215, 170) 100%)' :
+                     'linear-gradient(135deg, rgb(253, 186, 116) 0%, rgb(251, 113, 133) 100%)',
+          animationType: 'fluidBlob'
+        };
       
       case 'authkit-tech-pro':
-        return sectionType === 'hero' ? 'background: linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(30, 41, 59) 50%, rgb(30, 64, 175) 100%);' :
-               sectionType === 'features' ? 'background: linear-gradient(to bottom, rgb(15, 23, 42) 0%, rgb(30, 41, 59) 100%);' :
-               sectionType === 'pricing' ? 'background: linear-gradient(to bottom, rgb(30, 41, 59) 0%, rgb(30, 64, 175) 100%);' :
-               sectionType === 'testimonials' ? 'background: linear-gradient(to bottom, rgb(30, 64, 175) 0%, rgb(15, 23, 42) 100%);' :
-               'background: linear-gradient(135deg, rgb(51, 65, 85) 0%, rgb(30, 64, 175) 100%);';
+        return {
+          ...baseStyles,
+          background: sectionType === 'hero' ? 'linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(30, 41, 59) 50%, rgb(30, 64, 175) 100%)' :
+                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(15, 23, 42) 0%, rgb(30, 41, 59) 100%)' :
+                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(30, 41, 59) 0%, rgb(30, 64, 175) 100%)' :
+                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(30, 64, 175) 0%, rgb(15, 23, 42) 100%)' :
+                     'linear-gradient(135deg, rgb(51, 65, 85) 0%, rgb(30, 64, 175) 100%)',
+          animationType: 'premium3D'
+        };
       
       case 'nft-future-pro':
-        return sectionType === 'hero' ? 'background: linear-gradient(135deg, rgb(88, 28, 135) 0%, rgb(190, 24, 93) 50%, rgb(30, 64, 175) 100%);' :
-               sectionType === 'features' ? 'background: linear-gradient(to bottom, rgb(88, 28, 135) 0%, rgb(190, 24, 93) 100%);' :
-               sectionType === 'pricing' ? 'background: linear-gradient(to bottom, rgb(190, 24, 93) 0%, rgb(30, 64, 175) 100%);' :
-               sectionType === 'testimonials' ? 'background: linear-gradient(to bottom, rgb(30, 64, 175) 0%, rgb(88, 28, 135) 100%);' :
-               'background: linear-gradient(135deg, rgb(124, 45, 18) 0%, rgb(190, 24, 93) 100%);';
+        return {
+          ...baseStyles,
+          background: sectionType === 'hero' ? 'linear-gradient(135deg, rgb(88, 28, 135) 0%, rgb(190, 24, 93) 50%, rgb(30, 64, 175) 100%)' :
+                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(88, 28, 135) 0%, rgb(190, 24, 93) 100%)' :
+                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(190, 24, 93) 0%, rgb(30, 64, 175) 100%)' :
+                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(30, 64, 175) 0%, rgb(88, 28, 135) 100%)' :
+                     'linear-gradient(135deg, rgb(124, 45, 18) 0%, rgb(190, 24, 93) 100%)',
+          animationType: 'dynamicGradients'
+        };
       
       default:
-        return 'background: linear-gradient(135deg, rgb(55, 65, 81) 0%, rgb(30, 64, 175) 100%);';
+        return {
+          ...baseStyles,
+          background: 'linear-gradient(135deg, rgb(55, 65, 81) 0%, rgb(30, 64, 175) 100%)',
+          animationType: 'dynamicGradients'
+        };
+    }
+  };
+
+  // Generate premium background HTML with animations
+  const generatePremiumBackgroundHTML = (animationType: string) => {
+    switch (animationType) {
+      case 'dynamicGradients':
+        return `
+        <div style="position: absolute; inset: 0; overflow: hidden;">
+          <div style="position: absolute; inset: 0;">
+            <div style="
+              position: absolute; 
+              inset: 0; 
+              opacity: 0.7;
+              background: 
+                radial-gradient(ellipse at 20% 50%, rgba(59, 130, 246, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 20%, rgba(168, 85, 247, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 50%);
+              animation: gradientShift 12s ease-in-out infinite;
+            "></div>
+          </div>
+          ${[...Array(12)].map((_, i) => `
+            <div style="
+              position: absolute;
+              width: ${20 + Math.random() * 40}px;
+              height: ${20 + Math.random() * 40}px;
+              left: ${Math.random() * 100}%;
+              top: ${Math.random() * 100}%;
+              background: linear-gradient(${Math.random() * 360}deg, rgba(59, 130, 246, 0.6), rgba(168, 85, 247, 0.4));
+              border-radius: ${i % 3 === 0 ? '50%' : i % 3 === 1 ? '0' : '20%'};
+              animation: floatGeometric ${8 + Math.random() * 4}s ease-in-out infinite ${Math.random() * 3}s;
+              filter: blur(1px);
+              opacity: 0.6;
+            "></div>
+          `).join('')}
+        </div>`;
+
+      case 'advancedSparkles':
+        return `
+        <div style="position: absolute; inset: 0; overflow: hidden;">
+          ${[...Array(35)].map((_, i) => `
+            <div style="
+              position: absolute;
+              width: ${2 + Math.random() * 4}px;
+              height: ${2 + Math.random() * 4}px;
+              left: ${Math.random() * 100}%;
+              top: ${Math.random() * 100}%;
+              background: ${['#ffffff', '#3b82f6', '#8b5cf6', '#ec4899'][Math.floor(Math.random() * 4)]};
+              border-radius: 50%;
+              animation: sparkleFloat ${6 + Math.random() * 4}s ease-in-out infinite ${Math.random() * 3}s;
+              filter: blur(0.5px);
+              box-shadow: 0 0 6px currentColor;
+            "></div>
+          `).join('')}
+        </div>`;
+
+      case 'animatedPaths':
+        return `
+        <div style="position: absolute; inset: 0; overflow: hidden;">
+          <svg style="position: absolute; inset: 0; width: 100%; height: 100%;" viewBox="0 0 1200 800">
+            <defs>
+              <linearGradient id="energyFlow1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="rgba(59, 130, 246, 0)" />
+                <stop offset="50%" stop-color="rgba(59, 130, 246, 0.8)" />
+                <stop offset="100%" stop-color="rgba(168, 85, 247, 0)" />
+              </linearGradient>
+            </defs>
+            ${[...Array(12)].map((_, i) => {
+              const y = 100 + i * 60;
+              const amplitude = 80 + Math.sin(i * 0.5) * 40;
+              return `
+                <path
+                  d="M-100,${y} Q${200 + Math.sin(i) * 50},${y - amplitude} ${600},${y + amplitude * 0.5} T${1300},${y}"
+                  stroke="url(#energyFlow1)"
+                  stroke-width="${4 - i * 0.2}"
+                  fill="none"
+                  style="
+                    animation: energyFlow ${15 + i * 2}s linear infinite;
+                    stroke-dasharray: ${60 + i * 10} ${120 + i * 20};
+                  "
+                />
+              `;
+            }).join('')}
+          </svg>
+        </div>`;
+
+      case 'fluidBlob':
+        return `
+        <div style="position: absolute; inset: 0; overflow: hidden;">
+          ${[
+            { size: 300, x: '15%', y: '20%', colors: ['#3b82f6', '#1d4ed8'], delay: 0, speed: 20 },
+            { size: 250, x: '70%', y: '15%', colors: ['#8b5cf6', '#7c3aed'], delay: 3, speed: 25 },
+            { size: 280, x: '20%', y: '70%', colors: ['#ec4899', '#db2777'], delay: 6, speed: 18 },
+            { size: 200, x: '75%', y: '75%', colors: ['#06b6d4', '#0891b2'], delay: 9, speed: 22 }
+          ].map((blob, i) => `
+            <div style="
+              position: absolute;
+              width: ${blob.size}px;
+              height: ${blob.size}px;
+              left: ${blob.x};
+              top: ${blob.y};
+              background: radial-gradient(circle at 30% 30%, ${blob.colors[0]}80, ${blob.colors[1]}40);
+              border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+              animation: fluidMorph ${blob.speed}s ease-in-out infinite ${blob.delay}s;
+              filter: blur(${1 + i * 0.5}px);
+              opacity: 0.7;
+            "></div>
+          `).join('')}
+        </div>`;
+
+      case 'premium3D':
+        return `
+        <div style="position: absolute; inset: 0; overflow: hidden; perspective: 1200px;">
+          ${[...Array(8)].map((_, i) => {
+            const size = 80 + i * 20;
+            const depth = 20 + i * 10;
+            return `
+              <div style="
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                left: ${15 + (i % 3) * 25}%;
+                top: ${15 + Math.floor(i / 3) * 20}%;
+                transform-style: preserve-3d;
+                animation: rotate3D ${12 + i * 2}s linear infinite;
+              ">
+                <div style="
+                  position: absolute;
+                  inset: 0;
+                  background: linear-gradient(135deg, ${['#1e40af', '#7c3aed', '#db2777', '#059669'][i % 4]}80, ${['#3b82f6', '#8b5cf6', '#ec4899', '#10b981'][i % 4]}40);
+                  transform: rotateY(0deg) translateZ(${depth}px);
+                  border: 1px solid rgba(255,255,255,0.1);
+                  backdrop-filter: blur(2px);
+                "></div>
+              </div>
+            `;
+          }).join('')}
+        </div>`;
+
+      default:
+        return '';
     }
   };
 
@@ -351,12 +525,96 @@ export const generatePageHTML = (templateData: any) => {
           100% { transform: translateY(400px); opacity: 0; }
         }
         
+        /* Premium Background Animations */
+        @keyframes gradientShift {
+          0%, 100% { transform: translateX(0%) rotate(0deg); }
+          33% { transform: translateX(-10%) rotate(120deg); }
+          66% { transform: translateX(10%) rotate(240deg); }
+        }
+        
+        @keyframes floatGeometric {
+          0%, 100% { 
+            transform: translateY(0px) rotate(0deg) scale(1);
+            opacity: 0.6;
+          }
+          50% { 
+            transform: translateY(-30px) rotate(180deg) scale(1.2);
+            opacity: 0.8;
+          }
+        }
+        
+        @keyframes sparkleFloat {
+          0%, 100% { 
+            opacity: 0; 
+            transform: translateY(0px) scale(0);
+          }
+          50% { 
+            opacity: 1; 
+            transform: translateY(-20px) scale(1.5);
+          }
+        }
+        
+        @keyframes energyFlow {
+          0% { 
+            stroke-dashoffset: 0;
+            opacity: 0.7;
+          }
+          50% { 
+            stroke-dashoffset: -200;
+            opacity: 1;
+          }
+          100% { 
+            stroke-dashoffset: -400;
+            opacity: 0.7;
+          }
+        }
+        
+        @keyframes fluidMorph {
+          0%, 100% { 
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            transform: rotate(0deg) scale(1);
+          }
+          25% { 
+            border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+            transform: rotate(90deg) scale(1.1);
+          }
+          50% { 
+            border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%;
+            transform: rotate(180deg) scale(0.9);
+          }
+          75% { 
+            border-radius: 70% 30% 60% 40% / 40% 50% 60% 30%;
+            transform: rotate(270deg) scale(1.05);
+          }
+        }
+        
+        @keyframes rotate3D {
+          0% { 
+            transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateZ(0px);
+          }
+          25% { 
+            transform: rotateX(90deg) rotateY(45deg) rotateZ(15deg) translateZ(30px);
+          }
+          50% { 
+            transform: rotateX(180deg) rotateY(90deg) rotateZ(30deg) translateZ(60px);
+          }
+          75% { 
+            transform: rotateX(270deg) rotateY(135deg) rotateZ(45deg) translateZ(30px);
+          }
+          100% { 
+            transform: rotateX(360deg) rotateY(180deg) rotateZ(60deg) translateZ(0px);
+          }
+        }
+        
         /* Premium Effects */
         ${getPremiumStyles()}
         
-        /* Premium sections use exact component styling */
+        /* Premium sections use exact component styling with animations */
         .hero { 
-            ${isPremium ? getPremiumSectionBackground(template.id, 'hero') : 'background-color: ' + template.styles.heroBackground + ';'}
+            ${isPremium ? (() => {
+              const bgData = getPremiumAnimatedBackground(template.id, 'hero');
+              return `${bgData.background}; position: relative; overflow: hidden;`;
+            })() : 'background-color: ' + template.styles.heroBackground + ';'}
             padding: 5rem 1.5rem;
             min-height: 100vh;
             display: flex;
@@ -366,56 +624,80 @@ export const generatePageHTML = (templateData: any) => {
         }
         
         .emotional { 
-            ${isPremium ? getPremiumSectionBackground(template.id, 'emotional') : 'background-color: ' + template.styles.emotionalBackground + ';'}
+            ${isPremium ? (() => {
+              const bgData = getPremiumAnimatedBackground(template.id, 'emotional');
+              return `${bgData.background}; position: relative; overflow: hidden;`;
+            })() : 'background-color: ' + template.styles.emotionalBackground + ';'}
             padding: 4rem 1.5rem;
             position: relative;
             overflow: hidden;
         }
         
         .features { 
-            ${isPremium ? getPremiumSectionBackground(template.id, 'features') : 'background-color: ' + template.styles.featuresBackground + ';'}
+            ${isPremium ? (() => {
+              const bgData = getPremiumAnimatedBackground(template.id, 'features');
+              return `${bgData.background}; position: relative; overflow: hidden;`;
+            })() : 'background-color: ' + template.styles.featuresBackground + ';'}
             padding: 5rem 1.5rem;
             position: relative;
             overflow: hidden;
         }
         
         .testimonials { 
-            ${isPremium ? getPremiumSectionBackground(template.id, 'testimonials') : 'background-color: ' + template.styles.testimonialsBackground + ';'}
+            ${isPremium ? (() => {
+              const bgData = getPremiumAnimatedBackground(template.id, 'testimonials');
+              return `${bgData.background}; position: relative; overflow: hidden;`;
+            })() : 'background-color: ' + template.styles.testimonialsBackground + ';'}
             padding: 4rem 1.5rem;
             position: relative;
             overflow: hidden;
         }
         
         .about { 
-            ${isPremium ? getPremiumSectionBackground(template.id, 'about') : 'background-color: ' + template.styles.aboutBackground + ';'}
+            ${isPremium ? (() => {
+              const bgData = getPremiumAnimatedBackground(template.id, 'about');
+              return `${bgData.background}; position: relative; overflow: hidden;`;
+            })() : 'background-color: ' + template.styles.aboutBackground + ';'}
             padding: 4rem 1.5rem;
             position: relative;
             overflow: hidden;
         }
         
         .pricing { 
-            ${isPremium ? getPremiumSectionBackground(template.id, 'pricing') : 'background-color: ' + template.styles.pricingBackground + ';'}
+            ${isPremium ? (() => {
+              const bgData = getPremiumAnimatedBackground(template.id, 'pricing');
+              return `${bgData.background}; position: relative; overflow: hidden;`;
+            })() : 'background-color: ' + template.styles.pricingBackground + ';'}
             padding: 5rem 1.5rem;
             position: relative;
             overflow: hidden;
         }
         
         .faq { 
-            ${isPremium ? getPremiumSectionBackground(template.id, 'faq') : 'background-color: ' + template.styles.faqBackground + ';'}
+            ${isPremium ? (() => {
+              const bgData = getPremiumAnimatedBackground(template.id, 'faq');
+              return `${bgData.background}; position: relative; overflow: hidden;`;
+            })() : 'background-color: ' + template.styles.faqBackground + ';'}
             padding: 4rem 1.5rem;
             position: relative;
             overflow: hidden;
         }
         
         .final-cta { 
-            ${isPremium ? getPremiumSectionBackground(template.id, 'final-cta') : 'background-color: ' + template.styles.finalCtaBackground + ';'}
+            ${isPremium ? (() => {
+              const bgData = getPremiumAnimatedBackground(template.id, 'final-cta');
+              return `${bgData.background}; position: relative; overflow: hidden;`;
+            })() : 'background-color: ' + template.styles.finalCtaBackground + ';'}
             padding: 4rem 1.5rem;
             position: relative;
             overflow: hidden;
         }
         
         .contact { 
-            ${isPremium ? getPremiumSectionBackground(template.id, 'contact') : 'background-color: ' + template.styles.contactBackground + ';'}
+            ${isPremium ? (() => {
+              const bgData = getPremiumAnimatedBackground(template.id, 'contact');
+              return `${bgData.background}; position: relative; overflow: hidden;`;
+            })() : 'background-color: ' + template.styles.contactBackground + ';'}
             padding: 4rem 1.5rem;
             position: relative;
             overflow: hidden;
@@ -432,6 +714,10 @@ export const generatePageHTML = (templateData: any) => {
 
     <!-- Hero Section -->
     <section class="hero">
+        ${isPremium ? (() => {
+          const bgData = getPremiumAnimatedBackground(template.id, 'hero');
+          return generatePremiumBackgroundHTML(bgData.animationType);
+        })() : ''}
         ${template.styles.heroBackgroundImage ? '<div class="absolute inset-0 bg-black/40 z-0"></div>' : ''}
         ${isPremium ? `
         <!-- Premium hero effects based on template -->
@@ -541,6 +827,10 @@ export const generatePageHTML = (templateData: any) => {
 
     <!-- Features Section -->
     <section class="features">
+        ${isPremium ? (() => {
+          const bgData = getPremiumAnimatedBackground(template.id, 'features');
+          return generatePremiumBackgroundHTML(bgData.animationType);
+        })() : ''}
         <div class="max-w-7xl mx-auto px-6 relative z-10">
             <div class="text-center mb-16">
                 ${template.features.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.primaryColor};">${template.features.badge}</div>` : ''}
@@ -611,6 +901,10 @@ export const generatePageHTML = (templateData: any) => {
 
     <!-- Testimonials Section -->
     <section id="testimonials" class="testimonials">
+        ${isPremium ? (() => {
+          const bgData = getPremiumAnimatedBackground(template.id, 'testimonials');
+          return generatePremiumBackgroundHTML(bgData.animationType);
+        })() : ''}
         ${isPremium ? `
         <!-- Animated background particles -->
         <div class="absolute inset-0">
