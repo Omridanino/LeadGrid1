@@ -12,22 +12,34 @@ export const generatePageHTML = (templateData: any) => {
     return style;
   };
 
-  // Premium styles for different templates
+  // Premium styles for different templates with exact match to preview
   const getPremiumStyles = () => {
     if (!isPremium) return '';
     
     switch (template.id) {
       case 'tech-consultant-pro':
         return `
-        /* Glassmorphism Effects */
+        /* Glassmorphism Effects - Exact Match */
         .glass-effect {
-          backdrop-filter: blur(10px);
+          backdrop-filter: blur(20px);
           background: rgba(255, 255, 255, 0.1);
           border: 1px solid rgba(255, 255, 255, 0.2);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
         
         .floating-element {
           animation: float 6s ease-in-out infinite;
+        }
+        
+        .hero, .features, .pricing, .testimonials {
+          color: white !important;
+        }
+        
+        .hero h1, .hero h2, .hero p,
+        .features h2, .features h3, .features p,
+        .pricing h2, .pricing h3, .pricing p,
+        .testimonials h2, .testimonials h3, .testimonials p {
+          color: white !important;
         }
         
         @keyframes float {
@@ -37,13 +49,30 @@ export const generatePageHTML = (templateData: any) => {
         
       case 'neon-academy-pro':
         return `
-        /* Neon Effects */
+        /* Neon Effects - Exact Match */
         .neon-text {
+          color: #00f5ff !important;
           text-shadow: 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 30px #00f5ff;
         }
         
         .neon-glow {
-          box-shadow: 0 0 20px #00f5ff;
+          box-shadow: 0 0 20px #00f5ff, 0 0 40px #00f5ff;
+        }
+        
+        .hero, .features, .pricing, .testimonials {
+          color: #00f5ff !important;
+        }
+        
+        .hero h1 {
+          color: #ff00ff !important;
+          text-shadow: 0 0 30px #ff00ff;
+        }
+        
+        .hero h2, .hero p,
+        .features h2, .features h3, .features p,
+        .pricing h2, .pricing h3, .pricing p,
+        .testimonials h2, .testimonials h3, .testimonials p {
+          color: #00f5ff !important;
         }
         
         .cyberpunk-grid {
@@ -59,13 +88,57 @@ export const generatePageHTML = (templateData: any) => {
           100% { opacity: 0.7; }
         }`;
         
+      case 'blockchain-tech-pro':
+        return `
+        /* Blockchain Effects - Exact Match */
+        .particle-network {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.3) 0%, transparent 50%),
+                      radial-gradient(circle at 40% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 50%);
+        }
+        
+        .hero, .features, .pricing, .testimonials {
+          color: #bfdbfe !important;
+        }
+        
+        .hero h1 {
+          background: linear-gradient(45deg, #60a5fa, #a78bfa, #22d3ee);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        
+        .hero h2, .hero p,
+        .features h2, .features h3, .features p,
+        .pricing h2, .pricing h3, .pricing p,
+        .testimonials h2, .testimonials h3, .testimonials p {
+          color: #bfdbfe !important;
+        }
+        
+        .crypto-glow {
+          box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+        }`;
+        
       case 'nft-future-pro':
         return `
-        /* Holographic Effects */
+        /* Holographic Effects - Exact Match */
         .holographic {
           background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
           background-size: 200% 200%;
           animation: holographic 3s ease infinite;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        
+        .hero, .features, .pricing, .testimonials {
+          color: #e879f9 !important;
+        }
+        
+        .hero h1 {
+          background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
@@ -88,13 +161,24 @@ export const generatePageHTML = (templateData: any) => {
         
       case 'creative-3d-pro':
         return `
-        /* Clay Morphism */
+        /* Clay Morphism - Exact Match */
         .clay-button {
           border-radius: 25px;
           box-shadow: 
             8px 8px 16px rgba(163, 177, 198, 0.6),
             -8px -8px 16px rgba(255, 255, 255, 0.8);
           transition: all 0.3s ease;
+        }
+        
+        .hero, .features, .pricing, .testimonials {
+          color: #374151 !important;
+        }
+        
+        .hero h1, .hero h2, .hero p,
+        .features h2, .features h3, .features p,
+        .pricing h2, .pricing h3, .pricing p,
+        .testimonials h2, .testimonials h3, .testimonials p {
+          color: #374151 !important;
         }
         
         .clay-button:hover {
@@ -117,7 +201,7 @@ export const generatePageHTML = (templateData: any) => {
         
       case 'authkit-tech-pro':
         return `
-        /* Matrix Effects */
+        /* Matrix Effects - Exact Match */
         .matrix-rain {
           position: absolute;
           top: 0;
@@ -126,6 +210,23 @@ export const generatePageHTML = (templateData: any) => {
           height: 100%;
           overflow: hidden;
           pointer-events: none;
+        }
+        
+        .hero, .features, .pricing, .testimonials {
+          color: #bfdbfe !important;
+        }
+        
+        .hero h1 {
+          color: white !important;
+          text-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+          font-family: monospace;
+        }
+        
+        .hero h2, .hero p,
+        .features h2, .features h3, .features p,
+        .pricing h2, .pricing h3, .pricing p,
+        .testimonials h2, .testimonials h3, .testimonials p {
+          color: #bfdbfe !important;
         }
         
         .matrix-char {
@@ -143,21 +244,6 @@ export const generatePageHTML = (templateData: any) => {
         
         .tech-glow {
           box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-        }`;
-        
-      case 'blockchain-tech-pro':
-        return `
-        /* Blockchain Effects */
-        .particle-network {
-          position: absolute;
-          inset: 0;
-          background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
-                      radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.3) 0%, transparent 50%),
-                      radial-gradient(circle at 40% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 50%);
-        }
-        
-        .crypto-glow {
-          box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
         }`;
         
       default:
@@ -578,11 +664,47 @@ export const generatePageHTML = (templateData: any) => {
             ${isPremium ? 'color: white;' : ''}
         }
         
-        /* Responsive */
+        /* Stars in testimonials - horizontal layout */
+        .stars-row {
+            display: flex;
+            flex-direction: row;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Mobile card grid fixes */
         @media (max-width: 768px) {
             .text-4xl { font-size: 2rem; }
             .text-3xl { font-size: 1.5rem; }
-            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            
+            /* Equal height cards on mobile */
+            .grid-2, .grid-3, .grid-4 { 
+                grid-template-columns: 1fr; 
+                gap: 1.5rem;
+            }
+            
+            .card {
+                min-height: 300px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+            
+            /* Pricing cards equal height */
+            .pricing .card {
+                min-height: 400px;
+            }
+            
+            /* Testimonial cards equal height */
+            .testimonials .card {
+                min-height: 250px;
+            }
+            
+            /* Feature cards equal height */
+            .features .card {
+                min-height: 200px;
+            }
+            
             .flex { 
                 flex-direction: column; 
                 align-items: center;
@@ -702,7 +824,7 @@ export const generatePageHTML = (templateData: any) => {
             <div class="grid-3 mb-12">
                 ${template.testimonials.testimonials.map((testimonial: any) => `
                     <div class="card">
-                        <div class="flex mb-4">
+                        <div class="stars-row">
                             ${Array(testimonial.rating).fill(0).map(() => '<span class="star">★</span>').join('')}
                         </div>
                         <p class="mb-4" style="color: ${template.styles.textColor}; font-style: italic;">"${testimonial.content}"</p>
