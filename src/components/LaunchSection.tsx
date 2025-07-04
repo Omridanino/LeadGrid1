@@ -47,7 +47,10 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
       },
       styles: template.styles,
       heroImage: '',
-      template: template
+      template: template,
+      businessInfo: {
+        companyName: template.hero.title
+      }
     };
     
     localStorage.setItem('generatedPageData', JSON.stringify(templateWithGeneratedContent));

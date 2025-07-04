@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Copy, ExternalLink, CheckCircle } from 'lucide-react';
+import { Copy, ExternalLink, CheckCircle, Mail } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 interface PublishSuccessPopupProps {
@@ -74,7 +74,15 @@ export const PublishSuccessPopup = ({ isOpen, onClose, publishedUrl, siteName }:
             </Button>
           </div>
           
+          
           <div className="text-center pt-3 border-t border-gray-700">
+            <div className="mb-3">
+              <p className="text-gray-400 text-xs mb-2">נזקק לעזרה? צרו קשר:</p>
+              <div className="flex items-center justify-center gap-2 text-sm text-blue-400">
+                <Mail className="w-4 h-4" />
+                <span>info.Leadgrid@gmail.com</span>
+              </div>
+            </div>
             <Button
               onClick={onClose}
               variant="outline"

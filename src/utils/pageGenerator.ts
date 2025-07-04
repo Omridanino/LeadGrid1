@@ -563,7 +563,7 @@ export const generatePageHTML = (templateData: any) => {
         ${template.styles.footerBackgroundImage ? '<div class="bg-overlay"></div>' : ''}
         <div class="container content">
             <div class="text-center">
-                <h3 class="text-xl font-bold mb-2" style="color: ${template.styles.footerBackgroundImage ? 'white' : template.styles.textColor};">${template.businessInfo?.companyName || template.hero?.title || 'העסק שלנו'}</h3>
+                <h3 class="text-xl font-bold mb-2" style="color: ${template.styles.footerBackgroundImage ? 'white' : template.styles.textColor};">${template.formData?.businessName || template.businessInfo?.companyName || template.hero?.title || 'העסק שלנו'}</h3>
                 ${template.footer.description ? `<p class="mb-4" style="color: ${template.styles.footerBackgroundImage ? 'white' : template.styles.textColor}; opacity: 0.8;">${template.footer.description}</p>` : ''}
                 
                 ${template.footer.contactInfo ? `
@@ -584,7 +584,7 @@ export const generatePageHTML = (templateData: any) => {
                 
                 <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1rem; margin-top: 2rem;">
                     <p style="color: ${template.styles.footerBackgroundImage ? 'white' : template.styles.textColor}; opacity: 0.6; font-size: 0.875rem;">
-                        &copy; ${new Date().getFullYear()} ${template.businessInfo?.companyName || template.hero?.title || 'העסק שלנו'}. כל הזכויות שמורות.
+                        &copy; ${new Date().getFullYear()} ${template.formData?.businessName || template.businessInfo?.companyName || template.hero?.title || 'העסק שלנו'}. כל הזכויות שמורות.
                     </p>
                     <p style="color: ${template.styles.footerBackgroundImage ? 'white' : template.styles.textColor}; opacity: 0.5; font-size: 0.75rem; margin-top: 0.5rem;">
                         נוצר עם LeadGrid

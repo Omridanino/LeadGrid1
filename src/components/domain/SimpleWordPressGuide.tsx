@@ -275,9 +275,9 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
                 <div className={`
                   relative w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-500 hover:scale-110
                   ${currentStep >= step.number 
-                    ? 'bg-gradient-to-br from-green-400 to-green-600 text-white shadow-xl shadow-green-500/40 animate-pulse' 
+                    ? 'bg-gradient-to-br from-green-400 to-green-600 text-white shadow-xl shadow-green-500/40' 
                     : currentStep === step.number 
-                      ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-xl shadow-blue-500/40 ring-4 ring-blue-500/30' 
+                      ? 'bg-gradient-to-br from-blue-500 via-purple-500 to-cyan-500 text-white shadow-xl shadow-blue-500/40 ring-4 ring-blue-500/30 bg-size-200 animate-gradient-xy' 
                       : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
                   }
                 `}>
