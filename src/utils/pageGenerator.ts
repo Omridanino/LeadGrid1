@@ -145,12 +145,91 @@ export const generatePageHTML = (templateData: any) => {
           box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
         }`;
         
+      case 'blockchain-tech-pro':
+        return `
+        /* Blockchain Effects */
+        .particle-network {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.3) 0%, transparent 50%),
+                      radial-gradient(circle at 40% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 50%);
+        }
+        
+        .crypto-glow {
+          box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+        }`;
+        
       default:
         return `
         /* Default Premium Effects */
         .premium-glow {
           box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
         }`;
+    }
+  };
+
+  // Premium hero backgrounds
+  const getPremiumHeroBackground = (templateId: string) => {
+    switch (templateId) {
+      case 'tech-consultant-pro':
+        return 'background: linear-gradient(135deg, #0f172a 0%, #374151 50%, #000000 100%);';
+      case 'neon-academy-pro':
+        return 'background: linear-gradient(135deg, #000000 0%, #7c3aed 50%, #000000 100%);';
+      case 'blockchain-tech-pro':
+        return 'background: linear-gradient(135deg, #1e1b4b 0%, #1e40af 50%, #7c2d12 100%);';
+      case 'creative-3d-pro':
+        return 'background: linear-gradient(135deg, #fed7aa 0%, #fca5a5 50%, #c084fc 100%);';
+      case 'authkit-tech-pro':
+        return 'background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e40af 100%);';
+      case 'nft-future-pro':
+        return 'background: linear-gradient(135deg, #581c87 0%, #be185d 50%, #1e40af 100%);';
+      default:
+        return 'background: linear-gradient(135deg, #374151 0%, #1e40af 50%, #581c87 100%);';
+    }
+  };
+
+  // Premium section backgrounds
+  const getPremiumSectionBackground = (templateId: string, sectionType: string) => {
+    switch (templateId) {
+      case 'tech-consultant-pro':
+        return sectionType === 'features' ? 'background: linear-gradient(135deg, #1f2937 0%, #374151 100%);' :
+               sectionType === 'pricing' ? 'background: linear-gradient(135deg, #374151 0%, #1f2937 100%);' :
+               sectionType === 'testimonials' ? 'background: linear-gradient(135deg, #1f2937 0%, #000000 100%);' :
+               'background: linear-gradient(135deg, #0f172a 0%, #1f2937 100%);';
+      
+      case 'neon-academy-pro':
+        return sectionType === 'features' ? 'background: linear-gradient(135deg, #000000 0%, #581c87 100%);' :
+               sectionType === 'pricing' ? 'background: linear-gradient(135deg, #581c87 0%, #000000 100%);' :
+               sectionType === 'testimonials' ? 'background: linear-gradient(135deg, #000000 0%, #581c87 100%);' :
+               'background: linear-gradient(135deg, #7c3aed 0%, #000000 100%);';
+      
+      case 'blockchain-tech-pro':
+        return sectionType === 'features' ? 'background: linear-gradient(135deg, #1e1b4b 0%, #1e40af 100%);' :
+               sectionType === 'pricing' ? 'background: linear-gradient(135deg, #1e40af 0%, #1e1b4b 100%);' :
+               sectionType === 'testimonials' ? 'background: linear-gradient(135deg, #1e1b4b 0%, #581c87 100%);' :
+               'background: linear-gradient(135deg, #312e81 0%, #1e40af 100%);';
+      
+      case 'creative-3d-pro':
+        return sectionType === 'features' ? 'background: linear-gradient(135deg, #fed7aa 0%, #fca5a5 100%);' :
+               sectionType === 'pricing' ? 'background: linear-gradient(135deg, #fca5a5 0%, #c084fc 100%);' :
+               sectionType === 'testimonials' ? 'background: linear-gradient(135deg, #c084fc 0%, #fed7aa 100%);' :
+               'background: linear-gradient(135deg, #fdba74 0%, #fb7185 100%);';
+      
+      case 'authkit-tech-pro':
+        return sectionType === 'features' ? 'background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);' :
+               sectionType === 'pricing' ? 'background: linear-gradient(135deg, #1e293b 0%, #1e40af 100%);' :
+               sectionType === 'testimonials' ? 'background: linear-gradient(135deg, #1e40af 0%, #0f172a 100%);' :
+               'background: linear-gradient(135deg, #334155 0%, #1e40af 100%);';
+      
+      case 'nft-future-pro':
+        return sectionType === 'features' ? 'background: linear-gradient(135deg, #581c87 0%, #be185d 100%);' :
+               sectionType === 'pricing' ? 'background: linear-gradient(135deg, #be185d 0%, #1e40af 100%);' :
+               sectionType === 'testimonials' ? 'background: linear-gradient(135deg, #1e40af 0%, #581c87 100%);' :
+               'background: linear-gradient(135deg, #7c2d12 0%, #be185d 100%);';
+      
+      default:
+        return 'background: linear-gradient(135deg, #374151 0%, #1e40af 100%);';
     }
   };
 
@@ -239,76 +318,76 @@ export const generatePageHTML = (templateData: any) => {
         
         /* Section Backgrounds */
         .hero { 
-            ${getSectionStyle(template.styles.heroBackground, template.styles.heroBackgroundImage)}
+            ${isPremium ? getPremiumHeroBackground(template.id) : getSectionStyle(template.styles.heroBackground, template.styles.heroBackgroundImage)}
             padding: 5rem 0;
             min-height: 100vh;
             display: flex;
             align-items: center;
             position: relative;
-            ${isPremium ? 'overflow: hidden;' : ''}
+            overflow: hidden;
         }
         
         .emotional { 
-            ${getSectionStyle(template.styles.emotionalBackground, template.styles.emotionalBackgroundImage)}
+            ${isPremium ? getPremiumSectionBackground(template.id, 'emotional') : getSectionStyle(template.styles.emotionalBackground, template.styles.emotionalBackgroundImage)}
             padding: 4rem 0;
             position: relative;
-            ${isPremium ? 'overflow: hidden;' : ''}
+            overflow: hidden;
         }
         
         .features { 
-            ${getSectionStyle(template.styles.featuresBackground, template.styles.featuresBackgroundImage)}
+            ${isPremium ? getPremiumSectionBackground(template.id, 'features') : getSectionStyle(template.styles.featuresBackground, template.styles.featuresBackgroundImage)}
             padding: 4rem 0;
             position: relative;
-            ${isPremium ? 'overflow: hidden;' : ''}
+            overflow: hidden;
         }
         
         .testimonials { 
-            ${getSectionStyle(template.styles.testimonialsBackground, template.styles.testimonialsBackgroundImage)}
+            ${isPremium ? getPremiumSectionBackground(template.id, 'testimonials') : getSectionStyle(template.styles.testimonialsBackground, template.styles.testimonialsBackgroundImage)}
             padding: 4rem 0;
             position: relative;
-            ${isPremium ? 'overflow: hidden;' : ''}
+            overflow: hidden;
         }
         
         .about { 
-            ${getSectionStyle(template.styles.aboutBackground, template.styles.aboutBackgroundImage)}
+            ${isPremium ? getPremiumSectionBackground(template.id, 'about') : getSectionStyle(template.styles.aboutBackground, template.styles.aboutBackgroundImage)}
             padding: 4rem 0;
             position: relative;
-            ${isPremium ? 'overflow: hidden;' : ''}
+            overflow: hidden;
         }
         
         .pricing { 
-            ${getSectionStyle(template.styles.pricingBackground, template.styles.pricingBackgroundImage)}
+            ${isPremium ? getPremiumSectionBackground(template.id, 'pricing') : getSectionStyle(template.styles.pricingBackground, template.styles.pricingBackgroundImage)}
             padding: 4rem 0;
             position: relative;
-            ${isPremium ? 'overflow: hidden;' : ''}
+            overflow: hidden;
         }
         
         .faq { 
-            ${getSectionStyle(template.styles.faqBackground, template.styles.faqBackgroundImage)}
+            ${isPremium ? getPremiumSectionBackground(template.id, 'faq') : getSectionStyle(template.styles.faqBackground, template.styles.faqBackgroundImage)}
             padding: 4rem 0;
             position: relative;
-            ${isPremium ? 'overflow: hidden;' : ''}
+            overflow: hidden;
         }
         
         .final-cta { 
-            ${getSectionStyle(template.styles.finalCtaBackground, template.styles.finalCtaBackgroundImage)}
+            ${isPremium ? getPremiumSectionBackground(template.id, 'final-cta') : getSectionStyle(template.styles.finalCtaBackground, template.styles.finalCtaBackgroundImage)}
             padding: 4rem 0;
             position: relative;
-            ${isPremium ? 'overflow: hidden;' : ''}
+            overflow: hidden;
         }
         
         .contact { 
-            ${getSectionStyle(template.styles.contactBackground, template.styles.contactBackgroundImage)}
+            ${isPremium ? getPremiumSectionBackground(template.id, 'contact') : getSectionStyle(template.styles.contactBackground, template.styles.contactBackgroundImage)}
             padding: 4rem 0;
             position: relative;
-            ${isPremium ? 'overflow: hidden;' : ''}
+            overflow: hidden;
         }
         
         .footer { 
-            ${getSectionStyle(template.styles.footerBackground, template.styles.footerBackgroundImage)}
+            ${isPremium ? getPremiumSectionBackground(template.id, 'footer') : getSectionStyle(template.styles.footerBackground, template.styles.footerBackgroundImage)}
             padding: 3rem 0;
             position: relative;
-            ${isPremium ? 'overflow: hidden;' : ''}
+            overflow: hidden;
         }
         
         /* Background overlay for sections with images */
@@ -326,7 +405,7 @@ export const generatePageHTML = (templateData: any) => {
         
         /* Premium Background Effects */
         ${isPremium && template.id === 'tech-consultant-pro' ? `
-        .hero::before {
+        .hero::before, .features::before, .pricing::before, .testimonials::before {
             content: '';
             position: absolute;
             top: 0;
@@ -339,10 +418,11 @@ export const generatePageHTML = (templateData: any) => {
             background-size: 20px 20px;
             opacity: 0.3;
             pointer-events: none;
+            z-index: 1;
         }` : ''}
         
         ${isPremium && template.id === 'neon-academy-pro' ? `
-        .hero::before {
+        .hero::before, .features::before, .pricing::before, .testimonials::before {
             content: '';
             position: absolute;
             top: 0;
@@ -355,6 +435,55 @@ export const generatePageHTML = (templateData: any) => {
             background-size: 40px 40px;
             animation: grid-glow 4s ease-in-out infinite alternate;
             pointer-events: none;
+            z-index: 1;
+        }` : ''}
+        
+        ${isPremium && template.id === 'blockchain-tech-pro' ? `
+        .hero::after, .features::after, .pricing::after, .testimonials::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }` : ''}
+        
+        ${isPremium && template.id === 'creative-3d-pro' ? `
+        .hero::before, .features::before, .pricing::before, .testimonials::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="25" cy="25" r="10" fill="rgba(255,107,107,0.1)"/><circle cx="75" cy="25" r="8" fill="rgba(78,205,196,0.1)"/><circle cx="50" cy="75" r="12" fill="rgba(69,183,209,0.1)"/></svg>');
+            background-size: 200px 200px;
+            animation: float 15s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
+        }` : ''}
+        
+        ${isPremium && template.id === 'authkit-tech-pro' ? `
+        .hero::before, .features::before, .pricing::before, .testimonials::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 98px,
+                rgba(59, 130, 246, 0.03) 100px
+            );
+            pointer-events: none;
+            z-index: 1;
         }` : ''}
         
         /* Grid layouts */
