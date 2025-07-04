@@ -1,6 +1,7 @@
-// Complete HTML Generator - Creates exact HTML from template preview
+// Complete HTML Generator - Creates exact HTML from template preview with premium support
 export const generatePageHTML = (templateData: any) => {
   const template = templateData;
+  const isPremium = template.category.includes('פרימיום');
   
   // Generate styling for each section based on template styles
   const getSectionStyle = (bgColor: string, bgImage?: string) => {
@@ -9,6 +10,148 @@ export const generatePageHTML = (templateData: any) => {
       style += `background-image: url(${bgImage}); background-size: cover; background-position: center; background-repeat: no-repeat;`;
     }
     return style;
+  };
+
+  // Premium styles for different templates
+  const getPremiumStyles = () => {
+    if (!isPremium) return '';
+    
+    switch (template.id) {
+      case 'tech-consultant-pro':
+        return `
+        /* Glassmorphism Effects */
+        .glass-effect {
+          backdrop-filter: blur(10px);
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .floating-element {
+          animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(5deg); }
+        }`;
+        
+      case 'neon-academy-pro':
+        return `
+        /* Neon Effects */
+        .neon-text {
+          text-shadow: 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 30px #00f5ff;
+        }
+        
+        .neon-glow {
+          box-shadow: 0 0 20px #00f5ff;
+        }
+        
+        .cyberpunk-grid {
+          background-image: 
+            linear-gradient(90deg, rgba(0, 245, 255, 0.1) 1px, transparent 1px),
+            linear-gradient(rgba(0, 245, 255, 0.1) 1px, transparent 1px);
+          background-size: 40px 40px;
+          animation: grid-glow 4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes grid-glow {
+          0% { opacity: 0.3; }
+          100% { opacity: 0.7; }
+        }`;
+        
+      case 'nft-future-pro':
+        return `
+        /* Holographic Effects */
+        .holographic {
+          background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
+          background-size: 200% 200%;
+          animation: holographic 3s ease infinite;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+        
+        @keyframes holographic {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        
+        .card-3d {
+          transform-style: preserve-3d;
+          transition: transform 0.6s;
+        }
+        
+        .card-3d:hover {
+          transform: rotateY(15deg) rotateX(10deg) scale(1.05);
+        }`;
+        
+      case 'creative-3d-pro':
+        return `
+        /* Clay Morphism */
+        .clay-button {
+          border-radius: 25px;
+          box-shadow: 
+            8px 8px 16px rgba(163, 177, 198, 0.6),
+            -8px -8px 16px rgba(255, 255, 255, 0.8);
+          transition: all 0.3s ease;
+        }
+        
+        .clay-button:hover {
+          box-shadow: 
+            4px 4px 8px rgba(163, 177, 198, 0.6),
+            -4px -4px 8px rgba(255, 255, 255, 0.8);
+        }
+        
+        .morphing-shape {
+          border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+          animation: morph 8s ease-in-out infinite;
+        }
+        
+        @keyframes morph {
+          0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+          25% { border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%; }
+          50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; }
+          75% { border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%; }
+        }`;
+        
+      case 'authkit-tech-pro':
+        return `
+        /* Matrix Effects */
+        .matrix-rain {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          pointer-events: none;
+        }
+        
+        .matrix-char {
+          position: absolute;
+          color: #0f0;
+          font-family: monospace;
+          font-size: 14px;
+          animation: matrix-fall 3s linear infinite;
+        }
+        
+        @keyframes matrix-fall {
+          0% { transform: translateY(-100vh); opacity: 1; }
+          100% { transform: translateY(100vh); opacity: 0; }
+        }
+        
+        .tech-glow {
+          box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }`;
+        
+      default:
+        return `
+        /* Default Premium Effects */
+        .premium-glow {
+          box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+        }`;
+    }
   };
 
   // Generate complete HTML with all sections
@@ -31,6 +174,7 @@ export const generatePageHTML = (templateData: any) => {
             line-height: 1.6;
             color: ${template.styles.textColor};
             background-color: ${template.styles.backgroundColor};
+            ${isPremium ? 'overflow-x: hidden;' : ''}
         }
         
         .container {
@@ -51,6 +195,7 @@ export const generatePageHTML = (templateData: any) => {
             text-decoration: none;
             cursor: pointer;
             transition: all 0.3s ease;
+            ${isPremium ? 'position: relative; z-index: 10;' : ''}
         }
         
         .btn:hover {
@@ -67,24 +212,30 @@ export const generatePageHTML = (templateData: any) => {
             font-size: 0.9rem;
             font-weight: 500;
             margin-bottom: 1rem;
+            ${isPremium ? 'backdrop-filter: blur(10px);' : ''}
         }
         
         .card {
-            background: white;
+            background: ${isPremium ? 'rgba(255,255,255,0.1)' : 'white'};
+            ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}
             border-radius: 12px;
             padding: 2rem;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             transition: transform 0.3s ease;
+            ${isPremium ? 'position: relative; overflow: hidden;' : ''}
         }
         
         .card:hover {
             transform: translateY(-5px);
+            ${isPremium ? 'box-shadow: 0 20px 40px rgba(0,0,0,0.2);' : ''}
         }
         
         .star {
             color: #fbbf24;
             font-size: 1.2rem;
         }
+
+        ${getPremiumStyles()}
         
         /* Section Backgrounds */
         .hero { 
@@ -94,60 +245,70 @@ export const generatePageHTML = (templateData: any) => {
             display: flex;
             align-items: center;
             position: relative;
+            ${isPremium ? 'overflow: hidden;' : ''}
         }
         
         .emotional { 
             ${getSectionStyle(template.styles.emotionalBackground, template.styles.emotionalBackgroundImage)}
             padding: 4rem 0;
             position: relative;
+            ${isPremium ? 'overflow: hidden;' : ''}
         }
         
         .features { 
             ${getSectionStyle(template.styles.featuresBackground, template.styles.featuresBackgroundImage)}
             padding: 4rem 0;
             position: relative;
+            ${isPremium ? 'overflow: hidden;' : ''}
         }
         
         .testimonials { 
             ${getSectionStyle(template.styles.testimonialsBackground, template.styles.testimonialsBackgroundImage)}
             padding: 4rem 0;
             position: relative;
+            ${isPremium ? 'overflow: hidden;' : ''}
         }
         
         .about { 
             ${getSectionStyle(template.styles.aboutBackground, template.styles.aboutBackgroundImage)}
             padding: 4rem 0;
             position: relative;
+            ${isPremium ? 'overflow: hidden;' : ''}
         }
         
         .pricing { 
             ${getSectionStyle(template.styles.pricingBackground, template.styles.pricingBackgroundImage)}
             padding: 4rem 0;
             position: relative;
+            ${isPremium ? 'overflow: hidden;' : ''}
         }
         
         .faq { 
             ${getSectionStyle(template.styles.faqBackground, template.styles.faqBackgroundImage)}
             padding: 4rem 0;
             position: relative;
+            ${isPremium ? 'overflow: hidden;' : ''}
         }
         
         .final-cta { 
             ${getSectionStyle(template.styles.finalCtaBackground, template.styles.finalCtaBackgroundImage)}
             padding: 4rem 0;
             position: relative;
+            ${isPremium ? 'overflow: hidden;' : ''}
         }
         
         .contact { 
             ${getSectionStyle(template.styles.contactBackground, template.styles.contactBackgroundImage)}
             padding: 4rem 0;
             position: relative;
+            ${isPremium ? 'overflow: hidden;' : ''}
         }
         
         .footer { 
             ${getSectionStyle(template.styles.footerBackground, template.styles.footerBackgroundImage)}
             padding: 3rem 0;
             position: relative;
+            ${isPremium ? 'overflow: hidden;' : ''}
         }
         
         /* Background overlay for sections with images */
@@ -162,6 +323,39 @@ export const generatePageHTML = (templateData: any) => {
             position: relative;
             z-index: 2;
         }
+        
+        /* Premium Background Effects */
+        ${isPremium && template.id === 'tech-consultant-pro' ? `
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px),
+                linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+            pointer-events: none;
+        }` : ''}
+        
+        ${isPremium && template.id === 'neon-academy-pro' ? `
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(90deg, rgba(0, 245, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(rgba(0, 245, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: grid-glow 4s ease-in-out infinite alternate;
+            pointer-events: none;
+        }` : ''}
         
         /* Grid layouts */
         .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
@@ -223,6 +417,7 @@ export const generatePageHTML = (templateData: any) => {
             color: ${template.styles.primaryColor};
             font-size: 1.5rem;
             margin: 0 auto 1rem;
+            ${isPremium ? 'box-shadow: 0 0 20px ' + template.styles.primaryColor + '30;' : ''}
         }
         
         /* Accordion styles */
@@ -231,10 +426,11 @@ export const generatePageHTML = (templateData: any) => {
             border-radius: 8px;
             margin-bottom: 1rem;
             overflow: hidden;
+            ${isPremium ? 'backdrop-filter: blur(10px); background: rgba(255,255,255,0.1);' : ''}
         }
         
         .accordion-header {
-            background: #f9fafb;
+            background: ${isPremium ? 'rgba(255,255,255,0.1)' : '#f9fafb'};
             padding: 1rem;
             cursor: pointer;
             font-weight: 600;
@@ -244,11 +440,13 @@ export const generatePageHTML = (templateData: any) => {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            ${isPremium ? 'color: white;' : ''}
         }
         
         .accordion-content {
             padding: 1rem;
-            background: white;
+            background: ${isPremium ? 'rgba(255,255,255,0.05)' : 'white'};
+            ${isPremium ? 'color: white;' : ''}
         }
         
         /* Responsive */

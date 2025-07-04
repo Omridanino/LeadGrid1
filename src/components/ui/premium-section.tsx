@@ -5,6 +5,7 @@ import { FloatingCardsGrid } from './floating-cards';
 import { LiquidPricing } from './liquid-pricing';
 import { MorphingTestimonials } from './morphing-testimonials';
 import { TechConsultantHero, NeonAcademyHero, BlockchainTechHero } from './premium-heroes';
+import { Creative3DHero, AuthKitHero } from './premium-heroes-2';
 import { NFTFutureCards, Creative3DCards, AuthKitCards } from './premium-cards';
 import { TemplateData } from '@/types/template';
 import { 
@@ -208,6 +209,19 @@ export const PremiumSection = ({ template, sectionType }: PremiumSectionProps) =
 
     case 'creative-3d-pro':
       switch (sectionType) {
+        case 'hero':
+          return (
+            <Creative3DHero
+              badge={template.hero.badge}
+              title={template.hero.title}
+              subtitle={template.hero.subtitle}
+              description={template.hero.description}
+              button1Text={template.hero.button1Text}
+              button2Text={template.hero.button2Text}
+              button1Icon={template.hero.button1Icon}
+              button2Icon={template.hero.button2Icon}
+            />
+          );
         case 'features':
           const creativeCards = template.features.items.map(item => ({
             title: item.title,
@@ -246,6 +260,19 @@ export const PremiumSection = ({ template, sectionType }: PremiumSectionProps) =
 
     case 'authkit-tech-pro':
       switch (sectionType) {
+        case 'hero':
+          return (
+            <AuthKitHero
+              badge={template.hero.badge}
+              title={template.hero.title}
+              subtitle={template.hero.subtitle}
+              description={template.hero.description}
+              button1Text={template.hero.button1Text}
+              button2Text={template.hero.button2Text}
+              button1Icon={template.hero.button1Icon}
+              button2Icon={template.hero.button2Icon}
+            />
+          );
         case 'features':
           const authCards = template.features.items.map(item => ({
             title: item.title,
