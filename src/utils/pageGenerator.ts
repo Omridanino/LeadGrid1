@@ -255,23 +255,44 @@ export const generatePageHTML = (templateData: any) => {
     }
   };
 
-  // Premium hero backgrounds
-  const getPremiumHeroBackground = (templateId: string) => {
+  // Premium hero title colors (special handling for titles)
+  const getPremiumHeroTitleColor = (templateId: string) => {
     switch (templateId) {
       case 'tech-consultant-pro':
-        return 'background: linear-gradient(135deg, #0f172a 0%, #374151 50%, #000000 100%);';
+        return 'white';
       case 'neon-academy-pro':
-        return 'background: linear-gradient(135deg, #000000 0%, #7c3aed 50%, #000000 100%);';
+        return '#ff00ff'; // Magenta for title in neon
       case 'blockchain-tech-pro':
-        return 'background: linear-gradient(135deg, #1e1b4b 0%, #1e40af 50%, #7c2d12 100%);';
+        return 'transparent'; // Use gradient via background-clip
       case 'creative-3d-pro':
-        return 'background: linear-gradient(135deg, #fed7aa 0%, #fca5a5 50%, #c084fc 100%);';
+        return '#374151';
       case 'authkit-tech-pro':
-        return 'background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e40af 100%);';
+        return 'white';
       case 'nft-future-pro':
-        return 'background: linear-gradient(135deg, #581c87 0%, #be185d 50%, #1e40af 100%);';
+        return 'transparent'; // Use gradient via background-clip
       default:
-        return 'background: linear-gradient(135deg, #374151 0%, #1e40af 50%, #581c87 100%);';
+        return 'white';
+    }
+  };
+
+
+  // Premium text colors for content
+  const getPremiumTextColor = (templateId: string) => {
+    switch (templateId) {
+      case 'tech-consultant-pro':
+        return 'white';
+      case 'neon-academy-pro':
+        return '#00f5ff';
+      case 'blockchain-tech-pro':
+        return '#bfdbfe';
+      case 'creative-3d-pro':
+        return '#374151';
+      case 'authkit-tech-pro':
+        return '#bfdbfe';
+      case 'nft-future-pro':
+        return '#e879f9';
+      default:
+        return 'white';
     }
   };
 
@@ -424,8 +445,9 @@ export const generatePageHTML = (templateData: any) => {
         ${getPremiumStyles()}
         
         /* Section Backgrounds */
+        /* Hero Section */
         .hero { 
-            ${isPremium ? getPremiumHeroBackground(template.id) : getSectionStyle(template.styles.heroBackground, template.styles.heroBackgroundImage)}
+            ${isPremium ? getPremiumSectionBackground(template.id, 'hero') : getSectionStyle(template.styles.heroBackground, template.styles.heroBackgroundImage)}
             padding: 5rem 0;
             min-height: 100vh;
             display: flex;

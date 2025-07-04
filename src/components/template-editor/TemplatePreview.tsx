@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -26,10 +25,6 @@ const getSectionStyle = (backgroundColor: string, backgroundImage?: string) => {
   }
   
   return baseStyle;
-};
-
-const isPremiumTemplate = (template: TemplateData) => {
-  return template.category.includes('פרימיום');
 };
 
 const getPremiumTextColor = (templateId: string) => {
@@ -118,149 +113,272 @@ const getEffectClasses = (effectType: string | null) => {
     // Motion Effects
     case 'vortex':
       return 'animate-vortex';
-    case 'spiral':
-      return 'animate-spiral';
+    case 'gravity-well':
+      return 'animate-gravity-well';
     case 'orbital':
       return 'animate-orbital';
     
-    // Color Effects
-    case 'color-breathing':
-      return 'animate-color-breathing';
-    case 'rainbow-wave':
-      return 'animate-rainbow-wave';
-    case 'gradient-shift':
-      return 'animate-gradient-shift';
-    
     // Glass Effects
     case 'glass-morph':
-      return 'animate-glass-morph glass-effect';
+      return 'glass-effect';
+    case 'frosted-glass':
+      return 'frosted-glass';
+    case 'crystal-reflection':
+      return 'crystal-reflection';
     
     default:
       return '';
   }
 };
 
-export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
-  const isPremiumTemplate = template.category.includes('פרימיום');
-  
-  if (isPremiumTemplate) {
+export const TemplatePreview: React.FC<TemplatePreviewProps> = ({ template }) => {
+  const isPremium = template.category.includes('פרימיום');
+
+  // For premium templates, use PremiumSection components
+  if (isPremium) {
     return (
       <div className="min-h-full">
         <PremiumSection template={template} sectionType="hero" />
         
         {/* Emotional Section */}
-        <section className="py-16 px-4 relative bg-gradient-to-br from-blue-900/50 to-purple-900/50">
-          <div className="max-w-4xl mx-auto text-center relative z-10">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
-              {template.emotional.title}
-            </h2>
-            <p className="text-lg leading-relaxed opacity-90 mb-8 text-blue-100">
-              {template.emotional.description}
-            </p>
+        {template.emotional && (
+          <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.emotionalBackground, template.styles.emotionalBackgroundImage)}>
+            {template.styles.emotionalBackgroundImage && (
+              <div className="absolute inset-0 bg-black/30"></div>
+            )}
+            <div className="max-w-6xl mx-auto text-center relative z-10">
+              {template.emotional.badge && (
+                <Badge className="mb-4" variant="outline" style={{ 
+                  borderColor: template.styles.accentColor, 
+                  color: getPremiumTextColor(template.id)
+                }}>
+                  {template.emotional.badge}
+                </Badge>
+              )}
+              <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: getPremiumTextColor(template.id) }}>
+                {template.emotional.title}
+              </h2>
+              <p className="text-lg max-w-4xl mx-auto opacity-90" style={{ color: getPremiumTextColor(template.id) }}>
+                {template.emotional.description}
+              </p>
+            </div>
+          </section>
+        )}
+        
+        <PremiumSection template={template} sectionType="features" />
+        
+        {/* Testimonials Section */}
+        <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.testimonialsBackground, template.styles.testimonialsBackgroundImage)}>
+          {template.styles.testimonialsBackgroundImage && (
+            <div className="absolute inset-0 bg-black/30"></div>
+          )}
+          <div className="max-w-6xl mx-auto relative z-10">
+            <div className="text-center mb-12">
+              {template.testimonials.badge && (
+                <Badge className="mb-4" variant="outline" style={{ 
+                  borderColor: template.styles.primaryColor, 
+                  color: getPremiumTextColor(template.id)
+                }}>
+                  {template.testimonials.badge}
+                </Badge>
+              )}
+              <h2 className="text-3xl md:text-4xl font-bold" style={{ color: getPremiumTextColor(template.id) }}>
+                {template.testimonials.title}
+              </h2>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-8 mb-12">
+              {template.testimonials.testimonials.map((testimonial, index) => (
+                <Card key={index} className={`p-6 bg-white/10 backdrop-blur-sm border-white/20`}>
+                  <div className="flex mb-4">
+                    {Array.from({ length: testimonial.rating }).map((_, i) => (
+                      <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                    ))}
+                  </div>
+                  <p className="mb-4 italic" style={{ color: getPremiumTextColor(template.id), opacity: 0.9 }}>"{testimonial.content}"</p>
+                  <div>
+                    <p className="font-bold" style={{ color: getPremiumTextColor(template.id) }}>{testimonial.name}</p>
+                    <p className="text-sm opacity-70" style={{ color: getPremiumTextColor(template.id) }}>{testimonial.role}</p>
+                  </div>
+                </Card>
+              ))}
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-blue-500 hover:bg-blue-600 text-white">
-                {template.emotional.button1Text}
+              <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
+                {template.testimonials.button1Icon && <i className={`ri-${template.testimonials.button1Icon}`}></i>}
+                {template.testimonials.button1Text}
               </Button>
-              <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10">
-                {template.emotional.button2Text}
+              <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
+                {template.testimonials.button2Icon && <i className={`ri-${template.testimonials.button2Icon}`}></i>}
+                {template.testimonials.button2Text}
               </Button>
             </div>
           </div>
         </section>
-        
-        <PremiumSection template={template} sectionType="features" />
-        <PremiumSection template={template} sectionType="testimonials" />
-        
+
         {/* About Section */}
-        <section className="py-16 px-4 relative bg-gradient-to-br from-purple-900/50 to-gray-900/50">
+        <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.aboutBackground, template.styles.aboutBackgroundImage)}>
+          {template.styles.aboutBackgroundImage && (
+            <div className="absolute inset-0 bg-black/30"></div>
+          )}
           <div className="max-w-6xl mx-auto relative z-10">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+              {template.about.badge && (
+                <Badge className="mb-4" variant="outline" style={{ 
+                  borderColor: template.styles.secondaryColor, 
+                  color: getPremiumTextColor(template.id)
+                }}>
+                  {template.about.badge}
+                </Badge>
+              )}
+              <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: getPremiumTextColor(template.id) }}>
                 {template.about.title}
               </h2>
-              <p className="text-lg max-w-4xl mx-auto opacity-90 text-blue-100">
+              <p className="text-lg max-w-4xl mx-auto opacity-90" style={{ color: getPremiumTextColor(template.id) }}>
                 {template.about.description}
               </p>
             </div>
+            
+            {template.about.stats && template.about.stats.length > 0 && (
+              <div className="grid md:grid-cols-3 gap-8 text-center mb-12">
+                {template.about.stats.map((stat, index) => (
+                  <div key={index}>
+                    <div className="text-4xl font-bold mb-2" style={{ color: template.styles.primaryColor }}>
+                      {stat.number}
+                    </div>
+                    <div className="text-lg opacity-80" style={{ color: getPremiumTextColor(template.id) }}>{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-purple-500 hover:bg-purple-600 text-white">
+              <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
+                {template.about.button1Icon && <i className={`ri-${template.about.button1Icon}`}></i>}
                 {template.about.button1Text}
               </Button>
-              <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10">
+              <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
+                {template.about.button2Icon && <i className={`ri-${template.about.button2Icon}`}></i>}
                 {template.about.button2Text}
               </Button>
             </div>
           </div>
         </section>
-        
+
         <PremiumSection template={template} sectionType="pricing" />
-        
+
         {/* FAQ Section */}
-        <section className="py-16 px-4 relative bg-gradient-to-br from-gray-900 to-blue-900">
+        <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.faqBackground, template.styles.faqBackgroundImage)}>
+          {template.styles.faqBackgroundImage && (
+            <div className="absolute inset-0 bg-black/30"></div>
+          )}
           <div className="max-w-4xl mx-auto relative z-10">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+              {template.faq.badge && (
+                <Badge className="mb-4" variant="outline" style={{ 
+                  borderColor: template.styles.primaryColor, 
+                  color: getPremiumTextColor(template.id)
+                }}>
+                  {template.faq.badge}
+                </Badge>
+              )}
+              <h2 className="text-3xl md:text-4xl font-bold" style={{ color: getPremiumTextColor(template.id) }}>
                 {template.faq.title}
               </h2>
             </div>
-            <div className="space-y-6">
-              {template.faq.questions.map((item, index) => (
-                <Card key={index} className="bg-white/10 backdrop-blur-sm border-white/20 p-6">
-                  <h3 className="text-xl font-bold mb-2 text-white">{item.question}</h3>
-                  <p className="text-blue-100/80">{item.answer}</p>
+            
+            <div className="space-y-4 mb-12">
+              {template.faq.questions.map((qa, index) => (
+                <Card key={index} className={`p-6 bg-white/10 backdrop-blur-sm border-white/20`}>
+                  <h3 className="text-lg font-bold mb-2 text-right" style={{ color: getPremiumTextColor(template.id) }}>{qa.question}</h3>
+                  <p className="opacity-80 text-right" style={{ color: getPremiumTextColor(template.id) }}>{qa.answer}</p>
                 </Card>
               ))}
             </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
+                {template.faq.button1Icon && <i className={`ri-${template.faq.button1Icon}`}></i>}
+                {template.faq.button1Text}
+              </Button>
+              <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
+                {template.faq.button2Icon && <i className={`ri-${template.faq.button2Icon}`}></i>}
+                {template.faq.button2Text}
+              </Button>
+            </div>
           </div>
         </section>
-        
-        {/* Final CTA */}
-        <section className="py-20 px-4 relative bg-gradient-to-br from-blue-500 to-purple-600">
+
+        {/* Final CTA Section */}
+        <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.finalCtaBackground, template.styles.finalCtaBackgroundImage)}>
+          {template.styles.finalCtaBackgroundImage && (
+            <div className="absolute inset-0 bg-black/30"></div>
+          )}
           <div className="max-w-4xl mx-auto text-center relative z-10">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+            {template.finalCta.badge && (
+              <Badge className="mb-4" style={{ 
+                backgroundColor: template.styles.secondaryColor,
+                color: '#ffffff'
+              }}>
+                {template.finalCta.badge}
+              </Badge>
+            )}
+            <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: getPremiumTextColor(template.id) }}>
               {template.finalCta.title}
             </h2>
-            <p className="text-xl mb-8 text-blue-100">
+            <p className="text-lg mb-8" style={{ color: getPremiumTextColor(template.id), opacity: 0.9 }}>
               {template.finalCta.description}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+              <Button size="lg" className="text-white flex items-center gap-2" style={{ backgroundColor: template.styles.accentColor }}>
+                {template.finalCta.button1Icon && <i className={`ri-${template.finalCta.button1Icon}`}></i>}
                 {template.finalCta.button1Text}
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+              <Button size="lg" className="text-white flex items-center gap-2" style={{ backgroundColor: template.styles.secondaryColor }}>
+                {template.finalCta.button2Icon && <i className={`ri-${template.finalCta.button2Icon}`}></i>}
                 {template.finalCta.button2Text}
               </Button>
             </div>
           </div>
         </section>
-        
+
         {/* Contact Section */}
-        <section className="py-16 px-4 relative bg-gradient-to-br from-gray-900 to-purple-900">
+        <section className="py-16 px-4 relative" style={getSectionStyle(template.styles.contactBackground, template.styles.contactBackgroundImage)}>
+          {template.styles.contactBackgroundImage && (
+            <div className="absolute inset-0 bg-black/30"></div>
+          )}
           <div className="max-w-4xl mx-auto text-center relative z-10">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: getPremiumTextColor(template.id) }}>
               {template.contact.title}
             </h2>
             {template.contact.subtitle && (
-              <p className="text-xl mb-8 text-blue-100/80">
+              <p className="text-xl mb-8 opacity-80" style={{ color: getPremiumTextColor(template.id) }}>
                 {template.contact.subtitle}
               </p>
             )}
-            <Button size="lg" className="bg-blue-500 hover:bg-blue-600 text-white">
-              {template.contact.buttonText}
-            </Button>
+            <Card className={`p-8 max-w-md mx-auto bg-white/10 backdrop-blur-sm border-white/20`}>
+              <div className="space-y-4">
+                <Input placeholder="שם מלא" className="text-right bg-white/10 border-white/20 text-white placeholder:text-white/70" />
+                <Input placeholder="אימייל" className="text-right bg-white/10 border-white/20 text-white placeholder:text-white/70" />
+                <Input placeholder="טלפון" className="text-right bg-white/10 border-white/20 text-white placeholder:text-white/70" />
+                <Textarea placeholder="הודעה" rows={4} className="text-right bg-white/10 border-white/20 text-white placeholder:text-white/70" />
+                <Button className="w-full text-white" style={{ backgroundColor: template.styles.primaryColor }}>
+                  {template.contact.buttonText}
+                </Button>
+              </div>
+            </Card>
           </div>
         </section>
-        
+
         {/* Footer */}
-        <footer className="bg-black text-white py-8 px-4">
-          <div className="max-w-6xl mx-auto text-center">
-            <p>&copy; 2024 {template.footer.companyName}. כל הזכויות שמורות.</p>
-          </div>
+        <footer className="py-8 px-4 text-center" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
+          <p>&copy; 2024 {template.footer.companyName}. כל הזכויות שמורות.</p>
         </footer>
       </div>
     );
   }
-  
+
   return (
     <div className="min-h-full" style={{ backgroundColor: template.styles.backgroundColor, color: template.styles.textColor }}>
       {/* Hero Section */}
@@ -280,15 +398,15 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
           <h2 className="text-xl md:text-2xl mb-6" style={{ color: template.styles.heroBackgroundImage ? '#ffffff' : template.styles.textColor, opacity: 0.9 }}>
             {template.hero.subtitle}
           </h2>
-          <p className="text-lg mb-8 max-w-3xl mx-auto" style={{ color: template.styles.heroBackgroundImage ? '#ffffff' : template.styles.textColor, opacity: 0.8 }}>
+          <p className="text-lg mb-8 max-w-4xl mx-auto" style={{ color: template.styles.heroBackgroundImage ? '#ffffff' : template.styles.textColor, opacity: 0.8 }}>
             {template.hero.description}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className={`text-white flex items-center gap-2 ${template.effects?.hero === 'liquid-distort' ? 'liquid-button' : ''}`} style={{ backgroundColor: template.styles.accentColor }}>
+            <Button size="lg" className="text-white flex items-center gap-2" style={{ backgroundColor: template.styles.accentColor }}>
               {template.hero.button1Icon && <i className={`ri-${template.hero.button1Icon}`}></i>}
               {template.hero.button1Text}
             </Button>
-            <Button size="lg" className="text-white flex items-center gap-2" style={{ backgroundColor: template.styles.primaryColor }}>
+            <Button size="lg" className="text-white flex items-center gap-2" style={{ backgroundColor: template.styles.secondaryColor }}>
               {template.hero.button2Icon && <i className={`ri-${template.hero.button2Icon}`}></i>}
               {template.hero.button2Text}
             </Button>
@@ -297,34 +415,26 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
       </section>
 
       {/* Emotional Section */}
-      <section className={`py-16 px-4 relative ${getEffectClasses(template.effects?.emotional)}`} style={getSectionStyle(template.styles.emotionalBackground, template.styles.emotionalBackgroundImage)}>
-        {template.styles.emotionalBackgroundImage && (
-          <div className="absolute inset-0 bg-black/30"></div>
-        )}
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          {template.emotional.badge && (
-            <Badge className="mb-4" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
-              {template.emotional.badge}
-            </Badge>
+      {template.emotional && (
+        <section className={`py-16 px-4 relative ${getEffectClasses(template.effects?.emotional)}`} style={getSectionStyle(template.styles.emotionalBackground, template.styles.emotionalBackgroundImage)}>
+          {template.styles.emotionalBackgroundImage && (
+            <div className="absolute inset-0 bg-black/30"></div>
           )}
-          <h2 className={`text-3xl md:text-4xl font-bold mb-6 ${template.effects?.emotional === 'holographic' ? 'holographic-text' : ''}`} style={{ color: template.styles.emotionalBackgroundImage ? '#ffffff' : template.styles.textColor }}>
-            {template.emotional.title}
-          </h2>
-          <p className="text-lg leading-relaxed opacity-90 mb-8" style={{ color: template.styles.emotionalBackgroundImage ? '#ffffff' : template.styles.textColor }}>
-            {template.emotional.description}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
-              {template.emotional.button1Icon && <i className={`ri-${template.emotional.button1Icon}`}></i>}
-              {template.emotional.button1Text}
-            </Button>
-            <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
-              {template.emotional.button2Icon && <i className={`ri-${template.emotional.button2Icon}`}></i>}
-              {template.emotional.button2Text}
-            </Button>
+          <div className="max-w-6xl mx-auto text-center relative z-10">
+            {template.emotional.badge && (
+              <Badge className="mb-4" variant="outline" style={{ borderColor: template.styles.accentColor, color: template.styles.accentColor }}>
+                {template.emotional.badge}
+              </Badge>
+            )}
+            <h2 className={`text-3xl md:text-4xl font-bold mb-6 ${template.effects?.emotional === 'holographic' ? 'holographic-text' : ''}`} style={{ color: template.styles.emotionalBackgroundImage ? '#ffffff' : template.styles.textColor }}>
+              {template.emotional.title}
+            </h2>
+            <p className="text-lg max-w-4xl mx-auto opacity-90" style={{ color: template.styles.emotionalBackgroundImage ? '#ffffff' : template.styles.textColor }}>
+              {template.emotional.description}
+            </p>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Features Section */}
       <section className={`py-16 px-4 relative ${getEffectClasses(template.effects?.features)}`} style={getSectionStyle(template.styles.featuresBackground, template.styles.featuresBackgroundImage)}>
@@ -348,16 +458,14 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
             )}
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-            {template.features.items.map((item, index) => (
-              <Card key={index} className={`text-center p-6 border-0 shadow-lg hover:shadow-xl transition-shadow ${template.effects?.features === 'glass-morph' ? 'glass-effect' : ''}`}>
-                <div className="flex justify-center mb-4">
-                  <div className="w-16 h-16 flex items-center justify-center rounded-full" style={{ backgroundColor: template.styles.primaryColor + '20', border: `2px solid ${template.styles.primaryColor}` }}>
-                    <i className={`ri-${item.icon} text-2xl`} style={{ color: template.styles.primaryColor }}></i>
-                  </div>
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            {template.features.items.map((feature, index) => (
+              <Card key={index} className={`p-6 ${template.effects?.features === 'glass-morph' ? 'glass-effect' : ''}`}>
+                <div className="text-4xl mb-4" style={{ color: template.styles.primaryColor }}>
+                  <i className={`ri-${feature.icon}`}></i>
                 </div>
-                <h3 className="text-xl font-bold mb-2" style={{ color: template.styles.textColor }}>{item.title}</h3>
-                <p className="opacity-80" style={{ color: template.styles.textColor }}>{item.description}</p>
+                <h3 className="text-xl font-bold mb-2" style={{ color: template.styles.textColor }}>{feature.title}</h3>
+                <p style={{ color: template.styles.textColor, opacity: 0.8 }}>{feature.description}</p>
               </Card>
             ))}
           </div>
@@ -392,18 +500,18 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
             </h2>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
             {template.testimonials.testimonials.map((testimonial, index) => (
-              <Card key={index} className={`p-6 border-0 shadow-lg ${template.effects?.testimonials === 'glass-morph' ? 'glass-effect' : ''}`}>
-                <div className="flex items-center mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
+              <Card key={index} className={`p-6 ${template.effects?.testimonials === 'glass-morph' ? 'glass-effect' : ''}`}>
+                <div className="flex mb-4">
+                  {Array.from({ length: testimonial.rating }).map((_, i) => (
                     <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
-                <p className="mb-4 italic" style={{ color: template.styles.textColor }}>"{testimonial.content}"</p>
+                <p className="mb-4 italic opacity-90" style={{ color: template.styles.textColor }}>"{testimonial.content}"</p>
                 <div>
                   <p className="font-bold" style={{ color: template.styles.textColor }}>{testimonial.name}</p>
-                  <p className="text-sm opacity-80" style={{ color: template.styles.textColor }}>{testimonial.role}</p>
+                  <p className="text-sm opacity-70" style={{ color: template.styles.textColor }}>{testimonial.role}</p>
                 </div>
               </Card>
             ))}
@@ -546,12 +654,8 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
           <div className="space-y-4 mb-12">
             {template.faq.questions.map((qa, index) => (
               <Card key={index} className={`p-6 ${template.effects?.faq === 'glass-morph' ? 'glass-effect' : ''}`}>
-                <h3 className="text-lg font-bold mb-2 text-right" style={{ 
-                  color: template.category.includes('פרימיום') ? getPremiumTextColor(template.id) : template.styles.textColor 
-                }}>{qa.question}</h3>
-                <p className="opacity-80 text-right" style={{ 
-                  color: template.category.includes('פרימיום') ? getPremiumTextColor(template.id) : template.styles.textColor 
-                }}>{qa.answer}</p>
+                <h3 className="text-lg font-bold mb-2 text-right" style={{ color: template.styles.textColor }}>{qa.question}</h3>
+                <p className="opacity-80 text-right" style={{ color: template.styles.textColor }}>{qa.answer}</p>
               </Card>
             ))}
           </div>
@@ -634,3 +738,5 @@ export const TemplatePreview = ({ template }: TemplatePreviewProps) => {
     </div>
   );
 };
+
+export default TemplatePreview;
