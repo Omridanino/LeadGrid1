@@ -228,15 +228,10 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
               <Button 
                 onClick={() => {
                   saveTemplateData();
-                  // Generate and download HTML file
-                  const { generateHtmlFile } = require('@/utils/htmlGenerator');
-                  const landingPageData = JSON.parse(localStorage.getItem('generatedPageData') || '{}');
-                  const htmlContent = generateHtmlFile(
-                    landingPageData?.generatedContent || {},
-                    landingPageData?.styles || { primary: '#1e40af', secondary: '#7c3aed' },
-                    landingPageData?.formData || {},
-                    ''
-                  );
+                  // Generate and download HTML file using new generator
+                  const { generatePageHTML } = require('@/utils/pageGenerator');
+                  const savedData = JSON.parse(localStorage.getItem('generatedPageData') || '{}');
+                  const htmlContent = generatePageHTML(savedData.template || template);
                   
                   const blob = new Blob([htmlContent], { type: 'text/html' });
                   const url = URL.createObjectURL(blob);

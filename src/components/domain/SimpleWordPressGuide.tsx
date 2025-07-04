@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Copy, CheckCircle, Code, ExternalLink, FileText, Play, Monitor, Settings, Eye, ArrowRight } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-import { generateHtmlFile } from '@/utils/htmlGenerator';
+import { generatePageHTML } from '@/utils/pageGenerator';
 
 interface SimpleWordPressGuideProps {
   onBack: () => void;
@@ -25,15 +25,26 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
       }
       
       // Fallback: generate from template data if no saved HTML
-      const landingPageData = JSON.parse(localStorage.getItem('generatedPageData') || '{}');
+      const savedData = JSON.parse(localStorage.getItem('generatedPageData') || '{}');
+      if (savedData.template) {
+        return generatePageHTML(savedData.template);
+      }
       
-      // Use the real HTML generator with actual data
-      return generateHtmlFile(
-        landingPageData?.generatedContent || {},
-        landingPageData?.styles || { primary: '#1e40af', secondary: '#7c3aed' },
-        landingPageData?.formData || {},
-        landingPageData?.heroImage || ''
-      );
+      // If no saved data, return a default HTML
+      return generatePageHTML({
+        hero: {
+          title: 'ברוכים הבאים לעסק שלנו',
+          subtitle: 'פתרונות מתקדמים ומקצועיים עבורכם',
+          button1Text: 'צור קשר',
+          button2Text: 'למד עוד'
+        },
+        styles: {
+          primaryColor: '#1e40af',
+          secondaryColor: '#7c3aed',
+          backgroundColor: '#ffffff',
+          textColor: '#000000'
+        }
+      });
     } catch (error) {
       console.error('Error getting HTML:', error);
       return `<!DOCTYPE html>

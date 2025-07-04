@@ -36,7 +36,7 @@ import { FinalCtaEditor } from './template-editor/FinalCtaEditor';
 import { ContactEditor } from './template-editor/ContactEditor';
 import { EffectsEditor } from './template-editor/EffectsEditor';
 import { LaunchSection } from './LaunchSection';
-import { generateHtmlFile } from '@/utils/htmlGenerator';
+import { generatePageHTML } from '@/utils/pageGenerator';
 
 interface TemplateEditorProps {
   template: TemplateData;
@@ -62,64 +62,15 @@ const TemplateEditor = ({ template, onTemplateChange, onClose, onPublishSuccess 
   // Save current page and generate exact HTML
   const handleSave = () => {
     try {
-      // Create comprehensive data object with current template state
-      const currentPageData = {
-        formData: {
-          businessName: editedTemplate.hero.title,
-          businessDescription: editedTemplate.hero.subtitle,
-          businessType: editedTemplate.category,
-          email: 'info@example.com',
-          phone: '050-123-4567'
-        },
-        generatedContent: {
-          hero: {
-            title: editedTemplate.hero.title,
-            subtitle: editedTemplate.hero.subtitle,
-            button1Text: editedTemplate.hero.button1Text,
-            button2Text: editedTemplate.hero.button2Text
-          },
-          features: editedTemplate.features,
-          testimonials: editedTemplate.testimonials,
-          about: editedTemplate.about,
-          contact: editedTemplate.contact,
-          pricing: editedTemplate.pricing,
-          faq: editedTemplate.faq,
-          finalCta: editedTemplate.finalCta
-        },
-        styles: editedTemplate.styles,
-        heroImage: '',
-        template: editedTemplate
-      };
+      // Generate the exact HTML using the new simple generator
+      const htmlContent = generatePageHTML(editedTemplate);
       
-      // Create color scheme from template styles
-      const colorScheme = {
-        primary: editedTemplate.styles.primaryColor || '#1e40af',
-        secondary: editedTemplate.styles.secondaryColor || '#7c3aed',
-        accent: editedTemplate.styles.accentColor || '#3b82f6',
-        background: editedTemplate.styles.backgroundColor || '#ffffff',
-        heroBackground: editedTemplate.styles.primaryColor || '#1e40af',
-        text: editedTemplate.styles.textColor || '#000000',
-        headlineColor: editedTemplate.styles.textColor || '#ffffff',
-        subheadlineColor: editedTemplate.styles.textColor || '#e5e7eb',
-        featuresColor: editedTemplate.styles.primaryColor || '#1e40af',
-        featuresTextColor: editedTemplate.styles.textColor || '#374151',
-        aboutColor: editedTemplate.styles.secondaryColor || '#7c3aed',
-        aboutTextColor: editedTemplate.styles.textColor || '#374151',
-        contactColor: editedTemplate.styles.primaryColor || '#1e40af',
-        contactTextColor: editedTemplate.styles.textColor || '#ffffff'
-      };
-      
-      // Generate the exact HTML using the real generator
-      const htmlContent = generateHtmlFile(
-        currentPageData.generatedContent,
-        colorScheme,
-        currentPageData.formData,
-        currentPageData.heroImage
-      );
-      
-      // Save both the template data and generated HTML
-      localStorage.setItem('generatedPageData', JSON.stringify(currentPageData));
+      // Save the HTML
       localStorage.setItem('generatedHTML', htmlContent);
+      localStorage.setItem('generatedPageData', JSON.stringify({
+        template: editedTemplate,
+        timestamp: Date.now()
+      }));
       
       setIsSaved(true);
       toast({
