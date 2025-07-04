@@ -632,31 +632,6 @@ export const generatePageHTML = (templateData: any) => {
             </div>
             `}
             
-            <!-- Main testimonial card -->
-            <div class="relative max-w-4xl mx-auto mb-16">
-                <div class="relative group">
-                    <!-- Morphing background -->
-                    <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl shadow-2xl border border-white/20 rounded-3xl"></div>
-                    
-                    <!-- Glow effect -->
-                    <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-lg rounded-3xl opacity-30"></div>
-                    
-                    <!-- Content -->
-                    <div class="relative z-10 p-12 text-center space-y-8">
-                        <!-- Quote icon -->
-                        <div class="mx-auto w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center shadow-lg">
-                            <i class="ri-double-quotes-l text-2xl text-white"></i>
-                        </div>
-                        
-                        <!-- Rating -->
-                        <div class="flex justify-center gap-1">
-                            ${Array(5).fill(0).map((_, i) => `<span style="color: #fbbf24; font-size: 1.5rem;">★</span>`).join('')}
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
-            
             <!-- Testimonials grid -->
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                 ${template.testimonials.testimonials.map((testimonial: any) => `
