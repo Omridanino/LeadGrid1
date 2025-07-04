@@ -3,8 +3,12 @@ export const generatePageHTML = (templateData: any) => {
   const template = templateData;
   const isPremium = template.category.includes('פרימיום');
   
-  // Premium text colors for content (exact match to TemplatePreview)
-  const getPremiumTextColor = (templateId: string) => {
+  // Premium text colors for content - now editable
+  const getPremiumTextColor = (templateId: string, customColor?: string) => {
+    // If custom color is provided, use it
+    if (customColor) return customColor;
+    
+    // Otherwise use template defaults
     switch (templateId) {
       case 'tech-consultant-pro':
         return 'white';
@@ -717,7 +721,7 @@ export const generatePageHTML = (templateData: any) => {
 <body style="background-color: ${isPremium && template.id === 'nft-future-pro' ? '#0a0a1f' : template.styles.backgroundColor || template.styles.primaryColor}; color: ${template.styles.textColor};" class="text-foreground">
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" ${template.styles.heroBackgroundImage ? `style="background-image: url(${template.styles.heroBackgroundImage}); background-size: cover; background-position: center; background-repeat: no-repeat;"` : ''}>
         ${isPremium ? (() => {
           const bgData = getPremiumAnimatedBackground(template.id, 'hero');
           return generatePremiumBackgroundHTML(bgData.animationType);
@@ -798,10 +802,10 @@ export const generatePageHTML = (templateData: any) => {
         ` : ''}
         <div class="max-w-6xl mx-auto px-4 relative z-10">
             <div class="text-center">
-                ${template.hero.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : (template.styles.heroBackgroundImage ? 'white' : template.styles.accentColor)}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : (template.styles.heroBackgroundImage ? 'rgba(255,255,255,0.3)' : template.styles.accentColor)};">${template.hero.badge}</div>` : ''}
-                <h1 class="text-4xl md:text-6xl font-bold mb-4 ${isPremium && template.id === 'neon-academy-pro' ? 'neon-text' : ''}" style="color: ${isPremium ? getPremiumTextColor(template.id) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; ${isPremium && (template.id === 'blockchain-tech-pro' || template.id === 'nft-future-pro') ? 'background: linear-gradient(45deg, #60a5fa, #a78bfa, #22d3ee); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;' : ''}">${template.hero.title}</h1>
-                <h2 class="text-xl md:text-2xl mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.9;">${template.hero.subtitle}</h2>
-                <p class="text-lg mb-8 max-w-4xl mx-auto" style="color: ${isPremium ? getPremiumTextColor(template.id) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.8;">${template.hero.description}</p>
+                ${template.hero.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.accentColor)}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : (template.styles.heroBackgroundImage ? 'rgba(255,255,255,0.3)' : template.styles.accentColor)};">${template.hero.badge}</div>` : ''}
+                <h1 class="text-4xl md:text-6xl font-bold mb-4 ${isPremium && template.id === 'neon-academy-pro' ? 'neon-text' : ''}" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; ${isPremium && (template.id === 'blockchain-tech-pro' || template.id === 'nft-future-pro') ? 'background: linear-gradient(45deg, #60a5fa, #a78bfa, #22d3ee); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;' : ''}">${template.hero.title}</h1>
+                <h2 class="text-xl md:text-2xl mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.9;">${template.hero.subtitle}</h2>
+                <p class="text-lg mb-8 max-w-4xl mx-auto" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.8;">${template.hero.description}</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.accentColor}; ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}">
                         ${template.hero.button1Icon ? `<i class="ri-${template.hero.button1Icon}"></i>` : ''}
@@ -818,15 +822,29 @@ export const generatePageHTML = (templateData: any) => {
 
     <!-- Emotional Section -->
     ${template.emotional ? `
-    <section class="emotional">
-        <div class="max-w-6xl mx-auto px-4 relative z-10">
-            <div class="text-center">
-                ${template.emotional.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.accentColor};">${template.emotional.badge}</div>` : ''}
-                <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.emotional.title}</h2>
-                <p class="text-lg max-w-4xl mx-auto opacity-90" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.emotional.description}</p>
-            </div>
-        </div>
-    </section>
+     <section class="emotional">
+         <div class="max-w-6xl mx-auto px-4 relative z-10">
+             <div class="text-center">
+                 ${template.emotional.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : template.styles.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.accentColor};">${template.emotional.badge}</div>` : ''}
+                 <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : template.styles.textColor};">${template.emotional.title}</h2>
+                 <p class="text-lg max-w-4xl mx-auto opacity-90 mb-8" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : template.styles.textColor};">${template.emotional.description}</p>
+                 ${template.emotional.button1Text ? `
+                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                     <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.primaryColor};">
+                         ${template.emotional.button1Icon ? `<i class="ri-${template.emotional.button1Icon}"></i>` : ''}
+                         ${template.emotional.button1Text}
+                     </a>
+                     ${template.emotional.button2Text ? `
+                     <a href="#about" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.secondaryColor};">
+                         ${template.emotional.button2Icon ? `<i class="ri-${template.emotional.button2Icon}"></i>` : ''}
+                         ${template.emotional.button2Text}
+                     </a>
+                     ` : ''}
+                 </div>
+                 ` : ''}
+             </div>
+         </div>
+     </section>
     ` : ''}
 
     <!-- Features Section -->
@@ -837,9 +855,9 @@ export const generatePageHTML = (templateData: any) => {
         })() : ''}
         <div class="max-w-7xl mx-auto px-6 relative z-10">
             <div class="text-center mb-16">
-                ${template.features.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.primaryColor};">${template.features.badge}</div>` : ''}
-                <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.features.title}</h2>
-                ${template.features.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor}; opacity: 0.8;">${template.features.subtitle}</p>` : ''}
+                ${template.features.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : template.styles.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.primaryColor};">${template.features.badge}</div>` : ''}
+                <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : template.styles.textColor};">${template.features.title}</h2>
+                ${template.features.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : template.styles.textColor}; opacity: 0.8;">${template.features.subtitle}</p>` : ''}
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
