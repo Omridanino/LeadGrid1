@@ -188,30 +188,55 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
   const steps = [
     {
       number: 1,
-      title: "היכנס לפאנל הניהול של WordPress",
+      title: "קנה דומיין והירשם לוורדפרס",
       icon: <Monitor className="w-5 h-5" />,
-      description: "פתח את הדפדפן וגש לכתובת האתר שלך עם תוספת /wp-admin"
+      description: "רכוש דומיין והרשם לשירות אחסון WordPress",
+      image: "/lovable-uploads/cace6f71-ada2-4b7e-91fc-365f03ced923.png"
     },
     {
       number: 2,
-      title: "צור עמוד חדש",
-      icon: <FileText className="w-5 h-5" />,
-      description: "בתפריט הצדדי: עמודים ← הוסף עמוד חדש"
+      title: "הורד את תוסף Elementor",
+      icon: <Settings className="w-5 h-5" />,
+      description: "התקן את Elementor (בחינם) מספריית התוספים",
+      image: "/lovable-uploads/fc6b79e5-d0ae-4347-a64a-16726c82eee2.png"
     },
     {
       number: 3,
-      title: "עבור למצב HTML/Text",
-      icon: <Code className="w-5 h-5" />,
-      description: "וודא שאתה במצב Text/HTML ולא במצב Visual"
+      title: "צור עמוד חדש בוורדפרס",
+      icon: <FileText className="w-5 h-5" />,
+      description: "כנס לוורדפרס → עמודים → הוסף עמוד חדש",
+      image: "/lovable-uploads/e6318e7c-02de-4dc9-9fb1-45b6ea0230a6.png"
     },
     {
       number: 4,
-      title: "העתק והדבק את הקוד",
-      icon: <Copy className="w-5 h-5" />,
-      description: "העתק את הקוד למטה והדבק בעורך WordPress"
+      title: "ערוך באלמנטור",
+      icon: <Code className="w-5 h-5" />,
+      description: "לחץ על העמוד ובחר 'עריכה באמצעות אלמנטור'",
+      image: "/lovable-uploads/36692fc6-fedf-48eb-a2f4-9b4394dea231.png"
     },
     {
       number: 5,
+      title: "שנה פריסה לקנבס",
+      icon: <Settings className="w-5 h-5" />,
+      description: "לחץ על גלגל השיניים ושנה פריסה ל'אלמנטור קנבס'",
+      image: "/lovable-uploads/355ad52c-63bd-4656-98c6-e68cb883501d.png"
+    },
+    {
+      number: 6,
+      title: "הוסף רכיב HTML",
+      icon: <Copy className="w-5 h-5" />,
+      description: "גרור רכיב HTML לאמצע המסך והדבק את הקוד",
+      image: "/lovable-uploads/4df785c9-b78f-4c97-acbd-c2f06cd0ca01.png"
+    },
+    {
+      number: 7,
+      title: "כוונן הגדרות תצוגה",
+      icon: <Settings className="w-5 h-5" />,
+      description: "שנה רוחב ושוליים מ-PX ל-VW ושים 100",
+      image: "/lovable-uploads/256cea30-a0fd-449d-b308-a0fe4767e2c4.png"
+    },
+    {
+      number: 8,
       title: "פרסם את הדף",
       icon: <Eye className="w-5 h-5" />,
       description: "בדוק תצוגה מקדימה ולחץ פרסם"
@@ -227,7 +252,7 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
           מדריך התקנה ב-WordPress
         </h1>
         <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-          5 שלבים פשוטים להעלאת דף הנחיתה שלך לאתר WordPress
+          8 שלבים פשוטים להעלאת דף הנחיתה שלך לאתר WordPress עם Elementor
         </p>
       </div>
 
@@ -280,8 +305,20 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
 
         <CardContent className="space-y-6">
           
-          {/* Step 4 - Code Display */}
-          {currentStep === 4 && (
+
+          {/* Step Image */}
+          {steps[currentStep - 1].image && (
+            <div className="bg-slate-900 border border-slate-600 rounded-lg p-4">
+              <img 
+                src={steps[currentStep - 1].image} 
+                alt={steps[currentStep - 1].title}
+                className="w-full max-w-md mx-auto rounded-lg border border-slate-600"
+              />
+            </div>
+          )}
+
+          {/* Step 6 - Code Display */}
+          {currentStep === 6 && (
             <div className="space-y-4">
               <div className="bg-slate-900 border border-slate-600 rounded-lg">
                 <div className="flex items-center justify-between p-4 border-b border-slate-600">
@@ -333,39 +370,66 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
             </div>
           )}
 
-          {/* Important Tips for other steps */}
-          {currentStep !== 4 && (
+          {/* Important Tips for steps */}
+          {currentStep !== 6 && (
             <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
               <h4 className="text-amber-300 font-semibold mb-2 flex items-center gap-2">
                 <Settings className="w-4 h-4" />
-                {currentStep === 1 && "כניסה לפאנל הניהול"}
-                {currentStep === 2 && "יצירת עמוד חדש"}
-                {currentStep === 3 && "מעבר למצב HTML"}
-                {currentStep === 5 && "פרסום הדף"}
+                הוראות מפורטות
               </h4>
               <div className="text-amber-100 text-sm space-y-1">
                 {currentStep === 1 && (
                   <>
-                    <p>• הכנס לכתובת: yoursite.com/wp-admin</p>
-                    <p>• הזן שם משתמש וסיסמה</p>
-                    <p>• וודא שיש לך הרשאות עריכה</p>
+                    <p>• קנה דומיין מכל ספק דומיינים (Godaddy, Namecheap וכו')</p>
+                    <p>• הירשם לשירות אחסון WordPress (SiteGround, Bluehost וכו')</p>
+                    <p>• וודא שהדומיין מחובר לאחסון</p>
                   </>
                 )}
                 {currentStep === 2 && (
                   <>
-                    <p>• לחץ על "עמודים" בתפריט הצדדי</p>
-                    <p>• בחר "הוסף עמוד חדש"</p>
-                    <p>• אל תמלא עדיין תוכן</p>
+                    <p>• היכנס לפאנל הניהול של WordPress</p>
+                    <p>• לחץ על "תוספים" ← "הוסף תוסף חדש"</p>
+                    <p>• חפש "Elementor Website Builder" והתקן (בחינם!)</p>
+                    <Button 
+                      onClick={() => window.open('https://wordpress.org/plugins/elementor/', '_blank')}
+                      variant="outline"
+                      size="sm"
+                      className="mt-2 border-purple-600 text-purple-400 hover:bg-purple-600/10"
+                    >
+                      <ExternalLink className="w-4 h-4 ml-1" />
+                      הורד Elementor
+                    </Button>
                   </>
                 )}
                 {currentStep === 3 && (
                   <>
-                    <p>• חפש כפתור "Text" או "HTML" בעורך</p>
-                    <p>• ודא שלא אתה במצב "Visual"</p>
-                    <p>• העורך צריך להראות כמו עורך קוד</p>
+                    <p>• במסך הראשי של WordPress, לחץ על "עמודים"</p>
+                    <p>• לחץ על "הוסף עמוד חדש"</p>
+                    <p>• תן שם לעמוד (למשל: "דף הבית")</p>
+                  </>
+                )}
+                {currentStep === 4 && (
+                  <>
+                    <p>• לחץ על העמוד שיצרת</p>
+                    <p>• לחץ על "עריכה באמצעות אלמנטור"</p>
+                    <p>• העמוד ייפתח בעורך האלמנטור</p>
                   </>
                 )}
                 {currentStep === 5 && (
+                  <>
+                    <p>• לחץ על גלגל השיניים (הגדרות עמוד)</p>
+                    <p>• בחר "פריסת עמוד" ← "אלמנטור קנבס"</p>
+                    <p>• זה ייתן לך שליטה מלאה על העמוד</p>
+                  </>
+                )}
+                {currentStep === 7 && (
+                  <>
+                    <p>• לחץ על הכפתור האמצעי ברכיב HTML</p>
+                    <p>• שנה את הרוחב מ-PX ל-VW ושים 100</p>
+                    <p>• לחץ על "מתקדם" ושנה שוליים פנימיים וחיצוניים ל-VW עם 0</p>
+                  </>
+                )}
+                {currentStep === 8 && (
                   <>
                     <p>• לחץ "תצוגה מקדימה" לבדיקה</p>
                     <p>• וודא שהדף נראה תקין</p>
