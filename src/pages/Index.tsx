@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -221,16 +220,18 @@ const Index = () => {
       <nav className="relative z-10 p-6">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <motion.div 
-            className="flex items-center gap-3"
+            className="flex items-center justify-center gap-3"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <GlassIcon 
-              icon={Sparkles} 
-              size="md" 
-              variant="gold"
-            />
+            <div className="flex justify-center">
+              <GlassIcon 
+                icon={Sparkles} 
+                size="md" 
+                variant="gold"
+              />
+            </div>
             <span className="text-2xl font-bold text-yellow-400">
               LeadGrid
             </span>
@@ -240,6 +241,7 @@ const Index = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
+            className="flex justify-center"
           >
             <Button
               onClick={() => handleOpenQuestionnaire()}
@@ -260,12 +262,14 @@ const Index = () => {
             transition={{ duration: 0.8 }}
             className="mb-8"
           >
-            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6 flex items-center gap-2">
-              <GlassIcon 
-                icon={Sparkles} 
-                size="sm" 
-                variant="gold"
-              />
+            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6 flex items-center justify-center gap-2 mx-auto w-fit">
+              <div className="flex justify-center">
+                <GlassIcon 
+                  icon={Sparkles} 
+                  size="sm" 
+                  variant="gold"
+                />
+              </div>
               הפלטפורמה המתקדמת ביותר ליצירת דפי נחיתה
             </Badge>
             
@@ -383,12 +387,14 @@ const Index = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-20"
           >
-            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6 flex items-center gap-2">
-              <GlassIcon 
-                icon={Crown} 
-                size="sm" 
-                variant="gold"
-              />
+            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6 flex items-center justify-center gap-2 mx-auto w-fit">
+              <div className="flex justify-center">
+                <GlassIcon 
+                  icon={Crown} 
+                  size="sm" 
+                  variant="gold"
+                />
+              </div>
               תבניות לכל צורך
             </Badge>
             
@@ -429,7 +435,7 @@ const Index = () => {
                   
                   <Card className={`h-full bg-gradient-to-br ${category.bgColor} border-2 ${category.borderColor} backdrop-blur-xl hover:shadow-2xl transition-all duration-300 overflow-hidden`}>
                     <CardContent className="p-8 text-center">
-                      <div className="mx-auto mb-6">
+                      <div className="mx-auto mb-6 flex justify-center">
                         <GlassIcon 
                           icon={Icon} 
                           size="lg" 
@@ -490,12 +496,14 @@ const Index = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-20"
           >
-            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6 flex items-center gap-2">
-              <GlassIcon 
-                icon={Zap} 
-                size="sm" 
-                variant="gold"
-              />
+            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6 flex items-center justify-center gap-2 mx-auto w-fit">
+              <div className="flex justify-center">
+                <GlassIcon 
+                  icon={Zap} 
+                  size="sm" 
+                  variant="gold"
+                />
+              </div>
               תהליך פשוט ומהיר
             </Badge>
             
@@ -521,7 +529,7 @@ const Index = () => {
                   transition={{ duration: 0.6, delay: index * 0.2 }}
                   className="text-center group"
                 >
-                  <div className="relative mb-8">
+                  <div className="relative mb-8 flex justify-center">
                     <motion.div
                       whileHover={{ scale: 1.1 }}
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -555,12 +563,14 @@ const Index = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-20"
           >
-            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6 flex items-center gap-2">
-              <GlassIcon 
-                icon={Star} 
-                size="sm" 
-                variant="gold"
-              />
+            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6 flex items-center justify-center gap-2 mx-auto w-fit">
+              <div className="flex justify-center">
+                <GlassIcon 
+                  icon={Star} 
+                  size="sm" 
+                  variant="gold"
+                />
+              </div>
               למה LeadGrid?
             </Badge>
             
@@ -587,7 +597,7 @@ const Index = () => {
                   <Card className="h-full bg-gradient-to-br from-gray-900/80 to-black/80 border border-yellow-400/20 backdrop-blur-xl hover:shadow-2xl hover:shadow-yellow-400/20 transition-all duration-300">
                     <CardContent className="p-8">
                       <motion.div 
-                        className="mx-auto mb-6"
+                        className="mx-auto mb-6 flex justify-center"
                         whileHover={{ rotate: 5 }}
                         transition={{ type: "spring", stiffness: 300, damping: 20 }}
                       >
@@ -644,7 +654,7 @@ const Index = () => {
                   <Card className="h-full bg-gradient-to-br from-gray-900/50 to-gray-800/50 border border-gray-700/50 backdrop-blur-xl hover:shadow-2xl transition-all duration-300">
                     <CardContent className="p-8">
                       <div className="flex items-start gap-6">
-                        <div className="flex-shrink-0">
+                        <div className="flex-shrink-0 flex justify-center">
                           <GlassIcon 
                             icon={Icon} 
                             size="lg" 
@@ -675,7 +685,7 @@ const Index = () => {
             transition={{ duration: 0.8 }}
           >
             <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-xl rounded-3xl p-12 border border-gray-700/50 shadow-2xl">
-              <div className="mx-auto mb-8">
+              <div className="mx-auto mb-8 flex justify-center">
                 <GlassIcon 
                   icon={Rocket} 
                   size="xl" 
@@ -719,12 +729,14 @@ const Index = () => {
       <footer className="relative z-10 py-12 px-6 border-t border-gray-800/50">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="flex items-center gap-3 mb-4 md:mb-0">
-              <GlassIcon 
-                icon={Sparkles} 
-                size="md" 
-                variant="gold"
-              />
+            <div className="flex items-center justify-center gap-3 mb-4 md:mb-0">
+              <div className="flex justify-center">
+                <GlassIcon 
+                  icon={Sparkles} 
+                  size="md" 
+                  variant="gold"
+                />
+              </div>
               <span className="text-2xl font-bold text-yellow-400">
                 LeadGrid
               </span>
