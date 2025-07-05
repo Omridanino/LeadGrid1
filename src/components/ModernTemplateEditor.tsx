@@ -359,7 +359,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
       
       {/* Floating Editor Panel */}
       {!isEditorMinimized && (
-        <div className="fixed top-4 right-4 w-80 max-h-[calc(100vh-2rem)] bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-xl shadow-2xl z-50 flex flex-col">
+        <div className="fixed top-4 right-4 w-80 max-h-[calc(100vh-2rem)] bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-xl shadow-2xl z-[100] flex flex-col overflow-hidden">
           
           {/* Header - Compact */}
           <div className="p-3 border-b border-slate-700/50 bg-gradient-to-r from-slate-800/80 to-slate-700/80 flex-shrink-0 rounded-t-xl">
@@ -431,7 +431,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
           </div>
 
           {/* Navigation Tabs */}
-          <Tabs value={activeCategory} onValueChange={setActiveCategory} className="flex-1 flex flex-col min-h-0">
+          <Tabs value={activeCategory} onValueChange={setActiveCategory} className="flex-1 flex flex-col min-h-0 overflow-hidden">
             <div className="px-3 py-2 border-b border-slate-700/30 flex-shrink-0">
               <TabsList className="grid w-full grid-cols-3 bg-slate-800/50 p-0.5 rounded-md h-7">
                 <TabsTrigger value="sections" className="text-xs data-[state=active]:bg-blue-600/80 data-[state=active]:text-white h-6">
@@ -451,7 +451,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
 
             {/* Tab Content - Scrollable */}
             {categories.map((category) => (
-              <TabsContent key={category.id} value={category.id} className="flex-1 m-0 min-h-0">
+              <TabsContent key={category.id} value={category.id} className="flex-1 m-0 min-h-0 overflow-hidden">
                 <ScrollArea className="h-full">
                    <div className="p-3 space-y-1.5">
                      {category.id === 'elements' && (
@@ -529,18 +529,21 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                 </ScrollArea>
               </TabsContent>
             ))}
-          </Tabs>
 
-          {/* Editor Content - Only when section is selected */}
-          {activeSection && !['sections', 'elements', 'styles'].includes(activeSection) && (
-            <div className="border-t border-slate-700/30 flex-shrink-0">
-              <ScrollArea className="max-h-80">
-                <div className="p-3">
-                  {renderEditor()}
+            {/* Editor Content - At bottom as collapsible section */}
+            {activeSection && !['sections', 'elements', 'styles'].includes(activeSection) && (
+              <div className="border-t border-slate-700/30 bg-slate-800/30 flex-shrink-0 max-h-64 overflow-hidden">
+                <div className="p-2 bg-slate-700/20 border-b border-slate-600/30">
+                  <div className="text-xs text-slate-300 font-medium">עריכת {categories.find(c => c.items.find(i => i.id === activeSection))?.items.find(i => i.id === activeSection)?.name}</div>
                 </div>
-              </ScrollArea>
-            </div>
-          )}
+                <ScrollArea className="h-full max-h-56">
+                  <div className="p-3">
+                    {renderEditor()}
+                  </div>
+                </ScrollArea>
+              </div>
+            )}
+          </Tabs>
         </div>
       )}
 
