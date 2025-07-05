@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import LandingPageQuestionnaire from "@/components/LandingPageQuestionnaire";
-import { TemplateEditor } from "@/components/template-editor/TemplateEditor";
+import TemplateEditor from "@/components/TemplateEditor";
 import TemplatePreview from "@/components/template-editor/TemplatePreview";
 import { PublishingWizard } from "@/components/PublishingWizard";
 import Header from "@/components/Header";
@@ -58,6 +58,10 @@ const Index = () => {
     setCurrentStep("questionnaire");
   };
 
+  const handleCloseEditor = () => {
+    setCurrentStep("questionnaire");
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -71,34 +75,11 @@ const Index = () => {
         )}
 
         {currentStep === "editor" && template && (
-          <div className="grid lg:grid-cols-2 gap-8 h-[calc(100vh-12rem)]">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold">עריכת התבנית</h1>
-                <div className="flex gap-2">
-                  <button
-                    onClick={handleStartOver}
-                    className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-                  >
-                    התחל מחדש
-                  </button>
-                  <button
-                    onClick={handlePublish}
-                    className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
-                  >
-                    פרסם עכשיו
-                  </button>
-                </div>
-              </div>
-              <TemplateEditor
-                template={template}
-                onTemplateUpdate={handleTemplateUpdate}
-              />
-            </div>
-            <div className="bg-white rounded-lg shadow-sm border">
-              <TemplatePreview template={template} />
-            </div>
-          </div>
+          <TemplateEditor
+            template={template}
+            onTemplateChange={handleTemplateUpdate}
+            onClose={handleCloseEditor}
+          />
         )}
 
         {currentStep === "publish" && (
