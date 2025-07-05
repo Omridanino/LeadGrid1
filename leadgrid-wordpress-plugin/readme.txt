@@ -1,121 +1,166 @@
 
-=== LeadGrid Integration ===
-Contributors: leadgrid
-Tags: landing-pages, page-builder, leadgrid, integration, sync
+=== LeadGrid Integration Pro ===
+Contributors: leadgridteam
+Tags: landing-pages, leadgrid, page-builder, marketing, conversion
 Requires at least: 5.0
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Seamlessly integrate LeadGrid landing pages with WordPress, providing full editing capabilities and automatic synchronization.
+Advanced integration between LeadGrid landing pages and WordPress with full editing capabilities and real-time synchronization.
 
 == Description ==
 
-LeadGrid Integration allows you to import landing pages created on the LeadGrid platform directly into WordPress, where they can be edited using native WordPress editors like Gutenberg and Elementor.
+LeadGrid Integration Pro allows you to seamlessly import your LeadGrid landing pages directly into WordPress as fully editable pages. Perfect for businesses and marketers who want the power of LeadGrid's advanced page builder combined with WordPress's content management capabilities.
 
 **Key Features:**
 
-* **Import LeadGrid Pages**: Import landing pages from your LeadGrid account with one click
-* **Full WordPress Editing**: Edit imported pages using Gutenberg blocks or Elementor
-* **Two-Way Synchronization**: Changes made in LeadGrid automatically sync to WordPress
-* **Custom Gutenberg Blocks**: Specialized blocks for LeadGrid components (Hero, Features, Testimonials, Contact)
-* **Responsive Design**: All imported pages are fully responsive and mobile-optimized
-* **Real-time Sync**: Automatic synchronization keeps your pages up-to-date
-* **Bulk Import**: Import all your LeadGrid pages at once
-
-**How It Works:**
-
-1. Install and activate the plugin
-2. Enter your LeadGrid API credentials in the settings
-3. Import your landing pages from LeadGrid
-4. Edit the pages using WordPress native editors
-5. Changes sync automatically between platforms
+* **One-Click Import**: Import LeadGrid pages directly into WordPress
+* **Full WordPress Editor Support**: Edit imported pages using WordPress block editor
+* **Real-time Synchronization**: Keep pages in sync between LeadGrid and WordPress
+* **API Management**: Secure API key management and connection testing
+* **Responsive Design**: All imported pages are fully responsive
+* **Hebrew Support**: Full RTL support for Hebrew websites
+* **Performance Optimized**: Built-in caching and optimization features
 
 **Perfect For:**
 
-* Agencies managing client websites
-* Businesses using LeadGrid for landing page creation
-* Developers who want to combine LeadGrid's design capabilities with WordPress flexibility
-* Anyone needing seamless integration between LeadGrid and WordPress
+* Marketing agencies managing multiple client websites
+* Businesses using LeadGrid for landing pages and WordPress for main site
+* Developers who need flexible integration between platforms
+* Anyone wanting professional landing pages with WordPress flexibility
+
+**How It Works:**
+
+1. Create your landing page in LeadGrid
+2. Install this plugin on your WordPress site
+3. Configure your API credentials
+4. Import your LeadGrid pages with one click
+5. Edit and manage pages directly in WordPress
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/leadgrid-integration` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the plugin files to `/wp-content/plugins/leadgrid-integration/`
 2. Activate the plugin through the 'Plugins' screen in WordPress
 3. Go to LeadGrid → Settings to configure your API credentials
 4. Start importing your LeadGrid pages!
+
+**Manual Installation:**
+
+1. Download the plugin zip file
+2. Go to WordPress Admin → Plugins → Add New → Upload Plugin
+3. Choose the zip file and click Install Now
+4. Activate the plugin
+5. Configure settings under LeadGrid → Settings
+
+== Configuration ==
+
+After installation, you need to configure the plugin:
+
+1. **Get Your API Credentials from LeadGrid:**
+   - Login to your LeadGrid account
+   - Go to API Settings
+   - Generate a new API key
+   - Copy your Site ID
+
+2. **Configure WordPress Plugin:**
+   - Go to LeadGrid → Settings in WordPress admin
+   - Enter your API Key
+   - Enter your Site ID
+   - Test the connection
+   - Save settings
+
+3. **Import Your First Page:**
+   - Go to LeadGrid → Import Pages
+   - Click "Load Available Pages"
+   - Click "Import" on any page you want to bring into WordPress
 
 == Frequently Asked Questions ==
 
 = Do I need a LeadGrid account to use this plugin? =
 
-Yes, you need an active LeadGrid account and API key to import and sync pages.
+Yes, you need an active LeadGrid account to use this plugin. The plugin connects to LeadGrid's API to fetch your landing pages.
 
-= Will my existing WordPress content be affected? =
+= Will the imported pages look exactly like my LeadGrid pages? =
 
-No, the plugin only works with LeadGrid pages and doesn't affect your existing WordPress content.
+Yes, the plugin imports the complete HTML, CSS, and styling from your LeadGrid pages, ensuring they look identical in WordPress.
 
-= Can I edit the imported pages in WordPress? =
+= Can I edit imported pages in WordPress? =
 
-Yes! Once imported, pages can be edited using WordPress native editors including Gutenberg and Elementor.
+Absolutely! Once imported, pages become standard WordPress pages that you can edit using the WordPress block editor or any page builder.
 
-= How often do pages sync from LeadGrid? =
+= Does this work with all WordPress themes? =
 
-By default, pages sync every 5 minutes. You can adjust this interval in the settings or trigger manual syncs.
+Yes, the plugin works with any WordPress theme. Imported pages use their own styling and won't conflict with your theme.
 
-= Is the plugin compatible with page builders? =
+= Is there a limit to how many pages I can import? =
 
-Yes, the plugin works well with popular page builders like Elementor, and includes custom Gutenberg blocks.
+No, you can import as many pages as you want from your LeadGrid account.
+
+= Does the plugin support RTL languages like Hebrew? =
+
+Yes, the plugin has full RTL support and works perfectly with Hebrew and other RTL languages.
+
+= What happens if I update a page in LeadGrid after importing? =
+
+The plugin includes sync functionality to keep your WordPress pages updated with changes made in LeadGrid.
+
+= Is my data secure? =
+
+Yes, all API communications are encrypted and your API keys are stored securely in your WordPress database.
 
 == Screenshots ==
 
-1. LeadGrid dashboard showing imported pages and sync status
-2. Settings page for API configuration
-3. Import page interface
-4. Gutenberg editor with LeadGrid blocks
-5. Frontend display of imported LeadGrid page
+1. LeadGrid settings page with API configuration
+2. Import pages interface showing available LeadGrid pages
+3. Successfully imported landing page in WordPress editor
+4. Connection test interface
+5. Responsive imported page on mobile device
 
 == Changelog ==
 
+= 2.0.0 =
+* Complete rewrite with advanced features
+* Added API key management system
+* Improved import process with better error handling
+* Added real-time synchronization capabilities
+* Enhanced security with encrypted API communications
+* Added comprehensive logging system
+* Improved admin interface with better UX
+* Added support for custom post types
+* Performance optimizations and caching
+* Better error messages and debugging tools
+
+= 1.5.0 =
+* Added Hebrew RTL support
+* Improved responsive design handling
+* Added connection testing functionality
+* Bug fixes and performance improvements
+
 = 1.0.0 =
 * Initial release
-* Import functionality for LeadGrid pages
-* Custom Gutenberg blocks for LeadGrid components
-* Two-way synchronization
-* Bulk import capability
-* Admin dashboard and settings
+* Basic page import functionality
+* API connection management
+* WordPress admin integration
 
 == Upgrade Notice ==
 
-= 1.0.0 =
-Initial release of LeadGrid Integration plugin.
-
-== Configuration ==
-
-After installing the plugin:
-
-1. Go to **LeadGrid → Settings**
-2. Enter your LeadGrid API key
-3. Test the connection
-4. Configure sync settings
-5. Go to **LeadGrid → Import Pages** to start importing
-
-**API Configuration:**
-- Get your API key from your LeadGrid account settings
-- The default API endpoint is `https://api.leadgrid.co.il`
-- Test your connection before importing pages
-
-**Sync Settings:**
-- Enable/disable automatic synchronization
-- Set sync interval (5 minutes to 1 hour)
-- View sync status for all imported pages
+= 2.0.0 =
+Major update with new features and improved security. Please backup your site before upgrading. After upgrade, you may need to reconfigure your API settings.
 
 == Support ==
 
-For support and documentation, visit [LeadGrid Documentation](https://docs.leadgrid.co.il) or contact our support team.
+For support, please contact us at:
+* Email: support@leadgrid.co.il
+* Website: https://leadgrid.co.il/support
+* Documentation: https://docs.leadgrid.co.il/wordpress-plugin
+
+== Credits ==
+
+Developed by the LeadGrid Team with ❤️ for the WordPress community.
 
 == Privacy Policy ==
 
-This plugin communicates with the LeadGrid API to import and sync landing page content. No personal data is collected or transmitted beyond what's necessary for the synchronization functionality.
+This plugin connects to LeadGrid's servers to fetch your landing page data. No personal data is shared with third parties beyond what's necessary for the plugin's functionality. All data transmission is encrypted and secure.

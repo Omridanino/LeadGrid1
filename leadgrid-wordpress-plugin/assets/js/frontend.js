@@ -1,230 +1,238 @@
 
-jQuery(document).ready(function($) {
+(function($) {
     'use strict';
-
-    // Smooth scrolling for LeadGrid buttons
-    $('.leadgrid-hero .btn[href^="#"]').on('click', function(e) {
-        e.preventDefault();
-        
-        var target = $($(this).attr('href'));
-        if (target.length) {
-            $('html, body').animate({
-                scrollTop: target.offset().top - 80
-            }, 800, 'swing');
-        }
+    
+    $(document).ready(function() {
+        initializeFrontendFeatures();
     });
-
-    // Animate features on scroll
-    if ($('.leadgrid-features').length) {
-        $(window).on('scroll', function() {
-            $('.leadgrid-features .feature-item').each(function() {
-                var elementTop = $(this).offset().top;
-                var windowBottom = $(window).scrollTop() + $(window).height();
-                
-                if (elementTop < windowBottom - 100) {
-                    $(this).addClass('animate-in');
+    
+    function initializeFrontendFeatures() {
+        // Smooth scrolling for anchor links
+        $('a[href^="#"]').on('click', function(e) {
+            e.preventDefault();
+            
+            var target = $($(this).attr('href'));
+            if (target.length) {
+                $('html, body').animate({
+                    scrollTop: target.offset().top - 100
+                }, 800);
+            }
+        });
+        
+        // Form handling for LeadGrid contact forms
+        $('.leadgrid-contact-form').on('submit', function(e) {
+            e.preventDefault();
+            
+            var form = $(this);
+            var formData = new FormData(this);
+            formData.append('action', 'leadgrid_submit_form');
+            formData.append('nonce', leadgrid_ajax.nonce);
+            
+            // Show loading state
+            var submitButton = form.find('button[type="submit"]');
+            var originalText = submitButton.text();
+            submitButton.text('שולח...').prop('disabled', true);
+            
+            $.ajax({
+                url: leadgrid_ajax.ajax_url,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        showFormMessage(form, 'ההודעה נשלחה בהצלחה!', 'success');
+                        form[0].reset();
+                    } else {
+                        showFormMessage(form, response.data || 'שגיאה בשליחת ההודעה', 'error');
+                    }
+                },
+                error: function() {
+                    showFormMessage(form, 'שגיאה בשליחת ההודעה', 'error');
+                },
+                complete: function() {
+                    submitButton.text(originalText).prop('disabled', false);
                 }
             });
         });
-    }
-
-    // Testimonials carousel (if multiple testimonials)
-    if ($('.leadgrid-testimonials .testimonials-grid .testimonial-item').length > 3) {
-        // Add carousel functionality for mobile
-        var $testimonials = $('.leadgrid-testimonials .testimonials-grid');
-        var $items = $testimonials.find('.testimonial-item');
         
-        if ($(window).width() <= 768) {
-            $testimonials.addClass('testimonials-carousel');
-            
-            var currentIndex = 0;
-            var totalItems = $items.length;
-            
-            // Add navigation dots
-            var dotsHtml = '<div class="testimonials-dots">';
-            for (var i = 0; i < totalItems; i++) {
-                dotsHtml += '<span class="dot' + (i === 0 ? ' active' : '') + '" data-index="' + i + '"></span>';
-            }
-            dotsHtml += '</div>';
-            
-            $testimonials.after(dotsHtml);
-            
-            // Show only first item initially
-            $items.hide().first().show();
-            
-            // Auto-rotate every 5 seconds
-            setInterval(function() {
-                currentIndex = (currentIndex + 1) % totalItems;
-                showTestimonial(currentIndex);
-            }, 5000);
-            
-            // Dot navigation
-            $('.testimonials-dots .dot').on('click', function() {
-                currentIndex = $(this).data('index');
-                showTestimonial(currentIndex);
+        // Lazy loading for images
+        if ('IntersectionObserver' in window) {
+            var imageObserver = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        var img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(img);
+                    }
+                });
             });
             
-            function showTestimonial(index) {
-                $items.fadeOut(300);
-                $items.eq(index).fadeIn(300);
-                $('.testimonials-dots .dot').removeClass('active').eq(index).addClass('active');
-            }
+            $('.leadgrid-page img[data-src]').each(function() {
+                imageObserver.observe(this);
+            });
         }
-    }
-
-    // Contact form enhancements
-    $('.leadgrid-contact form').on('submit', function(e) {
-        var $form = $(this);
-        var $submitButton = $form.find('input[type="submit"], button[type="submit"]');
         
-        // Add loading state
-        $submitButton.prop('disabled', true).addClass('loading');
-        
-        // Re-enable after 3 seconds (in case of form validation errors)
-        setTimeout(function() {
-            $submitButton.prop('disabled', false).removeClass('loading');
-        }, 3000);
-    });
-
-    // Add entrance animations
-    function addEntranceAnimations() {
-        var animatedElements = [
-            '.leadgrid-hero h1',
-            '.leadgrid-hero h2',
-            '.leadgrid-hero p',
-            '.leadgrid-hero .btn',
-            '.leadgrid-features h2',
-            '.leadgrid-testimonials h2',
-            '.leadgrid-contact h2'
-        ];
-        
-        animatedElements.forEach(function(selector, index) {
-            $(selector).css({
-                'opacity': '0',
-                'transform': 'translateY(30px)',
-                'transition': 'all 0.6s ease'
-            }).delay(index * 100).animate({
-                'opacity': '1'
+        // Animation on scroll
+        if ('IntersectionObserver' in window) {
+            var animationObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                    }
+                });
             }, {
-                duration: 600,
-                step: function(now) {
-                    $(this).css('transform', 'translateY(' + (30 - (30 * now)) + 'px)');
-                }
+                threshold: 0.1
             });
+            
+            $('.leadgrid-animate').each(function() {
+                animationObserver.observe(this);
+            });
+        }
+        
+        // Mobile menu toggle (if needed)
+        $('.leadgrid-mobile-menu-toggle').on('click', function() {
+            $('.leadgrid-mobile-menu').toggleClass('open');
         });
-    }
-
-    // Initialize animations
-    setTimeout(addEntranceAnimations, 500);
-
-    // Responsive handling
-    $(window).on('resize', function() {
-        // Recalculate layouts if needed
-        if ($(window).width() > 768) {
-            $('.testimonials-carousel .testimonial-item').show();
-            $('.testimonials-dots').remove();
-        }
-    });
-
-    // Add hover effects for interactive elements
-    $('.leadgrid-features .feature-item, .leadgrid-testimonials .testimonial-item').hover(
-        function() {
-            $(this).css('transform', 'translateY(-5px)');
-        },
-        function() {
-            $(this).css('transform', 'translateY(0)');
-        }
-    );
-
-    // Parallax effect for hero section (subtle)
-    if ($('.leadgrid-hero').length && $(window).width() > 768) {
+        
+        // Back to top button
+        var backToTop = $('<button class="leadgrid-back-to-top" title="חזור למעלה">↑</button>');
+        $('body').append(backToTop);
+        
         $(window).on('scroll', function() {
-            var scrolled = $(window).scrollTop();
-            var parallax = scrolled * 0.5;
-            $('.leadgrid-hero').css('transform', 'translateY(' + parallax + 'px)');
+            if ($(this).scrollTop() > 300) {
+                backToTop.fadeIn();
+            } else {
+                backToTop.fadeOut();
+            }
+        });
+        
+        backToTop.on('click', function() {
+            $('html, body').animate({scrollTop: 0}, 800);
         });
     }
-});
-
-// Add CSS for animations
-var animationCSS = `
-<style>
-.leadgrid-features .feature-item,
-.leadgrid-testimonials .testimonial-item {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.leadgrid-features .feature-item:hover,
-.leadgrid-testimonials .testimonial-item:hover {
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-}
-
-.testimonials-carousel {
-    position: relative;
-    overflow: hidden;
-}
-
-.testimonials-dots {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.testimonials-dots .dot {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #ccc;
-    margin: 0 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.testimonials-dots .dot.active {
-    background: #1e40af;
-}
-
-.loading {
-    position: relative;
-}
-
-.loading::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 16px;
-    height: 16px;
-    margin: -8px 0 0 -8px;
-    border: 2px solid transparent;
-    border-top: 2px solid #fff;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-@media (max-width: 768px) {
-    .leadgrid-hero {
-        padding: 60px 20px;
+    
+    function showFormMessage(form, message, type) {
+        var messageClass = type === 'success' ? 'success' : 'error';
+        var messageElement = $('<div class="leadgrid-form-message ' + messageClass + '">' + message + '</div>');
+        
+        form.find('.leadgrid-form-message').remove();
+        form.prepend(messageElement);
+        
+        setTimeout(function() {
+            messageElement.fadeOut();
+        }, 5000);
     }
     
-    .leadgrid-features,
-    .leadgrid-testimonials,
-    .leadgrid-contact {
-        padding: 60px 20px;
-    }
+    // Utility functions
+    window.leadgridFrontend = {
+        scrollToElement: function(selector, offset) {
+            offset = offset || 0;
+            var target = $(selector);
+            if (target.length) {
+                $('html, body').animate({
+                    scrollTop: target.offset().top - offset
+                }, 800);
+            }
+        },
+        
+        showMessage: function(message, type) {
+            var messageClass = type === 'success' ? 'success' : 'error';
+            var messageElement = $('<div class="leadgrid-message ' + messageClass + '">' + message + '</div>');
+            
+            $('body').append(messageElement);
+            
+            setTimeout(function() {
+                messageElement.addClass('show');
+            }, 100);
+            
+            setTimeout(function() {
+                messageElement.removeClass('show');
+                setTimeout(function() {
+                    messageElement.remove();
+                }, 300);
+            }, 3000);
+        }
+    };
     
-    .leadgrid-hero .btn {
-        display: block;
-        margin: 10px auto;
-        max-width: 250px;
+})(jQuery);
+
+// Add CSS for messages and animations
+var leadgridCSS = `
+    .leadgrid-form-message {
+        padding: 12px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+        font-weight: bold;
     }
-}
-</style>
+    .leadgrid-form-message.success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    .leadgrid-form-message.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+    .leadgrid-back-to-top {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: #1e40af;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        cursor: pointer;
+        display: none;
+        z-index: 1000;
+        transition: all 0.3s ease;
+    }
+    .leadgrid-back-to-top:hover {
+        background: #1e3a8a;
+        transform: translateY(-2px);
+    }
+    .leadgrid-animate {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease;
+    }
+    .leadgrid-animate.animate-in {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .leadgrid-message {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 4px;
+        font-weight: bold;
+        z-index: 1000;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+    }
+    .leadgrid-message.show {
+        transform: translateX(0);
+    }
+    .leadgrid-message.success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    .leadgrid-message.error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
 `;
 
-$('head').append(animationCSS);
+// Inject CSS
+var styleSheet = document.createElement('style');
+styleSheet.type = 'text/css';
+styleSheet.innerText = leadgridCSS;
+document.head.appendChild(styleSheet);

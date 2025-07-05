@@ -1,53 +1,58 @@
 
 /* LeadGrid Frontend Styles */
 
-.leadgrid-hero {
-    background: linear-gradient(135deg, #1e40af, #7c3aed);
-    color: white;
-    padding: 80px 20px;
-    text-align: center;
+.leadgrid-page {
+    max-width: 100%;
+    margin: 0 auto;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    direction: rtl;
 }
 
-.leadgrid-hero .container {
-    max-width: 1200px;
-    margin: 0 auto;
+.leadgrid-hero {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    position: relative;
 }
 
 .leadgrid-hero h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
     font-weight: bold;
+    line-height: 1.2;
 }
 
 .leadgrid-hero h2 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
     opacity: 0.9;
+    font-weight: normal;
 }
 
 .leadgrid-hero p {
     font-size: 1.25rem;
     margin-bottom: 2rem;
     opacity: 0.9;
+    line-height: 1.6;
 }
 
 .leadgrid-hero .btn {
-    background: rgba(255,255,255,0.2);
-    color: white;
-    padding: 16px 32px;
-    border: 2px solid white;
-    border-radius: 8px;
-    text-decoration: none;
     display: inline-block;
+    padding: 16px 32px;
     margin: 0 10px;
+    text-decoration: none;
+    border-radius: 8px;
     font-weight: bold;
     transition: all 0.3s ease;
+    border: 2px solid white;
+    background: rgba(255,255,255,0.2);
+    color: white;
 }
 
 .leadgrid-hero .btn:hover {
-    background: white;
-    color: #1e40af;
-    text-decoration: none;
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
 }
 
 .leadgrid-features {
@@ -55,43 +60,41 @@
     background: #f8fafc;
 }
 
-.leadgrid-features .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    text-align: center;
-}
-
 .leadgrid-features h2 {
     font-size: 2.5rem;
     margin-bottom: 3rem;
     color: #1e40af;
+    text-align: center;
 }
 
-.leadgrid-features .features-grid {
+.features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.leadgrid-features .feature-item {
+.feature-item {
     background: white;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: center;
     transition: transform 0.3s ease;
 }
 
-.leadgrid-features .feature-item:hover {
+.feature-item:hover {
     transform: translateY(-5px);
 }
 
-.leadgrid-features .feature-item h3 {
+.feature-item h3 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
     color: #1e40af;
 }
 
-.leadgrid-features .feature-item p {
+.feature-item p {
     color: #6b7280;
     line-height: 1.6;
 }
@@ -101,57 +104,50 @@
     background: #f1f5f9;
 }
 
-.leadgrid-testimonials .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    text-align: center;
-}
-
 .leadgrid-testimonials h2 {
     font-size: 2.5rem;
     margin-bottom: 3rem;
     color: #1e40af;
+    text-align: center;
 }
 
-.leadgrid-testimonials .testimonials-grid {
+.testimonials-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.leadgrid-testimonials .testimonial-item {
+.testimonial-item {
     background: white;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: center;
 }
 
-.leadgrid-testimonials .testimonial-item p {
+.testimonial-item p {
     font-style: italic;
     margin-bottom: 1rem;
     color: #374151;
-    font-size: 1.1rem;
+    line-height: 1.6;
 }
 
-.leadgrid-testimonials .testimonial-author strong {
+.testimonial-author strong {
     color: #1e40af;
-    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
 }
 
-.leadgrid-testimonials .testimonial-author span {
+.testimonial-author span {
     color: #6b7280;
-    display: block;
     font-size: 0.9rem;
 }
 
 .leadgrid-contact {
     padding: 80px 20px;
     background: #f8fafc;
-}
-
-.leadgrid-contact .container {
-    max-width: 800px;
-    margin: 0 auto;
     text-align: center;
 }
 
@@ -167,12 +163,40 @@
     color: #6b7280;
 }
 
-.leadgrid-contact .contact-form {
+.contact-form {
     background: white;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    text-align: left;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.contact-form button {
+    background: #1e40af;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 100%;
+}
+
+.contact-form button:hover {
+    background: #1e3a8a;
 }
 
 /* Responsive Design */
@@ -182,18 +206,11 @@
     }
     
     .leadgrid-hero h2 {
-        font-size: 1.2rem;
+        font-size: 1.25rem;
     }
     
-    .leadgrid-features h2,
-    .leadgrid-testimonials h2,
-    .leadgrid-contact h2 {
-        font-size: 2rem;
-    }
-    
-    .leadgrid-features .features-grid,
-    .leadgrid-testimonials .testimonials-grid {
-        grid-template-columns: 1fr;
+    .leadgrid-hero p {
+        font-size: 1rem;
     }
     
     .leadgrid-hero .btn {
@@ -201,4 +218,40 @@
         margin: 10px auto;
         max-width: 200px;
     }
+    
+    .features-grid,
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .leadgrid-features h2,
+    .leadgrid-testimonials h2,
+    .leadgrid-contact h2 {
+        font-size: 2rem;
+    }
+}
+
+/* RTL Support */
+[dir="rtl"] .leadgrid-page {
+    text-align: right;
+}
+
+[dir="rtl"] .leadgrid-hero {
+    text-align: center;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.leadgrid-page > * {
+    animation: fadeInUp 0.6s ease-out;
 }
