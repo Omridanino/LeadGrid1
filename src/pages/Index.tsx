@@ -428,7 +428,7 @@ const Index = () => {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8 items-stretch">
             {templateCategories.map((category, index) => {
               const Icon = category.icon;
               return (
