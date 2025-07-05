@@ -433,12 +433,289 @@ export const TemplatePreview: React.FC<TemplatePreviewProps> = ({ template }) =>
           </div>
         </section>
 
+        {/* Custom Dynamic Elements */}
+        {/* Gallery Section */}
+        {template.gallery && (
+          <section 
+            className={`py-12 px-4 relative overflow-hidden ${getEffectClasses(template.effects?.hero)}`} 
+            style={getSectionStyle(template.styles.backgroundColor, template.styles.heroBackgroundImage)}
+          >
+            {template.styles?.primaryColor && (
+              <>
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20"></div>
+                <div className="absolute top-0 left-0 w-full h-full">
+                  <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-blue-400/30 to-purple-400/30 rounded-full blur-xl"></div>
+                  <div className="absolute bottom-10 right-10 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-xl"></div>
+                </div>
+              </>
+            )}
+            {template.styles.heroBackgroundImage && (
+              <div className="absolute inset-0 bg-black/30"></div>
+            )}
+            <div className="max-w-6xl mx-auto relative z-10 text-center" dir="rtl">
+              <div className="mb-8">
+                <h2 className="text-2xl md:text-3xl font-bold mb-4" style={{ color: getPremiumTextColor(template.id) }}>
+                  {template.gallery.title}
+                </h2>
+                {template.gallery.subtitle && (
+                  <p className="text-lg opacity-80 mb-6" style={{ color: getPremiumTextColor(template.id) }}>
+                    {template.gallery.subtitle}
+                  </p>
+                )}
+              </div>
+              <div className={`grid gap-4 ${template.gallery.layout === 'grid' ? `grid-cols-1 md:grid-cols-${template.gallery.columns || 3}` : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
+                {template.gallery.images?.map((img, index) => (
+                  <Card key={index} className="overflow-hidden bg-white/10 backdrop-blur-sm border-white/20 shadow-lg hover:shadow-xl transition-shadow">
+                    <img src={img.src} alt={img.alt || img.caption || `תמונה ${index + 1}`} className="w-full h-40 object-cover hover:scale-105 transition-transform duration-300" />
+                    {(img.caption || img.alt) && (
+                      <CardContent className="p-3">
+                        <p className="text-xs" style={{ color: getPremiumTextColor(template.id) }}>{img.caption || img.alt}</p>
+                      </CardContent>
+                    )}
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* List Section */}
+        {template.list && template.list.items && template.list.items.length > 0 && (
+          <section 
+            className={`py-12 px-4 relative ${getEffectClasses(template.effects?.hero)}`} 
+            style={getSectionStyle(template.styles.backgroundColor, template.styles.heroBackgroundImage)}
+          >
+            {template.styles.heroBackgroundImage && (
+              <div className="absolute inset-0 bg-black/30"></div>
+            )}
+            <div className="max-w-4xl mx-auto relative z-10 text-center" dir="rtl">
+              <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: getPremiumTextColor(template.id) }}>
+                {template.list.title}
+              </h2>
+              <div className="space-y-4">
+                {template.list.listType === 'ordered' && (
+                  <ol className="list-decimal list-inside space-y-3 text-right">
+                    {template.list.items.map((item, index) => (
+                      <li key={index} className="text-lg" style={{ color: getPremiumTextColor(template.id) }}>
+                        <strong>{item.title}</strong>
+                        {item.description && <div className="text-sm opacity-80 mt-1">{item.description}</div>}
+                      </li>
+                    ))}
+                  </ol>
+                )}
+                {template.list.listType === 'unordered' && (
+                  <ul className="list-disc list-inside space-y-3 text-right">
+                    {template.list.items.map((item, index) => (
+                      <li key={index} className="text-lg" style={{ color: getPremiumTextColor(template.id) }}>
+                        <strong>{item.title}</strong>
+                        {item.description && <div className="text-sm opacity-80 mt-1">{item.description}</div>}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {template.list.listType === 'icon' && (
+                  <div className="space-y-4">
+                    {template.list.items.map((item, index) => (
+                      <div key={index} className="flex items-start gap-3 text-right">
+                        <div className="w-6 h-6 rounded-full flex items-center justify-center mt-1" style={{ backgroundColor: template.styles.primaryColor }}>
+                          <span className="text-white text-xs">✓</span>
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold" style={{ color: getPremiumTextColor(template.id) }}>{item.title}</h3>
+                          {item.description && <p className="text-sm opacity-80 mt-1" style={{ color: getPremiumTextColor(template.id) }}>{item.description}</p>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Heading Section */}
+        {template.heading && (
+          <section className="py-12 px-4" style={getSectionStyle(template.styles.backgroundColor)}>
+            <div className="max-w-6xl mx-auto text-center" dir="rtl">
+              <div className={`text-${template.heading.alignment || 'center'}`}>
+                <h2 className={`font-bold mb-4 ${
+                  template.heading.size === 'small' ? 'text-xl md:text-2xl' :
+                  template.heading.size === 'large' ? 'text-4xl md:text-5xl' :
+                  'text-2xl md:text-3xl'
+                }`} style={{ color: getPremiumTextColor(template.id) }}>
+                  {template.heading.title}
+                </h2>
+                {template.heading.subtitle && (
+                  <p className="text-lg opacity-80" style={{ color: getPremiumTextColor(template.id) }}>
+                    {template.heading.subtitle}
+                  </p>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Text Section */}
+        {template.text && (
+          <section className="py-12 px-4" style={getSectionStyle(template.styles.backgroundColor)}>
+            <div className="max-w-4xl mx-auto text-center" dir="rtl">
+              <div className={`text-${template.text.alignment || 'center'}`}>
+                <h2 className="text-2xl font-bold mb-6" style={{ color: getPremiumTextColor(template.id) }}>
+                  {template.text.title}
+                </h2>
+                <div className={`prose prose-lg max-w-none ${
+                  template.text.textSize === 'small' ? 'text-sm' :
+                  template.text.textSize === 'large' ? 'text-xl' :
+                  'text-base'
+                }`} style={{ color: getPremiumTextColor(template.id) }}>
+                  {template.text.content?.split('\n').map((paragraph, index) => (
+                    paragraph.trim() && <p key={index} className="mb-4">{paragraph}</p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Video Section */}
+        {template.video && template.video.videoUrl && (
+          <section className="py-12 px-4" style={getSectionStyle(template.styles.backgroundColor)}>
+            <div className="max-w-4xl mx-auto text-center" dir="rtl">
+              <h2 className="text-2xl md:text-3xl font-bold mb-4" style={{ color: getPremiumTextColor(template.id) }}>
+                {template.video.title}
+              </h2>
+              {template.video.subtitle && (
+                <p className="text-lg opacity-80 mb-8" style={{ color: getPremiumTextColor(template.id) }}>
+                  {template.video.subtitle}
+                </p>
+              )}
+              <div className="aspect-video rounded-lg overflow-hidden shadow-lg">
+                {template.video.videoType === 'youtube' && (
+                  <iframe
+                    src={template.video.videoUrl.replace('watch?v=', 'embed/')}
+                    className="w-full h-full"
+                    allowFullScreen
+                    title={template.video.title}
+                  />
+                )}
+                {template.video.videoType === 'vimeo' && (
+                  <iframe
+                    src={template.video.videoUrl}
+                    className="w-full h-full"
+                    allowFullScreen
+                    title={template.video.title}
+                  />
+                )}
+                {template.video.videoType === 'direct' && (
+                  <video
+                    src={template.video.videoUrl}
+                    controls={template.video.controls}
+                    className="w-full h-full"
+                    autoPlay={false}
+                  />
+                )}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Slider Section */}
+        {template.slider && template.slider.slides && template.slider.slides.length > 0 && (
+          <section className="py-12 px-4" style={getSectionStyle(template.styles.backgroundColor)}>
+            <div className="max-w-4xl mx-auto text-center" dir="rtl">
+              <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: getPremiumTextColor(template.id) }}>
+                {template.slider.title}
+              </h2>
+              <div className="relative">
+                <div className="overflow-hidden rounded-lg">
+                  <div className="flex transition-transform duration-300">
+                    {template.slider.slides.map((slide, index) => (
+                      <div key={index} className="w-full flex-shrink-0">
+                        <Card className="p-8 bg-white/10 backdrop-blur-sm border-white/20">
+                          <h3 className="text-xl font-bold mb-4" style={{ color: getPremiumTextColor(template.id) }}>
+                            {slide.title}
+                          </h3>
+                          <p className="mb-6 opacity-80" style={{ color: getPremiumTextColor(template.id) }}>
+                            {slide.description}
+                          </p>
+                          {slide.buttonText && (
+                            <Button style={{ backgroundColor: template.styles.primaryColor }} className="text-white">
+                              {slide.buttonText}
+                            </Button>
+                          )}
+                        </Card>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Embed Section */}
+        {template.embed && template.embed.htmlCode && (
+          <section className="py-12 px-4" style={getSectionStyle(template.styles.backgroundColor)}>
+            <div className="max-w-4xl mx-auto text-center" dir="rtl">
+              <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: getPremiumTextColor(template.id) }}>
+                {template.embed.title}
+              </h2>
+              <div 
+                className="rounded-lg overflow-hidden"
+                style={{ height: template.embed.height || 400 }}
+                dangerouslySetInnerHTML={{ __html: template.embed.htmlCode }}
+              />
+            </div>
+          </section>
+        )}
+
+        {/* Social Bar Section */}
+        {template.socialBar && template.socialBar.socialLinks && template.socialBar.socialLinks.length > 0 && (
+          <section className="py-12 px-4" style={getSectionStyle(template.styles.backgroundColor)}>
+            <div className="max-w-4xl mx-auto text-center" dir="rtl">
+              {template.socialBar.title && (
+                <h2 className="text-2xl md:text-3xl font-bold mb-8" style={{ color: getPremiumTextColor(template.id) }}>
+                  {template.socialBar.title}
+                </h2>
+              )}
+              <div className={`flex gap-6 ${template.socialBar.alignment === 'center' ? 'justify-center' : template.socialBar.alignment === 'right' ? 'justify-end' : 'justify-start'}`}>
+                {template.socialBar.socialLinks.map((link, index) => (
+                  <a
+                    key={index}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors hover:opacity-80"
+                    style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}
+                  >
+                    <i className={`ri-${link.platform}-fill`}></i>
+                    {template.socialBar.showLabels && link.label && (
+                      <span>{link.label}</span>
+                    )}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        </footer>
+
         {/* Footer */}
         <footer className="py-8 px-4 text-center" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
           <p>&copy; 2024 {template.footer.companyName}. כל הזכויות שמורות.</p>
         </footer>
+      </div>
+    );
+  }
 
-        {/* Custom Elements for Premium Templates */}
+  return (
+    <div className="min-h-full text-center" dir="rtl" style={{ backgroundColor: template.styles.backgroundColor, color: template.styles.textColor }}>
+      {/* All sections here */}
+      <div>תצוגה מקדימה של התבנית</div>
+    </div>
+  );
+};
         {/* Gallery Section */}
         {template.gallery && template.gallery.images && template.gallery.images.length > 0 && (
           <section 

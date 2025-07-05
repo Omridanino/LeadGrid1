@@ -357,12 +357,12 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
   return (
     <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-black to-slate-900 z-50 flex h-screen" dir="rtl">
       
-      {/* Compact Editor Sidebar */}
+      {/* Floating Editor Panel */}
       {!isEditorMinimized && (
-        <div className="w-64 bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border-r border-slate-700/50 flex flex-col shadow-2xl">
+        <div className="fixed top-4 right-4 w-80 max-h-[calc(100vh-2rem)] bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-xl shadow-2xl z-50 flex flex-col">
           
           {/* Header - Compact */}
-          <div className="p-3 border-b border-slate-700/50 bg-gradient-to-r from-slate-800/80 to-slate-700/80 flex-shrink-0">
+          <div className="p-3 border-b border-slate-700/50 bg-gradient-to-r from-slate-800/80 to-slate-700/80 flex-shrink-0 rounded-t-xl">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <div className="w-7 h-7 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
@@ -484,44 +484,44 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                              setActiveSection(item.id);
                            }}
                          >
-                            <CardContent className="p-2.5">
-                              <div className="flex items-center gap-2">
-                                <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${
-                                  isActive ? 'bg-blue-500/20' : 'bg-slate-700/50'
-                                }`}>
-                                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-blue-400' : item.color}`} />
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <h3 className={`font-medium text-xs ${isActive ? 'text-white' : 'text-slate-200'} truncate`}>
-                                    {item.name}
-                                  </h3>
-                                  <p className="text-xs text-slate-500 truncate">
-                                    {category.id === 'elements' ? 'גרור או לחץ' : isActive ? 'פעיל' : 'לחץ לעריכה'}
-                                  </p>
-                                </div>
-                                {/* Remove button for elements */}
-                                {category.id === 'elements' && editedTemplate[item.id as keyof TemplateData] && (
-                                  <Button
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setEditedTemplate(prev => {
-                                        const newTemplate = { ...prev };
-                                        delete newTemplate[item.id as keyof TemplateData];
-                                        return newTemplate;
-                                      });
-                                      toast({
-                                        title: "🗑️ אלמנט הוסר",
-                                        description: `${item.name} הוסר מהדף`,
-                                      });
-                                    }}
-                                    size="sm"
-                                    className="bg-red-600/80 hover:bg-red-700 text-white w-5 h-5 p-0"
-                                  >
-                                    <X className="w-2.5 h-2.5" />
-                                  </Button>
-                                )}
-                              </div>
-                            </CardContent>
+                           <CardContent className="p-2.5">
+                             <div className="flex items-center gap-2">
+                               <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${
+                                 isActive ? 'bg-blue-500/20' : 'bg-slate-700/50'
+                               }`}>
+                                 <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-blue-400' : item.color}`} />
+                               </div>
+                               <div className="flex-1 min-w-0">
+                                 <h3 className={`font-medium text-xs ${isActive ? 'text-white' : 'text-slate-200'} truncate`}>
+                                   {item.name}
+                                 </h3>
+                                 <p className="text-xs text-slate-500 truncate">
+                                   {category.id === 'elements' ? 'גרור או לחץ' : isActive ? 'פעיל' : 'לחץ לעריכה'}
+                                 </p>
+                               </div>
+                               {/* Remove button for elements */}
+                               {category.id === 'elements' && editedTemplate[item.id as keyof TemplateData] && (
+                                 <Button
+                                   onClick={(e) => {
+                                     e.stopPropagation();
+                                     setEditedTemplate(prev => {
+                                       const newTemplate = { ...prev };
+                                       delete newTemplate[item.id as keyof TemplateData];
+                                       return newTemplate;
+                                     });
+                                     toast({
+                                       title: "🗑️ אלמנט הוסר",
+                                       description: `${item.name} הוסר מהדף`,
+                                     });
+                                   }}
+                                   size="sm"
+                                   className="bg-red-600/80 hover:bg-red-700 text-white w-5 h-5 p-0"
+                                 >
+                                   <X className="w-2.5 h-2.5" />
+                                 </Button>
+                               )}
+                             </div>
+                           </CardContent>
                          </Card>
                        );
                      })}
@@ -530,6 +530,17 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
               </TabsContent>
             ))}
           </Tabs>
+
+          {/* Editor Content - Only when section is selected */}
+          {activeSection && !['sections', 'elements', 'styles'].includes(activeSection) && (
+            <div className="border-t border-slate-700/30 flex-shrink-0">
+              <ScrollArea className="max-h-80">
+                <div className="p-3">
+                  {renderEditor()}
+                </div>
+              </ScrollArea>
+            </div>
+          )}
         </div>
       )}
 
@@ -587,23 +598,10 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
           </div>
         </div>
 
-        {/* Content Area */}
+        {/* Preview Area with Scroll */}
         <div className="flex-1 flex min-h-0">
-          
-          {/* Editor Panel - Right Side */}
-          {!isEditorMinimized && (
-            <div className="w-64 border-l border-slate-600/30 bg-gradient-to-b from-slate-800/50 to-slate-900/50 backdrop-blur-sm flex flex-col">
-              <ScrollArea className="flex-1">
-                <div className="p-3">
-                  {renderEditor()}
-                </div>
-              </ScrollArea>
-            </div>
-          )}
-          
-          {/* Preview - Takes remaining space */}
           <div 
-            className="flex-1 bg-white overflow-auto"
+            className="flex-1 bg-white"
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => {
               e.preventDefault();
@@ -618,7 +616,11 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
               }
             }}
           >
-            <TemplatePreview template={editedTemplate} />
+            <ScrollArea className="h-full">
+              <div className="p-4">
+                <TemplatePreview template={editedTemplate} />
+              </div>
+            </ScrollArea>
           </div>
         </div>
       </div>
