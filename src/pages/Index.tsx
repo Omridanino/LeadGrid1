@@ -53,9 +53,9 @@ const Index = () => {
       name: 'תבניות בסיסיות',
       price: '89.90₪',
       period: 'לחודש',
-      color: 'from-blue-500 to-cyan-500',
-      bgColor: 'from-blue-500/10 to-cyan-500/10',
-      borderColor: 'border-blue-500/30',
+      color: 'from-yellow-400 to-yellow-600',
+      bgColor: 'from-yellow-400/10 to-yellow-600/10',
+      borderColor: 'border-yellow-400/30',
       description: 'תבניות מקצועיות לדפי נחיתה יעילים',
       features: ['10+ תבניות מוכנות', 'עריכה חזותית', 'תמיכה בסיסית', 'ייצוא HTML'],
       templates: 4,
@@ -66,9 +66,9 @@ const Index = () => {
       name: 'תבניות פרימיום',
       price: '119.90₪',
       period: 'לחודש',
-      color: 'from-purple-500 to-pink-500',
-      bgColor: 'from-purple-500/10 to-pink-500/10',
-      borderColor: 'border-purple-500/30',
+      color: 'from-yellow-400 to-yellow-600',
+      bgColor: 'from-yellow-400/15 to-yellow-600/15',
+      borderColor: 'border-yellow-400/40',
       description: 'תבניות מתקדמות עם אפקטים ואנימציות',
       features: ['25+ תבניות פרימיום', 'אפקטים מתקדמים', 'אנימציות 3D', 'תמיכה מועדפת'],
       templates: 6,
@@ -80,9 +80,9 @@ const Index = () => {
       name: 'תבניות אקסלוסיביות',
       price: '149.90₪',
       period: 'לחודש',
-      color: 'from-orange-500 to-red-500',
-      bgColor: 'from-orange-500/10 to-red-500/10',
-      borderColor: 'border-orange-500/30',
+      color: 'from-yellow-400 to-yellow-600',
+      bgColor: 'from-yellow-400/20 to-yellow-600/20',
+      borderColor: 'border-yellow-400/50',
       description: 'תבניות יוקרה עם עיצוב חדשני ורכיבים אינטראקטיביים',
       features: ['40+ תבניות יוקרה', 'רכיבים אינטראקטיביים', 'עיצוב מותאם אישית', 'תמיכה VIP'],
       templates: 8,
@@ -101,19 +101,19 @@ const Index = () => {
       icon: Palette,
       title: 'עיצוב מתקדם',
       description: 'אפקטים ואנימציות ברמה עולמית',
-      color: 'text-pink-400'
+      color: 'text-yellow-400'
     },
     {
       icon: Code2,
       title: 'קוד נקי',
       description: 'HTML מוכן להטמעה בכל פלטפורמה',
-      color: 'text-blue-400'
+      color: 'text-yellow-400'
     },
     {
       icon: TrendingUp,
       title: 'ממירות גבוהות',
       description: 'עיצובים מבוססי נתונים להמרות מקסימליות',
-      color: 'text-green-400'
+      color: 'text-yellow-400'
     }
   ];
 
@@ -123,28 +123,28 @@ const Index = () => {
       title: 'בחר תבנית',
       description: 'בחר מתוך עשרות תבניות מעוצבות',
       icon: Layout,
-      color: 'from-blue-500 to-cyan-500'
+      color: 'from-yellow-400 to-yellow-600'
     },
     {
       step: '02', 
       title: 'התאם אישית',
       description: 'ערוך תוכן, צבעים ואפקטים בקלות',
       icon: Palette,
-      color: 'from-purple-500 to-pink-500'
+      color: 'from-yellow-400 to-yellow-600'
     },
     {
       step: '03',
       title: 'פרסם',
       description: 'קבל קוד HTML מוכן להטמעה',
       icon: Rocket,
-      color: 'from-orange-500 to-red-500'
+      color: 'from-yellow-400 to-yellow-600'
     },
     {
       step: '04',
       title: 'הצלח',
       description: 'צפה בממירות גבוהות ומכירות מוגברות',
       icon: TrendingUp,
-      color: 'from-green-500 to-emerald-500'
+      color: 'from-yellow-400 to-yellow-600'
     }
   ];
 
@@ -153,25 +153,25 @@ const Index = () => {
       title: 'עיצוב ברמה עולמית',
       description: 'תבניות מעוצבות על ידי מעצבים מובילים מחו"ל',
       icon: Star,
-      gradient: 'from-yellow-400 to-orange-500'
+      gradient: 'from-yellow-400 to-yellow-600'
     },
     {
       title: 'טכנולוגיה מתקדמת',
       description: 'אפקטים ואנימציות חדשניות שמרשימות מבקרים',
       icon: Cpu,
-      gradient: 'from-blue-400 to-purple-500'
+      gradient: 'from-yellow-400 to-yellow-600'
     },
     {
       title: 'ביצועים מהירים',
       description: 'קוד מוטב לטעינה מהירה וחוויית משתמש מושלמת',
       icon: Zap,
-      gradient: 'from-green-400 to-cyan-500'
+      gradient: 'from-yellow-400 to-yellow-600'
     },
     {
       title: 'תמיכה מקצועית',
       description: 'צוות מומחים זמין לסייע בכל שאלה או בעיה',
       icon: Shield,
-      gradient: 'from-purple-400 to-pink-500'
+      gradient: 'from-yellow-400 to-yellow-600'
     }
   ];
 
@@ -271,7 +271,7 @@ const Index = () => {
               transition={{ duration: 1, ease: "easeOut" }}
             >
               <motion.span 
-                className="bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent inline-block"
+                className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent inline-block"
                 animate={{
                   backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
                 }}
@@ -292,7 +292,7 @@ const Index = () => {
               </motion.span>
               <br />
               <motion.span 
-                className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent inline-block"
+                className="bg-gradient-to-r from-yellow-400 to-white bg-clip-text text-transparent inline-block"
                 animate={{
                   backgroundPosition: ['100% 50%', '0% 50%', '100% 50%']
                 }}
@@ -316,9 +316,9 @@ const Index = () => {
             
             <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
               פלטפורמה חדשנית המאפשרת ליצור דפי נחיתה מתקדמים עם 
-              <span className="text-blue-400 font-semibold"> אפקטים מטורפים</span>,
-              <span className="text-purple-400 font-semibold"> אנימציות מתקדמות</span> ו
-              <span className="text-pink-400 font-semibold">עיצוב ברמה עולמית</span>
+              <span className="text-yellow-400 font-semibold"> אפקטים מטורפים</span>,
+              <span className="text-white font-semibold"> אנימציות מתקדמות</span> ו
+              <span className="text-yellow-400 font-semibold">עיצוב ברמה עולמית</span>
             </p>
           </motion.div>
 
@@ -380,7 +380,7 @@ const Index = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-20"
           >
-            <Badge className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 border border-purple-500/30 px-4 py-2 text-sm mb-6">
+            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6">
               <Crown className="w-4 h-4 ml-2" />
               תבניות לכל צורך
             </Badge>
@@ -390,7 +390,7 @@ const Index = () => {
                 בחר את החבילה
               </span>
               <br />
-              <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
                 המושלמת עבורך
               </span>
             </h2>
@@ -414,7 +414,7 @@ const Index = () => {
                 >
                   {category.popular && (
                     <div className="absolute -top-4 right-6 z-10">
-                      <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 text-xs">
+                      <Badge className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-3 py-1 text-xs">
                         הכי פופולרי
                       </Badge>
                     </div>
@@ -423,7 +423,7 @@ const Index = () => {
                   <Card className={`h-full bg-gradient-to-br ${category.bgColor} border-2 ${category.borderColor} backdrop-blur-xl hover:shadow-2xl transition-all duration-300 overflow-hidden`}>
                     <CardContent className="p-8 text-center">
                       <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${category.color} flex items-center justify-center shadow-2xl`}>
-                        <Icon className="w-8 h-8 text-white" />
+                        <Icon className="w-8 h-8 text-black" />
                       </div>
                       
                       <h3 className="text-2xl font-bold text-white mb-2">{category.name}</h3>
@@ -439,7 +439,7 @@ const Index = () => {
                       <div className="space-y-3 mb-8">
                         {category.features.map((feature, i) => (
                           <div key={i} className="flex items-center gap-3 text-sm text-gray-300">
-                            <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
+                            <CheckCircle className="w-4 h-4 text-yellow-400 flex-shrink-0" />
                             <span>{feature}</span>
                           </div>
                         ))}
@@ -475,7 +475,7 @@ const Index = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-20"
           >
-            <Badge className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-300 border border-green-500/30 px-4 py-2 text-sm mb-6">
+            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6">
               <Zap className="w-4 h-4 ml-2" />
               תהליך פשוט ומהיר
             </Badge>
@@ -504,9 +504,9 @@ const Index = () => {
                 >
                   <div className="relative mb-8">
                     <div className={`w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300`}>
-                      <Icon className="w-10 h-10 text-white" />
+                      <Icon className="w-10 h-10 text-black" />
                     </div>
-                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center text-xs font-bold text-white shadow-lg">
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center text-xs font-bold text-black shadow-lg">
                       {step.step}
                     </div>
                   </div>
@@ -529,7 +529,7 @@ const Index = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-20"
           >
-            <Badge className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-300 border border-blue-500/30 px-4 py-2 text-sm mb-6">
+            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6">
               <Star className="w-4 h-4 ml-2" />
               למה LeadGrid?
             </Badge>
@@ -615,7 +615,7 @@ const Index = () => {
                     <CardContent className="p-8">
                       <div className="flex items-start gap-6">
                         <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${benefit.gradient} flex items-center justify-center shadow-xl group-hover:shadow-2xl transition-all duration-300 flex-shrink-0`}>
-                          <Icon className="w-8 h-8 text-white" />
+                          <Icon className="w-8 h-8 text-black" />
                         </div>
                         
                         <div>
@@ -641,8 +641,8 @@ const Index = () => {
             transition={{ duration: 0.8 }}
           >
             <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-xl rounded-3xl p-12 border border-gray-700/50 shadow-2xl">
-              <div className="w-20 h-20 mx-auto mb-8 rounded-2xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-2xl">
-                <Rocket className="w-10 h-10 text-white" />
+              <div className="w-20 h-20 mx-auto mb-8 rounded-2xl bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center shadow-2xl">
+                <Rocket className="w-10 h-10 text-black" />
               </div>
               
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
