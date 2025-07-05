@@ -83,7 +83,7 @@ const Index = () => {
       color: 'from-yellow-400 to-yellow-600',
       bgColor: 'from-yellow-400/20 to-yellow-600/20',
       borderColor: 'border-yellow-400/50',
-      description: 'תבניות יוקרה עם עיצוב חדשני ורכיבים אינטראקטיביים',
+      description: 'תבניות יוקרה עם עיצוב חדשני ורכיבים מתקדמים',
       features: ['40+ תבניות יוקרה', 'רכיבים אינטראקטיביים', 'עיצוב מותאם אישית', 'תמיכה VIP'],
       templates: 8,
       icon: Rocket
@@ -241,7 +241,7 @@ const Index = () => {
           >
             <Button
               onClick={() => handleOpenQuestionnaire()}
-              className="bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black px-6 py-3 rounded-xl shadow-2xl shadow-yellow-400/30 hover:shadow-yellow-500/30 transition-all duration-300 font-semibold"
+              className="bg-yellow-400/10 backdrop-blur-xl border border-yellow-400/30 text-yellow-400 hover:bg-yellow-400/20 px-6 py-3 rounded-xl shadow-2xl shadow-yellow-400/20 hover:shadow-yellow-400/30 transition-all duration-300 font-semibold"
             >
               <Rocket className="w-5 h-5 ml-2" />
               צור דף עכשיו
@@ -331,7 +331,7 @@ const Index = () => {
             <Button
               onClick={() => handleOpenQuestionnaire()}
               size="lg"
-              className="bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black px-8 py-4 text-lg rounded-xl shadow-2xl shadow-yellow-500/30 hover:shadow-yellow-500/50 transform hover:scale-105 transition-all duration-300 font-semibold"
+              className="bg-yellow-400/15 backdrop-blur-xl border border-yellow-400/40 text-yellow-400 hover:bg-yellow-400/25 px-8 py-4 text-lg rounded-xl shadow-2xl shadow-yellow-400/30 hover:shadow-yellow-400/50 transform hover:scale-105 transition-all duration-300 font-semibold"
             >
               <Rocket className="w-6 h-6 ml-3" />
               התחל בחינם עכשיו
@@ -447,7 +447,7 @@ const Index = () => {
                       
                         <Button
                           onClick={() => handleOpenQuestionnaire(category.id)}
-                          className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black font-semibold hover:shadow-2xl transform hover:scale-105 transition-all duration-300 py-3 rounded-xl"
+                          className="w-full bg-yellow-400/15 backdrop-blur-xl border border-yellow-400/40 text-yellow-400 hover:bg-yellow-400/25 font-semibold hover:shadow-2xl transform hover:scale-105 transition-all duration-300 py-3 rounded-xl"
                         >
                           התחל עכשיו
                         </Button>
@@ -659,7 +659,7 @@ const Index = () => {
                 <Button
                   onClick={() => handleOpenQuestionnaire()}
                   size="lg"
-                  className="bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black px-10 py-4 text-lg rounded-xl shadow-2xl hover:shadow-yellow-500/50 transform hover:scale-105 transition-all duration-300 font-semibold"
+                  className="bg-yellow-400/15 backdrop-blur-xl border border-yellow-400/40 text-yellow-400 hover:bg-yellow-400/25 px-10 py-4 text-lg rounded-xl shadow-2xl hover:shadow-yellow-400/50 transform hover:scale-105 transition-all duration-300 font-semibold"
                 >
                   <Rocket className="w-6 h-6 ml-3" />
                   התחל בחינם עכשיו
