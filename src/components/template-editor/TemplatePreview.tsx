@@ -27,7 +27,57 @@ const getSectionStyle = (backgroundColor: string, backgroundImage?: string) => {
   return baseStyle;
 };
 
-const getPremiumTextColor = (templateId: string) => {
+const getPremiumTextColor = (templateId: string, template?: TemplateData, sectionType?: string, colorType?: 'title' | 'text' | 'badge') => {
+  // Check for custom colors first
+  if (template && sectionType && colorType) {
+    const sectionColors = {
+      emotional: {
+        title: template.styles.emotionalTitleColor,
+        text: template.styles.emotionalTextColor,
+        badge: template.styles.emotionalBadgeColor
+      },
+      features: {
+        title: template.styles.featuresTitleColor,
+        text: template.styles.featuresTextColor,
+        badge: template.styles.featuresBadgeColor
+      },
+      testimonials: {
+        title: template.styles.testimonialsTitleColor,
+        text: template.styles.testimonialsTextColor,
+        badge: template.styles.testimonialsBadgeColor
+      },
+      about: {
+        title: template.styles.aboutTitleColor,
+        text: template.styles.aboutTextColor,
+        badge: template.styles.aboutBadgeColor
+      },
+      pricing: {
+        title: template.styles.pricingTitleColor,
+        text: template.styles.pricingTextColor,
+        badge: template.styles.pricingBadgeColor
+      },
+      faq: {
+        title: template.styles.faqTitleColor,
+        text: template.styles.faqTextColor,
+        badge: template.styles.faqBadgeColor
+      },
+      'final-cta': {
+        title: template.styles.finalCtaTitleColor,
+        text: template.styles.finalCtaTextColor,
+        badge: template.styles.finalCtaBadgeColor
+      },
+      contact: {
+        title: template.styles.contactTitleColor,
+        text: template.styles.contactTextColor,
+        badge: template.styles.contactBadgeColor
+      }
+    };
+    
+    const sectionColor = sectionColors[sectionType as keyof typeof sectionColors]?.[colorType];
+    if (sectionColor) return sectionColor;
+  }
+  
+  // Default colors by template
   switch (templateId) {
     case 'tech-consultant-pro':
       return 'white';
@@ -149,18 +199,30 @@ export const TemplatePreview: React.FC<TemplatePreviewProps> = ({ template }) =>
             <div className="max-w-6xl mx-auto text-center relative z-10">
               {template.emotional.badge && (
                 <Badge className="mb-4" variant="outline" style={{ 
-                  borderColor: template.styles.accentColor, 
-                  color: getPremiumTextColor(template.id)
+                  borderColor: getPremiumTextColor(template.id, template, 'emotional', 'badge') || template.styles.accentColor, 
+                  color: getPremiumTextColor(template.id, template, 'emotional', 'badge')
                 }}>
                   {template.emotional.badge}
                 </Badge>
               )}
-              <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: getPremiumTextColor(template.id) }}>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: getPremiumTextColor(template.id, template, 'emotional', 'title') }}>
                 {template.emotional.title}
               </h2>
-              <p className="text-lg max-w-4xl mx-auto opacity-90" style={{ color: getPremiumTextColor(template.id) }}>
+              <p className="text-lg max-w-4xl mx-auto opacity-90 mb-8" style={{ color: getPremiumTextColor(template.id, template, 'emotional', 'text') }}>
                 {template.emotional.description}
               </p>
+              
+              {/* Add buttons to emotional section */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
+                  {template.emotional.button1Icon && <i className={`ri-${template.emotional.button1Icon}`}></i>}
+                  {template.emotional.button1Text}
+                </Button>
+                <Button size="lg" className="flex items-center gap-2" style={{ backgroundColor: template.styles.secondaryColor, color: '#ffffff' }}>
+                  {template.emotional.button2Icon && <i className={`ri-${template.emotional.button2Icon}`}></i>}
+                  {template.emotional.button2Text}
+                </Button>
+              </div>
             </div>
           </section>
         )}
@@ -176,13 +238,13 @@ export const TemplatePreview: React.FC<TemplatePreviewProps> = ({ template }) =>
             <div className="text-center mb-12">
               {template.testimonials.badge && (
                 <Badge className="mb-4" variant="outline" style={{ 
-                  borderColor: template.styles.primaryColor, 
-                  color: getPremiumTextColor(template.id)
+                  borderColor: getPremiumTextColor(template.id, template, 'testimonials', 'badge') || template.styles.primaryColor, 
+                  color: getPremiumTextColor(template.id, template, 'testimonials', 'badge')
                 }}>
                   {template.testimonials.badge}
                 </Badge>
               )}
-              <h2 className="text-3xl md:text-4xl font-bold" style={{ color: getPremiumTextColor(template.id) }}>
+              <h2 className="text-3xl md:text-4xl font-bold" style={{ color: getPremiumTextColor(template.id, template, 'testimonials', 'title') }}>
                 {template.testimonials.title}
               </h2>
             </div>

@@ -36,18 +36,25 @@ export interface TemplateStyles {
   emotionalBadgeColor?: string;
   featuresTitleColor?: string;
   featuresTextColor?: string;
+  featuresBadgeColor?: string;
   testimonialsTitleColor?: string;
   testimonialsTextColor?: string;
+  testimonialsBadgeColor?: string;
   aboutTitleColor?: string;
   aboutTextColor?: string;
+  aboutBadgeColor?: string;
   pricingTitleColor?: string;
   pricingTextColor?: string;
+  pricingBadgeColor?: string;
   faqTitleColor?: string;
   faqTextColor?: string;
+  faqBadgeColor?: string;
   finalCtaTitleColor?: string;
   finalCtaTextColor?: string;
+  finalCtaBadgeColor?: string;
   contactTitleColor?: string;
   contactTextColor?: string;
+  contactBadgeColor?: string;
 }
 
 export interface HeroSection {

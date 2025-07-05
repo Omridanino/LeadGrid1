@@ -223,6 +223,18 @@ export const PremiumSection = ({ template, sectionType }: PremiumSectionProps) =
 
     case 'nft-future-pro':
       switch (sectionType) {
+        case 'hero':
+          return (
+            <HolographicHero
+              badge={template.hero.badge}
+              title={template.hero.title}
+              subtitle={template.hero.subtitle}
+              description={template.hero.description}
+              button1Text={template.hero.button1Text}
+              button2Text={template.hero.button2Text}
+              className="bg-gradient-to-br from-purple-900 via-pink-900 to-blue-900"
+            />
+          );
         case 'features':
           const nftCards = template.features.items.map(item => ({
             title: item.title,
@@ -245,18 +257,25 @@ export const PremiumSection = ({ template, sectionType }: PremiumSectionProps) =
               </div>
             </section>
           );
-        default:
+        case 'pricing':
           return (
-            <HolographicHero
-              badge={template.hero.badge}
-              title={template.hero.title}
-              subtitle={template.hero.subtitle}
-              description={template.hero.description}
-              button1Text={template.hero.button1Text}
-              button2Text={template.hero.button2Text}
-              className="bg-gradient-to-br from-purple-900 via-pink-900 to-blue-900"
+            <LiquidPricing
+              title={template.pricing.title}
+              subtitle={template.pricing.subtitle}
+              plans={template.pricing.plans}
+              className="bg-gradient-to-b from-pink-900 to-purple-900"
             />
           );
+        case 'testimonials':
+          return (
+            <MorphingTestimonials
+              title={template.testimonials.title}
+              testimonials={template.testimonials.testimonials}
+              className="bg-gradient-to-b from-purple-900 to-pink-900"
+            />
+          );
+        default:
+          return null;
       }
 
     case 'creative-3d-pro':
