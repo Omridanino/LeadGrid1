@@ -28,6 +28,7 @@ import {
   Image,
   Video
 } from 'lucide-react';
+import GlassIcon from "@/components/ui/glass-icon";
 import LandingPageQuestionnaire from "@/components/LandingPageQuestionnaire";
 
 const Index = () => {
@@ -171,28 +172,114 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden" dir="rtl">
-      {/* Animated Background */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(120,119,198,0.3),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(236,72,153,0.3),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(59,130,246,0.3),transparent_50%)]" />
-        {/* Floating particles */}
-        {[...Array(50)].map((_, i) => (
+      {/* Advanced Animated Background */}
+      <div className="fixed inset-0 z-0 overflow-hidden">
+        {/* Gradient overlays with animations */}
+        <motion.div 
+          className="absolute inset-0"
+          animate={{
+            background: [
+              'radial-gradient(ellipse_at_top,rgba(255,215,0,0.15),transparent_50%)',
+              'radial-gradient(ellipse_at_top_right,rgba(192,192,192,0.15),transparent_50%)',
+              'radial-gradient(ellipse_at_top_left,rgba(255,215,0,0.15),transparent_50%)'
+            ]
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute inset-0"
+          animate={{
+            background: [
+              'radial-gradient(ellipse_at_bottom_right,rgba(255,105,180,0.2),transparent_60%)',
+              'radial-gradient(ellipse_at_bottom_left,rgba(64,224,208,0.2),transparent_60%)',
+              'radial-gradient(ellipse_at_bottom,rgba(255,105,180,0.2),transparent_60%)'
+            ]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        />
+        
+        {/* Floating glass orbs */}
+        {[...Array(12)].map((_, i) => (
           <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-white/30 rounded-full"
+            key={`orb-${i}`}
+            className="absolute rounded-full backdrop-blur-sm border border-white/10"
+            style={{
+              width: `${20 + Math.random() * 40}px`,
+              height: `${20 + Math.random() * 40}px`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 8px 25px rgba(0, 0, 0, 0.1)'
+            }}
+            animate={{
+              y: [0, -50, 0],
+              x: [0, 30, 0],
+              opacity: [0.3, 0.8, 0.3],
+              scale: [1, 1.2, 1],
+              rotate: [0, 180, 360]
+            }}
+            transition={{
+              duration: 6 + Math.random() * 4,
+              repeat: Infinity,
+              delay: Math.random() * 3,
+              ease: "easeInOut"
+            }}
+          />
+        ))}
+        
+        {/* Enhanced floating particles with gold/silver colors */}
+        {[...Array(80)].map((_, i) => (
+          <motion.div
+            key={`particle-${i}`}
+            className={`absolute w-1 h-1 rounded-full ${i % 3 === 0 ? 'bg-yellow-400/40' : i % 3 === 1 ? 'bg-gray-300/40' : 'bg-white/30'}`}
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
             }}
             animate={{
-              y: [0, -30, 0],
-              opacity: [0.3, 1, 0.3],
+              y: [0, -60, 0],
+              x: [0, Math.random() * 40 - 20, 0],
+              opacity: [0.2, 1, 0.2],
+              scale: [0.5, 1.5, 0.5]
             }}
             transition={{
-              duration: 3 + Math.random() * 2,
+              duration: 4 + Math.random() * 3,
               repeat: Infinity,
-              delay: Math.random() * 2,
+              delay: Math.random() * 3,
+              ease: "easeInOut"
+            }}
+          />
+        ))}
+        
+        {/* Morphing liquid shapes */}
+        {[...Array(3)].map((_, i) => (
+          <motion.div
+            key={`liquid-${i}`}
+            className="absolute opacity-20"
+            style={{
+              width: `${150 + Math.random() * 200}px`,
+              height: `${150 + Math.random() * 200}px`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              background: i === 0 ? 'radial-gradient(circle, rgba(255,215,0,0.3), transparent)' : 
+                         i === 1 ? 'radial-gradient(circle, rgba(192,192,192,0.3), transparent)' :
+                                  'radial-gradient(circle, rgba(255,105,180,0.3), transparent)',
+            }}
+            animate={{
+              borderRadius: [
+                '60% 40% 30% 70% / 60% 30% 70% 40%',
+                '30% 60% 70% 40% / 50% 60% 30% 60%',
+                '40% 30% 60% 70% / 40% 70% 50% 30%',
+                '60% 40% 30% 70% / 60% 30% 70% 40%'
+              ],
+              rotate: [0, 90, 180, 270, 360],
+              scale: [1, 1.2, 0.8, 1]
+            }}
+            transition={{
+              duration: 12 + Math.random() * 6,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 2
             }}
           />
         ))}
@@ -245,15 +332,55 @@ const Index = () => {
               הפלטפורמה המתקדמת ביותר ליצירת דפי נחיתה
             </Badge>
             
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
-              <span className="bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent">
+            <motion.h1 
+              className="text-5xl md:text-7xl font-bold leading-tight mb-6"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+            >
+              <motion.span 
+                className="bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent inline-block"
+                animate={{
+                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
+                }}
+                style={{ 
+                  backgroundSize: '200% 200%',
+                  background: 'linear-gradient(45deg, hsl(var(--gold)), hsl(var(--silver)), hsl(var(--gold)))',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent'
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
                 יצירת דפי נחיתה
-              </span>
+              </motion.span>
               <br />
-              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              <motion.span 
+                className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent inline-block"
+                animate={{
+                  backgroundPosition: ['100% 50%', '0% 50%', '100% 50%']
+                }}
+                style={{ 
+                  backgroundSize: '200% 200%',
+                  background: 'linear-gradient(45deg, hsl(var(--gold)), hsl(var(--silver)), hsl(var(--platinum)))',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent'
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 2
+                }}
+              >
                 מקצועיים תוך דקות
-              </span>
-            </h1>
+              </motion.span>
+            </motion.h1>
             
             <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
               פלטפורמה חדשנית המאפשרת ליצור דפי נחיתה מתקדמים עם 
@@ -485,25 +612,123 @@ const Index = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => {
               const Icon = feature.icon;
+              const glassVariants = ['gold', 'silver', 'platinum', 'rainbow'] as const;
+              const variant = glassVariants[index % glassVariants.length];
+              
               return (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  whileHover={{ scale: 1.05 }}
-                  className="text-center group"
+                  initial={{ opacity: 0, y: 50, rotateX: -30 }}
+                  whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+                  transition={{ 
+                    duration: 0.8, 
+                    delay: index * 0.2,
+                    type: "spring",
+                    stiffness: 100
+                  }}
+                  whileHover={{ 
+                    scale: 1.08,
+                    rotateY: 10,
+                    z: 50
+                  }}
+                  className="text-center group perspective-1000"
                 >
-                  <Card className="h-full bg-gradient-to-br from-gray-900/50 to-gray-800/50 border border-gray-700/50 backdrop-blur-xl hover:shadow-2xl transition-all duration-300">
-                    <CardContent className="p-8">
-                      <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-700 flex items-center justify-center shadow-xl group-hover:shadow-2xl transition-shadow duration-300">
-                        <Icon className={`w-8 h-8 ${feature.color}`} />
-                      </div>
+                  <motion.div
+                    className="relative"
+                    whileHover={{ rotateX: 5, rotateY: 5 }}
+                    style={{ transformStyle: "preserve-3d" }}
+                  >
+                    <Card className="h-full bg-gradient-to-br from-black/40 via-gray-900/30 to-black/40 border border-white/10 backdrop-blur-2xl hover:shadow-2xl transition-all duration-500 overflow-hidden relative">
+                      {/* Glass morphism overlay */}
+                      <motion.div
+                        className="absolute inset-0 opacity-30"
+                        style={{
+                          background: `linear-gradient(135deg, 
+                            rgba(255, 255, 255, 0.1) 0%,
+                            transparent 30%,
+                            transparent 70%,
+                            rgba(255, 255, 255, 0.05) 100%)`,
+                        }}
+                        whileHover={{ opacity: 0.5 }}
+                        transition={{ duration: 0.3 }}
+                      />
                       
-                      <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
-                      <p className="text-gray-400">{feature.description}</p>
-                    </CardContent>
-                  </Card>
+                      {/* Animated border glow */}
+                      <motion.div
+                        className="absolute inset-0 opacity-0 group-hover:opacity-100"
+                        style={{
+                          background: `linear-gradient(45deg, 
+                            rgba(255, 215, 0, 0.2), 
+                            rgba(192, 192, 192, 0.2), 
+                            rgba(255, 215, 0, 0.2))`,
+                          backgroundSize: '200% 200%'
+                        }}
+                        animate={{
+                          backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
+                        }}
+                        transition={{
+                          duration: 3,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                      />
+                      
+                      <CardContent className="p-8 relative z-10">
+                        <motion.div 
+                          className="mx-auto mb-6"
+                          whileHover={{ scale: 1.1, rotate: 5 }}
+                          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                        >
+                          <GlassIcon 
+                            icon={Icon} 
+                            size="lg" 
+                            variant={variant}
+                          />
+                        </motion.div>
+                        
+                        <motion.h3 
+                          className="text-xl font-bold text-white mb-3"
+                          whileHover={{ scale: 1.05 }}
+                        >
+                          {feature.title}
+                        </motion.h3>
+                        <motion.p 
+                          className="text-gray-300"
+                          initial={{ opacity: 0.7 }}
+                          whileHover={{ opacity: 1 }}
+                        >
+                          {feature.description}
+                        </motion.p>
+                      </CardContent>
+                      
+                      {/* Floating sparkles on hover */}
+                      <motion.div
+                        className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100"
+                        transition={{ duration: 0.5 }}
+                      >
+                        {[...Array(6)].map((_, i) => (
+                          <motion.div
+                            key={i}
+                            className="absolute w-1 h-1 bg-yellow-400 rounded-full"
+                            style={{
+                              left: `${20 + Math.random() * 60}%`,
+                              top: `${20 + Math.random() * 60}%`,
+                            }}
+                            animate={{
+                              opacity: [0, 1, 0],
+                              scale: [0, 1.5, 0],
+                              rotate: [0, 180, 360],
+                            }}
+                            transition={{
+                              duration: 2,
+                              repeat: Infinity,
+                              delay: i * 0.3,
+                            }}
+                          />
+                        ))}
+                      </motion.div>
+                    </Card>
+                  </motion.div>
                 </motion.div>
               );
             })}
