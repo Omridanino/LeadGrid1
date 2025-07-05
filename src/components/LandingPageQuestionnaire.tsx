@@ -3,7 +3,7 @@ import TemplateSelector from "./TemplateSelector";
 
 interface LandingPageQuestionnaireProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (data?: any) => void;
 }
 
 const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireProps) => {

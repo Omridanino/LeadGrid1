@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { ColorScheme } from '@/types/colors';
 
@@ -25,7 +26,7 @@ export const useGeneratedPageState = () => {
   const [heroImage, setHeroImage] = useState<string>('');
   const [isFullScreenPreview, setIsFullScreenPreview] = useState(false);
   
-  // Add back missing state properties
+  // Add missing state properties for compatibility
   const [isSaved, setIsSaved] = useState(false);
   const [showAdvancedEditor, setShowAdvancedEditor] = useState(false);
   const [showDesignEditor, setShowDesignEditor] = useState(false);
@@ -33,12 +34,18 @@ export const useGeneratedPageState = () => {
   const [showSidePanel, setShowSidePanel] = useState(true);
   const [elements, setElements] = useState<any[]>([]);
 
+  // Add the missing pageData and template properties
+  const [pageData, setPageData] = useState<any>(null);
+  const [template, setTemplate] = useState<any>(null);
+
   // Load saved data on component mount
   useEffect(() => {
     const savedContent = localStorage.getItem('generatedContent');
     const savedFormData = localStorage.getItem('formData');
     const savedColors = localStorage.getItem('pageColors');
     const savedHeroImage = localStorage.getItem('heroImage');
+    const savedPageData = localStorage.getItem('pageData');
+    const savedTemplate = localStorage.getItem('template');
 
     if (savedContent) {
       setContent(JSON.parse(savedContent));
@@ -53,6 +60,12 @@ export const useGeneratedPageState = () => {
     if (savedHeroImage) {
       setHeroImage(savedHeroImage);
     }
+    if (savedPageData) {
+      setPageData(JSON.parse(savedPageData));
+    }
+    if (savedTemplate) {
+      setTemplate(JSON.parse(savedTemplate));
+    }
   }, []);
 
   // Save formData to localStorage when it changes
@@ -63,21 +76,32 @@ export const useGeneratedPageState = () => {
     }
   }, [formData]);
 
+  // Save pageData to localStorage when it changes
+  useEffect(() => {
+    if (pageData) {
+      localStorage.setItem('pageData', JSON.stringify(pageData));
+    }
+  }, [pageData]);
+
+  // Save template to localStorage when it changes
+  useEffect(() => {
+    if (template) {
+      localStorage.setItem('template', JSON.stringify(template));
+    }
+  }, [template]);
+
   // Handle color changes - NO TOAST NOTIFICATIONS
   const handleColorChange = (newColors: ColorScheme) => {
     setCurrentColors(newColors);
     localStorage.setItem('pageColors', JSON.stringify(newColors));
-    // Removed all toast notifications from here
   };
 
-  // Add back missing functions
   const setGeneratedContent = (newContent: any) => {
     setContent(newContent);
     localStorage.setItem('generatedContent', JSON.stringify(newContent));
   };
 
   const generateCreativeContent = () => {
-    // Return existing content or generate new one based on formData
     return content || {};
   };
 
@@ -95,7 +119,6 @@ export const useGeneratedPageState = () => {
     isFullScreenPreview,
     setIsFullScreenPreview,
     handleColorChange,
-    // Add back missing properties
     isSaved,
     setIsSaved,
     showAdvancedEditor,
@@ -109,6 +132,11 @@ export const useGeneratedPageState = () => {
     elements,
     setElements,
     setGeneratedContent,
-    generateCreativeContent
+    generateCreativeContent,
+    // Add the missing properties
+    pageData,
+    setPageData,
+    template,
+    setTemplate
   };
 };

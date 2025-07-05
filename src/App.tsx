@@ -7,10 +7,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import GeneratedLandingPage from "./pages/GeneratedLandingPage";
-import WordPressLandingPage from "./pages/WordPressLandingPage";
-import WordPressAuthCallback from "./pages/WordPressAuthCallback";
-import DemoWordPressSite from "./pages/DemoWordPressSite";
-import DemoWordPressClientSite from "./pages/DemoWordPressClientSite";
+import { WordPressLandingPage } from "./pages/WordPressLandingPage";
+import { WordPressAuthCallback } from "./pages/WordPressAuthCallback";
+import { DemoWordPressSite } from "./pages/DemoWordPressSite";
+import { DemoWordPressClientSite } from "./pages/DemoWordPressClientSite";
 import NotFound from "./pages/NotFound";
 import ApiSettings from "./components/ApiSettings";
 

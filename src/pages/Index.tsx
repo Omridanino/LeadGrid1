@@ -2,9 +2,9 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import LandingPageQuestionnaire from "@/components/LandingPageQuestionnaire";
-import TemplateEditor from "@/components/template-editor/TemplateEditor";
+import { TemplateEditor } from "@/components/template-editor/TemplateEditor";
 import TemplatePreview from "@/components/template-editor/TemplatePreview";
-import PublishingWizard from "@/components/PublishingWizard";
+import { PublishingWizard } from "@/components/PublishingWizard";
 import Header from "@/components/Header";
 import { useGeneratedPageState } from "@/hooks/useGeneratedPageState";
 
@@ -64,7 +64,10 @@ const Index = () => {
       
       <main className="container mx-auto px-4 py-8">
         {currentStep === "questionnaire" && (
-          <LandingPageQuestionnaire onComplete={handleQuestionnaireComplete} />
+          <LandingPageQuestionnaire 
+            isOpen={true}
+            onClose={handleQuestionnaireComplete}
+          />
         )}
 
         {currentStep === "editor" && template && (
@@ -100,9 +103,9 @@ const Index = () => {
 
         {currentStep === "publish" && (
           <PublishingWizard
-            pageData={pageData}
-            onBack={handleBackToEditor}
-            onComplete={handleStartOver}
+            template={pageData}
+            isOpen={true}
+            onClose={handleBackToEditor}
           />
         )}
       </main>
