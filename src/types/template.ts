@@ -179,6 +179,95 @@ export interface ContactSection {
   }[];
 }
 
+export interface GallerySection {
+  badge?: string;
+  title: string;
+  subtitle?: string;
+  images: {
+    src: string;
+    alt: string;
+    caption?: string;
+  }[];
+  layout: 'grid' | 'masonry' | 'carousel';
+  columns?: number;
+}
+
+export interface HeadingSection {
+  badge?: string;
+  title: string;
+  subtitle?: string;
+  alignment: 'left' | 'center' | 'right';
+  size: 'small' | 'medium' | 'large' | 'xl';
+}
+
+export interface TextSection {
+  badge?: string;
+  title?: string;
+  content: string;
+  alignment: 'left' | 'center' | 'right';
+  textSize: 'small' | 'medium' | 'large';
+}
+
+export interface VideoSection {
+  badge?: string;
+  title?: string;
+  subtitle?: string;
+  videoUrl: string;
+  videoType: 'youtube' | 'vimeo' | 'direct';
+  thumbnail?: string;
+  autoplay?: boolean;
+  controls?: boolean;
+}
+
+export interface SliderSection {
+  badge?: string;
+  title?: string;
+  subtitle?: string;
+  slides: {
+    title: string;
+    description: string;
+    image?: string;
+    buttonText?: string;
+    buttonLink?: string;
+  }[];
+  autoplay?: boolean;
+  duration?: number;
+}
+
+export interface ListSection {
+  badge?: string;
+  title?: string;
+  subtitle?: string;
+  items: {
+    title: string;
+    description?: string;
+    icon?: string;
+    link?: string;
+  }[];
+  listType: 'ordered' | 'unordered' | 'icon';
+}
+
+export interface EmbedSection {
+  badge?: string;
+  title?: string;
+  subtitle?: string;
+  htmlCode: string;
+  height?: number;
+}
+
+export interface SocialBarSection {
+  badge?: string;
+  title?: string;
+  subtitle?: string;
+  socialLinks: {
+    platform: 'facebook' | 'instagram' | 'twitter' | 'linkedin' | 'youtube' | 'tiktok' | 'whatsapp' | 'telegram';
+    url: string;
+    label?: string;
+  }[];
+  alignment: 'left' | 'center' | 'right';
+  showLabels?: boolean;
+}
+
 export interface FooterSection {
   companyName: string;
   description?: string;
@@ -227,6 +316,17 @@ export interface TemplateData {
   finalCta: FinalCtaSection;
   contact: ContactSection;
   footer: FooterSection;
+  // New content sections
+  gallery?: GallerySection;
+  heading?: HeadingSection;
+  text?: TextSection;
+  video?: VideoSection;
+  slider?: SliderSection;
+  list?: ListSection;
+  embed?: EmbedSection;
+  socialBar?: SocialBarSection;
+  // Array of custom sections order
+  sectionsOrder?: string[];
   styles: TemplateStyles;
   effects?: TemplateEffects;
 }
