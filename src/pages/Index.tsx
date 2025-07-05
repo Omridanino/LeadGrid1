@@ -245,14 +245,7 @@ const Index = () => {
               onClick={() => handleOpenQuestionnaire()}
               className="bg-yellow-400/10 backdrop-blur-xl border border-yellow-400/30 text-yellow-400 hover:bg-yellow-400/20 px-6 py-3 rounded-xl shadow-2xl shadow-yellow-400/20 hover:shadow-yellow-400/30 transition-all duration-300 font-semibold"
             >
-              <div className="flex items-center gap-2">
-                <GlassIcon 
-                  icon={Rocket} 
-                  size="sm" 
-                  variant="gold"
-                />
-                צור דף עכשיו
-              </div>
+              צור דף עכשיו
             </Button>
           </motion.div>
         </div>
@@ -345,14 +338,7 @@ const Index = () => {
               size="lg"
               className="bg-yellow-400/15 backdrop-blur-xl border border-yellow-400/40 text-yellow-400 hover:bg-yellow-400/25 px-8 py-4 text-lg rounded-xl shadow-2xl shadow-yellow-400/30 hover:shadow-yellow-400/50 transform hover:scale-105 transition-all duration-300 font-semibold"
             >
-              <div className="flex items-center gap-3">
-                <GlassIcon 
-                  icon={Rocket} 
-                  size="sm" 
-                  variant="gold"
-                />
-                התחל בחינם עכשיו
-              </div>
+              התחל בחינם עכשיו
             </Button>
             
             <Button
@@ -360,14 +346,7 @@ const Index = () => {
               size="lg"
               className="border-2 border-yellow-400/50 text-yellow-400 hover:bg-yellow-400/10 px-8 py-4 text-lg rounded-xl backdrop-blur-sm"
             >
-              <div className="flex items-center gap-3">
-                <GlassIcon 
-                  icon={PlayCircle} 
-                  size="sm" 
-                  variant="gold"
-                />
-                צפה בדמו
-              </div>
+              צפה בדמו
             </Button>
           </motion.div>
 
@@ -720,14 +699,7 @@ const Index = () => {
                   size="lg"
                   className="bg-yellow-400/15 backdrop-blur-xl border border-yellow-400/40 text-yellow-400 hover:bg-yellow-400/25 px-10 py-4 text-lg rounded-xl shadow-2xl hover:shadow-yellow-400/50 transform hover:scale-105 transition-all duration-300 font-semibold"
                 >
-                  <div className="flex items-center gap-3">
-                    <GlassIcon 
-                      icon={Rocket} 
-                      size="sm" 
-                      variant="gold"
-                    />
-                    התחל בחינם עכשיו
-                  </div>
+                  התחל בחינם עכשיו
                 </Button>
                 
                 <Button
@@ -735,14 +707,7 @@ const Index = () => {
                   size="lg"
                   className="border-2 border-yellow-400/50 text-yellow-400 hover:bg-yellow-400/10 px-10 py-4 text-lg rounded-xl backdrop-blur-sm"
                 >
-                  <div className="flex items-center gap-3">
-                    <GlassIcon 
-                      icon={PlayCircle} 
-                      size="sm" 
-                      variant="gold"
-                    />
-                    צפה בדמו חי
-                  </div>
+                  צפה בדמו חי
                 </Button>
               </div>
             </div>
