@@ -251,7 +251,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
   };
 
   if (showLaunchSection) {
-    return <LaunchSection template={editedTemplate} onBack={handleBackToEditor} onPublishSuccess={onPublishSuccess} />;
+    return <LaunchSection template={editedTemplate} onBack={handleBackToEditor} />;
   }
 
   return (
