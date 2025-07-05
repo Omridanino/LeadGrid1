@@ -143,7 +143,8 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
       });
       return;
     }
-    setShowLaunchSection(true);
+    // Open in new tab instead of modal
+    window.open('/launch', '_blank');
   };
 
   const handleBackToEditor = () => {
