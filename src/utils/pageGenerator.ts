@@ -5,6 +5,61 @@ export const generatePageHTML = (templateData: any) => {
   const isPremium = template.category.includes('פרימיום') || template.id.includes('-pro');
   
   console.log('Template ID:', template.id, 'isPremium:', isPremium);
+
+  // Helper functions for new content sections - moved to top
+  const generateGallerySection = (gallery: any, styles: any, isPremium: boolean) => {
+    if (!gallery || !gallery.images || gallery.images.length === 0) return '';
+    return `
+    <section class="py-20" style="background: ${isPremium ? 'linear-gradient(135deg, rgba(55,65,81,0.9), rgba(30,64,175,0.9))' : styles.backgroundColor};">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                ${gallery.badge ? `<div class="inline-block px-3 py-1 text-xs bg-blue-600/20 text-blue-300 rounded-full border border-blue-500/30 mb-4">${gallery.badge}</div>` : ''}
+                <h2 class="text-4xl font-bold mb-4 text-white">${gallery.title}</h2>
+                ${gallery.subtitle ? `<p class="text-xl text-slate-300">${gallery.subtitle}</p>` : ''}
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-${gallery.columns || 3} gap-6">
+                ${gallery.images.map((img: any) => `
+                    <div class="group overflow-hidden rounded-lg shadow-lg">
+                        <img src="${img.src}" alt="${img.alt}" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
+                        ${img.caption ? `<div class="p-4 bg-white/10"><p class="text-white text-sm">${img.caption}</p></div>` : ''}
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    </section>`;
+  };
+
+  const generateHeadingSection = (heading: any, styles: any, isPremium: boolean) => {
+    if (!heading || !heading.title) return '';
+    return `
+    <section class="py-16" style="background: ${isPremium ? 'linear-gradient(135deg, rgba(55,65,81,0.9), rgba(30,64,175,0.9))' : styles.backgroundColor};">
+        <div class="max-w-4xl mx-auto px-6 text-${heading.alignment}">
+            ${heading.badge ? `<div class="inline-block px-3 py-1 text-xs bg-blue-600/20 text-blue-300 rounded-full border border-blue-500/30 mb-4">${heading.badge}</div>` : ''}
+            <h2 class="${heading.size === 'small' ? 'text-2xl' : heading.size === 'medium' ? 'text-3xl' : heading.size === 'large' ? 'text-4xl' : 'text-6xl'} font-bold mb-4 text-white">${heading.title}</h2>
+            ${heading.subtitle ? `<p class="text-xl text-slate-300">${heading.subtitle}</p>` : ''}
+        </div>
+    </section>`;
+  };
+
+  const generateTextSection = (text: any, styles: any, isPremium: boolean) => {
+    if (!text || !text.content) return '';
+    return `
+    <section class="py-16" style="background: ${isPremium ? 'linear-gradient(135deg, rgba(55,65,81,0.9), rgba(30,64,175,0.9))' : styles.backgroundColor};">
+        <div class="max-w-4xl mx-auto px-6 text-${text.alignment}">
+            ${text.badge ? `<div class="inline-block px-3 py-1 text-xs bg-blue-600/20 text-blue-300 rounded-full border border-blue-500/30 mb-4">${text.badge}</div>` : ''}
+            ${text.title ? `<h3 class="text-2xl font-bold mb-4 text-white">${text.title}</h3>` : ''}
+            <div class="${text.textSize === 'small' ? 'text-sm' : text.textSize === 'medium' ? 'text-base' : 'text-lg'} text-slate-300 leading-relaxed">
+                ${text.content.split('\n').map((line: string) => `<p class="mb-4">${line}</p>`).join('')}
+            </div>
+        </div>
+    </section>`;
+  };
+
+  const generateVideoSection = (video: any) => { return video ? `<section class="py-20"><div class="max-w-4xl mx-auto px-6"><h2 class="text-4xl font-bold mb-4 text-white">${video.title || 'וידאו'}</h2></div></section>` : ''; };
+  const generateSliderSection = (slider: any) => { return slider ? `<section class="py-20"><div class="max-w-6xl mx-auto px-6"><h2 class="text-4xl font-bold mb-4 text-white">${slider.title || 'סליידר'}</h2></div></section>` : ''; };
+  const generateListSection = (list: any) => { return list ? `<section class="py-16"><div class="max-w-4xl mx-auto px-6"><h2 class="text-3xl font-bold mb-8 text-white">${list.title || 'רשימה'}</h2></div></section>` : ''; };
+  const generateEmbedSection = (embed: any) => { return embed ? `<section class="py-16"><div class="max-w-6xl mx-auto px-6"><h2 class="text-3xl font-bold mb-8 text-white">${embed.title || 'תוכן משובץ'}</h2></div></section>` : ''; };
+  const generateSocialBarSection = (social: any) => { return social ? `<section class="py-16"><div class="max-w-4xl mx-auto px-6"><h2 class="text-3xl font-bold mb-8 text-white">${social.title || 'רשתות חברתיות'}</h2></div></section>` : ''; };
   
   // Premium text colors for content - now editable
   const getPremiumTextColor = (templateId: string, sectionType: string = '', customColor?: string) => {
@@ -1347,6 +1402,17 @@ export const generatePageHTML = (templateData: any) => {
         </div>
     </section>
 
+    
+    <!-- New Content Sections -->
+    ${template.gallery ? generateGallerySection(template.gallery, template.styles, isPremium) : ''}
+    ${template.heading ? generateHeadingSection(template.heading, template.styles, isPremium) : ''}
+    ${template.text ? generateTextSection(template.text, template.styles, isPremium) : ''}
+    ${template.video ? generateVideoSection(template.video, template.styles, isPremium) : ''}
+    ${template.slider ? generateSliderSection(template.slider, template.styles, isPremium) : ''}
+    ${template.list ? generateListSection(template.list, template.styles, isPremium) : ''}
+    ${template.embed ? generateEmbedSection(template.embed, template.styles, isPremium) : ''}
+    ${template.socialBar ? generateSocialBarSection(template.socialBar, template.styles, isPremium) : ''}
+
     <!-- Footer -->
     <footer class="footer">
         <div class="text-center">
@@ -1356,4 +1422,141 @@ export const generatePageHTML = (templateData: any) => {
 
 </body>
 </html>`;
+
+  // Helper functions for new content sections
+  const generateGallerySection = (gallery: any, styles: any, isPremium: boolean) => {
+    return `
+    <section class="py-20" style="background: ${isPremium ? 'linear-gradient(135deg, rgba(55,65,81,0.9), rgba(30,64,175,0.9))' : styles.backgroundColor};">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                ${gallery.badge ? `<div class="inline-block px-3 py-1 text-xs bg-blue-600/20 text-blue-300 rounded-full border border-blue-500/30 mb-4">${gallery.badge}</div>` : ''}
+                <h2 class="text-4xl font-bold mb-4 text-white">${gallery.title}</h2>
+                ${gallery.subtitle ? `<p class="text-xl text-slate-300">${gallery.subtitle}</p>` : ''}
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-${gallery.columns || 3} gap-6">
+                ${gallery.images.map((img: any) => `
+                    <div class="group overflow-hidden rounded-lg shadow-lg">
+                        <img src="${img.src}" alt="${img.alt}" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
+                        ${img.caption ? `<div class="p-4 bg-white/10"><p class="text-white text-sm">${img.caption}</p></div>` : ''}
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    </section>`;
+  };
+
+  const generateHeadingSection = (heading: any, styles: any, isPremium: boolean) => {
+    return `
+    <section class="py-16" style="background: ${isPremium ? 'linear-gradient(135deg, rgba(55,65,81,0.9), rgba(30,64,175,0.9))' : styles.backgroundColor};">
+        <div class="max-w-4xl mx-auto px-6 text-${heading.alignment}">
+            ${heading.badge ? `<div class="inline-block px-3 py-1 text-xs bg-blue-600/20 text-blue-300 rounded-full border border-blue-500/30 mb-4">${heading.badge}</div>` : ''}
+            <h2 class="${heading.size === 'small' ? 'text-2xl' : heading.size === 'medium' ? 'text-3xl' : heading.size === 'large' ? 'text-4xl' : 'text-6xl'} font-bold mb-4 text-white">${heading.title}</h2>
+            ${heading.subtitle ? `<p class="text-xl text-slate-300">${heading.subtitle}</p>` : ''}
+        </div>
+    </section>`;
+  };
+
+  const generateTextSection = (text: any, styles: any, isPremium: boolean) => {
+    return `
+    <section class="py-16" style="background: ${isPremium ? 'linear-gradient(135deg, rgba(55,65,81,0.9), rgba(30,64,175,0.9))' : styles.backgroundColor};">
+        <div class="max-w-4xl mx-auto px-6 text-${text.alignment}">
+            ${text.badge ? `<div class="inline-block px-3 py-1 text-xs bg-blue-600/20 text-blue-300 rounded-full border border-blue-500/30 mb-4">${text.badge}</div>` : ''}
+            ${text.title ? `<h3 class="text-2xl font-bold mb-4 text-white">${text.title}</h3>` : ''}
+            <div class="${text.textSize === 'small' ? 'text-sm' : text.textSize === 'medium' ? 'text-base' : 'text-lg'} text-slate-300 leading-relaxed">
+                ${text.content.split('\n').map((line: string) => `<p class="mb-4">${line}</p>`).join('')}
+            </div>
+        </div>
+    </section>`;
+  };
+
+  const generateVideoSection = (video: any, styles: any, isPremium: boolean) => {
+    const getVideoId = (url: string, type: string) => {
+      if (type === 'youtube') {
+        const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
+        return match ? match[1] : '';
+      }
+      return '';
+    };
+
+    return `
+    <section class="py-20" style="background: ${isPremium ? 'linear-gradient(135deg, rgba(55,65,81,0.9), rgba(30,64,175,0.9))' : styles.backgroundColor};">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-12">
+                ${video.badge ? `<div class="inline-block px-3 py-1 text-xs bg-blue-600/20 text-blue-300 rounded-full border border-blue-500/30 mb-4">${video.badge}</div>` : ''}
+                <h2 class="text-4xl font-bold mb-4 text-white">${video.title}</h2>
+                ${video.subtitle ? `<p class="text-xl text-slate-300">${video.subtitle}</p>` : ''}
+            </div>
+            <div class="aspect-video bg-slate-800 rounded-lg overflow-hidden">
+                ${video.videoType === 'youtube' ? 
+                    `<iframe src="https://www.youtube.com/embed/${getVideoId(video.videoUrl, 'youtube')}" class="w-full h-full" allowfullscreen></iframe>` :
+                    video.videoType === 'vimeo' ?
+                    `<iframe src="https://player.vimeo.com/video/${getVideoId(video.videoUrl, 'vimeo')}" class="w-full h-full" allowfullscreen></iframe>` :
+                    `<video controls ${video.autoplay ? 'autoplay' : ''} class="w-full h-full"><source src="${video.videoUrl}" type="video/mp4"></video>`
+                }
+            </div>
+        </div>
+    </section>`;
+  };
+
+  const generateSliderSection = (slider: any, styles: any, isPremium: boolean) => {
+    return `
+    <section class="py-20" style="background: ${isPremium ? 'linear-gradient(135deg, rgba(55,65,81,0.9), rgba(30,64,175,0.9))' : styles.backgroundColor};">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-12">
+                ${slider.badge ? `<div class="inline-block px-3 py-1 text-xs bg-blue-600/20 text-blue-300 rounded-full border border-blue-500/30 mb-4">${slider.badge}</div>` : ''}
+                <h2 class="text-4xl font-bold mb-4 text-white">${slider.title}</h2>
+                ${slider.subtitle ? `<p class="text-xl text-slate-300">${slider.subtitle}</p>` : ''}
+            </div>
+            <div class="relative bg-slate-800 rounded-lg overflow-hidden aspect-video">
+                ${slider.slides.map((slide: any, index: number) => `
+                    <div class="absolute inset-0 ${index === 0 ? 'block' : 'hidden'} slide-${index}">
+                        ${slide.image ? `<img src="${slide.image}" alt="${slide.title}" class="absolute inset-0 w-full h-full object-cover opacity-50" />` : ''}
+                        <div class="relative z-10 flex items-center justify-center h-full p-8 text-center">
+                            <div class="space-y-4">
+                                <h4 class="text-2xl font-bold text-white">${slide.title}</h4>
+                                <p class="text-slate-200">${slide.description}</p>
+                                ${slide.buttonText ? `<a href="${slide.buttonLink || '#'}" class="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">${slide.buttonText}</a>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    </section>`;
+  };
+
+  const generateListSection = (list: any, styles: any, isPremium: boolean) => {
+    return `
+    <section class="py-16" style="background: ${isPremium ? 'linear-gradient(135deg, rgba(55,65,81,0.9), rgba(30,64,175,0.9))' : styles.backgroundColor};">
+        <div class="max-w-4xl mx-auto px-6">
+            ${list.badge ? `<div class="inline-block px-3 py-1 text-xs bg-blue-600/20 text-blue-300 rounded-full border border-blue-500/30 mb-4">${list.badge}</div>` : ''}
+            <h2 class="text-3xl font-bold mb-8 text-white">${list.title}</h2>
+            ${list.subtitle ? `<p class="text-xl text-slate-300 mb-8">${list.subtitle}</p>` : ''}
+            <${list.listType === 'ordered' ? 'ol' : 'ul'} class="${list.listType === 'ordered' ? 'list-decimal' : 'list-disc'} list-inside space-y-4">
+                ${list.items.map((item: any) => `
+                    <li class="text-slate-200 text-lg">
+                        ${list.listType === 'icon' && item.icon ? `<i class="ri-${item.icon} text-blue-400 mr-2"></i>` : ''}
+                        <strong>${item.title}</strong>
+                        ${item.description ? `<br><span class="text-slate-300 text-base">${item.description}</span>` : ''}
+                    </li>
+                `).join('')}
+            </${list.listType === 'ordered' ? 'ol' : 'ul'}>
+        </div>
+    </section>`;
+  };
+
+  const generateEmbedSection = (embed: any, styles: any, isPremium: boolean) => {
+    return `
+    <section class="py-16" style="background: ${isPremium ? 'linear-gradient(135deg, rgba(55,65,81,0.9), rgba(30,64,175,0.9))' : styles.backgroundColor};">
+        <div class="max-w-6xl mx-auto px-6">
+            ${embed.badge ? `<div class="text-center mb-4"><div class="inline-block px-3 py-1 text-xs bg-blue-600/20 text-blue-300 rounded-full border border-blue-500/30">${embed.badge}</div></div>` : ''}
+            ${embed.title ? `<h2 class="text-3xl font-bold mb-8 text-white text-center">${embed.title}</h2>` : ''}
+            ${embed.subtitle ? `<p class="text-xl text-slate-300 mb-8 text-center">${embed.subtitle}</p>` : ''}
+            <div class="bg-white/10 rounded-lg overflow-hidden" style="height: ${embed.height || 400}px;">
+                ${embed.htmlCode}
+            </div>
+        </div>
+    </section>`;
+  };
+
 };

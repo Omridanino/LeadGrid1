@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { TemplateData } from '@/types/template';
 import { templates } from '@/data/templates';
-import TemplateEditor from './TemplateEditor';
+import TemplateEditor from './ModernTemplateEditor';
 
 interface TemplateSelectorProps {
   isOpen: boolean;
