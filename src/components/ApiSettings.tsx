@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Copy, Eye, EyeOff, Trash2, Plus, ExternalLink, Check } from 'lucide-react';
+import { Copy, Eye, EyeOff, Trash2, Plus, ExternalLink, Check, Globe } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ApiKey {
@@ -25,7 +25,21 @@ const ApiSettings = () => {
   const [wordpressUrl, setWordpressUrl] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [copied, setCopied] = useState<string>('');
+  const [siteId, setSiteId] = useState<string>('');
   const { toast } = useToast();
+
+  // Generate or load Site ID
+  useEffect(() => {
+    let savedSiteId = localStorage.getItem('leadgrid_site_id');
+    if (!savedSiteId) {
+      // Generate new Site ID based on current domain and timestamp
+      const domain = window.location.hostname;
+      const timestamp = Date.now();
+      savedSiteId = `site_${btoa(domain).replace(/[^a-zA-Z0-9]/g, '')}_${timestamp.toString(36)}`;
+      localStorage.setItem('leadgrid_site_id', savedSiteId);
+    }
+    setSiteId(savedSiteId);
+  }, []);
 
   // Load existing API keys
   useEffect(() => {
@@ -76,21 +90,21 @@ const ApiSettings = () => {
     }, 1000);
   };
 
-  // Copy API key to clipboard
-  const copyToClipboard = async (key: string, keyId: string) => {
+  // Copy to clipboard (now handles both API keys and Site ID)
+  const copyToClipboard = async (text: string, itemId: string) => {
     try {
-      await navigator.clipboard.writeText(key);
-      setCopied(keyId);
+      await navigator.clipboard.writeText(text);
+      setCopied(itemId);
       setTimeout(() => setCopied(''), 2000);
       
       toast({
         title: "הועתק בהצלחה",
-        description: "המפתח הועתק ללוח",
+        description: itemId === 'site-id' ? "Site ID הועתק ללוח" : "המפתח הועתק ללוח",
       });
     } catch (err) {
       toast({
         title: "שגיאת העתקה",
-        description: "לא ניתן להעתיק את המפתח",
+        description: "לא ניתן להעתיק",
         variant: "destructive"
       });
     }
@@ -135,6 +149,37 @@ const ApiSettings = () => {
         </TabsList>
 
         <TabsContent value="api-keys" className="space-y-6">
+          {/* Site ID Display */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Globe className="w-5 h-5" />
+                Site ID
+              </CardTitle>
+              <CardDescription>
+                זהו ה-ID הייחודי של האתר שלך. השתמש בו לחיבור עם WordPress או יישומים אחרים
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center gap-2 bg-blue-50 p-3 rounded border">
+                <code className="flex-1 text-sm font-mono text-blue-800">
+                  {siteId}
+                </code>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => copyToClipboard(siteId, 'site-id')}
+                  className="text-blue-600 hover:text-blue-700"
+                >
+                  {copied === 'site-id' ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4" />}
+                </Button>
+              </div>
+              <p className="text-xs text-gray-500 mt-2">
+                * ה-Site ID נוצר אוטומטically ונשמר במכשיר שלך
+              </p>
+            </CardContent>
+          </Card>
+
           {/* Generate New API Key */}
           <Card>
             <CardHeader>
@@ -253,11 +298,12 @@ const ApiSettings = () => {
               </Alert>
 
               <div className="space-y-4">
-                <h3 className="font-medium">שלב 2: הגדרת API Key</h3>
+                <h3 className="font-medium">שלב 2: הגדרת API Key ו-Site ID</h3>
                 <ol className="list-decimal list-inside space-y-2 text-sm text-gray-700">
                   <li>היכנס לאזור הניהול של WordPress</li>
                   <li>לך ל: <code className="bg-gray-100 px-2 py-1 rounded">LeadGrid → Settings</code></li>
                   <li>הכנס את ה-API Key שיצרת למעלה</li>
+                  <li>הכנס את ה-Site ID: <code className="bg-blue-100 px-2 py-1 rounded text-blue-800">{siteId}</code></li>
                   <li>שמור את ההגדרות</li>
                 </ol>
               </div>
