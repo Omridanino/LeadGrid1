@@ -1,0 +1,204 @@
+
+/* LeadGrid Frontend Styles */
+
+.leadgrid-hero {
+    background: linear-gradient(135deg, #1e40af, #7c3aed);
+    color: white;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.leadgrid-hero .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.leadgrid-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.leadgrid-hero h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.leadgrid-hero p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.leadgrid-hero .btn {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    padding: 16px 32px;
+    border: 2px solid white;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 10px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.leadgrid-hero .btn:hover {
+    background: white;
+    color: #1e40af;
+    text-decoration: none;
+}
+
+.leadgrid-features {
+    padding: 80px 20px;
+    background: #f8fafc;
+}
+
+.leadgrid-features .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.leadgrid-features h2 {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: #1e40af;
+}
+
+.leadgrid-features .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.leadgrid-features .feature-item {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.leadgrid-features .feature-item:hover {
+    transform: translateY(-5px);
+}
+
+.leadgrid-features .feature-item h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #1e40af;
+}
+
+.leadgrid-features .feature-item p {
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+.leadgrid-testimonials {
+    padding: 80px 20px;
+    background: #f1f5f9;
+}
+
+.leadgrid-testimonials .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.leadgrid-testimonials h2 {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: #1e40af;
+}
+
+.leadgrid-testimonials .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.leadgrid-testimonials .testimonial-item {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.leadgrid-testimonials .testimonial-item p {
+    font-style: italic;
+    margin-bottom: 1rem;
+    color: #374151;
+    font-size: 1.1rem;
+}
+
+.leadgrid-testimonials .testimonial-author strong {
+    color: #1e40af;
+    font-weight: bold;
+}
+
+.leadgrid-testimonials .testimonial-author span {
+    color: #6b7280;
+    display: block;
+    font-size: 0.9rem;
+}
+
+.leadgrid-contact {
+    padding: 80px 20px;
+    background: #f8fafc;
+}
+
+.leadgrid-contact .container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.leadgrid-contact h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #1e40af;
+}
+
+.leadgrid-contact p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    color: #6b7280;
+}
+
+.leadgrid-contact .contact-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: left;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .leadgrid-hero h1 {
+        font-size: 2rem;
+    }
+    
+    .leadgrid-hero h2 {
+        font-size: 1.2rem;
+    }
+    
+    .leadgrid-features h2,
+    .leadgrid-testimonials h2,
+    .leadgrid-contact h2 {
+        font-size: 2rem;
+    }
+    
+    .leadgrid-features .features-grid,
+    .leadgrid-testimonials .testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .leadgrid-hero .btn {
+        display: block;
+        margin: 10px auto;
+        max-width: 200px;
+    }
+}
