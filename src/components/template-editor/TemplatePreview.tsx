@@ -1129,31 +1129,50 @@ export const TemplatePreview: React.FC<TemplatePreviewProps> = ({ template }) =>
       </section>
 
       {/* Gallery Section */}
-      {template.gallery && template.gallery.images && template.gallery.images.length > 0 && (
-        <section className="py-16 px-4" style={getSectionStyle(template.styles.backgroundColor)}>
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
+      {template.gallery && (
+        <section 
+          className={`py-12 px-4 relative overflow-hidden ${getEffectClasses(template.effects?.hero)}`} 
+          style={getSectionStyle(template.styles.backgroundColor, template.styles.heroBackgroundImage)}
+        >
+          {/* Premium Effects */}
+          {template.styles?.primaryColor && (
+            <>
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-indigo-900/20"></div>
+              <div className="absolute top-0 left-0 w-full h-full">
+                <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-blue-400/30 to-purple-400/30 rounded-full blur-xl"></div>
+                <div className="absolute bottom-10 right-10 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-xl"></div>
+              </div>
+            </>
+          )}
+          {template.styles.heroBackgroundImage && (
+            <div className="absolute inset-0 bg-black/30"></div>
+          )}
+          <div className="max-w-6xl mx-auto relative z-10" dir="rtl">
+            <div className="text-center mb-8">
               {template.gallery.badge && (
-                <Badge className="mb-4" variant="outline" style={{ borderColor: template.styles.primaryColor, color: template.styles.primaryColor }}>
+                <Badge className="mb-4" variant="outline" style={{ 
+                  borderColor: getPremiumTextColor(template.id), 
+                  color: getPremiumTextColor(template.id) 
+                }}>
                   {template.gallery.badge}
                 </Badge>
               )}
-              <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: template.styles.textColor }}>
+              <h2 className="text-2xl md:text-3xl font-bold mb-4" style={{ color: getPremiumTextColor(template.id) }}>
                 {template.gallery.title}
               </h2>
               {template.gallery.subtitle && (
-                <p className="text-xl opacity-80" style={{ color: template.styles.textColor }}>
+                <p className="text-lg opacity-80 mb-6" style={{ color: getPremiumTextColor(template.id) }}>
                   {template.gallery.subtitle}
                 </p>
               )}
             </div>
-            <div className={`grid gap-4 ${template.gallery.layout === 'grid' ? `grid-cols-${template.gallery.columns || 3}` : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
-              {template.gallery.images.map((img, index) => (
-                <Card key={index} className="overflow-hidden">
-                  <img src={img.src} alt={img.alt} className="w-full h-48 object-cover" />
-                  {img.caption && (
-                    <CardContent className="p-4">
-                      <p className="text-sm" style={{ color: template.styles.textColor }}>{img.caption}</p>
+            <div className={`grid gap-4 ${template.gallery.layout === 'grid' ? `grid-cols-1 md:grid-cols-${template.gallery.columns || 3}` : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
+              {template.gallery.images?.map((img, index) => (
+                <Card key={index} className="overflow-hidden bg-white/10 backdrop-blur-sm border-white/20 shadow-lg hover:shadow-xl transition-shadow">
+                  <img src={img.src} alt={img.alt || img.caption || `תמונה ${index + 1}`} className="w-full h-40 object-cover hover:scale-105 transition-transform duration-300" />
+                  {(img.caption || img.alt) && (
+                    <CardContent className="p-3">
+                      <p className="text-xs" style={{ color: getPremiumTextColor(template.id) }}>{img.caption || img.alt}</p>
                     </CardContent>
                   )}
                 </Card>
