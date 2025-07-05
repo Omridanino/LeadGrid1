@@ -15,7 +15,6 @@ import {
 import { TemplateData } from '@/types/template';
 import { templates } from '@/data/templates';
 import TemplateEditor from './ModernTemplateEditor';
-import GlassIcon from "@/components/ui/glass-icon";
 
 interface TemplateSelectorProps {
   isOpen: boolean;
@@ -167,38 +166,20 @@ const TemplateSelector = ({ isOpen, onClose, initialCategory }: TemplateSelector
 
   return (
     <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center" dir="rtl">
-      <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-xl rounded-3xl border border-gray-700/50 shadow-2xl w-full max-w-6xl h-[90vh] flex flex-col">
+      <div className="bg-gray-900 rounded-lg border border-gray-800 w-full max-w-6xl h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="p-8 border-b border-gray-700/50 flex-shrink-0 bg-gradient-to-r from-gray-900/50 to-gray-800/50">
+        <div className="p-6 border-b border-gray-800 flex-shrink-0">
           <div className="flex items-center justify-between">
-            <div className="text-center flex-1">
-              <div className="flex items-center justify-center gap-4 mb-4">
-                <GlassIcon 
-                  icon={Sparkles} 
-                  size="lg" 
-                  variant="gold"
-                />
-                <h2 className="text-white text-3xl font-bold bg-gradient-to-r from-yellow-400 to-white bg-clip-text text-transparent">
-                  בחר תבנית לאתר שלך
-                </h2>
-                <GlassIcon 
-                  icon={Sparkles} 
-                  size="lg" 
-                  variant="gold"
-                />
-              </div>
-              <p className="text-green-400 text-lg font-semibold">תבניות מקצועיות מוכנות לעריכה!</p>
+            <div>
+              <h2 className="text-white text-2xl font-bold">🚀 בחר תבנית לאתר שלך</h2>
+              <p className="text-green-400 text-sm mt-1">תבניות מקצועיות מוכנות לעריכה!</p>
             </div>
             <Button
               onClick={onClose}
               size="sm"
-              className="bg-yellow-400/10 backdrop-blur-xl border border-yellow-400/30 text-yellow-400 hover:bg-yellow-400/20 rounded-xl"
+              className="bg-gray-700 hover:bg-gray-600 text-white"
             >
-              <GlassIcon 
-                icon={X} 
-                size="sm" 
-                variant="gold"
-              />
+              <X className="w-4 h-4" />
             </Button>
           </div>
         </div>
@@ -206,28 +187,18 @@ const TemplateSelector = ({ isOpen, onClose, initialCategory }: TemplateSelector
         {/* Content */}
         <div className="flex-1 overflow-hidden">
           <div className="p-6 h-full overflow-y-auto">
-            <div className="text-center mb-12">
-              <div className="flex items-center justify-center gap-8 mb-8">
-                <Badge className="bg-yellow-400/15 backdrop-blur-xl border border-yellow-400/40 text-yellow-400 px-6 py-3 text-lg font-bold rounded-xl shadow-2xl">
-                  <GlassIcon 
-                    icon={Sparkles} 
-                    size="sm" 
-                    variant="gold"
-                  />
-                  <span className="mr-3">{templates.length} תבניות זמינות</span>
+            <div className="text-center mb-8">
+              <div className="flex items-center justify-center gap-6 mb-6">
+                <Badge className="bg-blue-600 text-white px-4 py-2">
+                  <Sparkles className="w-4 h-4 ml-2" />
+                  {templates.length} תבניות זמינות
                 </Badge>
-                <Badge className="bg-green-400/15 backdrop-blur-xl border border-green-400/40 text-green-400 px-6 py-3 text-lg font-bold rounded-xl shadow-2xl">
-                  <GlassIcon 
-                    icon={Globe} 
-                    size="sm" 
-                    variant="gold"
-                  />
-                  <span className="mr-3">מוכן לעריכה</span>
+                <Badge className="bg-green-600 text-white px-4 py-2">
+                  <Globe className="w-4 h-4 ml-2" />
+                  מוכן לעריכה
                 </Badge>
               </div>
-              <p className="text-gray-300 text-xl max-w-2xl mx-auto leading-relaxed">
-                בחר תבנית שמתאימה לעסק שלך ותוכל לערוך אותה לפי הצרכים שלך
-              </p>
+              <p className="text-gray-400">בחר תבנית שמתאימה לעסק שלך ותוכל לערוך אותה לפי הצרכים שלך</p>
             </div>
 
             {/* Templates Grid */}

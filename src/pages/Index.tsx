@@ -428,7 +428,7 @@ const Index = () => {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8 items-stretch">
+          <div className="grid md:grid-cols-3 gap-8">
             {templateCategories.map((category, index) => {
               const Icon = category.icon;
               return (
@@ -448,50 +448,50 @@ const Index = () => {
                     </div>
                   )}
                   
-                  <Card className={`h-full bg-gradient-to-br ${category.bgColor} border-2 ${category.borderColor} backdrop-blur-xl hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col`}>
-                    <CardContent className="p-8 text-center flex-1 flex flex-col justify-between">
-                      <div>
-                        <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${category.color} flex items-center justify-center shadow-2xl`}>
-                          <Icon className="w-8 h-8 text-black" />
-                        </div>
-                        
-                        <h3 className="text-2xl font-bold text-white mb-2">{category.name}</h3>
-                        <div className="mb-4">
-                          <span className="text-4xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                            {category.price}
-                          </span>
-                          <span className="text-gray-400 text-lg">/{category.period}</span>
-                        </div>
-                        
-                        <p className="text-gray-300 mb-6">{category.description}</p>
-                        
-                        <div className="space-y-3 mb-8">
-                          {category.features.map((feature, i) => (
-                            <div key={i} className="flex items-center gap-3 text-sm text-gray-300 justify-center">
-                              <GlassIcon 
-                                icon={CheckCircle} 
-                                size="sm" 
-                                variant="gold"
-                              />
-                              <span>{feature}</span>
-                            </div>
-                          ))}
-                        </div>
+                  <Card className={`h-full bg-gradient-to-br ${category.bgColor} border-2 ${category.borderColor} backdrop-blur-xl hover:shadow-2xl transition-all duration-300 overflow-hidden`}>
+                    <CardContent className="p-8 text-center">
+                      <div className="mx-auto mb-6">
+                        <GlassIcon 
+                          icon={Icon} 
+                          size="lg" 
+                          variant="gold"
+                        />
                       </div>
                       
-                      <div className="mt-auto">
+                      <h3 className="text-2xl font-bold text-white mb-2">{category.name}</h3>
+                      <div className="mb-4">
+                        <span className="text-4xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                          {category.price}
+                        </span>
+                        <span className="text-gray-400 text-lg">/{category.period}</span>
+                      </div>
+                      
+                      <p className="text-gray-300 mb-6">{category.description}</p>
+                      
+                      <div className="space-y-3 mb-8">
+                        {category.features.map((feature, i) => (
+                          <div key={i} className="flex items-center gap-3 text-sm text-gray-300">
+                            <GlassIcon 
+                              icon={CheckCircle} 
+                              size="sm" 
+                              variant="gold"
+                            />
+                            <span>{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+                      
                         <Button
                           onClick={() => handleOpenQuestionnaire(category.id)}
-                          className="w-full bg-yellow-400/15 backdrop-blur-xl border border-yellow-400/40 text-yellow-400 hover:bg-yellow-400/25 font-semibold hover:shadow-2xl transform hover:scale-105 transition-all duration-300 py-3 rounded-xl mb-4"
+                          className="w-full bg-yellow-400/15 backdrop-blur-xl border border-yellow-400/40 text-yellow-400 hover:bg-yellow-400/25 font-semibold hover:shadow-2xl transform hover:scale-105 transition-all duration-300 py-3 rounded-xl"
                         >
                           התחל עכשיו
                         </Button>
-                        
-                        <div className="text-center">
-                          <span className="text-sm text-gray-400">
-                            {category.templates} תבניות זמינות
-                          </span>
-                        </div>
+                      
+                      <div className="mt-4 text-center">
+                        <span className="text-sm text-gray-400">
+                          {category.templates} תבניות זמינות
+                        </span>
                       </div>
                     </CardContent>
                   </Card>
