@@ -355,36 +355,36 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
   }
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-black to-slate-900 z-50 flex h-screen" dir="rtl">
+    <div className="fixed inset-0 bg-slate-950/50 backdrop-blur-sm z-50 flex h-screen" dir="rtl">
       
       {/* Floating Editor Panel */}
       {!isEditorMinimized && (
-        <div className="fixed top-4 right-4 w-80 max-h-[calc(100vh-2rem)] bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-xl shadow-2xl z-[100] flex flex-col overflow-hidden">
+        <div className="fixed top-4 right-4 w-80 max-h-[calc(100vh-2rem)] bg-white/95 backdrop-blur-xl border border-slate-200 rounded-xl shadow-2xl z-[9999] flex flex-col overflow-hidden">
           
           {/* Header - Compact */}
-          <div className="p-3 border-b border-slate-700/50 bg-gradient-to-r from-slate-800/80 to-slate-700/80 flex-shrink-0 rounded-t-xl">
+          <div className="p-3 border-b border-slate-200 bg-white flex-shrink-0 rounded-t-xl">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <div className="w-7 h-7 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                   <Settings className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-white text-base font-bold">עורך תוכן</h2>
-                  <p className="text-slate-300 text-xs truncate max-w-32">{editedTemplate.name}</p>
+                  <h2 className="text-slate-900 text-base font-bold">עורך תוכן</h2>
+                  <p className="text-slate-600 text-xs truncate max-w-32">{editedTemplate.name}</p>
                 </div>
               </div>
               <div className="flex items-center gap-1">
                 <Button
                   onClick={() => setIsEditorMinimized(true)}
                   size="sm"
-                  className="bg-slate-700/50 hover:bg-slate-600/50 text-white w-7 h-7 p-0"
+                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 w-7 h-7 p-0"
                 >
                   <Minimize2 className="w-3 h-3" />
                 </Button>
                 <Button
                   onClick={onClose}
                   size="sm"
-                  className="bg-slate-700/50 hover:bg-slate-600/50 text-white w-7 h-7 p-0"
+                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 w-7 h-7 p-0"
                 >
                   <X className="w-3 h-3" />
                 </Button>
@@ -551,7 +551,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
       <div className="flex-1 flex flex-col min-h-0">
         
         {/* Compact Top Bar */}
-        <div className="bg-gradient-to-r from-slate-800/90 to-slate-700/90 backdrop-blur-xl px-3 py-2 border-b border-slate-600/30 flex items-center justify-between flex-shrink-0">
+        <div className="bg-white/90 backdrop-blur-xl px-3 py-2 border-b border-slate-200 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-2">
             {isEditorMinimized && (
               <Button
@@ -604,7 +604,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
         {/* Preview Area with Scroll */}
         <div className="flex-1 flex min-h-0">
           <div 
-            className="flex-1 bg-white"
+            className="flex-1 bg-white overflow-hidden"
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => {
               e.preventDefault();
