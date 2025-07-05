@@ -144,6 +144,81 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
     });
   };
 
+  const initializeSection = (sectionId: string) => {
+    const defaultSections = {
+      gallery: {
+        title: 'גלריית תמונות',
+        subtitle: 'תמונות מהעבודות שלנו',
+        images: [],
+        layout: 'grid' as const,
+        columns: 3
+      },
+      heading: {
+        title: 'כותרת חדשה',
+        subtitle: 'תת כותרת',
+        alignment: 'center' as const,
+        size: 'large' as const
+      },
+      text: {
+        title: 'כותרת הטקסט',
+        content: 'הכנס כאן את התוכן שלך...',
+        alignment: 'center' as const,
+        textSize: 'medium' as const
+      },
+      video: {
+        title: 'סרטון מדהים',
+        subtitle: 'צפו בסרטון שלנו',
+        videoUrl: '',
+        videoType: 'youtube' as const,
+        controls: true
+      },
+      slider: {
+        title: 'הסליידר שלנו',
+        subtitle: 'גלשו בין האפשרויות',
+        slides: [
+          {
+            title: 'סליידר ראשון',
+            description: 'תיאור הסליידר הראשון',
+            buttonText: 'לחץ כאן'
+          }
+        ],
+        autoplay: true,
+        duration: 5000
+      },
+      list: {
+        title: 'הרשימה שלנו',
+        items: [
+          {
+            title: 'פריט ראשון',
+            description: 'תיאור הפריט הראשון'
+          }
+        ],
+        listType: 'unordered' as const
+      },
+      embed: {
+        title: 'תוכן משובץ',
+        htmlCode: '<p>הכנס כאן קוד HTML</p>',
+        height: 400
+      },
+      socialBar: {
+        title: 'עקבו אחרינו',
+        socialLinks: [
+          {
+            platform: 'facebook' as const,
+            url: 'https://facebook.com',
+            label: 'Facebook'
+          }
+        ],
+        alignment: 'center' as const,
+        showLabels: true
+      }
+    };
+
+    if (defaultSections[sectionId as keyof typeof defaultSections]) {
+      updateSection(sectionId as keyof TemplateData, defaultSections[sectionId as keyof typeof defaultSections]);
+    }
+  };
+
   const updateStyles = (styleUpdates: any) => {
     setEditedTemplate(prev => ({
       ...prev,
@@ -365,7 +440,12 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                               ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-400/50' 
                               : 'bg-slate-800/40 border-slate-700/30 hover:bg-slate-700/40 hover:border-slate-600/50'
                           } backdrop-blur-sm`}
-                          onClick={() => setActiveSection(item.id)}
+                          onClick={() => {
+                            if (!editedTemplate[item.id as keyof TemplateData] && ['gallery', 'heading', 'text', 'video', 'slider', 'list', 'embed', 'socialBar'].includes(item.id)) {
+                              initializeSection(item.id);
+                            }
+                            setActiveSection(item.id);
+                          }}
                         >
                           <CardContent className="p-2.5">
                             <div className="flex items-center gap-2">
