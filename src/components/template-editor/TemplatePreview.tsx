@@ -699,23 +699,6 @@ export const TemplatePreview: React.FC<TemplatePreviewProps> = ({ template }) =>
           </section>
         )}
 
-        </footer>
-
-        {/* Footer */}
-        <footer className="py-8 px-4 text-center" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
-          <p>&copy; 2024 {template.footer.companyName}. כל הזכויות שמורות.</p>
-        </footer>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-full text-center" dir="rtl" style={{ backgroundColor: template.styles.backgroundColor, color: template.styles.textColor }}>
-      {/* All sections here */}
-      <div>תצוגה מקדימה של התבנית</div>
-    </div>
-  );
-};
         {/* Gallery Section */}
         {template.gallery && template.gallery.images && template.gallery.images.length > 0 && (
           <section 
@@ -1049,12 +1032,17 @@ export const TemplatePreview: React.FC<TemplatePreviewProps> = ({ template }) =>
             </div>
           </section>
         )}
+        {/* Footer */}
+        <footer className="py-8 px-4 text-center" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
+          <p>&copy; 2024 {template.footer.companyName}. כל הזכויות שמורות.</p>
+        </footer>
       </div>
     );
   }
 
+  // Main return - render sections based on template style
   return (
-    <div className="min-h-full" style={{ backgroundColor: template.styles.backgroundColor, color: template.styles.textColor }}>
+    <div className="min-h-full text-center" dir="rtl" style={{ backgroundColor: template.styles.backgroundColor, color: template.styles.textColor }}>
       {/* Hero Section */}
       <section className={`py-20 px-4 relative ${getEffectClasses(template.effects?.hero)}`} style={getSectionStyle(template.styles.heroBackground, template.styles.heroBackgroundImage)}>
         {template.styles.heroBackgroundImage && (
