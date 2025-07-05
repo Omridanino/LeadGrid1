@@ -48,7 +48,6 @@ import { PricingEditor } from './template-editor/PricingEditor';
 import { FaqEditor } from './template-editor/FaqEditor';
 import { FinalCtaEditor } from './template-editor/FinalCtaEditor';
 import { ContactEditor } from './template-editor/ContactEditor';
-import { EffectsEditor } from './template-editor/EffectsEditor';
 import { GalleryEditor } from './template-editor/GalleryEditor';
 import { HeadingEditor } from './template-editor/HeadingEditor';
 import { TextEditor } from './template-editor/TextEditor';
@@ -57,8 +56,10 @@ import { SliderEditor } from './template-editor/SliderEditor';
 import { ListEditor } from './template-editor/ListEditor';
 import { EmbedEditor } from './template-editor/EmbedEditor';
 import { SocialBarEditor } from './template-editor/SocialBarEditor';
-import { LaunchSection } from './LaunchSection';
+import { EffectsEditor } from './template-editor/EffectsEditor';
+import { StylesEditor } from './template-editor/StylesEditor';
 import { generatePageHTML } from '@/utils/pageGenerator';
+import { LaunchSection } from './LaunchSection';
 
 interface ModernTemplateEditorProps {
   template: TemplateData;
@@ -153,66 +154,56 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
     }));
   };
 
-  const updateEffects = (section: string, effectType: string | null) => {
+  const updateEffects = (effectUpdates: any) => {
     setEditedTemplate(prev => ({
       ...prev,
       effects: {
         ...prev.effects,
-        [section]: effectType
+        ...effectUpdates
       }
     }));
   };
 
-  if (showLaunchSection) {
-    return (
-      <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 backdrop-blur-sm z-50 overflow-y-auto">
-        <LaunchSection 
-          template={editedTemplate}
-          onBack={handleBackToEditor}
-          className="min-h-screen p-6"
-        />
-      </div>
-    );
-  }
-
-  const sectionCategories = {
-    sections: {
-      label: 'סקשנים',
-      icon: LayoutGrid,
+  // Organized categories
+  const categories = [
+    {
+      id: 'sections',
+      label: 'חלקי דף',
       items: [
-        { id: 'hero', name: 'דף הבית', icon: Sparkles, color: 'text-purple-400' },
-        { id: 'emotional', name: 'רגש', icon: Heart, color: 'text-pink-400' },
+        { id: 'hero', name: 'חלק פתיחה', icon: Zap, color: 'text-blue-400' },
+        { id: 'emotional', name: 'חלק רגשי', icon: Heart, color: 'text-pink-400' },
         { id: 'features', name: 'תכונות', icon: Star, color: 'text-yellow-400' },
-        { id: 'testimonials', name: 'עדויות', icon: Users, color: 'text-green-400' },
-        { id: 'about', name: 'אודות', icon: Building, color: 'text-blue-400' },
+        { id: 'testimonials', name: 'המלצות', icon: Users, color: 'text-green-400' },
+        { id: 'about', name: 'אודות', icon: Building, color: 'text-purple-400' },
         { id: 'pricing', name: 'מחירים', icon: DollarSign, color: 'text-emerald-400' },
         { id: 'faq', name: 'שאלות נפוצות', icon: HelpCircle, color: 'text-orange-400' },
-        { id: 'finalCta', name: 'קריאה לפעולה', icon: Zap, color: 'text-red-400' },
-        { id: 'contact', name: 'יצירת קשר', icon: MessageSquare, color: 'text-cyan-400' }
+        { id: 'finalCta', name: 'קריאה לפעולה', icon: Rocket, color: 'text-red-400' },
+        { id: 'contact', name: 'יצירת קשר', icon: MessageSquare, color: 'text-cyan-400' },
       ]
     },
-    content: {
-      label: 'אלמנטי תוכן',
-      icon: Type,
+    {
+      id: 'content',
+      label: 'תוכן נוסף',
       items: [
-        { id: 'gallery', name: 'גלריית תמונות', icon: Image, color: 'text-violet-400' },
-        { id: 'heading', name: 'כותרת', icon: Type, color: 'text-indigo-400' },
-        { id: 'text', name: 'טקסט', icon: AlignLeft, color: 'text-slate-400' },
-        { id: 'video', name: 'וידאו', icon: Video, color: 'text-rose-400' },
-        { id: 'slider', name: 'סליידר', icon: LayoutGrid, color: 'text-teal-400' },
-        { id: 'list', name: 'רשימה', icon: List, color: 'text-amber-400' },
-        { id: 'embed', name: 'קוד HTML', icon: Code, color: 'text-lime-400' },
-        { id: 'socialBar', name: 'רשתות חברתיות', icon: Share2, color: 'text-sky-400' }
+        { id: 'gallery', name: 'גלריית תמונות', icon: Image, color: 'text-indigo-400' },
+        { id: 'heading', name: 'כותרת', icon: Type, color: 'text-slate-400' },
+        { id: 'text', name: 'טקסט', icon: AlignLeft, color: 'text-slate-300' },
+        { id: 'video', name: 'וידאו', icon: Video, color: 'text-red-400' },
+        { id: 'slider', name: 'סליידר', icon: LayoutGrid, color: 'text-blue-300' },
+        { id: 'list', name: 'רשימה', icon: List, color: 'text-green-300' },
+        { id: 'embed', name: 'קוד HTML', icon: Code, color: 'text-orange-300' },
+        { id: 'socialBar', name: 'רשתות חברתיות', icon: Share2, color: 'text-purple-300' },
       ]
     },
-    styling: {
-      label: 'עיצוב ואפקטים',
-      icon: Palette,
+    {
+      id: 'styles',
+      label: 'עיצוב',
       items: [
-        { id: 'effects', name: 'אפקטים חזותיים', icon: Palette, color: 'text-fuchsia-400' }
+        { id: 'styles', name: 'צבעים וגופנים', icon: Palette, color: 'text-pink-400' },
+        { id: 'effects', name: 'אפקטים', icon: Sparkles, color: 'text-yellow-400' },
       ]
     }
-  };
+  ];
 
   const renderEditor = () => {
     switch (activeSection) {
@@ -250,6 +241,8 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
         return <EmbedEditor template={editedTemplate} onUpdate={(updates) => updateSection('embed', updates)} onStyleUpdate={updateStyles} />;
       case 'socialBar':
         return <SocialBarEditor template={editedTemplate} onUpdate={(updates) => updateSection('socialBar', updates)} onStyleUpdate={updateStyles} />;
+      case 'styles':
+        return <StylesEditor template={editedTemplate} onUpdate={updateStyles} />;
       case 'effects':
         return <EffectsEditor template={editedTemplate} onUpdate={updateEffects} />;
       default:
@@ -257,53 +250,66 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
     }
   };
 
+  if (showLaunchSection) {
+    return <LaunchSection template={editedTemplate} onBack={handleBackToEditor} onPublishSuccess={onPublishSuccess} />;
+  }
+
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 backdrop-blur-sm z-50 flex h-screen" dir="rtl">
+    <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-black to-slate-900 z-50 flex h-screen" dir="rtl">
       
-      {/* Modern Sidebar */}
+      {/* Compact Editor Sidebar */}
       {!isEditorMinimized && (
-        <div className="w-96 bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border-r border-slate-700/50 flex flex-col h-full shadow-2xl">
+        <div className="w-72 bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border-r border-slate-700/50 flex flex-col shadow-2xl">
           
-          {/* Header with Glass Effect */}
-          <div className="p-6 border-b border-slate-700/50 bg-gradient-to-r from-slate-800/80 to-slate-700/80 backdrop-blur-sm">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                  <Settings className="w-5 h-5 text-white" />
+          {/* Header - Compact */}
+          <div className="p-3 border-b border-slate-700/50 bg-gradient-to-r from-slate-800/80 to-slate-700/80 flex-shrink-0">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <Settings className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-white text-xl font-bold">עורך תוכן מודרני</h2>
-                  <p className="text-slate-300 text-sm">{editedTemplate.name}</p>
+                  <h2 className="text-white text-base font-bold">עורך תוכן</h2>
+                  <p className="text-slate-300 text-xs truncate max-w-32">{editedTemplate.name}</p>
                 </div>
               </div>
-              <Button
-                onClick={onClose}
-                size="sm"
-                className="bg-slate-700/50 hover:bg-slate-600/50 text-white border border-slate-600/50 backdrop-blur-sm"
-              >
-                <X className="w-4 h-4" />
-              </Button>
+              <div className="flex items-center gap-1">
+                <Button
+                  onClick={() => setIsEditorMinimized(true)}
+                  size="sm"
+                  className="bg-slate-700/50 hover:bg-slate-600/50 text-white w-7 h-7 p-0"
+                >
+                  <Minimize2 className="w-3 h-3" />
+                </Button>
+                <Button
+                  onClick={onClose}
+                  size="sm"
+                  className="bg-slate-700/50 hover:bg-slate-600/50 text-white w-7 h-7 p-0"
+                >
+                  <X className="w-3 h-3" />
+                </Button>
+              </div>
             </div>
             
-            {/* Action Buttons */}
-            <div className="flex gap-3">
+            {/* Action Buttons - Compact */}
+            <div className="flex gap-1.5">
               <Button 
                 size="sm" 
                 className={`flex-1 ${
                   isSaved 
                     ? 'bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700' 
                     : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700'
-                } text-white shadow-lg`}
+                } text-white shadow-lg text-xs px-2 py-1.5`}
                 onClick={handleSave}
               >
                 {isSaved ? (
                   <>
-                    <CheckCircle className="w-4 h-4 ml-1" />
-                    נשמר!
+                    <CheckCircle className="w-3 h-3 ml-1" />
+                    נשמר
                   </>
                 ) : (
                   <>
-                    <Save className="w-4 h-4 ml-1" />
+                    <Save className="w-3 h-3 ml-1" />
                     שמור
                   </>
                 )}
@@ -314,38 +320,40 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                   isSaved 
                     ? 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700' 
                     : 'bg-slate-600/50 cursor-not-allowed opacity-50'
-                } text-white shadow-lg`}
+                } text-white shadow-lg text-xs px-2 py-1.5`}
                 onClick={handleSaveAndPublish}
                 disabled={!isSaved}
               >
-                <Rocket className="w-4 h-4 ml-1" />
+                <Rocket className="w-3 h-3 ml-1" />
                 פרסם
               </Button>
             </div>
           </div>
 
           {/* Navigation Tabs */}
-          <Tabs value={activeCategory} onValueChange={setActiveCategory} className="flex-1 flex flex-col">
-            <TabsList className="grid w-full grid-cols-3 bg-slate-700/30 border-b border-slate-600/30 rounded-none p-1 m-4 mb-0">
-              {Object.entries(sectionCategories).map(([key, category]) => {
-                const Icon = category.icon;
-                return (
-                  <TabsTrigger 
-                    key={key} 
-                    value={key}
-                    className="flex items-center gap-2 text-xs data-[state=active]:bg-slate-600/60 data-[state=active]:text-white text-slate-300"
-                  >
-                    <Icon className="w-4 h-4" />
-                    {category.label}
-                  </TabsTrigger>
-                );
-              })}
-            </TabsList>
+          <Tabs value={activeCategory} onValueChange={setActiveCategory} className="flex-1 flex flex-col min-h-0">
+            <div className="px-3 py-2 border-b border-slate-700/30 flex-shrink-0">
+              <TabsList className="grid w-full grid-cols-3 bg-slate-800/50 p-0.5 rounded-md h-7">
+                <TabsTrigger value="sections" className="text-xs data-[state=active]:bg-blue-600/80 data-[state=active]:text-white h-6">
+                  <Settings className="w-3 h-3 mr-1" />
+                  חלקים
+                </TabsTrigger>
+                <TabsTrigger value="content" className="text-xs data-[state=active]:bg-blue-600/80 data-[state=active]:text-white h-6">
+                  <Type className="w-3 h-3 mr-1" />
+                  תוכן
+                </TabsTrigger>
+                <TabsTrigger value="styles" className="text-xs data-[state=active]:bg-blue-600/80 data-[state=active]:text-white h-6">
+                  <Palette className="w-3 h-3 mr-1" />
+                  עיצוב
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
-            {Object.entries(sectionCategories).map(([categoryKey, category]) => (
-              <TabsContent key={categoryKey} value={categoryKey} className="flex-1 m-0 p-4">
+            {/* Tab Content - Scrollable */}
+            {categories.map((category) => (
+              <TabsContent key={category.id} value={category.id} className="flex-1 m-0 min-h-0">
                 <ScrollArea className="h-full">
-                  <div className="space-y-2">
+                  <div className="p-3 space-y-1.5">
                     {category.items.map((item) => {
                       const Icon = item.icon;
                       const isActive = activeSection === item.id;
@@ -354,24 +362,24 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                           key={item.id}
                           className={`cursor-pointer transition-all duration-200 border ${
                             isActive 
-                              ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-400/50 shadow-lg shadow-blue-500/20' 
+                              ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-400/50' 
                               : 'bg-slate-800/40 border-slate-700/30 hover:bg-slate-700/40 hover:border-slate-600/50'
                           } backdrop-blur-sm`}
                           onClick={() => setActiveSection(item.id)}
                         >
-                          <CardContent className="p-4">
-                            <div className="flex items-center gap-3">
-                              <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                          <CardContent className="p-2.5">
+                            <div className="flex items-center gap-2">
+                              <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${
                                 isActive ? 'bg-blue-500/20' : 'bg-slate-700/50'
                               }`}>
-                                <Icon className={`w-5 h-5 ${isActive ? 'text-blue-400' : item.color}`} />
+                                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-blue-400' : item.color}`} />
                               </div>
-                              <div>
-                                <h3 className={`font-medium ${isActive ? 'text-white' : 'text-slate-200'}`}>
+                              <div className="flex-1 min-w-0">
+                                <h3 className={`font-medium text-xs ${isActive ? 'text-white' : 'text-slate-200'} truncate`}>
                                   {item.name}
                                 </h3>
-                                <p className="text-xs text-slate-400">
-                                  {isActive ? 'פעיל כעת' : 'לחץ לעריכה'}
+                                <p className="text-xs text-slate-500 truncate">
+                                  {isActive ? 'פעיל' : 'לחץ לעריכה'}
                                 </p>
                               </div>
                             </div>
@@ -388,62 +396,75 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
       )}
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-h-0">
         
-        {/* Top Bar */}
-        <div className="bg-gradient-to-r from-slate-800/90 to-slate-700/90 backdrop-blur-xl p-4 border-b border-slate-600/30 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Button
-              onClick={() => setIsEditorMinimized(!isEditorMinimized)}
-              size="sm"
-              className="bg-slate-700/50 hover:bg-slate-600/50 text-white border border-slate-600/30"
-            >
-              {isEditorMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
-              {isEditorMinimized ? 'הצג עורך' : 'הסתר עורך'}
-            </Button>
-            <Separator orientation="vertical" className="h-6 bg-slate-600/30" />
-            <div className="flex items-center gap-2">
-              <Eye className="w-4 h-4 text-slate-300" />
-              <span className="text-sm text-slate-300">תצוגה מקדימה</span>
+        {/* Compact Top Bar */}
+        <div className="bg-gradient-to-r from-slate-800/90 to-slate-700/90 backdrop-blur-xl px-3 py-2 border-b border-slate-600/30 flex items-center justify-between flex-shrink-0">
+          <div className="flex items-center gap-2">
+            {isEditorMinimized && (
+              <Button
+                onClick={() => setIsEditorMinimized(false)}
+                size="sm"
+                className="bg-slate-700/50 hover:bg-slate-600/50 text-white border border-slate-600/30 text-xs px-2 py-1.5"
+              >
+                <Maximize2 className="w-3 h-3 mr-1" />
+                הצג עורך
+              </Button>
+            )}
+            <div className="flex items-center gap-1.5">
+              <Eye className="w-3.5 h-3.5 text-slate-300" />
+              <span className="text-xs text-slate-300">תצוגה מקדימה</span>
             </div>
           </div>
           
-          <div className="flex items-center gap-3">
-            <Badge variant="secondary" className="bg-slate-700/50 text-slate-200 border-slate-600/30">
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary" className="bg-slate-700/50 text-slate-200 border-slate-600/30 text-xs px-2 py-0.5">
               {editedTemplate.category}
             </Badge>
-            <Button 
-              size="sm" 
-              className={`${
-                isSaved 
-                  ? 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700' 
-                  : 'bg-slate-600/50 cursor-not-allowed opacity-50'
-              } text-white shadow-lg`}
-              onClick={handleSaveAndPublish}
-              disabled={!isSaved}
-            >
-              <Rocket className="w-4 h-4 mr-2" />
-              פרסם עם LEADGRID
-            </Button>
+            {isEditorMinimized && (
+              <>
+                <Button
+                  onClick={handleSave}
+                  size="sm"
+                  className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-lg text-xs px-2 py-1.5"
+                >
+                  <Save className="w-3 h-3 mr-1" />
+                  שמור
+                </Button>
+                <Button 
+                  size="sm" 
+                  className={`${
+                    isSaved 
+                      ? 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700' 
+                      : 'bg-slate-600/50 cursor-not-allowed opacity-50'
+                  } text-white shadow-lg text-xs px-2 py-1.5`}
+                  onClick={handleSaveAndPublish}
+                  disabled={!isSaved}
+                >
+                  <Rocket className="w-3 h-3 mr-1" />
+                  פרסם
+                </Button>
+              </>
+            )}
           </div>
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 flex">
+        <div className="flex-1 flex min-h-0">
           
-          {/* Editor Panel */}
+          {/* Editor Panel - Right Side */}
           {!isEditorMinimized && (
-            <div className="w-96 border-l border-slate-600/30 bg-gradient-to-b from-slate-800/50 to-slate-900/50 backdrop-blur-sm">
-              <ScrollArea className="h-full">
-                <div className="p-6">
+            <div className="w-72 border-l border-slate-600/30 bg-gradient-to-b from-slate-800/50 to-slate-900/50 backdrop-blur-sm flex flex-col">
+              <ScrollArea className="flex-1">
+                <div className="p-3">
                   {renderEditor()}
                 </div>
               </ScrollArea>
             </div>
           )}
           
-          {/* Preview */}
-          <div className="flex-1 bg-white overflow-hidden">
+          {/* Preview - Takes remaining space */}
+          <div className="flex-1 bg-white overflow-auto">
             <TemplatePreview template={editedTemplate} />
           </div>
         </div>
