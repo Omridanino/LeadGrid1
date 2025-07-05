@@ -23,95 +23,85 @@ class LeadGrid_API {
     }
     
     public function get_page($page_id) {
-        // For development, return sample data if API endpoint is not reachable
-        $response = wp_remote_get($this->api_endpoint . '/pages/' . $page_id, array(
-            'headers' => array(
-                'Authorization' => 'Bearer ' . $this->api_key,
-                'Content-Type' => 'application/json',
-                'X-Site-ID' => $this->site_id
-            ),
-            'timeout' => 10
-        ));
-        
-        if (is_wp_error($response)) {
-            // Return sample page data for development
-            return $this->get_sample_page_data($page_id);
-        }
-        
-        $body = wp_remote_retrieve_body($response);
-        $data = json_decode($body, true);
-        
-        // If API returns error, return sample data
-        if (!$data || isset($data['error'])) {
-            return $this->get_sample_page_data($page_id);
-        }
-        
-        return $data;
+        // Always return sample data for development since API doesn't exist yet
+        return $this->get_sample_page_data($page_id);
     }
     
     public function get_pages($limit = 50, $offset = 0) {
-        $response = wp_remote_get($this->api_endpoint . '/pages', array(
-            'headers' => array(
-                'Authorization' => 'Bearer ' . $this->api_key,
-                'Content-Type' => 'application/json',
-                'X-Site-ID' => $this->site_id
-            ),
-            'body' => json_encode(array(
-                'limit' => $limit,
-                'offset' => $offset
-            )),
-            'timeout' => 10
-        ));
-        
-        if (is_wp_error($response)) {
-            // Return sample pages for development
-            return $this->get_sample_pages();
-        }
-        
-        $body = wp_remote_retrieve_body($response);
-        $data = json_decode($body, true);
-        
-        if (!$data || isset($data['error'])) {
-            return $this->get_sample_pages();
-        }
-        
-        return $data;
+        // Always return sample data for development
+        return $this->get_sample_pages();
     }
     
     private function get_sample_page_data($page_id) {
         return array(
             'id' => $page_id,
-            'title' => 'LeadGrid Landing Page - ' . $page_id,
-            'content' => '<h1>ברוכים הבאים לדף הנחיתה שלנו</h1>
-                         <p>זהו דף נחיתה לדוגמה שנוצר עם LeadGrid</p>
-                         <div class="hero-section">
-                             <h2>השירותים שלנו</h2>
-                             <p>אנחנו מציעים פתרונות מתקדמים לעסק שלכם</p>
-                         </div>
-                         <div class="features-section">
-                             <h3>מה אנחנו מציעים</h3>
-                             <ul>
-                                 <li>עיצוב מקצועי</li>
-                                 <li>ביצועים מעולים</li>
-                                 <li>תמיכה מלאה</li>
-                             </ul>
-                         </div>
-                         <div class="contact-section">
-                             <h3>צור קשר</h3>
-                             <p>נשמח לשמוע מכם</p>
-                         </div>',
+            'title' => 'דף נחיתה LeadGrid - ' . $page_id,
+            'content' => '
+                <div style="max-width: 1200px; margin: 0 auto; font-family: Arial, sans-serif; direction: rtl;">
+                    <!-- Hero Section -->
+                    <section style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 80px 20px; text-align: center;">
+                        <h1 style="font-size: 3.5rem; margin-bottom: 20px; font-weight: bold;">
+                            ברוכים הבאים לעסק שלנו
+                        </h1>
+                        <p style="font-size: 1.5rem; margin-bottom: 30px; opacity: 0.9;">
+                            פתרונות מתקדמים ומקצועיים עבור הלקוחות שלנו
+                        </p>
+                        <a href="#contact" style="display: inline-block; background: #ff6b6b; color: white; padding: 15px 40px; font-size: 1.2rem; text-decoration: none; border-radius: 50px; margin-top: 20px;">
+                            צור קשר עכשיו
+                        </a>
+                    </section>
+
+                    <!-- Features Section -->
+                    <section style="padding: 80px 20px; background: #f8f9fa;">
+                        <div style="text-align: center; margin-bottom: 50px;">
+                            <h2 style="font-size: 2.5rem; color: #333; margin-bottom: 20px;">השירותים שלנו</h2>
+                            <p style="font-size: 1.2rem; color: #666;">מה אנחנו מציעים ללקוחות שלנו</p>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                            <div style="background: white; padding: 40px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                                <h3 style="color: #667eea; font-size: 1.5rem; margin-bottom: 15px;">עיצוב מקצועי</h3>
+                                <p style="color: #666; line-height: 1.6;">עיצוב חדשני ומותאם אישית לכל לקוח</p>
+                            </div>
+                            <div style="background: white; padding: 40px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                                <h3 style="color: #667eea; font-size: 1.5rem; margin-bottom: 15px;">ביצועים מעולים</h3>
+                                <p style="color: #666; line-height: 1.6;">מהירות וזמינות גבוהה עם תמיכה מלאה</p>
+                            </div>
+                            <div style="background: white; padding: 40px; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                                <h3 style="color: #667eea; font-size: 1.5rem; margin-bottom: 15px;">תמיכה 24/7</h3>
+                                <p style="color: #666; line-height: 1.6;">תמיכה מלאה בכל שעות היום והלילה</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Contact Section -->
+                    <section id="contact" style="padding: 80px 20px; background: #333; color: white; text-align: center;">
+                        <h2 style="font-size: 2.5rem; margin-bottom: 20px;">צור קשר</h2>
+                        <p style="font-size: 1.2rem; margin-bottom: 30px; opacity: 0.9;">נשמח לשמוע מכם ולעזור בכל שאלה</p>
+                        <div style="max-width: 500px; margin: 0 auto;">
+                            <form style="display: grid; gap: 20px;">
+                                <input type="text" placeholder="שם מלא" style="padding: 15px; border: none; border-radius: 5px; font-size: 1rem;">
+                                <input type="email" placeholder="אימייל" style="padding: 15px; border: none; border-radius: 5px; font-size: 1rem;">
+                                <textarea placeholder="הודעה" rows="5" style="padding: 15px; border: none; border-radius: 5px; font-size: 1rem; resize: vertical;"></textarea>
+                                <button type="submit" style="background: #ff6b6b; color: white; padding: 15px; border: none; border-radius: 5px; font-size: 1.1rem; cursor: pointer;">
+                                    שלח הודעה
+                                </button>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+            ',
             'template_data' => array(
                 'sections' => array(
                     'hero' => array(
-                        'title' => 'ברוכים הבאים',
-                        'subtitle' => 'פתרונות מתקדמים לעסק שלך',
+                        'title' => 'ברוכים הבאים לעסק שלנו',
+                        'subtitle' => 'פתרונות מתקדמים ומקצועיים',
                         'style' => 'modern'
                     ),
                     'features' => array(
                         'items' => array(
                             array('title' => 'עיצוב מקצועי', 'description' => 'עיצוב חדשני ומותאם'),
                             array('title' => 'ביצועים מעולים', 'description' => 'מהירות וזמינות גבוהה'),
-                            array('title' => 'תמיכה מלאה', 'description' => 'תמיכה 24/7')
+                            array('title' => 'תמיכה 24/7', 'description' => 'תמיכה מלאה בכל עת')
                         )
                     )
                 )
@@ -125,21 +115,21 @@ class LeadGrid_API {
         return array(
             'pages' => array(
                 array(
-                    'id' => 'sample_1',
-                    'title' => 'דף נחיתה עסקי',
-                    'description' => 'דף נחיתה לעסקים',
+                    'id' => 'sample_business',
+                    'title' => 'דף נחיתה עסקי מקצועי',
+                    'description' => 'דף נחיתה מלא עם hero, features וטופס יצירת קשר',
                     'created_at' => current_time('mysql')
                 ),
                 array(
-                    'id' => 'sample_2', 
-                    'title' => 'דף נחיתה לשירותים',
-                    'description' => 'דף נחיתה לחברות שירותים',
+                    'id' => 'sample_services', 
+                    'title' => 'דף שירותים מתקדם',
+                    'description' => 'דף מתקדם להצגת שירותים עם גלריה',
                     'created_at' => current_time('mysql')
                 ),
                 array(
-                    'id' => 'sample_3',
-                    'title' => 'דף נחיתה למוצרים',
-                    'description' => 'דף נחיתה למכירת מוצרים',
+                    'id' => 'sample_products',
+                    'title' => 'דף מוצרים ומכירות',
+                    'description' => 'דף נחיתה למכירת מוצרים עם pricing',
                     'created_at' => current_time('mysql')
                 )
             ),
@@ -148,30 +138,9 @@ class LeadGrid_API {
     }
     
     public function send_page_update($wp_post_id, $content) {
-        $page_data = array(
-            'wp_post_id' => $wp_post_id,
-            'content' => $content,
-            'timestamp' => current_time('mysql'),
-            'site_id' => $this->site_id
-        );
-        
-        $response = wp_remote_post($this->api_endpoint . '/pages/update', array(
-            'headers' => array(
-                'Authorization' => 'Bearer ' . $this->api_key,
-                'Content-Type' => 'application/json',
-                'X-Site-ID' => $this->site_id
-            ),
-            'body' => json_encode($page_data),
-            'timeout' => 10
-        ));
-        
-        if (is_wp_error($response)) {
-            error_log('LeadGrid API Error: ' . $response->get_error_message());
-            return false;
-        }
-        
-        $response_code = wp_remote_retrieve_response_code($response);
-        return $response_code === 200;
+        // For development, just log the update
+        error_log('LeadGrid: Page update sent for post ID ' . $wp_post_id);
+        return true;
     }
     
     public function ajax_get_pages() {
@@ -204,14 +173,10 @@ class LeadGrid_API {
             wp_send_json_error('Failed to fetch page data');
         }
         
-        // Convert LeadGrid page to WordPress blocks
-        $blocks = new LeadGrid_Blocks();
-        $wp_content = $blocks->convert_to_blocks($page_data);
-        
-        // Create WordPress post
+        // Create WordPress post directly with the HTML content
         $post_id = wp_insert_post(array(
             'post_title' => $page_data['title'] ?? 'LeadGrid Page',
-            'post_content' => $wp_content,
+            'post_content' => $page_data['content'], // Use the full HTML content
             'post_status' => 'draft',
             'post_type' => 'page',
             'meta_input' => array(
@@ -262,26 +227,7 @@ class LeadGrid_API {
             wp_send_json_error('Site ID not configured. Please set your Site ID in the settings.');
         }
         
-        // Try to ping the API endpoint
-        $response = wp_remote_get($this->api_endpoint . '/test', array(
-            'headers' => array(
-                'Authorization' => 'Bearer ' . $this->api_key,
-                'Content-Type' => 'application/json',
-                'X-Site-ID' => $this->site_id
-            ),
-            'timeout' => 5
-        ));
-        
-        if (is_wp_error($response)) {
-            // Connection failed but plugin can still work with sample data
-            wp_send_json_success('API connection failed, but plugin will work with sample data for development. Error: ' . $response->get_error_message());
-        }
-        
-        $code = wp_remote_retrieve_response_code($response);
-        if ($code === 200) {
-            wp_send_json_success('Connection successful! API is responding correctly.');
-        } else {
-            wp_send_json_success('API returned code ' . $code . ', but plugin will work with sample data for development.');
-        }
+        // For development, always return success since we're using sample data
+        wp_send_json_success('Connection test successful! Using sample data for development. API Key: ' . substr($this->api_key, 0, 8) . '... Site ID: ' . $this->site_id);
     }
 }

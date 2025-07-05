@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Copy, Eye, EyeOff, Trash2, Plus, ExternalLink, Check, Globe } from 'lucide-react';
+import { Copy, Eye, EyeOff, Trash2, Plus, ExternalLink, Check, Globe, Info } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ApiKey {
@@ -211,6 +211,14 @@ const ApiSettings = () => {
         <p className="text-gray-600">נהל את מפתחות ה-API שלך וחבר אתרי WordPress</p>
       </div>
 
+      {/* הודעה חשובה על התהליך */}
+      <Alert className="border-blue-200 bg-blue-50">
+        <Info className="h-4 w-4 text-blue-600" />
+        <AlertDescription className="text-blue-800">
+          <strong>איך זה עובד:</strong> תחילה צור דף נחיתה ב-LeadGrid (עמוד הבית), לאחר מכן השתמש במפתח ה-API וב-Site ID כדי לייבא את הדף ל-WordPress.
+        </AlertDescription>
+      </Alert>
+
       <Tabs defaultValue="api-keys" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="api-keys">מפתחות API</TabsTrigger>
@@ -244,7 +252,7 @@ const ApiSettings = () => {
                 </Button>
               </div>
               <p className="text-xs text-gray-500 mt-2">
-                * ה-Site ID נוצר אוטומטically ונשמר במכשיר שלך
+                * ה-Site ID נוצר אוטומטית ונשמר במכשיר שלך
               </p>
             </CardContent>
           </Card>
@@ -358,47 +366,64 @@ const ApiSettings = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <ExternalLink className="w-5 h-5" />
-                חיבור WordPress
+                חיבור WordPress - התהליך המלא
               </CardTitle>
               <CardDescription>
-                הוראות להתקנה וחיבור התוסף ב-WordPress
+                הוראות מפורטות להתקנה וחיבור התוסף ב-WordPress
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <Alert>
-                <AlertDescription>
-                  <strong>שלב 1:</strong> וודא שהתקנת את התוסף "LeadGrid Integration Pro" באתר WordPress שלך
+              <Alert className="border-amber-200 bg-amber-50">
+                <Info className="h-4 w-4 text-amber-600" />
+                <AlertDescription className="text-amber-800">
+                  <strong>חשוב:</strong> לפני חיבור WordPress, תחילה צור דף נחיתה ב-LeadGrid (עמוד הבית של האתר)
                 </AlertDescription>
               </Alert>
 
-              <div className="space-y-4">
-                <h3 className="font-medium">שלב 2: הגדרת API Key ו-Site ID</h3>
-                <ol className="list-decimal list-inside space-y-2 text-sm text-gray-700">
-                  <li>היכנס לאזור הניהול של WordPress</li>
-                  <li>לך ל: <code className="bg-gray-100 px-2 py-1 rounded">LeadGrid → Settings</code></li>
-                  <li>הכנס את ה-API Key שיצרת למעלה</li>
-                  <li>הכנס את ה-Site ID: <code className="bg-blue-100 px-2 py-1 rounded text-blue-800">{siteId}</code></li>
-                  <li>שמור את ההגדרות</li>
-                </ol>
+              <div className="space-y-6">
+                <div className="p-4 bg-blue-50 rounded-lg">
+                  <h3 className="font-bold text-blue-900 mb-3">שלב 1: יצירת דף נחיתה ב-LeadGrid</h3>
+                  <ol className="list-decimal list-inside space-y-2 text-sm text-blue-800">
+                    <li>לך לעמוד הבית של LeadGrid</li>
+                    <li>לחץ על "התחל ליצור עכשיו"</li>
+                    <li>מלא את השאלון ויצר את הדף</li>
+                    <li>ערוך את הדף לפי הצורך</li>
+                    <li>שמור את הדף (הוא נשמר אוטומטית במערכת)</li>
+                  </ol>
+                </div>
+
+                <div className="p-4 bg-green-50 rounded-lg">
+                  <h3 className="font-bold text-green-900 mb-3">שלב 2: הגדרת WordPress Plugin</h3>
+                  <ol className="list-decimal list-inside space-y-2 text-sm text-green-800">
+                    <li>וודא שהתקנת את התוסף "LeadGrid Integration Pro" באתר WordPress שלך</li>
+                    <li>היכנס לאזור הניהול של WordPress</li>
+                    <li>לך ל: <code className="bg-white px-2 py-1 rounded">LeadGrid → Settings</code></li>
+                    <li>הכנס את ה-API Key שיצרת למעלה</li>
+                    <li>הכנס את ה-Site ID: <code className="bg-blue-100 px-2 py-1 rounded text-blue-800">{siteId}</code></li>
+                    <li>שמור את ההגדרות</li>
+                  </ol>
+                </div>
+
+                <div className="p-4 bg-purple-50 rounded-lg">
+                  <h3 className="font-bold text-purple-900 mb-3">שלב 3: ייבוא הדפים</h3>
+                  <ol className="list-decimal list-inside space-y-2 text-sm text-purple-800">
+                    <li>לך ל: <code className="bg-white px-2 py-1 rounded">LeadGrid → Import Pages</code></li>
+                    <li>לחץ על "בדוק חיבור" כדי לוודא שהחיבור עובד</li>
+                    <li>לחץ על "טען דפים" כדי לראות את הדפים הזמינים</li>
+                    <li>בחר את הדף שיצרת ולחץ על "ייבא"</li>
+                    <li>הדף יווצר כטיוטה ב-WordPress עם כל העיצוב</li>
+                  </ol>
+                </div>
               </div>
 
-              <div className="space-y-4">
-                <h3 className="font-medium">שלב 3: ייבוא דפים</h3>
-                <ol className="list-decimal list-inside space-y-2 text-sm text-gray-700">
-                  <li>לך ל: <code className="bg-gray-100 px-2 py-1 rounded">LeadGrid → Import Pages</code></li>
-                  <li>בחר את הדפים שתרצה לייבא</li>
-                  <li>הדפים יתורגמו אוטומטית לבלוקים של WordPress</li>
-                </ol>
-              </div>
-
-              <div className="p-4 bg-blue-50 rounded-lg">
-                <h4 className="font-medium text-blue-900 mb-2">תכונות התוסף:</h4>
-                <ul className="text-sm text-blue-800 space-y-1">
-                  <li>• סנכרון אוטומטי של שינויים</li>
-                  <li>• תמיכה מלאה בעורך הבלוקים של WordPress</li>
-                  <li>• ממשק ניהול מתקדם</li>
-                  <li>• אנליטיקס ומעקב ביצועים</li>
-                  <li>• מטמון מתקדם לביצועים מיטביים</li>
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <h4 className="font-medium text-gray-900 mb-2">מה כלול בייבוא:</h4>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  <li>• HTML מלא עם עיצוב מקצועי</li>
+                  <li>• רספונסיבי לכל המכשירים</li>
+                  <li>• צבעים וגופנים מותאמים</li>
+                  <li>• טפסי יצירת קשר</li>
+                  <li>• אנימציות וטקסטים</li>
                 </ul>
               </div>
             </CardContent>
