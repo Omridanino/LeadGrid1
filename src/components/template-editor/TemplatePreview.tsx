@@ -437,6 +437,341 @@ export const TemplatePreview: React.FC<TemplatePreviewProps> = ({ template }) =>
         <footer className="py-8 px-4 text-center" style={{ backgroundColor: template.styles.primaryColor, color: '#ffffff' }}>
           <p>&copy; 2024 {template.footer.companyName}. כל הזכויות שמורות.</p>
         </footer>
+
+        {/* Custom Elements for Premium Templates */}
+        {/* Gallery Section */}
+        {template.gallery && template.gallery.images && template.gallery.images.length > 0 && (
+          <section 
+            className={`py-16 px-4 relative ${getEffectClasses(template.effects?.hero)}`} 
+            style={getSectionStyle(template.styles.backgroundColor, template.styles.heroBackgroundImage)}
+          >
+            {template.styles.heroBackgroundImage && (
+              <div className="absolute inset-0 bg-black/30"></div>
+            )}
+            <div className="max-w-6xl mx-auto text-center relative z-10" dir="rtl">
+              {template.gallery.badge && (
+                <Badge className="mb-4" variant="outline" style={{ 
+                  borderColor: getPremiumTextColor(template.id), 
+                  color: getPremiumTextColor(template.id) 
+                }}>
+                  {template.gallery.badge}
+                </Badge>
+              )}
+              <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: getPremiumTextColor(template.id) }}>
+                {template.gallery.title}
+              </h2>
+              {template.gallery.subtitle && (
+                <p className="text-xl opacity-80 mb-8" style={{ color: getPremiumTextColor(template.id) }}>
+                  {template.gallery.subtitle}
+                </p>
+              )}
+              <div className={`grid gap-4 ${template.gallery.layout === 'grid' ? `md:grid-cols-${template.gallery.columns || 3}` : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
+                {template.gallery.images.map((img, index) => (
+                  <Card key={index} className="overflow-hidden bg-white/10 backdrop-blur-sm border-white/20">
+                    <img src={img.src} alt={img.alt} className="w-full h-48 object-cover" />
+                    {img.caption && (
+                      <CardContent className="p-4">
+                        <p className="text-sm" style={{ color: getPremiumTextColor(template.id) }}>{img.caption}</p>
+                      </CardContent>
+                    )}
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Text Section */}
+        {template.text && (
+          <section 
+            className={`py-16 px-4 relative ${getEffectClasses(template.effects?.hero)}`} 
+            style={getSectionStyle(template.styles.backgroundColor, template.styles.heroBackgroundImage)}
+          >
+            {template.styles.heroBackgroundImage && (
+              <div className="absolute inset-0 bg-black/30"></div>
+            )}
+            <div className="max-w-6xl mx-auto text-center relative z-10" dir="rtl">
+              {template.text.badge && (
+                <Badge className="mb-4" variant="outline" style={{ 
+                  borderColor: getPremiumTextColor(template.id), 
+                  color: getPremiumTextColor(template.id) 
+                }}>
+                  {template.text.badge}
+                </Badge>
+              )}
+              {template.text.title && (
+                <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: getPremiumTextColor(template.id) }}>
+                  {template.text.title}
+                </h2>
+              )}
+              <div className={`${
+                template.text.textSize === 'large' ? 'text-xl' :
+                template.text.textSize === 'medium' ? 'text-lg' :
+                'text-base'
+              }`} style={{ color: getPremiumTextColor(template.id) }}>
+                <div dangerouslySetInnerHTML={{ __html: template.text.content.replace(/\n/g, '<br>') }} />
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Heading Section */}
+        {template.heading && (
+          <section 
+            className={`py-16 px-4 relative ${getEffectClasses(template.effects?.hero)}`} 
+            style={getSectionStyle(template.styles.backgroundColor, template.styles.heroBackgroundImage)}
+          >
+            {template.styles.heroBackgroundImage && (
+              <div className="absolute inset-0 bg-black/30"></div>
+            )}
+            <div className="max-w-6xl mx-auto text-center relative z-10" dir="rtl">
+              {template.heading.badge && (
+                <Badge className="mb-4" variant="outline" style={{ 
+                  borderColor: getPremiumTextColor(template.id), 
+                  color: getPremiumTextColor(template.id) 
+                }}>
+                  {template.heading.badge}
+                </Badge>
+              )}
+              <h2 className={`font-bold mb-4 ${
+                template.heading.size === 'xl' ? 'text-5xl md:text-6xl' :
+                template.heading.size === 'large' ? 'text-4xl md:text-5xl' :
+                template.heading.size === 'medium' ? 'text-3xl md:text-4xl' :
+                'text-2xl md:text-3xl'
+              }`} style={{ color: getPremiumTextColor(template.id) }}>
+                {template.heading.title}
+              </h2>
+              {template.heading.subtitle && (
+                <p className="text-xl opacity-80" style={{ color: getPremiumTextColor(template.id) }}>
+                  {template.heading.subtitle}
+                </p>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* Video Section */}
+        {template.video && template.video.videoUrl && (
+          <section 
+            className={`py-16 px-4 relative ${getEffectClasses(template.effects?.hero)}`} 
+            style={getSectionStyle(template.styles.backgroundColor, template.styles.heroBackgroundImage)}
+          >
+            {template.styles.heroBackgroundImage && (
+              <div className="absolute inset-0 bg-black/30"></div>
+            )}
+            <div className="max-w-4xl mx-auto text-center relative z-10" dir="rtl">
+              {template.video.badge && (
+                <Badge className="mb-4" variant="outline" style={{ 
+                  borderColor: getPremiumTextColor(template.id), 
+                  color: getPremiumTextColor(template.id) 
+                }}>
+                  {template.video.badge}
+                </Badge>
+              )}
+              {template.video.title && (
+                <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: getPremiumTextColor(template.id) }}>
+                  {template.video.title}
+                </h2>
+              )}
+              {template.video.subtitle && (
+                <p className="text-xl mb-8 opacity-80" style={{ color: getPremiumTextColor(template.id) }}>
+                  {template.video.subtitle}
+                </p>
+              )}
+              <div className="aspect-video bg-black/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                {template.video.videoType === 'youtube' ? (
+                  <iframe
+                    src={`https://www.youtube.com/embed/${template.video.videoUrl.split('v=')[1] || template.video.videoUrl}`}
+                    className="w-full h-full rounded-lg"
+                    allowFullScreen
+                  />
+                ) : (
+                  <div style={{ color: getPremiumTextColor(template.id) }}>
+                    <p>וידאו: {template.video.videoUrl}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Social Bar Section */}
+        {template.socialBar && template.socialBar.socialLinks && template.socialBar.socialLinks.length > 0 && (
+          <section 
+            className={`py-16 px-4 relative ${getEffectClasses(template.effects?.hero)}`} 
+            style={getSectionStyle(template.styles.backgroundColor, template.styles.heroBackgroundImage)}
+          >
+            {template.styles.heroBackgroundImage && (
+              <div className="absolute inset-0 bg-black/30"></div>
+            )}
+            <div className="max-w-4xl mx-auto text-center relative z-10" dir="rtl">
+              {template.socialBar.badge && (
+                <Badge className="mb-4" variant="outline" style={{ 
+                  borderColor: getPremiumTextColor(template.id), 
+                  color: getPremiumTextColor(template.id) 
+                }}>
+                  {template.socialBar.badge}
+                </Badge>
+              )}
+              {template.socialBar.title && (
+                <h2 className="text-3xl md:text-4xl font-bold mb-8" style={{ color: getPremiumTextColor(template.id) }}>
+                  {template.socialBar.title}
+                </h2>
+              )}
+              <div className="flex gap-6 justify-center">
+                {template.socialBar.socialLinks.map((link, index) => (
+                  <a
+                    key={index}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors hover:opacity-80 bg-white/10 backdrop-blur-sm border border-white/20"
+                    style={{ color: getPremiumTextColor(template.id) }}
+                  >
+                    <i className={`ri-${link.platform}-fill`}></i>
+                    {template.socialBar.showLabels && link.label && (
+                      <span>{link.label}</span>
+                    )}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* List Section */}
+        {template.list && template.list.items && template.list.items.length > 0 && (
+          <section 
+            className={`py-16 px-4 relative ${getEffectClasses(template.effects?.hero)}`} 
+            style={getSectionStyle(template.styles.backgroundColor, template.styles.heroBackgroundImage)}
+          >
+            {template.styles.heroBackgroundImage && (
+              <div className="absolute inset-0 bg-black/30"></div>
+            )}
+            <div className="max-w-4xl mx-auto text-center relative z-10" dir="rtl">
+              {template.list.badge && (
+                <Badge className="mb-4" variant="outline" style={{ 
+                  borderColor: getPremiumTextColor(template.id), 
+                  color: getPremiumTextColor(template.id) 
+                }}>
+                  {template.list.badge}
+                </Badge>
+              )}
+              {template.list.title && (
+                <h2 className="text-3xl md:text-4xl font-bold mb-8" style={{ color: getPremiumTextColor(template.id) }}>
+                  {template.list.title}
+                </h2>
+              )}
+              <div className="space-y-4">
+                {template.list.items.map((item, index) => (
+                  <Card key={index} className="p-4 bg-white/10 backdrop-blur-sm border-white/20">
+                    <div className="flex items-center gap-4">
+                      <div className="flex-1 text-right">
+                        <h3 className="font-bold" style={{ color: getPremiumTextColor(template.id) }}>{item.title}</h3>
+                        {item.description && (
+                          <p className="opacity-80" style={{ color: getPremiumTextColor(template.id) }}>{item.description}</p>
+                        )}
+                      </div>
+                      {template.list.listType === 'ordered' && (
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold" style={{ backgroundColor: template.styles.primaryColor }}>
+                          {index + 1}
+                        </div>
+                      )}
+                      {template.list.listType === 'icon' && item.icon && (
+                        <div className="w-8 h-8 flex items-center justify-center" style={{ color: template.styles.primaryColor }}>
+                          <i className={`ri-${item.icon}`}></i>
+                        </div>
+                      )}
+                      {template.list.listType === 'unordered' && (
+                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: template.styles.primaryColor }}></div>
+                      )}
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Embed Section */}
+        {template.embed && template.embed.htmlCode && (
+          <section 
+            className={`py-16 px-4 relative ${getEffectClasses(template.effects?.hero)}`} 
+            style={getSectionStyle(template.styles.backgroundColor, template.styles.heroBackgroundImage)}
+          >
+            {template.styles.heroBackgroundImage && (
+              <div className="absolute inset-0 bg-black/30"></div>
+            )}
+            <div className="max-w-6xl mx-auto text-center relative z-10" dir="rtl">
+              {template.embed.badge && (
+                <Badge className="mb-4" variant="outline" style={{ 
+                  borderColor: getPremiumTextColor(template.id), 
+                  color: getPremiumTextColor(template.id) 
+                }}>
+                  {template.embed.badge}
+                </Badge>
+              )}
+              {template.embed.title && (
+                <h2 className="text-3xl md:text-4xl font-bold mb-8" style={{ color: getPremiumTextColor(template.id) }}>
+                  {template.embed.title}
+                </h2>
+              )}
+              <div 
+                className="w-full bg-white/10 backdrop-blur-sm rounded-lg border border-white/20"
+                style={{ height: template.embed.height || 400 }}
+                dangerouslySetInnerHTML={{ __html: template.embed.htmlCode }}
+              />
+            </div>
+          </section>
+        )}
+
+        {/* Slider Section */}
+        {template.slider && template.slider.slides && template.slider.slides.length > 0 && (
+          <section 
+            className={`py-16 px-4 relative ${getEffectClasses(template.effects?.hero)}`} 
+            style={getSectionStyle(template.styles.backgroundColor, template.styles.heroBackgroundImage)}
+          >
+            {template.styles.heroBackgroundImage && (
+              <div className="absolute inset-0 bg-black/30"></div>
+            )}
+            <div className="max-w-6xl mx-auto text-center relative z-10" dir="rtl">
+              {template.slider.badge && (
+                <Badge className="mb-4" variant="outline" style={{ 
+                  borderColor: getPremiumTextColor(template.id), 
+                  color: getPremiumTextColor(template.id) 
+                }}>
+                  {template.slider.badge}
+                </Badge>
+              )}
+              {template.slider.title && (
+                <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: getPremiumTextColor(template.id) }}>
+                  {template.slider.title}
+                </h2>
+              )}
+              {template.slider.subtitle && (
+                <p className="text-xl opacity-80 mb-8" style={{ color: getPremiumTextColor(template.id) }}>
+                  {template.slider.subtitle}
+                </p>
+              )}
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {template.slider.slides.map((slide, index) => (
+                  <Card key={index} className="p-6 bg-white/10 backdrop-blur-sm border-white/20">
+                    {slide.image && (
+                      <img src={slide.image} alt={slide.title} className="w-full h-32 object-cover rounded mb-4" />
+                    )}
+                    <h3 className="text-xl font-bold mb-2" style={{ color: getPremiumTextColor(template.id) }}>{slide.title}</h3>
+                    <p className="mb-4 opacity-80" style={{ color: getPremiumTextColor(template.id) }}>{slide.description}</p>
+                    {slide.buttonText && (
+                      <Button className="text-white" style={{ backgroundColor: template.styles.primaryColor }}>
+                        {slide.buttonText}
+                      </Button>
+                    )}
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
       </div>
     );
   }
