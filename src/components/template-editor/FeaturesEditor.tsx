@@ -1,4 +1,3 @@
-
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -23,7 +22,10 @@ export const FeaturesEditor = ({ template, onUpdate, onStyleUpdate }: FeaturesEd
       { title: 'ניסיון רב', description: 'מעל 10 שנות ניסיון בתחום', icon: 'star' },
       { title: 'שירות מקצועי', description: 'צוות מקצועי ומנוסה', icon: 'award' },
       { title: 'מחירים הוגנים', description: 'מחירים תחרותיים', icon: 'target' }
-    ]
+    ],
+    button1Text: 'כפתור 1',
+    button2Text: 'כפתור 2',
+    layout: 'grid'
   };
 
   const iconOptions = [
@@ -54,7 +56,7 @@ export const FeaturesEditor = ({ template, onUpdate, onStyleUpdate }: FeaturesEd
   const addFeatureItem = () => {
     const newItem = {
       title: 'תכונה חדשה',
-      description: 'תיאור התכונה החדשة',
+      description: 'תיאור התכונה החדשה',
       icon: 'star'
     };
     updateFeatures('items', [...features.items, newItem]);

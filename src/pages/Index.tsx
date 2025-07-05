@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import LandingPageQuestionnaire from "@/components/LandingPageQuestionnaire";
 import TemplateEditor from "@/components/TemplateEditor";
-import TemplatePreview from "@/components/template-editor/TemplatePreview";
+import { TemplatePreview } from "@/components/template-editor/TemplatePreview";
 import { PublishingWizard } from "@/components/PublishingWizard";
 import Header from "@/components/Header";
 import { useGeneratedPageState } from "@/hooks/useGeneratedPageState";
