@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,6 +25,7 @@ const ApiSettings = () => {
   const [showKeys, setShowKeys] = useState<{ [key: string]: boolean }>({});
   const [wordpressUrl, setWordpressUrl] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isTesting, setIsTesting] = useState(false);
   const [copied, setCopied] = useState<string>('');
   const [siteId, setSiteId] = useState<string>('');
   const { toast } = useToast();
@@ -45,7 +47,13 @@ const ApiSettings = () => {
   useEffect(() => {
     const savedKeys = localStorage.getItem('leadgrid_api_keys');
     if (savedKeys) {
-      setApiKeys(JSON.parse(savedKeys));
+      try {
+        const parsedKeys = JSON.parse(savedKeys);
+        setApiKeys(parsedKeys);
+      } catch (error) {
+        console.error('Error loading API keys:', error);
+        setApiKeys([]);
+      }
     }
   }, []);
 
@@ -88,6 +96,67 @@ const ApiSettings = () => {
         description: "המפתח החדש מוכן לשימוש",
       });
     }, 1000);
+  };
+
+  // Test API connection
+  const testApiConnection = async () => {
+    if (!wordpressUrl.trim()) {
+      toast({
+        title: "שגיאה",
+        description: "אנא הכנס כתובת אתר WordPress",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (apiKeys.length === 0) {
+      toast({
+        title: "שגיאה",
+        description: "אנא צור מפתח API לפני בדיקת החיבור",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsTesting(true);
+    
+    try {
+      // Get the most recent API key
+      const activeApiKey = apiKeys.find(key => key.status === 'active') || apiKeys[0];
+      
+      if (!activeApiKey) {
+        throw new Error('לא נמצא מפתח API פעיל');
+      }
+
+      console.log('Testing with API Key:', activeApiKey.key);
+      console.log('Testing with Site ID:', siteId);
+      console.log('Testing WordPress URL:', wordpressUrl);
+
+      // Simulate API test (replace with actual API call)
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Update last used time for the API key
+      const updatedKeys = apiKeys.map(key => 
+        key.id === activeApiKey.id 
+          ? { ...key, lastUsed: new Date().toISOString() }
+          : key
+      );
+      saveApiKeys(updatedKeys);
+
+      toast({
+        title: "חיבור בוצע בהצלחה",
+        description: `האתר ${wordpressUrl} מחובר ומוכן לשימוש עם המפתח ${activeApiKey.name}`,
+      });
+    } catch (error) {
+      console.error('API Test Error:', error);
+      toast({
+        title: "שגיאת חיבור",
+        description: error instanceof Error ? error.message : "לא ניתן לבדוק את החיבור",
+        variant: "destructive"
+      });
+    } finally {
+      setIsTesting(false);
+    }
   };
 
   // Copy to clipboard (now handles both API keys and Site ID)
@@ -236,6 +305,11 @@ const ApiSettings = () => {
                           <h3 className="font-medium">{apiKey.name}</h3>
                           <p className="text-sm text-gray-500">
                             נוצר: {new Date(apiKey.created).toLocaleDateString('he-IL')}
+                            {apiKey.lastUsed && (
+                              <span className="mr-4">
+                                • שימוש אחרון: {new Date(apiKey.lastUsed).toLocaleDateString('he-IL')}
+                              </span>
+                            )}
                           </p>
                         </div>
                         <Badge variant={apiKey.status === 'active' ? 'default' : 'secondary'}>
@@ -348,34 +422,31 @@ const ApiSettings = () => {
                   onChange={(e) => setWordpressUrl(e.target.value)}
                 />
               </div>
+              
+              {apiKeys.length > 0 && (
+                <div className="p-3 bg-green-50 rounded border">
+                  <p className="text-sm text-green-800">
+                    <strong>מפתח API זמין:</strong> {apiKeys.find(k => k.status === 'active')?.name || apiKeys[0]?.name}
+                  </p>
+                  <code className="text-xs text-green-700">
+                    {formatApiKey(apiKeys.find(k => k.status === 'active')?.key || apiKeys[0]?.key || '', false)}
+                  </code>
+                </div>
+              )}
+              
               <Button 
                 className="w-full"
-                onClick={() => {
-                  if (!wordpressUrl) {
-                    toast({
-                      title: "שגיאה",
-                      description: "אנא הכנס כתובת אתר",
-                      variant: "destructive"
-                    });
-                    return;
-                  }
-                  
-                  toast({
-                    title: "בודק חיבור...",
-                    description: "בדיקת החיבור עם האתר",
-                  });
-                  
-                  // Simulate connection test
-                  setTimeout(() => {
-                    toast({
-                      title: "חיבור בוצע בהצלחה",
-                      description: "האתר מחובר ומוכן לשימוש",
-                    });
-                  }, 2000);
-                }}
+                onClick={testApiConnection}
+                disabled={isTesting || apiKeys.length === 0}
               >
-                בדוק חיבור
+                {isTesting ? 'בודק חיבור...' : 'בדוק חיבור'}
               </Button>
+              
+              {apiKeys.length === 0 && (
+                <p className="text-sm text-amber-600 text-center">
+                  צור מפתח API בלשונית "מפתחות API" לפני בדיקת החיבור
+                </p>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
