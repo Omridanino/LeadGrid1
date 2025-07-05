@@ -91,7 +91,7 @@ export const EmotionalEditor = ({ template, onUpdate, onStyleUpdate }: Emotional
 
       {/* Colors and Background Section */}
       <div className="space-y-4">
-        <h3 className="text-white text-lg font-semibold border-b border-gray-700 pb-2">עיצוב רקע</h3>
+        <h3 className="text-white text-lg font-semibold border-b border-gray-700 pb-2">עיצוב רקע וצבעים</h3>
         
         <BackgroundSelector
           label="רקע הסקשן"
@@ -103,8 +103,20 @@ export const EmotionalEditor = ({ template, onUpdate, onStyleUpdate }: Emotional
         
         <ColorPicker
           label="צבע כותרת"
-          value={template.styles.textColor}
-          onChange={(value) => onStyleUpdate({ textColor: value })}
+          value={template.styles.emotionalTitleColor || template.styles.textColor}
+          onChange={(value) => onStyleUpdate({ emotionalTitleColor: value })}
+        />
+        
+        <ColorPicker
+          label="צבע טקסט"
+          value={template.styles.emotionalTextColor || template.styles.textColor}
+          onChange={(value) => onStyleUpdate({ emotionalTextColor: value })}
+        />
+        
+        <ColorPicker
+          label="צבע תג"
+          value={template.styles.emotionalBadgeColor || template.styles.accentColor}
+          onChange={(value) => onStyleUpdate({ emotionalBadgeColor: value })}
         />
         
         <ColorPicker

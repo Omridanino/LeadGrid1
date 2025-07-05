@@ -29,6 +29,25 @@ export interface TemplateStyles {
   primaryColor: string;
   secondaryColor: string;
   accentColor: string;
+  
+  // Premium section-specific colors (optional)
+  emotionalTitleColor?: string;
+  emotionalTextColor?: string;
+  emotionalBadgeColor?: string;
+  featuresTitleColor?: string;
+  featuresTextColor?: string;
+  testimonialsTitleColor?: string;
+  testimonialsTextColor?: string;
+  aboutTitleColor?: string;
+  aboutTextColor?: string;
+  pricingTitleColor?: string;
+  pricingTextColor?: string;
+  faqTitleColor?: string;
+  faqTextColor?: string;
+  finalCtaTitleColor?: string;
+  finalCtaTextColor?: string;
+  contactTitleColor?: string;
+  contactTextColor?: string;
 }
 
 export interface HeroSection {

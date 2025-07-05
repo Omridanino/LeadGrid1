@@ -4,9 +4,25 @@ export const generatePageHTML = (templateData: any) => {
   const isPremium = template.category.includes('פרימיום');
   
   // Premium text colors for content - now editable
-  const getPremiumTextColor = (templateId: string, customColor?: string) => {
+  const getPremiumTextColor = (templateId: string, sectionType: string = '', customColor?: string) => {
     // If custom color is provided, use it
     if (customColor) return customColor;
+    
+    // Check for section-specific custom colors
+    const sectionColors = {
+      emotional: template.styles.emotionalTitleColor || template.styles.emotionalTextColor,
+      features: template.styles.featuresTitleColor || template.styles.featuresTextColor,
+      testimonials: template.styles.testimonialsTitleColor || template.styles.testimonialsTextColor,
+      about: template.styles.aboutTitleColor || template.styles.aboutTextColor,
+      pricing: template.styles.pricingTitleColor || template.styles.pricingTextColor,
+      faq: template.styles.faqTitleColor || template.styles.faqTextColor,
+      'final-cta': template.styles.finalCtaTitleColor || template.styles.finalCtaTextColor,
+      contact: template.styles.contactTitleColor || template.styles.contactTextColor
+    };
+    
+    if (sectionType && sectionColors[sectionType as keyof typeof sectionColors]) {
+      return sectionColors[sectionType as keyof typeof sectionColors];
+    }
     
     // Otherwise use template defaults
     switch (templateId) {
@@ -718,7 +734,13 @@ export const generatePageHTML = (templateData: any) => {
         }
     </style>
 </head>
-<body style="background-color: ${isPremium && template.id === 'nft-future-pro' ? '#0a0a1f' : template.styles.backgroundColor || template.styles.primaryColor}; color: ${template.styles.textColor};" class="text-foreground">
+<body style="background: ${isPremium && template.id === 'nft-future-pro' ? 'linear-gradient(135deg, #0a0a1f, #1e1b4b)' :
+           isPremium && template.id === 'tech-consultant-pro' ? 'linear-gradient(135deg, #0f172a, #374151)' :
+           isPremium && template.id === 'neon-academy-pro' ? 'linear-gradient(135deg, #000000, #581c87)' :
+           isPremium && template.id === 'blockchain-tech-pro' ? 'linear-gradient(135deg, #1e1b4b, #1e40af)' :
+           isPremium && template.id === 'creative-3d-pro' ? 'linear-gradient(135deg, #fed7aa, #fca5a5)' :
+           isPremium && template.id === 'authkit-tech-pro' ? 'linear-gradient(135deg, #0f172a, #1e3a8a)' :
+           template.styles.backgroundColor || '#ffffff'}; color: ${template.styles.textColor};" class="text-foreground">
 
     <!-- Hero Section -->
     <section class="hero" ${template.styles.heroBackgroundImage ? `style="background-image: url(${template.styles.heroBackgroundImage}); background-size: cover; background-position: center; background-repeat: no-repeat;"` : ''}>
@@ -802,10 +824,10 @@ export const generatePageHTML = (templateData: any) => {
         ` : ''}
         <div class="max-w-6xl mx-auto px-4 relative z-10">
             <div class="text-center">
-                ${template.hero.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.accentColor)}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : (template.styles.heroBackgroundImage ? 'rgba(255,255,255,0.3)' : template.styles.accentColor)};">${template.hero.badge}</div>` : ''}
-                <h1 class="text-4xl md:text-6xl font-bold mb-4 ${isPremium && template.id === 'neon-academy-pro' ? 'neon-text' : ''}" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; ${isPremium && (template.id === 'blockchain-tech-pro' || template.id === 'nft-future-pro') ? 'background: linear-gradient(45deg, #60a5fa, #a78bfa, #22d3ee); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;' : ''}">${template.hero.title}</h1>
-                <h2 class="text-xl md:text-2xl mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.9;">${template.hero.subtitle}</h2>
-                <p class="text-lg mb-8 max-w-4xl mx-auto" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.8;">${template.hero.description}</p>
+                ${template.hero.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroBadgeColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.accentColor)}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : (template.styles.heroBackgroundImage ? 'rgba(255,255,255,0.3)' : template.styles.accentColor)};">${template.hero.badge}</div>` : ''}
+                <h1 class="text-4xl md:text-6xl font-bold mb-4 ${isPremium && template.id === 'neon-academy-pro' ? 'neon-text' : ''}" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroTitleColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; ${isPremium && (template.id === 'blockchain-tech-pro' || template.id === 'nft-future-pro') ? 'background: linear-gradient(45deg, #60a5fa, #a78bfa, #22d3ee); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;' : ''}">${template.hero.title}</h1>
+                <h2 class="text-xl md:text-2xl mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroTextColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.9;">${template.hero.subtitle}</h2>
+                <p class="text-lg mb-8 max-w-4xl mx-auto" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroTextColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.8;">${template.hero.description}</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.accentColor}; ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}">
                         ${template.hero.button1Icon ? `<i class="ri-${template.hero.button1Icon}"></i>` : ''}
@@ -825,9 +847,9 @@ export const generatePageHTML = (templateData: any) => {
      <section class="emotional">
          <div class="max-w-6xl mx-auto px-4 relative z-10">
              <div class="text-center">
-                 ${template.emotional.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : template.styles.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.accentColor};">${template.emotional.badge}</div>` : ''}
-                 <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : template.styles.textColor};">${template.emotional.title}</h2>
-                 <p class="text-lg max-w-4xl mx-auto opacity-90 mb-8" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : template.styles.textColor};">${template.emotional.description}</p>
+                 ${template.emotional.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'emotional', template.styles.emotionalBadgeColor) : template.styles.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.accentColor};">${template.emotional.badge}</div>` : ''}
+                 <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id, 'emotional', template.styles.emotionalTitleColor) : template.styles.textColor};">${template.emotional.title}</h2>
+                 <p class="text-lg max-w-4xl mx-auto opacity-90 mb-8" style="color: ${isPremium ? getPremiumTextColor(template.id, 'emotional', template.styles.emotionalTextColor) : template.styles.textColor};">${template.emotional.description}</p>
                  ${template.emotional.button1Text ? `
                  <div class="flex flex-col sm:flex-row gap-4 justify-center">
                      <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.primaryColor};">
@@ -855,9 +877,9 @@ export const generatePageHTML = (templateData: any) => {
         })() : ''}
         <div class="max-w-7xl mx-auto px-6 relative z-10">
             <div class="text-center mb-16">
-                ${template.features.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : template.styles.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.primaryColor};">${template.features.badge}</div>` : ''}
-                <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : template.styles.textColor};">${template.features.title}</h2>
-                ${template.features.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(template.id, template.styles.textColor) : template.styles.textColor}; opacity: 0.8;">${template.features.subtitle}</p>` : ''}
+                ${template.features.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'features', template.styles.featuresBadgeColor) : template.styles.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.primaryColor};">${template.features.badge}</div>` : ''}
+                <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'features', template.styles.featuresTitleColor) : template.styles.textColor};">${template.features.title}</h2>
+                ${template.features.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(template.id, 'features', template.styles.featuresTextColor) : template.styles.textColor}; opacity: 0.8;">${template.features.subtitle}</p>` : ''}
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
