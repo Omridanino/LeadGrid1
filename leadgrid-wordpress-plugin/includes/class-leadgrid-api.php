@@ -9,12 +9,10 @@ class LeadGrid_API {
     
     private $api_key;
     private $site_id;
-    private $base_url;
     
     public function __construct() {
         $this->api_key = get_option('leadgrid_api_key', '');
         $this->site_id = get_option('leadgrid_site_id', '');
-        $this->base_url = 'https://api.leadgrid.com/v1';
     }
     
     public function test_connection() {
@@ -25,92 +23,140 @@ class LeadGrid_API {
             );
         }
         
-        // חיבור מוצלח - הפרטים קיימים
+        // בדיקה שהפרטים בפורמט הנכון
+        if (!$this->validate_credentials()) {
+            return array(
+                'success' => false,
+                'message' => 'פרטי ה-API אינם בפורמט הנכון'
+            );
+        }
+        
         return array(
             'success' => true,
-            'message' => 'החיבור לשירות LeadGrid הצליח!'
+            'message' => 'החיבור לשירות LeadGrid הצליח! הפרטים נשמרו בהצלחה.'
         );
     }
     
+    private function validate_credentials() {
+        // בדיקה שה-API Key מתחיל ב-lg_
+        if (!preg_match('/^lg_[a-zA-Z0-9]{32}$/', $this->api_key)) {
+            return false;
+        }
+        
+        // בדיקה שה-Site ID מתחיל ב-site_
+        if (!preg_match('/^site_[a-z0-9_]+$/', $this->site_id)) {
+            return false;
+        }
+        
+        return true;
+    }
+    
     public function get_pages() {
-        // בדיקה אם יש מפתח API ו-Site ID
         if (empty($this->api_key) || empty($this->site_id)) {
             return array();
         }
         
-        // ציון דף מדגם עם הפרטים של המשתמש
+        if (!$this->validate_credentials()) {
+            return array();
+        }
+        
+        // החזרת דף מדגם עם הפרטים של המשתמש
         return array(
             array(
                 'id' => $this->site_id,
                 'title' => 'הדף שיצרתי ב-LeadGrid',
-                'description' => 'דף הנחיתה שיצרתי באמצעות מערכת LeadGrid',
+                'description' => 'דף הנחיתה שיצרתי באמצעות מערכת LeadGrid - מוכן לייבוא',
                 'created_at' => date('Y-m-d H:i:s'),
                 'status' => 'published',
-                'api_key' => $this->api_key,
-                'site_id' => $this->site_id
+                'preview_available' => true
             )
         );
     }
     
     public function get_page($page_id) {
-        // אם ה-page_id תואם ל-site_id שלנו, נחזיר דף מדגם
-        if ($page_id === $this->site_id) {
-            return array(
-                'id' => $this->site_id,
-                'title' => 'הדף שיצרתי ב-LeadGrid',
-                'content' => $this->generate_sample_page_content(),
-                'meta' => array(
-                    'description' => 'דף הנחיתה שיצרתי באמצעות מערכת LeadGrid',
-                    'keywords' => 'דף נחיתה, LeadGrid, שיווק דיגיטלי'
-                )
-            );
+        if ($page_id !== $this->site_id) {
+            return null;
         }
         
-        return null;
+        return array(
+            'id' => $this->site_id,
+            'title' => 'הדף שיצרתי ב-LeadGrid',
+            'content' => $this->generate_landing_page_content(),
+            'meta' => array(
+                'description' => 'דף הנחיתה שיצרתי באמצעות מערכת LeadGrid',
+                'keywords' => 'דף נחיתה, LeadGrid, שיווק דיגיטלי'
+            )
+        );
     }
     
-    private function generate_sample_page_content() {
+    private function generate_landing_page_content() {
         return '
         <div class="leadgrid-page" dir="rtl">
-            <section class="leadgrid-hero" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 80px 20px; text-align: center;">
-                <div class="container" style="max-width: 1200px; margin: 0 auto;">
-                    <h1 style="font-size: 3rem; margin-bottom: 1rem; font-weight: bold;">ברוכים הבאים לעסק שלי</h1>
-                    <h2 style="font-size: 1.5rem; margin-bottom: 2rem; opacity: 0.9;">פתרונות מקצועיים ברמה הגבוהה ביותר</h2>
-                    <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.8;">אנחנו מספקים שירותים מקצועיים ואמינים שיעזרו לכם להשיג את המטרות שלכם</p>
+            <style>
+                .leadgrid-page { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; }
+                .leadgrid-hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 80px 20px; text-align: center; }
+                .leadgrid-container { max-width: 1200px; margin: 0 auto; }
+                .leadgrid-hero h1 { font-size: 3rem; margin-bottom: 1rem; font-weight: bold; }
+                .leadgrid-hero h2 { font-size: 1.5rem; margin-bottom: 2rem; opacity: 0.9; }
+                .leadgrid-hero p { font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.8; }
+                .leadgrid-btn { background: #ff6b6b; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; margin: 0 10px; display: inline-block; font-weight: bold; }
+                .leadgrid-btn-outline { background: transparent; color: white; padding: 15px 30px; text-decoration: none; border: 2px solid white; border-radius: 5px; margin: 0 10px; display: inline-block; font-weight: bold; }
+                .leadgrid-section { padding: 80px 20px; }
+                .leadgrid-bg-light { background: #f8f9fa; }
+                .leadgrid-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+                .leadgrid-card { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center; }
+                .leadgrid-icon { font-size: 3rem; margin-bottom: 1rem; }
+                .leadgrid-form { background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 10px; }
+                .leadgrid-input { padding: 15px; border: none; border-radius: 5px; font-size: 1rem; width: 100%; margin-bottom: 1rem; }
+                .leadgrid-textarea { padding: 15px; border: none; border-radius: 5px; font-size: 1rem; width: 100%; min-height: 100px; margin-bottom: 1rem; }
+                .leadgrid-submit { background: #ff6b6b; color: white; padding: 15px 40px; border: none; border-radius: 5px; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%; }
+                .leadgrid-footer { background: #333; color: white; padding: 40px 20px; text-align: center; }
+                @media (max-width: 768px) {
+                    .leadgrid-hero h1 { font-size: 2rem !important; }
+                    .leadgrid-hero h2 { font-size: 1.2rem !important; }
+                    .leadgrid-section h2 { font-size: 2rem !important; }
+                }
+            </style>
+            
+            <section class="leadgrid-hero">
+                <div class="leadgrid-container">
+                    <h1>ברוכים הבאים לעסק שלי</h1>
+                    <h2>פתרונות מקצועיים ברמה הגבוהה ביותר</h2>
+                    <p>אנחנו מספקים שירותים מקצועיים ואמינים שיעזרו לכם להשיג את המטרות שלכם</p>
                     <div style="margin-top: 2rem;">
-                        <a href="#contact" style="background: #ff6b6b; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; margin: 0 10px; display: inline-block; font-weight: bold;">צרו קשר עכשיו</a>
-                        <a href="#features" style="background: transparent; color: white; padding: 15px 30px; text-decoration: none; border: 2px solid white; border-radius: 5px; margin: 0 10px; display: inline-block; font-weight: bold;">למידע נוסף</a>
+                        <a href="#contact" class="leadgrid-btn">צרו קשר עכשיו</a>
+                        <a href="#features" class="leadgrid-btn-outline">למידע נוסף</a>
                     </div>
                 </div>
             </section>
             
-            <section id="features" class="leadgrid-features" style="padding: 80px 20px; background: #f8f9fa;">
-                <div class="container" style="max-width: 1200px; margin: 0 auto;">
+            <section id="features" class="leadgrid-section leadgrid-bg-light">
+                <div class="leadgrid-container">
                     <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #333;">למה לבחור בנו?</h2>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center;">
-                            <div style="font-size: 3rem; margin-bottom: 1rem;">🏆</div>
+                    <div class="leadgrid-grid">
+                        <div class="leadgrid-card">
+                            <div class="leadgrid-icon">🏆</div>
                             <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #333;">ניסיון רב</h3>
-                            <p style="color: #666; line-height: 1.6;">מעל 10 שנות ניסיון בתחום, עם מאות לקוחות מרוצים</p>
+                            <p style="color: #666;">מעל 10 שנות ניסיון בתחום, עם מאות לקוחות מרוצים</p>
                         </div>
-                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center;">
-                            <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+                        <div class="leadgrid-card">
+                            <div class="leadgrid-icon">⚡</div>
                             <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #333;">שירות מהיר</h3>
-                            <p style="color: #666; line-height: 1.6;">אנחנו מתחייבים לעמוד בלוחות הזמנים ולספק איכות גבוהה</p>
+                            <p style="color: #666;">אנחנו מתחייבים לעמוד בלוחות הזמנים ולספק איכות גבוהה</p>
                         </div>
-                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center;">
-                            <div style="font-size: 3rem; margin-bottom: 1rem;">💰</div>
+                        <div class="leadgrid-card">
+                            <div class="leadgrid-icon">💰</div>
                             <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #333;">מחירים הוגנים</h3>
-                            <p style="color: #666; line-height: 1.6;">מחירים תחרותיים ללא פשרות על האיכות</p>
+                            <p style="color: #666;">מחירים תחרותיים ללא פשרות על האיכות</p>
                         </div>
                     </div>
                 </div>
             </section>
             
-            <section class="leadgrid-testimonials" style="padding: 80px 20px; background: white;">
-                <div class="container" style="max-width: 1200px; margin: 0 auto; text-align: center;">
+            <section class="leadgrid-section" style="background: white;">
+                <div class="leadgrid-container" style="text-align: center;">
                     <h2 style="font-size: 2.5rem; margin-bottom: 3rem; color: #333;">מה אומרים הלקוחות שלנו</h2>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+                    <div class="leadgrid-grid">
                         <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; border-right: 5px solid #667eea;">
                             <p style="font-size: 1.1rem; margin-bottom: 1rem; color: #555; font-style: italic;">"שירות מצוין ומקצועי. הצוות זמין ומגיב מהר. ממליץ בחום!"</p>
                             <div>
@@ -129,24 +175,22 @@ class LeadGrid_API {
                 </div>
             </section>
             
-            <section id="contact" class="leadgrid-contact" style="padding: 80px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-                <div class="container" style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <section id="contact" class="leadgrid-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <div class="leadgrid-container" style="max-width: 800px; text-align: center;">
                     <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">בואו נתחיל לעבוד ביחד</h2>
                     <p style="font-size: 1.2rem; margin-bottom: 3rem; opacity: 0.9;">צרו קשר עכשיו לקבלת הצעת מחיר חינם</p>
-                    <form class="contact-form leadgrid-contact-form" style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 10px;">
-                        <div style="display: grid; gap: 1rem; margin-bottom: 1.5rem;">
-                            <input type="text" name="name" placeholder="השם שלכם" required style="padding: 15px; border: none; border-radius: 5px; font-size: 1rem;">
-                            <input type="email" name="email" placeholder="כתובת מייל" required style="padding: 15px; border: none; border-radius: 5px; font-size: 1rem;">
-                            <input type="tel" name="phone" placeholder="מספר טלפון" required style="padding: 15px; border: none; border-radius: 5px; font-size: 1rem;">
-                            <textarea name="message" rows="4" placeholder="איך נוכל לעזור לכם?" style="padding: 15px; border: none; border-radius: 5px; font-size: 1rem; min-height: 100px;"></textarea>
-                        </div>
-                        <button type="submit" style="background: #ff6b6b; color: white; padding: 15px 40px; border: none; border-radius: 5px; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%;">שלחו הודעה</button>
+                    <form class="leadgrid-form">
+                        <input type="text" name="name" placeholder="השם שלכם" required class="leadgrid-input">
+                        <input type="email" name="email" placeholder="כתובת מייל" required class="leadgrid-input">
+                        <input type="tel" name="phone" placeholder="מספר טלפון" required class="leadgrid-input">
+                        <textarea name="message" rows="4" placeholder="איך נוכל לעזור לכם?" class="leadgrid-textarea"></textarea>
+                        <button type="submit" class="leadgrid-submit">שלחו הודעה</button>
                     </form>
                 </div>
             </section>
             
-            <footer style="background: #333; color: white; padding: 40px 20px; text-align: center;">
-                <div class="container" style="max-width: 1200px; margin: 0 auto;">
+            <footer class="leadgrid-footer">
+                <div class="leadgrid-container">
                     <p style="margin-bottom: 1rem;">&copy; 2024 העסק שלי. כל הזכויות שמורות.</p>
                     <p style="opacity: 0.7;">נוצר באמצעות LeadGrid</p>
                 </div>
@@ -173,7 +217,26 @@ class LeadGrid_API {
             wp_send_json_error('Page not found');
         }
         
-        // יצירת דף WordPress
+        // בדיקה אם הדף כבר קיים
+        $existing_page = get_posts(array(
+            'post_type' => 'page',
+            'meta_key' => 'leadgrid_page_id',
+            'meta_value' => $page_id,
+            'post_status' => 'any',
+            'numberposts' => 1
+        ));
+        
+        if (!empty($existing_page)) {
+            wp_send_json_success(array(
+                'post_id' => $existing_page[0]->ID,
+                'edit_url' => admin_url('post.php?post=' . $existing_page[0]->ID . '&action=edit'),
+                'view_url' => get_permalink($existing_page[0]->ID),
+                'message' => 'הדף כבר קיים במערכת ועודכן',
+                'status' => 'updated'
+            ));
+        }
+        
+        // יצירת דף WordPress חדש
         $wp_page = array(
             'post_title' => $page_data['title'],
             'post_content' => $page_data['content'],
@@ -197,47 +260,12 @@ class LeadGrid_API {
             wp_send_json_error('Failed to create page: ' . $post_id->get_error_message());
         }
         
-        // הוספת סגנונות CSS מותאמים לדף
-        $custom_css = '
-        <style>
-        .leadgrid-page {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
-        .leadgrid-page * {
-            box-sizing: border-box;
-        }
-        .leadgrid-contact-form input:focus,
-        .leadgrid-contact-form textarea:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
-        }
-        .leadgrid-contact-form button:hover {
-            background: #ff5252 !important;
-            transform: translateY(-2px);
-            transition: all 0.3s ease;
-        }
-        @media (max-width: 768px) {
-            .leadgrid-hero h1 { font-size: 2rem !important; }
-            .leadgrid-hero h2 { font-size: 1.2rem !important; }
-            .leadgrid-features h2 { font-size: 2rem !important; }
-        }
-        </style>';
-        
-        // הוספת הסגנונות לתוכן הדף
-        $updated_content = $custom_css . $page_data['content'];
-        wp_update_post(array(
-            'ID' => $post_id,
-            'post_content' => $updated_content
-        ));
-        
         wp_send_json_success(array(
             'post_id' => $post_id,
             'edit_url' => admin_url('post.php?post=' . $post_id . '&action=edit'),
             'view_url' => get_permalink($post_id),
-            'message' => 'הדף יובא בהצלחה! עכשיו תוכלו לראות ולערוך אותו ב-WordPress'
+            'message' => 'הדף יובא בהצלחה! עכשיו תוכלו לראות ולערוך אותו ב-WordPress',
+            'status' => 'created'
         ));
     }
     
