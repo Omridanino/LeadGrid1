@@ -186,7 +186,99 @@ export const templates: TemplateData[] = [
     }
   },
 
-  // ===== PREMIUM TEMPLATES - פרימיום ₪119.90 =====
+  // Add another exclusive template
+  {
+    id: 'exclusive-luxury-pro',
+    name: 'Luxury Pro Exclusive',
+    category: 'exclusive',
+    hero: {
+      title: 'פרימיום ללא פשרות',
+      subtitle: 'הפתרון המושלם לעסק שלכם',
+      description: 'רמת שירות וטכנולוגיה שלא ראיתם',
+      button1Text: 'התחילו עכשיו',
+      button2Text: 'צפו בדמו'
+    },
+    emotional: {
+      title: 'מצוינות זה הסטנדרט',
+      description: 'כל פרט מושלם למען הצלחתכם',
+      button1Text: 'גלו עוד',
+      button2Text: 'התחילו היום'
+    },
+    about: {
+      title: 'מי אנחנו',
+      description: 'מובילים בתחום הפתרונות הפרימיום',
+      button1Text: 'הסיפור שלנו',
+      button2Text: 'הצוות'
+    },
+    features: {
+      title: 'תכונות מתקדמות',
+      items: [
+        { title: 'איכות פרימיום', description: 'רמה גבוהה ביותר', icon: 'star' },
+        { title: 'תמיכה אישית', description: 'זמינים עבורכם תמיד', icon: 'headset-line' }
+      ],
+      button1Text: 'כל התכונות',
+      button2Text: 'התחילו'
+    },
+    testimonials: {
+      title: 'לקוחות מרוצים',
+      testimonials: [
+        { name: 'מיכל רוזן', role: 'מנהלת', content: 'שירות מעולה', rating: 5 }
+      ],
+      button1Text: 'עוד עדויות',
+      button2Text: 'הצטרפו'
+    },
+    pricing: {
+      title: 'מחירים פרימיום',
+      plans: [
+        { name: 'פרימיום', price: '₪1,499', period: 'חודש', features: ['תכונה 1', 'תכונה 2'], buttonText: 'בחרו' }
+      ],
+      button1Text: 'השוו',
+      button2Text: 'יעוץ'
+    },
+    faq: {
+      title: 'שאלות נפוצות',
+      questions: [
+        { question: 'מה כלול?', answer: 'הכל' }
+      ],
+      button1Text: 'עוד שאלות',
+      button2Text: 'צרו קשר'
+    },
+    finalCta: {
+      title: 'התחילו היום',
+      description: 'הפתרון המושלם מחכה',
+      button1Text: 'התחילו',
+      button2Text: 'למדו עוד'
+    },
+    contact: {
+      title: 'צרו קשר',
+      subtitle: 'נשמח לעזור',
+      buttonText: 'שלחו הודעה'
+    },
+    footer: {
+      companyName: 'Luxury Pro'
+    },
+    styles: {
+      backgroundColor: '#000000',
+      heroBackground: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)',
+      emotionalBackground: 'linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-light)) 100%)',
+      featuresBackground: '#111111',
+      testimonialsBackground: '#000000',
+      aboutBackground: '#1a1a1a',
+      pricingBackground: '#111111',
+      faqBackground: '#000000',
+      finalCtaBackground: 'linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--silver)) 100%)',
+      contactBackground: '#1a1a1a',
+      footerBackground: '#000000',
+      textColor: 'hsl(var(--foreground))',
+      primaryColor: 'hsl(var(--gold))',
+      secondaryColor: 'hsl(var(--silver))',
+      accentColor: 'hsl(var(--gold-light))'
+    },
+    effects: {
+      hero: 'holographic',
+      features: 'cosmic-geometry'
+    }
+  },
   // Premium Template 1 - Tech Consulting (inspired by first image)
   {
     id: 'tech-consultant-pro',
