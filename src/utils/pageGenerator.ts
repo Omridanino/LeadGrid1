@@ -1,7 +1,10 @@
 // Complete HTML Generator - Creates exact HTML from template preview with premium support
 export const generatePageHTML = (templateData: any) => {
   const template = templateData;
-  const isPremium = template.category.includes('פרימיום');
+  // More robust premium detection
+  const isPremium = template.category.includes('פרימיום') || template.id.includes('-pro');
+  
+  console.log('Template ID:', template.id, 'isPremium:', isPremium);
   
   // Premium text colors for content - now editable
   const getPremiumTextColor = (templateId: string, sectionType: string = '', customColor?: string) => {
@@ -67,6 +70,9 @@ export const generatePageHTML = (templateData: any) => {
       overflow: 'hidden',
     };
 
+    // Debug log
+    console.log('Getting background for template:', templateId, 'section:', sectionType);
+
     switch (templateId) {
       case 'tech-consultant-pro':
         return {
@@ -75,6 +81,11 @@ export const generatePageHTML = (templateData: any) => {
                      sectionType === 'features' ? 'linear-gradient(to bottom, rgb(15, 23, 42), rgb(55, 65, 81))' :
                      sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(55, 65, 81), rgb(15, 23, 42))' :
                      sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(15, 23, 42), rgb(0, 0, 0))' :
+                     sectionType === 'emotional' ? 'linear-gradient(to bottom, rgb(55, 65, 81), rgb(15, 23, 42))' :
+                     sectionType === 'about' ? 'linear-gradient(to bottom, rgb(30, 41, 59), rgb(15, 23, 42))' :
+                     sectionType === 'contact' ? 'linear-gradient(to bottom, rgb(15, 23, 42), rgb(55, 65, 81))' :
+                     sectionType === 'faq' ? 'linear-gradient(to bottom, rgb(55, 65, 81), rgb(30, 41, 59))' :
+                     sectionType === 'final-cta' ? 'linear-gradient(135deg, rgb(55, 65, 81) 0%, rgb(15, 23, 42) 100%)' :
                      'linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(30, 41, 59) 100%)',
           animationType: 'dynamicGradients'
         };
@@ -86,6 +97,11 @@ export const generatePageHTML = (templateData: any) => {
                      sectionType === 'features' ? 'linear-gradient(to bottom, rgb(0, 0, 0), rgb(88, 28, 135))' :
                      sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(88, 28, 135), rgb(0, 0, 0))' :
                      sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(0, 0, 0), rgb(88, 28, 135))' :
+                     sectionType === 'emotional' ? 'linear-gradient(to bottom, rgb(124, 58, 237), rgb(0, 0, 0))' :
+                     sectionType === 'about' ? 'linear-gradient(to bottom, rgb(88, 28, 135), rgb(124, 58, 237))' :
+                     sectionType === 'contact' ? 'linear-gradient(to bottom, rgb(0, 0, 0), rgb(88, 28, 135))' :
+                     sectionType === 'faq' ? 'linear-gradient(to bottom, rgb(88, 28, 135), rgb(0, 0, 0))' :
+                     sectionType === 'final-cta' ? 'linear-gradient(135deg, rgb(124, 58, 237) 0%, rgb(0, 0, 0) 100%)' :
                      'linear-gradient(135deg, rgb(124, 58, 237) 0%, rgb(0, 0, 0) 100%)',
           animationType: 'advancedSparkles'
         };
@@ -97,6 +113,11 @@ export const generatePageHTML = (templateData: any) => {
                      sectionType === 'features' ? 'linear-gradient(to bottom, rgb(30, 27, 75), rgb(30, 64, 175))' :
                      sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(30, 64, 175), rgb(30, 27, 75))' :
                      sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(30, 27, 75), rgb(88, 28, 135))' :
+                     sectionType === 'emotional' ? 'linear-gradient(to bottom, rgb(30, 64, 175), rgb(49, 46, 129))' :
+                     sectionType === 'about' ? 'linear-gradient(to bottom, rgb(49, 46, 129), rgb(30, 27, 75))' :
+                     sectionType === 'contact' ? 'linear-gradient(to bottom, rgb(30, 27, 75), rgb(30, 64, 175))' :
+                     sectionType === 'faq' ? 'linear-gradient(to bottom, rgb(30, 64, 175), rgb(49, 46, 129))' :
+                     sectionType === 'final-cta' ? 'linear-gradient(135deg, rgb(30, 64, 175) 0%, rgb(30, 27, 75) 100%)' :
                      'linear-gradient(135deg, rgb(49, 46, 129) 0%, rgb(30, 64, 175) 100%)',
           animationType: 'animatedPaths'
         };
@@ -108,6 +129,11 @@ export const generatePageHTML = (templateData: any) => {
                      sectionType === 'features' ? 'linear-gradient(to bottom, rgb(254, 215, 170), rgb(252, 165, 165))' :
                      sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(252, 165, 165), rgb(192, 132, 252))' :
                      sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(192, 132, 252), rgb(254, 215, 170))' :
+                     sectionType === 'emotional' ? 'linear-gradient(to bottom, rgb(254, 215, 170), rgb(192, 132, 252))' :
+                     sectionType === 'about' ? 'linear-gradient(to bottom, rgb(252, 165, 165), rgb(254, 215, 170))' :
+                     sectionType === 'contact' ? 'linear-gradient(to bottom, rgb(192, 132, 252), rgb(252, 165, 165))' :
+                     sectionType === 'faq' ? 'linear-gradient(to bottom, rgb(254, 215, 170), rgb(252, 165, 165))' :
+                     sectionType === 'final-cta' ? 'linear-gradient(135deg, rgb(252, 165, 165) 0%, rgb(192, 132, 252) 100%)' :
                      'linear-gradient(135deg, rgb(253, 186, 116) 0%, rgb(251, 113, 133) 100%)',
           animationType: 'fluidBlob'
         };
@@ -119,6 +145,11 @@ export const generatePageHTML = (templateData: any) => {
                      sectionType === 'features' ? 'linear-gradient(to bottom, rgb(17, 24, 39), rgb(15, 23, 42))' :
                      sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(15, 23, 42), rgb(30, 64, 175))' :
                      sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(30, 64, 175), rgb(17, 24, 39))' :
+                     sectionType === 'emotional' ? 'linear-gradient(to bottom, rgb(15, 23, 42), rgb(30, 41, 59))' :
+                     sectionType === 'about' ? 'linear-gradient(to bottom, rgb(30, 41, 59), rgb(30, 64, 175))' :
+                     sectionType === 'contact' ? 'linear-gradient(to bottom, rgb(17, 24, 39), rgb(15, 23, 42))' :
+                     sectionType === 'faq' ? 'linear-gradient(to bottom, rgb(30, 64, 175), rgb(30, 41, 59))' :
+                     sectionType === 'final-cta' ? 'linear-gradient(135deg, rgb(30, 64, 175) 0%, rgb(15, 23, 42) 100%)' :
                      'linear-gradient(135deg, rgb(51, 65, 85) 0%, rgb(30, 64, 175) 100%)',
           animationType: 'premium3D'
         };
@@ -126,16 +157,17 @@ export const generatePageHTML = (templateData: any) => {
       case 'nft-future-pro':
         return {
           ...baseStyles,
-          background: sectionType === 'hero' ? 'linear-gradient(135deg, rgb(30, 27, 75) 0%, rgb(55, 48, 163) 100%)' :
-                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(30, 27, 75), rgb(139, 92, 246))' :
-                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(30, 27, 75), rgb(124, 58, 237))' :
-                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(10, 10, 31), rgb(30, 27, 75))' :
-                     sectionType === 'about' ? 'linear-gradient(to bottom, rgb(49, 46, 129), rgb(30, 27, 75))' :
-                     sectionType === 'contact' ? 'linear-gradient(to bottom, rgb(49, 46, 129), rgb(30, 27, 75))' :
-                     sectionType === 'faq' ? 'linear-gradient(to bottom, rgb(10, 10, 31), rgb(30, 27, 75))' :
-                     sectionType === 'final-cta' ? 'linear-gradient(135deg, rgb(139, 92, 246) 0%, rgb(124, 58, 237) 100%)' :
+          background: sectionType === 'hero' ? 'linear-gradient(135deg, rgb(88, 28, 135) 0%, rgb(168, 85, 247) 50%, rgb(30, 64, 175) 100%)' :
+                     sectionType === 'features' ? 'linear-gradient(to bottom, rgb(88, 28, 135), rgb(168, 85, 247))' :
+                     sectionType === 'pricing' ? 'linear-gradient(to bottom, rgb(168, 85, 247), rgb(236, 72, 153))' :
+                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, rgb(88, 28, 135), rgb(168, 85, 247))' :
+                     sectionType === 'emotional' ? 'linear-gradient(to bottom, rgb(168, 85, 247), rgb(88, 28, 135))' :
+                     sectionType === 'about' ? 'linear-gradient(to bottom, rgb(139, 92, 246), rgb(168, 85, 247))' :
+                     sectionType === 'contact' ? 'linear-gradient(to bottom, rgb(168, 85, 247), rgb(236, 72, 153))' :
+                     sectionType === 'faq' ? 'linear-gradient(to bottom, rgb(88, 28, 135), rgb(139, 92, 246))' :
+                     sectionType === 'final-cta' ? 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(236, 72, 153) 100%)' :
                      'linear-gradient(135deg, rgb(30, 27, 75) 0%, rgb(139, 92, 246) 100%)',
-          animationType: 'dynamicGradients'
+          animationType: 'holographicFlow'
         };
       
       default:
@@ -281,6 +313,37 @@ export const generatePageHTML = (templateData: any) => {
               </div>
             `;
           }).join('')}
+        </div>`;
+
+      case 'holographicFlow':
+        return `
+        <div style="position: absolute; inset: 0; overflow: hidden;">
+          <div style="position: absolute; inset: 0;">
+            <div style="
+              position: absolute; 
+              inset: 0; 
+              opacity: 0.8;
+              background: 
+                radial-gradient(ellipse at 25% 25%, rgba(168, 85, 247, 0.5) 0%, transparent 50%),
+                radial-gradient(ellipse at 75% 75%, rgba(236, 72, 153, 0.5) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(139, 92, 246, 0.3) 0%, transparent 50%);
+              animation: holographicShift 15s ease-in-out infinite;
+            "></div>
+          </div>
+          ${[...Array(20)].map((_, i) => `
+            <div style="
+              position: absolute;
+              width: ${15 + Math.random() * 35}px;
+              height: ${15 + Math.random() * 35}px;
+              left: ${Math.random() * 100}%;
+              top: ${Math.random() * 100}%;
+              background: linear-gradient(${Math.random() * 360}deg, rgba(168, 85, 247, 0.7), rgba(236, 72, 153, 0.5));
+              border-radius: ${i % 4 === 0 ? '50%' : i % 4 === 1 ? '0' : i % 4 === 2 ? '20%' : '40% 60%'};
+              animation: holographicFloat ${10 + Math.random() * 6}s ease-in-out infinite ${Math.random() * 4}s;
+              filter: blur(1.5px);
+              opacity: 0.7;
+            "></div>
+          `).join('')}
         </div>`;
 
       default:
@@ -635,6 +698,32 @@ export const generatePageHTML = (templateData: any) => {
           }
           100% { 
             transform: rotateX(360deg) rotateY(180deg) rotateZ(60deg) translateZ(0px);
+          }
+        }
+        
+        @keyframes holographicShift {
+          0%, 100% { 
+            transform: translateX(0%) rotate(0deg) scale(1);
+            opacity: 0.8;
+          }
+          33% { 
+            transform: translateX(-15%) rotate(120deg) scale(1.1);
+            opacity: 0.9;
+          }
+          66% { 
+            transform: translateX(15%) rotate(240deg) scale(0.9);
+            opacity: 1;
+          }
+        }
+        
+        @keyframes holographicFloat {
+          0%, 100% { 
+            transform: translateY(0px) rotate(0deg) scale(1);
+            opacity: 0.7;
+          }
+          50% { 
+            transform: translateY(-40px) rotate(180deg) scale(1.3);
+            opacity: 0.9;
           }
         }
         
