@@ -61,6 +61,17 @@ export const EmbedEditor = ({ template, onUpdate }: EmbedEditorProps) => {
               max="1000"
             />
           </div>
+
+          {embedData.htmlCode && (
+            <div className="bg-slate-700/30 p-3 rounded border">
+              <Label className="text-slate-200 text-xs">תצוגה מקדימה:</Label>
+              <div 
+                className="mt-2 bg-white rounded border"
+                style={{ height: embedData.height || 400 }}
+                dangerouslySetInnerHTML={{ __html: embedData.htmlCode }}
+              />
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

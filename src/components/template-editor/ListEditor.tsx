@@ -27,10 +27,17 @@ export const ListEditor = ({ template, onUpdate }: ListEditorProps) => {
     if (newItem.title) {
       onUpdate({
         ...listData,
-        items: [...listData.items, newItem]
+        items: [...(listData.items || []), newItem]
       });
       setNewItem({ title: '', description: '', icon: '', link: '' });
     }
+  };
+
+  const handleRemoveItem = (index: number) => {
+    onUpdate({
+      ...listData,
+      items: listData.items.filter((_, i) => i !== index)
+    });
   };
 
   return (
@@ -83,6 +90,31 @@ export const ListEditor = ({ template, onUpdate }: ListEditorProps) => {
               הוסף פריט
             </Button>
           </div>
+
+          {listData.items && listData.items.length > 0 && (
+            <div>
+              <Label className="text-slate-200">פריטים קיימים</Label>
+              <div className="space-y-2 max-h-40 overflow-y-auto">
+                {listData.items.map((item, index) => (
+                  <div key={index} className="flex items-center justify-between bg-slate-700/30 p-3 rounded">
+                    <div className="flex-1">
+                      <p className="text-white text-sm font-medium">{item.title}</p>
+                      {item.description && (
+                        <p className="text-slate-300 text-xs">{item.description}</p>
+                      )}
+                    </div>
+                    <Button
+                      onClick={() => handleRemoveItem(index)}
+                      size="sm"
+                      className="bg-red-600 hover:bg-red-700 text-white p-1 h-auto"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

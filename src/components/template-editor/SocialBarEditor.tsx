@@ -33,10 +33,17 @@ export const SocialBarEditor = ({ template, onUpdate }: SocialBarEditorProps) =>
     if (newLink.url) {
       onUpdate({
         ...socialData,
-        socialLinks: [...socialData.socialLinks, newLink]
+        socialLinks: [...(socialData.socialLinks || []), newLink]
       });
       setNewLink({ platform: 'facebook' as const, url: '', label: '' });
     }
+  };
+
+  const handleRemoveLink = (index: number) => {
+    onUpdate({
+      ...socialData,
+      socialLinks: socialData.socialLinks.filter((_, i) => i !== index)
+    });
   };
 
   return (
@@ -87,6 +94,36 @@ export const SocialBarEditor = ({ template, onUpdate }: SocialBarEditorProps) =>
               הוסף קישור
             </Button>
           </div>
+
+          {socialData.socialLinks && socialData.socialLinks.length > 0 && (
+            <div>
+              <Label className="text-slate-200">קישורים קיימים</Label>
+              <div className="space-y-2 max-h-40 overflow-y-auto">
+                {socialData.socialLinks.map((link, index) => {
+                  const platform = platforms.find(p => p.value === link.platform);
+                  const Icon = platform?.icon || Share2;
+                  return (
+                    <div key={index} className="flex items-center justify-between bg-slate-700/30 p-3 rounded">
+                      <div className="flex items-center gap-2 flex-1">
+                        <Icon className="w-4 h-4 text-slate-300" />
+                        <div>
+                          <p className="text-white text-sm font-medium">{platform?.label}</p>
+                          <p className="text-slate-300 text-xs truncate max-w-32">{link.url}</p>
+                        </div>
+                      </div>
+                      <Button
+                        onClick={() => handleRemoveLink(index)}
+                        size="sm"
+                        className="bg-red-600 hover:bg-red-700 text-white p-1 h-auto"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
