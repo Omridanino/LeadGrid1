@@ -10,173 +10,89 @@ export const templates: TemplateData[] = [
     hero: {
       title: 'המהפכה הטכנולוגית הבאה',
       subtitle: 'פתרונות AI מתקדמים לעסקים חכמים',
-      description: 'הצטרפו לעתיד הבינה המלאכותית עם הפלטפורמה המתקדמת ביותר בעולם',
+      description: 'הצטרפו לעתיד הבינה המלאכותית עם הפלטformה המתקדמת ביותר בעולם',
       button1Text: 'התחילו עכשיו',
       button2Text: 'צפו בדמו'
     },
+    emotional: {
+      title: 'עתיד הטכנולוגיה כאן',
+      description: 'בינה מלאכותית שתשנה את העולם',
+      button1Text: 'גלו עוד',
+      button2Text: 'התחילו היום'
+    },
+    about: {
+      title: 'מי אנחנו',
+      description: 'מובילים בתחום הבינה המלאכותית',
+      button1Text: 'הסיפור שלנו',
+      button2Text: 'הצוות'
+    },
+    features: {
+      title: 'התכונות שלנו',
+      items: [
+        { title: 'AI מתקדם', description: 'בינה מלאכותית ברמה חדשה', icon: 'brain-line' },
+        { title: 'אבטחה מקסימלית', description: 'נתונים מוגנים ברמה גבוהה', icon: 'shield-line' }
+      ],
+      button1Text: 'כל התכונות',
+      button2Text: 'התחילו'
+    },
+    testimonials: {
+      title: 'לקוחות מרוצים',
+      testimonials: [
+        { name: 'דני כהן', role: 'מנכ"ל', content: 'פתרונות מדהימים', rating: 5 }
+      ],
+      button1Text: 'עוד עדויות',
+      button2Text: 'הצטרפו'
+    },
+    pricing: {
+      title: 'מחירים',
+      plans: [
+        { name: 'בסיסי', price: '₪299', period: 'חודש', features: ['תכונה 1'], buttonText: 'בחרו' }
+      ],
+      button1Text: 'השוו',
+      button2Text: 'יעוץ'
+    },
+    faq: {
+      title: 'שאלות נפוצות',
+      questions: [
+        { question: 'איך זה עובד?', answer: 'זה פשוט' }
+      ],
+      button1Text: 'עוד שאלות',
+      button2Text: 'צרו קשר'
+    },
+    finalCta: {
+      title: 'התחילו היום',
+      description: 'אל תחכו יותר',
+      button1Text: 'התחילו',
+      button2Text: 'למדו עוד'
+    },
+    contact: {
+      title: 'צרו קשר',
+      subtitle: 'נשמח לעזור',
+      buttonText: 'שלחו הודעה'
+    },
+    footer: {
+      companyName: 'Tech Titan'
+    },
     styles: {
       backgroundColor: '#000000',
+      heroBackground: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)',
+      emotionalBackground: 'linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-light)) 100%)',
+      featuresBackground: '#111111',
+      testimonialsBackground: '#000000',
+      aboutBackground: '#1a1a1a',
+      pricingBackground: '#111111',
+      faqBackground: '#000000',
+      finalCtaBackground: 'linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--silver)) 100%)',
+      contactBackground: '#1a1a1a',
+      footerBackground: '#000000',
+      textColor: 'hsl(var(--foreground))',
       primaryColor: 'hsl(var(--gold))',
       secondaryColor: 'hsl(var(--silver))',
-      textColor: 'hsl(var(--foreground))'
+      accentColor: 'hsl(var(--gold-light))'
     },
     effects: {
       hero: 'holographic',
       features: 'cosmic-geometry'
-    }
-  },
-  {
-    id: 'exclusive-quantum-labs',
-    name: 'Quantum Labs Exclusive',
-    category: 'אקסלוסיביות - מדע וטכנולוגיה',
-    hero: {
-      title: 'מחקר קוונטי מתקדם',
-      subtitle: 'פורצי דרך במדע החישוב הקוונטי',
-      description: 'פתרונות מדעיים חדשניים לעתיד טוב יותר',
-      button1Text: 'גלו עוד',
-      button2Text: 'הצטרפו למהפכה'
-    },
-    styles: {
-      backgroundColor: '#0a0a0f',
-      primaryColor: 'hsl(var(--gold))',
-      secondaryColor: 'hsl(var(--platinum))',
-      textColor: 'hsl(var(--foreground))'
-    },
-    effects: {
-      hero: 'quantum-bubbles',
-      features: 'particle-storm'
-    }
-  },
-  {
-    id: 'exclusive-neo-finance',
-    name: 'Neo Finance Exclusive',
-    category: 'אקסלוסיביות - פיננסים',
-    hero: {
-      title: 'הבנקאות של העתיד',
-      subtitle: 'פתרונות פיננסיים דיגיטליים מתקדמים',
-      description: 'טכנולוגיית blockchain וביטקוין למשקיעים חכמים',
-      button1Text: 'התחילו להשקיע',
-      button2Text: 'למדו עוד'
-    },
-    styles: {
-      backgroundColor: '#0f0f23',
-      primaryColor: 'hsl(var(--gold))',
-      secondaryColor: 'hsl(var(--silver))',
-      textColor: 'hsl(var(--foreground))'
-    },
-    effects: {
-      hero: 'liquid-metal',
-      features: 'crystal-matrix'
-    }
-  },
-  {
-    id: 'exclusive-cyber-health',
-    name: 'Cyber Health Exclusive',
-    category: 'אקסלוסיביות - בריאות דיגיטלית',
-    hero: {
-      title: 'רפואה דיגיטלית מתקדמת',
-      subtitle: 'AI לאבחון וטיפול מדוייק',
-      description: 'המהפכה הרפואית הדיגיטלית כבר כאן',
-      button1Text: 'הזמינו ייעוץ',
-      button2Text: 'גלו הכל'
-    },
-    styles: {
-      backgroundColor: '#001122',
-      primaryColor: 'hsl(var(--gold))',
-      secondaryColor: 'hsl(var(--silver))',
-      textColor: 'hsl(var(--foreground))'
-    },
-    effects: {
-      hero: 'neon-grid-portal',
-      features: 'holographic'
-    }
-  },
-  {
-    id: 'exclusive-space-tech',
-    name: 'Space Tech Exclusive',
-    category: 'אקסלוסיביות - טכנולוגיית חלל',
-    hero: {
-      title: 'כיבוש החלל החדש',
-      subtitle: 'טכנולוגיות חלל למשימות מתקדמות',
-      description: 'חדשנות שתוביל אותנו לכוכבים',
-      button1Text: 'הצטרפו למשימה',
-      button2Text: 'צפו במשימות'
-    },
-    styles: {
-      backgroundColor: '#000011',
-      primaryColor: 'hsl(var(--gold))',
-      secondaryColor: 'hsl(var(--platinum))',
-      textColor: 'hsl(var(--foreground))'
-    },
-    effects: {
-      hero: 'cosmic-geometry',
-      features: 'particle-storm'
-    }
-  },
-  {
-    id: 'exclusive-neural-network',
-    name: 'Neural Network Exclusive',
-    category: 'אקסלוסיביות - רשתות נוירונים',
-    hero: {
-      title: 'רשתות נוירונים מתקדמות',
-      subtitle: 'למידת מכונה ברמה חדשה',
-      description: 'AI שחושב כמו בן אדם, עובד כמו מכונה',
-      button1Text: 'התחילו ללמוד',
-      button2Text: 'ראו דוגמאות'
-    },
-    styles: {
-      backgroundColor: '#0a0f1c',
-      primaryColor: 'hsl(var(--gold))',
-      secondaryColor: 'hsl(var(--silver))',
-      textColor: 'hsl(var(--foreground))'
-    },
-    effects: {
-      hero: 'digital-waves',
-      features: 'quantum-bubbles'
-    }
-  },
-  {
-    id: 'exclusive-metaverse-builder',
-    name: 'Metaverse Builder Exclusive',
-    category: 'אקסלוסיביות - מטאוורס',
-    hero: {
-      title: 'בנו את המטאוורס שלכם',
-      subtitle: 'עולמות וירטואליים בלתי מוגבלים',
-      description: 'יצירת חוויות VR/AR מהפכניות',
-      button1Text: 'בנו עולם',
-      button2Text: 'חוו דמו'
-    },
-    styles: {
-      backgroundColor: '#1a0f2e',
-      primaryColor: 'hsl(var(--gold))',
-      secondaryColor: 'hsl(var(--platinum))',
-      textColor: 'hsl(var(--foreground))'
-    },
-    effects: {
-      hero: 'morphing-shapes',
-      features: 'holographic'
-    }
-  },
-  {
-    id: 'exclusive-bio-tech',
-    name: 'Bio Tech Exclusive',
-    category: 'אקסלוסיביות - ביוטכנולוגיה',
-    hero: {
-      title: 'ביוטכנולוגיה מתקדמת',
-      subtitle: 'שיפור החיים דרך מדע מתקדם',
-      description: 'טכנולוגיות חיים לעתיד בריא יותר',
-      button1Text: 'גלו חדשנות',
-      button2Text: 'קיראו מחקרים'
-    },
-    styles: {
-      backgroundColor: '#0f2027',
-      primaryColor: 'hsl(var(--gold))',
-      secondaryColor: 'hsl(var(--silver))',
-      textColor: 'hsl(var(--foreground))'
-    },
-    effects: {
-      hero: 'glass-refraction',
-      features: 'liquid-metal'
     }
   },
 
