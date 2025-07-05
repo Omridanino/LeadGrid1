@@ -226,9 +226,11 @@ const Index = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-xl flex items-center justify-center shadow-2xl shadow-yellow-400/30">
-              <Sparkles className="w-6 h-6 text-black" />
-            </div>
+            <GlassIcon 
+              icon={Sparkles} 
+              size="md" 
+              variant="gold"
+            />
             <span className="text-2xl font-bold text-yellow-400">
               LeadGrid
             </span>
@@ -243,8 +245,14 @@ const Index = () => {
               onClick={() => handleOpenQuestionnaire()}
               className="bg-yellow-400/10 backdrop-blur-xl border border-yellow-400/30 text-yellow-400 hover:bg-yellow-400/20 px-6 py-3 rounded-xl shadow-2xl shadow-yellow-400/20 hover:shadow-yellow-400/30 transition-all duration-300 font-semibold"
             >
-              <Rocket className="w-5 h-5 ml-2" />
-              צור דף עכשיו
+              <div className="flex items-center gap-2">
+                <GlassIcon 
+                  icon={Rocket} 
+                  size="sm" 
+                  variant="gold"
+                />
+                צור דף עכשיו
+              </div>
             </Button>
           </motion.div>
         </div>
@@ -259,8 +267,12 @@ const Index = () => {
             transition={{ duration: 0.8 }}
             className="mb-8"
           >
-            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6">
-              <Sparkles className="w-4 h-4 ml-2" />
+            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6 flex items-center gap-2">
+              <GlassIcon 
+                icon={Sparkles} 
+                size="sm" 
+                variant="gold"
+              />
               הפלטפורמה המתקדמת ביותר ליצירת דפי נחיתה
             </Badge>
             
@@ -333,8 +345,14 @@ const Index = () => {
               size="lg"
               className="bg-yellow-400/15 backdrop-blur-xl border border-yellow-400/40 text-yellow-400 hover:bg-yellow-400/25 px-8 py-4 text-lg rounded-xl shadow-2xl shadow-yellow-400/30 hover:shadow-yellow-400/50 transform hover:scale-105 transition-all duration-300 font-semibold"
             >
-              <Rocket className="w-6 h-6 ml-3" />
-              התחל בחינם עכשיו
+              <div className="flex items-center gap-3">
+                <GlassIcon 
+                  icon={Rocket} 
+                  size="sm" 
+                  variant="gold"
+                />
+                התחל בחינם עכשיו
+              </div>
             </Button>
             
             <Button
@@ -342,8 +360,14 @@ const Index = () => {
               size="lg"
               className="border-2 border-yellow-400/50 text-yellow-400 hover:bg-yellow-400/10 px-8 py-4 text-lg rounded-xl backdrop-blur-sm"
             >
-              <PlayCircle className="w-6 h-6 ml-3" />
-              צפה בדמו
+              <div className="flex items-center gap-3">
+                <GlassIcon 
+                  icon={PlayCircle} 
+                  size="sm" 
+                  variant="gold"
+                />
+                צפה בדמו
+              </div>
             </Button>
           </motion.div>
 
@@ -380,8 +404,12 @@ const Index = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-20"
           >
-            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6">
-              <Crown className="w-4 h-4 ml-2" />
+            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6 flex items-center gap-2">
+              <GlassIcon 
+                icon={Crown} 
+                size="sm" 
+                variant="gold"
+              />
               תבניות לכל צורך
             </Badge>
             
@@ -422,8 +450,12 @@ const Index = () => {
                   
                   <Card className={`h-full bg-gradient-to-br ${category.bgColor} border-2 ${category.borderColor} backdrop-blur-xl hover:shadow-2xl transition-all duration-300 overflow-hidden`}>
                     <CardContent className="p-8 text-center">
-                      <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${category.color} flex items-center justify-center shadow-2xl`}>
-                        <Icon className="w-8 h-8 text-black" />
+                      <div className="mx-auto mb-6">
+                        <GlassIcon 
+                          icon={Icon} 
+                          size="lg" 
+                          variant="gold"
+                        />
                       </div>
                       
                       <h3 className="text-2xl font-bold text-white mb-2">{category.name}</h3>
@@ -439,7 +471,11 @@ const Index = () => {
                       <div className="space-y-3 mb-8">
                         {category.features.map((feature, i) => (
                           <div key={i} className="flex items-center gap-3 text-sm text-gray-300">
-                            <CheckCircle className="w-4 h-4 text-yellow-400 flex-shrink-0" />
+                            <GlassIcon 
+                              icon={CheckCircle} 
+                              size="sm" 
+                              variant="gold"
+                            />
                             <span>{feature}</span>
                           </div>
                         ))}
@@ -475,8 +511,12 @@ const Index = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-20"
           >
-            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6">
-              <Zap className="w-4 h-4 ml-2" />
+            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6 flex items-center gap-2">
+              <GlassIcon 
+                icon={Zap} 
+                size="sm" 
+                variant="gold"
+              />
               תהליך פשוט ומהיר
             </Badge>
             
@@ -503,9 +543,16 @@ const Index = () => {
                   className="text-center group"
                 >
                   <div className="relative mb-8">
-                    <div className={`w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300`}>
-                      <Icon className="w-10 h-10 text-black" />
-                    </div>
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    >
+                      <GlassIcon 
+                        icon={Icon} 
+                        size="xl" 
+                        variant="gold"
+                      />
+                    </motion.div>
                     <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center text-xs font-bold text-black shadow-lg">
                       {step.step}
                     </div>
@@ -529,8 +576,12 @@ const Index = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-20"
           >
-            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6">
-              <Star className="w-4 h-4 ml-2" />
+            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6 flex items-center gap-2">
+              <GlassIcon 
+                icon={Star} 
+                size="sm" 
+                variant="gold"
+              />
               למה LeadGrid?
             </Badge>
             
@@ -614,8 +665,12 @@ const Index = () => {
                   <Card className="h-full bg-gradient-to-br from-gray-900/50 to-gray-800/50 border border-gray-700/50 backdrop-blur-xl hover:shadow-2xl transition-all duration-300">
                     <CardContent className="p-8">
                       <div className="flex items-start gap-6">
-                        <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${benefit.gradient} flex items-center justify-center shadow-xl group-hover:shadow-2xl transition-all duration-300 flex-shrink-0`}>
-                          <Icon className="w-8 h-8 text-black" />
+                        <div className="flex-shrink-0">
+                          <GlassIcon 
+                            icon={Icon} 
+                            size="lg" 
+                            variant="gold"
+                          />
                         </div>
                         
                         <div>
@@ -641,8 +696,12 @@ const Index = () => {
             transition={{ duration: 0.8 }}
           >
             <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-xl rounded-3xl p-12 border border-gray-700/50 shadow-2xl">
-              <div className="w-20 h-20 mx-auto mb-8 rounded-2xl bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center shadow-2xl">
-                <Rocket className="w-10 h-10 text-black" />
+              <div className="mx-auto mb-8">
+                <GlassIcon 
+                  icon={Rocket} 
+                  size="xl" 
+                  variant="gold"
+                />
               </div>
               
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -661,8 +720,14 @@ const Index = () => {
                   size="lg"
                   className="bg-yellow-400/15 backdrop-blur-xl border border-yellow-400/40 text-yellow-400 hover:bg-yellow-400/25 px-10 py-4 text-lg rounded-xl shadow-2xl hover:shadow-yellow-400/50 transform hover:scale-105 transition-all duration-300 font-semibold"
                 >
-                  <Rocket className="w-6 h-6 ml-3" />
-                  התחל בחינם עכשיו
+                  <div className="flex items-center gap-3">
+                    <GlassIcon 
+                      icon={Rocket} 
+                      size="sm" 
+                      variant="gold"
+                    />
+                    התחל בחינם עכשיו
+                  </div>
                 </Button>
                 
                 <Button
@@ -670,8 +735,14 @@ const Index = () => {
                   size="lg"
                   className="border-2 border-yellow-400/50 text-yellow-400 hover:bg-yellow-400/10 px-10 py-4 text-lg rounded-xl backdrop-blur-sm"
                 >
-                  <PlayCircle className="w-6 h-6 ml-3" />
-                  צפה בדמו חי
+                  <div className="flex items-center gap-3">
+                    <GlassIcon 
+                      icon={PlayCircle} 
+                      size="sm" 
+                      variant="gold"
+                    />
+                    צפה בדמו חי
+                  </div>
                 </Button>
               </div>
             </div>
@@ -684,9 +755,11 @@ const Index = () => {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="flex items-center gap-3 mb-4 md:mb-0">
-              <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-xl flex items-center justify-center shadow-2xl shadow-yellow-400/30">
-                <Sparkles className="w-6 h-6 text-black" />
-              </div>
+              <GlassIcon 
+                icon={Sparkles} 
+                size="md" 
+                variant="gold"
+              />
               <span className="text-2xl font-bold text-yellow-400">
                 LeadGrid
               </span>

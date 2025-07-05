@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { X, MessageCircle, Send, Bot, User, Sparkles } from "lucide-react";
+import GlassIcon from "@/components/ui/glass-icon";
 
 interface ChatMessage {
   type: "bot" | "user";
@@ -98,7 +99,11 @@ const ChatWidget = ({ isOpen, onClose }: ChatWidgetProps) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center ml-3">
-                <Bot className="w-6 h-6" />
+                <GlassIcon 
+                  icon={Bot} 
+                  size="sm" 
+                  variant="gold"
+                />
               </div>
               <div>
                 <h4 className="font-semibold text-lg">LeadGrid AI</h4>
@@ -114,7 +119,11 @@ const ChatWidget = ({ isOpen, onClose }: ChatWidgetProps) => {
               size="sm"
               className="text-white hover:bg-white/20 rounded-full"
             >
-              <X className="w-5 h-5" />
+              <GlassIcon 
+                icon={X} 
+                size="sm" 
+                variant="gold"
+              />
             </Button>
           </div>
         </div>
@@ -128,10 +137,18 @@ const ChatWidget = ({ isOpen, onClose }: ChatWidgetProps) => {
               } p-4 shadow-lg backdrop-blur-sm`}>
                 <div className="flex items-start gap-3">
                   {msg.type === 'bot' && (
-                    <Sparkles className="w-4 h-4 text-blue-400 mt-1 flex-shrink-0" />
+                    <GlassIcon 
+                      icon={Sparkles} 
+                      size="sm" 
+                      variant="gold"
+                    />
                   )}
                   {msg.type === 'user' && (
-                    <User className="w-4 h-4 text-gray-400 mt-1 flex-shrink-0" />
+                    <GlassIcon 
+                      icon={User} 
+                      size="sm" 
+                      variant="silver"
+                    />
                   )}
                   <div className="flex-1">
                     <p className="text-sm leading-relaxed whitespace-pre-line">{msg.message}</p>
@@ -148,7 +165,11 @@ const ChatWidget = ({ isOpen, onClose }: ChatWidgetProps) => {
             <div className="flex justify-end">
               <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 text-blue-100 rounded-2xl rounded-br-md p-4 max-w-[85%] border border-blue-500/30">
                 <div className="flex items-center gap-3">
-                  <Bot className="w-4 h-4 text-blue-400" />
+                  <GlassIcon 
+                    icon={Bot} 
+                    size="sm" 
+                    variant="gold"
+                  />
                   <div className="flex gap-1">
                     <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
                     <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
@@ -176,7 +197,11 @@ const ChatWidget = ({ isOpen, onClose }: ChatWidgetProps) => {
               className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-4 rounded-xl"
               disabled={isTyping || !chatMessage.trim()}
             >
-              <Send className="w-4 h-4" />
+              <GlassIcon 
+                icon={Send} 
+                size="sm" 
+                variant="gold"
+              />
             </Button>
           </div>
         </form>
