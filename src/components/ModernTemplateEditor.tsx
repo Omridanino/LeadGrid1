@@ -60,6 +60,7 @@ import { EffectsEditor } from './template-editor/EffectsEditor';
 import { StylesEditor } from './template-editor/StylesEditor';
 import { generatePageHTML } from '@/utils/pageGenerator';
 import { LaunchSection } from './LaunchSection';
+import { DragDropElementsEditor } from './DragDropElementsEditor';
 
 interface ModernTemplateEditorProps {
   template: TemplateData;
@@ -83,11 +84,25 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
 
   const handleSave = () => {
     try {
+      // Clear old data first to make space
+      localStorage.removeItem('generatedHTML');
+      localStorage.removeItem('generatedPageData');
+      
       const htmlContent = generatePageHTML(editedTemplate);
+      
+      // Create simplified template data for storage
+      const simplifiedTemplate = {
+        ...editedTemplate,
+        // Remove large objects to reduce storage size
+        styles: editedTemplate.styles ? {
+          primaryColor: editedTemplate.styles.primaryColor,
+          backgroundColor: editedTemplate.styles.backgroundColor
+        } : undefined
+      };
       
       localStorage.setItem('generatedHTML', htmlContent);
       localStorage.setItem('generatedPageData', JSON.stringify({
-        template: editedTemplate,
+        template: simplifiedTemplate,
         timestamp: Date.now()
       }));
       
@@ -101,11 +116,22 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
       
     } catch (error) {
       console.error('Error saving page:', error);
-      toast({
-        title: "❌ שגיאה בשמירה",
-        description: "אירעה שגיאה בשמירת הדף. אנא נסה שוב.",
-        variant: "destructive"
-      });
+      
+      // If still failing, try clearing all storage
+      try {
+        localStorage.clear();
+        toast({
+          title: "⚠️ נוקה מטמון",
+          description: "המטמון נוקה בשל מחסור במקום. נסה לשמור שוב.",
+          variant: "destructive"
+        });
+      } catch (clearError) {
+        toast({
+          title: "❌ שגיאה בשמירה",
+          description: "אירעה שגיאה חמורה. אנא רענן את הדף.",
+          variant: "destructive"
+        });
+      }
     }
   };
 
@@ -257,8 +283,15 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
       ]
     },
     {
+      id: 'drag-drop',
+      label: 'גרירת אלמנטים',
+      items: [
+        { id: 'elements-manager', name: 'ניהול אלמנטים', icon: LayoutGrid, color: 'text-blue-400' },
+      ]
+    },
+    {
       id: 'content',
-      label: 'תוכן נוסף',
+      label: 'עריכת תוכן',
       items: [
         { id: 'gallery', name: 'גלריית תמונות', icon: Image, color: 'text-indigo-400' },
         { id: 'heading', name: 'כותרת', icon: Type, color: 'text-slate-400' },
@@ -300,6 +333,8 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
         return <FinalCtaEditor template={editedTemplate} onUpdate={(updates) => updateSection('finalCta', updates)} onStyleUpdate={updateStyles} />;
       case 'contact':
         return <ContactEditor template={editedTemplate} onUpdate={(updates) => updateSection('contact', updates)} onStyleUpdate={updateStyles} />;
+      case 'elements-manager':
+        return <DragDropElementsEditor template={editedTemplate} onTemplateChange={setEditedTemplate} />;
       case 'gallery':
         return <GalleryEditor template={editedTemplate} onUpdate={(updates) => updateSection('gallery', updates)} onStyleUpdate={updateStyles} />;
       case 'heading':
@@ -408,10 +443,14 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
           {/* Navigation Tabs */}
           <Tabs value={activeCategory} onValueChange={setActiveCategory} className="flex-1 flex flex-col min-h-0">
             <div className="px-3 py-2 border-b border-slate-700/30 flex-shrink-0">
-              <TabsList className="grid w-full grid-cols-3 bg-slate-800/50 p-0.5 rounded-md h-7">
+              <TabsList className="grid w-full grid-cols-4 bg-slate-800/50 p-0.5 rounded-md h-7">
                 <TabsTrigger value="sections" className="text-xs data-[state=active]:bg-blue-600/80 data-[state=active]:text-white h-6">
                   <Settings className="w-3 h-3 mr-1" />
                   חלקים
+                </TabsTrigger>
+                <TabsTrigger value="drag-drop" className="text-xs data-[state=active]:bg-blue-600/80 data-[state=active]:text-white h-6">
+                  <LayoutGrid className="w-3 h-3 mr-1" />
+                  גרירה
                 </TabsTrigger>
                 <TabsTrigger value="content" className="text-xs data-[state=active]:bg-blue-600/80 data-[state=active]:text-white h-6">
                   <Type className="w-3 h-3 mr-1" />
