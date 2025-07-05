@@ -31,32 +31,28 @@ const GlassIcon = ({
 
   const variants = {
     gold: {
-      background: 'rgba(255, 215, 0, 0.15)',
-      border: 'rgba(255, 215, 0, 0.4)',
+      background: 'linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 193, 7, 0.1) 100%)',
+      border: 'rgba(255, 215, 0, 0.3)',
       iconColor: 'text-yellow-400',
-      shadowColor: 'rgba(255, 215, 0, 0.6)',
-      glowColor: 'rgba(255, 215, 0, 0.8)'
+      shadowColor: 'rgba(255, 215, 0, 0.4)'
     },
     silver: {
-      background: 'rgba(192, 192, 192, 0.15)',
-      border: 'rgba(192, 192, 192, 0.4)',
+      background: 'linear-gradient(135deg, rgba(192, 192, 192, 0.15) 0%, rgba(169, 169, 169, 0.1) 100%)',
+      border: 'rgba(192, 192, 192, 0.3)',
       iconColor: 'text-gray-300',
-      shadowColor: 'rgba(192, 192, 192, 0.6)',
-      glowColor: 'rgba(192, 192, 192, 0.8)'
+      shadowColor: 'rgba(192, 192, 192, 0.4)'
     },
     platinum: {
-      background: 'rgba(229, 228, 226, 0.15)',
-      border: 'rgba(229, 228, 226, 0.4)',
+      background: 'linear-gradient(135deg, rgba(229, 228, 226, 0.15) 0%, rgba(220, 220, 220, 0.1) 100%)',
+      border: 'rgba(229, 228, 226, 0.3)',
       iconColor: 'text-gray-200',
-      shadowColor: 'rgba(229, 228, 226, 0.6)',
-      glowColor: 'rgba(229, 228, 226, 0.8)'
+      shadowColor: 'rgba(229, 228, 226, 0.4)'
     },
     rainbow: {
-      background: 'rgba(255, 105, 180, 0.1)',
-      border: 'rgba(255, 255, 255, 0.3)',
+      background: 'linear-gradient(135deg, rgba(255, 105, 180, 0.1) 0%, rgba(64, 224, 208, 0.1) 50%, rgba(255, 215, 0, 0.1) 100%)',
+      border: 'rgba(255, 255, 255, 0.2)',
       iconColor: 'text-white',
-      shadowColor: 'rgba(255, 105, 180, 0.5)',
-      glowColor: 'rgba(255, 105, 180, 0.9)'
+      shadowColor: 'rgba(255, 105, 180, 0.3)'
     }
   };
 
@@ -68,7 +64,6 @@ const GlassIcon = ({
         ${sizes[size]} ${className}
         rounded-2xl relative overflow-hidden
         backdrop-blur-xl border-2 group cursor-pointer
-        transition-all duration-300
       `}
       style={{
         background: currentVariant.background,
@@ -76,20 +71,13 @@ const GlassIcon = ({
         boxShadow: `
           inset 0 1px 0 rgba(255, 255, 255, 0.3),
           0 8px 25px rgba(0, 0, 0, 0.15),
-          0 0 20px ${currentVariant.shadowColor},
-          0 0 40px ${currentVariant.glowColor}
+          0 0 20px ${currentVariant.shadowColor}
         `,
       }}
       whileHover={{ 
         scale: 1.1,
         rotateY: 15,
-        rotateX: 5,
-        boxShadow: `
-          inset 0 1px 0 rgba(255, 255, 255, 0.4),
-          0 12px 35px rgba(0, 0, 0, 0.2),
-          0 0 30px ${currentVariant.shadowColor},
-          0 0 60px ${currentVariant.glowColor}
-        `
+        rotateX: 5
       }}
       whileTap={{ scale: 0.95 }}
       transition={{ 
@@ -145,24 +133,13 @@ const GlassIcon = ({
         </motion.div>
       </div>
       
-      {/* Enhanced glow effect */}
+      {/* Hover glow effect */}
       <motion.div
         className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100"
         style={{
-          background: `radial-gradient(circle, ${currentVariant.glowColor} 0%, ${currentVariant.shadowColor} 40%, transparent 70%)`,
-          filter: 'blur(8px)',
+          background: `radial-gradient(circle, ${currentVariant.shadowColor} 0%, transparent 70%)`,
         }}
         transition={{ duration: 0.3 }}
-      />
-      
-      {/* Additional outer glow */}
-      <motion.div
-        className="absolute -inset-2 rounded-2xl opacity-0 group-hover:opacity-60"
-        style={{
-          background: `radial-gradient(circle, transparent 60%, ${currentVariant.glowColor} 70%, transparent 85%)`,
-          filter: 'blur(15px)',
-        }}
-        transition={{ duration: 0.4 }}
       />
     </motion.div>
   );

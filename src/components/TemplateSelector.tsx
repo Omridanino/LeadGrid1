@@ -217,11 +217,8 @@ const TemplateSelector = ({ isOpen, onClose, initialCategory }: TemplateSelector
                 >
                   <CardContent className="p-6">
                     <div className="text-center">
-                      <Badge className="mb-4 bg-yellow-400/20 text-yellow-400 border border-yellow-400/30">
-                        {template.category === 'basic' ? 'בסיסיות' : 
-                         template.category === 'premium' ? 'פרימיום' : 
-                         template.category === 'exclusive' ? 'אקסקלוסיביות' : 
-                         template.category}
+                      <Badge className="mb-4 bg-purple-600 text-white">
+                        {template.category}
                       </Badge>
                       
                       <h3 className="text-white font-bold text-lg mb-2">
