@@ -351,7 +351,11 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
   };
 
   if (showLaunchSection) {
-    return <LaunchSection template={editedTemplate} onBack={handleBackToEditor} />;
+    return (
+      <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50">
+        <LaunchSection template={editedTemplate} onBack={handleBackToEditor} className="p-8 max-h-screen overflow-auto" />
+      </div>
+    );
   }
 
   return (

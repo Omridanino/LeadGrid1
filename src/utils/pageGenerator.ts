@@ -1418,7 +1418,7 @@ export const generatePageHTML = (templateData: any) => {
     </section>
 
     
-    <!-- New Content Sections -->
+    <!-- New Content Sections - BEFORE Footer -->
     ${template.gallery ? generateGallerySection(template.gallery, template.styles, isPremium) : ''}
     ${template.heading ? generateHeadingSection(template.heading, template.styles, isPremium) : ''}
     ${template.text ? generateTextSection(template.text, template.styles, isPremium) : ''}
@@ -1429,9 +1429,9 @@ export const generatePageHTML = (templateData: any) => {
     ${template.socialBar ? generateSocialBarSection(template.socialBar, template.styles, isPremium) : ''}
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="text-center">
-            <p style="color: ${isPremium ? getPremiumTextColor(template.id) : '#ffffff'};">&copy; 2024 ${template.footer.companyName}. כל הזכויות שמורות.</p>
+    <footer class="footer" style="background: ${isPremium ? 'linear-gradient(135deg, rgba(55,65,81,0.9), rgba(30,64,175,0.9))' : template.styles.footerBackground};">
+        <div class="text-center py-8">
+            <p style="color: ${isPremium ? getPremiumTextColor(template.id) : '#ffffff'}; text-align: center;">&copy; 2024 ${template.footer.companyName}. כל הזכויות שמורות.</p>
         </div>
     </footer>
 
