@@ -60,7 +60,6 @@ import { EffectsEditor } from './template-editor/EffectsEditor';
 import { StylesEditor } from './template-editor/StylesEditor';
 import { generatePageHTML } from '@/utils/pageGenerator';
 import { LaunchSection } from './LaunchSection';
-import { DragDropElementsEditor } from './DragDropElementsEditor';
 
 interface ModernTemplateEditorProps {
   template: TemplateData;
@@ -283,15 +282,8 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
       ]
     },
     {
-      id: 'drag-drop',
-      label: 'גרירת אלמנטים',
-      items: [
-        { id: 'elements-manager', name: 'ניהול אלמנטים', icon: LayoutGrid, color: 'text-blue-400' },
-      ]
-    },
-    {
-      id: 'content',
-      label: 'עריכת תוכן',
+      id: 'elements',
+      label: 'אלמנטים',
       items: [
         { id: 'gallery', name: 'גלריית תמונות', icon: Image, color: 'text-indigo-400' },
         { id: 'heading', name: 'כותרת', icon: Type, color: 'text-slate-400' },
@@ -333,8 +325,6 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
         return <FinalCtaEditor template={editedTemplate} onUpdate={(updates) => updateSection('finalCta', updates)} onStyleUpdate={updateStyles} />;
       case 'contact':
         return <ContactEditor template={editedTemplate} onUpdate={(updates) => updateSection('contact', updates)} onStyleUpdate={updateStyles} />;
-      case 'elements-manager':
-        return <DragDropElementsEditor template={editedTemplate} onTemplateChange={setEditedTemplate} />;
       case 'gallery':
         return <GalleryEditor template={editedTemplate} onUpdate={(updates) => updateSection('gallery', updates)} onStyleUpdate={updateStyles} />;
       case 'heading':
@@ -443,18 +433,14 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
           {/* Navigation Tabs */}
           <Tabs value={activeCategory} onValueChange={setActiveCategory} className="flex-1 flex flex-col min-h-0">
             <div className="px-3 py-2 border-b border-slate-700/30 flex-shrink-0">
-              <TabsList className="grid w-full grid-cols-4 bg-slate-800/50 p-0.5 rounded-md h-7">
+              <TabsList className="grid w-full grid-cols-3 bg-slate-800/50 p-0.5 rounded-md h-7">
                 <TabsTrigger value="sections" className="text-xs data-[state=active]:bg-blue-600/80 data-[state=active]:text-white h-6">
                   <Settings className="w-3 h-3 mr-1" />
                   חלקים
                 </TabsTrigger>
-                <TabsTrigger value="drag-drop" className="text-xs data-[state=active]:bg-blue-600/80 data-[state=active]:text-white h-6">
-                  <LayoutGrid className="w-3 h-3 mr-1" />
-                  גרירה
-                </TabsTrigger>
-                <TabsTrigger value="content" className="text-xs data-[state=active]:bg-blue-600/80 data-[state=active]:text-white h-6">
-                  <Type className="w-3 h-3 mr-1" />
-                  תוכן
+                <TabsTrigger value="elements" className="text-xs data-[state=active]:bg-blue-600/80 data-[state=active]:text-white h-6">
+                  <Plus className="w-3 h-3 mr-1" />
+                  אלמנטים
                 </TabsTrigger>
                 <TabsTrigger value="styles" className="text-xs data-[state=active]:bg-blue-600/80 data-[state=active]:text-white h-6">
                   <Palette className="w-3 h-3 mr-1" />
@@ -467,45 +453,57 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
             {categories.map((category) => (
               <TabsContent key={category.id} value={category.id} className="flex-1 m-0 min-h-0">
                 <ScrollArea className="h-full">
-                  <div className="p-3 space-y-1.5">
-                    {category.items.map((item) => {
-                      const Icon = item.icon;
-                      const isActive = activeSection === item.id;
-                      return (
-                        <Card 
-                          key={item.id}
-                          className={`cursor-pointer transition-all duration-200 border ${
-                            isActive 
-                              ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-400/50' 
-                              : 'bg-slate-800/40 border-slate-700/30 hover:bg-slate-700/40 hover:border-slate-600/50'
-                          } backdrop-blur-sm`}
-                          onClick={() => {
-                            if (!editedTemplate[item.id as keyof TemplateData] && ['gallery', 'heading', 'text', 'video', 'slider', 'list', 'embed', 'socialBar'].includes(item.id)) {
-                              initializeSection(item.id);
-                            }
-                            setActiveSection(item.id);
-                          }}
-                        >
-                          <CardContent className="p-2.5">
-                            <div className="flex items-center gap-2">
-                              <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${
-                                isActive ? 'bg-blue-500/20' : 'bg-slate-700/50'
-                              }`}>
-                                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-blue-400' : item.color}`} />
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <h3 className={`font-medium text-xs ${isActive ? 'text-white' : 'text-slate-200'} truncate`}>
-                                  {item.name}
-                                </h3>
-                                <p className="text-xs text-slate-500 truncate">
-                                  {isActive ? 'פעיל' : 'לחץ לעריכה'}
-                                </p>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
+                   <div className="p-3 space-y-1.5">
+                     {category.id === 'elements' && (
+                       <div className="mb-4 p-3 bg-slate-700/30 rounded-lg border border-slate-600/30">
+                         <p className="text-slate-300 text-xs mb-2">גרור אלמנטים לדף התצוגה ↙️</p>
+                         <div className="text-xs text-slate-400">לחץ על אלמנט להוספה או גרור למקום רצוי</div>
+                       </div>
+                     )}
+                     {category.items.map((item) => {
+                       const Icon = item.icon;
+                       const isActive = activeSection === item.id;
+                       return (
+                         <Card 
+                           key={item.id}
+                           draggable={category.id === 'elements'}
+                           onDragStart={(e) => {
+                             if (category.id === 'elements') {
+                               e.dataTransfer.setData('elementType', item.id);
+                             }
+                           }}
+                           className={`cursor-pointer transition-all duration-200 border ${
+                             isActive 
+                               ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-400/50' 
+                               : 'bg-slate-800/40 border-slate-700/30 hover:bg-slate-700/40 hover:border-slate-600/50'
+                           } backdrop-blur-sm ${category.id === 'elements' ? 'cursor-grab active:cursor-grabbing' : ''}`}
+                           onClick={() => {
+                             if (!editedTemplate[item.id as keyof TemplateData] && ['gallery', 'heading', 'text', 'video', 'slider', 'list', 'embed', 'socialBar'].includes(item.id)) {
+                               initializeSection(item.id);
+                             }
+                             setActiveSection(item.id);
+                           }}
+                         >
+                           <CardContent className="p-2.5">
+                             <div className="flex items-center gap-2">
+                               <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${
+                                 isActive ? 'bg-blue-500/20' : 'bg-slate-700/50'
+                               }`}>
+                                 <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-blue-400' : item.color}`} />
+                               </div>
+                               <div className="flex-1 min-w-0">
+                                 <h3 className={`font-medium text-xs ${isActive ? 'text-white' : 'text-slate-200'} truncate`}>
+                                   {item.name}
+                                 </h3>
+                                 <p className="text-xs text-slate-500 truncate">
+                                   {category.id === 'elements' ? 'גרור או לחץ' : isActive ? 'פעיל' : 'לחץ לעריכה'}
+                                 </p>
+                               </div>
+                             </div>
+                           </CardContent>
+                         </Card>
+                       );
+                     })}
                   </div>
                 </ScrollArea>
               </TabsContent>
@@ -583,7 +581,22 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
           )}
           
           {/* Preview - Takes remaining space */}
-          <div className="flex-1 bg-white overflow-auto">
+          <div 
+            className="flex-1 bg-white overflow-auto"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              const elementType = e.dataTransfer.getData('elementType');
+              if (elementType && ['gallery', 'heading', 'text', 'video', 'slider', 'list', 'embed', 'socialBar'].includes(elementType)) {
+                initializeSection(elementType);
+                setActiveSection(elementType);
+                toast({
+                  title: "✅ אלמנט נוסף בהצלחה!",
+                  description: `${elementType} נוסף לדף`,
+                });
+              }
+            }}
+          >
             <TemplatePreview template={editedTemplate} />
           </div>
         </div>
