@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -11,10 +11,15 @@ import {
   Globe,
   Code,
   Download,
-  Eye
+  Eye,
+  EyeOff,
+  Key,
+  Copy,
+  ExternalLink
 } from 'lucide-react';
 import { CleanWordPressForm } from './domain/CleanWordPressForm';
 import { TemplateData } from '@/types/template';
+import { ApiKeyService } from '@/services/apiKeyService';
 
 interface LaunchSectionProps {
   template: TemplateData;
@@ -24,10 +29,12 @@ interface LaunchSectionProps {
 
 export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectionProps) => {
   const [showWordPressForm, setShowWordPressForm] = useState(false);
+  const [apiCredentials, setApiCredentials] = useState<any>(null);
+  const [showCredentials, setShowCredentials] = useState(false);
   const { toast } = useToast();
 
-  // Save the template data to localStorage for later use
-  const saveTemplateData = () => {
+  // Generate API credentials when component loads
+  useEffect(() => {
     const templateWithGeneratedContent = {
       formData: {
         businessName: template.hero.title,
@@ -57,13 +64,28 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
     };
     
     localStorage.setItem('generatedPageData', JSON.stringify(templateWithGeneratedContent));
+    
+    // Auto-generate API credentials for this page
+    const credentials = ApiKeyService.createCredentials(templateWithGeneratedContent);
+    setApiCredentials(credentials);
+  }, [template]);
+
+  const copyToClipboard = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    toast({
+      title: "✅ הועתק!",
+      description: `${label} הועתק ללוח`,
+    });
   };
 
   if (showWordPressForm) {
     return (
       <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 overflow-y-auto">
         <div className="min-h-screen">
-          <CleanWordPressForm onBack={() => setShowWordPressForm(false)} />
+          <CleanWordPressForm 
+            onBack={() => setShowWordPressForm(false)} 
+            apiCredentials={apiCredentials}
+          />
         </div>
       </div>
     );
@@ -83,17 +105,84 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
               🎉 הדף שלך מוכן!
             </h1>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              עכשיו תוכל להוסיף אותו לאתר WordPress שלך בקלות ובמהירות
+              יצרנו עבורך פרטי API אוטומטיים - עכשיו תוכל להוסיף את הדף לאתר WordPress שלך
             </p>
           </div>
         </div>
+
+        {/* API Credentials Display */}
+        {apiCredentials && (
+          <div className="max-w-4xl mx-auto">
+            <Card className="bg-gradient-to-br from-green-900/30 to-emerald-900/30 border-green-500/50 shadow-xl">
+              <CardHeader>
+                <CardTitle className="text-white text-center flex items-center justify-center gap-2">
+                  <Key className="w-6 h-6 text-green-400" />
+                  פרטי ה-API שלך נוצרו אוטומטיס!
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm text-gray-300">Site ID:</label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        value={apiCredentials.siteId}
+                        readOnly
+                        className="flex-1 bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white text-sm font-mono"
+                      />
+                      <Button
+                        size="sm"
+                        onClick={() => copyToClipboard(apiCredentials.siteId, 'Site ID')}
+                        className="bg-green-600 hover:bg-green-700"
+                      >
+                        <Copy className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-sm text-gray-300">API Key:</label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        value={showCredentials ? apiCredentials.apiKey : '••••••••••••••••••••••••••••••••••••'}
+                        readOnly
+                        className="flex-1 bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white text-sm font-mono"
+                      />
+                      <Button
+                        size="sm"
+                        onClick={() => setShowCredentials(!showCredentials)}
+                        variant="outline"
+                        className="border-gray-600 text-white hover:bg-gray-700"
+                      >
+                        {showCredentials ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={() => copyToClipboard(apiCredentials.apiKey, 'API Key')}
+                        className="bg-green-600 hover:bg-green-700"
+                      >
+                        <Copy className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="text-center pt-4">
+                  <Badge className="bg-green-500/20 text-green-300 border-green-500/30">
+                    נוצר ב-{new Date(apiCredentials.created).toLocaleString('he-IL')}
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
         {/* Integration Options */}
         <div className="max-w-4xl mx-auto space-y-6">
           
           <div className="text-center">
             <h2 className="text-3xl font-bold text-white mb-4">איך תרצה להשתמש בדף?</h2>
-            <p className="text-gray-400">בחר את הדרך הכי נוחה עבורך</p>
+            <p className="text-gray-400">הפרטים שלמעלה יועברו אוטומטית</p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
@@ -108,34 +197,31 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
                 <div>
                   <h3 className="text-xl font-bold text-white mb-2">הוסף לאתר WordPress</h3>
                   <p className="text-gray-300 text-sm mb-4">
-                    קוד HTML מוכן + מדריך שלב אחר שלב
+                    מדריך מפורט + התוסף + הפרטים מוכנים
                   </p>
                   
                   <div className="space-y-2 text-xs text-blue-200">
                     <div className="flex items-center justify-center gap-2">
                       <CheckCircle className="w-4 h-4" />
-                      <span>מהיר וקל - 5 דקות בלבד</span>
+                      <span>פרטי API יועברו אוטומטית</span>
                     </div>
                     <div className="flex items-center justify-center gap-2">
                       <CheckCircle className="w-4 h-4" />
-                      <span>שומר על כל העיצוב והתוכן</span>
+                      <span>תוסף WordPress מוכן להורדה</span>
                     </div>
                     <div className="flex items-center justify-center gap-2">
                       <CheckCircle className="w-4 h-4" />
-                      <span>מדריך מפורט עם תמונות</span>
+                      <span>מדריך התקנה מפורט</span>
                     </div>
                   </div>
                 </div>
                 
                 <Button 
-                  onClick={() => {
-                    saveTemplateData();
-                    setShowWordPressForm(true);
-                  }}
+                  onClick={() => setShowWordPressForm(true)}
                   className="w-full bg-blue-500 hover:bg-blue-600 text-white"
                 >
                   <Code className="w-4 h-4 mr-2" />
-                  קבל מדריך + קוד HTML
+                  התחל התקנה ב-WordPress
                 </Button>
               </CardContent>
             </Card>
@@ -172,11 +258,9 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
                 <Button 
                   onClick={() => {
                     try {
-                      // Get the saved HTML from localStorage (if exists) or generate new one
                       let htmlContent = localStorage.getItem('generatedHTML');
                       
                       if (!htmlContent) {
-                        // Fallback: generate from template if no saved HTML
                         const { generatePageHTML } = require('@/utils/pageGenerator');
                         htmlContent = generatePageHTML(template);
                       }
