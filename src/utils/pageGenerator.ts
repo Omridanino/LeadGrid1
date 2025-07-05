@@ -46,6 +46,26 @@ export const generatePageHTML = (templateData: any) => {
     }
   };
 
+  // Get premium icon colors based on template
+  const getPremiumIconColors = (templateId: string) => {
+    switch (templateId) {
+      case 'tech-consultant-pro':
+        return 'from-blue-400 to-slate-500';
+      case 'neon-academy-pro':
+        return 'from-cyan-400 to-purple-500';
+      case 'blockchain-tech-pro':
+        return 'from-blue-400 to-indigo-600';
+      case 'nft-future-pro':
+        return 'from-purple-400 to-pink-500';
+      case 'creative-3d-pro':
+        return 'from-orange-400 to-pink-400';
+      case 'authkit-tech-pro':
+        return 'from-blue-400 to-gray-600';
+      default:
+        return 'from-blue-400 to-purple-500';
+    }
+  };
+
   // Generate styling for each section based on template styles
   const getSectionStyle = (bgColor: string, bgImage?: string, isPremiumTemplate = false, templateId?: string, sectionType?: string) => {
     if (isPremiumTemplate && templateId) {
@@ -586,6 +606,7 @@ export const generatePageHTML = (templateData: any) => {
         }
       }
     </script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <style>
         body {
             font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
@@ -829,15 +850,21 @@ export const generatePageHTML = (templateData: any) => {
             padding: 2rem 1.5rem;
             text-align: center;
         }
+        
+        /* Body should match the section backgrounds */
+        body {
+            ${isPremium ? (() => {
+              const bodyBgData = getPremiumAnimatedBackground(template.id, 'hero');
+              return `background: ${bodyBgData.background}; position: relative; overflow-x: hidden;`;
+            })() : `background: ${template.styles.backgroundColor || '#ffffff'};`}
+            color: ${template.styles.textColor};
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
     </style>
 </head>
-<body style="background: ${isPremium && template.id === 'nft-future-pro' ? 'linear-gradient(135deg, #0a0a1f, #1e1b4b)' :
-           isPremium && template.id === 'tech-consultant-pro' ? 'linear-gradient(135deg, #0f172a, #374151)' :
-           isPremium && template.id === 'neon-academy-pro' ? 'linear-gradient(135deg, #000000, #581c87)' :
-           isPremium && template.id === 'blockchain-tech-pro' ? 'linear-gradient(135deg, #1e1b4b, #1e40af)' :
-           isPremium && template.id === 'creative-3d-pro' ? 'linear-gradient(135deg, #fed7aa, #fca5a5)' :
-           isPremium && template.id === 'authkit-tech-pro' ? 'linear-gradient(135deg, #0f172a, #1e3a8a)' :
-           template.styles.backgroundColor || '#ffffff'}; color: ${template.styles.textColor};" class="text-foreground">
+<body class="text-foreground">
 
     <!-- Hero Section -->
     <section class="hero" ${template.styles.heroBackgroundImage ? `style="background-image: url(${template.styles.heroBackgroundImage}); background-size: cover; background-position: center; background-repeat: no-repeat;"` : ''}>
@@ -1000,7 +1027,7 @@ export const generatePageHTML = (templateData: any) => {
                           <!-- Content -->
                           <div class="relative z-10 p-8 space-y-4">
                             <!-- Floating icon -->
-                            <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
+                            <div class="w-16 h-16 bg-gradient-to-br ${getPremiumIconColors(template.id)} rounded-xl flex items-center justify-center shadow-lg">
                               <i class="ri-${feature.icon} text-2xl text-white"></i>
                             </div>
                             
