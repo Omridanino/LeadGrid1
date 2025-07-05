@@ -2,11 +2,101 @@
 import { TemplateData } from '@/types/template';
 
 export const templates: TemplateData[] = [
+  // ===== BASIC TEMPLATES - בסיסי ₪89.90 =====
+  {
+    id: 'basic-business',
+    name: 'עסק בסיסי',
+    category: 'basic',
+    hero: {
+      title: 'העסק שלכם מתחיל כאן',
+      subtitle: 'פתרונות פשוטים ויעילים',
+      description: 'התחילו את המסע שלכם עם הכלים הנכונים',
+      button1Text: 'התחילו עכשיו',
+      button2Text: 'קראו עוד'
+    },
+    emotional: {
+      title: 'הזמן שלכם הגיע',
+      description: 'כל חלום מתחיל בצעד ראשון',
+      button1Text: 'התחילו היום',
+      button2Text: 'למדו עוד'
+    },
+    features: {
+      title: 'מה אתם מקבלים',
+      items: [
+        { title: 'פשוט ונוח', description: 'קל לשימוש', icon: 'check-circle' },
+        { title: 'מהיר', description: 'תוצאות מהירות', icon: 'zap' },
+        { title: 'אמין', description: 'תמיכה מקצועית', icon: 'shield' }
+      ],
+      button1Text: 'התחילו',
+      button2Text: 'צרו קשר'
+    },
+    testimonials: {
+      title: 'מה אומרים עלינו',
+      testimonials: [
+        { name: 'יוסי כהן', role: 'בעל עסק', content: 'שירות מעולה', rating: 5 }
+      ],
+      button1Text: 'קראו עוד',
+      button2Text: 'הצטרפו'
+    },
+    about: {
+      title: 'מי אנחנו',
+      description: 'אנחנו כאן בשבילכם',
+      button1Text: 'קראו עוד',
+      button2Text: 'צרו קשר'
+    },
+    pricing: {
+      title: 'מחירים פשוטים',
+      plans: [
+        { name: 'בסיסי', price: '₪299', period: 'חודש', features: ['תכונה 1', 'תכונה 2'], buttonText: 'בחרו' }
+      ],
+      button1Text: 'השוו',
+      button2Text: 'יעוץ'
+    },
+    faq: {
+      title: 'שאלות נפוצות',
+      questions: [
+        { question: 'איך מתחילים?', answer: 'פשוט לחצו על התחל' }
+      ],
+      button1Text: 'עזרה',
+      button2Text: 'תמיכה'
+    },
+    finalCta: {
+      title: 'מוכנים להתחיל?',
+      description: 'הצטרפו אלינו עוד היום',
+      button1Text: 'התחילו עכשיו',
+      button2Text: 'צרו קשר'
+    },
+    contact: {
+      title: 'צרו קשר',
+      buttonText: 'שלחו הודעה'
+    },
+    footer: {
+      companyName: 'החברה שלכם'
+    },
+    styles: {
+      backgroundColor: '#1a1a1a',
+      heroBackground: '#2a2a2a',
+      emotionalBackground: '#1f1f1f',
+      featuresBackground: '#2a2a2a',
+      testimonialsBackground: '#1f1f1f',
+      aboutBackground: '#2a2a2a',
+      pricingBackground: '#1f1f1f',
+      faqBackground: '#2a2a2a',
+      finalCtaBackground: '#1f1f1f',
+      contactBackground: '#2a2a2a',
+      footerBackground: '#1a1a1a',
+      textColor: '#ffffff',
+      primaryColor: '#FFD700',
+      secondaryColor: '#FFA500',
+      accentColor: '#FFED4E'
+    }
+  },
+
   // ===== EXCLUSIVE TEMPLATES - אקסלוסיביות ₪149.90 =====
   {
     id: 'exclusive-tech-titan',
     name: 'Tech Titan Exclusive',
-    category: 'אקסלוסיביות - טכנולוגיה',
+    category: 'exclusive',
     hero: {
       title: 'המהפכה הטכנולוגית הבאה',
       subtitle: 'פתרונות AI מתקדמים לעסקים חכמים',
@@ -101,7 +191,7 @@ export const templates: TemplateData[] = [
   {
     id: 'tech-consultant-pro',
     name: 'Tech Consultant Pro',
-    category: 'פרימיום - ייעוץ טכנולוגי',
+    category: 'premium',
     hero: {
       title: 'ייעוץ מקצועי לאפליקציות ותוכנה',
       subtitle: 'המומחים המובילים בפיתוח ופריסת פתרונות טכנולוגיים',
@@ -220,7 +310,7 @@ export const templates: TemplateData[] = [
   {
     id: 'neon-academy-pro',
     name: 'Neon Academy Pro',
-    category: 'פרימיום - חינוך דיגיטלי',
+    category: 'premium',
     hero: {
       title: 'גלה את הכוח שמחבא בתוכך',
       subtitle: 'קורסים דיגיטליים מתקדמים שישנו את הקריירה שלך לעד',
@@ -339,7 +429,7 @@ export const templates: TemplateData[] = [
   {
     id: 'blockchain-tech-pro',
     name: 'Blockchain Tech Pro',
-    category: 'פרימיום - בלוקצ\'יין',
+    category: 'premium',
     hero: {
       title: 'משחררים את הכוח של הבלוקצ\'יין',
       subtitle: 'טכנולוגיה מתקדמת שמשנה תעשיות עם פתרונות מאובטחים ומבוזרים',
@@ -940,7 +1030,7 @@ export const templates: TemplateData[] = [
   {
     id: 'nft-future-pro',
     name: 'NFT Future Pro',
-    category: 'פרימיום - NFT ומטאוורס',
+    category: 'premium',
     hero: {
       title: 'אסוף את דור העתיד של NFTs היום',
       subtitle: 'הפלטפורמה המובילה לנכסים דיגיטליים שתוכל באמת להחזיק לעצמך',
@@ -1059,7 +1149,7 @@ export const templates: TemplateData[] = [
   {
     id: 'creative-3d-pro',
     name: 'Creative 3D Pro',
-    category: 'פרימיום - סוכנות עיצוב',
+    category: 'premium',
     hero: {
       title: 'סוכנות עיצוב Web3',
       subtitle: 'נתונים טובים יותר מובילים לביצועים טובים יותר',
@@ -1178,7 +1268,7 @@ export const templates: TemplateData[] = [
   {
     id: 'authkit-tech-pro',
     name: 'AuthKit Tech Pro',
-    category: 'פרימיום - טכנולוגיה',
+    category: 'premium',
     hero: {
       title: 'מציגים AuthKit',
       subtitle: 'תיבת הלוגין הטובה בעולם, מופעלת על ידי טכנולוגיה מתקדמת',

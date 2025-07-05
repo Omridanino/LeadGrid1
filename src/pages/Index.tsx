@@ -33,13 +33,18 @@ import LandingPageQuestionnaire from "@/components/LandingPageQuestionnaire";
 
 const Index = () => {
   const [isQuestionnaireOpen, setIsQuestionnaireOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
 
-  const handleOpenQuestionnaire = () => {
+  const handleOpenQuestionnaire = (category?: string) => {
+    if (category) {
+      setSelectedCategory(category);
+    }
     setIsQuestionnaireOpen(true);
   };
 
   const handleCloseQuestionnaire = () => {
     setIsQuestionnaireOpen(false);
+    setSelectedCategory('');
   };
 
   const templateCategories = [
@@ -172,114 +177,41 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden" dir="rtl">
-      {/* Advanced Animated Background */}
+      {/* Clean Minimal Background */}
       <div className="fixed inset-0 z-0 overflow-hidden">
-        {/* Gradient overlays with animations */}
+        {/* Simple gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
+        
+        {/* Subtle gold accent */}
         <motion.div 
-          className="absolute inset-0"
+          className="absolute inset-0 opacity-20"
           animate={{
             background: [
-              'radial-gradient(ellipse_at_top,rgba(255,215,0,0.15),transparent_50%)',
-              'radial-gradient(ellipse_at_top_right,rgba(192,192,192,0.15),transparent_50%)',
-              'radial-gradient(ellipse_at_top_left,rgba(255,215,0,0.15),transparent_50%)'
+              'radial-gradient(ellipse_at_top,rgba(255,215,0,0.1),transparent_70%)',
+              'radial-gradient(ellipse_at_bottom,rgba(255,215,0,0.05),transparent_70%)'
             ]
           }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
-        <motion.div 
-          className="absolute inset-0"
-          animate={{
-            background: [
-              'radial-gradient(ellipse_at_bottom_right,rgba(255,105,180,0.2),transparent_60%)',
-              'radial-gradient(ellipse_at_bottom_left,rgba(64,224,208,0.2),transparent_60%)',
-              'radial-gradient(ellipse_at_bottom,rgba(255,105,180,0.2),transparent_60%)'
-            ]
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        />
         
-        {/* Floating glass orbs */}
-        {[...Array(12)].map((_, i) => (
-          <motion.div
-            key={`orb-${i}`}
-            className="absolute rounded-full backdrop-blur-sm border border-white/10"
-            style={{
-              width: `${20 + Math.random() * 40}px`,
-              height: `${20 + Math.random() * 40}px`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))',
-              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 8px 25px rgba(0, 0, 0, 0.1)'
-            }}
-            animate={{
-              y: [0, -50, 0],
-              x: [0, 30, 0],
-              opacity: [0.3, 0.8, 0.3],
-              scale: [1, 1.2, 1],
-              rotate: [0, 180, 360]
-            }}
-            transition={{
-              duration: 6 + Math.random() * 4,
-              repeat: Infinity,
-              delay: Math.random() * 3,
-              ease: "easeInOut"
-            }}
-          />
-        ))}
-        
-        {/* Enhanced floating particles with gold/silver colors */}
-        {[...Array(80)].map((_, i) => (
+        {/* Minimal floating particles */}
+        {[...Array(20)].map((_, i) => (
           <motion.div
             key={`particle-${i}`}
-            className={`absolute w-1 h-1 rounded-full ${i % 3 === 0 ? 'bg-yellow-400/40' : i % 3 === 1 ? 'bg-gray-300/40' : 'bg-white/30'}`}
+            className="absolute w-1 h-1 bg-yellow-400/30 rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
             }}
             animate={{
-              y: [0, -60, 0],
-              x: [0, Math.random() * 40 - 20, 0],
-              opacity: [0.2, 1, 0.2],
-              scale: [0.5, 1.5, 0.5]
+              y: [0, -40, 0],
+              opacity: [0.1, 0.6, 0.1],
             }}
             transition={{
-              duration: 4 + Math.random() * 3,
+              duration: 6 + Math.random() * 2,
               repeat: Infinity,
-              delay: Math.random() * 3,
+              delay: Math.random() * 4,
               ease: "easeInOut"
-            }}
-          />
-        ))}
-        
-        {/* Morphing liquid shapes */}
-        {[...Array(3)].map((_, i) => (
-          <motion.div
-            key={`liquid-${i}`}
-            className="absolute opacity-20"
-            style={{
-              width: `${150 + Math.random() * 200}px`,
-              height: `${150 + Math.random() * 200}px`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              background: i === 0 ? 'radial-gradient(circle, rgba(255,215,0,0.3), transparent)' : 
-                         i === 1 ? 'radial-gradient(circle, rgba(192,192,192,0.3), transparent)' :
-                                  'radial-gradient(circle, rgba(255,105,180,0.3), transparent)',
-            }}
-            animate={{
-              borderRadius: [
-                '60% 40% 30% 70% / 60% 30% 70% 40%',
-                '30% 60% 70% 40% / 50% 60% 30% 60%',
-                '40% 30% 60% 70% / 40% 70% 50% 30%',
-                '60% 40% 30% 70% / 60% 30% 70% 40%'
-              ],
-              rotate: [0, 90, 180, 270, 360],
-              scale: [1, 1.2, 0.8, 1]
-            }}
-            transition={{
-              duration: 12 + Math.random() * 6,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: i * 2
             }}
           />
         ))}
@@ -294,10 +226,10 @@ const Index = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-2xl shadow-blue-500/30">
-              <Sparkles className="w-6 h-6 text-white" />
+            <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-xl flex items-center justify-center shadow-2xl shadow-yellow-400/30">
+              <Sparkles className="w-6 h-6 text-black" />
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <span className="text-2xl font-bold text-yellow-400">
               LeadGrid
             </span>
           </motion.div>
@@ -308,8 +240,8 @@ const Index = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <Button
-              onClick={handleOpenQuestionnaire}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3 rounded-xl shadow-2xl shadow-blue-500/30 hover:shadow-purple-500/30 transition-all duration-300"
+              onClick={() => handleOpenQuestionnaire()}
+              className="bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black px-6 py-3 rounded-xl shadow-2xl shadow-yellow-400/30 hover:shadow-yellow-500/30 transition-all duration-300 font-semibold"
             >
               <Rocket className="w-5 h-5 ml-2" />
               צור דף עכשיו
@@ -327,7 +259,7 @@ const Index = () => {
             transition={{ duration: 0.8 }}
             className="mb-8"
           >
-            <Badge className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-blue-300 border border-blue-500/30 px-4 py-2 text-sm mb-6">
+            <Badge className="bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 px-4 py-2 text-sm mb-6">
               <Sparkles className="w-4 h-4 ml-2" />
               הפלטפורמה המתקדמת ביותר ליצירת דפי נחיתה
             </Badge>
@@ -397,9 +329,9 @@ const Index = () => {
             className="flex flex-col md:flex-row gap-6 justify-center items-center mb-16"
           >
             <Button
-              onClick={handleOpenQuestionnaire}
+              onClick={() => handleOpenQuestionnaire()}
               size="lg"
-              className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white px-8 py-4 text-lg rounded-xl shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/50 transform hover:scale-105 transition-all duration-300"
+              className="bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black px-8 py-4 text-lg rounded-xl shadow-2xl shadow-yellow-500/30 hover:shadow-yellow-500/50 transform hover:scale-105 transition-all duration-300 font-semibold"
             >
               <Rocket className="w-6 h-6 ml-3" />
               התחל בחינם עכשיו
@@ -408,7 +340,7 @@ const Index = () => {
             <Button
               variant="outline"
               size="lg"
-              className="border-2 border-white/20 text-white hover:bg-white/10 px-8 py-4 text-lg rounded-xl backdrop-blur-sm"
+              className="border-2 border-yellow-400/50 text-yellow-400 hover:bg-yellow-400/10 px-8 py-4 text-lg rounded-xl backdrop-blur-sm"
             >
               <PlayCircle className="w-6 h-6 ml-3" />
               צפה בדמו
@@ -429,7 +361,7 @@ const Index = () => {
               { number: '24/7', label: 'תמיכה מקצועית' }
             ].map((stat, index) => (
               <div key={index} className="space-y-2">
-                <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                <div className="text-3xl md:text-4xl font-bold text-yellow-400">
                   {stat.number}
                 </div>
                 <div className="text-gray-400 text-sm">{stat.label}</div>
@@ -513,12 +445,12 @@ const Index = () => {
                         ))}
                       </div>
                       
-                      <Button
-                        onClick={handleOpenQuestionnaire}
-                        className={`w-full bg-gradient-to-r ${category.color} hover:shadow-2xl transform hover:scale-105 transition-all duration-300 text-white py-3 rounded-xl`}
-                      >
-                        התחל עכשיו
-                      </Button>
+                        <Button
+                          onClick={() => handleOpenQuestionnaire(category.id)}
+                          className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black font-semibold hover:shadow-2xl transform hover:scale-105 transition-all duration-300 py-3 rounded-xl"
+                        >
+                          התחל עכשיו
+                        </Button>
                       
                       <div className="mt-4 text-center">
                         <span className="text-sm text-gray-400">
@@ -612,123 +544,34 @@ const Index = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => {
               const Icon = feature.icon;
-              const glassVariants = ['gold', 'silver', 'platinum', 'rainbow'] as const;
-              const variant = glassVariants[index % glassVariants.length];
               
               return (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 50, rotateX: -30 }}
-                  whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-                  transition={{ 
-                    duration: 0.8, 
-                    delay: index * 0.2,
-                    type: "spring",
-                    stiffness: 100
-                  }}
-                  whileHover={{ 
-                    scale: 1.08,
-                    rotateY: 10,
-                    z: 50
-                  }}
-                  className="text-center group perspective-1000"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05 }}
+                  className="text-center group"
                 >
-                  <motion.div
-                    className="relative"
-                    whileHover={{ rotateX: 5, rotateY: 5 }}
-                    style={{ transformStyle: "preserve-3d" }}
-                  >
-                    <Card className="h-full bg-gradient-to-br from-black/40 via-gray-900/30 to-black/40 border border-white/10 backdrop-blur-2xl hover:shadow-2xl transition-all duration-500 overflow-hidden relative">
-                      {/* Glass morphism overlay */}
-                      <motion.div
-                        className="absolute inset-0 opacity-30"
-                        style={{
-                          background: `linear-gradient(135deg, 
-                            rgba(255, 255, 255, 0.1) 0%,
-                            transparent 30%,
-                            transparent 70%,
-                            rgba(255, 255, 255, 0.05) 100%)`,
-                        }}
-                        whileHover={{ opacity: 0.5 }}
-                        transition={{ duration: 0.3 }}
-                      />
-                      
-                      {/* Animated border glow */}
-                      <motion.div
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100"
-                        style={{
-                          background: `linear-gradient(45deg, 
-                            rgba(255, 215, 0, 0.2), 
-                            rgba(192, 192, 192, 0.2), 
-                            rgba(255, 215, 0, 0.2))`,
-                          backgroundSize: '200% 200%'
-                        }}
-                        animate={{
-                          backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
-                        }}
-                        transition={{
-                          duration: 3,
-                          repeat: Infinity,
-                          ease: "easeInOut"
-                        }}
-                      />
-                      
-                      <CardContent className="p-8 relative z-10">
-                        <motion.div 
-                          className="mx-auto mb-6"
-                          whileHover={{ scale: 1.1, rotate: 5 }}
-                          transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                        >
-                          <GlassIcon 
-                            icon={Icon} 
-                            size="lg" 
-                            variant={variant}
-                          />
-                        </motion.div>
-                        
-                        <motion.h3 
-                          className="text-xl font-bold text-white mb-3"
-                          whileHover={{ scale: 1.05 }}
-                        >
-                          {feature.title}
-                        </motion.h3>
-                        <motion.p 
-                          className="text-gray-300"
-                          initial={{ opacity: 0.7 }}
-                          whileHover={{ opacity: 1 }}
-                        >
-                          {feature.description}
-                        </motion.p>
-                      </CardContent>
-                      
-                      {/* Floating sparkles on hover */}
-                      <motion.div
-                        className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100"
-                        transition={{ duration: 0.5 }}
+                  <Card className="h-full bg-gradient-to-br from-gray-900/80 to-black/80 border border-yellow-400/20 backdrop-blur-xl hover:shadow-2xl hover:shadow-yellow-400/20 transition-all duration-300">
+                    <CardContent className="p-8">
+                      <motion.div 
+                        className="mx-auto mb-6"
+                        whileHover={{ rotate: 5 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
                       >
-                        {[...Array(6)].map((_, i) => (
-                          <motion.div
-                            key={i}
-                            className="absolute w-1 h-1 bg-yellow-400 rounded-full"
-                            style={{
-                              left: `${20 + Math.random() * 60}%`,
-                              top: `${20 + Math.random() * 60}%`,
-                            }}
-                            animate={{
-                              opacity: [0, 1, 0],
-                              scale: [0, 1.5, 0],
-                              rotate: [0, 180, 360],
-                            }}
-                            transition={{
-                              duration: 2,
-                              repeat: Infinity,
-                              delay: i * 0.3,
-                            }}
-                          />
-                        ))}
+                        <GlassIcon 
+                          icon={Icon} 
+                          size="lg" 
+                          variant="gold"
+                        />
                       </motion.div>
-                    </Card>
-                  </motion.div>
+                      
+                      <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
+                      <p className="text-gray-300">{feature.description}</p>
+                    </CardContent>
+                  </Card>
                 </motion.div>
               );
             })}
@@ -814,9 +657,9 @@ const Index = () => {
               
               <div className="flex flex-col md:flex-row gap-6 justify-center">
                 <Button
-                  onClick={handleOpenQuestionnaire}
+                  onClick={() => handleOpenQuestionnaire()}
                   size="lg"
-                  className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white px-10 py-4 text-lg rounded-xl shadow-2xl hover:shadow-purple-500/50 transform hover:scale-105 transition-all duration-300"
+                  className="bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black px-10 py-4 text-lg rounded-xl shadow-2xl hover:shadow-yellow-500/50 transform hover:scale-105 transition-all duration-300 font-semibold"
                 >
                   <Rocket className="w-6 h-6 ml-3" />
                   התחל בחינם עכשיו
@@ -825,7 +668,7 @@ const Index = () => {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-2 border-white/20 text-white hover:bg-white/10 px-10 py-4 text-lg rounded-xl backdrop-blur-sm"
+                  className="border-2 border-yellow-400/50 text-yellow-400 hover:bg-yellow-400/10 px-10 py-4 text-lg rounded-xl backdrop-blur-sm"
                 >
                   <PlayCircle className="w-6 h-6 ml-3" />
                   צפה בדמו חי
@@ -841,10 +684,10 @@ const Index = () => {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="flex items-center gap-3 mb-4 md:mb-0">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-2xl shadow-blue-500/30">
-                <Sparkles className="w-6 h-6 text-white" />
+              <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-xl flex items-center justify-center shadow-2xl shadow-yellow-400/30">
+                <Sparkles className="w-6 h-6 text-black" />
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold text-yellow-400">
                 LeadGrid
               </span>
             </div>
@@ -859,7 +702,8 @@ const Index = () => {
       {/* Questionnaire Modal */}
       <LandingPageQuestionnaire 
         isOpen={isQuestionnaireOpen} 
-        onClose={handleCloseQuestionnaire} 
+        onClose={handleCloseQuestionnaire}
+        initialCategory={selectedCategory}
       />
     </div>
   );

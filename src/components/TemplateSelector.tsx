@@ -19,14 +19,16 @@ import TemplateEditor from './ModernTemplateEditor';
 interface TemplateSelectorProps {
   isOpen: boolean;
   onClose: () => void;
+  initialCategory?: string;
 }
 
-const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
+const TemplateSelector = ({ isOpen, onClose, initialCategory }: TemplateSelectorProps) => {
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateData | null>(null);
   const [editingTemplate, setEditingTemplate] = useState<TemplateData | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [publishedUrl, setPublishedUrl] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory || '');
 
   const handleTemplateSelect = (template: TemplateData) => {
     setSelectedTemplate(template);
@@ -201,7 +203,9 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
 
             {/* Templates Grid */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {templates.map((template) => (
+              {templates
+                .filter(template => !selectedCategory || template.category === selectedCategory)
+                .map((template) => (
                 <Card 
                   key={template.id}
                   className={`cursor-pointer transition-all duration-300 hover:scale-105 ${
