@@ -1,4 +1,3 @@
-
 export interface TemplateStyles {
   // Background colors for each section
   backgroundColor: string;
@@ -30,7 +29,7 @@ export interface TemplateStyles {
   primaryColor: string;
   secondaryColor: string;
   accentColor: string;
-  fontFamily: string; // Added missing fontFamily property
+  fontFamily?: string; // Made optional to maintain compatibility
   
   // Premium section-specific colors (optional)
   emotionalTitleColor?: string;
