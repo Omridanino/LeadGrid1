@@ -35,14 +35,26 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
         hero: {
           title: 'ברוכים הבאים לעסק שלנו',
           subtitle: 'פתרונות מתקדמים ומקצועיים עבורכם',
+          description: 'פתרונות מתקדמים ומקצועיים עבורכם',
           button1Text: 'צור קשר',
           button2Text: 'למד עוד'
         },
         styles: {
           primaryColor: '#1e40af',
           secondaryColor: '#7c3aed',
+          accentColor: '#06b6d4',
           backgroundColor: '#ffffff',
-          textColor: '#000000'
+          textColor: '#000000',
+          heroBackground: '#1e40af',
+          emotionalBackground: '#7c3aed',
+          featuresBackground: '#f8fafc',
+          testimonialsBackground: '#f1f5f9',
+          aboutBackground: '#ffffff',
+          pricingBackground: '#f8fafc',
+          faqBackground: '#f1f5f9',
+          finalCtaBackground: '#1e40af',
+          contactBackground: '#f8fafc',
+          footerBackground: '#1f2937'
         }
       });
     } catch (error) {
@@ -245,7 +257,7 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-y-auto">
       <div className="max-w-5xl mx-auto p-6 space-y-8" dir="rtl">
         
         {/* Header */}
