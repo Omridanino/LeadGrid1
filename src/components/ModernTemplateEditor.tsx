@@ -95,7 +95,9 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
         // Remove large objects to reduce storage size
         styles: editedTemplate.styles ? {
           primaryColor: editedTemplate.styles.primaryColor,
-          backgroundColor: editedTemplate.styles.backgroundColor
+          backgroundColor: editedTemplate.styles.backgroundColor,
+          textColor: editedTemplate.styles.textColor,
+          fontFamily: editedTemplate.styles.fontFamily
         } : undefined
       };
       
@@ -108,7 +110,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
       setIsSaved(true);
       toast({
         title: "✅ הדף נשמר בהצלחה!",
-        description: "הדף שלך נשמר וקוד ה-HTML מוכן להדבקה",
+        description: "הדף שלך נשמר ומוכן לפרסום. עכשיו תוכל לפרסם אותו!",
       });
       
       setTimeout(() => setIsSaved(false), 3000);
@@ -136,14 +138,15 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
 
   const handleSaveAndPublish = () => {
     if (!isSaved) {
-      toast({
-        title: "⚠️ יש לשמור קודם!",
-        description: "אנא שמור את הדף לפני הפרסום",
-        variant: "destructive"
-      });
-      return;
+      // Auto save first
+      handleSave();
+      // Wait a moment then show launch section
+      setTimeout(() => {
+        setShowLaunchSection(true);
+      }, 1000);
+    } else {
+      setShowLaunchSection(true);
     }
-    setShowLaunchSection(true);
   };
 
   const handleBackToEditor = () => {
@@ -369,7 +372,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                   <Settings className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-white text-base font-bold">עורך תוכן</h2>
+                  <h2 className="text-white text-base font-bold">עורך מתקדם</h2>
                   <p className="text-slate-300 text-xs truncate max-w-32">{editedTemplate.name}</p>
                 </div>
               </div>
@@ -391,7 +394,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
               </div>
             </div>
             
-            {/* Action Buttons - Compact */}
+            {/* Action Buttons - Improved */}
             <div className="flex gap-1.5">
               <Button 
                 size="sm" 
@@ -416,13 +419,8 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
               </Button>
               <Button 
                 size="sm" 
-                className={`flex-1 ${
-                  isSaved 
-                    ? 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700' 
-                    : 'bg-slate-600/50 cursor-not-allowed opacity-50'
-                } text-white shadow-lg text-xs px-2 py-1.5`}
+                className="flex-1 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg text-xs px-2 py-1.5"
                 onClick={handleSaveAndPublish}
-                disabled={!isSaved}
               >
                 <Rocket className="w-3 h-3 ml-1" />
                 פרסם
@@ -455,9 +453,9 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                 <ScrollArea className="h-full">
                    <div className="p-3 space-y-1.5">
                      {category.id === 'elements' && (
-                       <div className="mb-4 p-3 bg-slate-700/30 rounded-lg border border-slate-600/30">
-                         <p className="text-slate-300 text-xs mb-2">גרור אלמנטים לדף התצוגה ↙️</p>
-                         <div className="text-xs text-slate-400">לחץ על אלמנט להוספה או גרור למקום רצוי</div>
+                       <div className="mb-4 p-3 bg-gradient-to-r from-blue-900/30 to-purple-900/30 rounded-lg border border-blue-600/30">
+                         <p className="text-blue-300 text-xs mb-2 font-medium">💡 גרור אלמנטים לדף</p>
+                         <div className="text-xs text-slate-400">לחץ על אלמנט להוספה או גרור למקום רצוי בדף</div>
                        </div>
                      )}
                      {category.items.map((item) => {
@@ -474,9 +472,9 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                            }}
                            className={`cursor-pointer transition-all duration-200 border ${
                              isActive 
-                               ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-400/50' 
+                               ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-400/50 shadow-lg shadow-blue-500/10' 
                                : 'bg-slate-800/40 border-slate-700/30 hover:bg-slate-700/40 hover:border-slate-600/50'
-                           } backdrop-blur-sm ${category.id === 'elements' ? 'cursor-grab active:cursor-grabbing' : ''}`}
+                           } backdrop-blur-sm ${category.id === 'elements' ? 'cursor-grab active:cursor-grabbing hover:scale-105' : ''}`}
                            onClick={() => {
                              if (!editedTemplate[item.id as keyof TemplateData] && ['gallery', 'heading', 'text', 'video', 'slider', 'list', 'embed', 'socialBar'].includes(item.id)) {
                                initializeSection(item.id);
@@ -487,7 +485,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                            <CardContent className="p-2.5">
                              <div className="flex items-center gap-2">
                                <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${
-                                 isActive ? 'bg-blue-500/20' : 'bg-slate-700/50'
+                                 isActive ? 'bg-blue-500/20 border border-blue-400/30' : 'bg-slate-700/50'
                                }`}>
                                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-blue-400' : item.color}`} />
                                </div>
@@ -496,7 +494,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                                    {item.name}
                                  </h3>
                                  <p className="text-xs text-slate-500 truncate">
-                                   {category.id === 'elements' ? 'גרור או לחץ' : isActive ? 'פעיל' : 'לחץ לעריכה'}
+                                   {category.id === 'elements' ? 'גרור או לחץ' : isActive ? 'פעיל ✨' : 'לחץ לעריכה'}
                                  </p>
                                </div>
                              </div>
@@ -530,7 +528,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
             )}
             <div className="flex items-center gap-1.5">
               <Eye className="w-3.5 h-3.5 text-slate-300" />
-              <span className="text-xs text-slate-300">תצוגה מקדימה</span>
+              <span className="text-xs text-slate-300">תצוגה מקדימה בזמן אמת</span>
             </div>
           </div>
           
@@ -543,20 +541,19 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                 <Button
                   onClick={handleSave}
                   size="sm"
-                  className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-lg text-xs px-2 py-1.5"
+                  className={`${
+                    isSaved 
+                      ? 'bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700' 
+                      : 'bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700'
+                  } text-white shadow-lg text-xs px-2 py-1.5`}
                 >
-                  <Save className="w-3 h-3 mr-1" />
-                  שמור
+                  {isSaved ? <CheckCircle className="w-3 h-3 mr-1" /> : <Save className="w-3 h-3 mr-1" />}
+                  {isSaved ? 'נשמר' : 'שמור'}
                 </Button>
                 <Button 
                   size="sm" 
-                  className={`${
-                    isSaved 
-                      ? 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700' 
-                      : 'bg-slate-600/50 cursor-not-allowed opacity-50'
-                  } text-white shadow-lg text-xs px-2 py-1.5`}
+                  className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg text-xs px-2 py-1.5"
                   onClick={handleSaveAndPublish}
-                  disabled={!isSaved}
                 >
                   <Rocket className="w-3 h-3 mr-1" />
                   פרסם
@@ -571,7 +568,11 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
           
           {/* Editor Panel - Right Side */}
           {!isEditorMinimized && (
-            <div className="w-72 border-l border-slate-600/30 bg-gradient-to-b from-slate-800/50 to-slate-900/50 backdrop-blur-sm flex flex-col">
+            <div className="w-80 border-l border-slate-600/30 bg-gradient-to-b from-slate-800/50 to-slate-900/50 backdrop-blur-sm flex flex-col">
+              <div className="p-3 border-b border-slate-700/30 bg-slate-800/30">
+                <h3 className="text-white font-medium text-sm">עריכת {categories.find(c => c.items.find(i => i.id === activeSection))?.items.find(i => i.id === activeSection)?.name}</h3>
+                <p className="text-slate-400 text-xs mt-1">שנה והתאם אישית את החלק הזה</p>
+              </div>
               <ScrollArea className="flex-1">
                 <div className="p-3">
                   {renderEditor()}
@@ -580,9 +581,15 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
             </div>
           )}
           
-          {/* Preview - Takes remaining space */}
+          {/* Preview - Takes remaining space with full width styling */}
           <div 
             className="flex-1 bg-white overflow-auto"
+            style={{ 
+              width: '100%',
+              maxWidth: 'none',
+              margin: 0,
+              padding: 0
+            }}
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => {
               e.preventDefault();
@@ -592,12 +599,14 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                 setActiveSection(elementType);
                 toast({
                   title: "✅ אלמנט נוסף בהצלחה!",
-                  description: `${elementType} נוסף לדף`,
+                  description: `האלמנט נוסף לדף ומוכן לעריכה`,
                 });
               }
             }}
           >
-            <TemplatePreview template={editedTemplate} />
+            <div style={{ width: '100vw', margin: '0 -50vw 0 -50vw', position: 'relative', left: '50%', right: '50%' }}>
+              <TemplatePreview template={editedTemplate} />
+            </div>
           </div>
         </div>
       </div>
