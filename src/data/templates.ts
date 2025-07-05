@@ -2,6 +2,185 @@
 import { TemplateData } from '@/types/template';
 
 export const templates: TemplateData[] = [
+  // ===== EXCLUSIVE TEMPLATES - אקסלוסיביות ₪149.90 =====
+  {
+    id: 'exclusive-tech-titan',
+    name: 'Tech Titan Exclusive',
+    category: 'אקסלוסיביות - טכנולוגיה',
+    hero: {
+      title: 'המהפכה הטכנולוגית הבאה',
+      subtitle: 'פתרונות AI מתקדמים לעסקים חכמים',
+      description: 'הצטרפו לעתיד הבינה המלאכותית עם הפלטפורמה המתקדמת ביותר בעולם',
+      button1Text: 'התחילו עכשיו',
+      button2Text: 'צפו בדמו'
+    },
+    styles: {
+      backgroundColor: '#000000',
+      primaryColor: 'hsl(var(--gold))',
+      secondaryColor: 'hsl(var(--silver))',
+      textColor: 'hsl(var(--foreground))'
+    },
+    effects: {
+      hero: 'holographic',
+      features: 'cosmic-geometry'
+    }
+  },
+  {
+    id: 'exclusive-quantum-labs',
+    name: 'Quantum Labs Exclusive',
+    category: 'אקסלוסיביות - מדע וטכנולוגיה',
+    hero: {
+      title: 'מחקר קוונטי מתקדם',
+      subtitle: 'פורצי דרך במדע החישוב הקוונטי',
+      description: 'פתרונות מדעיים חדשניים לעתיד טוב יותר',
+      button1Text: 'גלו עוד',
+      button2Text: 'הצטרפו למהפכה'
+    },
+    styles: {
+      backgroundColor: '#0a0a0f',
+      primaryColor: 'hsl(var(--gold))',
+      secondaryColor: 'hsl(var(--platinum))',
+      textColor: 'hsl(var(--foreground))'
+    },
+    effects: {
+      hero: 'quantum-bubbles',
+      features: 'particle-storm'
+    }
+  },
+  {
+    id: 'exclusive-neo-finance',
+    name: 'Neo Finance Exclusive',
+    category: 'אקסלוסיביות - פיננסים',
+    hero: {
+      title: 'הבנקאות של העתיד',
+      subtitle: 'פתרונות פיננסיים דיגיטליים מתקדמים',
+      description: 'טכנולוגיית blockchain וביטקוין למשקיעים חכמים',
+      button1Text: 'התחילו להשקיע',
+      button2Text: 'למדו עוד'
+    },
+    styles: {
+      backgroundColor: '#0f0f23',
+      primaryColor: 'hsl(var(--gold))',
+      secondaryColor: 'hsl(var(--silver))',
+      textColor: 'hsl(var(--foreground))'
+    },
+    effects: {
+      hero: 'liquid-metal',
+      features: 'crystal-matrix'
+    }
+  },
+  {
+    id: 'exclusive-cyber-health',
+    name: 'Cyber Health Exclusive',
+    category: 'אקסלוסיביות - בריאות דיגיטלית',
+    hero: {
+      title: 'רפואה דיגיטלית מתקדמת',
+      subtitle: 'AI לאבחון וטיפול מדוייק',
+      description: 'המהפכה הרפואית הדיגיטלית כבר כאן',
+      button1Text: 'הזמינו ייעוץ',
+      button2Text: 'גלו הכל'
+    },
+    styles: {
+      backgroundColor: '#001122',
+      primaryColor: 'hsl(var(--gold))',
+      secondaryColor: 'hsl(var(--silver))',
+      textColor: 'hsl(var(--foreground))'
+    },
+    effects: {
+      hero: 'neon-grid-portal',
+      features: 'holographic'
+    }
+  },
+  {
+    id: 'exclusive-space-tech',
+    name: 'Space Tech Exclusive',
+    category: 'אקסלוסיביות - טכנולוגיית חלל',
+    hero: {
+      title: 'כיבוש החלל החדש',
+      subtitle: 'טכנולוגיות חלל למשימות מתקדמות',
+      description: 'חדשנות שתוביל אותנו לכוכבים',
+      button1Text: 'הצטרפו למשימה',
+      button2Text: 'צפו במשימות'
+    },
+    styles: {
+      backgroundColor: '#000011',
+      primaryColor: 'hsl(var(--gold))',
+      secondaryColor: 'hsl(var(--platinum))',
+      textColor: 'hsl(var(--foreground))'
+    },
+    effects: {
+      hero: 'cosmic-geometry',
+      features: 'particle-storm'
+    }
+  },
+  {
+    id: 'exclusive-neural-network',
+    name: 'Neural Network Exclusive',
+    category: 'אקסלוסיביות - רשתות נוירונים',
+    hero: {
+      title: 'רשתות נוירונים מתקדמות',
+      subtitle: 'למידת מכונה ברמה חדשה',
+      description: 'AI שחושב כמו בן אדם, עובד כמו מכונה',
+      button1Text: 'התחילו ללמוד',
+      button2Text: 'ראו דוגמאות'
+    },
+    styles: {
+      backgroundColor: '#0a0f1c',
+      primaryColor: 'hsl(var(--gold))',
+      secondaryColor: 'hsl(var(--silver))',
+      textColor: 'hsl(var(--foreground))'
+    },
+    effects: {
+      hero: 'digital-waves',
+      features: 'quantum-bubbles'
+    }
+  },
+  {
+    id: 'exclusive-metaverse-builder',
+    name: 'Metaverse Builder Exclusive',
+    category: 'אקסלוסיביות - מטאוורס',
+    hero: {
+      title: 'בנו את המטאוורס שלכם',
+      subtitle: 'עולמות וירטואליים בלתי מוגבלים',
+      description: 'יצירת חוויות VR/AR מהפכניות',
+      button1Text: 'בנו עולם',
+      button2Text: 'חוו דמו'
+    },
+    styles: {
+      backgroundColor: '#1a0f2e',
+      primaryColor: 'hsl(var(--gold))',
+      secondaryColor: 'hsl(var(--platinum))',
+      textColor: 'hsl(var(--foreground))'
+    },
+    effects: {
+      hero: 'morphing-shapes',
+      features: 'holographic'
+    }
+  },
+  {
+    id: 'exclusive-bio-tech',
+    name: 'Bio Tech Exclusive',
+    category: 'אקסלוסיביות - ביוטכנולוגיה',
+    hero: {
+      title: 'ביוטכנולוגיה מתקדמת',
+      subtitle: 'שיפור החיים דרך מדע מתקדם',
+      description: 'טכנולוגיות חיים לעתיד בריא יותר',
+      button1Text: 'גלו חדשנות',
+      button2Text: 'קיראו מחקרים'
+    },
+    styles: {
+      backgroundColor: '#0f2027',
+      primaryColor: 'hsl(var(--gold))',
+      secondaryColor: 'hsl(var(--silver))',
+      textColor: 'hsl(var(--foreground))'
+    },
+    effects: {
+      hero: 'glass-refraction',
+      features: 'liquid-metal'
+    }
+  },
+
+  // ===== PREMIUM TEMPLATES - פרימיום ₪119.90 =====
   // Premium Template 1 - Tech Consulting (inspired by first image)
   {
     id: 'tech-consultant-pro',
