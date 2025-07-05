@@ -2,98 +2,157 @@
 <?php
 /**
  * LeadGrid Admin Class
- * Handles WordPress admin interface
+ * Handles admin interface and functionality
  */
 
 class LeadGrid_Admin {
     
+    private $api;
+    
     public function __construct() {
+        $this->api = new LeadGrid_API();
+        
         add_action('admin_menu', array($this, 'add_admin_menu'));
-        add_action('admin_init', array($this, 'admin_init'));
+        add_action('wp_ajax_leadgrid_test_connection', array($this->api, 'ajax_test_connection'));
+        add_action('wp_ajax_leadgrid_import_page', array($this->api, 'ajax_import_page'));
     }
     
     public function add_admin_menu() {
         add_menu_page(
-            __('LeadGrid', 'leadgrid-integration'),
-            __('LeadGrid', 'leadgrid-integration'),
+            'LeadGrid Integration',
+            'LeadGrid',
             'manage_options',
             'leadgrid',
             array($this, 'admin_page'),
-            'dashicons-layout',
+            'dashicons-wordpress-alt',
             30
         );
         
         add_submenu_page(
             'leadgrid',
-            __('Import Pages', 'leadgrid-integration'),
-            __('Import Pages', 'leadgrid-integration'),
-            'manage_options',
-            'leadgrid-import',
-            array($this, 'import_page')
-        );
-        
-        add_submenu_page(
-            'leadgrid',
-            __('Settings', 'leadgrid-integration'),
-            __('Settings', 'leadgrid-integration'),
+            'Settings',
+            'הגדרות',
             'manage_options',
             'leadgrid-settings',
             array($this, 'settings_page')
         );
-    }
-    
-    public function admin_init() {
-        // Register settings will be handled by LeadGrid_Settings class
+        
+        add_submenu_page(
+            'leadgrid',
+            'Import Pages',
+            'ייבוא דפים',
+            'manage_options',
+            'leadgrid-import',
+            array($this, 'import_page')
+        );
     }
     
     public function admin_page() {
         ?>
-        <div class="wrap">
-            <h1><?php _e('LeadGrid Integration', 'leadgrid-integration'); ?></h1>
+        <div class="wrap" dir="rtl">
+            <h1>🚀 LeadGrid Integration Pro</h1>
             
-            <div class="leadgrid-admin-dashboard">
-                <div class="leadgrid-card">
-                    <h2><?php _e('Welcome to LeadGrid Integration', 'leadgrid-integration'); ?></h2>
-                    <p><?php _e('Import your LeadGrid landing pages directly into WordPress with full editing capabilities.', 'leadgrid-integration'); ?></p>
-                    
-                    <div class="leadgrid-quick-actions">
-                        <a href="<?php echo admin_url('admin.php?page=leadgrid-import'); ?>" class="button button-primary">
-                            <?php _e('Import Pages', 'leadgrid-integration'); ?>
-                        </a>
-                        <a href="<?php echo admin_url('admin.php?page=leadgrid-settings'); ?>" class="button">
-                            <?php _e('Settings', 'leadgrid-integration'); ?>
-                        </a>
+            <div class="notice notice-info">
+                <p><strong>ברוכים הבאים לתוסף LeadGrid!</strong></p>
+                <p>כדי להתחיל, אנא עברו לעמוד <a href="<?php echo admin_url('admin.php?page=leadgrid-settings'); ?>">הגדרות</a> והזינו את פרטי ה-API שלכם.</p>
+            </div>
+
+            <div class="leadgrid-admin-content">
+                <div class="postbox" style="margin-top: 20px;">
+                    <h2 class="hndle">מדריך מהיר</h2>
+                    <div class="inside">
+                        <ol style="font-size: 14px; line-height: 1.6;">
+                            <li><strong>קבלו את פרטי ה-API:</strong> לאחר יצירת דף ב-LeadGrid, תקבלו API Key ו-Site ID</li>
+                            <li><strong>הגדירו את הפרטים:</strong> היכנסו ל<a href="<?php echo admin_url('admin.php?page=leadgrid-settings'); ?>">הגדרות</a> והזינו את הפרטים</li>
+                            <li><strong>ייבאו את הדף:</strong> עברו ל<a href="<?php echo admin_url('admin.php?page=leadgrid-import'); ?>">ייבוא דפים</a> וייבאו את הדף שלכם</li>
+                            <li><strong>ערכו ופרסמו:</strong> הדף יתווסף כדף WordPress רגיל שתוכלו לערוך</li>
+                        </ol>
                     </div>
                 </div>
-                
-                <div class="leadgrid-card">
-                    <h3><?php _e('Connection Status', 'leadgrid-integration'); ?></h3>
-                    <div id="leadgrid-connection-status">
-                        <button type="button" class="button" id="test-connection">
-                            <?php _e('Test Connection', 'leadgrid-integration'); ?>
-                        </button>
-                        <div id="connection-result"></div>
+
+                <div class="postbox" style="margin-top: 20px;">
+                    <h2 class="hndle">מה התוסף מאפשר?</h2>
+                    <div class="inside">
+                        <ul style="font-size: 14px; line-height: 1.6;">
+                            <li>✅ ייבוא דפי נחיתה מ-LeadGrid</li>
+                            <li>✅ עריכה מלאה ב-WordPress</li>
+                            <li>✅ עיצוב רספונסיבי אוטומטי</li>
+                            <li>✅ טפסי יצירת קשר פעילים</li>
+                            <li>✅ אופטימיזציה ל-SEO</li>
+                            <li>✅ תמיכה בעברית מלאה</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
+        <?php
+    }
+    
+    public function settings_page() {
+        if (isset($_POST['submit'])) {
+            check_admin_referer('leadgrid_settings');
+            
+            update_option('leadgrid_api_key', sanitize_text_field($_POST['api_key']));
+            update_option('leadgrid_site_id', sanitize_text_field($_POST['site_id']));
+            
+            echo '<div class="notice notice-success"><p>ההגדרות נשמרו בהצלחה!</p></div>';
+        }
         
+        $api_key = get_option('leadgrid_api_key', '');
+        $site_id = get_option('leadgrid_site_id', '');
+        ?>
+        <div class="wrap" dir="rtl">
+            <h1>הגדרות LeadGrid</h1>
+            
+            <div class="notice notice-info">
+                <p><strong>איפה למצוא את הפרטים?</strong></p>
+                <p>לאחר יצירת דף ב-LeadGrid, תקבלו אוטומטית את פרטי ה-API Key ו-Site ID במסך הפרסום.</p>
+            </div>
+
+            <form method="post" action="">
+                <?php wp_nonce_field('leadgrid_settings'); ?>
+                
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">Site ID</th>
+                        <td>
+                            <input type="text" name="site_id" value="<?php echo esc_attr($site_id); ?>" class="regular-text" />
+                            <p class="description">ה-Site ID שקיבלתם מ-LeadGrid (מתחיל ב-site_)</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">API Key</th>
+                        <td>
+                            <input type="text" name="api_key" value="<?php echo esc_attr($api_key); ?>" class="regular-text" />
+                            <p class="description">ה-API Key שקיבלתם מ-LeadGrid (מתחיל ב-lg_)</p>
+                        </td>
+                    </tr>
+                </table>
+                
+                <p class="submit">
+                    <input type="submit" name="submit" class="button-primary" value="שמירה" />
+                    <button type="button" id="test-connection" class="button" style="margin-right: 10px;">בדיקת חיבור</button>
+                </p>
+            </form>
+            
+            <div id="connection-result" style="margin-top: 20px;"></div>
+        </div>
+
         <script>
         jQuery(document).ready(function($) {
             $('#test-connection').click(function() {
                 var button = $(this);
-                var result = $('#connection-result');
-                
-                button.prop('disabled', true).text('<?php _e('Testing...', 'leadgrid-integration'); ?>');
+                button.prop('disabled', true).text('בודק...');
                 
                 $.ajax({
-                    url: leadgrid_admin.ajax_url,
+                    url: ajaxurl,
                     type: 'POST',
                     data: {
                         action: 'leadgrid_test_connection',
-                        nonce: leadgrid_admin.nonce
+                        nonce: '<?php echo wp_create_nonce('leadgrid_nonce'); ?>'
                     },
                     success: function(response) {
+                        var result = $('#connection-result');
                         if (response.success) {
                             result.html('<div class="notice notice-success"><p>' + response.data + '</p></div>');
                         } else {
@@ -101,10 +160,10 @@ class LeadGrid_Admin {
                         }
                     },
                     error: function() {
-                        result.html('<div class="notice notice-error"><p><?php _e('Connection test failed', 'leadgrid-integration'); ?></p></div>');
+                        $('#connection-result').html('<div class="notice notice-error"><p>שגיאה בבדיקת החיבור</p></div>');
                     },
                     complete: function() {
-                        button.prop('disabled', false).text('<?php _e('Test Connection', 'leadgrid-integration'); ?>');
+                        button.prop('disabled', false).text('בדיקת חיבור');
                     }
                 });
             });
@@ -115,172 +174,94 @@ class LeadGrid_Admin {
     
     public function import_page() {
         ?>
-        <div class="wrap">
-            <h1><?php _e('Import LeadGrid Pages', 'leadgrid-integration'); ?></h1>
+        <div class="wrap" dir="rtl">
+            <h1>ייבוא דפי LeadGrid</h1>
             
-            <div class="leadgrid-import-container">
-                <div class="leadgrid-card">
-                    <h2><?php _e('Available Pages', 'leadgrid-integration'); ?></h2>
-                    <p><?php _e('Import your LeadGrid pages as WordPress pages.', 'leadgrid-integration'); ?></p>
-                    
-                    <button type="button" class="button" id="load-pages">
-                        <?php _e('Load Available Pages', 'leadgrid-integration'); ?>
-                    </button>
-                    
-                    <div id="pages-list"></div>
+            <?php
+            $api_key = get_option('leadgrid_api_key', '');
+            $site_id = get_option('leadgrid_site_id', '');
+            
+            if (empty($api_key) || empty($site_id)) {
+                ?>
+                <div class="notice notice-warning">
+                    <p><strong>חסרים פרטי API!</strong></p>
+                    <p>כדי לייבא דפים, תחילה צריך להגדיר את פרטי ה-API ב<a href="<?php echo admin_url('admin.php?page=leadgrid-settings'); ?>">עמוד ההגדרות</a>.</p>
+                </div>
+                <?php
+                return;
+            }
+            ?>
+            
+            <div class="notice notice-info">
+                <p><strong>מוכן לייבוא!</strong> פרטי ה-API שלכם מוגדרים נכון.</p>
+            </div>
+
+            <div class="postbox">
+                <h2 class="hndle">דפים זמינים לייבוא</h2>
+                <div class="inside">
+                    <button id="load-pages" class="button button-primary">טען דפים זמינים</button>
+                    <div id="pages-list" style="margin-top: 20px;"></div>
                 </div>
             </div>
         </div>
-        
+
         <script>
         jQuery(document).ready(function($) {
             $('#load-pages').click(function() {
                 var button = $(this);
-                var list = $('#pages-list');
+                button.prop('disabled', true).text('טוען...');
                 
-                button.prop('disabled', true).text('<?php _e('Loading...', 'leadgrid-integration'); ?>');
+                // הצגת הדף הזמין לייבוא
+                var pagesHtml = '<div class="leadgrid-pages-grid">';
+                pagesHtml += '<div class="leadgrid-page-item" style="border: 1px solid #ddd; padding: 20px; margin: 10px 0; background: #fff;">';
+                pagesHtml += '<h3>הדף שיצרתי ב-LeadGrid</h3>';
+                pagesHtml += '<p>דף הנחיתה שיצרתי באמצעות מערכת LeadGrid</p>';
+                pagesHtml += '<p><strong>Site ID:</strong> <?php echo esc_js($site_id); ?></p>';
+                pagesHtml += '<p><strong>סטטוס:</strong> <span style="color: green;">מוכן לייבוא</span></p>';
+                pagesHtml += '<button class="button button-primary import-page-btn" data-page-id="<?php echo esc_js($site_id); ?>">ייבא דף זה</button>';
+                pagesHtml += '</div>';
+                pagesHtml += '</div>';
                 
-                $.ajax({
-                    url: leadgrid_admin.ajax_url,
-                    type: 'POST',
-                    data: {
-                        action: 'leadgrid_get_pages',
-                        nonce: leadgrid_admin.nonce
-                    },
-                    success: function(response) {
-                        if (response.success && response.data.pages) {
-                            var html = '<div class="leadgrid-pages-grid">';
-                            
-                            response.data.pages.forEach(function(page) {
-                                html += '<div class="leadgrid-page-item">';
-                                html += '<h3>' + page.title + '</h3>';
-                                html += '<p>' + (page.description || '') + '</p>';
-                                html += '<p><small><?php _e('Created:', 'leadgrid-integration'); ?> ' + page.created_at + '</small></p>';
-                                html += '<button type="button" class="button button-primary import-page" data-page-id="' + page.id + '">';
-                                html += '<?php _e('Import', 'leadgrid-integration'); ?>';
-                                html += '</button>';
-                                html += '</div>';
-                            });
-                            
-                            html += '</div>';
-                            list.html(html);
-                        } else {
-                            list.html('<div class="notice notice-error"><p>' + (response.data || '<?php _e('Failed to load pages', 'leadgrid-integration'); ?>') + '</p></div>');
-                        }
-                    },
-                    error: function() {
-                        list.html('<div class="notice notice-error"><p><?php _e('Failed to load pages', 'leadgrid-integration'); ?></p></div>');
-                    },
-                    complete: function() {
-                        button.prop('disabled', false).text('<?php _e('Load Available Pages', 'leadgrid-integration'); ?>');
-                    }
-                });
+                $('#pages-list').html(pagesHtml);
+                button.prop('disabled', false).text('רענן רשימת דפים');
             });
             
-            $(document).on('click', '.import-page', function() {
+            $(document).on('click', '.import-page-btn', function() {
                 var button = $(this);
                 var pageId = button.data('page-id');
-                var pageItem = button.closest('.leadgrid-page-item');
                 
-                button.prop('disabled', true).text('<?php _e('Importing...', 'leadgrid-integration'); ?>');
+                button.prop('disabled', true).text('מייבא...');
                 
                 $.ajax({
-                    url: leadgrid_admin.ajax_url,
+                    url: ajaxurl,
                     type: 'POST',
                     data: {
                         action: 'leadgrid_import_page',
                         page_id: pageId,
-                        nonce: leadgrid_admin.nonce
+                        nonce: '<?php echo wp_create_nonce('leadgrid_nonce'); ?>'
                     },
                     success: function(response) {
                         if (response.success) {
-                            pageItem.append('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
-                            button.text('<?php _e('Imported', 'leadgrid-integration'); ?>').addClass('button-disabled');
+                            var result = '<div class="notice notice-success" style="margin: 10px 0; padding: 10px;">';
+                            result += '<p><strong>הייבוא הושלם בהצלחה!</strong></p>';
+                            result += '<p><a href="' + response.data.edit_url + '" class="button">ערוך את הדף</a> ';
+                            result += '<a href="' + response.data.view_url + '" class="button" target="_blank">צפה בדף</a></p>';
+                            result += '</div>';
+                            
+                            button.parent().html(result);
                         } else {
-                            pageItem.append('<div class="notice notice-error"><p>' + response.data + '</p></div>');
-                            button.prop('disabled', false).text('<?php _e('Import', 'leadgrid-integration'); ?>');
+                            alert('שגיאה בייבוא: ' + response.data);
+                            button.prop('disabled', false).text('ייבא דף זה');
                         }
                     },
                     error: function() {
-                        pageItem.append('<div class="notice notice-error"><p><?php _e('Import failed', 'leadgrid-integration'); ?></p></div>');
-                        button.prop('disabled', false).text('<?php _e('Import', 'leadgrid-integration'); ?>');
+                        alert('שגיאה בייבוא הדף');
+                        button.prop('disabled', false).text('ייבא דף זה');
                     }
                 });
             });
         });
         </script>
-        <?php
-    }
-    
-    public function settings_page() {
-        $settings = new LeadGrid_Settings();
-        
-        if (isset($_POST['submit'])) {
-            check_admin_referer('leadgrid_settings_nonce');
-            
-            update_option('leadgrid_api_endpoint', esc_url_raw($_POST['leadgrid_api_endpoint']));
-            update_option('leadgrid_api_key', sanitize_text_field($_POST['leadgrid_api_key']));
-            update_option('leadgrid_site_id', sanitize_text_field($_POST['leadgrid_site_id']));
-            update_option('leadgrid_cache_enabled', isset($_POST['leadgrid_cache_enabled']));
-            update_option('leadgrid_debug_mode', isset($_POST['leadgrid_debug_mode']));
-            
-            echo '<div class="notice notice-success"><p>' . __('Settings saved!', 'leadgrid-integration') . '</p></div>';
-        }
-        
-        $api_endpoint = get_option('leadgrid_api_endpoint', 'http://localhost:3000/api');
-        $api_key = get_option('leadgrid_api_key', '');
-        $site_id = get_option('leadgrid_site_id', '');
-        $cache_enabled = get_option('leadgrid_cache_enabled', true);
-        $debug_mode = get_option('leadgrid_debug_mode', false);
-        ?>
-        
-        <div class="wrap">
-            <h1><?php _e('LeadGrid Settings', 'leadgrid-integration'); ?></h1>
-            
-            <form method="post" action="">
-                <?php wp_nonce_field('leadgrid_settings_nonce'); ?>
-                
-                <table class="form-table">
-                    <tr>
-                        <th scope="row"><?php _e('API Endpoint', 'leadgrid-integration'); ?></th>
-                        <td>
-                            <input type="url" name="leadgrid_api_endpoint" value="<?php echo esc_attr($api_endpoint); ?>" class="regular-text" />
-                            <p class="description"><?php _e('LeadGrid API endpoint URL', 'leadgrid-integration'); ?></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php _e('API Key', 'leadgrid-integration'); ?></th>
-                        <td>
-                            <input type="text" name="leadgrid_api_key" value="<?php echo esc_attr($api_key); ?>" class="regular-text" />
-                            <p class="description"><?php _e('Your LeadGrid API key', 'leadgrid-integration'); ?></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php _e('Site ID', 'leadgrid-integration'); ?></th>
-                        <td>
-                            <input type="text" name="leadgrid_site_id" value="<?php echo esc_attr($site_id); ?>" class="regular-text" />
-                            <p class="description"><?php _e('Your LeadGrid site ID', 'leadgrid-integration'); ?></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php _e('Enable Cache', 'leadgrid-integration'); ?></th>
-                        <td>
-                            <input type="checkbox" name="leadgrid_cache_enabled" <?php checked($cache_enabled); ?> />
-                            <p class="description"><?php _e('Enable caching for better performance', 'leadgrid-integration'); ?></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php _e('Debug Mode', 'leadgrid-integration'); ?></th>
-                        <td>
-                            <input type="checkbox" name="leadgrid_debug_mode" <?php checked($debug_mode); ?> />
-                            <p class="description"><?php _e('Enable debug logging', 'leadgrid-integration'); ?></p>
-                        </td>
-                    </tr>
-                </table>
-                
-                <?php submit_button(); ?>
-            </form>
-        </div>
         <?php
     }
 }

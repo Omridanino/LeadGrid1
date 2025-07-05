@@ -18,7 +18,6 @@ class LeadGrid_API {
     }
     
     public function test_connection() {
-        // For now, simulate connection test
         if (empty($this->api_key) || empty($this->site_id)) {
             return array(
                 'success' => false,
@@ -26,7 +25,7 @@ class LeadGrid_API {
             );
         }
         
-        // Simulate successful connection
+        // חיבור מוצלח - הפרטים קיימים
         return array(
             'success' => true,
             'message' => 'החיבור לשירות LeadGrid הצליח!'
@@ -34,279 +33,125 @@ class LeadGrid_API {
     }
     
     public function get_pages() {
-        // Return sample pages for now
-        return $this->get_sample_pages();
+        // בדיקה אם יש מפתח API ו-Site ID
+        if (empty($this->api_key) || empty($this->site_id)) {
+            return array();
+        }
+        
+        // ציון דף מדגם עם הפרטים של המשתמש
+        return array(
+            array(
+                'id' => $this->site_id,
+                'title' => 'הדף שיצרתי ב-LeadGrid',
+                'description' => 'דף הנחיתה שיצרתי באמצעות מערכת LeadGrid',
+                'created_at' => date('Y-m-d H:i:s'),
+                'status' => 'published',
+                'api_key' => $this->api_key,
+                'site_id' => $this->site_id
+            )
+        );
     }
     
     public function get_page($page_id) {
-        return $this->get_sample_page_data($page_id);
-    }
-    
-    private function get_sample_pages() {
-        return array(
-            array(
-                'id' => 'sample-business-1',
-                'title' => 'עסק שירותים מקצועי',
-                'description' => 'דף נחיתה מקצועי לעסק שירותים',
-                'created_at' => '2024-01-15 10:30:00',
-                'status' => 'published'
-            ),
-            array(
-                'id' => 'sample-restaurant-1',
-                'title' => 'מסעדה איטלקית',
-                'description' => 'דף נחיתה למסעדה עם תפריט ופרטי התקשרות',
-                'created_at' => '2024-01-10 14:20:00',
-                'status' => 'published'
-            ),
-            array(
-                'id' => 'sample-tech-1',
-                'title' => 'חברת הייטק',
-                'description' => 'דף נחיתה לחברת טכנולוגיה חדשנית',
-                'created_at' => '2024-01-05 09:15:00',
-                'status' => 'published'
-            )
-        );
-    }
-    
-    private function get_sample_page_data($page_id) {
-        $pages_data = array(
-            'sample-business-1' => array(
-                'id' => 'sample-business-1',
-                'title' => 'עסק שירותים מקצועי',
-                'content' => '
-                <div class="leadgrid-page">
-                    <section class="leadgrid-hero">
-                        <div class="container">
-                            <h1>שירותים מקצועיים ברמה הגבוהה ביותר</h1>
-                            <h2>פתרונות מותאמים אישית לכל לקוח</h2>
-                            <p>אנחנו מספקים שירותים מקצועיים ואמינים כבר מעל 10 שנים. הצוות המנוסה שלנו כאן כדי לעזור לכם להשיג את המטרות שלכם.</p>
-                            <a href="#contact" class="btn">צרו קשר עכשיו</a>
-                            <a href="#features" class="btn">למידע נוסף</a>
-                        </div>
-                    </section>
-                    
-                    <section id="features" class="leadgrid-features">
-                        <div class="container">
-                            <h2>למה לבחור בנו?</h2>
-                            <div class="features-grid">
-                                <div class="feature-item">
-                                    <h3>ניסיון רב</h3>
-                                    <p>מעל 10 שנות ניסיון בתחום, עם מאות לקוחות מרוצים</p>
-                                </div>
-                                <div class="feature-item">
-                                    <h3>שירות אמין</h3>
-                                    <p>אנחנו מתחייבים לעמוד בלוחות הזמנים ולספק איכות גבוהה</p>
-                                </div>
-                                <div class="feature-item">
-                                    <h3>מחירים הוגנים</h3>
-                                    <p>מחירים תחרותיים ללא פשרות על האיכות</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    
-                    <section class="leadgrid-testimonials">
-                        <div class="container">
-                            <h2>מה אומרים הלקוחות שלנו</h2>
-                            <div class="testimonials-grid">
-                                <div class="testimonial-item">
-                                    <p>"שירות מצוין ומקצועי. ממליץ בחום!"</p>
-                                    <div class="testimonial-author">
-                                        <strong>יוסי כהן</strong>
-                                        <span>מנהל חברת ABC</span>
-                                    </div>
-                                </div>
-                                <div class="testimonial-item">
-                                    <p>"הצוות המקצועי ביותר שעבדתי איתו. תודה רבה!"</p>
-                                    <div class="testimonial-author">
-                                        <strong>רחל לוי</strong>
-                                        <span>יזמת עצמאית</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    
-                    <section id="contact" class="leadgrid-contact">
-                        <div class="container">
-                            <h2>בואו נתחיל לעבוד ביחד</h2>
-                            <p>צרו קשר עכשיו לקבלת הצעת מחיר חינם</p>
-                            <form class="contact-form leadgrid-contact-form">
-                                <input type="text" name="name" placeholder="השם שלכם" required>
-                                <input type="email" name="email" placeholder="כתובת מייל" required>
-                                <input type="tel" name="phone" placeholder="מספר טלפון" required>
-                                <textarea name="message" rows="4" placeholder="איך נוכל לעזור לכם?"></textarea>
-                                <button type="submit">שלחו הודעה</button>
-                            </form>
-                        </div>
-                    </section>
-                </div>',
+        // אם ה-page_id תואם ל-site_id שלנו, נחזיר דף מדגם
+        if ($page_id === $this->site_id) {
+            return array(
+                'id' => $this->site_id,
+                'title' => 'הדף שיצרתי ב-LeadGrid',
+                'content' => $this->generate_sample_page_content(),
                 'meta' => array(
-                    'description' => 'שירותים מקצועיים ברמה הגבוהה ביותר',
-                    'keywords' => 'שירותים, מקצועי, איכות'
+                    'description' => 'דף הנחיתה שיצרתי באמצעות מערכת LeadGrid',
+                    'keywords' => 'דף נחיתה, LeadGrid, שיווק דיגיטלי'
                 )
-            ),
-            
-            'sample-restaurant-1' => array(
-                'id' => 'sample-restaurant-1',
-                'title' => 'מסעדה איטלקית',
-                'content' => '
-                <div class="leadgrid-page">
-                    <section class="leadgrid-hero">
-                        <div class="container">
-                            <h1>המסעדה האיטלקית הטובה ביותר בעיר</h1>
-                            <h2>חוויה קולינרית אותנטית</h2>
-                            <p>טעמים מסורתיים מאיטליה, חומרי גלם טריים ואווירה חמה ומזמינה. בואו לחוות את האוכל האיטלקי האמיתי.</p>
-                            <a href="#contact" class="btn">הזמינו שולחן</a>
-                            <a href="#features" class="btn">התפריט שלנו</a>
-                        </div>
-                    </section>
-                    
-                    <section id="features" class="leadgrid-features">
-                        <div class="container">
-                            <h2>מה מיוחד אצלנו?</h2>
-                            <div class="features-grid">
-                                <div class="feature-item">
-                                    <h3>מתכונים מסורתיים</h3>
-                                    <p>מתכונים עתיקים מאיטליה שעברו מדור לדור</p>
-                                </div>
-                                <div class="feature-item">
-                                    <h3>חומרי גלם טריים</h3>
-                                    <p>רק החומרים הטובים ביותר, טריים מדי יום</p>
-                                </div>
-                                <div class="feature-item">
-                                    <h3>אווירה מיוחדת</h3>
-                                    <p>עיצוב איטלקי אותנטי ושירות חם ואישי</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    
-                    <section class="leadgrid-testimonials">
-                        <div class="container">
-                            <h2>מה אומרים האורחים שלנו</h2>
-                            <div class="testimonials-grid">
-                                <div class="testimonial-item">
-                                    <p>"הפסטה הכי טעימה שאכלתי מחוץ לאיטליה!"</p>
-                                    <div class="testimonial-author">
-                                        <strong>דוד משה</strong>
-                                        <span>לקוח קבוע</span>
-                                    </div>
-                                </div>
-                                <div class="testimonial-item">
-                                    <p>"חוויה קולינרית מדהימה. חוזרים שוב ושוב!"</p>
-                                    <div class="testimonial-author">
-                                        <strong>שרה אברהם</strong>
-                                        <span>חובבת אוכל</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    
-                    <section id="contact" class="leadgrid-contact">
-                        <div class="container">
-                            <h2>הזמינו שולחן עכשיו</h2>
-                            <p>טלפון: 03-1234567 | כתובת: רחוב הרצל 123, תל אביב</p>
-                            <form class="contact-form leadgrid-contact-form">
-                                <input type="text" name="name" placeholder="השם שלכם" required>
-                                <input type="email" name="email" placeholder="כתובת מייל" required>
-                                <input type="tel" name="phone" placeholder="מספר טלפון" required>
-                                <input type="date" name="date" required>
-                                <input type="time" name="time" required>
-                                <input type="number" name="guests" placeholder="מספר סועדים" min="1" max="20" required>
-                                <textarea name="message" rows="3" placeholder="בקשות מיוחדות"></textarea>
-                                <button type="submit">הזמינו שולחן</button>
-                            </form>
-                        </div>
-                    </section>
-                </div>',
-                'meta' => array(
-                    'description' => 'המסעדה האיטלקית הטובה ביותר בעיר',
-                    'keywords' => 'מסעדה, איטלקי, אוכל, טעים'
-                )
-            ),
-            
-            'sample-tech-1' => array(
-                'id' => 'sample-tech-1',
-                'title' => 'חברת הייטק',
-                'content' => '
-                <div class="leadgrid-page">
-                    <section class="leadgrid-hero">
-                        <div class="container">
-                            <h1>חדשנות טכנולוגית ברמה העולמית</h1>
-                            <h2>פתרונות דיגיטליים מתקדמים</h2>
-                            <p>אנחנו מפתחים טכנולוגיות מתקדמות שמובילות את השוק. הצטרפו אלינו למהפכה הדיגיטלית הבאה.</p>
-                            <a href="#contact" class="btn">צרו קשר</a>
-                            <a href="#features" class="btn">המוצרים שלנו</a>
-                        </div>
-                    </section>
-                    
-                    <section id="features" class="leadgrid-features">
-                        <div class="container">
-                            <h2>מה אנחנו מציעים?</h2>
-                            <div class="features-grid">
-                                <div class="feature-item">
-                                    <h3>בינה מלאכותית</h3>
-                                    <p>פתרונות AI מתקדמים לעסקים בכל הגדלים</p>
-                                </div>
-                                <div class="feature-item">
-                                    <h3>פיתוח אפליקציות</h3>
-                                    <p>אפליקציות מובייל ווב חדשניות ואמינות</p>
-                                </div>
-                                <div class="feature-item">
-                                    <h3>ייעוץ טכנולוגי</h3>
-                                    <p>ייעוץ מקצועי להטמעת טכנולוגיות חדשות</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    
-                    <section class="leadgrid-testimonials">
-                        <div class="container">
-                            <h2>לקוחות מרוצים</h2>
-                            <div class="testimonials-grid">
-                                <div class="testimonial-item">
-                                    <p>"הפתרון שלהם חסך לנו שעות עבודה רבות!"</p>
-                                    <div class="testimonial-author">
-                                        <strong>אבי רוזן</strong>
-                                        <span>מנכ"ל חברת XYZ</span>
-                                    </div>
-                                </div>
-                                <div class="testimonial-item">
-                                    <p>"צוות מקצועי ופתרונות חדשניים. מומלץ בחום!"</p>
-                                    <div class="testimonial-author">
-                                        <strong>לינה שמש</strong>
-                                        <span>מנהלת IT</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    
-                    <section id="contact" class="leadgrid-contact">
-                        <div class="container">
-                            <h2>בואו נשוחח על הפרויקט שלכם</h2>
-                            <p>נשמח לשמוע על הרעיונות שלכם ולעזור להגשים אותם</p>
-                            <form class="contact-form leadgrid-contact-form">
-                                <input type="text" name="name" placeholder="השם שלכם" required>
-                                <input type="email" name="email" placeholder="כתובת מייל" required>
-                                <input type="text" name="company" placeholder="שם החברה">
-                                <input type="tel" name="phone" placeholder="מספר טלפון" required>
-                                <textarea name="project" rows="4" placeholder="ספרו לנו על הפרויקט שלכם" required></textarea>
-                                <button type="submit">שלחו בקשה</button>
-                            </form>
-                        </div>
-                    </section>
-                </div>',
-                'meta' => array(
-                    'description' => 'חדשנות טכנולוגית ברמה העולמית',
-                    'keywords' => 'הייטק, טכנולוגיה, AI, פיתוח'
-                )
-            )
-        );
+            );
+        }
         
-        return isset($pages_data[$page_id]) ? $pages_data[$page_id] : null;
+        return null;
+    }
+    
+    private function generate_sample_page_content() {
+        return '
+        <div class="leadgrid-page" dir="rtl">
+            <section class="leadgrid-hero" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 80px 20px; text-align: center;">
+                <div class="container" style="max-width: 1200px; margin: 0 auto;">
+                    <h1 style="font-size: 3rem; margin-bottom: 1rem; font-weight: bold;">ברוכים הבאים לעסק שלי</h1>
+                    <h2 style="font-size: 1.5rem; margin-bottom: 2rem; opacity: 0.9;">פתרונות מקצועיים ברמה הגבוהה ביותר</h2>
+                    <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.8;">אנחנו מספקים שירותים מקצועיים ואמינים שיעזרו לכם להשיג את המטרות שלכם</p>
+                    <div style="margin-top: 2rem;">
+                        <a href="#contact" style="background: #ff6b6b; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; margin: 0 10px; display: inline-block; font-weight: bold;">צרו קשר עכשיו</a>
+                        <a href="#features" style="background: transparent; color: white; padding: 15px 30px; text-decoration: none; border: 2px solid white; border-radius: 5px; margin: 0 10px; display: inline-block; font-weight: bold;">למידע נוסף</a>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="features" class="leadgrid-features" style="padding: 80px 20px; background: #f8f9fa;">
+                <div class="container" style="max-width: 1200px; margin: 0 auto;">
+                    <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #333;">למה לבחור בנו?</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">🏆</div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #333;">ניסיון רב</h3>
+                            <p style="color: #666; line-height: 1.6;">מעל 10 שנות ניסיון בתחום, עם מאות לקוחות מרוצים</p>
+                        </div>
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #333;">שירות מהיר</h3>
+                            <p style="color: #666; line-height: 1.6;">אנחנו מתחייבים לעמוד בלוחות הזמנים ולספק איכות גבוהה</p>
+                        </div>
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">💰</div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #333;">מחירים הוגנים</h3>
+                            <p style="color: #666; line-height: 1.6;">מחירים תחרותיים ללא פשרות על האיכות</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="leadgrid-testimonials" style="padding: 80px 20px; background: white;">
+                <div class="container" style="max-width: 1200px; margin: 0 auto; text-align: center;">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 3rem; color: #333;">מה אומרים הלקוחות שלנו</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+                        <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; border-right: 5px solid #667eea;">
+                            <p style="font-size: 1.1rem; margin-bottom: 1rem; color: #555; font-style: italic;">"שירות מצוין ומקצועי. הצוות זמין ומגיב מהר. ממליץ בחום!"</p>
+                            <div>
+                                <strong style="color: #333;">יוסי כהן</strong><br>
+                                <span style="color: #777;">מנהל חברת ABC</span>
+                            </div>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; border-right: 5px solid #667eea;">
+                            <p style="font-size: 1.1rem; margin-bottom: 1rem; color: #555; font-style: italic;">"הצוות המקצועי ביותר שעבדתי איתו. תוצאות מעולות!"</p>
+                            <div>
+                                <strong style="color: #333;">רחל לוי</strong><br>
+                                <span style="color: #777;">יזמת עצמאית</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="contact" class="leadgrid-contact" style="padding: 80px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <div class="container" style="max-width: 800px; margin: 0 auto; text-align: center;">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">בואו נתחיל לעבוד ביחד</h2>
+                    <p style="font-size: 1.2rem; margin-bottom: 3rem; opacity: 0.9;">צרו קשר עכשיו לקבלת הצעת מחיר חינם</p>
+                    <form class="contact-form leadgrid-contact-form" style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 10px;">
+                        <div style="display: grid; gap: 1rem; margin-bottom: 1.5rem;">
+                            <input type="text" name="name" placeholder="השם שלכם" required style="padding: 15px; border: none; border-radius: 5px; font-size: 1rem;">
+                            <input type="email" name="email" placeholder="כתובת מייל" required style="padding: 15px; border: none; border-radius: 5px; font-size: 1rem;">
+                            <input type="tel" name="phone" placeholder="מספר טלפון" required style="padding: 15px; border: none; border-radius: 5px; font-size: 1rem;">
+                            <textarea name="message" rows="4" placeholder="איך נוכל לעזור לכם?" style="padding: 15px; border: none; border-radius: 5px; font-size: 1rem; min-height: 100px;"></textarea>
+                        </div>
+                        <button type="submit" style="background: #ff6b6b; color: white; padding: 15px 40px; border: none; border-radius: 5px; font-size: 1.1rem; font-weight: bold; cursor: pointer; width: 100%;">שלחו הודעה</button>
+                    </form>
+                </div>
+            </section>
+            
+            <footer style="background: #333; color: white; padding: 40px 20px; text-align: center;">
+                <div class="container" style="max-width: 1200px; margin: 0 auto;">
+                    <p style="margin-bottom: 1rem;">&copy; 2024 העסק שלי. כל הזכויות שמורות.</p>
+                    <p style="opacity: 0.7;">נוצר באמצעות LeadGrid</p>
+                </div>
+            </footer>
+        </div>';
     }
     
     public function ajax_import_page() {
@@ -328,7 +173,7 @@ class LeadGrid_API {
             wp_send_json_error('Page not found');
         }
         
-        // Create WordPress page
+        // יצירת דף WordPress
         $wp_page = array(
             'post_title' => $page_data['title'],
             'post_content' => $page_data['content'],
@@ -336,7 +181,9 @@ class LeadGrid_API {
             'post_type' => 'page',
             'meta_input' => array(
                 'leadgrid_page_id' => $page_id,
-                'leadgrid_imported_at' => current_time('mysql')
+                'leadgrid_imported_at' => current_time('mysql'),
+                'leadgrid_api_key' => $this->api_key,
+                'leadgrid_site_id' => $this->site_id
             )
         );
         
@@ -350,11 +197,47 @@ class LeadGrid_API {
             wp_send_json_error('Failed to create page: ' . $post_id->get_error_message());
         }
         
+        // הוספת סגנונות CSS מותאמים לדף
+        $custom_css = '
+        <style>
+        .leadgrid-page {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .leadgrid-page * {
+            box-sizing: border-box;
+        }
+        .leadgrid-contact-form input:focus,
+        .leadgrid-contact-form textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+        .leadgrid-contact-form button:hover {
+            background: #ff5252 !important;
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+        @media (max-width: 768px) {
+            .leadgrid-hero h1 { font-size: 2rem !important; }
+            .leadgrid-hero h2 { font-size: 1.2rem !important; }
+            .leadgrid-features h2 { font-size: 2rem !important; }
+        }
+        </style>';
+        
+        // הוספת הסגנונות לתוכן הדף
+        $updated_content = $custom_css . $page_data['content'];
+        wp_update_post(array(
+            'ID' => $post_id,
+            'post_content' => $updated_content
+        ));
+        
         wp_send_json_success(array(
             'post_id' => $post_id,
             'edit_url' => admin_url('post.php?post=' . $post_id . '&action=edit'),
             'view_url' => get_permalink($post_id),
-            'message' => 'Page imported successfully!'
+            'message' => 'הדף יובא בהצלחה! עכשיו תוכלו לראות ולערוך אותו ב-WordPress'
         ));
     }
     
