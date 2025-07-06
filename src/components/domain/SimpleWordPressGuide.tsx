@@ -30,101 +30,19 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
         return generatePageHTML(savedData.template);
       }
       
-      // If no saved data, return a default HTML with complete template data
+      // If no saved data, return a default HTML
       return generatePageHTML({
-        id: 'default-template',
-        name: 'Default Template',
-        category: 'כללי',
         hero: {
           title: 'ברוכים הבאים לעסק שלנו',
           subtitle: 'פתרונות מתקדמים ומקצועיים עבורכם',
-          description: 'פתרונות מתקדמים ומקצועיים עבורכם',
           button1Text: 'צור קשר',
           button2Text: 'למד עוד'
-        },
-        emotional: {
-          title: 'למה לבחור בנו',
-          description: 'אנחנו מציעים שירות מקצועי ואמין',
-          button1Text: 'צור קשר',
-          button2Text: 'למד עוד'
-        },
-        features: {
-          title: 'השירותים שלנו',
-          items: [
-            { title: 'שירות מקצועי', description: 'צוות מנוסה ומקצועי', icon: 'star-line' },
-            { title: 'זמינות גבוהה', description: '24/7 תמיכה טכנית', icon: 'time-line' },
-            { title: 'מחירים תחרותיים', description: 'מחירים הוגנים ושקופים', icon: 'money-dollar-line' }
-          ],
-          button1Text: 'צור קשר',
-          button2Text: 'למד עוד'
-        },
-        testimonials: {
-          title: 'המלצות לקוחות',
-          testimonials: [
-            { name: 'יוסי כהן', role: 'מנכ"ל', content: 'שירות מעולה ומקצועי', rating: 5 },
-            { name: 'שרה לוי', role: 'מנהלת', content: 'ממליצה בחום', rating: 5 }
-          ],
-          button1Text: 'צור קשר',
-          button2Text: 'למד עוד'
-        },
-        about: {
-          title: 'אודותינו',
-          description: 'חברה מובילה בתחום',
-          button1Text: 'צור קשר',
-          button2Text: 'למד עוד'
-        },
-        pricing: {
-          title: 'מחירון',
-          plans: [
-            { 
-              name: 'בסיסי', 
-              price: '₪99', 
-              period: 'חודש',
-              features: ['תכונה 1', 'תכונה 2', 'תכונה 3'],
-              buttonText: 'בחר תוכנית'
-            }
-          ],
-          button1Text: 'צור קשר',
-          button2Text: 'למד עוד'
-        },
-        faq: {
-          title: 'שאלות נפוצות',
-          questions: [
-            { question: 'איך פועל השירות?', answer: 'השירות פועל בצורה פשוטה ויעילה' }
-          ],
-          button1Text: 'צור קשר',
-          button2Text: 'למד עוד'
-        },
-        finalCta: {
-          title: 'מוכנים להתחיל?',
-          description: 'צרו איתנו קשר עוד היום',
-          button1Text: 'צור קשר',
-          button2Text: 'למד עוד'
-        },
-        contact: {
-          title: 'צור קשר',
-          subtitle: 'נשמח לשמוע מכם',
-          buttonText: 'שלח הודעה'
-        },
-        footer: {
-          companyName: 'העסק שלנו'
         },
         styles: {
           primaryColor: '#1e40af',
           secondaryColor: '#7c3aed',
-          accentColor: '#06b6d4',
           backgroundColor: '#ffffff',
-          textColor: '#000000',
-          heroBackground: '#1e40af',
-          emotionalBackground: '#7c3aed',
-          featuresBackground: '#f8fafc',
-          testimonialsBackground: '#f1f5f9',
-          aboutBackground: '#ffffff',
-          pricingBackground: '#f8fafc',
-          faqBackground: '#f1f5f9',
-          finalCtaBackground: '#1e40af',
-          contactBackground: '#f8fafc',
-          footerBackground: '#1f2937'
+          textColor: '#000000'
         }
       });
     } catch (error) {
@@ -327,7 +245,7 @@ export const SimpleWordPressGuide = ({ onBack }: SimpleWordPressGuideProps) => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-y-auto">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <div className="max-w-5xl mx-auto p-6 space-y-8" dir="rtl">
         
         {/* Header */}

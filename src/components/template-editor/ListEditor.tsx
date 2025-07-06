@@ -40,6 +40,16 @@ export const ListEditor = ({ template, onUpdate }: ListEditorProps) => {
     });
   };
 
+  const handleUpdateItem = (index: number, field: string, value: string) => {
+    const updatedItems = listData.items.map((item, i) => 
+      i === index ? { ...item, [field]: value } : item
+    );
+    onUpdate({
+      ...listData,
+      items: updatedItems
+    });
+  };
+
   return (
     <div className="space-y-6">
       <Card className="bg-slate-800/50 border-slate-700/50">
@@ -85,6 +95,13 @@ export const ListEditor = ({ template, onUpdate }: ListEditorProps) => {
               className="bg-slate-700/50 border-slate-600/50 text-white"
               placeholder="כותרת הפריט"
             />
+            <Textarea
+              value={newItem.description}
+              onChange={(e) => setNewItem({ ...newItem, description: e.target.value })}
+              className="bg-slate-700/50 border-slate-600/50 text-white"
+              placeholder="תיאור הפריט (אופציונלי)"
+              rows={2}
+            />
             <Button onClick={handleAddItem} className="w-full bg-blue-600 hover:bg-blue-700">
               <Plus className="w-4 h-4 mr-2" />
               הוסף פריט
@@ -96,20 +113,30 @@ export const ListEditor = ({ template, onUpdate }: ListEditorProps) => {
               <Label className="text-slate-200">פריטים קיימים</Label>
               <div className="space-y-2 max-h-40 overflow-y-auto">
                 {listData.items.map((item, index) => (
-                  <div key={index} className="flex items-center justify-between bg-slate-700/30 p-3 rounded">
-                    <div className="flex-1">
-                      <p className="text-white text-sm font-medium">{item.title}</p>
-                      {item.description && (
-                        <p className="text-slate-300 text-xs">{item.description}</p>
-                      )}
+                  <div key={index} className="bg-slate-700/30 p-3 rounded space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-200 text-xs font-medium">פריט {index + 1}</span>
+                      <Button
+                        onClick={() => handleRemoveItem(index)}
+                        size="sm"
+                        className="bg-red-600 hover:bg-red-700 text-white p-1 h-auto"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
                     </div>
-                    <Button
-                      onClick={() => handleRemoveItem(index)}
-                      size="sm"
-                      className="bg-red-600 hover:bg-red-700 text-white p-1 h-auto"
-                    >
-                      <Trash2 className="w-3 h-3" />
-                    </Button>
+                    <Input
+                      value={item.title}
+                      onChange={(e) => handleUpdateItem(index, 'title', e.target.value)}
+                      className="bg-slate-600/50 border-slate-500/50 text-white text-sm"
+                      placeholder="כותרת הפריט"
+                    />
+                    <Textarea
+                      value={item.description || ''}
+                      onChange={(e) => handleUpdateItem(index, 'description', e.target.value)}
+                      className="bg-slate-600/50 border-slate-500/50 text-white text-sm"
+                      placeholder="תיאור הפריט (אופציונלי)"
+                      rows={2}
+                    />
                   </div>
                 ))}
               </div>
