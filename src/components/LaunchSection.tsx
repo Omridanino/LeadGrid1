@@ -17,7 +17,7 @@ import {
   Link
 } from 'lucide-react';
 import { CleanWordPressForm } from './domain/CleanWordPressForm';
-import { DomainHostingWizard } from './domain/DomainHostingWizard';
+import { SimpleDomainGuide } from './domain/SimpleDomainGuide';
 import { TemplateData } from '@/types/template';
 
 interface LaunchSectionProps {
@@ -28,7 +28,7 @@ interface LaunchSectionProps {
 
 export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectionProps) => {
   const [showWordPressForm, setShowWordPressForm] = useState(false);
-  const [showDomainHostingWizard, setShowDomainHostingWizard] = useState(false);
+  const [showDomainGuide, setShowDomainGuide] = useState(false);
   const { toast } = useToast();
 
   // Save the template data to localStorage for later use
@@ -72,10 +72,10 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
     );
   }
 
-  if (showDomainHostingWizard) {
+  if (showDomainGuide) {
     return (
       <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50">
-        <DomainHostingWizard onBack={() => setShowDomainHostingWizard(false)} />
+        <SimpleDomainGuide onBack={() => setShowDomainGuide(false)} />
       </div>
     );
   }
@@ -108,7 +108,7 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
 
         <div className="grid md:grid-cols-3 gap-6">
           
-          {/* Domain & Hosting Purchase */}
+          {/* Domain & Hosting Purchase - Simplified */}
           <Card className="bg-gradient-to-br from-green-900/30 to-emerald-900/30 border-green-500/50 cursor-pointer hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-green-500/25">
             <CardContent className="p-8 text-center space-y-4">
               <div className="w-16 h-16 bg-green-500 rounded-xl mx-auto flex items-center justify-center shadow-lg shadow-green-500/30">
@@ -116,23 +116,23 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
               </div>
               
               <div>
-                <h3 className="text-xl font-bold text-white mb-2">רכוש דומיין ואחסון</h3>
+                <h3 className="text-xl font-bold text-white mb-2">מדריך פשוט לאחסון</h3>
                 <p className="text-gray-300 text-sm mb-4">
-                  דומיין ואחסון מקצועי + חיבור האתר שלך
+                  3 שלבים פשוטים עם GoDaddy
                 </p>
                 
                 <div className="space-y-2 text-xs text-green-200">
                   <div className="flex items-center justify-center gap-2">
                     <CheckCircle className="w-4 h-4" />
-                    <span>דומיין חינם לשנה</span>
+                    <span>מדריך ברור וקל לביצוע</span>
                   </div>
                   <div className="flex items-center justify-center gap-2">
                     <CheckCircle className="w-4 h-4" />
-                    <span>אחסון מ-UPRESS/GODADDY</span>
+                    <span>דומיין ואחסון במקום אחד</span>
                   </div>
                   <div className="flex items-center justify-center gap-2">
                     <CheckCircle className="w-4 h-4" />
-                    <span>חיבור האתר שלך לאחסון</span>
+                    <span>תמיכה בעברית 24/7</span>
                   </div>
                 </div>
               </div>
@@ -140,12 +140,12 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
               <Button 
                 onClick={() => {
                   saveTemplateData();
-                  setShowDomainHostingWizard(true);
+                  setShowDomainGuide(true);
                 }}
                 className="w-full bg-green-500 hover:bg-green-600 text-white"
               >
                 <Server className="w-4 h-4 mr-2" />
-                רכוש דומיין ואחסון
+                מדריך רכישת דומיין ואחסון
               </Button>
             </CardContent>
           </Card>
