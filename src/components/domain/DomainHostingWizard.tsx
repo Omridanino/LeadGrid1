@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -39,75 +40,72 @@ export const DomainHostingWizard = ({ onBack }: DomainHostingWizardProps) => {
 
   const hostingPlans = [
     {
-      id: 'upress-starter',
-      provider: 'UPRESS',
-      name: 'Starter',
-      price: 89,
-      originalPrice: 129,
-      popular: false,
-      features: [
-        'דומיין חינם לשנה',
-        '10GB אחסון SSD',
-        'SSL בחינם',
-        'גיבוי יומי',
-        '5 תיבות דואר',
-        'תמיכה 24/7'
-      ],
-      link: 'https://www.upress.co.il/wordpress-hosting/'
-    },
-    {
-      id: 'upress-pro',
-      provider: 'UPRESS',
-      name: 'Professional',
-      price: 189,
-      originalPrice: 249,
-      popular: true,
-      features: [
-        'דומיין חינם לשנה',
-        '50GB אחסון SSD',
-        'SSL בחינם',
-        'גיבוי יומי',
-        '25 תיבות דואר',
-        'CDN גלובלי',
-        'אנליטיקס מתקדם',
-        'תמיכה VIP'
-      ],
-      link: 'https://www.upress.co.il/wordpress-hosting/'
-    },
-    {
       id: 'godaddy-basic',
       provider: 'GODADDY',
-      name: 'Basic',
+      name: 'Basic Web Hosting',
       price: 99,
       originalPrice: 149,
       popular: false,
       features: [
-        'דומיין חינם לשנה',
         '10GB אחסון',
+        '1 דומיין',
         'SSL בחינם',
-        'גיבוי שבועי',
         '1 תיבת דואר',
-        'תמיכה 24/7'
+        'תמיכה 24/7',
+        'אחסון שיתוף רגיל'
       ],
-      link: 'https://il.godaddy.com/hosting/wordpress-hosting'
+      link: 'https://il.godaddy.com/hosting/web-hosting'
     },
     {
       id: 'godaddy-deluxe',
       provider: 'GODADDY',
-      name: 'Deluxe',
-      price: 199,
-      originalPrice: 299,
+      name: 'Deluxe Web Hosting',
+      price: 159,
+      originalPrice: 229,
+      popular: true,
+      features: [
+        'אחסון ללא הגבלה',
+        '10 אתרים',
+        'SSL בחינם',
+        '10 תיבות דואר',
+        'תמיכה 24/7',
+        'גיבוי יומי'
+      ],
+      link: 'https://il.godaddy.com/hosting/web-hosting'
+    },
+    {
+      id: 'namecheap-stellar',
+      provider: 'NAMECHEAP',
+      name: 'Stellar',
+      price: 78,
+      originalPrice: 118,
       popular: false,
       features: [
-        'דומיין חינם לשנה',
-        '25GB אחסון',
+        '20GB SSD',
+        '3 אתרים',
         'SSL בחינם',
-        'גיבוי יומי',
-        '10 תיבות דואר',
-        'מהירות משופרת',
-        'תמיכה מועדפת'
+        '30 תיבות דואר',
+        'תמיכה 24/7',
+        'גיבוי אוטומטי'
       ],
-      link: 'https://il.godaddy.com/hosting/wordpress-hosting'
+      link: 'https://www.namecheap.com/hosting/shared/'
+    },
+    {
+      id: 'namecheap-stellar-plus',
+      provider: 'NAMECHEAP',
+      name: 'Stellar Plus',
+      price: 128,
+      originalPrice: 188,
+      popular: false,
+      features: [
+        'אחסון ללא הגבלה',
+        'אתרים ללא הגבלה',
+        'SSL בחינם',
+        'תיבות דואר ללא הגבלה',
+        'תמיכה VIP',
+        'גיבוי יומי + CDN'
+      ],
+      link: 'https://www.namecheap.com/hosting/shared/'
     }
   ];
 
@@ -118,12 +116,12 @@ export const DomainHostingWizard = ({ onBack }: DomainHostingWizardProps) => {
     
     // Simulate domain search
     setTimeout(() => {
-      const extensions = ['.com', '.co.il', '.net', '.org', '.shop', '.online'];
+      const extensions = ['.com', '.co.il', '.net', '.org', '.info', '.online'];
       const results = extensions.map(ext => ({
         domain: `${searchTerm}${ext}`,
         available: Math.random() > 0.3,
-        price: ext === '.co.il' ? 35 : ext === '.com' ? 65 : Math.floor(Math.random() * 50) + 30,
-        provider: ext === '.co.il' ? 'UPRESS' : 'GODADDY'
+        price: ext === '.co.il' ? 49 : ext === '.com' ? 69 : Math.floor(Math.random() * 40) + 35,
+        provider: ext === '.co.il' ? 'GODADDY' : ext === '.com' ? 'NAMECHEAP' : 'GODADDY'
       }));
       
       setDomainResults(results);
@@ -162,8 +160,8 @@ export const DomainHostingWizard = ({ onBack }: DomainHostingWizardProps) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" dir="rtl">
-      <ScrollArea className="h-full w-full">
+    <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 z-50" dir="rtl">
+      <ScrollArea className="h-screen w-full">
         <div className="max-w-6xl mx-auto p-6 space-y-8 pb-20">
           
           {/* Header */}
@@ -175,7 +173,7 @@ export const DomainHostingWizard = ({ onBack }: DomainHostingWizardProps) => {
               רכוש דומיין ואחסון
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              קבל דומיין ואחסון מקצועי לאתר שלך מספקי האחסון המובילים בישראל
+              קבל דומיין ואחסון מקצועי לאתר שלך מספקי האחסון המובילים
             </p>
           </div>
 
@@ -279,7 +277,7 @@ export const DomainHostingWizard = ({ onBack }: DomainHostingWizardProps) => {
             <div className="space-y-8">
               <div className="text-center">
                 <h2 className="text-3xl font-bold text-white mb-4">בחר חבילת אחסון</h2>
-                <p className="text-gray-400">חבילות אחסון מקצועיות מספקי האחסון המובילים</p>
+                <p className="text-gray-400">חבילות אחסון רגיל מספקי האחסון המובילים</p>
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -391,9 +389,9 @@ export const DomainHostingWizard = ({ onBack }: DomainHostingWizardProps) => {
                     <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
                       <h4 className="text-blue-300 font-semibold mb-2">מה קורה עכשיו?</h4>
                       <div className="text-blue-200 text-sm space-y-1">
-                        <p>1. תועבר לאתר הספק לרכישת הדומיין והאחסון</p>
-                        <p>2. לאחר הרכישה, תקבל הוראות התקנה מפורטות</p>
-                        <p>3. נעזור לך להעלות את האתר לאחסון החדש</p>
+                        <p>1. תועבר לאתר הספק לרכישת האחסון והדומיין</p>
+                        <p>2. לאחר הרכישה, תוכל להעלות את קובץ ה-HTML שהורדת</p>
+                        <p>3. נעזור לך לחבר את האתר לאחסון החדש</p>
                       </div>
                     </div>
 
@@ -401,10 +399,20 @@ export const DomainHostingWizard = ({ onBack }: DomainHostingWizardProps) => {
                       <Button
                         onClick={() => {
                           const plan = hostingPlans.find(p => p.id === selectedHosting);
-                          window.open(plan?.link, '_blank');
+                          const domainExtension = selectedDomain.split('.').pop();
+                          let finalLink = plan?.link;
+                          
+                          // Add domain search parameter for better UX
+                          if (domainExtension === 'co.il') {
+                            finalLink = 'https://il.godaddy.com/domains/domain-name-search';
+                          } else if (plan?.provider === 'NAMECHEAP') {
+                            finalLink = 'https://www.namecheap.com/domains/';
+                          }
+                          
+                          window.open(finalLink, '_blank');
                           toast({
                             title: "🚀 נפתח באתר הספק",
-                            description: "השלם את הרכישה ואנחנו נעזור לך עם ההתקנה",
+                            description: "קנה דומיין ואחסון, ואז העלה את קובץ ה-HTML שהורדת",
                           });
                         }}
                         className="bg-green-600 hover:bg-green-700 text-white"
