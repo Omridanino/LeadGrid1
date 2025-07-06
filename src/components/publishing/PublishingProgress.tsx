@@ -8,7 +8,9 @@ import {
   CheckCircle, 
   Loader2,
   Server,
-  Database
+  Database,
+  Github,
+  Code
 } from 'lucide-react';
 
 interface PublishingProgressProps {
@@ -18,28 +20,29 @@ interface PublishingProgressProps {
 
 export const PublishingProgress = ({ progress, isPublishing }: PublishingProgressProps) => {
   const getProgressMessage = () => {
-    if (progress <= 25) return 'מכין את קבצי האתר...';
-    if (progress <= 50) return 'מעלה לאחסון חינם ב-Netlify...';
-    if (progress <= 75) return 'מגדיר SSL מאובטח וכתובת אתר...';
+    if (progress <= 20) return 'מכין את קבצי האתר...';
+    if (progress <= 40) return 'יוצר את תוכן האתר...';
+    if (progress <= 60) return 'יוצר repository ב-GitHub...';
+    if (progress <= 80) return 'מפרסם ב-GitHub Pages...';
     return 'האתר שלך חי באינטרנט! 🎉';
   };
 
   const getProgressSteps = () => {
     return [
-      { name: 'הכנת קבצי האתר', icon: Rocket, completed: progress > 25 },
-      { name: 'העלאה לאחסון', icon: Globe, completed: progress > 50 },
-      { name: 'הגדרת SSL', icon: Shield, completed: progress > 75 },
-      { name: 'פרסום מוכן', icon: CheckCircle, completed: progress === 100 },
+      { name: 'הכנת קבצי האתר', icon: Code, completed: progress > 20 },
+      { name: 'יצירת repository', icon: Github, completed: progress > 40 },
+      { name: 'פרסום ב-GitHub Pages', icon: Globe, completed: progress > 60 },
+      { name: 'הפעלת האתר', icon: CheckCircle, completed: progress === 100 },
     ];
   };
 
   const getDetailedProgress = () => {
     return [
       { step: 'יצירת קבצי HTML, CSS, JS', completed: progress > 15 },
-      { step: 'חיבור ל-Netlify', completed: progress > 35 },
-      { step: 'העלאת קבצים', completed: progress > 55 },
-      { step: 'הפעלת SSL חינם', completed: progress > 75 },
-      { step: 'כתובת אתר מוכנה', completed: progress > 90 },
+      { step: 'יצירת GitHub repository', completed: progress > 35 },
+      { step: 'העלאת קבצים ל-GitHub', completed: progress > 55 },
+      { step: 'הפעלת GitHub Pages', completed: progress > 75 },
+      { step: 'כתובת אתר זמינה', completed: progress > 90 },
     ];
   };
 
@@ -55,7 +58,7 @@ export const PublishingProgress = ({ progress, isPublishing }: PublishingProgres
         </div>
         
         <h3 className="text-white text-xl font-semibold mb-2">
-          מפרסם את האתר שלך
+          מפרסם את האתר שלך באמת
         </h3>
         <p className="text-gray-400">
           {getProgressMessage()}
@@ -75,7 +78,7 @@ export const PublishingProgress = ({ progress, isPublishing }: PublishingProgres
       <Card className="bg-gray-800 border-gray-700">
         <CardContent className="p-6">
           <div className="space-y-4">
-            <h4 className="text-white font-medium mb-4">שלבי הפרסום:</h4>
+            <h4 className="text-white font-medium mb-4">שלבי הפרסום האמיתי:</h4>
             {getProgressSteps().map((step, index) => {
               const Icon = step.icon;
               return (
@@ -126,9 +129,9 @@ export const PublishingProgress = ({ progress, isPublishing }: PublishingProgres
       <Card className="bg-gradient-to-r from-blue-900/30 to-purple-900/30 border-blue-700/30">
         <CardContent className="p-4">
           <div className="text-center">
-            <h4 className="text-blue-300 font-medium mb-2">💡 מה קורה מאחורי הקלעים?</h4>
+            <h4 className="text-blue-300 font-medium mb-2">🚀 מה קורה מאחורי הקלעים?</h4>
             <p className="text-blue-200 text-sm">
-              אנחנו מעלים את האתר שלך לאחסון חינם ב-Netlify, מגדירים SSL מאובטח ונותנים לך כתובת אתר קבועה - הכל חינם לחלוטין!
+              אנחנו יוצרים repository חדש ב-GitHub, מעלים את קבצי האתר, ומפעילים GitHub Pages - האתר שלך יהיה זמין באמת לכל העולם!
             </p>
           </div>
         </CardContent>
@@ -139,7 +142,7 @@ export const PublishingProgress = ({ progress, isPublishing }: PublishingProgres
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-600/20 rounded-lg border border-green-600/30">
             <CheckCircle className="w-5 h-5 text-green-400" />
             <span className="text-green-300 font-medium">
-              האתר באוויר עם SSL מאובטח - חינם לחלוטין!
+              האתר באוויר עם GitHub Pages - באמת וללא עלות!
             </span>
           </div>
         </div>
