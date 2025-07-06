@@ -1,4 +1,3 @@
-
 import { generatePageHTML } from '@/utils/pageGenerator';
 import { TemplateData } from '@/types/template';
 
@@ -86,7 +85,7 @@ export class RealPublishingService {
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     console.log('🌐 מפעיל את האתר...');
-    await new(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
   }
 
   // Method to get real GitHub API token
