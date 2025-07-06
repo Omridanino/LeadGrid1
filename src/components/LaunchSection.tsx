@@ -14,10 +14,12 @@ import {
   Eye,
   Server,
   Zap,
-  Link
+  Link,
+  ExternalLink
 } from 'lucide-react';
 import { CleanWordPressForm } from './domain/CleanWordPressForm';
 import { SimpleDomainGuide } from './domain/SimpleDomainGuide';
+import { NewPublishingWizard } from './publishing/NewPublishingWizard';
 import { TemplateData } from '@/types/template';
 
 interface LaunchSectionProps {
@@ -29,6 +31,7 @@ interface LaunchSectionProps {
 export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectionProps) => {
   const [showWordPressForm, setShowWordPressForm] = useState(false);
   const [showDomainGuide, setShowDomainGuide] = useState(false);
+  const [showPublishingWizard, setShowPublishingWizard] = useState(false);
   const { toast } = useToast();
 
   // Save the template data to localStorage for later use
@@ -80,6 +83,16 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
     );
   }
 
+  if (showPublishingWizard) {
+    return (
+      <NewPublishingWizard
+        template={template}
+        isOpen={showPublishingWizard}
+        onClose={() => setShowPublishingWizard(false)}
+      />
+    );
+  }
+
   return (
     <div className={`space-y-8 ${className}`} dir="rtl">
       {/* Header */}
@@ -93,46 +106,53 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
             🎉 הדף שלך מוכן!
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            עכשיו תוכל להוריד אותו כקובץ HTML או לרכוש דומיין ואחסון
+            בחר איך תרצה לפרסם את הדף שלך לאוויר
           </p>
         </div>
       </div>
 
       {/* Integration Options */}
-      <div className="max-w-5xl mx-auto space-y-6">
+      <div className="max-w-6xl mx-auto space-y-6">
         
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">איך תרצה להשתמש בדף?</h2>
+          <h2 className="text-3xl font-bold text-white mb-4">איך תרצה לפרסם את הדף?</h2>
           <p className="text-gray-400">בחר את הדרך הכי נוחה עבורך</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
           
-          {/* Domain & Hosting Purchase - Simplified */}
-          <Card className="bg-gradient-to-br from-green-900/30 to-emerald-900/30 border-green-500/50 cursor-pointer hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-green-500/25">
+          {/* One-Click Deploy - NEW MAIN OPTION */}
+          <Card className="bg-gradient-to-br from-emerald-900/40 to-green-900/40 border-emerald-500/60 cursor-pointer hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-emerald-500/30 relative overflow-hidden">
+            <div className="absolute top-2 left-2">
+              <Badge className="bg-green-500 text-black font-bold text-xs">מומלץ!</Badge>
+            </div>
             <CardContent className="p-8 text-center space-y-4">
-              <div className="w-16 h-16 bg-green-500 rounded-xl mx-auto flex items-center justify-center shadow-lg shadow-green-500/30">
-                <Server className="w-8 h-8 text-white" />
+              <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-green-500 rounded-xl mx-auto flex items-center justify-center shadow-lg shadow-emerald-500/40">
+                <Zap className="w-8 h-8 text-white" />
               </div>
               
               <div>
-                <h3 className="text-xl font-bold text-white mb-2">מדריך פשוט לאחסון</h3>
+                <h3 className="text-xl font-bold text-white mb-2">פרסום מיידי - לחיצה אחת</h3>
                 <p className="text-gray-300 text-sm mb-4">
-                  3 שלבים פשוטים עם GoDaddy
+                  פרסם את האתר תוך דקות - ללא צורך בידע טכני
                 </p>
                 
-                <div className="space-y-2 text-xs text-green-200">
+                <div className="space-y-2 text-xs text-emerald-200">
                   <div className="flex items-center justify-center gap-2">
-                    <CheckCircle className="w-4 h-4" />
-                    <span>מדריך ברור וקל לביצוע</span>
+                    <Zap className="w-4 h-4" />
+                    <span>פרסום תוך 2 דקות</span>
+                  </div>
+                  <div className="flex items-center justify-center gap-2">
+                    <Shield className="w-4 h-4" />
+                    <span>SSL מאובטח אוטומטי</span>
+                  </div>
+                  <div className="flex items-center justify-center gap-2">
+                    <Globe className="w-4 h-4" />
+                    <span>כתובת קבועה חינם</span>
                   </div>
                   <div className="flex items-center justify-center gap-2">
                     <CheckCircle className="w-4 h-4" />
-                    <span>דומיין ואחסון במקום אחד</span>
-                  </div>
-                  <div className="flex items-center justify-center gap-2">
-                    <CheckCircle className="w-4 h-4" />
-                    <span>תמיכה בעברית 24/7</span>
+                    <span>אפס הגדרות - הכל אוטומטי</span>
                   </div>
                 </div>
               </div>
@@ -140,13 +160,18 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
               <Button 
                 onClick={() => {
                   saveTemplateData();
-                  setShowDomainGuide(true);
+                  setShowPublishingWizard(true);
                 }}
-                className="w-full bg-green-500 hover:bg-green-600 text-white"
+                className="w-full bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white font-bold shadow-lg shadow-emerald-500/30"
+                size="lg"
               >
-                <Server className="w-4 h-4 mr-2" />
-                מדריך רכישת דומיין ואחסון
+                <Zap className="w-5 h-5 mr-2" />
+                פרסם עכשיו - לחיצה אחת!
               </Button>
+              
+              <div className="text-xs text-emerald-300 font-medium">
+                ⚡ הכי פשוט וטוב - בלי סיבוכים!
+              </div>
             </CardContent>
           </Card>
 
@@ -192,33 +217,63 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
             </CardContent>
           </Card>
 
-          {/* Direct Download */}
-          <Card className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 border-purple-500/50 cursor-pointer hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-purple-500/25">
+          {/* Manual Domain Guide */}
+          <Card className="bg-gradient-to-br from-orange-900/30 to-yellow-900/30 border-orange-500/50 cursor-pointer hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-orange-500/25">
             <CardContent className="p-8 text-center space-y-4">
-              <div className="w-16 h-16 bg-purple-500 rounded-xl mx-auto flex items-center justify-center shadow-lg shadow-purple-500/30">
-                <Download className="w-8 h-8 text-white" />
+              <div className="w-16 h-16 bg-orange-500 rounded-xl mx-auto flex items-center justify-center shadow-lg shadow-orange-500/30">
+                <Server className="w-8 h-8 text-white" />
               </div>
               
               <div>
-                <h3 className="text-xl font-bold text-white mb-2">הורד קובץ HTML</h3>
+                <h3 className="text-xl font-bold text-white mb-2">מדריך רכישת דומיין</h3>
                 <p className="text-gray-300 text-sm mb-4">
-                  האתר שלך כקובץ מוכן להעלאה
+                  שלבים מפורטים לרכישה עצמית ב-GoDaddy
                 </p>
                 
-                <div className="space-y-2 text-xs text-purple-200">
+                <div className="space-y-2 text-xs text-orange-200">
                   <div className="flex items-center justify-center gap-2">
                     <CheckCircle className="w-4 h-4" />
-                    <span>קובץ HTML מלא ומוכן</span>
+                    <span>מדריך ברור וקל לביצוע</span>
                   </div>
                   <div className="flex items-center justify-center gap-2">
                     <CheckCircle className="w-4 h-4" />
-                    <span>עובד בכל אתר או שרת</span>
+                    <span>דומיין ואחסון במקום אחד</span>
                   </div>
                   <div className="flex items-center justify-center gap-2">
                     <CheckCircle className="w-4 h-4" />
-                    <span>ללא תלות בפלטפורמה</span>
+                    <span>תמיכה בעברית 24/7</span>
                   </div>
                 </div>
+              </div>
+              
+              <Button 
+                onClick={() => {
+                  saveTemplateData();
+                  setShowDomainGuide(true);
+                }}
+                className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+              >
+                <Server className="w-4 h-4 mr-2" />
+                מדריך רכישת דומיין
+              </Button>
+            </CardContent>
+          </Card>
+
+        </div>
+
+        {/* Download Option - Moved to bottom as secondary */}
+        <div className="max-w-2xl mx-auto">
+          <Card className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border-gray-600/50">
+            <CardContent className="p-6 text-center space-y-4">
+              <div className="w-12 h-12 bg-purple-500 rounded-lg mx-auto flex items-center justify-center shadow-lg shadow-purple-500/30">
+                <Download className="w-6 h-6 text-white" />
+              </div>
+              
+              <div>
+                <h4 className="text-lg font-semibold text-white mb-2">או הורד קובץ HTML</h4>
+                <p className="text-gray-400 text-sm mb-4">
+                  האתר שלך כקובץ מוכן להעלאה בכל מקום
+                </p>
               </div>
               
               <Button 
@@ -266,14 +321,14 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
                     });
                   }
                 }}
-                className="w-full bg-purple-500 hover:bg-purple-600 text-white"
+                variant="outline"
+                className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white"
               >
                 <Download className="w-4 h-4 mr-2" />
                 הורד קובץ HTML
               </Button>
             </CardContent>
           </Card>
-
         </div>
       </div>
 

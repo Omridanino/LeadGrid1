@@ -10,7 +10,8 @@ import {
   Sparkles,
   Globe,
   Shield,
-  Server
+  Server,
+  Zap
 } from 'lucide-react';
 import { NewPublishingWizard } from './publishing/NewPublishingWizard';
 import { TemplateData } from '@/types/template';
@@ -30,8 +31,8 @@ export const LaunchButton = ({ template, className = '' }: LaunchButtonProps) =>
     category: 'מקצועי',
     hero: {
       title: 'האתר שלך מוכן לפרסום עם LEADGRID!',
-      subtitle: 'פתרון מלא לאחסון חינמי ומקצועי',
-      description: 'בואו נפרסם את האתר שלך לאוויר עם אחסון חינם איכותי',
+      subtitle: 'פתרון מלא לפרסום מיידי וחינמי',
+      description: 'בואו נפרסם את האתר שלך לאוויר עם פרסום מיידי וחינמי',
       button1Text: 'התחל עכשיו',
       button2Text: 'למד עוד'
     },
@@ -108,67 +109,67 @@ export const LaunchButton = ({ template, className = '' }: LaunchButtonProps) =>
 
   return (
     <>
-      <Card className={`bg-gradient-to-br from-blue-900/50 to-purple-900/50 border-blue-700/50 ${className}`}>
+      <Card className={`bg-gradient-to-br from-emerald-900/50 to-green-900/50 border-emerald-700/50 ${className}`}>
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="text-white flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <Rocket className="w-5 h-5 text-white" />
+              <div className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-green-500 rounded-lg flex items-center justify-center">
+                <Zap className="w-5 h-5 text-white" />
               </div>
-              LEADGRID - פרסם את האתר שלך
+              פרסום מיידי - לחיצה אחת
             </CardTitle>
-            <Badge className="bg-green-500 text-black font-medium">חינם לחלוטין</Badge>
+            <Badge className="bg-green-500 text-black font-bold">חינם!</Badge>
           </div>
         </CardHeader>
         <CardContent className="space-y-6">
           <p className="text-gray-300 text-sm">
-            הפתרון המלא לפרסום האתר שלך באינטרנט - אחסון חינמי, SSL מאובטח, ותמיכה מלאה
+            הדרך הכי פשוטה לפרסם את האתר שלך - בלחיצה אחת, תוך דקות, בחינם לחלוטין
           </p>
           
           <div className="space-y-3">
             <div className="flex items-center gap-2 text-sm">
               <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
-                <Globe className="w-3 h-3 text-white" />
+                <Zap className="w-3 h-3 text-white" />
               </div>
-              <span className="text-gray-300">אחסון חינם ב-Netlify - ללא הגבלת זמן</span>
+              <span className="text-gray-300">פרסום תוך 2-3 דקות בלבד</span>
             </div>
             
             <div className="flex items-center gap-2 text-sm">
               <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
-                <Server className="w-3 h-3 text-white" />
+                <Globe className="w-3 h-3 text-white" />
               </div>
-              <span className="text-gray-300">כתובת אתר קבועה עם SSL מאובטח</span>
+              <span className="text-gray-300">כתובת אתר קבועה וחינמית</span>
             </div>
             
             <div className="flex items-center gap-2 text-sm">
               <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
                 <Shield className="w-3 h-3 text-white" />
               </div>
-              <span className="text-gray-300">זמינות גבוהה 24/7 ומהירות מעולה</span>
+              <span className="text-gray-300">SSL מאובטח + זמינות גבוהה</span>
             </div>
 
             <div className="flex items-center gap-2 text-sm">
               <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
                 <CheckCircle className="w-3 h-3 text-white" />
               </div>
-              <span className="text-gray-300">אפשרות להוסיף דומיין משלך מאוחר יותר</span>
+              <span className="text-gray-300">אפס ידע טכני נדרש</span>
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-green-900/30 to-blue-900/30 p-4 rounded-lg border border-green-700/30">
+          <div className="bg-gradient-to-r from-emerald-900/40 to-green-900/40 p-4 rounded-lg border border-emerald-700/40">
             <div className="text-center">
-              <div className="text-green-300 font-semibold mb-2">🎉 פרסום חינמי מלא</div>
-              <div className="text-white text-sm">אחסון מקצועי ללא עלות - האתר שלך יהיה חי תוך דקות!</div>
+              <div className="text-emerald-300 font-bold mb-2">⚡ פרסום מיידי</div>
+              <div className="text-white text-sm">בלחיצה אחת האתר שלך יהיה חי באינטרנט!</div>
             </div>
           </div>
 
           <div className="grid grid-cols-1 gap-3">
             <Button
               onClick={() => setIsWizardOpen(true)}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium py-3 text-base"
+              className="bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white font-bold py-4 text-base shadow-xl shadow-emerald-500/30"
             >
-              <Rocket className="w-5 h-5 ml-2" />
-              פרסם את האתר שלי חינם עכשיו
+              <Zap className="w-5 h-5 ml-2" />
+              פרסם עכשיו - לחיצה אחת! 🚀
               <ArrowRight className="w-5 h-5 mr-2" />
             </Button>
           </div>
@@ -176,7 +177,7 @@ export const LaunchButton = ({ template, className = '' }: LaunchButtonProps) =>
           <div className="pt-2 border-t border-gray-700">
             <div className="flex items-center justify-center gap-2 text-xs text-gray-400">
               <Sparkles className="w-3 h-3" />
-              <span>תהליך פשוט של 3 דקות - הכל אוטומטי וחינם</span>
+              <span>הכי פשוט, הכי מהיר, הכי טוב - ובחינם!</span>
             </div>
           </div>
         </CardContent>
