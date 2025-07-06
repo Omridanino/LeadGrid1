@@ -15,7 +15,8 @@ import {
   Server,
   Zap,
   Link,
-  ExternalLink
+  ExternalLink,
+  Shield
 } from 'lucide-react';
 import { CleanWordPressForm } from './domain/CleanWordPressForm';
 import { SimpleDomainGuide } from './domain/SimpleDomainGuide';
