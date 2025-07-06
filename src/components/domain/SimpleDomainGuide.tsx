@@ -24,7 +24,8 @@ import {
   CreditCard,
   FolderOpen,
   Settings,
-  Wifi
+  Wifi,
+  Link
 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
