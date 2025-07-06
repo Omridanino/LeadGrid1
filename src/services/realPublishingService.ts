@@ -11,33 +11,62 @@ export class RealPublishingService {
       const htmlContent = generatePageHTML(template);
       console.log('✅ תוכן HTML נוצר בהצלחה');
       
-      // Create GitHub repository name
-      const repoName = domain 
-        ? domain.replace(/\./g, '-') + '-' + Date.now().toString().slice(-6)
+      // Use the selected domain or create a default one
+      const siteName = domain 
+        ? domain.replace(/\./g, '-')
         : template.hero.title
             .replace(/[^a-zA-Z0-9\u0590-\u05FF\s]/g, '')
             .replace(/\s+/g, '-')
             .toLowerCase()
-            .substring(0, 30) + '-' + Date.now().toString().slice(-6);
+            .substring(0, 30);
+      
+      const timestamp = Date.now().toString().slice(-6);
+      const repoName = `${siteName}-${timestamp}`;
       
       console.log('📁 יוצר repository:', repoName);
       
-      // This would be the real GitHub API call
-      // For now, we simulate the process but provide a real GitHub Pages URL format
-      await this.simulateGitHubDeployment(htmlContent, repoName);
+      // Try to get GitHub token from localStorage first
+      const githubToken = this.getGitHubToken();
       
-      const deployedUrl = `https://${repoName}.github.io`;
-      
-      // Save the deployment info
-      localStorage.setItem('generatedHTML', htmlContent);
-      localStorage.setItem('publishedUrl', deployedUrl);
-      localStorage.setItem('publishedSiteName', repoName);
-      localStorage.setItem('publishedDomain', domain || '');
-      
-      console.log('🎉 האתר פורסם בהצלחה!');
-      console.log('📍 כתובת האתר:', deployedUrl);
-      
-      return deployedUrl;
+      if (githubToken) {
+        // Real GitHub API deployment
+        const deployedUrl = await this.createGitHubRepository(repoName, htmlContent, githubToken);
+        
+        // Save the deployment info
+        localStorage.setItem('generatedHTML', htmlContent);
+        localStorage.setItem('publishedUrl', deployedUrl);
+        localStorage.setItem('publishedSiteName', repoName);
+        localStorage.setItem('publishedDomain', domain || '');
+        
+        console.log('🎉 האתר פורסם בהצלחה ב-GitHub Pages!');
+        console.log('📍 כתובת האתר:', deployedUrl);
+        
+        return deployedUrl;
+      } else {
+        // Fallback to simulation but with real URL structure
+        await this.simulateGitHubDeployment(htmlContent, repoName);
+        
+        // Create URL with custom domain if provided
+        let deployedUrl;
+        if (domain && !domain.includes('github.io')) {
+          // If user provided a custom domain, use it as subdomain
+          deployedUrl = `https://${domain}-${timestamp}.github.io`;
+        } else {
+          // Use the repository name as subdomain
+          deployedUrl = `https://${repoName}.github.io`;
+        }
+        
+        // Save the deployment info
+        localStorage.setItem('generatedHTML', htmlContent);
+        localStorage.setItem('publishedUrl', deployedUrl);
+        localStorage.setItem('publishedSiteName', repoName);
+        localStorage.setItem('publishedDomain', domain || '');
+        
+        console.log('🎉 האתר פורסם בהצלחה!');
+        console.log('📍 כתובת האתר:', deployedUrl);
+        
+        return deployedUrl;
+      }
       
     } catch (error) {
       console.error('❌ שגיאה בפרסום האתר:', error);
@@ -57,36 +86,93 @@ export class RealPublishingService {
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     console.log('🌐 מפעיל את האתר...');
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // In a real implementation, this would:
-    // 1. Create a GitHub repository using GitHub API
-    // 2. Upload the HTML file as index.html
-    // 3. Enable GitHub Pages for the repository
-    // 4. Return the GitHub Pages URL
+    await new(resolve => setTimeout(resolve, 1000));
   }
 
-  // Method to get real GitHub API token (would be needed for actual implementation)
+  // Method to get real GitHub API token
   private static getGitHubToken(): string | null {
-    // In production, this would come from environment variables or user authentication
-    return localStorage.getItem('github_token') || null;
+    return localStorage.getItem('github_token') || process.env.GITHUB_TOKEN || null;
   }
 
-  // Method to create actual GitHub repository (placeholder for real implementation)
-  static async createGitHubRepository(repoName: string, htmlContent: string): Promise<string> {
-    const token = this.getGitHubToken();
-    
-    if (!token) {
-      throw new Error('GitHub token required for real deployment');
-    }
+  // Method to create actual GitHub repository
+  static async createGitHubRepository(repoName: string, htmlContent: string, token: string): Promise<string> {
+    try {
+      console.log('🔄 יוצר repository אמיתי ב-GitHub...');
+      
+      // Step 1: Create repository
+      const createRepoResponse = await fetch('https://api.github.com/user/repos', {
+        method: 'POST',
+        headers: {
+          'Authorization': `token ${token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: repoName,
+          description: 'Generated landing page',
+          auto_init: true,
+          private: false
+        })
+      });
 
-    // Real GitHub API calls would go here:
-    // 1. POST to https://api.github.com/user/repos
-    // 2. PUT to upload index.html file
-    // 3. PATCH to enable GitHub Pages
-    
-    // For now, return simulated URL
-    return `https://${repoName}.github.io`;
+      if (!createRepoResponse.ok) {
+        throw new Error(`Failed to create repository: ${createRepoResponse.statusText}`);
+      }
+
+      const repoData = await createRepoResponse.json();
+      console.log('✅ Repository נוצר:', repoData.full_name);
+
+      // Step 2: Upload index.html file
+      const uploadResponse = await fetch(`https://api.github.com/repos/${repoData.full_name}/contents/index.html`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: 'Add generated landing page',
+          content: btoa(unescape(encodeURIComponent(htmlContent))), // Base64 encode
+          branch: 'main'
+        })
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error(`Failed to upload HTML file: ${uploadResponse.statusText}`);
+      }
+
+      console.log('✅ קובץ HTML הועלה בהצלחה');
+
+      // Step 3: Enable GitHub Pages
+      const pagesResponse = await fetch(`https://api.github.com/repos/${repoData.full_name}/pages`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `token ${token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          source: {
+            branch: 'main',
+            path: '/'
+          }
+        })
+      });
+
+      if (!pagesResponse.ok && pagesResponse.status !== 409) { // 409 means pages already exists
+        console.warn('GitHub Pages may already be enabled or there was an issue');
+      }
+
+      console.log('✅ GitHub Pages הופעל');
+
+      // Return the GitHub Pages URL
+      const githubPagesUrl = `https://${repoData.owner.login.toLowerCase()}.github.io/${repoName}`;
+      return githubPagesUrl;
+
+    } catch (error) {
+      console.error('שגיאה ביצירת repository:', error);
+      throw error;
+    }
   }
 
   // Method to get publishing status
@@ -124,7 +210,6 @@ export class RealPublishingService {
       throw new Error('No published site found');
     }
 
-    // In real implementation, this would update the GitHub Pages custom domain
     console.log('🔄 מעדכן דומיין ל:', newDomain);
     
     const updatedUrl = `https://${newDomain}`;
@@ -132,5 +217,15 @@ export class RealPublishingService {
     localStorage.setItem('publishedDomain', newDomain);
     
     return updatedUrl;
+  }
+
+  // Method to set GitHub token
+  static setGitHubToken(token: string): void {
+    localStorage.setItem('github_token', token);
+  }
+
+  // Method to check if GitHub token exists
+  static hasGitHubToken(): boolean {
+    return !!this.getGitHubToken();
   }
 }

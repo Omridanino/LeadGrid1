@@ -1,10 +1,10 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   Globe, 
@@ -17,22 +17,13 @@ import {
   ArrowRight,
   ArrowLeft,
   X,
-  AlertCircle,
-  Search,
-  Server,
-  Lock,
-  Info,
-  AlertTriangle,
-  Zap,
+  Github,
   Shuffle
 } from 'lucide-react';
 import { TemplateData } from '@/types/template';
 import { PublishingProgress } from './PublishingProgress';
-import { DomainService } from '@/services/domainService';
-import { HostingService } from '@/services/hostingService';
 import { RealPublishingService } from '@/services/realPublishingService';
-import { RealDomainPurchaseWizard } from '@/components/domain/RealDomainPurchaseWizard';
-import { CleanWordPressForm } from '@/components/domain/CleanWordPressForm';
+import { GitHubTokenForm } from './GitHubTokenForm';
 import { generatePageHTML } from '@/utils/pageGenerator';
 
 interface NewPublishingWizardProps {
@@ -41,7 +32,7 @@ interface NewPublishingWizardProps {
   onClose: () => void;
 }
 
-type PublishingStep = 'overview' | 'domain-choice' | 'publish' | 'complete';
+type PublishingStep = 'overview' | 'github-setup' | 'domain-choice' | 'publish' | 'complete';
 
 export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishingWizardProps) => {
   const [currentStep, setCurrentStep] = useState<PublishingStep>('overview');
@@ -50,18 +41,25 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
   const [publishedUrl, setPublishedUrl] = useState('');
   const [selectedTempDomain, setSelectedTempDomain] = useState('');
   const [customSubdomain, setCustomSubdomain] = useState('');
+  const [hasGitHubToken, setHasGitHubToken] = useState(false);
+
+  // Check for existing GitHub token on mount
+  useEffect(() => {
+    setHasGitHubToken(RealPublishingService.hasGitHubToken());
+  }, []);
 
   // Temporary domain options
   const tempDomainOptions = [
-    'leadgrid-demo.site',
-    'mysite-temp.online',
-    'quick-site.live',
-    'instant-web.app',
-    'temp-site.co'
+    'mysite-demo',
+    'quick-site',
+    'instant-web',
+    'temp-site',
+    'my-landing'
   ];
 
   const steps = [
     { id: 'overview', name: 'סקירה', icon: Sparkles },
+    { id: 'github-setup', name: 'GitHub', icon: Github },
     { id: 'domain-choice', name: 'דומיין זמני', icon: Globe },
     { id: 'publish', name: 'פרסום', icon: Rocket },
     { id: 'complete', name: 'הושלם', icon: CheckCircle }
@@ -110,7 +108,6 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
       // Step 2: Generate HTML
       setPublishingProgress(40);
       console.log('יוצר את תוכן האתר...');
-      const htmlContent = generatePageHTML(template);
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Step 3: Create GitHub repository
@@ -123,27 +120,19 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
       console.log('מפרסם ב-GitHub Pages...');
       
       const finalDomain = customSubdomain || selectedTempDomain;
-      const timestamp = Date.now().toString().slice(-6);
-      const siteName = `${finalDomain.replace(/\./g, '-')}-${timestamp}`;
       
-      // For now, use GitHub Pages URL format
-      const deployedUrl = `https://${siteName}.github.io`;
+      // Use the real publishing service
+      const deployedUrl = await RealPublishingService.publishSite(template, finalDomain);
       
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 500));
       
       // Step 5: Complete
       setPublishingProgress(100);
       console.log('האתר פורסם בהצלחה!');
-      await new Promise(resolve => setTimeout(resolve, 500));
 
       setPublishedUrl(deployedUrl);
       setCurrentStep('complete');
       setIsPublishing(false);
-      
-      // Save the HTML content and deployment info
-      localStorage.setItem('generatedHTML', htmlContent);
-      localStorage.setItem('publishedUrl', deployedUrl);
-      localStorage.setItem('selectedDomain', finalDomain);
       
     } catch (error) {
       console.error('Publishing failed:', error);
@@ -168,7 +157,7 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-white text-2xl font-bold">🚀 פרסום אמיתי</h2>
-              <p className="text-green-400 text-sm mt-1 font-medium">✅ האתר יהיה זמין באמת תוך דקות!</p>
+              <p className="text-green-400 text-sm mt-1 font-medium">✅ האתר יהיה זמין באמת עם GitHub Pages!</p>
             </div>
             <Button
               onClick={onClose}
@@ -218,21 +207,20 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
             <div className="p-6">
               {currentStep === 'overview' && (
                 <div className="space-y-6">
-                  
                   <div className="text-center">
                     <h3 className="text-white text-xl font-semibold mb-4">מוכן לראות את האתר שלך חי באינטרנט?</h3>
-                    <p className="text-gray-400">האתר יתפרסם באמת ויהיה זמין לכולם עם כתובת אמיתית</p>
+                    <p className="text-gray-400">האתר יתפרסם באמת עם GitHub Pages ויהיה זמין לכולם</p>
                   </div>
 
                   <Card className="bg-gradient-to-r from-emerald-900/40 to-green-900/40 border-emerald-700/40 max-w-3xl mx-auto">
                     <CardContent className="p-8">
                       <div className="text-center space-y-4">
                         <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-green-500 rounded-full flex items-center justify-center mx-auto shadow-xl shadow-emerald-500/40">
-                          <Rocket className="w-8 h-8 text-white" />
+                          <Github className="w-8 h-8 text-white" />
                         </div>
                         
                         <h4 className="text-emerald-300 font-bold text-xl mb-3">
-                          🌐 פרסום אמיתי באינטרנט
+                          🌐 פרסום אמיתי עם GitHub Pages
                         </h4>
                         
                         <div className="grid md:grid-cols-2 gap-4 text-sm text-emerald-200">
@@ -243,7 +231,7 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                             </div>
                             <div className="flex items-center gap-2">
                               <Globe className="w-4 h-4 text-emerald-400" />
-                              <span>כתובת אתר זמנית חינמית</span>
+                              <span>הדומיין הזמני יופיע ב-URL</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <Shield className="w-4 h-4 text-emerald-400" />
@@ -257,11 +245,11 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckCircle className="w-4 h-4 text-emerald-400" />
-                              <span>אפשרות לשנות לדומיין אמיתי</span>
+                              <span>מהירות טעינה מעולה</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <CheckCircle className="w-4 h-4 text-emerald-400" />
-                              <span>מהירות טעינה מעולה</span>
+                              <span>חינם לחלוטין</span>
                             </div>
                           </div>
                         </div>
@@ -275,18 +263,28 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                       className="bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 px-12 py-4 text-lg font-bold shadow-xl shadow-emerald-500/30"
                       size="lg"
                     >
-                      <Globe className="w-6 h-6 ml-2" />
-                      בחר דומיין זמני! 🌐
+                      <Github className="w-6 h-6 ml-2" />
+                      בואו נתחיל! 🚀
                     </Button>
                   </div>
                 </div>
+              )}
+
+              {currentStep === 'github-setup' && (
+                <GitHubTokenForm
+                  onTokenSaved={() => {
+                    setHasGitHubToken(true);
+                    nextStep();
+                  }}
+                  onSkip={nextStep}
+                />
               )}
 
               {currentStep === 'domain-choice' && (
                 <div className="space-y-6">
                   <div className="text-center">
                     <h3 className="text-white text-xl font-semibold mb-2">בחר דומיין זמני לאתר שלך</h3>
-                    <p className="text-gray-400">האתר יהיה זמין בכתובת זמנית עד שתרכוש דומיין קבוע</p>
+                    <p className="text-gray-400">הדומיין הזמני יופיע בכתובת האתר עד שתרכוש דומיין קבוע</p>
                   </div>
 
                   <Card className="bg-gray-800 border-gray-700 max-w-2xl mx-auto">
@@ -315,7 +313,7 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                                 className="text-blue-600"
                               />
                               <label htmlFor={domain} className="text-gray-300 cursor-pointer">
-                                {customSubdomain || generateRandomSubdomain()}.{domain}
+                                {domain}.github.io
                               </label>
                             </div>
                           ))}
@@ -323,10 +321,10 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                       </div>
 
                       <div className="border-t border-gray-600 pt-4">
-                        <Label className="text-white mb-2 block">או הזן כתובת משלך:</Label>
+                        <Label className="text-white mb-2 block">או הזן דומיין משלך:</Label>
                         <div className="flex gap-2">
                           <Input
-                            placeholder="השם שלך"
+                            placeholder="השם-שלך"
                             value={customSubdomain}
                             onChange={(e) => {
                               setCustomSubdomain(e.target.value);
@@ -344,7 +342,7 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                         </div>
                         {customSubdomain && (
                           <p className="text-sm text-gray-400 mt-2">
-                            האתר יהיה זמין ב: {customSubdomain}.github.io
+                            האתר יהיה זמין ב: <span className="text-blue-400">{customSubdomain}.github.io</span>
                           </p>
                         )}
                       </div>
@@ -354,11 +352,11 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                   <Card className="bg-blue-900/30 border-blue-700/30 max-w-2xl mx-auto">
                     <CardContent className="p-4">
                       <div className="text-center text-blue-200 text-sm">
-                        <p className="font-medium mb-2">💡 לאחר הפרסום תוכל:</p>
+                        <p className="font-medium mb-2">💡 דברים חשובים לדעת:</p>
                         <div className="space-y-1">
-                          <p>• לרכוש דומיין קבוע (.com, .co.il וכו')</p>
-                          <p>• לחבר את הדומיין החדש לאתר הקיים</p>
-                          <p>• להמשיך להשתמש בכתובת הזמנית</p>
+                          <p>• הדומיין הזמני יופיע בכתובת האתר</p>
+                          <p>• ניתן לשנות לדומיין אמיתי בעתיד</p>
+                          <p>• האתר יהיה זמין לכל העולם</p>
                         </div>
                       </div>
                     </CardContent>
@@ -391,18 +389,18 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                       <CheckCircle className="w-12 h-12 text-white" />
                     </div>
                     <h3 className="text-white text-2xl font-bold mb-4">🎉 האתר שלך חי באינטרנט!</h3>
-                    <p className="text-gray-400 mb-6">האתר שלך זמין עכשיו באמת לכל העולם</p>
+                    <p className="text-gray-400 mb-6">האתר שלך זמין עכשיו באמת לכל העולם עם הדומיין הזמני שבחרת</p>
                     
                     <Card className="bg-gray-800 border-gray-700 max-w-lg mx-auto mb-6">
                       <CardContent className="p-6">
                         <div className="space-y-4">
                           <div className="text-center">
-                            <div className="text-white font-semibold mb-2">🌐 האתר שלך:</div>
+                            <div className="text-white font-semibold mb-2">🌐 כתובת האתר שלך:</div>
                             <div className="bg-gray-900 p-3 rounded-lg border border-gray-600 mb-3">
                               <code className="text-blue-400 text-sm break-all">{publishedUrl}</code>
                             </div>
                             <div className="text-green-400 text-sm font-medium mb-4">
-                              ✅ זמין עכשיו באמת לכל העולם!
+                              ✅ זמין עכשיו באמת עם הדומיין הזמני שבחרת!
                             </div>
                           </div>
                           
