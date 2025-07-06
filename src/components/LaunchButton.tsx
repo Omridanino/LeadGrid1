@@ -99,8 +99,7 @@ export const LaunchButton = ({ template, className = '' }: LaunchButtonProps) =>
       textColor: '#000000',
       primaryColor: '#3b82f6',
       secondaryColor: '#6b7280',
-      accentColor: '#f59e0b',
-      fontFamily: 'Arial'
+      accentColor: '#f59e0b'
     },
     effects: {}
   };

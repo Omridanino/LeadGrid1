@@ -29,7 +29,6 @@ export interface TemplateStyles {
   primaryColor: string;
   secondaryColor: string;
   accentColor: string;
-  fontFamily?: string; // Made optional to maintain compatibility
   
   // Premium section-specific colors (optional)
   emotionalTitleColor?: string;
@@ -68,18 +67,6 @@ export interface HeroSection {
   button1Icon?: string;
   button2Icon?: string;
   image?: string;
-  // Added missing properties for editor
-  primaryButton?: {
-    text: string;
-    link: string;
-  };
-  secondaryButton?: {
-    text: string;
-    link: string;
-  };
-  backgroundImage?: string;
-  showVideo?: boolean;
-  videoUrl?: string;
 }
 
 export interface EmotionalSection {
@@ -115,7 +102,6 @@ export interface FeaturesSection {
   button2Text: string;
   button1Icon?: string;
   button2Icon?: string;
-  layout?: 'grid' | 'list' | 'carousel'; // Added missing layout property
 }
 
 export interface TestimonialsSection {
@@ -191,10 +177,6 @@ export interface ContactSection {
     placeholder: string;
     required: boolean;
   }[];
-  // Added missing contact properties
-  phone?: string;
-  email?: string;
-  address?: string;
 }
 
 export interface GallerySection {
