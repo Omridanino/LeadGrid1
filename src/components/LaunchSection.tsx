@@ -13,7 +13,8 @@ import {
   Download,
   Eye,
   Server,
-  Zap
+  Zap,
+  Link
 } from 'lucide-react';
 import { CleanWordPressForm } from './domain/CleanWordPressForm';
 import { DomainHostingWizard } from './domain/DomainHostingWizard';
@@ -92,7 +93,7 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
             🎉 הדף שלך מוכן!
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            עכשיו תוכל להוסיף אותו לאתר או לרכוש דומיין ואחסון חדשים
+            עכשיו תוכל להוריד אותו כקובץ HTML או לרכוש דומיין ואחסון
           </p>
         </div>
       </div>
@@ -117,7 +118,7 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
               <div>
                 <h3 className="text-xl font-bold text-white mb-2">רכוש דומיין ואחסון</h3>
                 <p className="text-gray-300 text-sm mb-4">
-                  דומיין ואחסון מקצועי מספקים מובילים
+                  דומיין ואחסון מקצועי + חיבור האתר שלך
                 </p>
                 
                 <div className="space-y-2 text-xs text-green-200">
@@ -131,7 +132,7 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
                   </div>
                   <div className="flex items-center justify-center gap-2">
                     <CheckCircle className="w-4 h-4" />
-                    <span>הדרכה מלאה להתקנה</span>
+                    <span>חיבור האתר שלך לאחסון</span>
                   </div>
                 </div>
               </div>
@@ -201,7 +202,7 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
               <div>
                 <h3 className="text-xl font-bold text-white mb-2">הורד קובץ HTML</h3>
                 <p className="text-gray-300 text-sm mb-4">
-                  קובץ מוכן להעלאה לכל שרת אחסון
+                  האתר שלך כקובץ מוכן להעלאה
                 </p>
                 
                 <div className="space-y-2 text-xs text-purple-200">

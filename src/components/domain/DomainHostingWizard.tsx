@@ -161,8 +161,8 @@ export const DomainHostingWizard = ({ onBack }: DomainHostingWizardProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" dir="rtl">
-      <div className="max-w-6xl mx-auto p-6 space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-y-auto" dir="rtl">
+      <div className="max-w-6xl mx-auto p-6 space-y-8 pb-20">
         
         {/* Header */}
         <div className="text-center space-y-6 py-8">
@@ -426,7 +426,7 @@ export const DomainHostingWizard = ({ onBack }: DomainHostingWizardProps) => {
         )}
 
         {/* Back Button */}
-        <div className="text-center">
+        <div className="text-center pt-8">
           <Button
             onClick={onBack}
             variant="outline"
