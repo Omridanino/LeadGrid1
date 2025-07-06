@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -32,6 +33,7 @@ import { HostingService } from '@/services/hostingService';
 import { RealPublishingService } from '@/services/realPublishingService';
 import { RealDomainPurchaseWizard } from '@/components/domain/RealDomainPurchaseWizard';
 import { CleanWordPressForm } from '@/components/domain/CleanWordPressForm';
+import { generatePageHTML } from '@/utils/pageGenerator';
 
 interface NewPublishingWizardProps {
   template: TemplateData;
@@ -90,7 +92,6 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
       // Step 2: Generate HTML
       setPublishingProgress(50);
       console.log('יוצר את תוכן האתר...');
-      const { generatePageHTML } = require('@/utils/pageGenerator');
       const htmlContent = generatePageHTML(template);
       await new Promise(resolve => setTimeout(resolve, 1000));
       
