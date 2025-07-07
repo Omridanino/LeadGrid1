@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -18,7 +19,8 @@ import {
   X,
   Github,
   Shuffle,
-  Play
+  Play,
+  MousePointer
 } from 'lucide-react';
 import { TemplateData } from '@/types/template';
 import { PublishingProgress } from './PublishingProgress';
@@ -425,64 +427,106 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                     {publishedUrl === 'manual-setup-needed' ? (
                       <div>
                         <h3 className="text-white text-2xl font-bold mb-4">🎉 Repository נוצר בהצלחה!</h3>
-                        <p className="text-yellow-400 mb-6">עכשיו צריך להפעיל את GitHub Pages במספר צעדים פשוטים</p>
+                        <p className="text-yellow-400 mb-6">עכשיו צריך להפעיל את האתר בצעדים פשוטים</p>
                         
                         <Card className="bg-gradient-to-br from-yellow-900/30 to-orange-900/30 border-yellow-700/50 max-w-3xl mx-auto mb-6">
                           <CardContent className="p-8 text-right">
                             <h4 className="text-yellow-300 font-bold text-xl mb-6 flex items-center gap-2 justify-center">
                               <Play className="w-6 h-6" />
-                              3 צעדים פשוטים להפעלת האתר
+                              איך להיכנס לאתר שלך - 3 צעדים קלים
                             </h4>
                             
-                            <div className="space-y-6">
-                              <div className="bg-yellow-900/20 p-4 rounded-lg">
-                                <div className="flex items-center gap-3 mb-2">
-                                  <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-black font-bold">1</div>
-                                  <h5 className="text-yellow-200 font-semibold">היכנס ל-GitHub</h5>
+                            <div className="space-y-8">
+                              <div className="bg-green-900/30 p-6 rounded-lg border-2 border-green-600/50">
+                                <div className="flex items-center gap-3 mb-4">
+                                  <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-black font-bold text-lg">1</div>
+                                  <h5 className="text-green-200 font-bold text-lg">היכנס ל-GitHub שלך</h5>
                                 </div>
-                                <p className="text-yellow-100 text-sm mr-11">
-                                  פתח את GitHub ומצא את הפרויקט החדש שנוצר: <span className="font-mono bg-black/20 px-2 py-1 rounded">{repoName}</span>
-                                </p>
-                                <Button
-                                  onClick={() => window.open('https://github.com', '_blank')}
-                                  className="bg-yellow-600 hover:bg-yellow-700 mt-3 mr-11"
-                                  size="sm"
-                                >
-                                  <ExternalLink className="w-4 h-4 ml-1" />
-                                  פתח GitHub
-                                </Button>
+                                <div className="mr-13 space-y-3">
+                                  <p className="text-green-100 text-base">
+                                    פתח את GitHub.com והתחבר לחשבון שלך
+                                  </p>
+                                  <p className="text-green-100 text-base">
+                                    מצא את הפרויקט החדש: <span className="font-mono bg-black/30 px-3 py-1 rounded text-green-300 font-bold">{repoName}</span>
+                                  </p>
+                                  <Button
+                                    onClick={() => window.open('https://github.com', '_blank')}
+                                    className="bg-green-600 hover:bg-green-700 mt-3"
+                                    size="sm"
+                                  >
+                                    <ExternalLink className="w-4 h-4 ml-1" />
+                                    פתח GitHub עכשיו
+                                  </Button>
+                                </div>
                               </div>
 
-                              <div className="bg-yellow-900/20 p-4 rounded-lg">
-                                <div className="flex items-center gap-3 mb-2">
-                                  <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-black font-bold">2</div>
-                                  <h5 className="text-yellow-200 font-semibold">היכנס להגדרות</h5>
+                              <div className="bg-blue-900/30 p-6 rounded-lg border-2 border-blue-600/50">
+                                <div className="flex items-center gap-3 mb-4">
+                                  <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-black font-bold text-lg">2</div>
+                                  <h5 className="text-blue-200 font-bold text-lg">היכנס להגדרות הפרויקט</h5>
                                 </div>
-                                <p className="text-yellow-100 text-sm mr-11">
-                                  לחץ על <span className="font-semibold">"Settings"</span> בפרויקט ואז גלול למטה עד שתמצא <span className="font-semibold">"Pages"</span>
-                                </p>
+                                <div className="mr-13 space-y-3">
+                                  <div className="flex items-center gap-2 text-blue-100">
+                                    <MousePointer className="w-4 h-4 text-blue-400" />
+                                    <span>לחץ על <span className="font-bold bg-blue-900/50 px-2 py-1 rounded">Settings</span> בתפריט הפרויקט</span>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-blue-100">
+                                    <ArrowRight className="w-4 h-4 text-blue-400" />
+                                    <span>גלול למטה ומצא <span className="font-bold bg-blue-900/50 px-2 py-1 rounded">Pages</span></span>
+                                  </div>
+                                </div>
                               </div>
 
-                              <div className="bg-yellow-900/20 p-4 rounded-lg">
-                                <div className="flex items-center gap-3 mb-2">
-                                  <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-black font-bold">3</div>
-                                  <h5 className="text-yellow-200 font-semibold">הפעל את האתר</h5>
+                              <div className="bg-purple-900/30 p-6 rounded-lg border-2 border-purple-600/50">
+                                <div className="flex items-center gap-3 mb-4">
+                                  <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-black font-bold text-lg">3</div>
+                                  <h5 className="text-purple-200 font-bold text-lg">הפעל את האתר</h5>
                                 </div>
-                                <div className="text-yellow-100 text-sm mr-11 space-y-1">
-                                  <p>• תחת "Source" בחר: <span className="font-semibold">"Deploy from a branch"</span></p>
-                                  <p>• תחת "Branch" בחר: <span className="font-semibold">"main"</span></p>
-                                  <p>• תחת "Folder" השאר: <span className="font-semibold">"/ (root)"</span></p>
-                                  <p>• לחץ <span className="font-semibold">"Save"</span></p>
+                                <div className="mr-13 space-y-4">
+                                  <div className="space-y-3">
+                                    <div className="flex items-center gap-2 text-purple-100">
+                                      <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
+                                      <span>תחת <span className="font-bold">Source</span> בחר: <span className="font-bold bg-purple-900/50 px-2 py-1 rounded">Deploy from a branch</span></span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-purple-100">
+                                      <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
+                                      <span>תחת <span className="font-bold">Branch</span> בחר: <span className="font-bold bg-purple-900/50 px-2 py-1 rounded">main</span></span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-purple-100">
+                                      <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
+                                      <span>לחץ <span className="font-bold bg-green-700 px-3 py-1 rounded text-white">Save</span></span>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
 
-                            <div className="bg-green-900/30 p-4 rounded-lg mt-6">
-                              <p className="text-green-200 text-center font-medium">
-                                🎉 זהו! האתר יהיה זמין תוך 2-3 דקות
+                            <div className="bg-gradient-to-r from-green-900/40 to-blue-900/40 p-6 rounded-lg mt-8 border border-green-600/30">
+                              <div className="text-center">
+                                <h5 className="text-green-200 font-bold text-xl mb-3">🎉 זהו! האתר שלך יהיה מוכן</h5>
+                                <p className="text-green-300 mb-2">
+                                  GitHub ישלח לך הודעה כשהאתר מוכן (בדרך כלל תוך 2-5 דקות)
+                                </p>
+                                <div className="bg-black/30 p-3 rounded-lg mt-4">
+                                  <p className="text-yellow-300 font-mono text-sm">
+                                    כתובת האתר שלך תהיה:<br />
+                                    <span className="text-green-400 font-bold">https://שם-המשתמש-שלך.github.io/{repoName}</span>
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+
+                        <Card className="bg-blue-900/20 border-blue-700/30 max-w-2xl mx-auto">
+                          <CardContent className="p-6">
+                            <div className="text-center space-y-3">
+                              <h5 className="text-blue-200 font-medium text-lg">💡 עזרה נוספת</h5>
+                              <p className="text-blue-300 text-sm">
+                                אם אתה לא מוצא את הפרויקט או נתקע, GitHub ישלח לך מייל עם הקישור המדויק לאתר שלך
                               </p>
-                              <p className="text-green-300 text-center text-sm mt-2">
-                                הכתובת תהיה: <span className="font-mono">{repoName}.github.io</span>
+                              <p className="text-blue-300 text-sm">
+                                החיפוש ב-GitHub: <span className="font-mono bg-blue-900/30 px-2 py-1 rounded">{repoName}</span>
                               </p>
                             </div>
                           </CardContent>
