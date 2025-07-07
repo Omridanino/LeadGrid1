@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -42,6 +41,7 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
   const [selectedTempDomain, setSelectedTempDomain] = useState('');
   const [customSubdomain, setCustomSubdomain] = useState('');
   const [hasGitHubToken, setHasGitHubToken] = useState(false);
+  const [publishingError, setPublishingError] = useState('');
 
   // Check for existing GitHub token on mount
   useEffect(() => {
@@ -98,6 +98,7 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
 
     setIsPublishing(true);
     setCurrentStep('publish');
+    setPublishingError('');
     
     try {
       // Step 1: Prepare files
@@ -137,7 +138,13 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
     } catch (error) {
       console.error('Publishing failed:', error);
       setIsPublishing(false);
-      alert('פרסום נכשל - נסה שוב');
+      setPublishingError(error instanceof Error ? error.message : 'פרסום נכשל - נסה שוב');
+      
+      // If it's a GitHub Pages manual setup error, show special handling
+      if (error instanceof Error && error.message.includes('הפעלה ידנית')) {
+        setCurrentStep('complete');
+        setPublishedUrl('manual-setup-needed');
+      }
     }
   };
 
@@ -376,10 +383,22 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
               )}
 
               {currentStep === 'publish' && (
-                <PublishingProgress 
-                  progress={publishingProgress}
-                  isPublishing={isPublishing}
-                />
+                <div>
+                  <PublishingProgress 
+                    progress={publishingProgress}
+                    isPublishing={isPublishing}
+                  />
+                  
+                  {publishingError && (
+                    <Card className="bg-red-900/20 border-red-700/50 mt-6">
+                      <CardContent className="p-4">
+                        <div className="text-red-300 text-sm">
+                          <strong>שגיאה:</strong> {publishingError}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+                </div>
               )}
 
               {currentStep === 'complete' && (
@@ -388,44 +407,78 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                     <div className="w-24 h-24 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-green-500/40">
                       <CheckCircle className="w-12 h-12 text-white" />
                     </div>
-                    <h3 className="text-white text-2xl font-bold mb-4">🎉 האתר שלך חי באינטרנט!</h3>
-                    <p className="text-gray-400 mb-6">האתר שלך זמין עכשיו באמת לכל העולם עם הדומיין הזמני שבחרת</p>
                     
-                    <Card className="bg-gray-800 border-gray-700 max-w-lg mx-auto mb-6">
-                      <CardContent className="p-6">
-                        <div className="space-y-4">
-                          <div className="text-center">
-                            <div className="text-white font-semibold mb-2">🌐 כתובת האתר שלך:</div>
-                            <div className="bg-gray-900 p-3 rounded-lg border border-gray-600 mb-3">
-                              <code className="text-blue-400 text-sm break-all">{publishedUrl}</code>
+                    {publishedUrl === 'manual-setup-needed' ? (
+                      <div>
+                        <h3 className="text-white text-2xl font-bold mb-4">🎉 Repository נוצר בהצלחה!</h3>
+                        <p className="text-yellow-400 mb-6">נדרשת הפעלה ידנית של GitHub Pages</p>
+                        
+                        <Card className="bg-yellow-900/20 border-yellow-700/50 max-w-2xl mx-auto mb-6">
+                          <CardContent className="p-6 text-right">
+                            <h4 className="text-yellow-300 font-bold mb-4">🔧 הוראות הפעלה ידנית:</h4>
+                            <div className="space-y-3 text-yellow-200 text-sm">
+                              <p>1. היכנס ל-GitHub ולחשבון שלך</p>
+                              <p>2. מצא את ה-Repository החדש שנוצר</p>
+                              <p>3. היכנס ל-Settings של ה-Repository</p>
+                              <p>4. גלול למטה ל-Pages</p>
+                              <p>5. בחר Source: "Deploy from a branch"</p>
+                              <p>6. בחר Branch: "main" ו-Folder: "/ (root)"</p>
+                              <p>7. לחץ Save</p>
+                              <p>8. האתר יהיה זמין תוך 2-5 דקות</p>
                             </div>
-                            <div className="text-green-400 text-sm font-medium mb-4">
-                              ✅ זמין עכשיו באמת עם הדומיין הזמני שבחרת!
-                            </div>
-                          </div>
-                          
-                          <div className="flex gap-2 justify-center">
+                            
                             <Button
-                              onClick={() => navigator.clipboard.writeText(publishedUrl)}
-                              size="sm"
-                              variant="outline"
-                              className="border-gray-600 text-gray-300 hover:bg-gray-700"
-                            >
-                              <Copy className="w-4 h-4 ml-1" />
-                              העתק קישור
-                            </Button>
-                            <Button
-                              onClick={openSite}
-                              size="sm"
-                              className="bg-blue-600 hover:bg-blue-700"
+                              onClick={() => window.open('https://github.com', '_blank')}
+                              className="bg-yellow-600 hover:bg-yellow-700 mt-4"
                             >
                               <ExternalLink className="w-4 h-4 ml-1" />
-                              פתח את האתר
+                              פתח GitHub
                             </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    ) : (
+                      <div>
+                        <h3 className="text-white text-2xl font-bold mb-4">🎉 האתר שלך חי באינטרנט!</h3>
+                        <p className="text-gray-400 mb-6">האתר שלך זמין עכשיו באמת לכל העולם עם הדומיין הזמני שבחרת</p>
+                        
+                        <Card className="bg-gray-800 border-gray-700 max-w-lg mx-auto mb-6">
+                          <CardContent className="p-6">
+                            <div className="space-y-4">
+                              <div className="text-center">
+                                <div className="text-white font-semibold mb-2">🌐 כתובת האתר שלך:</div>
+                                <div className="bg-gray-900 p-3 rounded-lg border border-gray-600 mb-3">
+                                  <code className="text-blue-400 text-sm break-all">{publishedUrl}</code>
+                                </div>
+                                <div className="text-green-400 text-sm font-medium mb-4">
+                                  ✅ זמין עכשיו באמת עם הדומיין הזמני שבחרת!
+                                </div>
+                              </div>
+                              
+                              <div className="flex gap-2 justify-center">
+                                <Button
+                                  onClick={() => navigator.clipboard.writeText(publishedUrl)}
+                                  size="sm"
+                                  variant="outline"
+                                  className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                                >
+                                  <Copy className="w-4 h-4 ml-1" />
+                                  העתק קישור
+                                </Button>
+                                <Button
+                                  onClick={openSite}
+                                  size="sm"
+                                  className="bg-blue-600 hover:bg-blue-700"
+                                >
+                                  <ExternalLink className="w-4 h-4 ml-1" />
+                                  פתח את האתר
+                                </Button>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    )}
                   </div>
 
                   <div className="text-center">
