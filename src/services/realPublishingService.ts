@@ -24,7 +24,7 @@ export class RealPublishingService {
       
       console.log('📁 יוצר repository:', repoName);
       
-      // Try to get GitHub token from localStorage first
+      // Try to get GitHub token from localStorage
       const githubToken = this.getGitHubToken();
       
       if (githubToken) {
@@ -88,9 +88,9 @@ export class RealPublishingService {
     await new Promise(resolve => setTimeout(resolve, 1000));
   }
 
-  // Method to get real GitHub API token
+  // Method to get real GitHub API token - only from localStorage
   private static getGitHubToken(): string | null {
-    return localStorage.getItem('github_token') || process.env.GITHUB_TOKEN || null;
+    return localStorage.getItem('github_token') || null;
   }
 
   // Method to create actual GitHub repository
