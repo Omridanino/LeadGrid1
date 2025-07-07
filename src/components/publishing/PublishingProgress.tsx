@@ -1,3 +1,4 @@
+
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -176,10 +177,11 @@ export const PublishingProgress = ({ progress, isPublishing }: PublishingProgres
               האתר באוויר עם GitHub Pages - באמת וללא עלות!
             </span>
           </div>
-          
+
+          {/* Domain Purchase Option */}
           <Card className="bg-gradient-to-r from-purple-900/30 to-pink-900/30 border-purple-700/50 max-w-md mx-auto">
             <CardContent className="p-4">
-              <div className="text-center space-y-2">
+              <div className="text-center space-y-3">
                 <Globe className="w-8 h-8 text-purple-400 mx-auto" />
                 <h5 className="text-purple-200 font-semibold">רוצה דומיין אמיתי?</h5>
                 <p className="text-purple-300 text-sm">
@@ -193,6 +195,22 @@ export const PublishingProgress = ({ progress, isPublishing }: PublishingProgres
                   <ExternalLink className="w-4 h-4 ml-1" />
                   רכישת דומיין ב-GitHub
                 </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Wait Reminder */}
+          <Card className="bg-gradient-to-r from-orange-900/40 to-red-900/40 border-orange-700/50 max-w-lg mx-auto">
+            <CardContent className="p-4">
+              <div className="text-center space-y-2">
+                <Clock className="w-6 h-6 text-orange-400 mx-auto" />
+                <h5 className="text-orange-200 font-semibold">תזכורת חשובה</h5>
+                <p className="text-orange-300 text-sm">
+                  האתר יהיה מוכן בעוד כ-5 דקות. GitHub Pages צריך זמן להפעיל את האתר
+                </p>
+                <p className="text-orange-400 text-xs font-medium">
+                  אל תדאג אם תקבל שגיאה 404 בהתחלה - זה נורמלי!
+                </p>
               </div>
             </CardContent>
           </Card>
