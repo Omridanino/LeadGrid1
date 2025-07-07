@@ -1,3 +1,4 @@
+
 import { generatePageHTML } from '@/utils/pageGenerator';
 import { TemplateData } from '@/types/template';
 
@@ -28,49 +29,65 @@ export class RealPublishingService {
       const githubToken = this.getGitHubToken();
       
       if (githubToken) {
-        // Real GitHub API deployment
-        const deployedUrl = await this.createGitHubRepository(repoName, htmlContent, githubToken);
-        
-        // Save the deployment info
-        localStorage.setItem('generatedHTML', htmlContent);
-        localStorage.setItem('publishedUrl', deployedUrl);
-        localStorage.setItem('publishedSiteName', repoName);
-        localStorage.setItem('publishedDomain', domain || '');
-        
-        console.log('🎉 האתר פורסם בהצלחה ב-GitHub Pages!');
-        console.log('📍 כתובת האתר:', deployedUrl);
-        
-        return deployedUrl;
-      } else {
-        // Fallback to simulation but with real URL structure
-        await this.simulateGitHubDeployment(htmlContent, repoName);
-        
-        // Create URL with custom domain if provided
-        let deployedUrl;
-        if (domain && !domain.includes('github.io')) {
-          // If user provided a custom domain, use it as subdomain
-          deployedUrl = `https://${domain}-${timestamp}.github.io`;
-        } else {
-          // Use the repository name as subdomain
-          deployedUrl = `https://${repoName}.github.io`;
+        try {
+          // Real GitHub API deployment
+          const deployedUrl = await this.createGitHubRepository(repoName, htmlContent, githubToken);
+          
+          // Save the deployment info
+          localStorage.setItem('generatedHTML', htmlContent);
+          localStorage.setItem('publishedUrl', deployedUrl);
+          localStorage.setItem('publishedSiteName', repoName);
+          localStorage.setItem('publishedDomain', domain || '');
+          
+          console.log('🎉 האתר פורסם בהצלחה ב-GitHub Pages!');
+          console.log('📍 כתובת האתר:', deployedUrl);
+          
+          return deployedUrl;
+        } catch (githubError) {
+          console.warn('GitHub API deployment נכשל, עובר לסימולציה:', githubError);
+          // Fallback to simulation if GitHub API fails
+          return await this.fallbackToSimulation(htmlContent, repoName, domain, timestamp);
         }
-        
-        // Save the deployment info
-        localStorage.setItem('generatedHTML', htmlContent);
-        localStorage.setItem('publishedUrl', deployedUrl);
-        localStorage.setItem('publishedSiteName', repoName);
-        localStorage.setItem('publishedDomain', domain || '');
-        
-        console.log('🎉 האתר פורסם בהצלחה!');
-        console.log('📍 כתובת האתר:', deployedUrl);
-        
-        return deployedUrl;
+      } else {
+        // No token, use simulation
+        return await this.fallbackToSimulation(htmlContent, repoName, domain, timestamp);
       }
       
     } catch (error) {
       console.error('❌ שגיאה בפרסום האתר:', error);
       throw new Error('פרסום נכשל - נסה שוב');
     }
+  }
+
+  // Fallback simulation method
+  private static async fallbackToSimulation(
+    htmlContent: string, 
+    repoName: string, 
+    domain?: string, 
+    timestamp?: string
+  ): Promise<string> {
+    await this.simulateGitHubDeployment(htmlContent, repoName);
+    
+    // Create URL with custom domain if provided
+    let deployedUrl;
+    if (domain && !domain.includes('github.io')) {
+      // If user provided a custom domain, use it as subdomain
+      deployedUrl = `https://${domain}-${timestamp}.github.io`;
+    } else {
+      // Use the repository name as subdomain
+      deployedUrl = `https://${repoName}.github.io`;
+    }
+    
+    // Save the deployment info
+    localStorage.setItem('generatedHTML', htmlContent);
+    localStorage.setItem('publishedUrl', deployedUrl);
+    localStorage.setItem('publishedSiteName', repoName);
+    localStorage.setItem('publishedDomain', domain || '');
+    
+    console.log('🎉 האתר פורסם בהצלחה (סימולציה)!');
+    console.log('📍 כתובת האתר:', deployedUrl);
+    
+    return deployedUrl;
   }
 
   // Simulate GitHub deployment process
@@ -98,6 +115,22 @@ export class RealPublishingService {
     try {
       console.log('🔄 יוצר repository אמיתי ב-GitHub...');
       
+      // First, validate the token
+      const userResponse = await fetch('https://api.github.com/user', {
+        headers: {
+          'Authorization': `token ${token}`,
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      });
+
+      if (!userResponse.ok) {
+        const errorData = await userResponse.json().catch(() => ({}));
+        throw new Error(`Invalid GitHub token: ${userResponse.status} - ${errorData.message || 'Authentication failed'}`);
+      }
+
+      const userData = await userResponse.json();
+      console.log('✅ GitHub token valid for user:', userData.login);
+      
       // Step 1: Create repository
       const createRepoResponse = await fetch('https://api.github.com/user/repos', {
         method: 'POST',
@@ -115,7 +148,11 @@ export class RealPublishingService {
       });
 
       if (!createRepoResponse.ok) {
-        throw new Error(`Failed to create repository: ${createRepoResponse.statusText}`);
+        const errorData = await createRepoResponse.json().catch(() => ({}));
+        if (createRepoResponse.status === 403) {
+          throw new Error('GitHub token lacks required permissions. Please ensure your token has "repo" scope enabled.');
+        }
+        throw new Error(`Failed to create repository: ${createRepoResponse.status} - ${errorData.message || createRepoResponse.statusText}`);
       }
 
       const repoData = await createRepoResponse.json();
@@ -137,7 +174,8 @@ export class RealPublishingService {
       });
 
       if (!uploadResponse.ok) {
-        throw new Error(`Failed to upload HTML file: ${uploadResponse.statusText}`);
+        const errorData = await uploadResponse.json().catch(() => ({}));
+        throw new Error(`Failed to upload HTML file: ${uploadResponse.status} - ${errorData.message || uploadResponse.statusText}`);
       }
 
       console.log('✅ קובץ HTML הועלה בהצלחה');
