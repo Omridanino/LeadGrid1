@@ -25,84 +25,31 @@ export class RealPublishingService {
       
       console.log('📁 יוצר repository:', repoName);
       
-      // Try to get GitHub token from localStorage
+      // Get GitHub token from localStorage - THIS IS THE KEY PART
       const githubToken = this.getGitHubToken();
       
-      if (githubToken) {
-        try {
-          // Real GitHub API deployment
-          const deployedUrl = await this.createGitHubRepository(repoName, htmlContent, githubToken);
-          
-          // Save the deployment info
-          localStorage.setItem('generatedHTML', htmlContent);
-          localStorage.setItem('publishedUrl', deployedUrl);
-          localStorage.setItem('publishedSiteName', repoName);
-          localStorage.setItem('publishedDomain', domain || '');
-          
-          console.log('🎉 האתר פורסם בהצלחה ב-GitHub Pages!');
-          console.log('📍 כתובת האתר:', deployedUrl);
-          
-          return deployedUrl;
-        } catch (githubError) {
-          console.warn('GitHub API deployment נכשל, עובר לאזור GitHub Pages Manual:', githubError);
-          // Show GitHub Pages manual setup info instead of falling back to simulation
-          throw new Error(`יצירת Repository בוצעה בהצלחה אבל יש צורך בהפעלה ידנית של GitHub Pages. אנא היכנס ל-GitHub ולהגדרות Repository ${repoName} והפעל GitHub Pages ידנית.`);
-        }
-      } else {
-        // No token, use simulation
-        return await this.fallbackToSimulation(htmlContent, repoName, domain, timestamp);
+      if (!githubToken) {
+        throw new Error('לא נמצא GitHub token. אנא הזן token תקין בצעד ההגדרה.');
       }
+
+      // REAL GitHub API deployment - NO MORE SIMULATION!
+      const deployedUrl = await this.createGitHubRepository(repoName, htmlContent, githubToken);
+      
+      // Save the deployment info
+      localStorage.setItem('generatedHTML', htmlContent);
+      localStorage.setItem('publishedUrl', deployedUrl);
+      localStorage.setItem('publishedSiteName', repoName);
+      localStorage.setItem('publishedDomain', domain || '');
+      
+      console.log('🎉 האתר פורסם בהצלחה ב-GitHub Pages!');
+      console.log('📍 כתובת האתר:', deployedUrl);
+      
+      return deployedUrl;
       
     } catch (error) {
       console.error('❌ שגיאה בפרסום האתר:', error);
-      throw error; // Re-throw the specific error instead of generic message
+      throw error;
     }
-  }
-
-  // Fallback simulation method
-  private static async fallbackToSimulation(
-    htmlContent: string, 
-    repoName: string, 
-    domain?: string, 
-    timestamp?: string
-  ): Promise<string> {
-    await this.simulateGitHubDeployment(htmlContent, repoName);
-    
-    // Create URL with custom domain if provided
-    let deployedUrl;
-    if (domain && !domain.includes('github.io')) {
-      // If user provided a custom domain, use it as subdomain
-      deployedUrl = `https://${domain}-${timestamp}.github.io`;
-    } else {
-      // Use the repository name as subdomain
-      deployedUrl = `https://${repoName}.github.io`;
-    }
-    
-    // Save the deployment info
-    localStorage.setItem('generatedHTML', htmlContent);
-    localStorage.setItem('publishedUrl', deployedUrl);
-    localStorage.setItem('publishedSiteName', repoName);
-    localStorage.setItem('publishedDomain', domain || '');
-    
-    console.log('🎉 האתר פורסם בהצלחה (סימולציה)!');
-    console.log('📍 כתובת האתר:', deployedUrl);
-    
-    return deployedUrl;
-  }
-
-  // Simulate GitHub deployment process
-  private static async simulateGitHubDeployment(htmlContent: string, repoName: string): Promise<void> {
-    console.log('🔄 יוצר repository ב-GitHub...');
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    console.log('📝 מעלה קבצים...');
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    console.log('⚙️ מגדיר GitHub Pages...');
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    console.log('🌐 מפעיל את האתר...');
-    await new Promise(resolve => setTimeout(resolve, 1000));
   }
 
   // Method to get real GitHub API token - only from localStorage
@@ -110,12 +57,13 @@ export class RealPublishingService {
     return localStorage.getItem('github_token') || null;
   }
 
-  // Method to create actual GitHub repository with better error handling
+  // Method to create actual GitHub repository with better logging
   static async createGitHubRepository(repoName: string, htmlContent: string, token: string): Promise<string> {
     try {
       console.log('🔄 יוצר repository אמיתי ב-GitHub...');
       
-      // First, validate the token
+      // First, validate the token by getting user info
+      console.log('🔍 בודק את הטוקן...');
       const userResponse = await fetch('https://api.github.com/user', {
         headers: {
           'Authorization': `token ${token}`,
@@ -125,13 +73,15 @@ export class RealPublishingService {
 
       if (!userResponse.ok) {
         const errorData = await userResponse.json().catch(() => ({}));
-        throw new Error(`Invalid GitHub token: ${userResponse.status} - ${errorData.message || 'Authentication failed'}`);
+        console.error('❌ שגיאה באימות הטוקן:', errorData);
+        throw new Error(`GitHub token לא תקין: ${userResponse.status} - ${errorData.message || 'Authentication failed'}`);
       }
 
       const userData = await userResponse.json();
-      console.log('✅ GitHub token valid for user:', userData.login);
+      console.log('✅ GitHub token תקין עבור משתמש:', userData.login);
       
       // Step 1: Create repository
+      console.log('📁 יוצר repository חדש...');
       const createRepoResponse = await fetch('https://api.github.com/user/repos', {
         method: 'POST',
         headers: {
@@ -141,7 +91,7 @@ export class RealPublishingService {
         },
         body: JSON.stringify({
           name: repoName,
-          description: 'Generated landing page',
+          description: 'Generated landing page - Created with LeadGrid',
           auto_init: true,
           private: false
         })
@@ -149,19 +99,22 @@ export class RealPublishingService {
 
       if (!createRepoResponse.ok) {
         const errorData = await createRepoResponse.json().catch(() => ({}));
+        console.error('❌ שגיאה ביצירת repository:', errorData);
         if (createRepoResponse.status === 403) {
-          throw new Error('GitHub token lacks required permissions. Please ensure your token has "repo" scope enabled.');
+          throw new Error('הטוקן לא מאושר לפעולה זו. וודא שיש לטוקן הרשאות "repo".');
         }
-        throw new Error(`Failed to create repository: ${createRepoResponse.status} - ${errorData.message || createRepoResponse.statusText}`);
+        throw new Error(`נכשל ביצירת repository: ${createRepoResponse.status} - ${errorData.message || createRepoResponse.statusText}`);
       }
 
       const repoData = await createRepoResponse.json();
-      console.log('✅ Repository נוצר:', repoData.full_name);
+      console.log('✅ Repository נוצר בהצלחה:', repoData.full_name);
 
-      // Wait a bit for repository to be fully created
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Wait for repository to be fully created
+      console.log('⏳ ממתין ליצירת repository...');
+      await new Promise(resolve => setTimeout(resolve, 3000));
 
       // Step 2: Upload index.html file
+      console.log('📤 מעלה קובץ HTML...');
       const uploadResponse = await fetch(`https://api.github.com/repos/${repoData.full_name}/contents/index.html`, {
         method: 'PUT',
         headers: {
@@ -178,15 +131,18 @@ export class RealPublishingService {
 
       if (!uploadResponse.ok) {
         const errorData = await uploadResponse.json().catch(() => ({}));
-        throw new Error(`Failed to upload HTML file: ${uploadResponse.status} - ${errorData.message || uploadResponse.statusText}`);
+        console.error('❌ שגיאה בהעלאת קובץ:', errorData);
+        throw new Error(`נכשל בהעלאת קובץ HTML: ${uploadResponse.status} - ${errorData.message || uploadResponse.statusText}`);
       }
 
       console.log('✅ קובץ HTML הועלה בהצלחה');
 
-      // Wait a bit before enabling Pages
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Wait before enabling Pages
+      console.log('⏳ ממתין לפני הפעלת Pages...');
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
-      // Step 3: Enable GitHub Pages - with better error handling
+      // Step 3: Enable GitHub Pages
+      console.log('🌐 מפעיל GitHub Pages...');
       try {
         const pagesResponse = await fetch(`https://api.github.com/repos/${repoData.full_name}/pages`, {
           method: 'POST',
@@ -210,28 +166,24 @@ export class RealPublishingService {
         } else {
           const errorData = await pagesResponse.json().catch(() => ({}));
           console.warn('⚠️ הפעלת GitHub Pages נכשלה:', errorData.message);
-          // Don't throw error here, continue with manual instructions
+          console.log('💡 תצטרך להפעיל Pages ידנית ב-Settings');
         }
       } catch (pagesError) {
         console.warn('⚠️ שגיאה בהפעלת GitHub Pages:', pagesError);
-        // Continue without throwing error
+        console.log('💡 תצטרך להפעיל Pages ידנית ב-Settings');
       }
 
       // Return the GitHub Pages URL
       const githubPagesUrl = `https://${repoData.owner.login.toLowerCase()}.github.io/${repoName}`;
       
-      // Add instructions for manual GitHub Pages setup
-      console.log('📝 אם הקישור לא עובד, אנא הפעל GitHub Pages ידנית:');
-      console.log(`1. היכנס ל: https://github.com/${repoData.full_name}/settings/pages`);
-      console.log('2. בחר Source: Deploy from a branch');
-      console.log('3. בחר Branch: main ו-Folder: / (root)');
-      console.log('4. לחץ Save');
-      console.log('5. האתר יהיה זמין תוך מספר דקות');
+      console.log('🎉 האתר פורסם בהצלחה!');
+      console.log('📍 כתובת האתר:', githubPagesUrl);
+      console.log('📁 Repository:', `https://github.com/${repoData.full_name}`);
       
       return githubPagesUrl;
 
     } catch (error) {
-      console.error('שגיאה ביצירת repository:', error);
+      console.error('❌ שגיאה ביצירת repository:', error);
       throw error;
     }
   }
@@ -258,28 +210,13 @@ export class RealPublishingService {
   static clearPublishingData(): void {
     localStorage.removeItem('publishedUrl');
     localStorage.removeItem('publishedSiteName');
-    localStorage.removeItem('publishedDomain');
+    localStorage.removeRemove('publishedDomain');
     localStorage.removeItem('generatedHTML');
-  }
-
-  static async updateSiteDomain(newDomain: string): Promise<string> {
-    const currentStatus = this.getPublishingStatus();
-    
-    if (!currentStatus.isPublished) {
-      throw new Error('No published site found');
-    }
-
-    console.log('🔄 מעדכן דומיין ל:', newDomain);
-    
-    const updatedUrl = `https://${newDomain}`;
-    localStorage.setItem('publishedUrl', updatedUrl);
-    localStorage.setItem('publishedDomain', newDomain);
-    
-    return updatedUrl;
   }
 
   static setGitHubToken(token: string): void {
     localStorage.setItem('github_token', token);
+    console.log('✅ GitHub token נשמר');
   }
 
   static hasGitHubToken(): boolean {
