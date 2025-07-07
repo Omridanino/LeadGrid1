@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Github, Key, ExternalLink, Info } from 'lucide-react';
+import { Github, Key, ExternalLink, Info, CheckCircle } from 'lucide-react';
 import { RealPublishingService } from '@/services/realPublishingService';
 
 interface GitHubTokenFormProps {
@@ -100,21 +100,56 @@ export const GitHubTokenForm = ({ onTokenSaved, onSkip }: GitHubTokenFormProps) 
           </div>
 
           <div className="border-t border-gray-600 pt-4">
-            <div className="text-sm text-gray-300 mb-2">איך ליצור טוקן GitHub:</div>
-            <ol className="text-xs text-gray-400 space-y-1">
-              <li>1. כנס ל-GitHub Settings</li>
-              <li>2. Developer settings → Personal access tokens</li>
-              <li>3. Generate new token (classic)</li>
-              <li>4. בחר הרשאות: repo, user, workflow</li>
-              <li>5. העתק את הטוקן שנוצר</li>
-            </ol>
+            <div className="text-sm text-gray-300 mb-4 font-semibold">איך ליצור טוקן GitHub - שלבים מדויקים:</div>
+            
+            <div className="space-y-4">
+              <div className="bg-yellow-900/20 p-4 rounded-lg border border-yellow-600/30">
+                <div className="flex items-center gap-2 text-yellow-300 font-semibold mb-2">
+                  <CheckCircle className="w-4 h-4" />
+                  שלב 1: בחר טוקן קלאסי
+                </div>
+                <div className="text-yellow-200 text-sm space-y-1">
+                  <p>• כנס ל-GitHub Settings → Developer settings</p>
+                  <p>• Personal access tokens → <strong>Tokens (classic)</strong></p>
+                  <p>• לחץ "Generate new token" → <strong>Generate new token (classic)</strong></p>
+                </div>
+              </div>
+
+              <div className="bg-red-900/20 p-4 rounded-lg border border-red-600/30">
+                <div className="flex items-center gap-2 text-red-300 font-semibold mb-2">
+                  <CheckCircle className="w-4 h-4" />
+                  שלב 2: סמן את כל ההרשאות
+                </div>
+                <div className="text-red-200 text-sm space-y-1">
+                  <p>• <strong>סמן את כל התיבות!</strong> כולל:</p>
+                  <p>• ✅ repo (כל התת-אפשרויות)</p>
+                  <p>• ✅ workflow</p>
+                  <p>• ✅ user</p>
+                  <p>• ✅ admin:repo_hook</p>
+                  <p className="font-semibold text-red-300">בלי זה הפרסום לא יעבד!</p>
+                </div>
+              </div>
+
+              <div className="bg-green-900/20 p-4 rounded-lg border border-green-600/30">
+                <div className="flex items-center gap-2 text-green-300 font-semibold mb-2">
+                  <CheckCircle className="w-4 h-4" />
+                  שלב 3: העתק את הטוקן
+                </div>
+                <div className="text-green-200 text-sm">
+                  <p>• לחץ "Generate token"</p>
+                  <p>• העתק את הטוקן מיד (לא תוכל לראות אותו שוב!)</p>
+                  <p>• הדבק אותו כאן למעלה</p>
+                </div>
+              </div>
+            </div>
+
             <Button
               variant="link"
-              className="text-blue-400 p-0 h-auto mt-2"
+              className="text-blue-400 p-0 h-auto mt-4"
               onClick={() => window.open('https://github.com/settings/tokens', '_blank')}
             >
               <ExternalLink className="w-3 h-3 mr-1" />
-              פתח GitHub Settings
+              פתח GitHub Settings עכשיו
             </Button>
           </div>
         </CardContent>

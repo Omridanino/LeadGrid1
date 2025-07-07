@@ -10,7 +10,9 @@ import {
   Server,
   Database,
   Github,
-  Code
+  Code,
+  Clock,
+  ExternalLink
 } from 'lucide-react';
 
 interface PublishingProgressProps {
@@ -24,6 +26,7 @@ export const PublishingProgress = ({ progress, isPublishing }: PublishingProgres
     if (progress <= 40) return 'יוצר את תוכן האתר...';
     if (progress <= 60) return 'יוצר repository ב-GitHub...';
     if (progress <= 80) return 'מפרסם ב-GitHub Pages...';
+    if (progress < 100) return 'מפעיל את האתר...';
     return 'האתר שלך חי באינטרנט! 🎉';
   };
 
@@ -73,6 +76,29 @@ export const PublishingProgress = ({ progress, isPublishing }: PublishingProgres
           <span className="text-white font-medium">{progress}%</span>
         </div>
       </div>
+
+      {/* Wait Notice for 100% */}
+      {progress === 100 && (
+        <Card className="bg-gradient-to-r from-yellow-900/40 to-orange-900/40 border-yellow-700/50">
+          <CardContent className="p-6">
+            <div className="text-center space-y-4">
+              <div className="flex items-center justify-center gap-2">
+                <Clock className="w-6 h-6 text-yellow-400" />
+                <h4 className="text-yellow-300 font-bold text-lg">⏳ חכה 5 דקות!</h4>
+              </div>
+              <div className="text-yellow-200 space-y-2">
+                <p className="font-medium">GitHub Pages צריך כמה דקות להפעיל את האתר</p>
+                <p className="text-sm">זה רגיל! אל תיכנס לאתר עדיין - חכה 5 דקות ואז תנסה</p>
+              </div>
+              <div className="bg-yellow-900/30 p-3 rounded-lg">
+                <p className="text-yellow-300 text-sm font-medium">
+                  💡 בזמן הזה תוכל לראות ב-GitHub שהאתר נוצר ו-Pages מופעל
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Main Progress Steps */}
       <Card className="bg-gray-800 border-gray-700">
@@ -128,23 +154,48 @@ export const PublishingProgress = ({ progress, isPublishing }: PublishingProgres
       {/* Technical Info */}
       <Card className="bg-gradient-to-r from-blue-900/30 to-purple-900/30 border-blue-700/30">
         <CardContent className="p-4">
-          <div className="text-center">
+          <div className="text-center space-y-2">
             <h4 className="text-blue-300 font-medium mb-2">🚀 מה קורה מאחורי הקלעים?</h4>
             <p className="text-blue-200 text-sm">
               אנחנו יוצרים repository חדש ב-GitHub, מעלים את קבצי האתר, ומפעילים GitHub Pages - האתר שלך יהיה זמין באמת לכל העולם!
             </p>
+            <div className="bg-blue-900/30 p-3 rounded-lg mt-3">
+              <p className="text-blue-300 text-sm font-medium">
+                🌐 בונוס: ב-GitHub יש לך גם אפשרות לרכוש דומיין אמיתי ולחבר אותו לאתר!
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>
       
       {progress === 100 && (
-        <div className="text-center">
+        <div className="text-center space-y-4">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-600/20 rounded-lg border border-green-600/30">
             <CheckCircle className="w-5 h-5 text-green-400" />
             <span className="text-green-300 font-medium">
               האתר באוויר עם GitHub Pages - באמת וללא עלות!
             </span>
           </div>
+          
+          <Card className="bg-gradient-to-r from-purple-900/30 to-pink-900/30 border-purple-700/50 max-w-md mx-auto">
+            <CardContent className="p-4">
+              <div className="text-center space-y-2">
+                <Globe className="w-8 h-8 text-purple-400 mx-auto" />
+                <h5 className="text-purple-200 font-semibold">רוצה דומיין אמיתי?</h5>
+                <p className="text-purple-300 text-sm">
+                  ב-GitHub יש לך אפשרות לרכוש דומיין (.com, .co.il וכו') ולחבר אותו לאתר שלך
+                </p>
+                <Button
+                  onClick={() => window.open('https://github.com/settings/pages', '_blank')}
+                  size="sm"
+                  className="bg-purple-600 hover:bg-purple-700 mt-2"
+                >
+                  <ExternalLink className="w-4 h-4 ml-1" />
+                  רכישת דומיין ב-GitHub
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       )}
     </div>
