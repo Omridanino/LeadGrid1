@@ -17,7 +17,8 @@ import {
   ArrowLeft,
   X,
   Github,
-  Shuffle
+  Shuffle,
+  Play
 } from 'lucide-react';
 import { TemplateData } from '@/types/template';
 import { PublishingProgress } from './PublishingProgress';
@@ -42,6 +43,7 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
   const [customSubdomain, setCustomSubdomain] = useState('');
   const [hasGitHubToken, setHasGitHubToken] = useState(false);
   const [publishingError, setPublishingError] = useState('');
+  const [repoName, setRepoName] = useState('');
 
   // Check for existing GitHub token on mount
   useEffect(() => {
@@ -125,6 +127,18 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
       // Use the real publishing service
       const deployedUrl = await RealPublishingService.publishSite(template, finalDomain);
       
+      // Save repo name for instructions
+      const timestamp = Date.now().toString().slice(-6);
+      const siteName = finalDomain 
+        ? finalDomain.replace(/\./g, '-')
+        : template.hero.title
+            .replace(/[^a-zA-Z0-9\u0590-\u05FF\s]/g, '')
+            .replace(/\s+/g, '-')
+            .toLowerCase()
+            .substring(0, 30);
+      
+      setRepoName(`${siteName}-${timestamp}`);
+      
       await new Promise(resolve => setTimeout(resolve, 500));
       
       // Step 5: Complete
@@ -149,7 +163,7 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
   };
 
   const openSite = () => {
-    if (publishedUrl) {
+    if (publishedUrl && publishedUrl !== 'manual-setup-needed') {
       window.open(publishedUrl, '_blank');
     }
   };
@@ -411,29 +425,66 @@ export const NewPublishingWizard = ({ template, isOpen, onClose }: NewPublishing
                     {publishedUrl === 'manual-setup-needed' ? (
                       <div>
                         <h3 className="text-white text-2xl font-bold mb-4">🎉 Repository נוצר בהצלחה!</h3>
-                        <p className="text-yellow-400 mb-6">נדרשת הפעלה ידנית של GitHub Pages</p>
+                        <p className="text-yellow-400 mb-6">עכשיו צריך להפעיל את GitHub Pages במספר צעדים פשוטים</p>
                         
-                        <Card className="bg-yellow-900/20 border-yellow-700/50 max-w-2xl mx-auto mb-6">
-                          <CardContent className="p-6 text-right">
-                            <h4 className="text-yellow-300 font-bold mb-4">🔧 הוראות הפעלה ידנית:</h4>
-                            <div className="space-y-3 text-yellow-200 text-sm">
-                              <p>1. היכנס ל-GitHub ולחשבון שלך</p>
-                              <p>2. מצא את ה-Repository החדש שנוצר</p>
-                              <p>3. היכנס ל-Settings של ה-Repository</p>
-                              <p>4. גלול למטה ל-Pages</p>
-                              <p>5. בחר Source: "Deploy from a branch"</p>
-                              <p>6. בחר Branch: "main" ו-Folder: "/ (root)"</p>
-                              <p>7. לחץ Save</p>
-                              <p>8. האתר יהיה זמין תוך 2-5 דקות</p>
-                            </div>
+                        <Card className="bg-gradient-to-br from-yellow-900/30 to-orange-900/30 border-yellow-700/50 max-w-3xl mx-auto mb-6">
+                          <CardContent className="p-8 text-right">
+                            <h4 className="text-yellow-300 font-bold text-xl mb-6 flex items-center gap-2 justify-center">
+                              <Play className="w-6 h-6" />
+                              3 צעדים פשוטים להפעלת האתר
+                            </h4>
                             
-                            <Button
-                              onClick={() => window.open('https://github.com', '_blank')}
-                              className="bg-yellow-600 hover:bg-yellow-700 mt-4"
-                            >
-                              <ExternalLink className="w-4 h-4 ml-1" />
-                              פתח GitHub
-                            </Button>
+                            <div className="space-y-6">
+                              <div className="bg-yellow-900/20 p-4 rounded-lg">
+                                <div className="flex items-center gap-3 mb-2">
+                                  <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-black font-bold">1</div>
+                                  <h5 className="text-yellow-200 font-semibold">היכנס ל-GitHub</h5>
+                                </div>
+                                <p className="text-yellow-100 text-sm mr-11">
+                                  פתח את GitHub ומצא את הפרויקט החדש שנוצר: <span className="font-mono bg-black/20 px-2 py-1 rounded">{repoName}</span>
+                                </p>
+                                <Button
+                                  onClick={() => window.open('https://github.com', '_blank')}
+                                  className="bg-yellow-600 hover:bg-yellow-700 mt-3 mr-11"
+                                  size="sm"
+                                >
+                                  <ExternalLink className="w-4 h-4 ml-1" />
+                                  פתח GitHub
+                                </Button>
+                              </div>
+
+                              <div className="bg-yellow-900/20 p-4 rounded-lg">
+                                <div className="flex items-center gap-3 mb-2">
+                                  <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-black font-bold">2</div>
+                                  <h5 className="text-yellow-200 font-semibold">היכנס להגדרות</h5>
+                                </div>
+                                <p className="text-yellow-100 text-sm mr-11">
+                                  לחץ על <span className="font-semibold">"Settings"</span> בפרויקט ואז גלול למטה עד שתמצא <span className="font-semibold">"Pages"</span>
+                                </p>
+                              </div>
+
+                              <div className="bg-yellow-900/20 p-4 rounded-lg">
+                                <div className="flex items-center gap-3 mb-2">
+                                  <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-black font-bold">3</div>
+                                  <h5 className="text-yellow-200 font-semibold">הפעל את האתר</h5>
+                                </div>
+                                <div className="text-yellow-100 text-sm mr-11 space-y-1">
+                                  <p>• תחת "Source" בחר: <span className="font-semibold">"Deploy from a branch"</span></p>
+                                  <p>• תחת "Branch" בחר: <span className="font-semibold">"main"</span></p>
+                                  <p>• תחת "Folder" השאר: <span className="font-semibold">"/ (root)"</span></p>
+                                  <p>• לחץ <span className="font-semibold">"Save"</span></p>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="bg-green-900/30 p-4 rounded-lg mt-6">
+                              <p className="text-green-200 text-center font-medium">
+                                🎉 זהו! האתר יהיה זמין תוך 2-3 דקות
+                              </p>
+                              <p className="text-green-300 text-center text-sm mt-2">
+                                הכתובת תהיה: <span className="font-mono">{repoName}.github.io</span>
+                              </p>
+                            </div>
                           </CardContent>
                         </Card>
                       </div>
