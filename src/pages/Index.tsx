@@ -1,11 +1,11 @@
 
 import { useState } from 'react';
-import { Header } from '@/components/Header';
+import Header from '@/components/Header';
 import { HeroSection } from '@/components/HeroSection';
-import { ModernFeaturesSection } from '@/components/ModernFeaturesSection';
-import { TestimonialsSection } from '@/components/TestimonialsSection';
-import { Footer } from '@/components/Footer';
-import { LandingPageQuestionnaire } from '@/components/LandingPageQuestionnaire';
+import ModernFeaturesSection from '@/components/ModernFeaturesSection';
+import TestimonialsSection from '@/components/TestimonialsSection';
+import Footer from '@/components/Footer';
+import LandingPageQuestionnaire from '@/components/LandingPageQuestionnaire';
 import { ServicesFlow } from '@/components/services/ServicesFlow';
 
 const Index = () => {
@@ -39,6 +39,7 @@ const Index = () => {
   if (isQuestionnaireOpen) {
     return (
       <LandingPageQuestionnaire 
+        isOpen={isQuestionnaireOpen}
         onClose={() => setIsQuestionnaireOpen(false)} 
       />
     );
@@ -46,7 +47,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header onStartQuestionnaire={() => setIsQuestionnaireOpen(true)} />
       <HeroSection onGetStarted={handleGetStarted} />
       <ModernFeaturesSection />
       <TestimonialsSection />

@@ -447,7 +447,7 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
         <PaymentMethodsWizard
           onPaymentComplete={handlePaymentComplete}
           onClose={() => setShowPaymentWizard(false)}
-          totalAmount={getPriceBrekdown()?.total || 0}
+          totalAmount={getPriceBreakdown()?.total || 0}
           orderDetails={{
             domain: selectedDomain,
             hosting: getSelectedPlan()?.name,
