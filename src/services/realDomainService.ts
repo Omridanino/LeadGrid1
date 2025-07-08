@@ -126,23 +126,23 @@ export const BANK_ACCOUNTS = [
   }
 ];
 
-export const LEADGRID_SERVICE_FEE = 119.90; // ₪119.90 לחודש עבור שירות LeadGrid
+export const LEADGRID_SERVICE_FEE = 129.90; // ₪129.90 לחודש עבור שירות LeadGrid
 
 export class RealDomainService {
   private static readonly NAMECHEAP_API_USER = process.env.NAMECHEAP_API_USER;
   private static readonly NAMECHEAP_API_KEY = process.env.NAMECHEAP_API_KEY;
   private static readonly NAMECHEAP_SANDBOX = process.env.NAMECHEAP_SANDBOX === 'true';
 
-  // מחירי דומיינים - מחירי Namecheap + ₪55 רווח (מעוגלים למעלה)
+  // מחירי דומיינים - רווח קבוע של ₪60 לכל דומיין
   static getDomainPricing() {
     return {
-      '.com': { wholesale: 12, retail: 70, profit: 55 }, // $12 ≈ ₪44 + ₪55 רווח = ₪99 → מעוגל ל-₪70
-      '.co.il': { wholesale: 20, retail: 80, profit: 55 }, // $20 ≈ ₪74 + ₪55 רווח = ₪129 → מעוגל ל-₪80  
-      '.net': { wholesale: 14, retail: 75, profit: 55 }, // $14 ≈ ₪52 + ₪55 רווח = ₪107 → מעוגל ל-₪75
-      '.org': { wholesale: 16, retail: 80, profit: 55 }, // $16 ≈ ₪59 + ₪55 רווח = ₪114 → מעוגל ל-₪80
-      '.io': { wholesale: 45, retail: 220, profit: 55 }, // $45 ≈ ₪166 + ₪55 רווח = ₪221 → מעוגל ל-₪220
-      '.info': { wholesale: 18, retail: 80, profit: 55 }, // $18 ≈ ₪66 + ₪55 רווח = ₪121 → מעוגל ל-₪80
-      '.biz': { wholesale: 16, retail: 80, profit: 55 } // $16 ≈ ₪59 + ₪55 רווח = ₪114 → מעוגל ל-₪80
+      '.com': { wholesale: 40, retail: 100, profit: 60 }, 
+      '.co.il': { wholesale: 50, retail: 110, profit: 60 }, 
+      '.net': { wholesale: 45, retail: 105, profit: 60 }, 
+      '.org': { wholesale: 45, retail: 105, profit: 60 }, 
+      '.io': { wholesale: 120, retail: 180, profit: 60 }, 
+      '.info': { wholesale: 40, retail: 100, profit: 60 }, 
+      '.biz': { wholesale: 40, retail: 100, profit: 60 } 
     };
   }
 
@@ -563,7 +563,7 @@ export class RealDomainService {
 
     // מחיר כולל: דומיין (לשנה) + אחסון (לשנה) + שירות LeadGrid (לשנה)
     const hostingYearlyPrice = hostingPlan.price * 12;
-    const leadgridYearlyPrice = LEADGRID_SERVICE_FEE * 12; // ₪119.90 × 12 חודשים
+    const leadgridYearlyPrice = LEADGRID_SERVICE_FEE * 12; // ₪129.90 × 12 חודשים
     
     return (domainPrice * years) + hostingYearlyPrice + leadgridYearlyPrice;
   }

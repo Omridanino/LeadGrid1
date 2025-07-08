@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -94,6 +94,12 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
     );
   }
 
+  // Auto-open publishing wizard immediately
+  useEffect(() => {
+    saveTemplateData();
+    setShowPublishingWizard(true);
+  }, []);
+
   return (
     <div className={`space-y-8 ${className}`} dir="rtl">
       {/* Header */}
@@ -107,230 +113,65 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
             🎉 הדף שלך מוכן!
           </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            בחר איך תרצה לפרסם את הדף שלך לאוויר
+            עכשיו בואו נרכוש דומיין ואחסון כדי להעלות את הדף לאוויר
           </p>
         </div>
       </div>
 
-      {/* Integration Options */}
-      <div className="max-w-6xl mx-auto space-y-6">
-        
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">איך תרצה לפרסם את הדף?</h2>
-          <p className="text-gray-400">בחר את הדרך הכי נוחה עבורך</p>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          
-          {/* One-Click Deploy - NEW MAIN OPTION */}
-          <Card className="bg-gradient-to-br from-emerald-900/40 to-green-900/40 border-emerald-500/60 cursor-pointer hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-emerald-500/30 relative overflow-hidden">
-            <div className="absolute top-2 left-2">
-              <Badge className="bg-green-500 text-black font-bold text-xs">מומלץ!</Badge>
+      {/* Main purchase option */}
+      <div className="max-w-2xl mx-auto">
+        <Card className="bg-gradient-to-br from-emerald-900/40 to-green-900/40 border-emerald-500/60 cursor-pointer hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-emerald-500/30 relative overflow-hidden">
+          <div className="absolute top-2 left-2">
+            <Badge className="bg-green-500 text-black font-bold text-xs">מומלץ!</Badge>
+          </div>
+          <CardContent className="p-8 text-center space-y-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-green-500 rounded-xl mx-auto flex items-center justify-center shadow-lg shadow-emerald-500/40">
+              <Zap className="w-8 h-8 text-white" />
             </div>
-            <CardContent className="p-8 text-center space-y-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-green-500 rounded-xl mx-auto flex items-center justify-center shadow-lg shadow-emerald-500/40">
-                <Zap className="w-8 h-8 text-white" />
-              </div>
+            
+            <div>
+              <h3 className="text-xl font-bold text-white mb-2">רכישת דומיין ואחסון</h3>
+              <p className="text-gray-300 text-sm mb-4">
+                הכל במקום אחד - דומיין, אחסון ושירות LeadGrid
+              </p>
               
-              <div>
-                <h3 className="text-xl font-bold text-white mb-2">פרסום מיידי - לחיצה אחת</h3>
-                <p className="text-gray-300 text-sm mb-4">
-                  פרסם את האתר תוך דקות - ללא צורך בידע טכני
-                </p>
-                
-                <div className="space-y-2 text-xs text-emerald-200">
-                  <div className="flex items-center justify-center gap-2">
-                    <Zap className="w-4 h-4" />
-                    <span>פרסום תוך 2 דקות</span>
-                  </div>
-                  <div className="flex items-center justify-center gap-2">
-                    <Shield className="w-4 h-4" />
-                    <span>SSL מאובטח אוטומטי</span>
-                  </div>
-                  <div className="flex items-center justify-center gap-2">
-                    <Globe className="w-4 h-4" />
-                    <span>כתובת קבועה חינם</span>
-                  </div>
-                  <div className="flex items-center justify-center gap-2">
-                    <CheckCircle className="w-4 h-4" />
-                    <span>אפס הגדרות - הכל אוטומטי</span>
-                  </div>
+              <div className="space-y-2 text-xs text-emerald-200">
+                <div className="flex items-center justify-center gap-2">
+                  <Zap className="w-4 h-4" />
+                  <span>פרסום תוך 2 דקות</span>
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  <Shield className="w-4 h-4" />
+                  <span>SSL מאובטח אוטומטי</span>
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  <Globe className="w-4 h-4" />
+                  <span>דומיין מקצועי</span>
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>שירות LeadGrid מלא</span>
                 </div>
               </div>
-              
-              <Button 
-                onClick={() => {
-                  saveTemplateData();
-                  setShowPublishingWizard(true);
-                }}
-                className="w-full bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white font-bold shadow-lg shadow-emerald-500/30"
-                size="lg"
-              >
-                <Zap className="w-5 h-5 mr-2" />
-                פרסם עכשיו - לחיצה אחת!
-              </Button>
-              
-              <div className="text-xs text-emerald-300 font-medium">
-                ⚡ הכי פשוט וטוב - בלי סיבוכים!
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* WordPress Integration */}
-          <Card className="bg-gradient-to-br from-blue-900/30 to-purple-900/30 border-blue-500/50 cursor-pointer hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-blue-500/25">
-            <CardContent className="p-8 text-center space-y-4">
-              <div className="w-16 h-16 bg-blue-500 rounded-xl mx-auto flex items-center justify-center shadow-lg shadow-blue-500/30">
-                <Code className="w-8 h-8 text-white" />
-              </div>
-              
-              <div>
-                <h3 className="text-xl font-bold text-white mb-2">הוסף לאתר WordPress</h3>
-                <p className="text-gray-300 text-sm mb-4">
-                  קוד HTML מוכן + מדריך שלב אחר שלב
-                </p>
-                
-                <div className="space-y-2 text-xs text-blue-200">
-                  <div className="flex items-center justify-center gap-2">
-                    <CheckCircle className="w-4 h-4" />
-                    <span>מהיר וקל - 5 דקות בלבד</span>
-                  </div>
-                  <div className="flex items-center justify-center gap-2">
-                    <CheckCircle className="w-4 h-4" />
-                    <span>שומר על כל העיצוב והתוכן</span>
-                  </div>
-                  <div className="flex items-center justify-center gap-2">
-                    <CheckCircle className="w-4 h-4" />
-                    <span>מדריך מפורט עם תמונות</span>
-                  </div>
-                </div>
-              </div>
-              
-              <Button 
-                onClick={() => {
-                  saveTemplateData();
-                  setShowWordPressForm(true);
-                }}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white"
-              >
-                <Code className="w-4 h-4 mr-2" />
-                קבל מדריך + קוד HTML
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Manual Domain Guide */}
-          <Card className="bg-gradient-to-br from-orange-900/30 to-yellow-900/30 border-orange-500/50 cursor-pointer hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-orange-500/25">
-            <CardContent className="p-8 text-center space-y-4">
-              <div className="w-16 h-16 bg-orange-500 rounded-xl mx-auto flex items-center justify-center shadow-lg shadow-orange-500/30">
-                <Server className="w-8 h-8 text-white" />
-              </div>
-              
-              <div>
-                <h3 className="text-xl font-bold text-white mb-2">מדריך רכישת דומיין</h3>
-                <p className="text-gray-300 text-sm mb-4">
-                  שלבים מפורטים לרכישה עצמית ב-GoDaddy
-                </p>
-                
-                <div className="space-y-2 text-xs text-orange-200">
-                  <div className="flex items-center justify-center gap-2">
-                    <CheckCircle className="w-4 h-4" />
-                    <span>מדריך ברור וקל לביצוע</span>
-                  </div>
-                  <div className="flex items-center justify-center gap-2">
-                    <CheckCircle className="w-4 h-4" />
-                    <span>דומיין ואחסון במקום אחד</span>
-                  </div>
-                  <div className="flex items-center justify-center gap-2">
-                    <CheckCircle className="w-4 h-4" />
-                    <span>תמיכה בעברית 24/7</span>
-                  </div>
-                </div>
-              </div>
-              
-              <Button 
-                onClick={() => {
-                  saveTemplateData();
-                  setShowDomainGuide(true);
-                }}
-                className="w-full bg-orange-500 hover:bg-orange-600 text-white"
-              >
-                <Server className="w-4 h-4 mr-2" />
-                מדריך רכישת דומיין
-              </Button>
-            </CardContent>
-          </Card>
-
-        </div>
-
-        {/* Download Option - Moved to bottom as secondary */}
-        <div className="max-w-2xl mx-auto">
-          <Card className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border-gray-600/50">
-            <CardContent className="p-6 text-center space-y-4">
-              <div className="w-12 h-12 bg-purple-500 rounded-lg mx-auto flex items-center justify-center shadow-lg shadow-purple-500/30">
-                <Download className="w-6 h-6 text-white" />
-              </div>
-              
-              <div>
-                <h4 className="text-lg font-semibold text-white mb-2">או הורד קובץ HTML</h4>
-                <p className="text-gray-400 text-sm mb-4">
-                  האתר שלך כקובץ מוכן להעלאה בכל מקום
-                </p>
-              </div>
-              
-              <Button 
-                onClick={() => {
-                  try {
-                    // Get the saved HTML from localStorage (if exists) or generate new one
-                    let htmlContent = localStorage.getItem('generatedHTML');
-                    
-                    if (!htmlContent) {
-                      // Fallback: generate from template if no saved HTML
-                      const { generatePageHTML } = require('@/utils/pageGenerator');
-                      htmlContent = generatePageHTML(template);
-                    }
-                    
-                    if (!htmlContent) {
-                      toast({
-                        title: "❌ שגיאה",
-                        description: "לא ניתן היה ליצור את קובץ ה-HTML. אנא נסה שוב.",
-                        variant: "destructive"
-                      });
-                      return;
-                    }
-                    
-                    const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `${template.hero.title.replace(/\s+/g, '-')}-landing-page.html`;
-                    a.style.display = 'none';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                    
-                    toast({
-                      title: "📁 קובץ HTML הורד!",
-                      description: "הקובץ הורד בהצלחה - זהו דף הנחיתה המדויק שיצרת",
-                    });
-                  } catch (error) {
-                    console.error('Error downloading HTML:', error);
-                    toast({
-                      title: "❌ שגיאה בהורדה",
-                      description: "אירעה שגיאה בהורדת הקובץ. אנא נסה שוב.",
-                      variant: "destructive"
-                    });
-                  }
-                }}
-                variant="outline"
-                className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white"
-              >
-                <Download className="w-4 h-4 mr-2" />
-                הורד קובץ HTML
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
+            </div>
+            
+            <Button 
+              onClick={() => {
+                saveTemplateData();
+                setShowPublishingWizard(true);
+              }}
+              className="w-full bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white font-bold shadow-lg shadow-emerald-500/30"
+              size="lg"
+            >
+              <Zap className="w-5 h-5 mr-2" />
+              המשך לרכישה
+            </Button>
+            
+            <div className="text-xs text-emerald-300 font-medium">
+              ⚡ הכי פשוט וטוב - בלי סיבוכים!
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Back Button */}
