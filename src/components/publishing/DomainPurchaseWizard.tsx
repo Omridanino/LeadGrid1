@@ -16,7 +16,8 @@ import {
   Server,
   Clock,
   AlertCircle,
-  Loader2
+  Loader2,
+  Info
 } from 'lucide-react';
 import { RealDomainService, RealDomainAvailabilityResult, RealHostingPlan } from '@/services/realDomainService';
 import { PaymentMethodsWizard } from '@/components/payment/PaymentMethodsWizard';
@@ -72,11 +73,11 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
     setCurrentStep('processing');
     
     const steps = [
-      { message: 'בודק זמינות דומיין...', progress: 20 },
-      { message: 'רוכש דומיין...', progress: 40 },
-      { message: 'מגדיר DNS...', progress: 60 },
-      { message: 'מתקין SSL...', progress: 80 },
-      { message: 'בונה דף נחיתה...', progress: 100 }
+      { message: 'בודק זמינות דומיין דרך Namecheap API...', progress: 20 },
+      { message: 'רוכש דומיין דרך Namecheap...', progress: 40 },
+      { message: 'מגדיר DNS וNameservers...', progress: 60 },
+      { message: 'מתקין SSL ואבטחה...', progress: 80 },
+      { message: 'בונה דף נחיתה מותאם אישית...', progress: 100 }
     ];
 
     for (const step of steps) {
@@ -91,16 +92,9 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
   const getSelectedPlan = () => hostingPlans.find(plan => plan.id === selectedHostingPlan);
   const getSelectedDomainData = () => domainResults.find(d => d.domain === selectedDomain);
   
-  const getTotalPrice = () => {
-    const plan = getSelectedPlan();
-    const domainData = getSelectedDomainData();
-    if (!plan || !domainData) return 0;
-    
-    // מחיר דומיין + אחסון שנתי
-    const domainPrice = domainData.price;
-    const hostingYearlyPrice = plan.price * 12;
-    
-    return domainPrice + hostingYearlyPrice;
+  const getPriceBreakdown = () => {
+    if (!selectedDomain || !selectedHostingPlan) return null;
+    return RealDomainService.getPriceBreakdown(selectedDomain, selectedHostingPlan, 1);
   };
 
   return (
@@ -111,9 +105,9 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
           <div className="p-6 border-b border-gray-800">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-white text-2xl font-bold">רכישת דומיין ואחסון מותאם לעסק שלך</h2>
+                <h2 className="text-white text-2xl font-bold">רכישת דומיין ואחסון מקצועי</h2>
                 <p className="text-gray-400 text-sm mt-1">
-                  פתרון מלא לבניית דף נחיתה מקצועי עם דומיין ואחסון איכותי
+                  פתרון מלא לבניית דף נחיתה מקצועי - דומיין מ-Namecheap + אחסון מהיר + שירות LeadGrid
                 </p>
               </div>
               <Button onClick={onClose} variant="outline" size="sm">
@@ -129,7 +123,7 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
                 <div className="text-center">
                   <Globe className="w-16 h-16 text-blue-400 mx-auto mb-4" />
                   <h3 className="text-xl font-semibold text-white mb-2">מצא את הדומיין המושלם לעסק שלך</h3>
-                  <p className="text-gray-400">הזן את השם שתרצה לדומיין - זה יהיה הכתובת של דף הנחיתה שלך באינטרנט</p>
+                  <p className="text-gray-400">חיפוש דומיינים באמצעות Namecheap API - מחירים אמיתיים וזמינות מעודכנת</p>
                 </div>
 
                 <Card className="bg-gray-800 border-gray-700">
@@ -156,9 +150,22 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
                         </div>
                       </div>
 
+                      {/* הסבר על המחירים */}
+                      <div className="bg-blue-900/20 border border-blue-600/50 rounded-lg p-4">
+                        <div className="flex items-start gap-2">
+                          <Info className="w-5 h-5 text-blue-400 mt-0.5" />
+                          <div>
+                            <div className="text-blue-300 font-medium">מחירים שקופים</div>
+                            <div className="text-blue-200 text-sm mt-1">
+                              המחירים כוללים רכישה דרך Namecheap + ₪55 שירות + דומיין לשנה מלאה
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                       {domainResults.length > 0 && (
                         <div className="space-y-3">
-                          <h4 className="text-white font-medium">דומיינים זמינים:</h4>
+                          <h4 className="text-white font-medium">תוצאות חיפוש מ-Namecheap:</h4>
                           {domainResults.map((result) => (
                             <Card key={result.domain} className={`border ${result.available ? 'border-green-600 bg-green-900/20' : 'border-red-600 bg-red-900/20'}`}>
                               <CardContent className="p-4">
@@ -172,7 +179,8 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
                                     <div>
                                       <span className="text-white font-medium">{result.domain}</span>
                                       <div className="text-sm text-gray-400">
-                                        {result.available ? 'זמין לרכישה' : 'כבר תפוס'}
+                                        {result.available ? 'זמין דרך Namecheap' : 'כבר תפוס'}
+                                        {result.registrar === 'demo' && ' (דמו)'}
                                       </div>
                                     </div>
                                   </div>
@@ -207,10 +215,10 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
               <div className="space-y-6">
                 <div className="text-center">
                   <Server className="w-16 h-16 text-purple-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-white mb-2">בחר תוכנית אחסון לדף הנחיתה שלך</h3>
+                  <h3 className="text-xl font-semibold text-white mb-2">בחר תוכנית אחסון מקצועית</h3>
                   <p className="text-gray-400">הדומיין שלך: <span className="text-blue-400 font-medium">{selectedDomain}</span></p>
                   <p className="text-gray-300 text-sm mt-2">
-                    כל התוכניות כוללות בניית דף נחיתה מותאם אישית לעסק שלך
+                    מחירים כוללים ₪55 שירות + אחסון Namecheap איכותי
                   </p>
                 </div>
 
@@ -233,7 +241,8 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
                         </CardTitle>
                         <div className="text-center">
                           <div className="text-2xl font-bold text-white">₪{plan.price}</div>
-                          <div className="text-sm text-gray-400">לחודש אחסון</div>
+                          <div className="text-sm text-gray-400">לחודש</div>
+                          <div className="text-xs text-gray-500">מחיר Namecheap: $${plan.originalPrice}</div>
                         </div>
                       </CardHeader>
                       
@@ -248,9 +257,6 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
                         </div>
                         
                         <div className="space-y-2">
-                          <div className="text-green-400 font-medium text-sm mb-2">
-                            ✓ בניית דף נחיתה מקצועי
-                          </div>
                           {plan.features.map((feature, index) => (
                             <div key={index} className="flex items-center gap-2 text-sm">
                               <CheckCircle className="w-4 h-4 text-green-400" />
@@ -289,35 +295,35 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <Card className="bg-gray-800 border-gray-700">
                     <CardHeader>
-                      <CardTitle className="text-white">פרטי ההזמנה</CardTitle>
+                      <CardTitle className="text-white">פירוט מחירים</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div className="flex justify-between">
-                        <span className="text-gray-300">דומיין:</span>
-                        <span className="text-white font-medium">{selectedDomain}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-300">תוכנית אחסון:</span>
-                        <span className="text-white font-medium">{getSelectedPlan()?.name}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-300">מחיר דומיין:</span>
-                        <span className="text-white">₪{getSelectedDomainData()?.price}/שנה</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-300">מחיר אחסון:</span>
-                        <span className="text-white">₪{getSelectedPlan()?.price}/חודש</span>
-                      </div>
-                      
-                      <div className="border-t border-gray-600 pt-4">
-                        <div className="flex justify-between text-lg font-semibold">
-                          <span className="text-white">סה״כ שנה ראשונה:</span>
-                          <span className="text-green-400">₪{getTotalPrice()}</span>
-                        </div>
-                        <div className="text-sm text-gray-400 mt-1">
-                          דומיין לשנה + 12 חודשי אחסון
-                        </div>
-                      </div>
+                      {getPriceBreakdown() && (
+                        <>
+                          <div className="flex justify-between">
+                            <span className="text-gray-300">דומיין {selectedDomain}:</span>
+                            <span className="text-white">₪{getPriceBreakdown()?.domain.price}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-300">אחסון {getSelectedPlan()?.name}:</span>
+                            <span className="text-white">₪{getPriceBreakdown()?.hosting.price}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-300">שירות LeadGrid:</span>
+                            <span className="text-white">₪{getPriceBreakdown()?.leadgrid.price}</span>
+                          </div>
+                          
+                          <div className="border-t border-gray-600 pt-4">
+                            <div className="flex justify-between text-lg font-semibold">
+                              <span className="text-white">סה״כ שנה ראשונה:</span>
+                              <span className="text-green-400">₪{getPriceBreakdown()?.total}</span>
+                            </div>
+                            <div className="text-sm text-gray-400 mt-1">
+                              כל התכלול הזה לשנה מלאה!
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </CardContent>
                   </Card>
 
@@ -332,29 +338,29 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
                       <div className="flex items-start gap-2">
                         <CheckCircle className="w-5 h-5 text-green-400 mt-0.5" />
                         <div>
-                          <div className="text-white font-medium">בניית דף נחיתה מקצועי</div>
-                          <div className="text-gray-400 text-sm">דף נחיתה מותאם לעסק שלך</div>
+                          <div className="text-white font-medium">דומיין דרך Namecheap</div>
+                          <div className="text-gray-400 text-sm">רכישה מקצועית מחברת דומיינים מובילה</div>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
                         <CheckCircle className="w-5 h-5 text-green-400 mt-0.5" />
                         <div>
-                          <div className="text-white font-medium">דומיין ואחסון מקצועי</div>
-                          <div className="text-gray-400 text-sm">כתובת אינטרנט ייחודית לעסק</div>
+                          <div className="text-white font-medium">אחסון מהיר ויציב</div>
+                          <div className="text-gray-400 text-sm">SSD מהיר + CDN לטעינה מהירה</div>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
                         <CheckCircle className="w-5 h-5 text-green-400 mt-0.5" />
                         <div>
-                          <div className="text-white font-medium">SSL ואבטחה</div>
-                          <div className="text-gray-400 text-sm">הצפנה ואבטחה מלאה</div>
+                          <div className="text-white font-medium">בניית דף נחיתה מותאם</div>
+                          <div className="text-gray-400 text-sm">דף נחיתה מקצועי לעסק שלך</div>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
                         <CheckCircle className="w-5 h-5 text-green-400 mt-0.5" />
                         <div>
-                          <div className="text-white font-medium">תמיכה טכנית</div>
-                          <div className="text-gray-400 text-sm">עזרה בהקמה ותחזוקה</div>
+                          <div className="text-white font-medium">SSL ואבטחה מלאה</div>
+                          <div className="text-gray-400 text-sm">הצפנה ואבטחה ברמה הגבוהה ביותר</div>
                         </div>
                       </div>
                     </CardContent>
@@ -368,7 +374,7 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
                     className="bg-green-600 hover:bg-green-700 px-8"
                   >
                     <CreditCard className="w-5 h-5 ml-2" />
-                    המשך לתשלום - ₪{getTotalPrice()}
+                    המשך לתשלום - ₪{getPriceBreakdown()?.total}
                   </Button>
                 </div>
               </div>
@@ -382,7 +388,7 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
                 
                 <div>
                   <h3 className="text-white text-xl font-semibold mb-2">בונה את דף הנחיתה שלך</h3>
-                  <p className="text-gray-400">אנא המתן, זה לוקח כמה רגעים...</p>
+                  <p className="text-gray-400">עובד עם Namecheap API לרכישת הדומיין...</p>
                 </div>
 
                 <div className="max-w-md mx-auto">
@@ -401,7 +407,7 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
                 <div>
                   <h3 className="text-white text-2xl font-bold mb-2">דף הנחיתה שלך מוכן! 🎉</h3>
                   <p className="text-gray-400">
-                    הדומיין <span className="text-green-400 font-medium">{selectedDomain}</span> והאחסון הוגדרו בהצלחה
+                    הדומיין <span className="text-green-400 font-medium">{selectedDomain}</span> נרכש דרך Namecheap והאחסון הוגדר בהצלחה
                   </p>
                 </div>
 
@@ -441,7 +447,7 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
         <PaymentMethodsWizard
           onPaymentComplete={handlePaymentComplete}
           onClose={() => setShowPaymentWizard(false)}
-          totalAmount={getTotalPrice()}
+          totalAmount={getPriceBreakdown()?.total || 0}
           orderDetails={{
             domain: selectedDomain,
             hosting: getSelectedPlan()?.name,

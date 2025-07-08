@@ -97,7 +97,7 @@ export const PaymentMethodsWizard = ({ onPaymentComplete, onClose, totalAmount, 
 
           {/* Credit Card Section */}
           {paymentMethod === 'credit' && (
-            <div className="space-y-6">
+            <div className="space-y-6 mt-6">
               <div className="text-center">
                 <CreditCard className="w-16 h-16 text-blue-400 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">תשלום באמצעות כרטיס אשראי</h3>
@@ -169,7 +169,7 @@ export const PaymentMethodsWizard = ({ onPaymentComplete, onClose, totalAmount, 
 
           {/* Bank Transfer Section */}
           {paymentMethod === 'bank' && (
-            <div className="space-y-6">
+            <div className="space-y-6 mt-6">
               <div className="text-center">
                 <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Building className="w-8 h-8 text-white" />
@@ -247,7 +247,7 @@ export const PaymentMethodsWizard = ({ onPaymentComplete, onClose, totalAmount, 
 
           {/* Bit Section */}
           {paymentMethod === 'bit' && (
-            <div className="space-y-6">
+            <div className="space-y-6 mt-6">
               <div className="text-center">
                 <Wallet className="w-16 h-16 text-blue-400 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-2">תשלום באמצעות Bit</h3>
@@ -306,9 +306,8 @@ export const PaymentMethodsWizard = ({ onPaymentComplete, onClose, totalAmount, 
 
           {/* PayPal Section */}
           {paymentMethod === 'paypal' && (
-            <div className="space-y-6">
+            <div className="space-y-6 mt-6">
               <div className="text-center">
-                {/* PayPal Icon */}
                 <h3 className="text-xl font-semibold text-white mb-2">תשלום באמצעות PayPal</h3>
                 <p className="text-gray-400">תועברו לאתר PayPal להשלמת התשלום</p>
               </div>
