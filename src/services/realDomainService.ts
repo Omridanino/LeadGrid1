@@ -1,4 +1,3 @@
-
 // Real domain registration and hosting service
 export interface DomainRegistrationData {
   domain: string;
@@ -137,13 +136,13 @@ export class RealDomainService {
   // מחירי דומיינים - מחירי Namecheap + ₪55 רווח (מעוגלים למעלה)
   static getDomainPricing() {
     return {
-      '.com': { wholesale: 12, retail: 70 }, // $12 ≈ ₪44 + ₪55 רווח = ₪99 → מעוגל ל-₪70
-      '.co.il': { wholesale: 20, retail: 80 }, // $20 ≈ ₪74 + ₪55 רווח = ₪129 → מעוגל ל-₪80  
-      '.net': { wholesale: 14, retail: 75 }, // $14 ≈ ₪52 + ₪55 רווח = ₪107 → מעוגל ל-₪75
-      '.org': { wholesale: 16, retail: 80 }, // $16 ≈ ₪59 + ₪55 רווח = ₪114 → מעוגל ל-₪80
-      '.io': { wholesale: 45, retail: 220 }, // $45 ≈ ₪166 + ₪55 רווח = ₪221 → מעוגל ל-₪220
-      '.info': { wholesale: 18, retail: 80 }, // $18 ≈ ₪66 + ₪55 רווח = ₪121 → מעוגל ל-₪80
-      '.biz': { wholesale: 16, retail: 80 } // $16 ≈ ₪59 + ₪55 רווח = ₪114 → מעוגל ל-₪80
+      '.com': { wholesale: 12, retail: 70, profit: 55 }, // $12 ≈ ₪44 + ₪55 רווח = ₪99 → מעוגל ל-₪70
+      '.co.il': { wholesale: 20, retail: 80, profit: 55 }, // $20 ≈ ₪74 + ₪55 רווח = ₪129 → מעוגל ל-₪80  
+      '.net': { wholesale: 14, retail: 75, profit: 55 }, // $14 ≈ ₪52 + ₪55 רווח = ₪107 → מעוגל ל-₪75
+      '.org': { wholesale: 16, retail: 80, profit: 55 }, // $16 ≈ ₪59 + ₪55 רווח = ₪114 → מעוגל ל-₪80
+      '.io': { wholesale: 45, retail: 220, profit: 55 }, // $45 ≈ ₪166 + ₪55 רווח = ₪221 → מעוגל ל-₪220
+      '.info': { wholesale: 18, retail: 80, profit: 55 }, // $18 ≈ ₪66 + ₪55 רווח = ₪121 → מעוגל ל-₪80
+      '.biz': { wholesale: 16, retail: 80, profit: 55 } // $16 ≈ ₪59 + ₪55 רווח = ₪114 → מעוגל ל-₪80
     };
   }
 
@@ -221,21 +220,26 @@ export class RealDomainService {
 
   private static async checkSingleDomainWithNamecheap(domain: string, pricing: any): Promise<RealDomainAvailabilityResult> {
     try {
-      if (!this.NAMECHEAP_API_KEY || !this.NAMECHEAP_API_USER) {
+      // נקבל את פרטי ה-API מ-localStorage לעת עתה
+      const apiUser = localStorage.getItem('NAMECHEAP_API_USER');
+      const apiKey = localStorage.getItem('NAMECHEAP_API_KEY');
+      const useSandbox = localStorage.getItem('NAMECHEAP_SANDBOX') === 'true';
+
+      if (!apiKey || !apiUser) {
         console.log('⚠️ Namecheap API לא מוגדר, משתמש בסימולציה');
         return this.simulateDomainCheck(domain, pricing);
       }
 
       console.log(`🌐 בדיקה אמיתית עם Namecheap API: ${domain}`);
       
-      const apiUrl = this.NAMECHEAP_SANDBOX 
+      const apiUrl = useSandbox 
         ? 'https://api.sandbox.namecheap.com/xml.response'
         : 'https://api.namecheap.com/xml.response';
 
       const params = new URLSearchParams({
-        ApiUser: this.NAMECHEAP_API_USER!,
-        ApiKey: this.NAMECHEAP_API_KEY!,
-        UserName: this.NAMECHEAP_API_USER!,
+        ApiUser: apiUser,
+        ApiKey: apiKey,
+        UserName: apiUser,
         Command: 'namecheap.domains.check',
         ClientIp: '127.0.0.1',
         DomainList: domain
@@ -341,21 +345,25 @@ export class RealDomainService {
   // רכישת דומיין דרך Namecheap API
   private static async purchaseDomainWithNamecheap(data: DomainRegistrationData): Promise<PurchaseResult> {
     try {
-      if (!this.NAMECHEAP_API_KEY || !this.NAMECHEAP_API_USER) {
+      const apiUser = localStorage.getItem('NAMECHEAP_API_USER');
+      const apiKey = localStorage.getItem('NAMECHEAP_API_KEY');
+      const useSandbox = localStorage.getItem('NAMECHEAP_SANDBOX') === 'true';
+
+      if (!apiKey || !apiUser) {
         console.log('⚠️ Namecheap API לא מוגדר, משתמש בסימולציה');
         return this.simulateDomainPurchase(data);
       }
 
       console.log('💰 רכישה אמיתית דרך Namecheap API - זה עולה כסף אמיתי!');
       
-      const apiUrl = this.NAMECHEAP_SANDBOX 
+      const apiUrl = useSandbox 
         ? 'https://api.sandbox.namecheap.com/xml.response'
         : 'https://api.namecheap.com/xml.response';
 
       const params = new URLSearchParams({
-        ApiUser: this.NAMECHEAP_API_USER!,
-        ApiKey: this.NAMECHEAP_API_KEY!,
-        UserName: this.NAMECHEAP_API_USER!,
+        ApiUser: apiUser,
+        ApiKey: apiKey,
+        UserName: apiUser,
         Command: 'namecheap.domains.create',
         ClientIp: '127.0.0.1',
         DomainName: data.domain,
@@ -383,7 +391,7 @@ export class RealDomainService {
           orderId: `NC_${Date.now()}`,
           domain: data.domain,
           message: 'דומיין נרכש בהצלחה דרך Namecheap',
-          status: 'paid',
+          status: 'completed',
           nameservers: ['ns1.leadgrid.co.il', 'ns2.leadgrid.co.il']
         };
       } else {
@@ -560,7 +568,7 @@ export class RealDomainService {
     return (domainPrice * years) + hostingYearlyPrice + leadgridYearlyPrice;
   }
 
-  // פונקציה חדשה לקבלת פירוט המחיר
+  // פונקציה חדשה לקבלת פירוט המחיר והרווח
   static getPriceBreakdown(domain: string, hostingPlanId: string, years: number = 1) {
     const hostingPlan = this.getHostingPlans().find(p => p.id === hostingPlanId);
     if (!hostingPlan) return null;
@@ -568,23 +576,29 @@ export class RealDomainService {
     const extension = '.' + domain.split('.').pop();
     const domainPricing = this.getDomainPricing();
     const domainPrice = domainPricing[extension]?.retail || 75;
+    const domainProfit = domainPricing[extension]?.profit || 55;
     const hostingYearlyPrice = hostingPlan.price * 12;
+    const hostingYearlyProfit = 55 * 12; // ₪55 רווח לחודש
     const leadgridYearlyPrice = LEADGRID_SERVICE_FEE * 12;
 
     return {
       domain: {
         price: domainPrice * years,
+        profit: domainProfit * years,
         description: `דומיין ${domain} (${years} ${years === 1 ? 'שנה' : 'שנים'})`
       },
       hosting: {
         price: hostingYearlyPrice,
+        profit: hostingYearlyProfit,
         description: `אחסון ${hostingPlan.name} (12 חודשים)`
       },
       leadgrid: {
         price: leadgridYearlyPrice,
+        profit: leadgridYearlyPrice, // כל השירות שלנו הוא רווח
         description: 'שירות בניית דף נחיתה LeadGrid (12 חודשים)'
       },
-      total: (domainPrice * years) + hostingYearlyPrice + leadgridYearlyPrice
+      total: (domainPrice * years) + hostingYearlyPrice + leadgridYearlyPrice,
+      totalProfit: (domainProfit * years) + hostingYearlyProfit + leadgridYearlyPrice
     };
   }
 
