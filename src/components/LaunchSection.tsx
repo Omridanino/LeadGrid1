@@ -79,30 +79,41 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
   }
 
   return (
-    <div className={`space-y-8 ${className}`} dir="rtl">
-      {/* Header */}
-      <div className="text-center space-y-6">
-        <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto shadow-2xl shadow-blue-500/25">
-          <Rocket className="w-12 h-12 text-white" />
+    <div className={`min-h-screen bg-gradient-to-br from-slate-950 via-black to-slate-900 text-white relative overflow-hidden ${className}`} dir="rtl">
+      {/* Modern Background Effects */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-900/10 via-purple-900/10 to-cyan-900/10"></div>
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-600/20 rounded-full filter blur-3xl opacity-20 animate-pulse"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-600/20 rounded-full filter blur-3xl opacity-20 animate-pulse delay-1000"></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-conic from-cyan-500/10 via-blue-500/10 to-purple-500/10 rounded-full filter blur-3xl opacity-30 animate-spin" style={{animationDuration: '20s'}}></div>
+      
+      {/* Grid Pattern */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.05)_1px,transparent_0)] bg-[size:40px_40px]"></div>
+      
+      {/* Content */}
+      <div className="relative z-10 p-8">
+        {/* Header */}
+        <div className="text-center space-y-6 mb-12">
+          <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto shadow-2xl shadow-blue-500/25">
+            <Rocket className="w-12 h-12 text-white" />
+          </div>
+          
+          <div>
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4">
+              🎉 הדף שלך מוכן!
+            </h1>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              בחר איך תרצה לפרסם את הדף שלך לאוויר
+            </p>
+          </div>
         </div>
-        
-        <div>
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4">
-            🎉 הדף שלך מוכן!
-          </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            בחר איך תרצה לפרסם את הדף שלך לאוויר
-          </p>
-        </div>
-      </div>
 
-      {/* Integration Options */}
-      <div className="max-w-6xl mx-auto space-y-6">
-        
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">איך תרצה לפרסם את הדף?</h2>
-          <p className="text-gray-400">בחר את הדרך הכי נוחה עבורך</p>
-        </div>
+        {/* Integration Options */}
+        <div className="max-w-6xl mx-auto space-y-6">
+          
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-white mb-4">איך תרצה לפרסם את הדף?</h2>
+            <p className="text-gray-400">בחר את הדרך הכי נוחה עבורך</p>
+          </div>
 
         <div className="grid md:grid-cols-3 gap-6">
           
@@ -329,6 +340,7 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
         </Button>
       </div>
 
+      </div>
     </div>
   );
 };
