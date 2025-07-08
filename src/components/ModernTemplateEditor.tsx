@@ -135,13 +135,16 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
   };
 
   const handleSaveAndPurchase = () => {
+    console.log('handleSaveAndPurchase called!');
     // Auto-save before purchase
+    handleSave(); // Call the actual save function
     setIsSaved(true);
     toast({
       title: "✅ הדף נשמר!",
       description: "עובר לרכישה...",
       variant: "default"
     });
+    console.log('Setting showLaunchSection to true');
     setShowLaunchSection(true);
   };
 
@@ -421,7 +424,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                     : 'bg-slate-600/50 cursor-not-allowed opacity-50'
                 } text-white shadow-lg text-xs px-2 py-1.5`}
                 onClick={handleSaveAndPurchase}
-                disabled={!isSaved}
+                disabled={false}
               >
                 <Rocket className="w-3 h-3 ml-1" />
                 המשך לרכישה

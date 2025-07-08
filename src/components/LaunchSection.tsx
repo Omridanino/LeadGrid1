@@ -32,8 +32,9 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
   const { toast } = useToast();
 
   const handleStartPurchase = () => {
-    console.log('Starting purchase flow...');
+    console.log('handleStartPurchase called - Starting purchase flow...');
     setShowServicesFlow(true);
+    console.log('showServicesFlow set to true');
   };
 
   // Save the template data to localStorage for later use
