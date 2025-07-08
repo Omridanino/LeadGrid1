@@ -306,6 +306,9 @@ export interface TemplateData {
   id: string;
   name: string;
   category: string;
+  price?: string;
+  period?: string;
+  isPremium?: boolean;
   hero: HeroSection;
   emotional: EmotionalSection;
   features: FeaturesSection;

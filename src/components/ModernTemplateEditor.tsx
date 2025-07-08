@@ -134,11 +134,11 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
     }
   };
 
-  const handleSaveAndPublish = () => {
+  const handleSaveAndPurchase = () => {
     if (!isSaved) {
       toast({
         title: "⚠️ יש לשמור קודם!",
-        description: "אנא שמור את הדף לפני הפרסום",
+        description: "אנא שמור את הדף לפני המעבר לרכישה",
         variant: "destructive"
       });
       return;
@@ -421,11 +421,11 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                     ? 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700' 
                     : 'bg-slate-600/50 cursor-not-allowed opacity-50'
                 } text-white shadow-lg text-xs px-2 py-1.5`}
-                onClick={handleSaveAndPublish}
+                onClick={handleSaveAndPurchase}
                 disabled={!isSaved}
               >
                 <Rocket className="w-3 h-3 ml-1" />
-                פרסם
+                המשך לרכישה
               </Button>
             </div>
           </div>
@@ -576,11 +576,11 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                       ? 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700' 
                       : 'bg-slate-600/50 cursor-not-allowed opacity-50'
                   } text-white shadow-lg text-xs px-2 py-1.5`}
-                  onClick={handleSaveAndPublish}
+                  onClick={handleSaveAndPurchase}
                   disabled={!isSaved}
                 >
                   <Rocket className="w-3 h-3 mr-1" />
-                  פרסם
+                  המשך לרכישה
                 </Button>
               </>
             )}
