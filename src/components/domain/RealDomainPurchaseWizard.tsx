@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -140,10 +139,10 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
       hostingPlan: selectedPlan!,
       orderId: orderId,
       customerInfo: {
-        name: wordpressUserData?.displayName || 'לקוח',
+        name: wordpressUserData?.displayName || wordpressUserData?.firstName + ' ' + wordpressUserData?.lastName || 'לקוח',
         email: wordpressUserData?.email || 'demo@example.com',
         phone: wordpressUserData?.phone || '050-0000000',
-        company: wordpressUserData?.company,
+        company: wordpressUserData?.company || '',
         address: wordpressUserData?.address || '',
         city: wordpressUserData?.city || '',
         country: wordpressUserData?.country || 'ישראל',
@@ -229,7 +228,7 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
   const getTotalPrice = () => {
     const domainPrice = searchResults.find(r => r.domain === selectedDomain)?.price || 0;
     const hostingPrice = selectedPlan?.price || 0;
-    return (domainPrice + hostingPrice) * paymentInfo.years;
+    return (domainPrice + (hostingPrice * 12)) * paymentInfo.years; // Hosting is per month, domain per year
   };
 
   const copyToClipboard = (text: string) => {
@@ -248,7 +247,10 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-white text-2xl font-bold">רכישת דומיין ויצירת אתר וורדפרס אמיתי</h2>
-                <p className="text-gray-400">יצירת אתר וורדפרס אמיתי עם התוכן שלך</p>
+                <p className="text-gray-400">
+                  מחירים מעודכנים: דומיין .com מ-₪{searchResults.find(r => r.domain.endsWith('.com'))?.price || 45}/שנה | 
+                  אחסון מ-₪{hostingPlans[0].price}/חודש + שירות LeadGrid
+                </p>
               </div>
               <Button onClick={onClose} size="sm" className="bg-gray-700 hover:bg-gray-600">
                 <X className="w-4 h-4" />
@@ -265,6 +267,9 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                     <div className="text-center">
                       <h3 className="text-white text-xl font-semibold mb-2">חיפוש דומיין</h3>
                       <p className="text-gray-400">הקלד את השם הרצוי לאתר שלך</p>
+                      <div className="text-sm text-yellow-400 mt-2">
+                        💡 מחירי דומיין כוללים את העלות הסיטונאית + 45% + שירות LeadGrid
+                      </div>
                     </div>
 
                     <Card className="bg-gray-800 border-gray-700">
@@ -311,7 +316,7 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                                   <div>
                                     <div className="text-white font-medium">{result.domain}</div>
                                     <span className="text-sm text-gray-400">
-                                      {result.available ? 'זמין' : 'תפוס'}
+                                      {result.available ? 'זמין' : 'תפוס'} • {result.registrar}
                                     </span>
                                   </div>
                                 </div>
@@ -319,6 +324,7 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                                 {result.available && (
                                   <div className="text-left">
                                     <div className="text-white font-semibold">₪{result.price}/שנה</div>
+                                    <div className="text-xs text-gray-400">כולל רווח 45%</div>
                                     <Badge className={
                                       selectedDomain === result.domain 
                                         ? "bg-green-600" 
@@ -398,36 +404,66 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                   <div className="space-y-6">
                     <div className="text-center">
                       <h3 className="text-white text-xl font-semibold mb-2">בחירת חבילת אחסון</h3>
-                      <p className="text-gray-400">בחר את החבילה המתאימה לך</p>
+                      <p className="text-gray-400">מחירים כוללים רווח 45% על עלות סיטונאית + שירות LeadGrid</p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       {hostingPlans.map((plan) => (
                         <Card 
                           key={plan.id}
-                          className={`bg-gray-800 border-gray-700 cursor-pointer transition-all ${
+                          className={`bg-gray-800 border-gray-700 cursor-pointer transition-all relative ${
                             selectedPlan?.id === plan.id ? 'ring-2 ring-blue-500' : 'hover:bg-gray-700'
-                          }`}
+                          } ${plan.popular ? 'border-purple-500' : ''}`}
                           onClick={() => setSelectedPlan(plan)}
                         >
+                          {plan.popular && (
+                            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                              <Badge className="bg-purple-600 text-white">מומלץ</Badge>
+                            </div>
+                          )}
+                          
                           <CardHeader>
-                            <CardTitle className="text-white flex items-center justify-between">
-                              <span>{plan.name}</span>
-                              {selectedPlan?.id === plan.id && (
-                                <Badge className="bg-green-600">נבחר</Badge>
-                              )}
+                            <CardTitle className="text-white text-center">
+                              {plan.name}
                             </CardTitle>
-                            <div className="text-2xl font-bold text-blue-400">
-                              ₪{plan.price}/חודש
+                            <div className="text-center">
+                              <div className="text-3xl font-bold text-white">₪{plan.price}</div>
+                              <div className="text-sm text-gray-400">לחודש</div>
+                              <div className="text-xs text-gray-500">עלות אמיתית: ~$3-8</div>
                             </div>
                           </CardHeader>
-                          <CardContent className="space-y-3">
-                            {plan.features.map((feature, index) => (
-                              <div key={index} className="flex items-center gap-2 text-gray-300">
-                                <Check className="w-4 h-4 text-green-400" />
-                                <span className="text-sm">{feature}</span>
+                          
+                          <CardContent className="space-y-4">
+                            <div className="space-y-2">
+                              <div className="text-gray-300 text-sm">
+                                <strong>אחסון:</strong> {plan.storage}
                               </div>
-                            ))}
+                              <div className="text-gray-300 text-sm">
+                                <strong>רוחב פס:</strong> {plan.bandwidth}
+                              </div>
+                            </div>
+                            
+                            <div className="space-y-2">
+                              {plan.features.map((feature, index) => (
+                                <div key={index} className="flex items-center gap-2 text-sm">
+                                  <CheckCircle className="w-4 h-4 text-green-400" />
+                                  <span className="text-gray-300">{feature}</span>
+                                </div>
+                              ))}
+                            </div>
+                            
+                            <Button
+                              onClick={() => setSelectedPlan(plan)}
+                              className={`w-full ${
+                                selectedPlan?.id === plan.id 
+                                  ? 'bg-green-600 hover:bg-green-700' 
+                                  : plan.popular 
+                                    ? 'bg-purple-600 hover:bg-purple-700'
+                                    : 'bg-blue-600 hover:bg-blue-700'
+                              }`}
+                            >
+                              {selectedPlan?.id === plan.id ? 'נבחר ✓' : 'בחר תוכנית'}
+                            </Button>
                           </CardContent>
                         </Card>
                       ))}
@@ -528,7 +564,7 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                   <div className="space-y-6">
                     <div className="text-center">
                       <h3 className="text-white text-xl font-semibold mb-2">סיכום הזמנה</h3>
-                      <p className="text-gray-400">בדוק את הפרטים לפני המעבר לתשלום</p>
+                      <p className="text-gray-400">מחירים כוללים עלויות אמיתיות + רווח 45% + שירות LeadGrid</p>
                     </div>
 
                     <Card className="bg-gray-800 border-gray-700">
@@ -538,18 +574,24 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                       <CardContent className="space-y-4">
                         <div className="flex justify-between items-center py-2 border-b border-gray-700">
                           <span className="text-gray-300">דומיין: {selectedDomain}</span>
-                          <span className="text-white">₪{searchResults.find(r => r.domain === selectedDomain)?.price || 0}</span>
+                          <div className="text-left">
+                            <div className="text-white">₪{searchResults.find(r => r.domain === selectedDomain)?.price || 0}</div>
+                            <div className="text-xs text-gray-400">לשנה</div>
+                          </div>
                         </div>
                         <div className="flex justify-between items-center py-2 border-b border-gray-700">
                           <span className="text-gray-300">אחסון: {selectedPlan?.name}</span>
-                          <span className="text-white">₪{selectedPlan?.price || 0}/חודש</span>
+                          <div className="text-left">
+                            <div className="text-white">₪{selectedPlan ? selectedPlan.price * 12 : 0}</div>
+                            <div className="text-xs text-gray-400">לשנה (₪{selectedPlan?.price}/חודש)</div>
+                          </div>
                         </div>
                         <div className="flex justify-between items-center py-2 border-b border-gray-700">
-                          <span className="text-gray-300">אתר וורדפרס: {wordpressUserData?.websiteTitle}</span>
+                          <span className="text-gray-300">אתר וורדפרס: {wordpressUserData?.websiteTitle || wordpressUserData?.firstName + ' Website'}</span>
                           <span className="text-green-400">כלול</span>
                         </div>
                         <div className="flex justify-between items-center py-2 border-b border-gray-700">
-                          <span className="text-gray-300">משתמש וורדפרס: {wordpressUserData?.username}</span>
+                          <span className="text-gray-300">משתמש וורדפרס: {wordpressUserData?.username || 'admin'}</span>
                           <span className="text-green-400">✓</span>
                         </div>
                         <div className="flex justify-between items-center py-2 border-b border-gray-700">
@@ -559,6 +601,9 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                         <div className="flex justify-between items-center py-3 text-xl font-bold">
                           <span className="text-white">סה"כ לתשלום:</span>
                           <span className="text-green-400">₪{getTotalPrice()}</span>
+                        </div>
+                        <div className="text-xs text-gray-400 text-center">
+                          💡 מחיר כולל: עלות סיטונאית + רווח 45% + שירות יצירה והתקנה של LeadGrid
                         </div>
                       </CardContent>
                     </Card>
@@ -582,10 +627,10 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                       <Loader2 className="w-10 h-10 text-white animate-spin" />
                     </div>
                     <div className="text-center">
-                      <h3 className="text-white text-xl font-semibold mb-2">יוצר אתר וורדפרס אמיתי</h3>
-                      <p className="text-gray-400">מתקין וורדפרס, מגדיר בסיס נתונים ויוצר את המשתמש שלך...</p>
+                      <h3 className="text-white text-xl font-semibold mb-2">רוכש דומיין ויוצר אתר אמיתי</h3>
+                      <p className="text-gray-400">מעבד תשלום → רוכש דומיין → מתקין וורדפרס → מגדיר DNS וSSL</p>
                       <p className="text-green-300 text-sm mt-2">
-                        🚀 זהו אתר וורדפרס אמיתי - יהיה זמין תוך דקות ספורות!
+                        💰 זוהי רכישה אמיתית - הדומיין נרכש בכסף אמיתי מהרגיסטרר!
                       </p>
                     </div>
                   </div>
@@ -606,7 +651,7 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                       <p className="text-gray-400">
                         {completionResult.wordpressDetails.isDemo 
                           ? 'אתר דמו עובד נוצר עם התוכן שלך (הפעלת fallback)'
-                          : 'אתר וורדפרס אמיתי עם התקנה מלאה ובסיס נתונים'
+                          : 'דומיין נרכש אמיתית + אתר וורדפרס מלא עם בסיס נתונים'
                         }
                       </p>
                     </div>
@@ -847,7 +892,7 @@ export const RealDomainPurchaseWizard = ({ isOpen, onClose, onComplete, template
                 }
               >
                 {currentStep === 'payment' ? (
-                  <>ממתין לبחירת תשלום</>
+                  <>ממתין לבחירת תשלום</>
                 ) : (
                   <>
                     הבא
