@@ -71,7 +71,6 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
   if (showServicesFlow) {
     return (
       <ServicesFlow
-        selectedTemplate={template}
         onComplete={() => setShowServicesFlow(false)}
         onBack={() => setShowServicesFlow(false)}
       />
@@ -192,7 +191,7 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
               <Button 
                 onClick={() => {
                   saveTemplateData();
-                  setShowWordPressForm(true);
+                  handleStartPurchase();
                 }}
                 className="w-full bg-blue-500 hover:bg-blue-600 text-white"
               >
@@ -234,7 +233,7 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
               <Button 
                 onClick={() => {
                   saveTemplateData();
-                  setShowDomainGuide(true);
+                  handleStartPurchase();
                 }}
                 className="w-full bg-orange-500 hover:bg-orange-600 text-white"
               >
