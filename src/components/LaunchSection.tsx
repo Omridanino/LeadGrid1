@@ -68,6 +68,12 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
     localStorage.setItem('generatedPageData', JSON.stringify(templateWithGeneratedContent));
   };
 
+  // Auto-open publishing wizard immediately
+  useEffect(() => {
+    saveTemplateData();
+    setShowPublishingWizard(true);
+  }, []);
+
   if (showWordPressForm) {
     return (
       <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50">
@@ -93,12 +99,6 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
       />
     );
   }
-
-  // Auto-open publishing wizard immediately
-  useEffect(() => {
-    saveTemplateData();
-    setShowPublishingWizard(true);
-  }, []);
 
   return (
     <div className={`space-y-8 ${className}`} dir="rtl">
