@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -65,7 +66,7 @@ export const PaymentMethodsWizard = ({ onPaymentComplete, onClose, totalAmount, 
           {/* Payment Method Selection */}
           <div className="space-y-4">
             <h3 className="text-white font-medium">בחרו אמצעי תשלום:</h3>
-            <RadioGroup defaultValue="credit" className="flex flex-col gap-2" onValueChange={setPaymentMethod}>
+            <RadioGroup defaultValue="credit" className="flex flex-col gap-2" onValueChange={(value) => setPaymentMethod(value as typeof paymentMethod)}>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="credit" id="credit" className="bg-gray-700 border-gray-600 rounded-full text-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 <Label htmlFor="credit" className="text-white">
@@ -144,7 +145,11 @@ export const PaymentMethodsWizard = ({ onPaymentComplete, onClose, totalAmount, 
               </Card>
 
               <div className="flex items-center space-x-2">
-                <Checkbox id="terms" className="bg-gray-700 border-gray-600 rounded-sm text-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" onCheckedChange={setTermsAccepted} />
+                <Checkbox 
+                  id="terms" 
+                  className="bg-gray-700 border-gray-600 rounded-sm text-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                  onCheckedChange={(checked) => setTermsAccepted(checked === true)}
+                />
                 <Label htmlFor="terms" className="text-white">אני מאשר את <a href="#" className="text-blue-500 underline">תנאי השימוש</a></Label>
               </div>
 

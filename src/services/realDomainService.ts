@@ -133,15 +133,15 @@ export class RealDomainService {
   private static readonly GODADDY_API_KEY = process.env.GODADDY_API_KEY;
   private static readonly GODADDY_SECRET = process.env.GODADDY_SECRET;
 
-  // מחירים מציאותיים בשוק הישראלי - בהתבסס על מחירי סיטונות + דמי השירות שלנו
+  // מחירים עם רווח של ₪55 על כל דומיין ואחסון
   static getHostingPlans(): RealHostingPlan[] {
     return [
       {
         id: 'basic',
         name: 'בסיסי',
-        originalPrice: 5, // מחיר סיטונות $5/חודש
-        price: 49, // ₪49/חודש (כולל 45% מרווח + דמי LeadGrid)
-        features: ['דומיין חינם לשנה', 'SSL אוטומטי', 'גיבוי יומי', 'תמיכה 24/7'],
+        originalPrice: 3, // מחיר סיטונות $3/חודש = ₪11
+        price: 66, // ₪11 + ₪55 רווח = ₪66/חודש
+        features: ['SSL אוטומטי', 'גיבוי יומי', 'תמיכה טכנית'],
         storage: '10GB SSD',
         bandwidth: '100GB',
         popular: false
@@ -149,9 +149,9 @@ export class RealDomainService {
       {
         id: 'professional',
         name: 'מקצועי',
-        originalPrice: 10, // מחיר סיטונות $10/חודש
-        price: 89, // ₪89/חודש + דמי LeadGrid ₪119.90
-        features: ['דומיין חינם לשנה', 'SSL אוטומטי', 'CDN מהיר', 'גיבוי יומי', 'תמיכה VIP', 'שירות LeadGrid מלא'],
+        originalPrice: 6, // מחיר סיטונות $6/חודש = ₪22
+        price: 77, // ₪22 + ₪55 רווח = ₪77/חודש
+        features: ['SSL אוטומטי', 'CDN מהיר', 'גיבוי יומי', 'תמיכה מועדפת'],
         storage: '50GB SSD',
         bandwidth: '500GB',
         popular: true
@@ -159,9 +159,9 @@ export class RealDomainService {
       {
         id: 'business',
         name: 'עסקי',
-        originalPrice: 20, // מחיר סיטונות $20/חודש
-        price: 149, // ₪149/חודש + דמי LeadGrid ₪119.90
-        features: ['דומיין חינם לשנה', 'SSL אוטומטי', 'CDN גלובלי', 'גיבוי יומי', 'תמיכה VIP', 'שירות LeadGrid מלא', 'הגנה מפני DDoS'],
+        originalPrice: 12, // מחיר סיטונות $12/חודש = ₪44
+        price: 99, // ₪44 + ₪55 רווח = ₪99/חודש
+        features: ['SSL אוטומטי', 'CDN גלובלי', 'גיבוי יומי', 'תמיכה VIP', 'הגנה מפני DDoS'],
         storage: '100GB SSD',
         bandwidth: 'ללא הגבלה',
         popular: false
@@ -169,21 +169,21 @@ export class RealDomainService {
     ];
   }
 
-  // מחירי דומיינים מציאותיים (מחירי סיטונות + 45% מרווח)
+  // מחירי דומיינים עם רווח של ₪55
   static getDomainPricing() {
     return {
-      '.com': { wholesale: 8.50, retail: Math.round(8.50 * 3.7 * 1.45) }, // ~₪46
-      '.co.il': { wholesale: 35, retail: Math.round(35 * 3.7 * 1.45) }, // ~₪188  
-      '.net': { wholesale: 12, retail: Math.round(12 * 3.7 * 1.45) }, // ~₪65
-      '.org': { wholesale: 14, retail: Math.round(14 * 3.7 * 1.45) }, // ~₸75
-      '.io': { wholesale: 60, retail: Math.round(60 * 3.7 * 1.45) } // ~₪323
+      '.com': { wholesale: 10, retail: 65 }, // $10 = ₪37, + ₪55 רווח = ₪92... נעגל ל-₪65 (רווח ₪28)
+      '.co.il': { wholesale: 25, retail: 120 }, // $25 = ₪92, + ₪55 רווח = ₪147... נעגל ל-₪120 (רווח ₪28)
+      '.net': { wholesale: 12, retail: 70 }, // $12 = ₪44, + ₪55 רווח = ₪99... נעגל ל-₪70 (רווח ₪26)
+      '.org': { wholesale: 14, retail: 75 }, // $14 = ₪52, + ₪55 רווח = ₪107... נעגל ל-₪75 (רווח ₪23)
+      '.io': { wholesale: 50, retail: 240 } // $50 = ₪185, + ₪55 רווח = ₪240
     };
   }
 
-  // בדיקת זמינות דומיין עם מחירים מציאותיים
+  // בדיקת זמינות דומיין
   static async checkDomainAvailability(domain: string): Promise<RealDomainAvailabilityResult[]> {
     try {
-      console.log(`Checking availability for domain: ${domain}`);
+      console.log(`🔍 בודק זמינות דומיין: ${domain}`);
 
       const results: RealDomainAvailabilityResult[] = [];
       const pricing = this.getDomainPricing();
@@ -211,21 +211,16 @@ export class RealDomainService {
 
       return results;
     } catch (error) {
-      console.error('Domain availability check failed:', error);
+      console.error('בדיקת זמינות דומיין נכשלה:', error);
       return [this.simulateDomainCheck(domain.includes('.') ? domain : `${domain}.com`)];
     }
   }
 
   private static async checkSingleDomain(domain: string, pricing: any): Promise<RealDomainAvailabilityResult> {
-    // בדיקה עם APIs אמיתיים אם זמינים
+    // בדיקה עם Namecheap API אם זמין
     if (this.NAMECHEAP_API_KEY) {
       const namecheapResult = await this.checkWithNamecheap(domain, pricing);
       if (namecheapResult) return { ...namecheapResult, domain };
-    }
-
-    if (this.GODADDY_API_KEY) {
-      const godaddyResult = await this.checkWithGoDaddy(domain, pricing);
-      if (godaddyResult) return { ...godaddyResult, domain };
     }
 
     return this.simulateDomainCheck(domain, pricing);
@@ -234,6 +229,8 @@ export class RealDomainService {
   // בדיקה עם Namecheap API
   private static async checkWithNamecheap(domain: string, pricing: any) {
     try {
+      console.log(`🌐 בדיקה עם Namecheap API: ${domain}`);
+      
       const response = await fetch(`https://api.namecheap.com/xml.response`, {
         method: 'POST',
         headers: {
@@ -252,9 +249,8 @@ export class RealDomainService {
       const text = await response.text();
       const available = text.includes('Available="true"');
       
-      // מחיר לפי סוג הדומיין
       const extension = '.' + domain.split('.').pop();
-      const price = pricing[extension]?.retail || 75; // ברירת מחדל ₪75
+      const price = pricing[extension]?.retail || 75;
       
       return {
         available,
@@ -262,33 +258,7 @@ export class RealDomainService {
         registrar: 'namecheap'
       };
     } catch (error) {
-      console.error('Namecheap check failed:', error);
-      return null;
-    }
-  }
-
-  // בדיקה עם GoDaddy API
-  private static async checkWithGoDaddy(domain: string, pricing: any) {
-    try {
-      const response = await fetch(`https://api.godaddy.com/v1/domains/available?domain=${domain}`, {
-        headers: {
-          'Authorization': `sso-key ${this.GODADDY_API_KEY}:${this.GODADDY_SECRET}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      const data = await response.json();
-      
-      const extension = '.' + domain.split('.').pop();
-      const price = pricing[extension]?.retail || 75;
-      
-      return {
-        available: data.available,
-        price,
-        registrar: 'godaddy'
-      };
-    } catch (error) {
-      console.error('GoDaddy check failed:', error);
+      console.error('Namecheap בדיקה נכשלה:', error);
       return null;
     }
   }
@@ -311,7 +281,7 @@ export class RealDomainService {
   // רכישת דומיין ואחסון
   static async purchaseDomainAndHosting(request: PurchaseRequest): Promise<PurchaseResult> {
     try {
-      console.log('🚀 Starting domain and hosting purchase:', request);
+      console.log('🚀 מתחיל רכישת דומיין ואחסון:', request);
 
       // שלב 1: רכישת דומיין
       const domainResult = await this.purchaseDomain({
@@ -339,20 +309,20 @@ export class RealDomainService {
         return hostingResult;
       }
 
-      // שלב 3: יצירת אתר WordPress
-      const wordpressDetails = await this.createWordPressSite(request);
+      // שלב 3: יצירת דף נחיתה
+      const landingPageDetails = await this.createLandingPage(request);
 
       return {
         success: true,
         orderId: request.orderId,
         domain: request.domain,
         siteUrl: `https://${request.domain}`,
-        message: 'האתר נוצר בהצלחה! הדומיין יהיה פעיל תוך 15 דקות.',
+        message: 'הדומיין ודף הנחיתה נוצרו בהצלחה! הדומיין יהיה פעיל תוך 15 דקות.',
         status: 'completed',
-        wordpressDetails
+        wordpressDetails: landingPageDetails
       };
     } catch (error) {
-      console.error('Purchase failed:', error);
+      console.error('רכישה נכשלה:', error);
       return {
         success: false,
         error: `רכישה נכשלה: ${error.message}`,
@@ -368,14 +338,12 @@ export class RealDomainService {
 
       if (registrationData.registrar === 'namecheap' && this.NAMECHEAP_API_KEY) {
         return await this.purchaseWithNamecheap(registrationData);
-      } else if (registrationData.registrar === 'godaddy' && this.GODADDY_API_KEY) {
-        return await this.purchaseWithGoDaddy(registrationData);
       }
 
       // סימולציה לפיתוח
       return this.simulateDomainPurchase(registrationData);
     } catch (error) {
-      console.error('Domain purchase failed:', error);
+      console.error('רכישת דומיין נכשלה:', error);
       return {
         success: false,
         error: `רכישת דומיין נכשלה: ${error.message}`,
@@ -387,7 +355,7 @@ export class RealDomainService {
   // רכישה דרך Namecheap
   private static async purchaseWithNamecheap(data: DomainRegistrationData): Promise<PurchaseResult> {
     try {
-      console.log('💰 רכישה אמיתית דרך Namecheap - זה עולה כסף!');
+      console.log('💰 רכישה אמיתית דרך Namecheap - זה עולה כסף אמיתי!');
       
       const response = await fetch(`https://api.namecheap.com/xml.response`, {
         method: 'POST',
@@ -418,54 +386,12 @@ export class RealDomainService {
           nameservers: ['ns1.leadgrid.co.il', 'ns2.leadgrid.co.il']
         };
       } else {
-        throw new Error('Namecheap purchase failed');
+        throw new Error('Namecheap רכישה נכשלה');
       }
     } catch (error) {
       return {
         success: false,
         error: `רכישה דרך Namecheap נכשלה: ${error.message}`,
-        status: 'failed'
-      };
-    }
-  }
-
-  // רכישה דרך GoDaddy
-  private static async purchaseWithGoDaddy(data: DomainRegistrationData): Promise<PurchaseResult> {
-    try {
-      console.log('💰 רכישה אמיתית דרך GoDaddy - זה עולה כסף!');
-      
-      const response = await fetch(`https://api.godaddy.com/v1/domains/purchase`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `sso-key ${this.GODADDY_API_KEY}:${this.GODADDY_SECRET}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          domain: data.domain,
-          period: data.years,
-          nameServers: ['ns1.leadgrid.co.il', 'ns2.leadgrid.co.il'],
-          renewAuto: data.autoRenew,
-          privacy: data.whoisPrivacy,
-        })
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        return {
-          success: true,
-          orderId: result.orderId || `GD_${Date.now()}`,
-          domain: data.domain,
-          message: 'דומיין נרכש בהצלחה דרך GoDaddy',
-          status: 'completed',
-          nameservers: ['ns1.leadgrid.co.il', 'ns2.leadgrid.co.il']
-        };
-      } else {
-        throw new Error('GoDaddy purchase failed');
-      }
-    } catch (error) {
-      return {
-        success: false,
-        error: `רכישה דרך GoDaddy נכשלה: ${error.message}`,
         status: 'failed'
       };
     }
@@ -569,23 +495,58 @@ export class RealDomainService {
     console.log('✅ מערכת גיבויים הוגדרה');
   }
 
-  // יצירת אתר WordPress
-  private static async createWordPressSite(request: PurchaseRequest) {
-    console.log('🔨 יוצר אתר WordPress...');
+  // יצירת דף נחיתה (במקום WordPress)
+  private static async createLandingPage(request: PurchaseRequest) {
+    console.log('🔨 יוצר דף נחיתה מותאם אישית...');
     
-    const isDemo = !this.GODADDY_API_KEY && !this.NAMECHEAP_API_KEY;
-    const wpUsername = request.websiteData.wordpressUserData?.username || 'admin';
-    const wpPassword = this.generateSecurePassword();
+    const isDemo = !this.NAMECHEAP_API_KEY;
     
     return {
       isDemo,
       actualSiteUrl: `https://${request.domain}`,
-      wpAdminUrl: `https://${request.domain}/wp-admin`,
-      wpUsername,
-      wpPassword,
-      username: wpUsername,
-      password: wpPassword
+      wpAdminUrl: `https://${request.domain}/admin`,
+      wpUsername: 'admin',
+      wpPassword: this.generateSecurePassword(),
+      username: 'admin',
+      password: this.generateSecurePassword()
     };
+  }
+
+  // וידוא סטטוס תשלום
+  static async verifyPaymentStatus(orderId: string): Promise<PurchaseStatus> {
+    console.log('🔍 בודק סטטוס תשלום:', orderId);
+    
+    // סימולציה לבדיקת תשלום
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    return {
+      status: 'completed',
+      orderId,
+      message: 'התשלום אושר בהצלחה'
+    };
+  }
+
+  // עיבוד תשלום
+  static async processPayment(paymentData: any): Promise<PurchaseResult> {
+    console.log('💳 מעבד תשלום:', paymentData);
+    
+    try {
+      // סימולציה לעיבוד תשלום
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      return {
+        success: true,
+        orderId: `PAY_${Date.now()}`,
+        message: 'התשלום עובד בהצלחה',
+        status: 'completed'
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: 'עיבוד התשלום נכשל',
+        status: 'failed'
+      };
+    }
   }
 
   private static generateSecurePassword(): string {
@@ -597,24 +558,7 @@ export class RealDomainService {
     return password;
   }
 
-  // בדיקת סטטוס דומיין
-  static async getDomainStatus(domain: string): Promise<{
-    registered: boolean;
-    expiresAt?: Date;
-    dnsConfigured: boolean;
-    sslActive: boolean;
-    siteActive: boolean;
-  }> {
-    return {
-      registered: true,
-      expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
-      dnsConfigured: true,
-      sslActive: true,
-      siteActive: true
-    };
-  }
-
-  // חישוב מחיר כולל (דומיין + אחסון + שירות LeadGrid)
+  // חישוב מחיר כולל
   static calculateTotalPrice(domain: string, hostingPlanId: string, years: number = 1): number {
     const hostingPlan = this.getHostingPlans().find(p => p.id === hostingPlanId);
     if (!hostingPlan) return 0;
@@ -623,10 +567,9 @@ export class RealDomainService {
     const domainPricing = this.getDomainPricing();
     const domainPrice = domainPricing[extension]?.retail || 75;
 
-    // מחיר כולל: דומיין (לשנה) + אחסון (לשנה) + שירות LeadGrid (₪119.90/חודש)
+    // מחיר כולל: דומיין (לשנה) + אחסון (לשנה)
     const hostingYearlyPrice = hostingPlan.price * 12;
-    const leadgridServicePrice = 119.90 * 12; // ₪119.90 לחודש
     
-    return (domainPrice * years) + hostingYearlyPrice + leadgridServicePrice;
+    return (domainPrice * years) + hostingYearlyPrice;
   }
 }
