@@ -17,10 +17,8 @@ import {
   Link,
   ExternalLink,
   Shield
-} from 'lucide-react';
-import { CleanWordPressForm } from './domain/CleanWordPressForm';
-import { SimpleDomainGuide } from './domain/SimpleDomainGuide';
-import { NewPublishingWizard } from './publishing/NewPublishingWizard';
+ } from 'lucide-react';
+import { ServicesFlow } from './services/ServicesFlow';
 import { TemplateData } from '@/types/template';
 
 interface LaunchSectionProps {
@@ -30,10 +28,12 @@ interface LaunchSectionProps {
 }
 
 export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectionProps) => {
-  const [showWordPressForm, setShowWordPressForm] = useState(false);
-  const [showDomainGuide, setShowDomainGuide] = useState(false);
-  const [showPublishingWizard, setShowPublishingWizard] = useState(false);
+  const [showServicesFlow, setShowServicesFlow] = useState(false);
   const { toast } = useToast();
+
+  const handleStartPurchase = () => {
+    setShowServicesFlow(true);
+  };
 
   // Save the template data to localStorage for later use
   const saveTemplateData = () => {
@@ -68,28 +68,12 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
     localStorage.setItem('generatedPageData', JSON.stringify(templateWithGeneratedContent));
   };
 
-  if (showWordPressForm) {
+  if (showServicesFlow) {
     return (
-      <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50">
-        <CleanWordPressForm onBack={() => setShowWordPressForm(false)} />
-      </div>
-    );
-  }
-
-  if (showDomainGuide) {
-    return (
-      <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50">
-        <SimpleDomainGuide onBack={() => setShowDomainGuide(false)} />
-      </div>
-    );
-  }
-
-  if (showPublishingWizard) {
-    return (
-      <NewPublishingWizard
-        template={template}
-        isOpen={showPublishingWizard}
-        onClose={() => setShowPublishingWizard(false)}
+      <ServicesFlow
+        selectedTemplate={template}
+        onComplete={() => setShowServicesFlow(false)}
+        onBack={() => setShowServicesFlow(false)}
       />
     );
   }
@@ -161,13 +145,13 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
               <Button 
                 onClick={() => {
                   saveTemplateData();
-                  setShowPublishingWizard(true);
+                  handleStartPurchase();
                 }}
                 className="w-full bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white font-bold shadow-lg shadow-emerald-500/30"
                 size="lg"
               >
                 <Zap className="w-5 h-5 mr-2" />
-                פרסם עכשיו - לחיצה אחת!
+                המשך לרכישה
               </Button>
               
               <div className="text-xs text-emerald-300 font-medium">
