@@ -6,10 +6,7 @@ export const templates: TemplateData[] = [
   {
     id: 'tech-consultant-pro',
     name: 'Tech Consultant Pro',
-    category: 'פרימיום',
-    price: '₪139.90',
-    period: 'חודש',
-    isPremium: true,
+    category: 'פרימיום - ייעוץ טכנולוגי',
     hero: {
       title: 'ייעוץ מקצועי לאפליקציות ותוכנה',
       subtitle: 'המומחים המובילים בפיתוח ופריסת פתרונות טכנולוגיים',
@@ -128,10 +125,7 @@ export const templates: TemplateData[] = [
   {
     id: 'neon-academy-pro',
     name: 'Neon Academy Pro',
-    category: 'פרימיום',
-    price: '₪139.90',
-    period: 'חודש',
-    isPremium: true,
+    category: 'פרימיום - חינוך דיגיטלי',
     hero: {
       title: 'גלה את הכוח שמחבא בתוכך',
       subtitle: 'קורסים דיגיטליים מתקדמים שישנו את הקריירה שלך לעד',
@@ -250,10 +244,7 @@ export const templates: TemplateData[] = [
   {
     id: 'blockchain-tech-pro',
     name: 'Blockchain Tech Pro',
-    category: 'פרימיום',
-    price: '₪139.90',
-    period: 'חודש',
-    isPremium: true,
+    category: 'פרימיום - בלוקצ\'יין',
     hero: {
       title: 'משחררים את הכוח של הבלוקצ\'יין',
       subtitle: 'טכנולוגיה מתקדמת שמשנה תעשיות עם פתרונות מאובטחים ומבוזרים',
@@ -377,10 +368,7 @@ export const templates: TemplateData[] = [
   {
     id: 'cyber-flow',
     name: 'CyberFlow',
-    category: 'בסיסי',
-    price: '₪119.90',
-    period: 'חודש',
-    isPremium: false,
+    category: 'טכנולוגיה',
     hero: {
       title: 'העתיד של הטכנולוגיה כאן',
       subtitle: 'חוויה דיגיטלית מהפכנית שתשנה את הדרך בה אתם עובדים',
@@ -475,10 +463,7 @@ export const templates: TemplateData[] = [
   {
     id: 'quantum-edge',
     name: 'Quantum Edge',
-    category: 'בסיסי',
-    price: '₪119.90',
-    period: 'חודש',
-    isPremium: false,
+    category: 'מדעי',
     hero: {
       title: 'מחשוב קוונטי לעסק שלך',
       subtitle: 'פתרונות מחשוב מתקדמים המבוססים על טכנולוגיה קוונטית',
@@ -573,10 +558,7 @@ export const templates: TemplateData[] = [
   {
     id: 'digital-genesis',
     name: 'Digital Genesis',
-    category: 'בסיסי',
-    price: '₪119.90',
-    period: 'חודש',
-    isPremium: false,
+    category: 'יצירתי',
     hero: {
       title: 'בראשית הדיגיטל החדש',
       subtitle: 'יוצרים חוויות דיגיטליות מהפכניות שמגדירות מחדש את המציאות',
@@ -671,10 +653,7 @@ export const templates: TemplateData[] = [
   {
     id: 'phoenix-rise',
     name: 'Phoenix Rise',
-    category: 'בסיסי',
-    price: '₪119.90',
-    period: 'חודש',
-    isPremium: false,
+    category: 'עסקי',
     hero: {
       title: 'קום וזרח כמו עוף החול',
       subtitle: 'פתרונות עסקיים שמעצימים חברות לצמוח ולהצליח בעידן הדיגיטלי',
@@ -769,10 +748,7 @@ export const templates: TemplateData[] = [
   {
     id: 'stellar-stream',
     name: 'Stellar Stream',
-    category: 'בסיסי',
-    price: '₪119.90',
-    period: 'חודש',
-    isPremium: false,
+    category: 'מדיה',
     hero: {
       title: 'זרם התוכן הכוכבי שלך',
       subtitle: 'פלטפורמת סטרימינג ותוכן מתקדמת שמביאה את הכוכבים אליך הביתה',
@@ -869,10 +845,7 @@ export const templates: TemplateData[] = [
   {
     id: 'nft-future-pro',
     name: 'NFT Future Pro',
-    category: 'פרימיום',
-    price: '₪139.90',
-    period: 'חודש',
-    isPremium: true,
+    category: 'פרימיום - NFT ומטאוורס',
     hero: {
       title: 'אסוף את דור העתיד של NFTs היום',
       subtitle: 'הפלטפורמה המובילה לנכסים דיגיטליים שתוכל באמת להחזיק לעצמך',
@@ -991,10 +964,7 @@ export const templates: TemplateData[] = [
   {
     id: 'creative-3d-pro',
     name: 'Creative 3D Pro',
-    category: 'פרימיום',
-    price: '₪139.90',
-    period: 'חודש',
-    isPremium: true,
+    category: 'פרימיום - סוכנות עיצוב',
     hero: {
       title: 'סוכנות עיצוב Web3',
       subtitle: 'נתונים טובים יותר מובילים לביצועים טובים יותר',
@@ -1113,10 +1083,7 @@ export const templates: TemplateData[] = [
   {
     id: 'authkit-tech-pro',
     name: 'AuthKit Tech Pro',
-    category: 'פרימיום',
-    price: '₪139.90',
-    period: 'חודש',
-    isPremium: true,
+    category: 'פרימיום - טכנולוגיה',
     hero: {
       title: 'מציגים AuthKit',
       subtitle: 'תיבת הלוגין הטובה בעולם, מופעלת על ידי טכנולוגיה מתקדמת',

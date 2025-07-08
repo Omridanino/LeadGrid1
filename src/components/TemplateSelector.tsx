@@ -199,139 +199,54 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
               <p className="text-gray-400">בחר תבנית שמתאימה לעסק שלך ותוכל לערוך אותה לפי הצרכים שלך</p>
             </div>
 
-            {/* Basic Templates Section */}
-            <div className="mb-12">
-              <div className="text-center mb-6">
-                <h3 className="text-2xl font-bold text-white mb-2">תבניות בסיסיות</h3>
-                <p className="text-blue-400 text-lg font-semibold">₪119.90 לחודש</p>
-                <p className="text-gray-400 text-sm">תבניות איכותיות עם כל הפונקציות הבסיסיות</p>
-              </div>
-              
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                {templates.filter(template => !template.isPremium).map((template) => (
-                  <Card 
-                    key={template.id}
-                    className={`cursor-pointer transition-all duration-300 hover:scale-105 ${
-                      selectedTemplate?.id === template.id 
-                        ? 'ring-2 ring-blue-500 bg-blue-900/20 border-blue-500' 
-                        : 'bg-gray-800 border-gray-700 hover:border-blue-500/50'
-                    }`}
-                    onClick={() => handleTemplateSelect(template)}
-                  >
-                    <CardContent className="p-6">
-                      <div className="text-center">
-                        <div className="flex justify-between items-center mb-4">
-                          <Badge className="bg-green-600 text-white">
-                            {template.category}
-                          </Badge>
-                          <div className="text-left">
-                            <div className="text-green-400 font-bold text-lg">{template.price}</div>
-                            <div className="text-gray-400 text-sm">{template.period}</div>
-                          </div>
-                        </div>
-                        
-                        <h3 className="text-white font-bold text-lg mb-2">
-                          {template.name}
-                        </h3>
-                        
-                        <div className="bg-gray-900 p-4 rounded-lg mb-4 border border-gray-700">
-                          <h4 className="text-blue-400 font-semibold text-sm mb-2">
-                            {template.hero.title}
-                          </h4>
-                          <p className="text-gray-400 text-xs mb-3">
-                            {template.hero.subtitle}
-                          </p>
-                          <div className="flex gap-2 justify-center">
-                            <div className="px-3 py-1 bg-blue-600 text-white text-xs rounded">
-                              {template.hero.button1Text}
-                            </div>
-                            <div className="px-3 py-1 bg-gray-600 text-white text-xs rounded">
-                              {template.hero.button2Text}
-                            </div>
-                          </div>
-                        </div>
-
-                        {selectedTemplate?.id === template.id && (
-                          <div className="text-blue-400 text-sm font-medium">
-                            ✓ נבחר
-                          </div>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            {/* Premium Templates Section */}
-            <div className="mb-12">
-              <div className="text-center mb-6">
-                <h3 className="text-2xl font-bold text-white mb-2">תבניות פרימיום</h3>
-                <p className="text-yellow-400 text-lg font-semibold">₪139.90 לחודש</p>
-                <p className="text-gray-400 text-sm">תבניות מתקדמות עם עיצובים מיוחדים ואפקטים מתקדמים</p>
-              </div>
-              
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                {templates.filter(template => template.isPremium).map((template) => (
-                  <Card 
-                    key={template.id}
-                    className={`cursor-pointer transition-all duration-300 hover:scale-105 relative ${
-                      selectedTemplate?.id === template.id 
-                        ? 'ring-2 ring-yellow-500 bg-yellow-900/20 border-yellow-500' 
-                        : 'bg-gradient-to-br from-gray-800 to-gray-900 border-yellow-600/30 hover:border-yellow-500/50'
-                    }`}
-                    onClick={() => handleTemplateSelect(template)}
-                  >
-                    <div className="absolute -top-2 -right-2">
-                      <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold">
-                        <Sparkles className="w-3 h-3 ml-1" />
-                        פרימיום
+            {/* Templates Grid */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {templates.map((template) => (
+                <Card 
+                  key={template.id}
+                  className={`cursor-pointer transition-all duration-300 hover:scale-105 ${
+                    selectedTemplate?.id === template.id 
+                      ? 'ring-2 ring-blue-500 bg-blue-900/20 border-blue-500' 
+                      : 'bg-gray-800 border-gray-700 hover:border-blue-500/50'
+                  }`}
+                  onClick={() => handleTemplateSelect(template)}
+                >
+                  <CardContent className="p-6">
+                    <div className="text-center">
+                      <Badge className="mb-4 bg-purple-600 text-white">
+                        {template.category}
                       </Badge>
-                    </div>
-                    
-                    <CardContent className="p-6">
-                      <div className="text-center">
-                        <div className="flex justify-between items-center mb-4">
-                          <Badge className="bg-gradient-to-r from-purple-600 to-pink-600 text-white">
-                            {template.category}
-                          </Badge>
-                          <div className="text-left">
-                            <div className="text-yellow-400 font-bold text-lg">{template.price}</div>
-                            <div className="text-gray-400 text-sm">{template.period}</div>
+                      
+                      <h3 className="text-white font-bold text-lg mb-2">
+                        {template.name}
+                      </h3>
+                      
+                      <div className="bg-gray-900 p-4 rounded-lg mb-4 border border-gray-700">
+                        <h4 className="text-blue-400 font-semibold text-sm mb-2">
+                          {template.hero.title}
+                        </h4>
+                        <p className="text-gray-400 text-xs mb-3">
+                          {template.hero.subtitle}
+                        </p>
+                        <div className="flex gap-2 justify-center">
+                          <div className="px-3 py-1 bg-blue-600 text-white text-xs rounded">
+                            {template.hero.button1Text}
+                          </div>
+                          <div className="px-3 py-1 bg-gray-600 text-white text-xs rounded">
+                            {template.hero.button2Text}
                           </div>
                         </div>
-                        
-                        <h3 className="text-white font-bold text-lg mb-2">
-                          {template.name}
-                        </h3>
-                        
-                        <div className="bg-gradient-to-br from-gray-900 to-black p-4 rounded-lg mb-4 border border-yellow-600/30">
-                          <h4 className="text-yellow-400 font-semibold text-sm mb-2">
-                            {template.hero.title}
-                          </h4>
-                          <p className="text-gray-300 text-xs mb-3">
-                            {template.hero.subtitle}
-                          </p>
-                          <div className="flex gap-2 justify-center">
-                            <div className="px-3 py-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-black text-xs rounded font-semibold">
-                              {template.hero.button1Text}
-                            </div>
-                            <div className="px-3 py-1 bg-gray-700 text-white text-xs rounded">
-                              {template.hero.button2Text}
-                            </div>
-                          </div>
-                        </div>
-
-                        {selectedTemplate?.id === template.id && (
-                          <div className="text-yellow-400 text-sm font-medium">
-                            ✓ נבחר
-                          </div>
-                        )}
                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+
+                      {selectedTemplate?.id === template.id && (
+                        <div className="text-blue-400 text-sm font-medium">
+                          ✓ נבחר
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
 
             {/* Action Button */}
@@ -342,10 +257,10 @@ const TemplateSelector = ({ isOpen, onClose }: TemplateSelectorProps) => {
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-12 py-4 text-lg font-bold"
                 >
                   <Edit className="w-5 h-5 ml-2" />
-                  המשך לעיצוב התבנית
+                  התחל לערוך את התבנית
                 </Button>
                 <p className="text-gray-500 text-sm">
-                  תוכל לערוך ולעצב את התבנית לפי הצרכים שלך, ולאחר מכן להמשיך לרכישה
+                  תוכל לערוך את התבנית ולהתאים אותה לצרכים שלך לפני הפרסום
                 </p>
               </div>
             )}

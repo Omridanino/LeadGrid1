@@ -134,17 +134,15 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
     }
   };
 
-  const handleSaveAndPurchase = () => {
-    console.log('handleSaveAndPurchase called!');
-    // Auto-save before purchase
-    handleSave(); // Call the actual save function
-    setIsSaved(true);
-    toast({
-      title: "✅ הדף נשמר!",
-      description: "עובר לרכישה...",
-      variant: "default"
-    });
-    console.log('Setting showLaunchSection to true');
+  const handleSaveAndPublish = () => {
+    if (!isSaved) {
+      toast({
+        title: "⚠️ יש לשמור קודם!",
+        description: "אנא שמור את הדף לפני הפרסום",
+        variant: "destructive"
+      });
+      return;
+    }
     setShowLaunchSection(true);
   };
 
@@ -423,11 +421,11 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                     ? 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700' 
                     : 'bg-slate-600/50 cursor-not-allowed opacity-50'
                 } text-white shadow-lg text-xs px-2 py-1.5`}
-                onClick={handleSaveAndPurchase}
-                disabled={false}
+                onClick={handleSaveAndPublish}
+                disabled={!isSaved}
               >
                 <Rocket className="w-3 h-3 ml-1" />
-                המשך לרכישה
+                פרסם
               </Button>
             </div>
           </div>
@@ -578,11 +576,11 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                       ? 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700' 
                       : 'bg-slate-600/50 cursor-not-allowed opacity-50'
                   } text-white shadow-lg text-xs px-2 py-1.5`}
-                  onClick={handleSaveAndPurchase}
+                  onClick={handleSaveAndPublish}
                   disabled={!isSaved}
                 >
                   <Rocket className="w-3 h-3 mr-1" />
-                  המשך לרכישה
+                  פרסם
                 </Button>
               </>
             )}
