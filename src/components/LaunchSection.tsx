@@ -32,6 +32,7 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
   const { toast } = useToast();
 
   const handleStartPurchase = () => {
+    console.log('Starting purchase flow...');
     setShowServicesFlow(true);
   };
 
