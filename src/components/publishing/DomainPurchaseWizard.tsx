@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Globe, 
   Search, 
@@ -19,7 +17,7 @@ import {
   AlertCircle,
   Loader2
 } from 'lucide-react';
-import { DomainRegistrationService, DomainPurchaseOptions } from '@/services/domainRegistrationService';
+import { RealDomainService, RealDomainAvailabilityResult, RealHostingPlan } from '@/services/realDomainService';
 
 interface DomainPurchaseWizardProps {
   onDomainPurchased: (domain: string, hostingPlan: string) => void;
@@ -31,48 +29,21 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDomain, setSelectedDomain] = useState('');
   const [selectedHostingPlan, setSelectedHostingPlan] = useState('');
-  const [domainAvailability, setDomainAvailability] = useState<any>(null);
+  const [domainAvailability, setDomainAvailability] = useState<RealDomainAvailabilityResult | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [processingProgress, setProcessingProgress] = useState(0);
 
-  // תוכניות אחסון עם מרווח של 45%
-  const hostingPlans = [
-    {
-      id: 'starter',
-      name: 'Starter',
-      originalPrice: 89,
-      price: Math.round(89 * 1.45), // 45% מרווח
-      features: ['דומיין חינם לשנה', 'SSL אוטומטי', 'גיבוי יומי', 'תמיכה 24/7'],
-      storage: '10GB SSD',
-      bandwidth: '100GB',
-      popular: false
-    },
-    {
-      id: 'professional',
-      name: 'Professional',
-      originalPrice: 189,
-      price: Math.round(189 * 1.45),
-      features: ['דומיין חינם לשנה', 'SSL אוטומטי', 'CDN גלובלי', 'גיבוי יומי'],
-      storage: '50GB SSD',
-      bandwidth: '500GB',
-      popular: true
-    },
-    {
-      id: 'enterprise',
-      name: 'Enterprise',
-      originalPrice: 399,
-      price: Math.round(399 * 1.45),
-      features: ['דומיין חינם לשנה', 'SSL אוטומטי', 'CDN גלובלי', 'תמיכה VIP'],
-      storage: '200GB SSD',
-      bandwidth: 'ללא הגבלה',
-      popular: false
-    }
-  ];
+  // תוכניות אחסון עם מחירים הגיוניים
+  const hostingPlans = RealDomainService.getHostingPlans();
 
   const searchDomain = async () => {
+    if (!searchTerm.trim()) return;
+    
     setIsSearching(true);
     try {
-      const result = await DomainRegistrationService.checkDomainAvailability(searchTerm);
+      // Add .com if no extension provided
+      const domainToCheck = searchTerm.includes('.') ? searchTerm : `${searchTerm}.com`;
+      const result = await RealDomainService.checkDomainAvailability(domainToCheck);
       setDomainAvailability(result);
     } catch (error) {
       console.error('Domain search failed:', error);
@@ -116,10 +87,7 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
   const getTotalPrice = () => {
     const plan = getSelectedPlan();
     if (!plan || !domainAvailability) return 0;
-    
-    // מחיר דומיין עם 45% מרווח
-    const domainPrice = Math.round(parseInt(domainAvailability.price.replace(/[^\d]/g, '')) * 1.45);
-    return plan.price + domainPrice;
+    return plan.price + domainAvailability.price;
   };
 
   return (
@@ -130,7 +98,7 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-white text-2xl font-bold">רכישת דומיין ואחסון</h2>
-              <p className="text-gray-400 text-sm mt-1">פתרון מלא לאתר שלך</p>
+              <p className="text-gray-400 text-sm mt-1">פתרון מלא לאתר שלך - מחירים משתלמים!</p>
             </div>
             <Button onClick={onClose} variant="outline" size="sm">
               סגור
@@ -159,6 +127,7 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
                           onChange={(e) => setSearchTerm(e.target.value)}
                           placeholder="השם שלך או העסק שלך"
                           className="bg-gray-700 border-gray-600 text-white"
+                          onKeyPress={(e) => e.key === 'Enter' && searchDomain()}
                         />
                         <Button 
                           onClick={searchDomain}
@@ -194,7 +163,7 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
                               {domainAvailability.available && (
                                 <div className="text-left">
                                   <div className="text-white font-semibold">
-                                    ₪{Math.round(parseInt(domainAvailability.price.replace(/[^\d]/g, '')) * 1.45)}/שנה
+                                    ₪{domainAvailability.price}/שנה
                                   </div>
                                   <Button
                                     onClick={() => selectDomain(domainAvailability.domain)}
@@ -209,7 +178,7 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
                           </CardContent>
                         </Card>
 
-                        {domainAvailability.suggestions && (
+                        {domainAvailability.suggestions && domainAvailability.suggestions.length > 0 && (
                           <div className="space-y-2">
                             <h5 className="text-gray-300 text-sm">הצעות חלופיות:</h5>
                             {domainAvailability.suggestions.slice(0, 3).map((suggestion: string) => (
@@ -217,14 +186,17 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
                                 <CardContent className="p-3">
                                   <div className="flex items-center justify-between">
                                     <span className="text-white">{suggestion}</span>
-                                    <Button
-                                      onClick={() => selectDomain(suggestion)}
-                                      size="sm"
-                                      variant="outline"
-                                      className="border-gray-600 text-white hover:bg-gray-700"
-                                    >
-                                      בחר
-                                    </Button>
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-sm text-gray-400">₪50/שנה</span>
+                                      <Button
+                                        onClick={() => selectDomain(suggestion)}
+                                        size="sm"
+                                        variant="outline"
+                                        className="border-gray-600 text-white hover:bg-gray-700"
+                                      >
+                                        בחר
+                                      </Button>
+                                    </div>
                                   </div>
                                 </CardContent>
                               </Card>
@@ -256,7 +228,7 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
                   `}>
                     {plan.popular && (
                       <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                        <Badge className="bg-purple-600 text-white">פופולרי</Badge>
+                        <Badge className="bg-purple-600 text-white">מומלץ</Badge>
                       </div>
                     )}
                     
@@ -267,6 +239,7 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
                       <div className="text-center">
                         <div className="text-3xl font-bold text-white">₪{plan.price}</div>
                         <div className="text-sm text-gray-400">לחודש</div>
+                        <div className="text-xs text-gray-500 line-through">₪{Math.round(plan.originalPrice * 1.2)}</div>
                       </div>
                     </CardHeader>
                     
@@ -299,7 +272,7 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
                               : 'bg-blue-600 hover:bg-blue-700'
                         }`}
                       >
-                        {selectedHostingPlan === plan.id ? 'נבחר' : 'בחר תוכנית'}
+                        {selectedHostingPlan === plan.id ? 'נבחר ✓' : 'בחר תוכנית'}
                       </Button>
                     </CardContent>
                   </Card>
@@ -331,21 +304,21 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
                       <span className="text-white font-medium">{getSelectedPlan()?.name}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-300">אחסון:</span>
-                      <span className="text-white">{getSelectedPlan()?.storage}</span>
+                      <span className="text-gray-300">מחיר דומיין:</span>
+                      <span className="text-white">₪{domainAvailability?.price}/שנה</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-300">רוחב פס:</span>
-                      <span className="text-white">{getSelectedPlan()?.bandwidth}</span>
+                      <span className="text-gray-300">מחיר אחסון:</span>
+                      <span className="text-white">₪{getSelectedPlan()?.price}/חודש</span>
                     </div>
                     
                     <div className="border-t border-gray-600 pt-4">
                       <div className="flex justify-between text-lg font-semibold">
-                        <span className="text-white">סה״כ:</span>
-                        <span className="text-green-400">₪{getTotalPrice()}/שנה</span>
+                        <span className="text-white">סה״כ שנה ראשונה:</span>
+                        <span className="text-green-400">₪{getTotalPrice()}</span>
                       </div>
                       <div className="text-sm text-gray-400 mt-1">
-                        כולל דומיין + אחסון לשנה שלמה
+                        דומיין + 12 חודשי אחסון
                       </div>
                     </div>
                   </CardContent>
