@@ -1,57 +1,40 @@
 
-import { useState } from 'react';
-import Header from '@/components/Header';
-import { HeroSection } from '@/components/HeroSection';
-import ModernFeaturesSection from '@/components/ModernFeaturesSection';
-import TestimonialsSection from '@/components/TestimonialsSection';
-import Footer from '@/components/Footer';
-import LandingPageQuestionnaire from '@/components/LandingPageQuestionnaire';
-import { ServicesFlow } from '@/components/services/ServicesFlow';
+import { useState } from "react";
+import Header from "@/components/Header";
+import ModernHeroSection from "@/components/ModernHeroSection";
+import ModernFeaturesSection from "@/components/ModernFeaturesSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import Footer from "@/components/Footer";
+import LandingPageQuestionnaire from "@/components/LandingPageQuestionnaire";
 
 const Index = () => {
   const [isQuestionnaireOpen, setIsQuestionnaireOpen] = useState(false);
-  const [showServicesFlow, setShowServicesFlow] = useState(false);
 
-  console.log('Index render - isQuestionnaireOpen:', isQuestionnaireOpen);
-
-  const handleGetStarted = () => {
-    setShowServicesFlow(true);
+  const handleOpenQuestionnaire = () => {
+    console.log("Index: Opening questionnaire");
+    setIsQuestionnaireOpen(true);
   };
 
-  const handleServicesComplete = () => {
-    setShowServicesFlow(false);
-    // כאן אפשר להוסיף לוגיקה נוספת כמו מעבר לדף הצלחה
+  const handleCloseQuestionnaire = () => {
+    console.log("Index: Closing questionnaire");
+    setIsQuestionnaireOpen(false);
   };
 
-  const handleServicesBack = () => {
-    setShowServicesFlow(false);
-  };
-
-  if (showServicesFlow) {
-    return (
-      <ServicesFlow
-        onComplete={handleServicesComplete}
-        onBack={handleServicesBack}
-      />
-    );
-  }
-
-  if (isQuestionnaireOpen) {
-    return (
-      <LandingPageQuestionnaire 
-        isOpen={isQuestionnaireOpen}
-        onClose={() => setIsQuestionnaireOpen(false)} 
-      />
-    );
-  }
+  console.log("Index render - isQuestionnaireOpen:", isQuestionnaireOpen);
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header onStartQuestionnaire={() => setIsQuestionnaireOpen(true)} />
-      <HeroSection onGetStarted={handleGetStarted} />
+    <div className="min-h-screen bg-black text-white md:text-right text-center" dir="rtl">
+      <Header onStartQuestionnaire={handleOpenQuestionnaire} />
+      <ModernHeroSection onStartQuestionnaire={handleOpenQuestionnaire} />
       <ModernFeaturesSection />
       <TestimonialsSection />
       <Footer />
+      
+      {/* Questionnaire Modal */}
+      <LandingPageQuestionnaire 
+        isOpen={isQuestionnaireOpen} 
+        onClose={handleCloseQuestionnaire} 
+      />
     </div>
   );
 };

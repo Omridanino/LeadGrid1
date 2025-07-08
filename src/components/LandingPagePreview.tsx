@@ -1,7 +1,7 @@
 
 import { generatePageHTML } from "@/utils/pageGenerator";
 import { ColorScheme } from "@/types/colors";
-import { HeroSection } from "@/components/HeroSection";
+import HeroSection from "@/components/HeroSection";
 
 interface LandingPagePreviewProps {
   content: any;
@@ -54,7 +54,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       scrollBehavior: 'smooth'
     }}>
       <div className="w-full min-h-screen" style={{ position: 'relative' }}>
-        <HeroSection onGetStarted={() => {}} />
+        <HeroSection onStartQuestionnaire={() => {}} />
       </div>
     </div>
   );
