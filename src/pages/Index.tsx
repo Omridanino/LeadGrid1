@@ -6,44 +6,16 @@ import ModernFeaturesSection from '@/components/ModernFeaturesSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import Footer from '@/components/Footer';
 import LandingPageQuestionnaire from '@/components/LandingPageQuestionnaire';
-import { ServicesFlow } from '@/components/services/ServicesFlow';
 
 const Index = () => {
   const [isQuestionnaireOpen, setIsQuestionnaireOpen] = useState(false);
-  const [showServicesFlow, setShowServicesFlow] = useState(false);
 
   console.log('Index render - isQuestionnaireOpen:', isQuestionnaireOpen);
 
   const handleGetStarted = () => {
-    setShowServicesFlow(true);
+    setIsQuestionnaireOpen(true);
   };
 
-  const handleServicesComplete = () => {
-    setShowServicesFlow(false);
-    // כאן אפשר להוסיף לוגיקה נוספת כמו מעבר לדף הצלחה
-  };
-
-  const handleServicesBack = () => {
-    setShowServicesFlow(false);
-  };
-
-  if (showServicesFlow) {
-    return (
-      <ServicesFlow
-        onComplete={handleServicesComplete}
-        onBack={handleServicesBack}
-      />
-    );
-  }
-
-  if (isQuestionnaireOpen) {
-    return (
-      <LandingPageQuestionnaire 
-        isOpen={isQuestionnaireOpen}
-        onClose={() => setIsQuestionnaireOpen(false)} 
-      />
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -52,6 +24,11 @@ const Index = () => {
       <ModernFeaturesSection />
       <TestimonialsSection />
       <Footer />
+      
+      <LandingPageQuestionnaire 
+        isOpen={isQuestionnaireOpen}
+        onClose={() => setIsQuestionnaireOpen(false)} 
+      />
     </div>
   );
 };
