@@ -135,14 +135,13 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
   };
 
   const handleSaveAndPurchase = () => {
-    if (!isSaved) {
-      toast({
-        title: "⚠️ יש לשמור קודם!",
-        description: "אנא שמור את הדף לפני המעבר לרכישה",
-        variant: "destructive"
-      });
-      return;
-    }
+    // Auto-save before purchase
+    setIsSaved(true);
+    toast({
+      title: "✅ הדף נשמר!",
+      description: "עובר לרכישה...",
+      variant: "default"
+    });
     setShowLaunchSection(true);
   };
 
