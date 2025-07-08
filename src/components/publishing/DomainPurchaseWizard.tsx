@@ -451,7 +451,6 @@ export const DomainPurchaseWizard = ({ onDomainPurchased, onClose }: DomainPurch
           orderDetails={{
             domain: selectedDomain,
             hosting: getSelectedPlan()?.name,
-            years: 1,
             orderId: `ORDER_${Date.now()}`
           }}
         />

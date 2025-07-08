@@ -22,8 +22,8 @@ export const LeadgridService = ({ onProceedToPayment, onGoBack }: LeadgridServic
 
   const services = [
     {
-      id: 'landing',
-      name: 'דף נחיתה מקצועי',
+      id: 'landing' as const,
+      name: 'דף נחיתה בסיסי',
       price: 119.90,
       originalPrice: 199,
       features: [
@@ -36,7 +36,25 @@ export const LeadgridService = ({ onProceedToPayment, onGoBack }: LeadgridServic
         'תמיכה טכנית'
       ],
       popular: true,
-      description: 'כל מה שאתה צריך כדי להתחיל לקבל לידים'
+      description: 'תבנית בסיסית ומקצועית לקבלת לידים'
+    },
+    {
+      id: 'premium' as const,
+      name: 'דף נחיתה פרימיום',
+      price: 139.90,
+      originalPrice: 249,
+      features: [
+        'כל מה שכלול בתבנית הבסיסית',
+        'עיצובים מתקדמים ואנימציות',
+        'טופס לידים עם שדות מותאמים',
+        'אינטגרציה עם CRM',
+        'A/B Testing מתקדם',
+        'אנליטיקס מפורט',
+        'תמיכה VIP 24/7',
+        'אופטימיזציה להמרות'
+      ],
+      popular: false,
+      description: 'תבנית מתקדמת עם כל הפיצ\'רים המתקדמים'
     }
   ];
 
@@ -69,61 +87,63 @@ export const LeadgridService = ({ onProceedToPayment, onGoBack }: LeadgridServic
             </CardHeader>
             
             <CardContent className="space-y-6">
-              {services.map((service) => (
-                <div 
-                  key={service.id}
-                  className={`
-                    relative p-6 rounded-lg border-2 cursor-pointer transition-all
-                    ${selectedService === service.id 
-                      ? 'border-blue-500 bg-blue-900/20' 
-                      : 'border-gray-600 bg-gray-800/30 hover:border-gray-500'
-                    }
-                  `}
-                  onClick={() => setSelectedService(service.id)}
-                >
-                  {service.popular && (
-                    <div className="absolute -top-3 right-6">
-                      <Badge className="bg-yellow-500 text-black font-semibold">
-                        <Star className="w-4 h-4 mr-1" />
-                        הכי פופולרי
-                      </Badge>
-                    </div>
-                  )}
-
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <h3 className="text-xl font-semibold text-white">{service.name}</h3>
-                      <p className="text-gray-400 text-sm mt-1">{service.description}</p>
-                    </div>
-                    
-                    <div className="text-left">
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl font-bold text-green-400">₪{service.price}</span>
-                        <span className="text-sm text-gray-400">/חודש</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {services.map((service) => (
+                  <div 
+                    key={service.id}
+                    className={`
+                      relative p-6 rounded-lg border-2 cursor-pointer transition-all
+                      ${selectedService === service.id 
+                        ? 'border-blue-500 bg-blue-900/20' 
+                        : 'border-gray-600 bg-gray-800/30 hover:border-gray-500'
+                      }
+                    `}
+                    onClick={() => setSelectedService(service.id)}
+                  >
+                    {service.popular && (
+                      <div className="absolute -top-3 right-6">
+                        <Badge className="bg-yellow-500 text-black font-semibold">
+                          <Star className="w-4 h-4 mr-1" />
+                          הכי פופולרי
+                        </Badge>
                       </div>
-                      <div className="text-sm text-gray-500 line-through">₪{service.originalPrice}</div>
+                    )}
+
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h3 className="text-xl font-semibold text-white">{service.name}</h3>
+                        <p className="text-gray-400 text-sm mt-1">{service.description}</p>
+                      </div>
+                      
+                      <div className="text-left">
+                        <div className="flex items-center gap-2">
+                          <span className="text-2xl font-bold text-green-400">₪{service.price}</span>
+                          <span className="text-sm text-gray-400">/חודש</span>
+                        </div>
+                        <div className="text-sm text-gray-500 line-through">₪{service.originalPrice}</div>
+                      </div>
                     </div>
+
+                    <div className="grid grid-cols-1 gap-3">
+                      {service.features.map((feature, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
+                          <span className="text-gray-300 text-sm">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {selectedService === service.id && (
+                      <div className="mt-4 p-4 bg-blue-900/30 rounded-lg border border-blue-600/50">
+                        <div className="flex items-center gap-2 text-blue-300">
+                          <Zap className="w-5 h-5" />
+                          <span className="font-medium">נבחר - מוכן להמשיך!</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {service.features.map((feature, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
-                        <span className="text-gray-300 text-sm">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {selectedService === service.id && (
-                    <div className="mt-4 p-4 bg-blue-900/30 rounded-lg border border-blue-600/50">
-                      <div className="flex items-center gap-2 text-blue-300">
-                        <Zap className="w-5 h-5" />
-                        <span className="font-medium">נבחר - מוכן להמשיך!</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
+                ))}
+              </div>
             </CardContent>
           </Card>
 

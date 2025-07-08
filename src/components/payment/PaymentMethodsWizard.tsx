@@ -50,21 +50,21 @@ export const PaymentMethodsWizard = ({
 
   const paymentMethods = [
     {
-      id: 'credit',
+      id: 'credit' as const,
       name: 'כרטיס אשראי',
       icon: CreditCard,
       description: 'תשלום מאובטח ומיידי',
       popular: true
     },
     {
-      id: 'bank',
+      id: 'bank' as const,
       name: 'העברה בנקאית',
       icon: Building2,
       description: 'תשלום דרך הבנק שלך',
       popular: false
     },
     {
-      id: 'bit',
+      id: 'bit' as const,
       name: 'Bit',
       icon: Smartphone,
       description: 'תשלום מהיר עם Bit',
