@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { CleanWordPressForm } from './domain/CleanWordPressForm';
 import { SimpleDomainGuide } from './domain/SimpleDomainGuide';
-import { NewPublishingWizard } from './publishing/NewPublishingWizard';
+import { RealDomainPurchaseWizard } from './domain/RealDomainPurchaseWizard';
 import { TemplateData } from '@/types/template';
 
 interface LaunchSectionProps {
@@ -32,7 +32,7 @@ interface LaunchSectionProps {
 export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectionProps) => {
   const [showWordPressForm, setShowWordPressForm] = useState(false);
   const [showDomainGuide, setShowDomainGuide] = useState(false);
-  const [showPublishingWizard, setShowPublishingWizard] = useState(false);
+  const [showDomainPurchaseWizard, setShowDomainPurchaseWizard] = useState(false);
   const { toast } = useToast();
 
   // Save the template data to localStorage for later use
@@ -68,10 +68,10 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
     localStorage.setItem('generatedPageData', JSON.stringify(templateWithGeneratedContent));
   };
 
-  // Auto-open publishing wizard immediately
+  // Auto-open domain purchase wizard immediately
   useEffect(() => {
     saveTemplateData();
-    setShowPublishingWizard(true);
+    setShowDomainPurchaseWizard(true);
   }, []);
 
   if (showWordPressForm) {
@@ -90,12 +90,12 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
     );
   }
 
-  if (showPublishingWizard) {
+  if (showDomainPurchaseWizard) {
     return (
-      <NewPublishingWizard
+      <RealDomainPurchaseWizard
         template={template}
-        isOpen={showPublishingWizard}
-        onClose={() => setShowPublishingWizard(false)}
+        isOpen={showDomainPurchaseWizard}
+        onClose={() => setShowDomainPurchaseWizard(false)}
       />
     );
   }
@@ -158,7 +158,7 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
             <Button 
               onClick={() => {
                 saveTemplateData();
-                setShowPublishingWizard(true);
+                setShowDomainPurchaseWizard(true);
               }}
               className="w-full bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white font-bold shadow-lg shadow-emerald-500/30"
               size="lg"
@@ -185,7 +185,6 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
           חזור לעריכת הדף
         </Button>
       </div>
-
     </div>
   );
 };
