@@ -68,12 +68,6 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
     localStorage.setItem('generatedPageData', JSON.stringify(templateWithGeneratedContent));
   };
 
-  // Auto-open domain purchase wizard immediately
-  useEffect(() => {
-    saveTemplateData();
-    setShowDomainPurchaseWizard(true);
-  }, []);
-
   const handleDomainPurchased = (domain: string, hostingPlan: string) => {
     toast({
       title: "🎉 רכישה הושלמה בהצלחה!",
@@ -82,11 +76,11 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
     setShowDomainPurchaseWizard(false);
   };
 
-  // Auto-open domain purchase wizard immediately
+  // Auto-open domain purchase wizard immediately - only once
   useEffect(() => {
     saveTemplateData();
     setShowDomainPurchaseWizard(true);
-  }, []);
+  }, []); // Empty dependency array to run only once
 
   if (showWordPressForm) {
     return (
