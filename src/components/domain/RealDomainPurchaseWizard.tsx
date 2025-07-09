@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,8 +18,7 @@ import {
   AlertCircle,
   Loader2,
   Info,
-  DollarSign,
-  TrendingUp
+  DollarSign
 } from 'lucide-react';
 import { RealDomainService, RealDomainAvailabilityResult, RealHostingPlan } from '@/services/realDomainService';
 import { PaymentMethodsWizard } from '@/components/payment/PaymentMethodsWizard';
@@ -244,7 +244,6 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
                           <div className="text-2xl font-bold text-white">₪{plan.price}</div>
                           <div className="text-sm text-gray-400">לחודש</div>
                           <div className="text-xs text-gray-500">מחיר Namecheap: ${plan.originalPrice}</div>
-                          <div className="text-xs text-green-400">רווח: ₪55/חודש</div>
                         </div>
                       </CardHeader>
                       
@@ -335,37 +334,39 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
                   <Card className="bg-gray-800 border-gray-700">
                     <CardHeader>
                       <CardTitle className="text-white flex items-center gap-2">
-                        <TrendingUp className="w-5 h-5" />
-                        רווח עסקי
+                        <Shield className="w-5 h-5" />
+                        מה כלול בשירות?
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                      {getPriceBreakdown() && (
-                        <>
-                          <div className="flex justify-between">
-                            <span className="text-gray-300">רווח מדומיין:</span>
-                            <span className="text-green-400">₪{getPriceBreakdown()?.domain.profit}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-300">רווח מאחסון:</span>
-                            <span className="text-green-400">₪{getPriceBreakdown()?.hosting.profit}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-300">רווח מ-LeadGrid:</span>
-                            <span className="text-green-400">₪{getPriceBreakdown()?.leadgrid.profit}</span>
-                          </div>
-                          
-                          <div className="border-t border-gray-600 pt-4">
-                            <div className="flex justify-between text-lg font-semibold">
-                              <span className="text-white">סה״כ רווח:</span>
-                              <span className="text-green-400">₪{getPriceBreakdown()?.totalProfit}</span>
-                            </div>
-                            <div className="text-sm text-gray-400 mt-1">
-                              רווח מהלקוח הזה בשנה הראשונה
-                            </div>
-                          </div>
-                        </>
-                      )}
+                    <CardContent className="space-y-3">
+                      <div className="flex items-start gap-2">
+                        <CheckCircle className="w-5 h-5 text-green-400 mt-0.5" />
+                        <div>
+                          <div className="text-white font-medium">דומיין דרך Namecheap</div>
+                          <div className="text-gray-400 text-sm">רכישה מקצועית מחברת דומיינים מובילה</div>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <CheckCircle className="w-5 h-5 text-green-400 mt-0.5" />
+                        <div>
+                          <div className="text-white font-medium">אחסון מהיר ויציב</div>
+                          <div className="text-gray-400 text-sm">SSD מהיר + CDN לטעינה מהירה</div>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <CheckCircle className="w-5 h-5 text-green-400 mt-0.5" />
+                        <div>
+                          <div className="text-white font-medium">בניית דף נחיתה מותאם</div>
+                          <div className="text-gray-400 text-sm">דף נחיתה מקצועי לעסק שלך</div>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <CheckCircle className="w-5 h-5 text-green-400 mt-0.5" />
+                        <div>
+                          <div className="text-white font-medium">SSL ואבטחה מלאה</div>
+                          <div className="text-gray-400 text-sm">הצפנה ואבטחה ברמה הגבוהה ביותר</div>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
                 </div>
