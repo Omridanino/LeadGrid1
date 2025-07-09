@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,6 +21,7 @@ import {
 } from 'lucide-react';
 import { RealDomainService, RealDomainAvailabilityResult, RealHostingPlan } from '@/services/realDomainService';
 import { PaymentMethodsWizard } from '@/components/payment/PaymentMethodsWizard';
+import { AutomaticPurchaseWizard } from '@/components/payment/AutomaticPurchaseWizard';
 
 interface RealDomainPurchaseWizardProps {
   onDomainPurchased: (domain: string, hostingPlan: string) => void;
@@ -37,6 +37,7 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
   const [isSearching, setIsSearching] = useState(false);
   const [processingProgress, setProcessingProgress] = useState(0);
   const [showPaymentWizard, setShowPaymentWizard] = useState(false);
+  const [showAutomaticPurchase, setShowAutomaticPurchase] = useState(false);
 
   const hostingPlans = RealDomainService.getHostingPlans();
 
@@ -70,24 +71,14 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
   };
 
   const handlePaymentComplete = async (paymentMethod: string, paymentData: any) => {
+    setShowAutomaticPurchase(true);
     setShowPaymentWizard(false);
-    setCurrentStep('processing');
-    
-    const steps = [
-      { message: 'בודק זמינות דומיין דרך Namecheap API...', progress: 20 },
-      { message: 'רוכש דומיין דרך Namecheap...', progress: 40 },
-      { message: 'מגדיר DNS וNameservers...', progress: 60 },
-      { message: 'מתקין SSL ואבטחה...', progress: 80 },
-      { message: 'בונה דף נחיתה מותאם אישית...', progress: 100 }
-    ];
+  };
 
-    for (const step of steps) {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setProcessingProgress(step.progress);
-    }
-
+  const handleAutomaticPurchaseSuccess = (domain: string) => {
+    setShowAutomaticPurchase(false);
     setCurrentStep('complete');
-    onDomainPurchased(selectedDomain, selectedHostingPlan);
+    onDomainPurchased(domain, selectedHostingPlan);
   };
 
   const getSelectedPlan = () => hostingPlans.find(plan => plan.id === selectedHostingPlan);
@@ -458,6 +449,15 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
             years: 1,
             orderId: `ORDER_${Date.now()}`
           }}
+        />
+      )}
+
+      {showAutomaticPurchase && (
+        <AutomaticPurchaseWizard
+          domain={selectedDomain}
+          hostingPlan={selectedHostingPlan}
+          onClose={() => setShowAutomaticPurchase(false)}
+          onSuccess={handleAutomaticPurchaseSuccess}
         />
       )}
     </>
