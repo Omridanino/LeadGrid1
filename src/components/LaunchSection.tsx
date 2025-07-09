@@ -74,6 +74,20 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
     setShowDomainPurchaseWizard(true);
   }, []);
 
+  const handleDomainPurchased = (domain: string, hostingPlan: string) => {
+    toast({
+      title: "🎉 רכישה הושלמה בהצלחה!",
+      description: `הדומיין ${domain} והאחסון ${hostingPlan} נרכשו בהצלחה`,
+    });
+    setShowDomainPurchaseWizard(false);
+  };
+
+  // Auto-open domain purchase wizard immediately
+  useEffect(() => {
+    saveTemplateData();
+    setShowDomainPurchaseWizard(true);
+  }, []);
+
   if (showWordPressForm) {
     return (
       <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50">
@@ -93,8 +107,7 @@ export const LaunchSection = ({ template, onBack, className = '' }: LaunchSectio
   if (showDomainPurchaseWizard) {
     return (
       <RealDomainPurchaseWizard
-        template={template}
-        isOpen={showDomainPurchaseWizard}
+        onDomainPurchased={handleDomainPurchased}
         onClose={() => setShowDomainPurchaseWizard(false)}
       />
     );
