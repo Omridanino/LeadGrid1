@@ -126,7 +126,7 @@ export const BANK_ACCOUNTS = [
   }
 ];
 
-export const LEADGRID_SERVICE_FEE = 129.90; // ₪129.90 לחודש עבור שירות LeadGrid
+export const LEADGRID_SERVICE_FEE = 130; // Rounded to ₪130 per month
 
 export class RealDomainService {
   private static readonly NAMECHEAP_API_USER = process.env.NAMECHEAP_API_USER;
@@ -552,7 +552,7 @@ export class RealDomainService {
     return password;
   }
 
-  // חישוב מחיר כולל כולל שירות LeadGrid
+  // חישוב מחיר כולל כולל שירות LeadGrid - מעוגל
   static calculateTotalPrice(domain: string, hostingPlanId: string, years: number = 1): number {
     const hostingPlan = this.getHostingPlans().find(p => p.id === hostingPlanId);
     if (!hostingPlan) return 0;
@@ -563,42 +563,37 @@ export class RealDomainService {
 
     // מחיר כולל: דומיין (לשנה) + אחסון (לשנה) + שירות LeadGrid (לשנה)
     const hostingYearlyPrice = hostingPlan.price * 12;
-    const leadgridYearlyPrice = LEADGRID_SERVICE_FEE * 12; // ₪129.90 × 12 חודשים
+    const leadgridYearlyPrice = LEADGRID_SERVICE_FEE * 12;
     
-    return (domainPrice * years) + hostingYearlyPrice + leadgridYearlyPrice;
+    const total = (domainPrice * years) + hostingYearlyPrice + leadgridYearlyPrice;
+    return Math.round(total); // Round to whole number
   }
 
-  // פונקציה חדשה לקבלת פירוט המחיר והרווח
+  // פונקציה מעודכנת לקבלת פירוט המחיר - ללא רווח עסקי
   static getPriceBreakdown(domain: string, hostingPlanId: string, years: number = 1) {
     const hostingPlan = this.getHostingPlans().find(p => p.id === hostingPlanId);
     if (!hostingPlan) return null;
 
     const extension = '.' + domain.split('.').pop();
     const domainPricing = this.getDomainPricing();
-    const domainPrice = domainPricing[extension]?.retail || 75;
-    const domainProfit = domainPricing[extension]?.profit || 55;
-    const hostingYearlyPrice = hostingPlan.price * 12;
-    const hostingYearlyProfit = 55 * 12; // ₪55 רווח לחודש
-    const leadgridYearlyPrice = LEADGRID_SERVICE_FEE * 12;
+    const domainPrice = Math.round(domainPricing[extension]?.retail || 75);
+    const hostingYearlyPrice = Math.round(hostingPlan.price * 12);
+    const leadgridYearlyPrice = Math.round(LEADGRID_SERVICE_FEE * 12);
 
     return {
       domain: {
         price: domainPrice * years,
-        profit: domainProfit * years,
         description: `דומיין ${domain} (${years} ${years === 1 ? 'שנה' : 'שנים'})`
       },
       hosting: {
         price: hostingYearlyPrice,
-        profit: hostingYearlyProfit,
         description: `אחסון ${hostingPlan.name} (12 חודשים)`
       },
       leadgrid: {
         price: leadgridYearlyPrice,
-        profit: leadgridYearlyPrice, // כל השירות שלנו הוא רווח
         description: 'שירות בניית דף נחיתה LeadGrid (12 חודשים)'
       },
-      total: (domainPrice * years) + hostingYearlyPrice + leadgridYearlyPrice,
-      totalProfit: (domainProfit * years) + hostingYearlyProfit + leadgridYearlyPrice
+      total: Math.round((domainPrice * years) + hostingYearlyPrice + leadgridYearlyPrice)
     };
   }
 
