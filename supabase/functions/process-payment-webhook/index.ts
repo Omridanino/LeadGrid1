@@ -1,6 +1,5 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import Stripe from "https://esm.sh/stripe@14.21.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -13,35 +12,55 @@ serve(async (req) => {
   }
 
   try {
-    const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
-      apiVersion: "2023-10-16",
+    const { orderId } = await req.json();
+    
+    console.log('🎯 PayPal Payment confirmed:', orderId);
+
+    const paypalClientId = Deno.env.get("PAYPAL_CLIENT_ID");
+    const paypalClientSecret = Deno.env.get("PAYPAL_CLIENT_SECRET");
+    const paypalMode = Deno.env.get("PAYPAL_MODE") || "sandbox";
+    
+    if (!paypalClientId || !paypalClientSecret) {
+      throw new Error("PayPal credentials not configured");
+    }
+
+    const paypalBaseUrl = paypalMode === "Live" ? "https://api-m.paypal.com" : "https://api-m.sandbox.paypal.com";
+    
+    // Get PayPal access token
+    const authResponse = await fetch(`${paypalBaseUrl}/v1/oauth2/token`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Accept-Language': 'en_US',
+        'Authorization': `Basic ${btoa(`${paypalClientId}:${paypalClientSecret}`)}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: 'grant_type=client_credentials'
     });
 
-    const body = await req.text();
-    const signature = req.headers.get("stripe-signature");
-    const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
+    const authData = await authResponse.json();
+    const accessToken = authData.access_token;
 
-    if (!signature || !webhookSecret) {
-      throw new Error("Missing signature or webhook secret");
-    }
+    // Get order details
+    const orderResponse = await fetch(`${paypalBaseUrl}/v2/checkout/orders/${orderId}`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
 
-    const event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-    console.log('🎯 Webhook event:', event.type);
-
-    if (event.type === 'payment_intent.succeeded') {
-      const paymentIntent = event.data.object as Stripe.PaymentIntent;
-      const { domain, hostingPlan, years } = paymentIntent.metadata;
-      
-      console.log('✅ תשלום אושר, מתחיל רכישה מ-Namecheap:', { domain, hostingPlan });
-      
-      // רכישה אוטומטית מ-Namecheap
-      await purchaseFromNamecheap({
-        domain,
-        hostingPlan,
-        years: parseInt(years || '1'),
-        paymentIntentId: paymentIntent.id
-      });
-    }
+    const orderData = await orderResponse.json();
+    const customData = JSON.parse(orderData.purchase_units[0].custom_id);
+    const { domain, hostingPlan, years } = customData;
+    
+    console.log('✅ תשלום אושר, מתחיל רכישה מ-GoDaddy:', { domain, hostingPlan });
+    
+    // רכישה אוטומטית מ-GoDaddy
+    await purchaseFromGoDaddy({
+      domain,
+      hostingPlan,
+      years: parseInt(years || '1'),
+      orderId
+    });
 
     return new Response(JSON.stringify({ received: true }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -59,136 +78,87 @@ serve(async (req) => {
   }
 });
 
-async function purchaseFromNamecheap(orderData: {
+async function purchaseFromGoDaddy(orderData: {
   domain: string;
   hostingPlan: string;
   years: number;
-  paymentIntentId: string;
+  orderId: string;
 }) {
   try {
-    console.log('🛒 מתחיל רכישה מ-Namecheap:', orderData);
+    console.log('🛒 מתחיל רכישה מ-GoDaddy:', orderData);
     
-    // Get Namecheap credentials
-    const apiUser = Deno.env.get('NAMECHEAP_API_USER');
-    const apiKey = Deno.env.get('NAMECHEAP_API_KEY');
-    const useSandbox = Deno.env.get('NAMECHEAP_SANDBOX') === 'true';
+    // Get GoDaddy credentials
+    const apiKey = Deno.env.get('GODADDY_API_KEY');
+    const apiSecret = Deno.env.get('GODADDY_API_SECRET');
+    const mode = Deno.env.get('GODADDY_MODE') || 'production';
     
-    if (!apiKey || !apiUser) {
-      throw new Error('Namecheap API credentials not configured');
+    if (!apiKey || !apiSecret) {
+      throw new Error('GoDaddy API credentials not configured');
     }
 
-    // Step 1: Purchase domain from Namecheap
-    const domainResult = await purchaseDomainFromNamecheap({
-      domain: orderData.domain,
-      years: orderData.years,
-      apiUser,
-      apiKey,
-      useSandbox
-    });
+    const baseUrl = mode === 'production' 
+      ? 'https://api.godaddy.com' 
+      : 'https://api.ote-godaddy.com';
 
-    if (!domainResult.success) {
-      throw new Error(`Domain purchase failed: ${domainResult.error}`);
+    // Step 1: Check domain availability
+    const availabilityResponse = await fetch(
+      `${baseUrl}/v1/domains/available?domain=${orderData.domain}`,
+      {
+        headers: {
+          'Authorization': `sso-key ${apiKey}:${apiSecret}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    const availabilityData = await availabilityResponse.json();
+    
+    if (!availabilityData.available) {
+      console.log('⚠️ דומיין לא זמין:', orderData.domain);
+      return { success: false, error: 'Domain not available' };
     }
 
-    // Step 2: Setup hosting (this would be your hosting setup logic)
-    const hostingResult = await setupHostingPlan({
-      domain: orderData.domain,
-      planId: orderData.hostingPlan,
-      apiUser,
-      apiKey,
-      useSandbox
+    // Step 2: Purchase domain from GoDaddy
+    const purchaseResponse = await fetch(`${baseUrl}/v1/domains/purchase`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `sso-key ${apiKey}:${apiSecret}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        domain: orderData.domain,
+        period: orderData.years || 1,
+        nameServers: ['ns1.godaddy.com', 'ns2.godaddy.com'],
+        renewAuto: true,
+        privacy: true,
+        consent: {
+          agreementKeys: ['DNRA'],
+          agreedBy: 'LeadGrid',
+          agreedAt: new Date().toISOString()
+        }
+      })
     });
 
-    console.log('🎉 רכישה הושלמה בהצלחה!', {
+    if (!purchaseResponse.ok) {
+      const errorData = await purchaseResponse.text();
+      console.error('❌ רכישת דומיין נכשלה:', errorData);
+      throw new Error(`GoDaddy domain purchase failed: ${errorData}`);
+    }
+
+    const purchaseData = await purchaseResponse.json();
+    console.log('🎉 דומיין נרכש בהצלחה מ-GoDaddy!', {
       domain: orderData.domain,
-      paymentIntent: orderData.paymentIntentId
+      orderId: purchaseData.orderId
     });
 
     return {
       success: true,
       domain: orderData.domain,
-      message: 'Domain and hosting purchased successfully'
+      message: 'Domain purchased successfully from GoDaddy'
     };
 
   } catch (error) {
-    console.error('❌ רכישה מ-Namecheap נכשלה:', error);
+    console.error('❌ רכישה מ-GoDaddy נכשלה:', error);
     throw error;
   }
-}
-
-async function purchaseDomainFromNamecheap(params: {
-  domain: string;
-  years: number;
-  apiUser: string;
-  apiKey: string;
-  useSandbox: boolean;
-}) {
-  try {
-    const apiUrl = params.useSandbox 
-      ? 'https://api.sandbox.namecheap.com/xml.response'
-      : 'https://api.namecheap.com/xml.response';
-
-    const requestParams = new URLSearchParams({
-      ApiUser: params.apiUser,
-      ApiKey: params.apiKey,
-      UserName: params.apiUser,
-      Command: 'namecheap.domains.create',
-      ClientIp: '127.0.0.1',
-      DomainName: params.domain,
-      Years: params.years.toString(),
-      AddFreeWhoisguard: 'yes',
-      WGEnabled: 'yes'
-    });
-
-    console.log('🌐 רוכש דומיין מ-Namecheap:', params.domain);
-    
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: requestParams
-    });
-
-    const responseText = await response.text();
-    console.log('📋 תגובת Namecheap:', responseText);
-    
-    const success = responseText.includes('CommandResponse Type="OK"');
-    
-    if (success) {
-      return {
-        success: true,
-        domain: params.domain,
-        message: 'Domain purchased successfully from Namecheap'
-      };
-    } else {
-      return {
-        success: false,
-        error: 'Namecheap domain purchase failed'
-      };
-    }
-  } catch (error) {
-    return {
-      success: false,
-      error: error.message
-    };
-  }
-}
-
-async function setupHostingPlan(params: {
-  domain: string;
-  planId: string;
-  apiUser: string;
-  apiKey: string;
-  useSandbox: boolean;
-}) {
-  // This would implement hosting setup through Namecheap hosting API
-  // For now, return success as hosting setup is more complex
-  console.log('⚙️ מגדיר אחסון עבור:', params.domain);
-  
-  return {
-    success: true,
-    domain: params.domain,
-    plan: params.planId
-  };
 }

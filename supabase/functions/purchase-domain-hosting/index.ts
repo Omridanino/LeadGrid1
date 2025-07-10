@@ -1,6 +1,5 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
@@ -17,11 +16,6 @@ serve(async (req) => {
     const { domain, hostingPlan, customerInfo, years = 1 } = await req.json();
     
     console.log('🚀 התחלת רכישה עבור:', { domain, hostingPlan, customerInfo });
-
-    // Initialize Stripe
-    const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
-      apiVersion: "2023-10-16",
-    });
 
     // Calculate pricing
     const domainExtension = '.' + domain.split('.').pop();
@@ -44,7 +38,7 @@ serve(async (req) => {
     const domainPrice = domainPricing[domainExtension] || 100;
     const hostingMonthlyPrice = hostingPricing[hostingPlan] || 100;
     const hostingYearlyPrice = hostingMonthlyPrice * 12;
-    const leadgridYearlyPrice = 130 * 12; // ₪130 לחודש שירות LeadGrid
+    const leadgridYearlyPrice = 130 * 12;
     
     const totalAmount = (domainPrice * years) + hostingYearlyPrice + leadgridYearlyPrice;
 
@@ -55,51 +49,79 @@ serve(async (req) => {
       total: totalAmount
     });
 
-    // Create Stripe customer if doesn't exist
-    let stripeCustomer;
-    const existingCustomers = await stripe.customers.list({
-      email: customerInfo.email,
-      limit: 1
-    });
-
-    if (existingCustomers.data.length > 0) {
-      stripeCustomer = existingCustomers.data[0];
-    } else {
-      stripeCustomer = await stripe.customers.create({
-        email: customerInfo.email,
-        name: `${customerInfo.firstName} ${customerInfo.lastName}`,
-        phone: customerInfo.phone,
-        address: {
-          line1: customerInfo.address,
-          city: customerInfo.city,
-          country: customerInfo.country,
-          postal_code: customerInfo.zipCode
-        }
-      });
+    // Create PayPal order
+    const paypalClientId = Deno.env.get("PAYPAL_CLIENT_ID");
+    const paypalClientSecret = Deno.env.get("PAYPAL_CLIENT_SECRET");
+    const paypalMode = Deno.env.get("PAYPAL_MODE") || "sandbox";
+    
+    if (!paypalClientId || !paypalClientSecret) {
+      throw new Error("PayPal credentials not configured");
     }
 
-    // Create payment intent for immediate charge
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: totalAmount * 100, // Convert to agorot
-      currency: 'ils',
-      customer: stripeCustomer.id,
-      automatic_payment_methods: {
-        enabled: true,
+    const paypalBaseUrl = paypalMode === "Live" ? "https://api-m.paypal.com" : "https://api-m.sandbox.paypal.com";
+    
+    // Get PayPal access token
+    const authResponse = await fetch(`${paypalBaseUrl}/v1/oauth2/token`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Accept-Language': 'en_US',
+        'Authorization': `Basic ${btoa(`${paypalClientId}:${paypalClientSecret}`)}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
-      metadata: {
-        domain,
-        hostingPlan,
-        years: years.toString(),
-        orderType: 'domain_hosting_purchase'
-      }
+      body: 'grant_type=client_credentials'
     });
 
-    console.log('💳 Payment Intent נוצר:', paymentIntent.id);
+    const authData = await authResponse.json();
+    const accessToken = authData.access_token;
+
+    // Create PayPal order
+    const orderResponse = await fetch(`${paypalBaseUrl}/v2/checkout/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+        'PayPal-Request-Id': `ORDER_${Date.now()}`
+      },
+      body: JSON.stringify({
+        intent: 'CAPTURE',
+        purchase_units: [{
+          amount: {
+            currency_code: 'ILS',
+            value: totalAmount.toString()
+          },
+          description: `רכישת דומיין ${domain} + אחסון ${hostingPlan} + שירות LeadGrid`,
+          custom_id: JSON.stringify({
+            domain,
+            hostingPlan,
+            years,
+            customerInfo
+          })
+        }],
+        application_context: {
+          return_url: `${req.headers.get("origin") || "http://localhost:5173"}/payment-success`,
+          cancel_url: `${req.headers.get("origin") || "http://localhost:5173"}/payment-cancel`,
+          brand_name: 'LeadGrid',
+          locale: 'he-IL',
+          landing_page: 'BILLING',
+          user_action: 'PAY_NOW'
+        }
+      })
+    });
+
+    const orderData = await orderResponse.json();
+    console.log('💳 PayPal Order נוצר:', orderData.id);
+
+    if (!orderData.id) {
+      throw new Error('Failed to create PayPal order');
+    }
+
+    const approvalUrl = orderData.links.find(link => link.rel === 'approve')?.href;
 
     return new Response(JSON.stringify({
       success: true,
-      clientSecret: paymentIntent.client_secret,
-      paymentIntentId: paymentIntent.id,
+      orderId: orderData.id,
+      approvalUrl,
       totalAmount,
       breakdown: {
         domain: domainPrice * years,
