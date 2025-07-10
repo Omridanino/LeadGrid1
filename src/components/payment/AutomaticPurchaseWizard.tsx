@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,7 +12,10 @@ import {
   Zap,
   CheckCircle,
   Loader2,
-  DollarSign
+  DollarSign,
+  Globe,
+  Server,
+  Mail
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -41,7 +45,7 @@ export const AutomaticPurchaseWizard = ({
   });
   const { toast } = useToast();
 
-  // Calculate pricing with new Leadgrid rates
+  // Calculate pricing with Leadgrid rates
   const domainExtension = '.' + domain.split('.').pop();
   const domainPricing = {
     '.com': 75,
@@ -61,7 +65,7 @@ export const AutomaticPurchaseWizard = ({
 
   const domainPrice = domainPricing[domainExtension] || 75;
   const hostingYearlyPrice = (hostingPricing[hostingPlan] || 80) * 12;
-  const leadgridYearlyPrice = 109.99 * 12; // New Leadgrid price
+  const leadgridYearlyPrice = 109.99 * 12;
   const totalAmount = domainPrice + hostingYearlyPrice + leadgridYearlyPrice;
 
   const handlePurchase = async () => {
@@ -77,7 +81,9 @@ export const AutomaticPurchaseWizard = ({
     setIsProcessing(true);
     
     try {
-      // Create PayPal order
+      console.log('🚀 מתחיל רכישה אמיתית עבור Leadgrid:', { domain, hostingPlan, customerInfo });
+
+      // Create PayPal order עם הפרטים העסקיים של Leadgrid
       const { data, error } = await supabase.functions.invoke('purchase-domain-hosting', {
         body: {
           domain,
@@ -95,14 +101,14 @@ export const AutomaticPurchaseWizard = ({
         
         toast({
           title: "🎉 הפניה לPayPal!",
-          description: "אנא השלם את התשלום בחלון שנפתח",
+          description: "אנא השלם את התשלום בחלון שנפתח. לאחר התשלום הדומיין יירכש אוטומטית מ-GoDaddy והאתר יעלה לאוויר",
         });
 
-        // Listen for payment completion (in a real app, you'd use webhooks)
+        // Listen for payment completion
         const checkPayment = setInterval(async () => {
           try {
-            // This is a simplified check - in production you'd verify via webhook
             console.log('בודק סטטוס תשלום...');
+            // בפרודקשן זה יבדוק דרך webhook
           } catch (error) {
             console.error('שגיאה בבדיקת תשלום:', error);
           }
@@ -138,8 +144,8 @@ export const AutomaticPurchaseWizard = ({
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-white text-2xl font-bold">רכישה אמיתית - Leadgrid</h2>
-              <p className="text-gray-400 text-sm mt-1">
-                התשלום ירכוש אוטומטית את {domain} ואחסון מ-GoDaddy
+              <p className="text-green-400 text-sm mt-1 font-medium">
+                ✅ התשלום ירכוש אוטומטית את {domain} מ-GoDaddy ויעלה את האתר לאוויר
               </p>
             </div>
             <Button onClick={onClose} variant="outline" size="sm">
@@ -159,7 +165,7 @@ export const AutomaticPurchaseWizard = ({
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-gray-300">דומיין {domain}:</span>
+                <span className="text-gray-300">דומיין {domain} (GoDaddy):</span>
                 <span className="text-white">₪{domainPrice}</span>
               </div>
               <div className="flex justify-between">
@@ -256,25 +262,77 @@ export const AutomaticPurchaseWizard = ({
             </CardContent>
           </Card>
 
+          {/* מה יקרה אחרי התשלום */}
+          <Card className="bg-gradient-to-br from-green-900/30 to-blue-900/30 border-green-600/50">
+            <CardHeader>
+              <CardTitle className="text-green-300 flex items-center gap-2">
+                <Zap className="w-5 h-5" />
+                מה יקרה אחרי התשלום?
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-sm">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">1</div>
+                <div>
+                  <div className="flex items-center gap-2 text-green-300 font-medium">
+                    <Globe className="w-4 h-4" />
+                    <span>רכישת דומיין מ-GoDaddy</span>
+                  </div>
+                  <p className="text-green-200 text-xs mt-1">הדומיין {domain} יירכש אוטומטית מ-GoDaddy</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">2</div>
+                <div>
+                  <div className="flex items-center gap-2 text-blue-300 font-medium">
+                    <Server className="w-4 h-4" />
+                    <span>הגדרת אחסון והעלאת האתר</span>
+                  </div>
+                  <p className="text-blue-200 text-xs mt-1">האתר שלך יועלה לשרתי Leadgrid ויהיה זמין ב-{domain}</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">3</div>
+                <div>
+                  <div className="flex items-center gap-2 text-purple-300 font-medium">
+                    <Mail className="w-4 h-4" />
+                    <span>קבלת פרטי גישה באימייל</span>
+                  </div>
+                  <p className="text-purple-200 text-xs mt-1">תקבל אימייל עם כתובת האתר ופרטי גישה לניהול</p>
+                </div>
+              </div>
+
+              <div className="bg-yellow-900/30 border border-yellow-600/50 rounded-lg p-3 mt-4">
+                <div className="text-yellow-300 font-medium text-center">⏱️ הכל יהיה מוכן תוך 15 דקות!</div>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* What's included */}
-          <Card className="bg-green-900/20 border-green-600/50">
+          <Card className="bg-blue-900/20 border-blue-700/30">
             <CardContent className="p-4">
               <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2 text-green-300">
+                <div className="flex items-center gap-2 text-blue-300">
                   <CheckCircle className="w-4 h-4" />
                   <span>רכישה אמיתית מ-GoDaddy ברגע התשלום</span>
                 </div>
-                <div className="flex items-center gap-2 text-green-300">
+                <div className="flex items-center gap-2 text-blue-300">
                   <Zap className="w-4 h-4" />
                   <span>הדומיין יהיה פעיל תוך 15 דקות</span>
                 </div>
-                <div className="flex items-center gap-2 text-green-300">
+                <div className="flex items-center gap-2 text-blue-300">
                   <Shield className="w-4 h-4" />
-                  <span>SSL ואבטחה אוטומטיים</span>
+                  <span>SSL ואבטחה אוטומטיים בשרתי Leadgrid</span>
                 </div>
-                <div className="flex items-center gap-2 text-green-300">
+                <div className="flex items-center gap-2 text-blue-300">
                   <CheckCircle className="w-4 h-4" />
-                  <span>שירות Leadgrid מלא ומקצועי</span>
+                  <span>האתר יועלה אוטומטית לדומיין החדש</span>
+                </div>
+                <div className="flex items-center gap-2 text-blue-300">
+                  <Mail className="w-4 h-4" />
+                  <span>אימייל עם פרטי גישה וניהול</span>
                 </div>
               </div>
             </CardContent>
@@ -285,7 +343,7 @@ export const AutomaticPurchaseWizard = ({
             onClick={handlePurchase}
             disabled={isProcessing}
             size="lg"
-            className="w-full bg-blue-600 hover:bg-blue-700"
+            className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 font-bold"
           >
             {isProcessing ? (
               <>
@@ -299,6 +357,11 @@ export const AutomaticPurchaseWizard = ({
               </>
             )}
           </Button>
+
+          <div className="text-center text-xs text-gray-400">
+            לחיצה על הכפתור תפתח את PayPal בחלון חדש.<br/>
+            לאחר התשלום, הדומיין יירכש אוטומטית והאתר יעלה לאוויר.
+          </div>
         </div>
       </div>
     </div>

@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -97,9 +98,9 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
           <div className="p-6 border-b border-gray-800">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-white text-2xl font-bold">רכישת דומיין ואחסון מקצועי</h2>
+                <h2 className="text-white text-2xl font-bold">רכישת דומיין ואחסון מקצועי - Leadgrid</h2>
                 <p className="text-gray-400 text-sm mt-1">
-                  פתרון מלא לבניית דף נחיתה מקצועי - דומיין מ-Namecheap + אחסון מהיר + שירות LeadGrid
+                  פתרון מלא לבניית דף נחיתה מקצועי - דומיין מ-GoDaddy + אחסון מהיר + שירות Leadgrid
                 </p>
               </div>
               <Button onClick={onClose} variant="outline" size="sm">
@@ -115,7 +116,7 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
                 <div className="text-center">
                   <Globe className="w-16 h-16 text-blue-400 mx-auto mb-4" />
                   <h3 className="text-xl font-semibold text-white mb-2">מצא את הדומיין המושלם לעסק שלך</h3>
-                  <p className="text-gray-400">חיפוש דומיינים באמצעות Namecheap API - מחירים אמיתיים וזמינות מעודכנת</p>
+                  <p className="text-gray-400">חיפוש דומיינים באמצעות GoDaddy API - מחירים אמיתיים וזמינות מעודכנת</p>
                 </div>
 
                 <Card className="bg-gray-800 border-gray-700">
@@ -149,7 +150,7 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
                           <div>
                             <div className="text-blue-300 font-medium">מחירים שקופים</div>
                             <div className="text-blue-200 text-sm mt-1">
-                              המחירים כוללים רכישה דרך Namecheap + ₪55 שירות + דומיין לשנה מלאה
+                              המחירים כוללים רכישה דרך GoDaddy + שירות Leadgrid מקצועי + דומיין לשנה מלאה
                             </div>
                           </div>
                         </div>
@@ -157,7 +158,7 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
 
                       {domainResults.length > 0 && (
                         <div className="space-y-3">
-                          <h4 className="text-white font-medium">תוצאות חיפוש מ-Namecheap:</h4>
+                          <h4 className="text-white font-medium">תוצאות חיפוש מ-GoDaddy:</h4>
                           {domainResults.map((result) => (
                             <Card key={result.domain} className={`border ${result.available ? 'border-green-600 bg-green-900/20' : 'border-red-600 bg-red-900/20'}`}>
                               <CardContent className="p-4">
@@ -171,7 +172,7 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
                                     <div>
                                       <span className="text-white font-medium">{result.domain}</span>
                                       <div className="text-sm text-gray-400">
-                                        {result.available ? 'זמין דרך Namecheap' : 'כבר תפוס'}
+                                        {result.available ? 'זמין דרך GoDaddy' : 'כבר תפוס'}
                                         {result.registrar === 'demo' && ' (דמו)'}
                                       </div>
                                     </div>
@@ -210,7 +211,7 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
                   <h3 className="text-xl font-semibold text-white mb-2">בחר תוכנית אחסון מקצועית</h3>
                   <p className="text-gray-400">הדומיין שלך: <span className="text-blue-400 font-medium">{selectedDomain}</span></p>
                   <p className="text-gray-300 text-sm mt-2">
-                    מחירים כוללים ₪55 שירות + אחסון Namecheap איכותי
+                    מחירים כוללים אחסון איכותי + שירות Leadgrid מקצועי
                   </p>
                 </div>
 
@@ -234,7 +235,6 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
                         <div className="text-center">
                           <div className="text-2xl font-bold text-white">₪{plan.price}</div>
                           <div className="text-sm text-gray-400">לחודש</div>
-                          <div className="text-xs text-gray-500">מחיר Namecheap: ${plan.originalPrice}</div>
                         </div>
                       </CardHeader>
                       
@@ -280,7 +280,7 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
               <div className="space-y-6">
                 <div className="text-center">
                   <CreditCard className="w-16 h-16 text-green-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-white mb-2">סיכום הזמנה</h3>
+                  <h3 className="text-xl font-semibold text-white mb-2">סיכום הזמנה - Leadgrid</h3>
                   <p className="text-gray-400">בדוק את הפרטים לפני התשלום</p>
                 </div>
 
@@ -304,7 +304,7 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
                             <span className="text-white">₪{getPriceBreakdown()?.hosting.price}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gray-300">שירות LeadGrid:</span>
+                            <span className="text-gray-300">שירות Leadgrid:</span>
                             <span className="text-white">₪{getPriceBreakdown()?.leadgrid.price}</span>
                           </div>
                           
@@ -326,29 +326,29 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
                     <CardHeader>
                       <CardTitle className="text-white flex items-center gap-2">
                         <Shield className="w-5 h-5" />
-                        מה כלול בשירות?
+                        מה כלול בשירות Leadgrid?
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-3">
                       <div className="flex items-start gap-2">
                         <CheckCircle className="w-5 h-5 text-green-400 mt-0.5" />
                         <div>
-                          <div className="text-white font-medium">דומיין דרך Namecheap</div>
-                          <div className="text-gray-400 text-sm">רכישה מקצועית מחברת דומיינים מובילה</div>
+                          <div className="text-white font-medium">דומיין דרך GoDaddy</div>
+                          <div className="text-gray-400 text-sm">רכישה מקצועית מחברת דומיינים מובילה עולמית</div>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
                         <CheckCircle className="w-5 h-5 text-green-400 mt-0.5" />
                         <div>
                           <div className="text-white font-medium">אחסון מהיר ויציב</div>
-                          <div className="text-gray-400 text-sm">SSD מהיר + CDN לטעינה מהירה</div>
+                          <div className="text-gray-400 text-sm">SSD מהיר + CDN לטעינה מהירה בכל העולם</div>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
                         <CheckCircle className="w-5 h-5 text-green-400 mt-0.5" />
                         <div>
                           <div className="text-white font-medium">בניית דף נחיתה מותאם</div>
-                          <div className="text-gray-400 text-sm">דף נחיתה מקצועי לעסק שלך</div>
+                          <div className="text-gray-400 text-sm">דף נחיתה מקצועי המותאם לעסק שלך</div>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
@@ -356,6 +356,13 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
                         <div>
                           <div className="text-white font-medium">SSL ואבטחה מלאה</div>
                           <div className="text-gray-400 text-sm">הצפנה ואבטחה ברמה הגבוהה ביותר</div>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <CheckCircle className="w-5 h-5 text-green-400 mt-0.5" />
+                        <div>
+                          <div className="text-white font-medium">תמיכה טכנית מקצועית</div>
+                          <div className="text-gray-400 text-sm">צוות Leadgrid לתמיכה ושירות</div>
                         </div>
                       </div>
                     </CardContent>
@@ -383,7 +390,7 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
                 
                 <div>
                   <h3 className="text-white text-xl font-semibold mb-2">בונה את דף הנחיתה שלך</h3>
-                  <p className="text-gray-400">עובד עם Namecheap API לרכישת הדומיין...</p>
+                  <p className="text-gray-400">עובד עם GoDaddy API לרכישת הדומיין...</p>
                 </div>
 
                 <div className="max-w-md mx-auto">
@@ -402,7 +409,7 @@ export const RealDomainPurchaseWizard = ({ onDomainPurchased, onClose }: RealDom
                 <div>
                   <h3 className="text-white text-2xl font-bold mb-2">דף הנחיתה שלך מוכן! 🎉</h3>
                   <p className="text-gray-400">
-                    הדומיין <span className="text-green-400 font-medium">{selectedDomain}</span> נרכש דרך Namecheap והאחסון הוגדר בהצלחה
+                    הדומיין <span className="text-green-400 font-medium">{selectedDomain}</span> נרכש דרך GoDaddy והאחסון הוגדר בהצלחה
                   </p>
                 </div>
 
