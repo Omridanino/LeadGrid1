@@ -1,3 +1,4 @@
+
 // Real domain registration and hosting service
 export interface DomainRegistrationData {
   domain: string;
@@ -129,9 +130,8 @@ export const BANK_ACCOUNTS = [
 export const LEADGRID_SERVICE_FEE = 109.99; // ₪109.99 per month
 
 export class RealDomainService {
-  private static readonly GODADDY_API_KEY = process.env.GODADDY_API_KEY;
-  private static readonly GODADDY_API_SECRET = process.env.GODADDY_API_SECRET;
-  private static readonly GODADDY_MODE = process.env.GODADDY_MODE || 'production';
+  // Remove process.env references - these will be handled via Supabase Edge Functions
+  private static readonly IS_DEMO_MODE = true; // For now, always demo mode in browser
 
   // מחירי דומיינים - רווח קבוע של ₪25 לכל דומיין
   static getDomainPricing() {
@@ -182,17 +182,17 @@ export class RealDomainService {
     ];
   }
 
-  // בדיקת זמינות דומיין דרך GoDaddy API האמיתי
+  // בדיקת זמינות דומיין - בדפדפן נשתמש רק בסימולציה
   static async checkDomainAvailability(domain: string): Promise<RealDomainAvailabilityResult[]> {
     try {
-      console.log(`🔍 בודק זמינות דומיין: ${domain} דרך GoDaddy API`);
+      console.log(`🔍 בודק זמינות דומיין: ${domain} במצב דמו`);
 
       const results: RealDomainAvailabilityResult[] = [];
       const pricing = this.getDomainPricing();
       
       // בדיקת הדומיין הראשי
       const mainDomain = domain.includes('.') ? domain : `${domain}.com`;
-      const mainResult = await this.checkSingleDomainWithGoDaddy(mainDomain, pricing);
+      const mainResult = this.simulateDomainCheck(mainDomain, pricing);
       results.push(mainResult);
 
       // הצעות חלופיות אם הדומיין תפוס
@@ -206,7 +206,7 @@ export class RealDomainService {
         ];
 
         for (const suggestion of suggestions.slice(0, 3)) {
-          const suggestionResult = await this.checkSingleDomainWithGoDaddy(suggestion, pricing);
+          const suggestionResult = this.simulateDomainCheck(suggestion, pricing);
           results.push(suggestionResult);
         }
       }
@@ -215,49 +215,6 @@ export class RealDomainService {
     } catch (error) {
       console.error('❌ בדיקת זמינות דומיין נכשלה:', error);
       return [this.simulateDomainCheck(domain.includes('.') ? domain : `${domain}.com`)];
-    }
-  }
-
-  private static async checkSingleDomainWithGoDaddy(domain: string, pricing: any): Promise<RealDomainAvailabilityResult> {
-    try {
-      // אם אין API credentials, נשתמש בסימולציה
-      if (!this.GODADDY_API_KEY || !this.GODADDY_API_SECRET) {
-        console.log('⚠️ GoDaddy API לא מוגדר, משתמש בסימולציה');
-        return this.simulateDomainCheck(domain, pricing);
-      }
-
-      console.log(`🌐 בדיקה אמיתית עם GoDaddy API: ${domain}`);
-      
-      const baseUrl = this.GODADDY_MODE === 'production' 
-        ? 'https://api.godaddy.com' 
-        : 'https://api.ote-godaddy.com';
-
-      const response = await fetch(
-        `${baseUrl}/v1/domains/available?domain=${domain}`,
-        {
-          headers: {
-            'Authorization': `sso-key ${this.GODADDY_API_KEY}:${this.GODADDY_API_SECRET}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-
-      const data = await response.json();
-      console.log('📋 תגובת GoDaddy:', data);
-      
-      const available = data.available;
-      const extension = '.' + domain.split('.').pop();
-      const price = pricing[extension]?.retail || 75;
-      
-      return {
-        domain,
-        available,
-        price,
-        registrar: 'godaddy'
-      };
-    } catch (error) {
-      console.error('❌ GoDaddy בדיקה נכשלה:', error);
-      return this.simulateDomainCheck(domain, pricing);
     }
   }
 
@@ -278,13 +235,13 @@ export class RealDomainService {
     };
   }
 
-  // רכישת דומיין ואחסון אמיתית דרך GoDaddy
+  // רכישת דומיין ואחסון - במצב דמו
   static async purchaseDomainAndHosting(request: PurchaseRequest): Promise<PurchaseResult> {
     try {
-      console.log('🚀 מתחיל רכישת דומיין ואחסון אמיתית:', request);
+      console.log('🚀 מתחיל רכישת דומיין ואחסון במצב דמו:', request);
 
-      // שלב 1: רכישת דומיין דרך GoDaddy API
-      const domainResult = await this.purchaseDomainWithGoDaddy({
+      // שלב 1: סימולציית רכישת דומיין
+      const domainResult = await this.simulateDomainPurchase({
         domain: request.domain,
         registrar: 'godaddy',
         years: request.payment.years,
@@ -317,7 +274,7 @@ export class RealDomainService {
         orderId: request.orderId,
         domain: request.domain,
         siteUrl: `https://${request.domain}`,
-        message: 'הדומיין ודף הנחיתה נוצרו בהצלחה! הדומיין יהיה פעיל תוך 15 דקות.',
+        message: 'הדומיין ודף הנחיתה נוצרו בהצלחה! (דמו) הדומיין יהיה פעיל תוך 15 דקות.',
         status: 'completed',
         wordpressDetails: landingPageDetails
       };
@@ -326,65 +283,6 @@ export class RealDomainService {
       return {
         success: false,
         error: `רכישה נכשלה: ${error.message}`,
-        status: 'failed'
-      };
-    }
-  }
-
-  // רכישת דומיין דרך GoDaddy API האמיתי
-  private static async purchaseDomainWithGoDaddy(data: DomainRegistrationData): Promise<PurchaseResult> {
-    try {
-      if (!this.GODADDY_API_KEY || !this.GODADDY_API_SECRET) {
-        console.log('⚠️ GoDaddy API לא מוגדר, משתמש בסימולציה');
-        return this.simulateDomainPurchase(data);
-      }
-
-      console.log('💰 רכישה אמיתית דרך GoDaddy API - זה עולה כסף אמיתי!');
-      
-      const baseUrl = this.GODADDY_MODE === 'production' 
-        ? 'https://api.godaddy.com' 
-        : 'https://api.ote-godaddy.com';
-
-      const response = await fetch(`${baseUrl}/v1/domains/purchase`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `sso-key ${this.GODADDY_API_KEY}:${this.GODADDY_API_SECRET}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          domain: data.domain,
-          period: data.years,
-          nameServers: ['ns1.leadgrid.co.il', 'ns2.leadgrid.co.il'],
-          renewAuto: data.autoRenew,
-          privacy: data.whoisPrivacy,
-          consent: {
-            agreementKeys: ['DNRA'],
-            agreedBy: 'Leadgrid',
-            agreedAt: new Date().toISOString()
-          }
-        })
-      });
-
-      const responseData = await response.json();
-      console.log('📋 תגובת רכישה מ-GoDaddy:', responseData);
-      
-      if (response.ok) {
-        return {
-          success: true,
-          orderId: responseData.orderId || `GD_${Date.now()}`,
-          domain: data.domain,
-          message: 'דומיין נרכש בהצלחה דרך GoDaddy',
-          status: 'completed',
-          nameservers: ['ns1.leadgrid.co.il', 'ns2.leadgrid.co.il']
-        };
-      } else {
-        throw new Error(`GoDaddy רכישה נכשלה: ${responseData.message || 'שגיאה לא ידועה'}`);
-      }
-    } catch (error) {
-      console.error('❌ רכישה דרך GoDaddy נכשלה:', error);
-      return {
-        success: false,
-        error: `רכישה דרך GoDaddy נכשלה: ${error.message}`,
         status: 'failed'
       };
     }
@@ -414,7 +312,7 @@ export class RealDomainService {
     });
   }
 
-  // הגדרת אחסון (יישאר אותו דבר)
+  // הגדרת אחסון
   static async setupHosting(hostingData: HostingSetupData): Promise<PurchaseResult> {
     try {
       console.log('⚙️ מגדיר אחסון עבור:', hostingData.domain);
@@ -481,7 +379,7 @@ export class RealDomainService {
 
   private static async createLandingPage(request: PurchaseRequest) {
     console.log('🔨 יוצר דף נחיתה מותאם אישית...');
-    const isDemo = !this.GODADDY_API_KEY;
+    const isDemo = this.IS_DEMO_MODE;
     
     return {
       isDemo,
