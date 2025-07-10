@@ -95,8 +95,8 @@ export const ABTestManager = ({ template, onUpdate }: ABTestManagerProps) => {
     }
   };
 
-  const calculateConversionRate = (conversions: number, visitors: number) => {
-    if (visitors === 0) return 0;
+  const calculateConversionRate = (conversions: number, visitors: number): string => {
+    if (visitors === 0) return '0.00';
     return ((conversions / visitors) * 100).toFixed(2);
   };
 
@@ -298,46 +298,49 @@ export const ABTestManager = ({ template, onUpdate }: ABTestManagerProps) => {
                     </div>
                     <p className="text-green-200 text-sm">
                       {test.variants.find(v => v.id === getWinningVariant(test).id)?.name} 
-                      {' '}עם שיעור המרה של {getWinningVariant(test).rate}%
+                      {' '}עם שיעור המרה של {getWinningVariant(test).rate.toFixed(2)}%
                     </p>
                   </div>
                 )}
 
                 <div className="grid gap-4">
-                  {test.variants.map((variant) => (
-                    <Card key={variant.id} className="bg-slate-700/50 border-slate-600">
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between mb-3">
-                          <h4 className="text-white font-medium">{variant.name}</h4>
-                          <Badge variant="outline" className="text-slate-300">
-                            {variant.traffic}% תנועה
-                          </Badge>
-                        </div>
-                        
-                        <div className="grid grid-cols-3 gap-4 mb-3">
-                          <div className="text-center">
-                            <div className="text-white font-bold">{variant.visitors}</div>
-                            <div className="text-slate-400 text-xs">מבקרים</div>
+                  {test.variants.map((variant) => {
+                    const conversionRate = calculateConversionRate(variant.conversions, variant.visitors);
+                    return (
+                      <Card key={variant.id} className="bg-slate-700/50 border-slate-600">
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="text-white font-medium">{variant.name}</h4>
+                            <Badge variant="outline" className="text-slate-300">
+                              {variant.traffic}% תנועה
+                            </Badge>
                           </div>
-                          <div className="text-center">
-                            <div className="text-white font-bold">{variant.conversions}</div>
-                            <div className="text-slate-400 text-xs">המרות</div>
-                          </div>
-                          <div className="text-center">
-                            <div className="text-white font-bold">
-                              {calculateConversionRate(variant.conversions, variant.visitors)}%
+                          
+                          <div className="grid grid-cols-3 gap-4 mb-3">
+                            <div className="text-center">
+                              <div className="text-white font-bold">{variant.visitors}</div>
+                              <div className="text-slate-400 text-xs">מבקרים</div>
                             </div>
-                            <div className="text-slate-400 text-xs">שיעור המרה</div>
+                            <div className="text-center">
+                              <div className="text-white font-bold">{variant.conversions}</div>
+                              <div className="text-slate-400 text-xs">המרות</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-white font-bold">
+                                {conversionRate}%
+                              </div>
+                              <div className="text-slate-400 text-xs">שיעור המרה</div>
+                            </div>
                           </div>
-                        </div>
-                        
-                        <Progress 
-                          value={parseFloat(calculateConversionRate(variant.conversions, variant.visitors))} 
-                          className="h-2"
-                        />
-                      </CardContent>
-                    </Card>
-                  ))}
+                          
+                          <Progress 
+                            value={parseFloat(conversionRate)} 
+                            className="h-2"
+                          />
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
                 </div>
               </TabsContent>
 
