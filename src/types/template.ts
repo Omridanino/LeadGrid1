@@ -67,6 +67,7 @@ export interface HeroSection {
   button1Icon?: string;
   button2Icon?: string;
   image?: string;
+  backgroundImage?: string;
 }
 
 export interface EmotionalSection {
@@ -374,10 +375,39 @@ export interface AdvancedStyles {
   responsive?: any;
   analytics?: any;
   forms?: any;
-  popups?: any;
-  interactivity?: any;
-  notifications?: any;
-  security?: any;
+  popups?: {
+    enabled: boolean;
+    type: 'exit-intent' | 'timer' | 'scroll';
+    timer?: number;
+    scrollPercentage?: number;
+    title: string;
+    message: string;
+    buttonText: string;
+    showFrequency: 'once' | 'session' | 'always';
+  };
+  interactivity?: {
+    animations: boolean;
+    hoverEffects: boolean;
+    parallaxScrolling: boolean;
+    smoothScrolling: boolean;
+    cursorEffects: boolean;
+  };
+  notifications?: {
+    enabled: boolean;
+    type: 'recent-activity' | 'visitor-count' | 'social-proof';
+    message: string;
+    position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+    showInterval: number;
+    autoHide: boolean;
+    hideAfter: number;
+  };
+  security?: {
+    enableCaptcha: boolean;
+    enableRateLimit: boolean;
+    blockSuspiciousIPs: boolean;
+    enableCSP: boolean;
+    enableHTTPS: boolean;
+  };
 }
 
 export interface TemplateData {
