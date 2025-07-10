@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,7 +17,7 @@ import {
   Plus,
   Play,
   Pause,
-  Stop
+  Square
 } from 'lucide-react';
 
 interface ABTest {
@@ -242,7 +241,7 @@ export const ABTestingManager = ({ onTestChange, currentTests }: ABTestingManage
                               stopTest(test.id);
                             }}
                           >
-                            <Stop className="w-3 h-3 mr-1" />
+                            <Square className="w-3 h-3 mr-1" />
                             עצור
                           </Button>
                         </>
