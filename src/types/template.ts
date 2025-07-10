@@ -1,3 +1,4 @@
+
 export interface TemplateStyles {
   // Background colors for each section
   backgroundColor: string;
@@ -302,6 +303,77 @@ export interface TemplateEffects {
   contact?: string | null;
 }
 
+// Advanced features interfaces
+export interface ABTest {
+  id: string;
+  name: string;
+  status: 'draft' | 'running' | 'paused' | 'completed';
+  startDate: string;
+  endDate?: string;
+  variants: {
+    id: string;
+    name: string;
+    traffic: number;
+    conversions: number;
+    visitors: number;
+    changes: any;
+  }[];
+  goal: {
+    type: 'click' | 'form_submit' | 'page_view' | 'custom';
+    target: string;
+    description: string;
+  };
+}
+
+export interface DynamicForm {
+  id: string;
+  title: string;
+  submitText: string;
+  successMessage: string;
+  redirectUrl?: string;
+  emailNotifications: boolean;
+  autoResponse: boolean;
+  autoResponseSubject?: string;
+  autoResponseMessage?: string;
+  webhookUrl?: string;
+  crmIntegration: string;
+  fields: {
+    id: string;
+    type: 'text' | 'email' | 'phone' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'file' | 'date' | 'number';
+    label: string;
+    placeholder?: string;
+    required: boolean;
+    options?: string[];
+    validation?: {
+      minLength?: number;
+      maxLength?: number;
+      pattern?: string;
+    };
+  }[];
+}
+
+export interface AdvancedStyles {
+  desktop?: any;
+  tablet?: any;
+  mobile?: any;
+  seo?: {
+    title: string;
+    description: string;
+    keywords: string;
+    ogImage: string;
+    indexable: boolean;
+  };
+  integrations?: {
+    facebookPixel?: string;
+    googleAnalytics?: string;
+    tiktokPixel?: string;
+    linkedinInsight?: string;
+    gtm?: string;
+    zapierWebhook?: string;
+    customHeadScripts?: string;
+  };
+}
+
 export interface TemplateData {
   id: string;
   name: string;
@@ -329,4 +401,8 @@ export interface TemplateData {
   sectionsOrder?: string[];
   styles: TemplateStyles;
   effects?: TemplateEffects;
+  // Advanced features
+  advancedStyles?: AdvancedStyles;
+  customForms?: DynamicForm[];
+  abTests?: ABTest[];
 }

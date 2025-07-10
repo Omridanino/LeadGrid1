@@ -35,7 +35,8 @@ import {
   Settings,
   Plus,
   Maximize2,
-  Minimize2
+  Minimize2,
+  Wrench
 } from 'lucide-react';
 import { TemplateData } from '@/types/template';
 import { TemplatePreview } from './template-editor/TemplatePreview';
@@ -58,6 +59,7 @@ import { EmbedEditor } from './template-editor/EmbedEditor';
 import { SocialBarEditor } from './template-editor/SocialBarEditor';
 import { EffectsEditor } from './template-editor/EffectsEditor';
 import { StylesEditor } from './template-editor/StylesEditor';
+import { AdvancedTemplateEditor } from './advanced/AdvancedTemplateEditor';
 import { generatePageHTML } from '@/utils/pageGenerator';
 import { LaunchSection } from './LaunchSection';
 
@@ -74,6 +76,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
   const [activeSection, setActiveSection] = useState('hero');
   const [isEditorMinimized, setIsEditorMinimized] = useState(false);
   const [showLaunchSection, setShowLaunchSection] = useState(false);
+  const [showAdvancedEditor, setShowAdvancedEditor] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const { toast } = useToast();
 
@@ -350,6 +353,16 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
     }
   };
 
+  if (showAdvancedEditor) {
+    return (
+      <AdvancedTemplateEditor
+        template={editedTemplate}
+        onTemplateChange={setEditedTemplate}
+        onSave={handleSave}
+      />
+    );
+  }
+
   if (showLaunchSection) {
     return <LaunchSection template={editedTemplate} onBack={handleBackToEditor} />;
   }
@@ -392,7 +405,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
             </div>
             
             {/* Action Buttons - Compact */}
-            <div className="flex gap-1.5">
+            <div className="flex gap-1.5 mb-2">
               <Button 
                 size="sm" 
                 className={`flex-1 ${
@@ -428,6 +441,16 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                 פרסם
               </Button>
             </div>
+
+            {/* Advanced Editor Button */}
+            <Button 
+              size="sm" 
+              className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white shadow-lg text-xs px-2 py-1.5"
+              onClick={() => setShowAdvancedEditor(true)}
+            >
+              <Wrench className="w-3 h-3 ml-1" />
+              עורך מתקדם
+            </Button>
           </div>
 
           {/* Navigation Tabs */}
@@ -561,6 +584,14 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
             </Badge>
             {isEditorMinimized && (
               <>
+                <Button
+                  onClick={() => setShowAdvancedEditor(true)}
+                  size="sm"
+                  className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white shadow-lg text-xs px-2 py-1.5"
+                >
+                  <Wrench className="w-3 h-3 mr-1" />
+                  עורך מתקדם
+                </Button>
                 <Button
                   onClick={handleSave}
                   size="sm"
