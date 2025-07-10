@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -72,6 +71,9 @@ import { StylesEditor } from './template-editor/StylesEditor';
 import { AdvancedTemplateEditor } from './advanced/AdvancedTemplateEditor';
 import { generatePageHTML } from '@/utils/pageGenerator';
 import { LaunchSection } from './LaunchSection';
+import { SEOEditor } from './advanced/SEOEditor';
+import { ResponsiveEditor } from './advanced/ResponsiveEditor';
+import { AnalyticsEditor } from './advanced/AnalyticsEditor';
 
 interface ModernTemplateEditorProps {
   template: TemplateData;
@@ -379,33 +381,18 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
         return <StylesEditor template={editedTemplate} onUpdate={updateStyles} />;
       case 'effects':
         return <EffectsEditor template={editedTemplate} onUpdate={updateEffects} />;
-      // Advanced sections placeholders
+      // Advanced sections with real content
       case 'seo':
-        return (
-          <div className="p-4 space-y-4">
-            <h3 className="text-white text-lg font-bold">SEO ומטא תגים</h3>
-            <p className="text-gray-300">כלים לאופטימיזציה למנועי חיפוש - בפיתוח</p>
-          </div>
-        );
+        return <SEOEditor template={editedTemplate} onUpdate={(updates) => updateSection('advancedStyles', updates.advancedStyles)} />;
       case 'responsive':
-        return (
-          <div className="p-4 space-y-4">
-            <h3 className="text-white text-lg font-bold">עיצוב רספונסיבי</h3>
-            <p className="text-gray-300">כלים לעיצוב מותאם לכל המכשירים - בפיתוח</p>
-          </div>
-        );
+        return <ResponsiveEditor template={editedTemplate} onUpdate={(updates) => updateSection('advancedStyles', updates.advancedStyles)} />;
       case 'analytics':
-        return (
-          <div className="p-4 space-y-4">
-            <h3 className="text-white text-lg font-bold">פיקסלים ואנליטיקס</h3>
-            <p className="text-gray-300">חיבור ל-Facebook Pixel, Google Analytics ועוד - בפיתוח</p>
-          </div>
-        );
+        return <AnalyticsEditor template={editedTemplate} onUpdate={(updates) => updateSection('advancedStyles', updates.advancedStyles)} />;
       case 'forms':
         return (
           <div className="p-4 space-y-4">
             <h3 className="text-white text-lg font-bold">טפסים דינמיים</h3>
-            <p className="text-gray-300">יצירת טפסים מותאמים אישית - בפיתוח</p>
+            <p className="text-gray-300">כלים ליצירת טפסים מותאמים אישית - בפיתוח</p>
           </div>
         );
       case 'abtesting':
