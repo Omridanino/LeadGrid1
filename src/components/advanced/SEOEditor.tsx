@@ -1,127 +1,100 @@
 
-import { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Globe, Search, Tag, Image } from 'lucide-react';
-import { TemplateData } from '@/types/template';
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { Search, Globe, FileText, Image } from 'lucide-react';
 
 interface SEOEditorProps {
-  template: TemplateData;
   onUpdate: (updates: any) => void;
+  currentData: any;
 }
 
-export const SEOEditor = ({ template, onUpdate }: SEOEditorProps) => {
+export const SEOEditor = ({ onUpdate, currentData }: SEOEditorProps) => {
   const [seoData, setSeoData] = useState({
-    title: template.advancedStyles?.seo?.title || template.name,
-    description: template.advancedStyles?.seo?.description || '',
-    keywords: template.advancedStyles?.seo?.keywords || '',
-    ogImage: template.advancedStyles?.seo?.ogImage || '',
-    indexable: template.advancedStyles?.seo?.indexable !== false
+    title: currentData?.title || '',
+    description: currentData?.description || '',
+    keywords: currentData?.keywords || '',
+    ogImage: currentData?.ogImage || '',
+    indexable: currentData?.indexable !== false,
+    ...currentData
   });
 
-  const handleUpdate = (field: string, value: any) => {
-    const newSeoData = { ...seoData, [field]: value };
-    setSeoData(newSeoData);
-    
-    onUpdate({
-      advancedStyles: {
-        ...template.advancedStyles,
-        seo: newSeoData
-      }
-    });
+  useEffect(() => {
+    onUpdate(seoData);
+  }, [seoData, onUpdate]);
+
+  const handleInputChange = (field: string, value: any) => {
+    setSeoData(prev => ({ ...prev, [field]: value }));
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-4">
-        <Globe className="w-5 h-5 text-blue-400" />
-        <h3 className="text-white text-lg font-bold">הגדרות SEO</h3>
-      </div>
-
-      <Card className="bg-slate-800/50 border-slate-700">
+      <Card className="bg-gray-800 border-gray-700">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
-            <Search className="w-4 h-4" />
-            מטא תגים בסיסיים
+            <Search className="w-5 h-5" />
+            SEO ומטא תגים
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div>
-            <Label className="text-slate-300">כותרת הדף (Title)</Label>
+          <div className="space-y-2">
+            <Label htmlFor="seo-title" className="text-white">כותרת העמוד (Title)</Label>
             <Input
+              id="seo-title"
               value={seoData.title}
-              onChange={(e) => handleUpdate('title', e.target.value)}
-              placeholder="הכנס כותרת לדף"
-              className="bg-slate-700 border-slate-600 text-white"
+              onChange={(e) => handleInputChange('title', e.target.value)}
+              placeholder="כותרת העמוד שתופיע ב-Google"
+              className="bg-gray-700 border-gray-600 text-white"
             />
-            <p className="text-xs text-slate-400 mt-1">עד 60 תווים מומלץ</p>
           </div>
 
-          <div>
-            <Label className="text-slate-300">תיאור הדף (Description)</Label>
+          <div className="space-y-2">
+            <Label htmlFor="seo-description" className="text-white">תיאור העמוד (Description)</Label>
             <Textarea
+              id="seo-description"
               value={seoData.description}
-              onChange={(e) => handleUpdate('description', e.target.value)}
-              placeholder="הכנס תיאור קצר לדף"
-              className="bg-slate-700 border-slate-600 text-white h-20"
+              onChange={(e) => handleInputChange('description', e.target.value)}
+              placeholder="תיאור קצר שיופיע בתוצאות החיפוש"
+              className="bg-gray-700 border-gray-600 text-white"
+              rows={3}
             />
-            <p className="text-xs text-slate-400 mt-1">עד 160 תווים מומלץ</p>
           </div>
 
-          <div>
-            <Label className="text-slate-300">מילות מפתח (Keywords)</Label>
+          <div className="space-y-2">
+            <Label htmlFor="seo-keywords" className="text-white">מילות מפתח (Keywords)</Label>
             <Input
+              id="seo-keywords"
               value={seoData.keywords}
-              onChange={(e) => handleUpdate('keywords', e.target.value)}
-              placeholder="מילה1, מילה2, מילה3"
-              className="bg-slate-700 border-slate-600 text-white"
+              onChange={(e) => handleInputChange('keywords', e.target.value)}
+              placeholder="מילות מפתח מופרדות בפסיק"
+              className="bg-gray-700 border-gray-600 text-white"
             />
-            <p className="text-xs text-slate-400 mt-1">הפרד עם פסיקים</p>
           </div>
-        </CardContent>
-      </Card>
 
-      <Card className="bg-slate-800/50 border-slate-700">
-        <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
-            <Image className="w-4 h-4" />
-            Open Graph (שיתוף ברשתות חברתיות)
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label className="text-slate-300">תמונה לשיתוף</Label>
+          <div className="space-y-2">
+            <Label htmlFor="og-image" className="text-white">תמונת שיתוף (OG Image)</Label>
             <Input
+              id="og-image"
               value={seoData.ogImage}
-              onChange={(e) => handleUpdate('ogImage', e.target.value)}
-              placeholder="https://example.com/image.jpg"
-              className="bg-slate-700 border-slate-600 text-white"
+              onChange={(e) => handleInputChange('ogImage', e.target.value)}
+              placeholder="קישור לתמונה לשיתוף ברשתות חברתיות"
+              className="bg-gray-700 border-gray-600 text-white"
             />
-            <p className="text-xs text-slate-400 mt-1">המלצה: 1200x630 פיקסלים</p>
           </div>
-        </CardContent>
-      </Card>
 
-      <Card className="bg-slate-800/50 border-slate-700">
-        <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
-            <Tag className="w-4 h-4" />
-            הגדרות מתקדמות
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
-            <div>
-              <Label className="text-slate-300">אפשר אינדוקס במנועי חיפוש</Label>
-              <p className="text-xs text-slate-400">האם הדף יופיע בתוצאות חיפוש</p>
+            <div className="space-y-1">
+              <Label htmlFor="indexable" className="text-white">זמין למנועי חיפוש</Label>
+              <p className="text-sm text-gray-400">האם לאפשר למנועי חיפוש לאנדקס את העמוד</p>
             </div>
             <Switch
+              id="indexable"
               checked={seoData.indexable}
-              onCheckedChange={(checked) => handleUpdate('indexable', checked)}
+              onCheckedChange={(checked) => handleInputChange('indexable', checked)}
             />
           </div>
         </CardContent>

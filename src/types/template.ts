@@ -1,4 +1,3 @@
-
 export interface TemplateStyles {
   // Background colors for each section
   backgroundColor: string;
@@ -68,6 +67,7 @@ export interface HeroSection {
   button1Icon?: string;
   button2Icon?: string;
   image?: string;
+  backgroundImage?: string;
 }
 
 export interface EmotionalSection {
@@ -362,6 +362,67 @@ export interface AdvancedStyles {
     keywords: string;
     ogImage: string;
     indexable: boolean;
+  };
+  responsive?: {
+    breakpoints: {
+      mobile: number;
+      tablet: number;
+      desktop: number;
+    };
+    hiddenOnMobile: string[];
+    hiddenOnTablet: string[];
+    mobileLayout: string;
+    tabletLayout: string;
+  };
+  analytics?: {
+    facebookPixel?: string;
+    googleAnalytics?: string;
+    tiktokPixel?: string;
+    linkedinInsight?: string;
+    gtm?: string;
+    customHeadScripts?: string;
+  };
+  forms?: {
+    id: string;
+    title: string;
+    submitText: string;
+    successMessage: string;
+    redirectUrl?: string;
+    emailNotifications: boolean;
+    autoResponse: boolean;
+    fields: any[];
+  };
+  popups?: {
+    exitIntent: boolean;
+    timeDelay: number;
+    scrollTrigger: number;
+    popupContent: string;
+    popupTitle: string;
+    countdown: boolean;
+    countdownEndDate: string;
+  };
+  interactivity?: {
+    animations: boolean;
+    hoverEffects: boolean;
+    parallaxScrolling: boolean;
+    smoothScrolling: boolean;
+    customCursor: boolean;
+    particleEffects: boolean;
+  };
+  notifications?: {
+    socialProof: boolean;
+    recentActivity: boolean;
+    stockAlerts: boolean;
+    discountTimers: boolean;
+    visitorCount: boolean;
+  };
+  security?: {
+    passwordProtection: boolean;
+    password?: string;
+    ipRestriction: boolean;
+    allowedIps?: string[];
+    disableRightClick: boolean;
+    disableTextSelection: boolean;
   };
   integrations?: {
     facebookPixel?: string;

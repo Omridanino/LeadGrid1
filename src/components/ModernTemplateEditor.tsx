@@ -164,8 +164,8 @@ export const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPu
                     onContentChange={updateTemplate}
                     formData={editedTemplate}
                     onFormDataChange={updateTemplate}
-                    heroImage={editedTemplate.hero?.backgroundImage || ''}
-                    onHeroImageChange={(image) => updateTemplate({ hero: { ...editedTemplate.hero, backgroundImage: image } })}
+                    heroImage={editedTemplate.hero?.image || ''}
+                    onHeroImageChange={(image) => updateTemplate({ hero: { ...editedTemplate.hero, image } })}
                   />
                 )}
 
@@ -242,21 +242,21 @@ export const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPu
                 {activeTab === 'seo' && (
                   <SEOEditor
                     onUpdate={(updates) => updateTemplate({ advancedStyles: { ...editedTemplate.advancedStyles, seo: updates } })}
-                    currentSettings={editedTemplate.advancedStyles?.seo || {}}
+                    currentData={editedTemplate.advancedStyles?.seo || {}}
                   />
                 )}
 
                 {activeTab === 'responsive' && (
                   <ResponsiveEditor
                     onUpdate={(updates) => updateTemplate({ advancedStyles: { ...editedTemplate.advancedStyles, responsive: updates } })}
-                    currentSettings={editedTemplate.advancedStyles?.responsive || {}}
+                    currentData={editedTemplate.advancedStyles?.responsive || {}}
                   />
                 )}
 
                 {activeTab === 'analytics' && (
                   <AnalyticsEditor
                     onUpdate={(updates) => updateTemplate({ advancedStyles: { ...editedTemplate.advancedStyles, analytics: updates } })}
-                    currentSettings={editedTemplate.advancedStyles?.analytics || {}}
+                    currentData={editedTemplate.advancedStyles?.analytics || {}}
                   />
                 )}
 
@@ -270,28 +270,28 @@ export const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPu
                 {activeTab === 'popups' && (
                   <PopupTimerEditor
                     onUpdate={(updates) => updateTemplate({ advancedStyles: { ...editedTemplate.advancedStyles, popups: updates } })}
-                    currentSettings={editedTemplate.advancedStyles?.popups || {}}
+                    currentData={editedTemplate.advancedStyles?.popups || {}}
                   />
                 )}
 
                 {activeTab === 'interactivity' && (
                   <InteractivityEditor
                     onUpdate={(updates) => updateTemplate({ advancedStyles: { ...editedTemplate.advancedStyles, interactivity: updates } })}
-                    currentSettings={editedTemplate.advancedStyles?.interactivity || {}}
+                    currentData={editedTemplate.advancedStyles?.interactivity || {}}
                   />
                 )}
 
                 {activeTab === 'notifications' && (
                   <NotificationEditor
                     onUpdate={(updates) => updateTemplate({ advancedStyles: { ...editedTemplate.advancedStyles, notifications: updates } })}
-                    currentSettings={editedTemplate.advancedStyles?.notifications || {}}
+                    currentData={editedTemplate.advancedStyles?.notifications || {}}
                   />
                 )}
 
                 {activeTab === 'security' && (
                   <SecurityEditor
                     onUpdate={(updates) => updateTemplate({ advancedStyles: { ...editedTemplate.advancedStyles, security: updates } })}
-                    currentSettings={editedTemplate.advancedStyles?.security || {}}
+                    currentData={editedTemplate.advancedStyles?.security || {}}
                   />
                 )}
 
@@ -313,3 +313,5 @@ export const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPu
     </div>
   );
 };
+
+export default ModernTemplateEditor;

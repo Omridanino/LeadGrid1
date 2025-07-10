@@ -1,171 +1,145 @@
 
-import { useState } from 'react';
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Monitor, Smartphone, Tablet } from 'lucide-react';
-import { TemplateData } from '@/types/template';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Smartphone, Tablet, Monitor } from 'lucide-react';
 
 interface ResponsiveEditorProps {
-  template: TemplateData;
   onUpdate: (updates: any) => void;
+  currentData: any;
 }
 
-export const ResponsiveEditor = ({ template, onUpdate }: ResponsiveEditorProps) => {
-  const [responsiveSettings, setResponsiveSettings] = useState({
-    desktop: {
-      fontSize: template.advancedStyles?.desktop?.fontSize || 16,
-      spacing: template.advancedStyles?.desktop?.spacing || 24,
-      containerWidth: template.advancedStyles?.desktop?.containerWidth || 1200
+export const ResponsiveEditor = ({ onUpdate, currentData }: ResponsiveEditorProps) => {
+  const [responsiveData, setResponsiveData] = useState({
+    breakpoints: {
+      mobile: currentData?.breakpoints?.mobile || 768,
+      tablet: currentData?.breakpoints?.tablet || 1024,
+      desktop: currentData?.breakpoints?.desktop || 1440,
     },
-    tablet: {
-      fontSize: template.advancedStyles?.tablet?.fontSize || 14,
-      spacing: template.advancedStyles?.tablet?.spacing || 20,
-      containerWidth: template.advancedStyles?.tablet?.containerWidth || 768
-    },
-    mobile: {
-      fontSize: template.advancedStyles?.mobile?.fontSize || 12,
-      spacing: template.advancedStyles?.mobile?.spacing || 16,
-      containerWidth: template.advancedStyles?.mobile?.containerWidth || 375
-    }
+    hiddenOnMobile: currentData?.hiddenOnMobile || [],
+    hiddenOnTablet: currentData?.hiddenOnTablet || [],
+    mobileLayout: currentData?.mobileLayout || 'stack',
+    tabletLayout: currentData?.tabletLayout || 'adaptive',
+    ...currentData
   });
 
-  const handleUpdate = (device: string, field: string, value: number) => {
-    const newSettings = {
-      ...responsiveSettings,
-      [device]: {
-        ...responsiveSettings[device as keyof typeof responsiveSettings],
-        [field]: value
+  useEffect(() => {
+    onUpdate(responsiveData);
+  }, [responsiveData, onUpdate]);
+
+  const handleBreakpointChange = (device: string, value: number) => {
+    setResponsiveData(prev => ({
+      ...prev,
+      breakpoints: {
+        ...prev.breakpoints,
+        [device]: value
       }
-    };
-    setResponsiveSettings(newSettings);
-    
-    onUpdate({
-      advancedStyles: {
-        ...template.advancedStyles,
-        ...newSettings
-      }
-    });
+    }));
   };
 
-  const DeviceSettings = ({ device, icon: Icon, settings }: any) => (
-    <Card className="bg-slate-800/50 border-slate-700">
-      <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
-          <Icon className="w-4 h-4" />
-          {device === 'desktop' ? 'דסקטופ' : device === 'tablet' ? 'טאבלט' : 'מובייל'}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div>
-          <Label className="text-slate-300">גודל גופן בסיסי</Label>
-          <div className="mt-2">
-            <Slider
-              value={[settings.fontSize]}
-              onValueChange={(value) => handleUpdate(device, 'fontSize', value[0])}
-              max={24}
-              min={10}
-              step={1}
-              className="w-full"
-            />
-            <div className="flex justify-between text-xs text-slate-400 mt-1">
-              <span>10px</span>
-              <span className="font-medium">{settings.fontSize}px</span>
-              <span>24px</span>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <Label className="text-slate-300">מרווחים בין אלמנטים</Label>
-          <div className="mt-2">
-            <Slider
-              value={[settings.spacing]}
-              onValueChange={(value) => handleUpdate(device, 'spacing', value[0])}
-              max={48}
-              min={8}
-              step={2}
-              className="w-full"
-            />
-            <div className="flex justify-between text-xs text-slate-400 mt-1">
-              <span>8px</span>
-              <span className="font-medium">{settings.spacing}px</span>
-              <span>48px</span>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <Label className="text-slate-300">רוחב מקסימלי של תוכן</Label>
-          <div className="mt-2">
-            <Slider
-              value={[settings.containerWidth]}
-              onValueChange={(value) => handleUpdate(device, 'containerWidth', value[0])}
-              max={device === 'desktop' ? 1400 : device === 'tablet' ? 1024 : 500}
-              min={device === 'desktop' ? 800 : device === 'tablet' ? 600 : 320}
-              step={10}
-              className="w-full"
-            />
-            <div className="flex justify-between text-xs text-slate-400 mt-1">
-              <span>{device === 'desktop' ? '800px' : device === 'tablet' ? '600px' : '320px'}</span>
-              <span className="font-medium">{settings.containerWidth}px</span>
-              <span>{device === 'desktop' ? '1400px' : device === 'tablet' ? '1024px' : '500px'}</span>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
+  const handleLayoutChange = (device: string, layout: string) => {
+    setResponsiveData(prev => ({
+      ...prev,
+      [`${device}Layout`]: layout
+    }));
+  };
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-4">
-        <Smartphone className="w-5 h-5 text-green-400" />
-        <h3 className="text-white text-lg font-bold">עיצוב רספונסיבי</h3>
-      </div>
+      <Card className="bg-gray-800 border-gray-700">
+        <CardHeader>
+          <CardTitle className="text-white flex items-center gap-2">
+            <Smartphone className="w-5 h-5" />
+            עיצוב רספונסיבי
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-4">
+            <h4 className="text-white font-medium">נקודות שבירה (Breakpoints)</h4>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="mobile-breakpoint" className="text-white flex items-center gap-2">
+                  <Smartphone className="w-4 h-4" />
+                  מובייל
+                </Label>
+                <Input
+                  id="mobile-breakpoint"
+                  type="number"
+                  value={responsiveData.breakpoints.mobile}
+                  onChange={(e) => handleBreakpointChange('mobile', parseInt(e.target.value))}
+                  className="bg-gray-700 border-gray-600 text-white"
+                />
+              </div>
 
-      <Tabs defaultValue="desktop" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 bg-slate-800">
-          <TabsTrigger value="desktop" className="text-white data-[state=active]:bg-blue-600">
-            <Monitor className="w-4 h-4 mr-1" />
-            דסקטופ
-          </TabsTrigger>
-          <TabsTrigger value="tablet" className="text-white data-[state=active]:bg-blue-600">
-            <Tablet className="w-4 h-4 mr-1" />
-            טאבלט
-          </TabsTrigger>
-          <TabsTrigger value="mobile" className="text-white data-[state=active]:bg-blue-600">
-            <Smartphone className="w-4 h-4 mr-1" />
-            מובייל
-          </TabsTrigger>
-        </TabsList>
+              <div className="space-y-2">
+                <Label htmlFor="tablet-breakpoint" className="text-white flex items-center gap-2">
+                  <Tablet className="w-4 h-4" />
+                  טאבלט
+                </Label>
+                <Input
+                  id="tablet-breakpoint"
+                  type="number"
+                  value={responsiveData.breakpoints.tablet}
+                  onChange={(e) => handleBreakpointChange('tablet', parseInt(e.target.value))}
+                  className="bg-gray-700 border-gray-600 text-white"
+                />
+              </div>
 
-        <TabsContent value="desktop">
-          <DeviceSettings 
-            device="desktop" 
-            icon={Monitor} 
-            settings={responsiveSettings.desktop}
-          />
-        </TabsContent>
+              <div className="space-y-2">
+                <Label htmlFor="desktop-breakpoint" className="text-white flex items-center gap-2">
+                  <Monitor className="w-4 h-4" />
+                  דסקטופ
+                </Label>
+                <Input
+                  id="desktop-breakpoint"
+                  type="number"
+                  value={responsiveData.breakpoints.desktop}
+                  onChange={(e) => handleBreakpointChange('desktop', parseInt(e.target.value))}
+                  className="bg-gray-700 border-gray-600 text-white"
+                />
+              </div>
+            </div>
+          </div>
 
-        <TabsContent value="tablet">
-          <DeviceSettings 
-            device="tablet" 
-            icon={Tablet} 
-            settings={responsiveSettings.tablet}
-          />
-        </TabsContent>
+          <div className="space-y-4">
+            <h4 className="text-white font-medium">פריסה במכשירים</h4>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="mobile-layout" className="text-white">פריסה במובייל</Label>
+                <Select value={responsiveData.mobileLayout} onValueChange={(value) => handleLayoutChange('mobile', value)}>
+                  <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="stack">ערימה</SelectItem>
+                    <SelectItem value="grid">רשת</SelectItem>
+                    <SelectItem value="carousel">קרוסלה</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-        <TabsContent value="mobile">
-          <DeviceSettings 
-            device="mobile" 
-            icon={Smartphone} 
-            settings={responsiveSettings.mobile}
-          />
-        </TabsContent>
-      </Tabs>
+              <div className="space-y-2">
+                <Label htmlFor="tablet-layout" className="text-white">פריסה בטאבלט</Label>
+                <Select value={responsiveData.tabletLayout} onValueChange={(value) => handleLayoutChange('tablet', value)}>
+                  <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="adaptive">אדפטיבי</SelectItem>
+                    <SelectItem value="desktop">כמו דסקטופ</SelectItem>
+                    <SelectItem value="mobile">כמו מובייל</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
