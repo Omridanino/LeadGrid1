@@ -356,12 +356,26 @@ export interface AdvancedStyles {
   desktop?: any;
   tablet?: any;
   mobile?: any;
+  design?: {
+    theme: string;
+    colorScheme: string;
+    typography: string;
+    layout: string;
+  };
   seo?: {
     title: string;
     description: string;
     keywords: string;
     ogImage: string;
     indexable: boolean;
+  };
+  performance?: {
+    imageOptimization: boolean;
+    lazyLoading: boolean;
+    minification: boolean;
+    caching: boolean;
+    compression: boolean;
+    preloading: boolean;
   };
   integrations?: {
     facebookPixel?: string;
@@ -371,6 +385,12 @@ export interface AdvancedStyles {
     gtm?: string;
     zapierWebhook?: string;
     customHeadScripts?: string;
+    mailchimp?: string;
+    activeCampaign?: string;
+    rabmaser?: string;
+    hubspot?: string;
+    salesforce?: string;
+    pipedrive?: string;
   };
   responsive?: any;
   analytics?: any;
