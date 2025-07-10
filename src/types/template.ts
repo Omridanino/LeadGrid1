@@ -1,4 +1,3 @@
-
 export interface TemplateStyles {
   // Background colors for each section
   backgroundColor: string;
@@ -372,6 +371,13 @@ export interface AdvancedStyles {
     zapierWebhook?: string;
     customHeadScripts?: string;
   };
+  responsive?: any;
+  analytics?: any;
+  forms?: any;
+  popups?: any;
+  interactivity?: any;
+  notifications?: any;
+  security?: any;
 }
 
 export interface TemplateData {

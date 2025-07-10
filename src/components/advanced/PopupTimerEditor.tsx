@@ -11,11 +11,11 @@ import { Timer, Zap, Plus, Trash2 } from 'lucide-react';
 
 interface PopupTimerEditorProps {
   onUpdate: (updates: any) => void;
-  currentSettings: any;
+  currentData: any;
 }
 
-export const PopupTimerEditor = ({ onUpdate, currentSettings }: PopupTimerEditorProps) => {
-  const [popups, setPopups] = useState(currentSettings?.popups || []);
+export const PopupTimerEditor = ({ onUpdate, currentData }: PopupTimerEditorProps) => {
+  const [popups, setPopups] = useState(currentData?.popups || []);
 
   const addPopup = () => {
     const newPopup = {

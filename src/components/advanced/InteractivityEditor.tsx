@@ -1,34 +1,30 @@
 
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
-import { Zap, MousePointer, Eye, Volume2 } from 'lucide-react';
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+import { MousePointer } from 'lucide-react';
 
 interface InteractivityEditorProps {
   onUpdate: (updates: any) => void;
-  currentSettings: any;
+  currentData: any;
 }
 
-export const InteractivityEditor = ({ onUpdate, currentSettings }: InteractivityEditorProps) => {
-  const [settings, setSettings] = useState(currentSettings?.interactivity || {
-    hoverEffects: true,
-    smoothScrolling: true,
-    clickAnimations: true,
-    parallaxEffect: false,
-    mouseFollower: false,
-    loadingAnimations: true,
-    autoplay: false,
-    backgroundMusic: false
+export const InteractivityEditor = ({ onUpdate, currentData }: InteractivityEditorProps) => {
+  const [settings, setSettings] = useState({
+    hoverEffects: currentData?.hoverEffects || true,
+    parallaxScrolling: currentData?.parallaxScrolling || false,
+    smoothScrolling: currentData?.smoothScrolling || true,
+    animationSpeed: currentData?.animationSpeed || 300,
+    mouseFollower: currentData?.mouseFollower || false,
+    clickAnimations: currentData?.clickAnimations || true
   });
 
   const updateSetting = (key: string, value: any) => {
-    const updatedSettings = { ...settings, [key]: value };
-    setSettings(updatedSettings);
-    onUpdate({ interactivity: updatedSettings });
+    const newSettings = { ...settings, [key]: value };
+    setSettings(newSettings);
+    onUpdate(newSettings);
   };
 
   return (
@@ -36,16 +32,15 @@ export const InteractivityEditor = ({ onUpdate, currentSettings }: Interactivity
       <Card className="bg-gray-800 border-gray-700">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
-            <MousePointer className="w-5 h-5 text-purple-500" />
-            אינטראקטיביות ואנימציות
+            <MousePointer className="w-5 h-5 text-pink-500" />
+            הגדרות אינטראקטיביות
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Hover Effects */}
           <div className="flex items-center justify-between">
             <div>
-              <Label className="text-white font-medium">אפקטי Hover</Label>
-              <p className="text-gray-400 text-sm">אפקטים כשמעבירים עכבר על אלמנטים</p>
+              <Label className="text-white">אפקטי Hover</Label>
+              <p className="text-gray-400 text-sm">אפקטים כשמרחפים מעל אלמנטים</p>
             </div>
             <Switch
               checked={settings.hoverEffects}
@@ -53,11 +48,10 @@ export const InteractivityEditor = ({ onUpdate, currentSettings }: Interactivity
             />
           </div>
 
-          {/* Smooth Scrolling */}
           <div className="flex items-center justify-between">
             <div>
-              <Label className="text-white font-medium">גלילה חלקה</Label>
-              <p className="text-gray-400 text-sm">גלילה חלקה בין סקשנים</p>
+              <Label className="text-white">גלילה חלקה</Label>
+              <p className="text-gray-400 text-sm">גלילה רכה בין קטעים</p>
             </div>
             <Switch
               checked={settings.smoothScrolling}
@@ -65,34 +59,20 @@ export const InteractivityEditor = ({ onUpdate, currentSettings }: Interactivity
             />
           </div>
 
-          {/* Click Animations */}
           <div className="flex items-center justify-between">
             <div>
-              <Label className="text-white font-medium">אנימציות לחיצה</Label>
-              <p className="text-gray-400 text-sm">אנימציות כשלוחצים על כפתורים</p>
+              <Label className="text-white">אפקט פרלקס</Label>
+              <p className="text-gray-400 text-sm">תנועת רקע תלויית גלילה</p>
             </div>
             <Switch
-              checked={settings.clickAnimations}
-              onCheckedChange={(checked) => updateSetting('clickAnimations', checked)}
+              checked={settings.parallaxScrolling}
+              onCheckedChange={(checked) => updateSetting('parallaxScrolling', checked)}
             />
           </div>
 
-          {/* Parallax Effect */}
           <div className="flex items-center justify-between">
             <div>
-              <Label className="text-white font-medium">אפקט פרלקס</Label>
-              <p className="text-gray-400 text-sm">רקע נע לפי הגלילה</p>
-            </div>
-            <Switch
-              checked={settings.parallaxEffect}
-              onCheckedChange={(checked) => updateSetting('parallaxEffect', checked)}
-            />
-          </div>
-
-          {/* Mouse Follower */}
-          <div className="flex items-center justify-between">
-            <div>
-              <Label className="text-white font-medium">עוקב עכבר</Label>
+              <Label className="text-white">עוקב עכבר</Label>
               <p className="text-gray-400 text-sm">אלמנט שעוקב אחרי העכבר</p>
             </div>
             <Switch
@@ -101,58 +81,34 @@ export const InteractivityEditor = ({ onUpdate, currentSettings }: Interactivity
             />
           </div>
 
-          {/* Loading Animations */}
           <div className="flex items-center justify-between">
             <div>
-              <Label className="text-white font-medium">אנימציות טעינה</Label>
-              <p className="text-gray-400 text-sm">אנימציות כשאלמנטים נכנסים לתצוגה</p>
+              <Label className="text-white">אנימציות לחיצה</Label>
+              <p className="text-gray-400 text-sm">אפקטים בלחיצה על כפתורים</p>
             </div>
             <Switch
-              checked={settings.loadingAnimations}
-              onCheckedChange={(checked) => updateSetting('loadingAnimations', checked)}
+              checked={settings.clickAnimations}
+              onCheckedChange={(checked) => updateSetting('clickAnimations', checked)}
             />
           </div>
 
-          {/* Animation Speed */}
           <div>
-            <Label className="text-white font-medium">מהירות אנימציות</Label>
-            <Select 
-              value={settings.animationSpeed || 'normal'} 
-              onValueChange={(value) => updateSetting('animationSpeed', value)}
-            >
-              <SelectTrigger className="bg-gray-700 border-gray-600 text-white mt-2">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-gray-700 border-gray-600">
-                <SelectItem value="slow" className="text-white">איטי</SelectItem>
-                <SelectItem value="normal" className="text-white">רגיל</SelectItem>
-                <SelectItem value="fast" className="text-white">מהיר</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Custom CSS */}
-          <div>
-            <Label className="text-white font-medium">CSS מותאם אישית</Label>
-            <textarea
-              value={settings.customCSS || ''}
-              onChange={(e) => updateSetting('customCSS', e.target.value)}
-              className="w-full mt-2 p-3 bg-gray-700 border-gray-600 text-white rounded font-mono text-sm"
-              rows={4}
-              placeholder="/* הוסף CSS מותאם אישית כאן */"
-            />
-          </div>
-
-          {/* Custom JavaScript */}
-          <div>
-            <Label className="text-white font-medium">JavaScript מותאם אישית</Label>
-            <textarea
-              value={settings.customJS || ''}
-              onChange={(e) => updateSetting('customJS', e.target.value)}
-              className="w-full mt-2 p-3 bg-gray-700 border-gray-600 text-white rounded font-mono text-sm"
-              rows={4}
-              placeholder="// הוסף JavaScript מותאם אישית כאן"
-            />
+            <Label className="text-white">מהירות אנימציה</Label>
+            <div className="mt-2">
+              <Slider
+                value={[settings.animationSpeed]}
+                onValueChange={(value) => updateSetting('animationSpeed', value[0])}
+                max={1000}
+                min={100}
+                step={50}
+                className="w-full"
+              />
+              <div className="flex justify-between text-xs text-gray-400 mt-1">
+                <span>מהיר (100ms)</span>
+                <span className="font-medium">{settings.animationSpeed}ms</span>
+                <span>איטי (1000ms)</span>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>

@@ -10,11 +10,11 @@ import { Bell, Mail, MessageSquare, Plus, Trash2 } from 'lucide-react';
 
 interface NotificationEditorProps {
   onUpdate: (updates: any) => void;
-  currentSettings: any;
+  currentData: any;
 }
 
-export const NotificationEditor = ({ onUpdate, currentSettings }: NotificationEditorProps) => {
-  const [notifications, setNotifications] = useState(currentSettings?.notifications || []);
+export const NotificationEditor = ({ onUpdate, currentData }: NotificationEditorProps) => {
+  const [notifications, setNotifications] = useState(currentData?.notifications || []);
 
   const addNotification = () => {
     const newNotification = {

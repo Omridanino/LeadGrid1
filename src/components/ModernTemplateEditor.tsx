@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,7 +23,6 @@ import {
 import { TemplateData } from '@/types/template';
 import { TemplatePreview } from './template-editor/TemplatePreview';
 import AdvancedEditor from './AdvancedEditor';
-import { AdvancedTemplateEditor } from './advanced/AdvancedTemplateEditor';
 import { SEOEditor } from './advanced/SEOEditor';
 import { ResponsiveEditor } from './advanced/ResponsiveEditor';
 import { AnalyticsEditor } from './advanced/AnalyticsEditor';
@@ -32,6 +32,7 @@ import { InteractivityEditor } from './advanced/InteractivityEditor';
 import { NotificationEditor } from './advanced/NotificationEditor';
 import { SecurityEditor } from './advanced/SecurityEditor';
 import { DevicePreview } from './advanced/DevicePreview';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface ModernTemplateEditorProps {
   template: TemplateData;
@@ -40,10 +41,11 @@ interface ModernTemplateEditorProps {
   onPublishSuccess?: (url: string) => void;
 }
 
-export const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSuccess }: ModernTemplateEditorProps) => {
+const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSuccess }: ModernTemplateEditorProps) => {
   const [editedTemplate, setEditedTemplate] = useState<TemplateData>(template);
   const [activeTab, setActiveTab] = useState('basic');
-  const [showAdvancedEditor, setShowAdvancedEditor] = useState(false);
+  const [showAdvancedDialog, setShowAdvancedDialog] = useState(false);
+  const [advancedTab, setAdvancedTab] = useState('seo');
   const { toast } = useToast();
 
   const updateTemplate = (updates: any) => {
@@ -65,32 +67,16 @@ export const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPu
     });
   };
 
-  const handleOpenAdvancedEditor = () => {
-    setShowAdvancedEditor(true);
+  const handleAdvancedUpdate = (key: string, updates: any) => {
+    const newAdvancedStyles = {
+      ...editedTemplate.advancedStyles,
+      [key]: updates
+    };
+    
+    updateTemplate({
+      advancedStyles: newAdvancedStyles
+    });
   };
-
-  const handleCloseAdvancedEditor = () => {
-    setShowAdvancedEditor(false);
-  };
-
-  if (showAdvancedEditor) {
-    return (
-      <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-[60] overflow-y-auto">
-        <AdvancedTemplateEditor
-          template={editedTemplate}
-          onTemplateChange={setEditedTemplate}
-          onSave={() => {
-            onTemplateChange(editedTemplate);
-            toast({
-              title: "✅ השינויים נשמרו!",
-              description: "העורך המתקדם עודכן בהצלחה"
-            });
-          }}
-          onBack={handleCloseAdvancedEditor}
-        />
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -110,7 +96,7 @@ export const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPu
           </div>
           <div className="flex gap-2">
             <Button 
-              onClick={handleOpenAdvancedEditor}
+              onClick={() => setShowAdvancedDialog(true)}
               className="bg-purple-600 hover:bg-purple-700"
             >
               <Rocket className="w-4 h-4 mr-1" />
@@ -138,13 +124,6 @@ export const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPu
                 עריכה בסיסית
               </Button>
               <Button
-                onClick={() => setActiveTab('advanced')}
-                className={`justify-start ${activeTab === 'advanced' ? 'bg-blue-600' : 'bg-gray-700'}`}
-              >
-                <Settings className="w-4 h-4 mr-2" />
-                הגדרות מתקדמות
-              </Button>
-              <Button
                 onClick={() => setActiveTab('preview')}
                 className={`justify-start ${activeTab === 'preview' ? 'bg-blue-600' : 'bg-gray-700'}`}
               >
@@ -169,132 +148,6 @@ export const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPu
                   />
                 )}
 
-                {activeTab === 'advanced' && (
-                  <div className="space-y-6">
-                    <Card className="bg-gray-800 border-gray-700">
-                      <CardHeader>
-                        <CardTitle className="text-white">הגדרות מתקדמות</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="grid grid-cols-1 gap-3">
-                          <Button
-                            onClick={() => setActiveTab('seo')}
-                            className="justify-start bg-green-600 hover:bg-green-700"
-                          >
-                            <Search className="w-4 h-4 mr-2" />
-                            SEO ומטא תגים
-                          </Button>
-                          <Button
-                            onClick={() => setActiveTab('responsive')}
-                            className="justify-start bg-blue-600 hover:bg-blue-700"
-                          >
-                            <Smartphone className="w-4 h-4 mr-2" />
-                            עיצוב רספונסיבי
-                          </Button>
-                          <Button
-                            onClick={() => setActiveTab('analytics')}
-                            className="justify-start bg-purple-600 hover:bg-purple-700"
-                          >
-                            <BarChart3 className="w-4 h-4 mr-2" />
-                            אנליטיקס ופיקסלים
-                          </Button>
-                          <Button
-                            onClick={() => setActiveTab('forms')}
-                            className="justify-start bg-orange-600 hover:bg-orange-700"
-                          >
-                            <FileText className="w-4 h-4 mr-2" />
-                            טפסים דינמיים
-                          </Button>
-                          <Button
-                            onClick={() => setActiveTab('popups')}
-                            className="justify-start bg-red-600 hover:bg-red-700"
-                          >
-                            <Timer className="w-4 h-4 mr-2" />
-                            פופ-אפים וטיימרים
-                          </Button>
-                          <Button
-                            onClick={() => setActiveTab('interactivity')}
-                            className="justify-start bg-pink-600 hover:bg-pink-700"
-                          >
-                            <MousePointer className="w-4 h-4 mr-2" />
-                            אינטראקטיביות
-                          </Button>
-                          <Button
-                            onClick={() => setActiveTab('notifications')}
-                            className="justify-start bg-yellow-600 hover:bg-yellow-700"
-                          >
-                            <Bell className="w-4 h-4 mr-2" />
-                            התראות ו-FOMO
-                          </Button>
-                          <Button
-                            onClick={() => setActiveTab('security')}
-                            className="justify-start bg-gray-600 hover:bg-gray-700"
-                          >
-                            <Shield className="w-4 h-4 mr-2" />
-                            אבטחה והגנה
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                )}
-
-                {activeTab === 'seo' && (
-                  <SEOEditor
-                    onUpdate={(updates) => updateTemplate({ advancedStyles: { ...editedTemplate.advancedStyles, seo: updates } })}
-                    currentSettings={editedTemplate.advancedStyles?.seo || {}}
-                  />
-                )}
-
-                {activeTab === 'responsive' && (
-                  <ResponsiveEditor
-                    onUpdate={(updates) => updateTemplate({ advancedStyles: { ...editedTemplate.advancedStyles, responsive: updates } })}
-                    currentSettings={editedTemplate.advancedStyles?.responsive || {}}
-                  />
-                )}
-
-                {activeTab === 'analytics' && (
-                  <AnalyticsEditor
-                    onUpdate={(updates) => updateTemplate({ advancedStyles: { ...editedTemplate.advancedStyles, analytics: updates } })}
-                    currentSettings={editedTemplate.advancedStyles?.analytics || {}}
-                  />
-                )}
-
-                {activeTab === 'forms' && (
-                  <DynamicFormBuilder
-                    onFormChange={(formData) => updateTemplate({ advancedStyles: { ...editedTemplate.advancedStyles, forms: formData } })}
-                    currentForm={editedTemplate.advancedStyles?.forms || {}}
-                  />
-                )}
-
-                {activeTab === 'popups' && (
-                  <PopupTimerEditor
-                    onUpdate={(updates) => updateTemplate({ advancedStyles: { ...editedTemplate.advancedStyles, popups: updates } })}
-                    currentSettings={editedTemplate.advancedStyles?.popups || {}}
-                  />
-                )}
-
-                {activeTab === 'interactivity' && (
-                  <InteractivityEditor
-                    onUpdate={(updates) => updateTemplate({ advancedStyles: { ...editedTemplate.advancedStyles, interactivity: updates } })}
-                    currentSettings={editedTemplate.advancedStyles?.interactivity || {}}
-                  />
-                )}
-
-                {activeTab === 'notifications' && (
-                  <NotificationEditor
-                    onUpdate={(updates) => updateTemplate({ advancedStyles: { ...editedTemplate.advancedStyles, notifications: updates } })}
-                    currentSettings={editedTemplate.advancedStyles?.notifications || {}}
-                  />
-                )}
-
-                {activeTab === 'security' && (
-                  <SecurityEditor
-                    onUpdate={(updates) => updateTemplate({ advancedStyles: { ...editedTemplate.advancedStyles, security: updates } })}
-                    currentSettings={editedTemplate.advancedStyles?.security || {}}
-                  />
-                )}
-
                 {activeTab === 'preview' && (
                   <DevicePreview template={editedTemplate} />
                 )}
@@ -310,6 +163,140 @@ export const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPu
           </div>
         </div>
       </div>
+
+      {/* Advanced Editor Dialog */}
+      <Dialog open={showAdvancedDialog} onOpenChange={setShowAdvancedDialog}>
+        <DialogContent className="max-w-6xl max-h-[90vh] bg-gray-900 border-gray-700">
+          <DialogHeader>
+            <DialogTitle className="text-white text-xl">העורך המתקדם</DialogTitle>
+          </DialogHeader>
+          
+          <div className="flex h-[70vh]">
+            {/* Advanced Settings Sidebar */}
+            <div className="w-64 bg-gray-800 border-r border-gray-700 p-4">
+              <div className="space-y-2">
+                <Button
+                  onClick={() => setAdvancedTab('seo')}
+                  className={`w-full justify-start ${advancedTab === 'seo' ? 'bg-green-600' : 'bg-gray-700'}`}
+                >
+                  <Search className="w-4 h-4 mr-2" />
+                  SEO ומטא תגים
+                </Button>
+                <Button
+                  onClick={() => setAdvancedTab('responsive')}
+                  className={`w-full justify-start ${advancedTab === 'responsive' ? 'bg-blue-600' : 'bg-gray-700'}`}
+                >
+                  <Smartphone className="w-4 h-4 mr-2" />
+                  עיצוב רספונסיבי
+                </Button>
+                <Button
+                  onClick={() => setAdvancedTab('analytics')}
+                  className={`w-full justify-start ${advancedTab === 'analytics' ? 'bg-purple-600' : 'bg-gray-700'}`}
+                >
+                  <BarChart3 className="w-4 h-4 mr-2" />
+                  אנליטיקס ופיקסלים
+                </Button>
+                <Button
+                  onClick={() => setAdvancedTab('forms')}
+                  className={`w-full justify-start ${advancedTab === 'forms' ? 'bg-orange-600' : 'bg-gray-700'}`}
+                >
+                  <FileText className="w-4 h-4 mr-2" />
+                  טפסים דינמיים
+                </Button>
+                <Button
+                  onClick={() => setAdvancedTab('popups')}
+                  className={`w-full justify-start ${advancedTab === 'popups' ? 'bg-red-600' : 'bg-gray-700'}`}
+                >
+                  <Timer className="w-4 h-4 mr-2" />
+                  פופ-אפים וטיימרים
+                </Button>
+                <Button
+                  onClick={() => setAdvancedTab('interactivity')}
+                  className={`w-full justify-start ${advancedTab === 'interactivity' ? 'bg-pink-600' : 'bg-gray-700'}`}
+                >
+                  <MousePointer className="w-4 h-4 mr-2" />
+                  אינטראקטיביות
+                </Button>
+                <Button
+                  onClick={() => setAdvancedTab('notifications')}
+                  className={`w-full justify-start ${advancedTab === 'notifications' ? 'bg-yellow-600' : 'bg-gray-700'}`}
+                >
+                  <Bell className="w-4 h-4 mr-2" />
+                  התראות ו-FOMO
+                </Button>
+                <Button
+                  onClick={() => setAdvancedTab('security')}
+                  className={`w-full justify-start ${advancedTab === 'security' ? 'bg-gray-600' : 'bg-gray-700'}`}
+                >
+                  <Shield className="w-4 h-4 mr-2" />
+                  אבטחה והגנה
+                </Button>
+              </div>
+            </div>
+
+            {/* Advanced Settings Content */}
+            <div className="flex-1 p-6 overflow-y-auto">
+              {advancedTab === 'seo' && (
+                <SEOEditor
+                  template={editedTemplate}
+                  onUpdate={(updates) => handleAdvancedUpdate('seo', updates)}
+                />
+              )}
+
+              {advancedTab === 'responsive' && (
+                <ResponsiveEditor
+                  template={editedTemplate}
+                  onUpdate={(updates) => handleAdvancedUpdate('responsive', updates)}
+                />
+              )}
+
+              {advancedTab === 'analytics' && (
+                <AnalyticsEditor
+                  template={editedTemplate}
+                  onUpdate={(updates) => handleAdvancedUpdate('analytics', updates)}
+                />
+              )}
+
+              {advancedTab === 'forms' && (
+                <DynamicFormBuilder
+                  onFormChange={(formData) => handleAdvancedUpdate('forms', formData)}
+                  currentForm={editedTemplate.advancedStyles?.forms || {}}
+                />
+              )}
+
+              {advancedTab === 'popups' && (
+                <PopupTimerEditor
+                  onUpdate={(updates) => handleAdvancedUpdate('popups', updates)}
+                  currentData={editedTemplate.advancedStyles?.popups || {}}
+                />
+              )}
+
+              {advancedTab === 'interactivity' && (
+                <InteractivityEditor
+                  onUpdate={(updates) => handleAdvancedUpdate('interactivity', updates)}
+                  currentData={editedTemplate.advancedStyles?.interactivity || {}}
+                />
+              )}
+
+              {advancedTab === 'notifications' && (
+                <NotificationEditor
+                  onUpdate={(updates) => handleAdvancedUpdate('notifications', updates)}
+                  currentData={editedTemplate.advancedStyles?.notifications || {}}
+                />
+              )}
+
+              {advancedTab === 'security' && (
+                <SecurityEditor
+                  onUpdate={(updates) => handleAdvancedUpdate('security', updates)}
+                  currentData={editedTemplate.advancedStyles?.security || {}}
+                />
+              )}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
+
+export default ModernTemplateEditor;
