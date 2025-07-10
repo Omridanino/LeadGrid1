@@ -1,3 +1,4 @@
+
 export interface TemplateStyles {
   // Background colors for each section
   backgroundColor: string;
@@ -356,6 +357,20 @@ export interface AdvancedStyles {
   desktop?: any;
   tablet?: any;
   mobile?: any;
+  design?: {
+    templateId?: string;
+    customizations?: any;
+  };
+  performance?: {
+    imageOptimization?: boolean;
+    lazyLoading?: boolean;
+    minification?: boolean;
+    compression?: boolean;
+    caching?: boolean;
+    preloading?: boolean;
+    webpConversion?: boolean;
+    cssOptimization?: boolean;
+  };
   seo?: {
     title: string;
     description: string;
@@ -371,6 +386,16 @@ export interface AdvancedStyles {
     gtm?: string;
     zapierWebhook?: string;
     customHeadScripts?: string;
+    emailMarketing?: {
+      provider: string;
+      apiKey: string;
+      listId: string;
+    };
+    crm?: {
+      provider: string;
+      apiKey: string;
+      settings: any;
+    };
   };
   responsive?: any;
   analytics?: any;
