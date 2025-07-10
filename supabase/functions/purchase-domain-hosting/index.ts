@@ -1,6 +1,5 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -15,41 +14,41 @@ serve(async (req) => {
   try {
     const { domain, hostingPlan, customerInfo, years = 1 } = await req.json();
     
-    console.log('🚀 התחלת רכישה עבור:', { domain, hostingPlan, customerInfo });
+    console.log('🚀 התחלת רכישה אמיתית עבור:', { domain, hostingPlan, customerInfo });
 
-    // Calculate pricing
+    // Calculate pricing with new Leadgrid rates
     const domainExtension = '.' + domain.split('.').pop();
     const domainPricing = {
-      '.com': 100,
-      '.co.il': 110, 
-      '.net': 105,
-      '.org': 105,
-      '.io': 180,
-      '.info': 100,
-      '.biz': 100
+      '.com': 75,
+      '.co.il': 80, 
+      '.net': 77,
+      '.org': 77,
+      '.io': 175,
+      '.info': 75,
+      '.biz': 75
     };
     
     const hostingPricing = {
-      'basic': 90,
-      'professional': 100,
-      'business': 125
+      'basic': 60,
+      'professional': 80,
+      'business': 110
     };
 
-    const domainPrice = domainPricing[domainExtension] || 100;
-    const hostingMonthlyPrice = hostingPricing[hostingPlan] || 100;
+    const domainPrice = domainPricing[domainExtension] || 75;
+    const hostingMonthlyPrice = hostingPricing[hostingPlan] || 80;
     const hostingYearlyPrice = hostingMonthlyPrice * 12;
-    const leadgridYearlyPrice = 130 * 12;
+    const leadgridYearlyPrice = 109.99 * 12; // ₪109.99 per month
     
     const totalAmount = (domainPrice * years) + hostingYearlyPrice + leadgridYearlyPrice;
 
-    console.log('💰 חישוב מחיר:', {
+    console.log('💰 חישוב מחיר אמיתי:', {
       domain: domainPrice * years,
       hosting: hostingYearlyPrice,
       leadgrid: leadgridYearlyPrice,
       total: totalAmount
     });
 
-    // Create PayPal order
+    // Create PayPal order with real business details
     const paypalClientId = Deno.env.get("PAYPAL_CLIENT_ID");
     const paypalClientSecret = Deno.env.get("PAYPAL_CLIENT_SECRET");
     const paypalMode = Deno.env.get("PAYPAL_MODE") || "sandbox";
@@ -75,7 +74,7 @@ serve(async (req) => {
     const authData = await authResponse.json();
     const accessToken = authData.access_token;
 
-    // Create PayPal order
+    // Create PayPal order with Leadgrid business details
     const orderResponse = await fetch(`${paypalBaseUrl}/v2/checkout/orders`, {
       method: 'POST',
       headers: {
@@ -90,7 +89,10 @@ serve(async (req) => {
             currency_code: 'ILS',
             value: totalAmount.toString()
           },
-          description: `רכישת דומיין ${domain} + אחסון ${hostingPlan} + שירות LeadGrid`,
+          description: `רכישת דומיין ${domain} + אחסון ${hostingPlan} + שירות Leadgrid`,
+          payee: {
+            merchant_id: paypalClientId // זה יכוון לחשבון PayPal שלך
+          },
           custom_id: JSON.stringify({
             domain,
             hostingPlan,
@@ -101,7 +103,7 @@ serve(async (req) => {
         application_context: {
           return_url: `${req.headers.get("origin") || "http://localhost:5173"}/payment-success`,
           cancel_url: `${req.headers.get("origin") || "http://localhost:5173"}/payment-cancel`,
-          brand_name: 'LeadGrid',
+          brand_name: 'Leadgrid',
           locale: 'he-IL',
           landing_page: 'BILLING',
           user_action: 'PAY_NOW'
@@ -110,7 +112,7 @@ serve(async (req) => {
     });
 
     const orderData = await orderResponse.json();
-    console.log('💳 PayPal Order נוצר:', orderData.id);
+    console.log('💳 PayPal Order נוצר עבור Leadgrid:', orderData.id);
 
     if (!orderData.id) {
       throw new Error('Failed to create PayPal order');

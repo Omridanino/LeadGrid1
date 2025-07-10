@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -42,27 +41,27 @@ export const AutomaticPurchaseWizard = ({
   });
   const { toast } = useToast();
 
-  // Calculate pricing
+  // Calculate pricing with new Leadgrid rates
   const domainExtension = '.' + domain.split('.').pop();
   const domainPricing = {
-    '.com': 100,
-    '.co.il': 110, 
-    '.net': 105,
-    '.org': 105,
-    '.io': 180,
-    '.info': 100,
-    '.biz': 100
+    '.com': 75,
+    '.co.il': 80, 
+    '.net': 77,
+    '.org': 77,
+    '.io': 175,
+    '.info': 75,
+    '.biz': 75
   };
   
   const hostingPricing = {
-    'basic': 90,
-    'professional': 100,
-    'business': 125
+    'basic': 60,
+    'professional': 80,
+    'business': 110
   };
 
-  const domainPrice = domainPricing[domainExtension] || 100;
-  const hostingYearlyPrice = (hostingPricing[hostingPlan] || 100) * 12;
-  const leadgridYearlyPrice = 130 * 12;
+  const domainPrice = domainPricing[domainExtension] || 75;
+  const hostingYearlyPrice = (hostingPricing[hostingPlan] || 80) * 12;
+  const leadgridYearlyPrice = 109.99 * 12; // New Leadgrid price
   const totalAmount = domainPrice + hostingYearlyPrice + leadgridYearlyPrice;
 
   const handlePurchase = async () => {
@@ -138,7 +137,7 @@ export const AutomaticPurchaseWizard = ({
         <div className="p-6 border-b border-gray-800">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-white text-2xl font-bold">רכישה אוטומטית</h2>
+              <h2 className="text-white text-2xl font-bold">רכישה אמיתית - Leadgrid</h2>
               <p className="text-gray-400 text-sm mt-1">
                 התשלום ירכוש אוטומטית את {domain} ואחסון מ-GoDaddy
               </p>
@@ -155,7 +154,7 @@ export const AutomaticPurchaseWizard = ({
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
                 <DollarSign className="w-5 h-5" />
-                פירוט מחירים
+                פירוט מחירים - Leadgrid
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
@@ -168,13 +167,13 @@ export const AutomaticPurchaseWizard = ({
                 <span className="text-white">₪{hostingYearlyPrice}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-300">שירות LeadGrid (12 חודשים):</span>
-                <span className="text-white">₪{leadgridYearlyPrice}</span>
+                <span className="text-gray-300">שירות Leadgrid (12 חודשים):</span>
+                <span className="text-white">₪{Math.round(leadgridYearlyPrice)}</span>
               </div>
               <div className="border-t border-gray-600 pt-3">
                 <div className="flex justify-between text-lg font-semibold">
                   <span className="text-white">סה״כ:</span>
-                  <span className="text-green-400">₪{totalAmount}</span>
+                  <span className="text-green-400">₪{Math.round(totalAmount)}</span>
                 </div>
               </div>
             </CardContent>
@@ -263,7 +262,7 @@ export const AutomaticPurchaseWizard = ({
               <div className="space-y-2 text-sm">
                 <div className="flex items-center gap-2 text-green-300">
                   <CheckCircle className="w-4 h-4" />
-                  <span>רכישה אוטומטית מ-GoDaddy ברגע התשלום</span>
+                  <span>רכישה אמיתית מ-GoDaddy ברגע התשלום</span>
                 </div>
                 <div className="flex items-center gap-2 text-green-300">
                   <Zap className="w-4 h-4" />
@@ -272,6 +271,10 @@ export const AutomaticPurchaseWizard = ({
                 <div className="flex items-center gap-2 text-green-300">
                   <Shield className="w-4 h-4" />
                   <span>SSL ואבטחה אוטומטיים</span>
+                </div>
+                <div className="flex items-center gap-2 text-green-300">
+                  <CheckCircle className="w-4 h-4" />
+                  <span>שירות Leadgrid מלא ומקצועי</span>
                 </div>
               </div>
             </CardContent>
@@ -292,7 +295,7 @@ export const AutomaticPurchaseWizard = ({
             ) : (
               <>
                 <CreditCard className="w-5 h-5 ml-2" />
-                שלם עם PayPal - ₪{totalAmount}
+                שלם עם PayPal - ₪{Math.round(totalAmount)}
               </>
             )}
           </Button>

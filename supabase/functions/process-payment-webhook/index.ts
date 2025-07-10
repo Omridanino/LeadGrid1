@@ -14,7 +14,7 @@ serve(async (req) => {
   try {
     const { orderId } = await req.json();
     
-    console.log('🎯 PayPal Payment confirmed:', orderId);
+    console.log('🎯 PayPal Payment confirmed for Leadgrid:', orderId);
 
     const paypalClientId = Deno.env.get("PAYPAL_CLIENT_ID");
     const paypalClientSecret = Deno.env.get("PAYPAL_CLIENT_SECRET");
@@ -52,9 +52,9 @@ serve(async (req) => {
     const customData = JSON.parse(orderData.purchase_units[0].custom_id);
     const { domain, hostingPlan, years } = customData;
     
-    console.log('✅ תשלום אושר, מתחיל רכישה מ-GoDaddy:', { domain, hostingPlan });
+    console.log('✅ תשלום אושר, מתחיל רכישה אמיתית מ-GoDaddy:', { domain, hostingPlan });
     
-    // רכישה אוטומטית מ-GoDaddy
+    // רכישה אוטומטית אמיתית מ-GoDaddy
     await purchaseFromGoDaddy({
       domain,
       hostingPlan,
@@ -85,7 +85,7 @@ async function purchaseFromGoDaddy(orderData: {
   orderId: string;
 }) {
   try {
-    console.log('🛒 מתחיל רכישה מ-GoDaddy:', orderData);
+    console.log('🛒 מתחיל רכישה אמיתית מ-GoDaddy:', orderData);
     
     // Get GoDaddy credentials
     const apiKey = Deno.env.get('GODADDY_API_KEY');
@@ -118,7 +118,7 @@ async function purchaseFromGoDaddy(orderData: {
       return { success: false, error: 'Domain not available' };
     }
 
-    // Step 2: Purchase domain from GoDaddy
+    // Step 2: Purchase domain from GoDaddy with Leadgrid details
     const purchaseResponse = await fetch(`${baseUrl}/v1/domains/purchase`, {
       method: 'POST',
       headers: {
@@ -128,12 +128,12 @@ async function purchaseFromGoDaddy(orderData: {
       body: JSON.stringify({
         domain: orderData.domain,
         period: orderData.years || 1,
-        nameServers: ['ns1.godaddy.com', 'ns2.godaddy.com'],
+        nameServers: ['ns1.leadgrid.co.il', 'ns2.leadgrid.co.il'],
         renewAuto: true,
         privacy: true,
         consent: {
           agreementKeys: ['DNRA'],
-          agreedBy: 'LeadGrid',
+          agreedBy: 'Leadgrid',
           agreedAt: new Date().toISOString()
         }
       })
@@ -146,7 +146,7 @@ async function purchaseFromGoDaddy(orderData: {
     }
 
     const purchaseData = await purchaseResponse.json();
-    console.log('🎉 דומיין נרכש בהצלחה מ-GoDaddy!', {
+    console.log('🎉 דומיין נרכש בהצלחה מ-GoDaddy עבור Leadgrid!', {
       domain: orderData.domain,
       orderId: purchaseData.orderId
     });
@@ -154,7 +154,7 @@ async function purchaseFromGoDaddy(orderData: {
     return {
       success: true,
       domain: orderData.domain,
-      message: 'Domain purchased successfully from GoDaddy'
+      message: 'Domain purchased successfully from GoDaddy for Leadgrid'
     };
 
   } catch (error) {

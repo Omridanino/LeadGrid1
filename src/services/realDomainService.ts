@@ -107,13 +107,13 @@ export interface PurchaseStatus {
 }
 
 export const COMPANY_DETAILS = {
-  name: 'LeadGrid Solutions',
-  vatNumber: '123456789',
-  address: 'תל אביב, ישראל',
-  phone: '+972-50-123-4567',
-  email: 'support@leadgrid.co.il',
-  whatsapp: '+972-50-123-4567',
-  supportEmail: 'support@leadgrid.co.il'
+  name: 'Leadgrid',
+  vatNumber: '207514837',
+  address: 'הארגמן 3 ב',
+  phone: '0544866116',
+  email: 'info.leadgrid@gmail.com',
+  whatsapp: '+972-54-486-6116',
+  supportEmail: 'info.leadgrid@gmail.com'
 };
 
 export const BANK_ACCOUNTS = [
@@ -122,38 +122,38 @@ export const BANK_ACCOUNTS = [
     accountNumber: '12345-678-90123',
     branch: '001',
     swift: 'POALILIT',
-    accountName: 'LeadGrid Solutions Ltd'
+    accountName: 'Leadgrid Ltd'
   }
 ];
 
-export const LEADGRID_SERVICE_FEE = 130; // Rounded to ₪130 per month
+export const LEADGRID_SERVICE_FEE = 109.99; // ₪109.99 per month
 
 export class RealDomainService {
-  private static readonly NAMECHEAP_API_USER = process.env.NAMECHEAP_API_USER;
-  private static readonly NAMECHEAP_API_KEY = process.env.NAMECHEAP_API_KEY;
-  private static readonly NAMECHEAP_SANDBOX = process.env.NAMECHEAP_SANDBOX === 'true';
+  private static readonly GODADDY_API_KEY = process.env.GODADDY_API_KEY;
+  private static readonly GODADDY_API_SECRET = process.env.GODADDY_API_SECRET;
+  private static readonly GODADDY_MODE = process.env.GODADDY_MODE || 'production';
 
-  // מחירי דומיינים - רווח קבוע של ₪60 לכל דומיין
+  // מחירי דומיינים - רווח קבוע של ₪25 לכל דומיין
   static getDomainPricing() {
     return {
-      '.com': { wholesale: 40, retail: 100, profit: 60 }, 
-      '.co.il': { wholesale: 50, retail: 110, profit: 60 }, 
-      '.net': { wholesale: 45, retail: 105, profit: 60 }, 
-      '.org': { wholesale: 45, retail: 105, profit: 60 }, 
-      '.io': { wholesale: 120, retail: 180, profit: 60 }, 
-      '.info': { wholesale: 40, retail: 100, profit: 60 }, 
-      '.biz': { wholesale: 40, retail: 100, profit: 60 } 
+      '.com': { wholesale: 50, retail: 75, profit: 25 }, 
+      '.co.il': { wholesale: 55, retail: 80, profit: 25 }, 
+      '.net': { wholesale: 52, retail: 77, profit: 25 }, 
+      '.org': { wholesale: 52, retail: 77, profit: 25 }, 
+      '.io': { wholesale: 150, retail: 175, profit: 25 }, 
+      '.info': { wholesale: 50, retail: 75, profit: 25 }, 
+      '.biz': { wholesale: 50, retail: 75, profit: 25 } 
     };
   }
 
-  // תוכניות אחסון - מחיר Namecheap + ₪55 רווח (מעוגלים למעלה)
+  // תוכניות אחסון - מחיר אמיתי + ₪25 רווח
   static getHostingPlans(): RealHostingPlan[] {
     return [
       {
         id: 'basic',
         name: 'בסיסי',
-        originalPrice: 8, // מחיר Namecheap $8/חודש ≈ ₪30
-        price: 90, // ₪30 + ₪55 רווח = ₪85 → מעוגל ל-₪90
+        originalPrice: 35, // מחיר אמיתי
+        price: 60, // ₪35 + ₪25 רווח = ₪60
         features: ['SSL חינם', 'גיבוי שבועי', 'תמיכה בעברית'],
         storage: '20GB SSD',
         bandwidth: '500GB',
@@ -162,8 +162,8 @@ export class RealDomainService {
       {
         id: 'professional',
         name: 'מקצועי',
-        originalPrice: 12, // מחיר Namecheap $12/חודש ≈ ₪44
-        price: 100, // ₪44 + ₪55 רווח = ₪99 → מעוגל ל-₪100
+        originalPrice: 55, // מחיר אמיתי
+        price: 80, // ₪55 + ₪25 רווח = ₪80
         features: ['SSL חינם', 'CDN מהיר', 'גיבוי יומי', 'תמיכה מועדפת'],
         storage: '40GB SSD',
         bandwidth: 'ללא הגבלה',
@@ -172,8 +172,8 @@ export class RealDomainService {
       {
         id: 'business',
         name: 'עסקי',
-        originalPrice: 18, // מחיר Namecheap $18/חודש ≈ ₪66
-        price: 125, // ₪66 + ₪55 רווח = ₪121 → מעוגל ל-₪125
+        originalPrice: 85, // מחיר אמיתי
+        price: 110, // ₪85 + ₪25 רווח = ₪110
         features: ['SSL חינם', 'CDN גלובלי', 'גיבוי יומי', 'תמיכה VIP', 'הגנה מפני DDoS'],
         storage: '100GB SSD',
         bandwidth: 'ללא הגבלה',
@@ -182,17 +182,17 @@ export class RealDomainService {
     ];
   }
 
-  // בדיקת זמינות דומיין דרך Namecheap API
+  // בדיקת זמינות דומיין דרך GoDaddy API האמיתי
   static async checkDomainAvailability(domain: string): Promise<RealDomainAvailabilityResult[]> {
     try {
-      console.log(`🔍 בודק זמינות דומיין: ${domain} דרך Namecheap API`);
+      console.log(`🔍 בודק זמינות דומיין: ${domain} דרך GoDaddy API`);
 
       const results: RealDomainAvailabilityResult[] = [];
       const pricing = this.getDomainPricing();
       
       // בדיקת הדומיין הראשי
       const mainDomain = domain.includes('.') ? domain : `${domain}.com`;
-      const mainResult = await this.checkSingleDomainWithNamecheap(mainDomain, pricing);
+      const mainResult = await this.checkSingleDomainWithGoDaddy(mainDomain, pricing);
       results.push(mainResult);
 
       // הצעות חלופיות אם הדומיין תפוס
@@ -206,7 +206,7 @@ export class RealDomainService {
         ];
 
         for (const suggestion of suggestions.slice(0, 3)) {
-          const suggestionResult = await this.checkSingleDomainWithNamecheap(suggestion, pricing);
+          const suggestionResult = await this.checkSingleDomainWithGoDaddy(suggestion, pricing);
           results.push(suggestionResult);
         }
       }
@@ -218,45 +218,34 @@ export class RealDomainService {
     }
   }
 
-  private static async checkSingleDomainWithNamecheap(domain: string, pricing: any): Promise<RealDomainAvailabilityResult> {
+  private static async checkSingleDomainWithGoDaddy(domain: string, pricing: any): Promise<RealDomainAvailabilityResult> {
     try {
-      // נקבל את פרטי ה-API מ-localStorage לעת עתה
-      const apiUser = localStorage.getItem('NAMECHEAP_API_USER');
-      const apiKey = localStorage.getItem('NAMECHEAP_API_KEY');
-      const useSandbox = localStorage.getItem('NAMECHEAP_SANDBOX') === 'true';
-
-      if (!apiKey || !apiUser) {
-        console.log('⚠️ Namecheap API לא מוגדר, משתמש בסימולציה');
+      // אם אין API credentials, נשתמש בסימולציה
+      if (!this.GODADDY_API_KEY || !this.GODADDY_API_SECRET) {
+        console.log('⚠️ GoDaddy API לא מוגדר, משתמש בסימולציה');
         return this.simulateDomainCheck(domain, pricing);
       }
 
-      console.log(`🌐 בדיקה אמיתית עם Namecheap API: ${domain}`);
+      console.log(`🌐 בדיקה אמיתית עם GoDaddy API: ${domain}`);
       
-      const apiUrl = useSandbox 
-        ? 'https://api.sandbox.namecheap.com/xml.response'
-        : 'https://api.namecheap.com/xml.response';
+      const baseUrl = this.GODADDY_MODE === 'production' 
+        ? 'https://api.godaddy.com' 
+        : 'https://api.ote-godaddy.com';
 
-      const params = new URLSearchParams({
-        ApiUser: apiUser,
-        ApiKey: apiKey,
-        UserName: apiUser,
-        Command: 'namecheap.domains.check',
-        ClientIp: '127.0.0.1',
-        DomainList: domain
-      });
+      const response = await fetch(
+        `${baseUrl}/v1/domains/available?domain=${domain}`,
+        {
+          headers: {
+            'Authorization': `sso-key ${this.GODADDY_API_KEY}:${this.GODADDY_API_SECRET}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
 
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: params
-      });
-
-      const text = await response.text();
-      console.log('📋 תגובת Namecheap:', text);
+      const data = await response.json();
+      console.log('📋 תגובת GoDaddy:', data);
       
-      const available = text.includes('Available="true"');
+      const available = data.available;
       const extension = '.' + domain.split('.').pop();
       const price = pricing[extension]?.retail || 75;
       
@@ -264,10 +253,10 @@ export class RealDomainService {
         domain,
         available,
         price,
-        registrar: 'namecheap'
+        registrar: 'godaddy'
       };
     } catch (error) {
-      console.error('❌ Namecheap בדיקה נכשלה:', error);
+      console.error('❌ GoDaddy בדיקה נכשלה:', error);
       return this.simulateDomainCheck(domain, pricing);
     }
   }
@@ -289,15 +278,15 @@ export class RealDomainService {
     };
   }
 
-  // רכישת דומיין ואחסון
+  // רכישת דומיין ואחסון אמיתית דרך GoDaddy
   static async purchaseDomainAndHosting(request: PurchaseRequest): Promise<PurchaseResult> {
     try {
-      console.log('🚀 מתחיל רכישת דומיין ואחסון:', request);
+      console.log('🚀 מתחיל רכישת דומיין ואחסון אמיתית:', request);
 
-      // שלב 1: רכישת דומיין דרך Namecheap
-      const domainResult = await this.purchaseDomainWithNamecheap({
+      // שלב 1: רכישת דומיין דרך GoDaddy API
+      const domainResult = await this.purchaseDomainWithGoDaddy({
         domain: request.domain,
-        registrar: 'namecheap',
+        registrar: 'godaddy',
         years: request.payment.years,
         autoRenew: request.payment.autoRenew,
         whoisPrivacy: true
@@ -342,66 +331,60 @@ export class RealDomainService {
     }
   }
 
-  // רכישת דומיין דרך Namecheap API
-  private static async purchaseDomainWithNamecheap(data: DomainRegistrationData): Promise<PurchaseResult> {
+  // רכישת דומיין דרך GoDaddy API האמיתי
+  private static async purchaseDomainWithGoDaddy(data: DomainRegistrationData): Promise<PurchaseResult> {
     try {
-      const apiUser = localStorage.getItem('NAMECHEAP_API_USER');
-      const apiKey = localStorage.getItem('NAMECHEAP_API_KEY');
-      const useSandbox = localStorage.getItem('NAMECHEAP_SANDBOX') === 'true';
-
-      if (!apiKey || !apiUser) {
-        console.log('⚠️ Namecheap API לא מוגדר, משתמש בסימולציה');
+      if (!this.GODADDY_API_KEY || !this.GODADDY_API_SECRET) {
+        console.log('⚠️ GoDaddy API לא מוגדר, משתמש בסימולציה');
         return this.simulateDomainPurchase(data);
       }
 
-      console.log('💰 רכישה אמיתית דרך Namecheap API - זה עולה כסף אמיתי!');
+      console.log('💰 רכישה אמיתית דרך GoDaddy API - זה עולה כסף אמיתי!');
       
-      const apiUrl = useSandbox 
-        ? 'https://api.sandbox.namecheap.com/xml.response'
-        : 'https://api.namecheap.com/xml.response';
+      const baseUrl = this.GODADDY_MODE === 'production' 
+        ? 'https://api.godaddy.com' 
+        : 'https://api.ote-godaddy.com';
 
-      const params = new URLSearchParams({
-        ApiUser: apiUser,
-        ApiKey: apiKey,
-        UserName: apiUser,
-        Command: 'namecheap.domains.create',
-        ClientIp: '127.0.0.1',
-        DomainName: data.domain,
-        Years: data.years.toString(),
-        AddFreeWhoisguard: data.whoisPrivacy ? 'yes' : 'no',
-        WGEnabled: data.whoisPrivacy ? 'yes' : 'no'
-      });
-
-      const response = await fetch(apiUrl, {
+      const response = await fetch(`${baseUrl}/v1/domains/purchase`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `sso-key ${this.GODADDY_API_KEY}:${this.GODADDY_API_SECRET}`,
+          'Content-Type': 'application/json'
         },
-        body: params
+        body: JSON.stringify({
+          domain: data.domain,
+          period: data.years,
+          nameServers: ['ns1.leadgrid.co.il', 'ns2.leadgrid.co.il'],
+          renewAuto: data.autoRenew,
+          privacy: data.whoisPrivacy,
+          consent: {
+            agreementKeys: ['DNRA'],
+            agreedBy: 'Leadgrid',
+            agreedAt: new Date().toISOString()
+          }
+        })
       });
 
-      const text = await response.text();
-      console.log('📋 תגובת רכישה מ-Namecheap:', text);
+      const responseData = await response.json();
+      console.log('📋 תגובת רכישה מ-GoDaddy:', responseData);
       
-      const success = text.includes('CommandResponse Type="OK"');
-      
-      if (success) {
+      if (response.ok) {
         return {
           success: true,
-          orderId: `NC_${Date.now()}`,
+          orderId: responseData.orderId || `GD_${Date.now()}`,
           domain: data.domain,
-          message: 'דומיין נרכש בהצלחה דרך Namecheap',
+          message: 'דומיין נרכש בהצלחה דרך GoDaddy',
           status: 'completed',
           nameservers: ['ns1.leadgrid.co.il', 'ns2.leadgrid.co.il']
         };
       } else {
-        throw new Error('Namecheap רכישה נכשלה');
+        throw new Error(`GoDaddy רכישה נכשלה: ${responseData.message || 'שגיאה לא ידועה'}`);
       }
     } catch (error) {
-      console.error('❌ רכישה דרך Namecheap נכשלה:', error);
+      console.error('❌ רכישה דרך GoDaddy נכשלה:', error);
       return {
         success: false,
-        error: `רכישה דרך Namecheap נכשלה: ${error.message}`,
+        error: `רכישה דרך GoDaddy נכשלה: ${error.message}`,
         status: 'failed'
       };
     }
@@ -498,7 +481,7 @@ export class RealDomainService {
 
   private static async createLandingPage(request: PurchaseRequest) {
     console.log('🔨 יוצר דף נחיתה מותאם אישית...');
-    const isDemo = !this.NAMECHEAP_API_KEY;
+    const isDemo = !this.GODADDY_API_KEY;
     
     return {
       isDemo,
