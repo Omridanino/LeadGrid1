@@ -6,18 +6,20 @@ import { AdvancedStyleEditor } from './AdvancedStyleEditor';
 import { DynamicFormBuilder } from './DynamicFormBuilder';
 import { ABTestingManager } from './ABTestingManager';
 import { TemplateData } from '@/types/template';
-import { Save, Eye, Code, Settings, Zap, BarChart3 } from 'lucide-react';
+import { Save, Eye, Code, Settings, Zap, BarChart3, ArrowLeft } from 'lucide-react';
 
 interface AdvancedTemplateEditorProps {
   template: TemplateData;
   onTemplateChange: (template: TemplateData) => void;
   onSave: () => void;
+  onBack?: () => void;
 }
 
 export const AdvancedTemplateEditor = ({ 
   template, 
   onTemplateChange, 
-  onSave 
+  onSave,
+  onBack 
 }: AdvancedTemplateEditorProps) => {
   const [advancedStyles, setAdvancedStyles] = useState(template.advancedStyles || {});
   const [customForms, setCustomForms] = useState(template.customForms || []);
@@ -47,11 +49,30 @@ export const AdvancedTemplateEditor = ({
     });
   };
 
+  const handleBack = () => {
+    console.log("Back button clicked in AdvancedTemplateEditor");
+    if (onBack) {
+      onBack();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="border-b border-gray-800 p-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">עורך מתקדם - {template.name}</h1>
+          <div className="flex items-center gap-3">
+            {onBack && (
+              <Button
+                onClick={handleBack}
+                variant="outline"
+                className="border-gray-600 text-white hover:bg-gray-700"
+              >
+                <ArrowLeft className="w-4 h-4 mr-1" />
+                חזור לעורך הבסיסי
+              </Button>
+            )}
+            <h1 className="text-2xl font-bold">עורך מתקדם - {template.name}</h1>
+          </div>
           <div className="flex gap-2">
             <Button variant="outline" className="border-gray-600 text-white hover:bg-gray-700">
               <Eye className="w-4 h-4 mr-1" />

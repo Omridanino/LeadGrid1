@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -36,7 +37,16 @@ import {
   Plus,
   Maximize2,
   Minimize2,
-  Wrench
+  Wrench,
+  BarChart3,
+  Globe,
+  Smartphone,
+  Monitor,
+  TestTube,
+  Timer,
+  MousePointer,
+  Bell,
+  Shield
 } from 'lucide-react';
 import { TemplateData } from '@/types/template';
 import { TemplatePreview } from './template-editor/TemplatePreview';
@@ -86,16 +96,13 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
 
   const handleSave = () => {
     try {
-      // Clear old data first to make space
       localStorage.removeItem('generatedHTML');
       localStorage.removeItem('generatedPageData');
       
       const htmlContent = generatePageHTML(editedTemplate);
       
-      // Create simplified template data for storage
       const simplifiedTemplate = {
         ...editedTemplate,
-        // Remove large objects to reduce storage size
         styles: editedTemplate.styles ? {
           primaryColor: editedTemplate.styles.primaryColor,
           backgroundColor: editedTemplate.styles.backgroundColor
@@ -119,7 +126,6 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
     } catch (error) {
       console.error('Error saving page:', error);
       
-      // If still failing, try clearing all storage
       try {
         localStorage.clear();
         toast({
@@ -151,6 +157,16 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
 
   const handleBackToEditor = () => {
     setShowLaunchSection(false);
+  };
+
+  const handleAdvancedEditor = () => {
+    console.log("Opening Advanced Editor");
+    setShowAdvancedEditor(true);
+  };
+
+  const handleBackFromAdvanced = () => {
+    console.log("Closing Advanced Editor");
+    setShowAdvancedEditor(false);
   };
 
   const updateSection = (section: keyof TemplateData, updates: any) => {
@@ -305,6 +321,21 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
         { id: 'styles', name: 'צבעים וגופנים', icon: Palette, color: 'text-pink-400' },
         { id: 'effects', name: 'אפקטים', icon: Sparkles, color: 'text-yellow-400' },
       ]
+    },
+    {
+      id: 'advanced',
+      label: 'מתקדם',
+      items: [
+        { id: 'seo', name: 'SEO ומטא תגים', icon: Globe, color: 'text-blue-400' },
+        { id: 'responsive', name: 'רספונסיבי', icon: Smartphone, color: 'text-green-400' },
+        { id: 'analytics', name: 'פיקסלים ואנליטיקס', icon: BarChart3, color: 'text-purple-400' },
+        { id: 'forms', name: 'טפסים דינמיים', icon: Code, color: 'text-orange-400' },
+        { id: 'abtesting', name: 'A/B Testing', icon: TestTube, color: 'text-cyan-400' },
+        { id: 'popups', name: 'פופ-אפים וטיימרים', icon: Timer, color: 'text-red-400' },
+        { id: 'interactions', name: 'אינטראקטיביות', icon: MousePointer, color: 'text-yellow-400' },
+        { id: 'notifications', name: 'התראות', icon: Bell, color: 'text-indigo-400' },
+        { id: 'security', name: 'אבטחה', icon: Shield, color: 'text-green-500' },
+      ]
     }
   ];
 
@@ -348,6 +379,70 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
         return <StylesEditor template={editedTemplate} onUpdate={updateStyles} />;
       case 'effects':
         return <EffectsEditor template={editedTemplate} onUpdate={updateEffects} />;
+      // Advanced sections placeholders
+      case 'seo':
+        return (
+          <div className="p-4 space-y-4">
+            <h3 className="text-white text-lg font-bold">SEO ומטא תגים</h3>
+            <p className="text-gray-300">כלים לאופטימיזציה למנועי חיפוש - בפיתוח</p>
+          </div>
+        );
+      case 'responsive':
+        return (
+          <div className="p-4 space-y-4">
+            <h3 className="text-white text-lg font-bold">עיצוב רספונסיבי</h3>
+            <p className="text-gray-300">כלים לעיצוב מותאם לכל המכשירים - בפיתוח</p>
+          </div>
+        );
+      case 'analytics':
+        return (
+          <div className="p-4 space-y-4">
+            <h3 className="text-white text-lg font-bold">פיקסלים ואנליטיקס</h3>
+            <p className="text-gray-300">חיבור ל-Facebook Pixel, Google Analytics ועוד - בפיתוח</p>
+          </div>
+        );
+      case 'forms':
+        return (
+          <div className="p-4 space-y-4">
+            <h3 className="text-white text-lg font-bold">טפסים דינמיים</h3>
+            <p className="text-gray-300">יצירת טפסים מותאמים אישית - בפיתוח</p>
+          </div>
+        );
+      case 'abtesting':
+        return (
+          <div className="p-4 space-y-4">
+            <h3 className="text-white text-lg font-bold">A/B Testing</h3>
+            <p className="text-gray-300">בדיקות A/B מתקדמות - בפיתוח</p>
+          </div>
+        );
+      case 'popups':
+        return (
+          <div className="p-4 space-y-4">
+            <h3 className="text-white text-lg font-bold">פופ-אפים וטיימרים</h3>
+            <p className="text-gray-300">הוספת פופ-אפים, טיימרים וחוויות אינטראקטיביות - בפיתוח</p>
+          </div>
+        );
+      case 'interactions':
+        return (
+          <div className="p-4 space-y-4">
+            <h3 className="text-white text-lg font-bold">אינטראקטיביות</h3>
+            <p className="text-gray-300">הוספת אלמנטים אינטראקטיביים - בפיתוח</p>
+          </div>
+        );
+      case 'notifications':
+        return (
+          <div className="p-4 space-y-4">
+            <h3 className="text-white text-lg font-bold">התראות</h3>
+            <p className="text-gray-300">מערכת התראות מתקדמת - בפיתוח</p>
+          </div>
+        );
+      case 'security':
+        return (
+          <div className="p-4 space-y-4">
+            <h3 className="text-white text-lg font-bold">אבטחה</h3>
+            <p className="text-gray-300">הגדרות אבטחה מתקדמות - בפיתוח</p>
+          </div>
+        );
       default:
         return null;
     }
@@ -359,6 +454,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
         template={editedTemplate}
         onTemplateChange={setEditedTemplate}
         onSave={handleSave}
+        onBack={handleBackFromAdvanced}
       />
     );
   }
@@ -446,7 +542,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
             <Button 
               size="sm" 
               className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white shadow-lg text-xs px-2 py-1.5"
-              onClick={() => setShowAdvancedEditor(true)}
+              onClick={handleAdvancedEditor}
             >
               <Wrench className="w-3 h-3 ml-1" />
               עורך מתקדם
@@ -456,7 +552,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
           {/* Navigation Tabs */}
           <Tabs value={activeCategory} onValueChange={setActiveCategory} className="flex-1 flex flex-col min-h-0">
             <div className="px-3 py-2 border-b border-slate-700/30 flex-shrink-0">
-              <TabsList className="grid w-full grid-cols-3 bg-slate-800/50 p-0.5 rounded-md h-7">
+              <TabsList className="grid w-full grid-cols-4 bg-slate-800/50 p-0.5 rounded-md h-7">
                 <TabsTrigger value="sections" className="text-xs data-[state=active]:bg-blue-600/80 data-[state=active]:text-white h-6">
                   <Settings className="w-3 h-3 mr-1" />
                   חלקים
@@ -468,6 +564,10 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                 <TabsTrigger value="styles" className="text-xs data-[state=active]:bg-blue-600/80 data-[state=active]:text-white h-6">
                   <Palette className="w-3 h-3 mr-1" />
                   עיצוב
+                </TabsTrigger>
+                <TabsTrigger value="advanced" className="text-xs data-[state=active]:bg-blue-600/80 data-[state=active]:text-white h-6">
+                  <Wrench className="w-3 h-3 mr-1" />
+                  מתקדם
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -481,6 +581,12 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                        <div className="mb-4 p-3 bg-slate-700/30 rounded-lg border border-slate-600/30">
                          <p className="text-slate-300 text-xs mb-2">גרור אלמנטים לדף התצוגה ↙️</p>
                          <div className="text-xs text-slate-400">לחץ על אלמנט להוספה או גרור למקום רצוי</div>
+                       </div>
+                     )}
+                     {category.id === 'advanced' && (
+                       <div className="mb-4 p-3 bg-orange-600/20 rounded-lg border border-orange-500/30">
+                         <p className="text-orange-300 text-xs mb-2">🚀 כלים מתקדמים</p>
+                         <div className="text-xs text-orange-400">כל הפיצ'רים המתקדמים שהוספתי נמצאים כאן</div>
                        </div>
                      )}
                      {category.items.map((item) => {
@@ -519,7 +625,9 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
                                     {item.name}
                                   </h3>
                                   <p className="text-xs text-slate-500 truncate">
-                                    {category.id === 'elements' ? 'גרור או לחץ' : isActive ? 'פעיל' : 'לחץ לעריכה'}
+                                    {category.id === 'elements' ? 'גרור או לחץ' : 
+                                     category.id === 'advanced' ? 'כלים מתקדמים' :
+                                     isActive ? 'פעיל' : 'לחץ לעריכה'}
                                   </p>
                                 </div>
                                 {/* Remove button for elements */}
@@ -585,7 +693,7 @@ const ModernTemplateEditor = ({ template, onTemplateChange, onClose, onPublishSu
             {isEditorMinimized && (
               <>
                 <Button
-                  onClick={() => setShowAdvancedEditor(true)}
+                  onClick={handleAdvancedEditor}
                   size="sm"
                   className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white shadow-lg text-xs px-2 py-1.5"
                 >
