@@ -1,4 +1,5 @@
 
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,29 +14,38 @@ import { DemoWordPressSite } from "./pages/DemoWordPressSite";
 import { DemoWordPressClientSite } from "./pages/DemoWordPressClientSite";
 import { PurchaseSuccessPage } from "./components/PurchaseSuccessPage";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      retry: 1,
+    },
+  },
+});
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <div className="min-h-screen bg-black">
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/generated-landing-page" element={<GeneratedLandingPage />} />
-            <Route path="/wordpress-landing-page" element={<WordPressLandingPage />} />
-            <Route path="/demo-wordpress-site" element={<DemoWordPressSite />} />
-            <Route path="/demo-wordpress-client" element={<DemoWordPressClientSite />} />
-            <Route path="/auth/wordpress/callback" element={<WordPressAuthCallback />} />
-            <Route path="/purchase-success" element={<PurchaseSuccessPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </div>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App: React.FC = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <div className="min-h-screen bg-black">
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/generated-landing-page" element={<GeneratedLandingPage />} />
+              <Route path="/wordpress-landing-page" element={<WordPressLandingPage />} />
+              <Route path="/demo-wordpress-site" element={<DemoWordPressSite />} />
+              <Route path="/demo-wordpress-client" element={<DemoWordPressClientSite />} />
+              <Route path="/auth/wordpress/callback" element={<WordPressAuthCallback />} />
+              <Route path="/purchase-success" element={<PurchaseSuccessPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
