@@ -1,35 +1,49 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Timer, Clock, MousePointer } from 'lucide-react';
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Timer, Zap, Plus, Trash2 } from 'lucide-react';
 
 interface PopupTimerEditorProps {
   onUpdate: (updates: any) => void;
-  currentData: any;
+  currentSettings: any;
 }
 
-export const PopupTimerEditor = ({ onUpdate, currentData }: PopupTimerEditorProps) => {
-  const [popupData, setPopupData] = useState({
-    exitIntent: currentData?.exitIntent || false,
-    timeDelay: currentData?.timeDelay || 5,
-    scrollTrigger: currentData?.scrollTrigger || 50,
-    popupContent: currentData?.popupContent || '',
-    popupTitle: currentData?.popupTitle || '',
-    countdown: currentData?.countdown || false,
-    countdownEndDate: currentData?.countdownEndDate || '',
-    ...currentData
-  });
+export const PopupTimerEditor = ({ onUpdate, currentSettings }: PopupTimerEditorProps) => {
+  const [popups, setPopups] = useState(currentSettings?.popups || []);
 
-  useEffect(() => {
-    onUpdate(popupData);
-  }, [popupData, onUpdate]);
+  const addPopup = () => {
+    const newPopup = {
+      id: Date.now(),
+      type: 'exit-intent',
+      title: 'חכה רגע!',
+      message: 'קבל הנחה של 20% לפני שאתה עוזב',
+      buttonText: 'קבל הנחה',
+      delay: 5000,
+      enabled: true
+    };
+    const updatedPopups = [...popups, newPopup];
+    setPopups(updatedPopups);
+    onUpdate({ popups: updatedPopups });
+  };
 
-  const handleInputChange = (field: string, value: any) => {
-    setPopupData(prev => ({ ...prev, [field]: value }));
+  const updatePopup = (id: number, updates: any) => {
+    const updatedPopups = popups.map((popup: any) => 
+      popup.id === id ? { ...popup, ...updates } : popup
+    );
+    setPopups(updatedPopups);
+    onUpdate({ popups: updatedPopups });
+  };
+
+  const removePopup = (id: number) => {
+    const updatedPopups = popups.filter((popup: any) => popup.id !== id);
+    setPopups(updatedPopups);
+    onUpdate({ popups: updatedPopups });
   };
 
   return (
@@ -37,99 +51,110 @@ export const PopupTimerEditor = ({ onUpdate, currentData }: PopupTimerEditorProp
       <Card className="bg-gray-800 border-gray-700">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
-            <Timer className="w-5 h-5" />
+            <Timer className="w-5 h-5 text-orange-500" />
             פופ-אפים וטיימרים
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <Label htmlFor="exit-intent" className="text-white">Exit Intent Popup</Label>
-              <p className="text-sm text-gray-400">פופ-אפ שיופיע כשהמשתמש עומד לעזוב</p>
-            </div>
-            <Switch
-              id="exit-intent"
-              checked={popupData.exitIntent}
-              onCheckedChange={(checked) => handleInputChange('exitIntent', checked)}
-            />
-          </div>
+          <Button onClick={addPopup} className="bg-orange-600 hover:bg-orange-700 w-full">
+            <Plus className="w-4 h-4 mr-1" />
+            הוסף פופ-אפ חדש
+          </Button>
 
-          <div className="space-y-2">
-            <Label htmlFor="time-delay" className="text-white flex items-center gap-2">
-              <Clock className="w-4 h-4" />
-              עיכוב זמן (שניות)
-            </Label>
-            <Input
-              id="time-delay"
-              type="number"
-              value={popupData.timeDelay}
-              onChange={(e) => handleInputChange('timeDelay', parseInt(e.target.value))}
-              className="bg-gray-700 border-gray-600 text-white"
-            />
-          </div>
+          {popups.map((popup: any) => (
+            <Card key={popup.id} className="bg-gray-700 border-gray-600">
+              <CardContent className="p-4 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      checked={popup.enabled}
+                      onCheckedChange={(checked) => updatePopup(popup.id, { enabled: checked })}
+                    />
+                    <Label className="text-white">פופ-אפ פעיל</Label>
+                  </div>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => removePopup(popup.id)}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="scroll-trigger" className="text-white flex items-center gap-2">
-              <MousePointer className="w-4 h-4" />
-              טריגר גלילה (%)
-            </Label>
-            <Input
-              id="scroll-trigger"
-              type="number"
-              value={popupData.scrollTrigger}
-              onChange={(e) => handleInputChange('scrollTrigger', parseInt(e.target.value))}
-              placeholder="50"
-              className="bg-gray-700 border-gray-600 text-white"
-            />
-          </div>
+                <div>
+                  <Label className="text-white">סוג פופ-אפ</Label>
+                  <Select 
+                    value={popup.type} 
+                    onValueChange={(value) => updatePopup(popup.id, { type: value })}
+                  >
+                    <SelectTrigger className="bg-gray-600 border-gray-500 text-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-gray-600 border-gray-500">
+                      <SelectItem value="exit-intent" className="text-white">Exit Intent</SelectItem>
+                      <SelectItem value="time-delay" className="text-white">עיכוב זמן</SelectItem>
+                      <SelectItem value="scroll-percentage" className="text-white">אחוז גלילה</SelectItem>
+                      <SelectItem value="countdown" className="text-white">ספירה לאחור</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="popup-title" className="text-white">כותרת הפופ-אפ</Label>
-            <Input
-              id="popup-title"
-              value={popupData.popupTitle}
-              onChange={(e) => handleInputChange('popupTitle', e.target.value)}
-              placeholder="כותרת מושכת"
-              className="bg-gray-700 border-gray-600 text-white"
-            />
-          </div>
+                <div>
+                  <Label className="text-white">כותרת</Label>
+                  <Input
+                    value={popup.title}
+                    onChange={(e) => updatePopup(popup.id, { title: e.target.value })}
+                    className="bg-gray-600 border-gray-500 text-white"
+                  />
+                </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="popup-content" className="text-white">תוכן הפופ-אפ</Label>
-            <Textarea
-              id="popup-content"
-              value={popupData.popupContent}
-              onChange={(e) => handleInputChange('popupContent', e.target.value)}
-              placeholder="הודעה מעודדת פעולה..."
-              className="bg-gray-700 border-gray-600 text-white"
-              rows={3}
-            />
-          </div>
+                <div>
+                  <Label className="text-white">הודעה</Label>
+                  <Textarea
+                    value={popup.message}
+                    onChange={(e) => updatePopup(popup.id, { message: e.target.value })}
+                    className="bg-gray-600 border-gray-500 text-white"
+                    rows={2}
+                  />
+                </div>
 
-          <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <Label htmlFor="countdown" className="text-white">טיימר ספירה לאחור</Label>
-              <p className="text-sm text-gray-400">הצג ספירה לאחור למבצע</p>
-            </div>
-            <Switch
-              id="countdown"
-              checked={popupData.countdown}
-              onCheckedChange={(checked) => handleInputChange('countdown', checked)}
-            />
-          </div>
+                <div>
+                  <Label className="text-white">טקסט כפתור</Label>
+                  <Input
+                    value={popup.buttonText}
+                    onChange={(e) => updatePopup(popup.id, { buttonText: e.target.value })}
+                    className="bg-gray-600 border-gray-500 text-white"
+                  />
+                </div>
 
-          {popupData.countdown && (
-            <div className="space-y-2">
-              <Label htmlFor="countdown-date" className="text-white">תאריך סיום המבצע</Label>
-              <Input
-                id="countdown-date"
-                type="datetime-local"
-                value={popupData.countdownEndDate}
-                onChange={(e) => handleInputChange('countdownEndDate', e.target.value)}
-                className="bg-gray-700 border-gray-600 text-white"
-              />
-            </div>
-          )}
+                {popup.type === 'time-delay' && (
+                  <div>
+                    <Label className="text-white">עיכוב (אלפיות שנייה)</Label>
+                    <Input
+                      type="number"
+                      value={popup.delay}
+                      onChange={(e) => updatePopup(popup.id, { delay: parseInt(e.target.value) })}
+                      className="bg-gray-600 border-gray-500 text-white"
+                    />
+                  </div>
+                )}
+
+                {popup.type === 'scroll-percentage' && (
+                  <div>
+                    <Label className="text-white">אחוז גלילה (%)</Label>
+                    <Input
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={popup.scrollPercentage || 50}
+                      onChange={(e) => updatePopup(popup.id, { scrollPercentage: parseInt(e.target.value) })}
+                      className="bg-gray-600 border-gray-500 text-white"
+                    />
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ))}
         </CardContent>
       </Card>
     </div>

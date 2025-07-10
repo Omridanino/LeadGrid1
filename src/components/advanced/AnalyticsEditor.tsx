@@ -1,125 +1,160 @@
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState } from 'react';
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { BarChart3, Facebook, Chrome, Linkedin, Music } from 'lucide-react';
+import { Switch } from "@/components/ui/switch";
+import { BarChart3, Facebook, Chrome, Linkedin, Zap } from 'lucide-react';
+import { TemplateData } from '@/types/template';
 
 interface AnalyticsEditorProps {
+  template: TemplateData;
   onUpdate: (updates: any) => void;
-  currentData: any;
 }
 
-export const AnalyticsEditor = ({ onUpdate, currentData }: AnalyticsEditorProps) => {
-  const [analyticsData, setAnalyticsData] = useState({
-    facebookPixel: currentData?.facebookPixel || '',
-    googleAnalytics: currentData?.googleAnalytics || '',
-    tiktokPixel: currentData?.tiktokPixel || '',
-    linkedinInsight: currentData?.linkedinInsight || '',
-    gtm: currentData?.gtm || '',
-    customHeadScripts: currentData?.customHeadScripts || '',
-    ...currentData
+export const AnalyticsEditor = ({ template, onUpdate }: AnalyticsEditorProps) => {
+  const [analytics, setAnalytics] = useState({
+    facebookPixel: template.advancedStyles?.integrations?.facebookPixel || '',
+    googleAnalytics: template.advancedStyles?.integrations?.googleAnalytics || '',
+    tiktokPixel: template.advancedStyles?.integrations?.tiktokPixel || '',
+    linkedinInsight: template.advancedStyles?.integrations?.linkedinInsight || '',
+    gtm: template.advancedStyles?.integrations?.gtm || '',
+    zapierWebhook: template.advancedStyles?.integrations?.zapierWebhook || '',
+    customHeadScripts: template.advancedStyles?.integrations?.customHeadScripts || ''
   });
 
-  useEffect(() => {
-    onUpdate(analyticsData);
-  }, [analyticsData, onUpdate]);
-
-  const handleInputChange = (field: string, value: string) => {
-    setAnalyticsData(prev => ({ ...prev, [field]: value }));
+  const handleUpdate = (field: string, value: string) => {
+    const newAnalytics = { ...analytics, [field]: value };
+    setAnalytics(newAnalytics);
+    
+    onUpdate({
+      advancedStyles: {
+        ...template.advancedStyles,
+        integrations: newAnalytics
+      }
+    });
   };
 
   return (
     <div className="space-y-6">
-      <Card className="bg-gray-800 border-gray-700">
+      <div className="flex items-center gap-2 mb-4">
+        <BarChart3 className="w-5 h-5 text-purple-400" />
+        <h3 className="text-white text-lg font-bold">פיקסלים ואנליטיקס</h3>
+      </div>
+
+      <Card className="bg-slate-800/50 border-slate-700">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
-            <BarChart3 className="w-5 h-5" />
-            אנליטיקס ופיקסלים
+            <Facebook className="w-4 h-4" />
+            Facebook Pixel
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="facebook-pixel" className="text-white flex items-center gap-2">
-              <Facebook className="w-4 h-4" />
-              Facebook Pixel ID
-            </Label>
+          <div>
+            <Label className="text-slate-300">Facebook Pixel ID</Label>
             <Input
-              id="facebook-pixel"
-              value={analyticsData.facebookPixel}
-              onChange={(e) => handleInputChange('facebookPixel', e.target.value)}
+              value={analytics.facebookPixel}
+              onChange={(e) => handleUpdate('facebookPixel', e.target.value)}
               placeholder="123456789012345"
-              className="bg-gray-700 border-gray-600 text-white"
+              className="bg-slate-700 border-slate-600 text-white"
             />
+            <p className="text-xs text-slate-400 mt-1">מזהה הפיקסל של פייסבוק לטראקינג</p>
           </div>
+        </CardContent>
+      </Card>
 
-          <div className="space-y-2">
-            <Label htmlFor="google-analytics" className="text-white flex items-center gap-2">
-              <Chrome className="w-4 h-4" />
-              Google Analytics ID
-            </Label>
+      <Card className="bg-slate-800/50 border-slate-700">
+        <CardHeader>
+          <CardTitle className="text-white flex items-center gap-2">
+            <Chrome className="w-4 h-4" />
+            Google Analytics
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <Label className="text-slate-300">Google Analytics ID</Label>
             <Input
-              id="google-analytics"
-              value={analyticsData.googleAnalytics}
-              onChange={(e) => handleInputChange('googleAnalytics', e.target.value)}
+              value={analytics.googleAnalytics}
+              onChange={(e) => handleUpdate('googleAnalytics', e.target.value)}
               placeholder="G-XXXXXXXXXX או UA-XXXXXXXXX"
-              className="bg-gray-700 border-gray-600 text-white"
+              className="bg-slate-700 border-slate-600 text-white"
             />
+            <p className="text-xs text-slate-400 mt-1">מזהה Google Analytics למעקב אחר ביקורים</p>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="tiktok-pixel" className="text-white flex items-center gap-2">
-              <Music className="w-4 h-4" />
-              TikTok Pixel ID
-            </Label>
+          <div>
+            <Label className="text-slate-300">Google Tag Manager ID</Label>
             <Input
-              id="tiktok-pixel"
-              value={analyticsData.tiktokPixel}
-              onChange={(e) => handleInputChange('tiktokPixel', e.target.value)}
-              placeholder="C4XXXXXXXXXXXXXXXXXXXXXXXXXX"
-              className="bg-gray-700 border-gray-600 text-white"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="linkedin-insight" className="text-white flex items-center gap-2">
-              <Linkedin className="w-4 h-4" />
-              LinkedIn Insight Tag
-            </Label>
-            <Input
-              id="linkedin-insight"
-              value={analyticsData.linkedinInsight}
-              onChange={(e) => handleInputChange('linkedinInsight', e.target.value)}
-              placeholder="1234567"
-              className="bg-gray-700 border-gray-600 text-white"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="gtm" className="text-white flex items-center gap-2">
-              <Chrome className="w-4 h-4" />
-              Google Tag Manager ID
-            </Label>
-            <Input
-              id="gtm"
-              value={analyticsData.gtm}
-              onChange={(e) => handleInputChange('gtm', e.target.value)}
+              value={analytics.gtm}
+              onChange={(e) => handleUpdate('gtm', e.target.value)}
               placeholder="GTM-XXXXXXX"
-              className="bg-gray-700 border-gray-600 text-white"
+              className="bg-slate-700 border-slate-600 text-white"
+            />
+            <p className="text-xs text-slate-400 mt-1">מזהה Google Tag Manager</p>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="bg-slate-800/50 border-slate-700">
+        <CardHeader>
+          <CardTitle className="text-white flex items-center gap-2">
+            <Linkedin className="w-4 h-4" />
+            רשתות חברתיות נוספות
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <Label className="text-slate-300">TikTok Pixel ID</Label>
+            <Input
+              value={analytics.tiktokPixel}
+              onChange={(e) => handleUpdate('tiktokPixel', e.target.value)}
+              placeholder="C4XXXXXXXXXXXXXXXXXXXXXXX"
+              className="bg-slate-700 border-slate-600 text-white"
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="custom-scripts" className="text-white">קוד מותאם אישית (Head)</Label>
-            <Textarea
-              id="custom-scripts"
-              value={analyticsData.customHeadScripts}
-              onChange={(e) => handleInputChange('customHeadScripts', e.target.value)}
-              placeholder="<script>...</script>"
-              className="bg-gray-700 border-gray-600 text-white"
-              rows={5}
+          <div>
+            <Label className="text-slate-300">LinkedIn Insight Tag</Label>
+            <Input
+              value={analytics.linkedinInsight}
+              onChange={(e) => handleUpdate('linkedinInsight', e.target.value)}
+              placeholder="12345"
+              className="bg-slate-700 border-slate-600 text-white"
             />
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="bg-slate-800/50 border-slate-700">
+        <CardHeader>
+          <CardTitle className="text-white flex items-center gap-2">
+            <Zap className="w-4 h-4" />
+            אינטגרציות נוספות
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <Label className="text-slate-300">Zapier Webhook URL</Label>
+            <Input
+              value={analytics.zapierWebhook}
+              onChange={(e) => handleUpdate('zapierWebhook', e.target.value)}
+              placeholder="https://hooks.zapier.com/hooks/catch/..."
+              className="bg-slate-700 border-slate-600 text-white"
+            />
+            <p className="text-xs text-slate-400 mt-1">URL לחיבור עם Zapier</p>
+          </div>
+
+          <div>
+            <Label className="text-slate-300">סקריפטים מותאמים אישית</Label>
+            <Textarea
+              value={analytics.customHeadScripts}
+              onChange={(e) => handleUpdate('customHeadScripts', e.target.value)}
+              placeholder="<script>...</script>"
+              className="bg-slate-700 border-slate-600 text-white h-24"
+            />
+            <p className="text-xs text-slate-400 mt-1">סקריפטים שיתווספו ל-head של הדף</p>
           </div>
         </CardContent>
       </Card>

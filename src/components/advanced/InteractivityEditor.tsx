@@ -1,32 +1,34 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Switch } from "@/components/ui/switch";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { MousePointer, Sparkles, Eye, Zap } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { Zap, MousePointer, Eye, Volume2 } from 'lucide-react';
 
 interface InteractivityEditorProps {
   onUpdate: (updates: any) => void;
-  currentData: any;
+  currentSettings: any;
 }
 
-export const InteractivityEditor = ({ onUpdate, currentData }: InteractivityEditorProps) => {
-  const [interactivityData, setInteractivityData] = useState({
-    animations: currentData?.animations || false,
-    hoverEffects: currentData?.hoverEffects || false,
-    parallaxScrolling: currentData?.parallaxScrolling || false,
-    smoothScrolling: currentData?.smoothScrolling || false,
-    customCursor: currentData?.customCursor || false,
-    particleEffects: currentData?.particleEffects || false,
-    ...currentData
+export const InteractivityEditor = ({ onUpdate, currentSettings }: InteractivityEditorProps) => {
+  const [settings, setSettings] = useState(currentSettings?.interactivity || {
+    hoverEffects: true,
+    smoothScrolling: true,
+    clickAnimations: true,
+    parallaxEffect: false,
+    mouseFollower: false,
+    loadingAnimations: true,
+    autoplay: false,
+    backgroundMusic: false
   });
 
-  useEffect(() => {
-    onUpdate(interactivityData);
-  }, [interactivityData, onUpdate]);
-
-  const handleInputChange = (field: string, value: boolean) => {
-    setInteractivityData(prev => ({ ...prev, [field]: value }));
+  const updateSetting = (key: string, value: any) => {
+    const updatedSettings = { ...settings, [key]: value };
+    setSettings(updatedSettings);
+    onUpdate({ interactivity: updatedSettings });
   };
 
   return (
@@ -34,89 +36,122 @@ export const InteractivityEditor = ({ onUpdate, currentData }: InteractivityEdit
       <Card className="bg-gray-800 border-gray-700">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
-            <MousePointer className="w-5 h-5" />
-            אינטראקטיביות
+            <MousePointer className="w-5 h-5 text-purple-500" />
+            אינטראקטיביות ואנימציות
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
+          {/* Hover Effects */}
           <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <Label htmlFor="animations" className="text-white flex items-center gap-2">
-                <Sparkles className="w-4 h-4" />
-                אנימציות
-              </Label>
-              <p className="text-sm text-gray-400">הפעל אנימציות כניסה ויציאה</p>
+            <div>
+              <Label className="text-white font-medium">אפקטי Hover</Label>
+              <p className="text-gray-400 text-sm">אפקטים כשמעבירים עכבר על אלמנטים</p>
             </div>
             <Switch
-              id="animations"
-              checked={interactivityData.animations}
-              onCheckedChange={(checked) => handleInputChange('animations', checked)}
+              checked={settings.hoverEffects}
+              onCheckedChange={(checked) => updateSetting('hoverEffects', checked)}
             />
           </div>
 
+          {/* Smooth Scrolling */}
           <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <Label htmlFor="hover-effects" className="text-white flex items-center gap-2">
-                <Eye className="w-4 h-4" />
-                אפקטי Hover
-              </Label>
-              <p className="text-sm text-gray-400">אפקטים בעת העברת עכבר</p>
+            <div>
+              <Label className="text-white font-medium">גלילה חלקה</Label>
+              <p className="text-gray-400 text-sm">גלילה חלקה בין סקשנים</p>
             </div>
             <Switch
-              id="hover-effects"
-              checked={interactivityData.hoverEffects}
-              onCheckedChange={(checked) => handleInputChange('hoverEffects', checked)}
+              checked={settings.smoothScrolling}
+              onCheckedChange={(checked) => updateSetting('smoothScrolling', checked)}
             />
           </div>
 
+          {/* Click Animations */}
           <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <Label htmlFor="parallax-scrolling" className="text-white flex items-center gap-2">
-                <Zap className="w-4 h-4" />
-                Parallax Scrolling
-              </Label>
-              <p className="text-sm text-gray-400">אפקט תלת-מימד בגלילה</p>
+            <div>
+              <Label className="text-white font-medium">אנימציות לחיצה</Label>
+              <p className="text-gray-400 text-sm">אנימציות כשלוחצים על כפתורים</p>
             </div>
             <Switch
-              id="parallax-scrolling"
-              checked={interactivityData.parallaxScrolling}
-              onCheckedChange={(checked) => handleInputChange('parallaxScrolling', checked)}
+              checked={settings.clickAnimations}
+              onCheckedChange={(checked) => updateSetting('clickAnimations', checked)}
             />
           </div>
 
+          {/* Parallax Effect */}
           <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <Label htmlFor="smooth-scrolling" className="text-white">גלילה חלקה</Label>
-              <p className="text-sm text-gray-400">גלילה חלקה במעבר בין קטעים</p>
+            <div>
+              <Label className="text-white font-medium">אפקט פרלקס</Label>
+              <p className="text-gray-400 text-sm">רקע נע לפי הגלילה</p>
             </div>
             <Switch
-              id="smooth-scrolling"
-              checked={interactivityData.smoothScrolling}
-              onCheckedChange={(checked) => handleInputChange('smoothScrolling', checked)}
+              checked={settings.parallaxEffect}
+              onCheckedChange={(checked) => updateSetting('parallaxEffect', checked)}
             />
           </div>
 
+          {/* Mouse Follower */}
           <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <Label htmlFor="custom-cursor" className="text-white">עכבר מותאם אישית</Label>
-              <p className="text-sm text-gray-400">עכבר עם עיצוב מיוחד</p>
+            <div>
+              <Label className="text-white font-medium">עוקב עכבר</Label>
+              <p className="text-gray-400 text-sm">אלמנט שעוקב אחרי העכבר</p>
             </div>
             <Switch
-              id="custom-cursor"
-              checked={interactivityData.customCursor}
-              onCheckedChange={(checked) => handleInputChange('customCursor', checked)}
+              checked={settings.mouseFollower}
+              onCheckedChange={(checked) => updateSetting('mouseFollower', checked)}
             />
           </div>
 
+          {/* Loading Animations */}
           <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <Label htmlFor="particle-effects" className="text-white">אפקטי חלקיקים</Label>
-              <p className="text-sm text-gray-400">חלקיקים נעים ברקע</p>
+            <div>
+              <Label className="text-white font-medium">אנימציות טעינה</Label>
+              <p className="text-gray-400 text-sm">אנימציות כשאלמנטים נכנסים לתצוגה</p>
             </div>
             <Switch
-              id="particle-effects"
-              checked={interactivityData.particleEffects}
-              onCheckedChange={(checked) => handleInputChange('particleEffects', checked)}
+              checked={settings.loadingAnimations}
+              onCheckedChange={(checked) => updateSetting('loadingAnimations', checked)}
+            />
+          </div>
+
+          {/* Animation Speed */}
+          <div>
+            <Label className="text-white font-medium">מהירות אנימציות</Label>
+            <Select 
+              value={settings.animationSpeed || 'normal'} 
+              onValueChange={(value) => updateSetting('animationSpeed', value)}
+            >
+              <SelectTrigger className="bg-gray-700 border-gray-600 text-white mt-2">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-gray-700 border-gray-600">
+                <SelectItem value="slow" className="text-white">איטי</SelectItem>
+                <SelectItem value="normal" className="text-white">רגיל</SelectItem>
+                <SelectItem value="fast" className="text-white">מהיר</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Custom CSS */}
+          <div>
+            <Label className="text-white font-medium">CSS מותאם אישית</Label>
+            <textarea
+              value={settings.customCSS || ''}
+              onChange={(e) => updateSetting('customCSS', e.target.value)}
+              className="w-full mt-2 p-3 bg-gray-700 border-gray-600 text-white rounded font-mono text-sm"
+              rows={4}
+              placeholder="/* הוסף CSS מותאם אישית כאן */"
+            />
+          </div>
+
+          {/* Custom JavaScript */}
+          <div>
+            <Label className="text-white font-medium">JavaScript מותאם אישית</Label>
+            <textarea
+              value={settings.customJS || ''}
+              onChange={(e) => updateSetting('customJS', e.target.value)}
+              className="w-full mt-2 p-3 bg-gray-700 border-gray-600 text-white rounded font-mono text-sm"
+              rows={4}
+              placeholder="// הוסף JavaScript מותאם אישית כאן"
             />
           </div>
         </CardContent>
