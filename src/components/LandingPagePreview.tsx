@@ -1,7 +1,7 @@
 
 import { generatePageHTML } from "@/utils/pageGenerator";
 import { ColorScheme } from "@/types/colors";
-import HeroSection from "@/components/HeroSection";
+
 
 interface LandingPagePreviewProps {
   content: any;

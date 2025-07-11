@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import Header from "@/components/Header";
-import ModernHeroSection from "@/components/ModernHeroSection";
+
 import ModernFeaturesSection from "@/components/ModernFeaturesSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import Footer from "@/components/Footer";
