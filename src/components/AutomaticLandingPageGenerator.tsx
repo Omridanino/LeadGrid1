@@ -227,7 +227,23 @@ const AutomaticLandingPageGenerator = ({ isOpen, onClose }: AutomaticLandingPage
         footer: {
           companyName: formData.businessName
         },
-        styles: {},
+        styles: {
+          backgroundColor: '#ffffff',
+          heroBackground: '#f8fafc',
+          emotionalBackground: '#ffffff',
+          featuresBackground: '#f8fafc',
+          testimonialsBackground: '#ffffff',
+          aboutBackground: '#f8fafc',
+          pricingBackground: '#ffffff',
+          faqBackground: '#f8fafc',
+          finalCtaBackground: '#ffffff',
+          contactBackground: '#f8fafc',
+          footerBackground: '#1f2937',
+          textColor: '#1f2937',
+          primaryColor: '#3b82f6',
+          secondaryColor: '#6b7280',
+          accentColor: '#f59e0b'
+        },
         effects: {}
       };
 
