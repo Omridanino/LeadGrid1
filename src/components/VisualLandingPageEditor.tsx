@@ -60,179 +60,186 @@ const VisualLandingPageEditor = ({
   console.log('VisualLandingPageEditor - generatedContent:', generatedContent);
   console.log('VisualLandingPageEditor - formData:', formData);
   
-  // Initialize content with generated data or defaults
+  // Initialize content with exact template data from formData (like pageGenerator.ts)
   const initializeContent = () => {
-    console.log('Initializing content with generatedContent:', generatedContent);
+    console.log('Initializing content with formData:', formData);
     
-    if (generatedContent) {
-      return {
-        hero: {
-          title: generatedContent.hero?.title || 'כותרת ראשית',
-          subtitle: generatedContent.hero?.subtitle || 'כותרת משנה', 
-          button1Text: generatedContent.hero?.button1Text || 'התחל עכשיו',
-          button2Text: generatedContent.hero?.button2Text || 'למד עוד',
-          badge: generatedContent.hero?.badge || 'חדש!',
-          description: generatedContent.hero?.description || 'תיאור מפורט של השירות או המוצר שלכם',
-          button1Icon: '',
-          button2Icon: ''
-        },
-        features: generatedContent.features ? {
-          title: generatedContent.features.title || 'התכונות שלנו',
-          subtitle: generatedContent.features.subtitle || 'גלה את היתרונות הייחודיים שלנו',
-          items: generatedContent.features.items || [
-            { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star' },
-            { title: 'תכונה 2', description: 'תיאור התכונה השנייה', icon: 'heart' },
-            { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'zap' }
-          ]
-        } : {
-          title: 'התכונות שלנו',
-          subtitle: 'גלה את היתרונות הייחודיים שלנו',
-          items: [
-            { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star' },
-            { title: 'תכונה 2', description: 'תיאור התכונה השנייה', icon: 'heart' },
-            { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'zap' }
-          ]
-        },
-        about: generatedContent.about ? {
-          title: generatedContent.about.title || 'אודותינו',
-          subtitle: generatedContent.about.subtitle || 'כותרת משנה',
-          description: generatedContent.about.description || 'אנחנו חברה מובילה בתחום',
-          stats: generatedContent.about.stats || [
-            { number: '24/7', label: 'תמיכה' },
-            { number: '+5', label: 'שנות ניסיון' },
-            { number: '+100', label: 'לקוחות מרוצים' }
-          ],
-          image: generatedContent.about.image || 'תמונה'
-        } : {
-          title: 'אודותינו',
-          subtitle: 'כותרת משנה', 
-          description: 'אנחנו חברה מובילה בתחום',
-          stats: [
-            { number: '24/7', label: 'תמיכה' },
-            { number: '+5', label: 'שנות ניסיון' },
-            { number: '+100', label: 'לקוחות מרוצים' }
-          ],
-          image: 'תמונה'
-        },
-        services: generatedContent.services ? {
-          title: generatedContent.services.title || 'השירותים שלנו',
-          subtitle: generatedContent.services.subtitle || 'פתרונות מקצועיים עבור העסק שלך',
-          items: generatedContent.services.items || [
-            { 
-              title: 'שירות 1', 
-              description: 'תיאור השירות הראשון',
-              price: '₪999',
-              features: ['תכונה 1', 'תכונה 2', 'תכונה 3']
-            },
-            { 
-              title: 'שירות 2', 
-              description: 'תיאור השירות השני',
-              price: '₪1,999',
-              features: ['תכונה 1', 'תכונה 2', 'תכונה 3', 'תכונה 4']
-            }
-          ]
-        } : {
-          title: 'השירותים שלנו',
-          subtitle: 'פתרונות מקצועיים עבור העסק שלך',
-          items: [
-            { 
-              title: 'שירות 1', 
-              description: 'תיאור השירות הראשון',
-              price: '₪999',
-              features: ['תכונה 1', 'תכונה 2', 'תכונה 3']
-            },
-            { 
-              title: 'שירות 2', 
-              description: 'תיאור השירות השני', 
-              price: '₪1,999',
-              features: ['תכונה 1', 'תכונה 2', 'תכונה 3', 'תכונה 4']
-            }
-          ]
-        },
-        testimonials: generatedContent.testimonials ? {
-          title: generatedContent.testimonials.title || 'מה הלקוחות המרוצים שלנו אומרים עלינו',
-          subtitle: generatedContent.testimonials.subtitle || 'הצלחות אמיתיות של לקוחות אמיתיים - המלצות כנות ומפורטות',
-          items: generatedContent.testimonials.items || [
-            {
-              name: 'שרה כהן',
-              role: 'מנהלת פרויקטים בכירה',
-              content: 'העבודה עם החברה הייתה חוויה מדהימה ומקצועית. הם הבינו בדיוק מה אנחנו צריכים, הציעו פתרונות יצירתיים וחדשניים, והביאו פתרון שחרג מכל הציפיות שלנו. השירות היה מעולה מהרגע הראשון ועד למסירה הסופית.',
-              rating: 5
-            },
-            {
-              name: 'דוד לוי',
-              role: 'בעל עסק ויזם',
-              content: 'השירות היה מקצועי ברמה הגבוהה ביותר, מהיר ויעיל מאוד. הצוות הקשיב לצרכים שלנו, הציע פתרונות מותאמים ועמד בכל הלוחות זמנים. ממליץ בחום לכל מי שמחפש פתרון איכותי, אמין ומקצועי.',
-              rating: 5
-            }
-          ]
-        } : {
-          title: 'מה הלקוחות המרוצים שלנו אומרים עלינו',
-          subtitle: 'הצלחות אמיתיות של לקוחות אמיתיים - המלצות כנות ומפורטות',
-          items: [
-            {
-              name: 'שרה כהן',
-              role: 'מנהלת פרויקטים בכירה',
-              content: 'העבודה עם החברה הייתה חוויה מדהימה ומקצועית. הם הבינו בדיוק מה אנחנו צריכים, הציעו פתרונות יצירתיים וחדשניים, והביאו פתרון שחרג מכל הציפיות שלנו. השירות היה מעולה מהרגע הראשון ועד למסירה הסופית.',
-              rating: 5
-            },
-            {
-              name: 'דוד לוי',
-              role: 'בעל עסק ויזם',
-              content: 'השירות היה מקצועי ברמה הגבוהה ביותר, מהיר ויעיל מאוד. הצוות הקשיב לצרכים שלנו, הציע פתרונות מותאמים ועמד בכל הלוחות זמנים. ממליץ בחום לכל מי שמחפש פתרון איכותי, אמין ומקצועי.',
-              rating: 5
-            }
-          ]
-        },
-        faq: generatedContent.faq ? {
-          title: generatedContent.faq.title || 'שאלות נפוצות ותשובות מפורטות',
-          subtitle: generatedContent.faq.subtitle || 'תשובות מקצועיות ומפורטות לשאלות הכי חשובות והנפוצות שלכם',
-          items: generatedContent.faq.items || [
-            {
-              question: 'כמה זמן בדיוק לוקח לבצע פרויקט מקצועי?',
-              answer: 'זמן הביצוע תלוי בהיקף והמורכבות של הפרויקט. פרויקטים קטנים יכולים להסתיים תוך שבוע עד 10 ימים, בעוד פרויקטים גדולים ומורכבים יותר יכולים לקחת מספר שבועות עד חודש וחצי.'
-            },
-            {
-              question: 'איזה סוג אחריות אתם נותנים על העבודה המקצועית?',
-              answer: 'אנחנו נותנים אחריות מלאה וכוללת על כל העבודות שלנו למשך שנה שלמה. האחריות כוללת תיקונים, שדרוגים, חזרה על עבודות שלא בוצעו כראוי, תמיכה טכנית ותחזוקה שוטפת - הכל ללא עלות נוספת.'
-            },
-            {
-              question: 'איך בדיוק אפשר ליצור קשר ולהזמין שירות מקצועי?',
-              answer: 'תוכלו ליצור קשר באמצעות מספר דרכים נוחות: טלפון ישיר, אימייל מקצועי, טופס יצירת קשר באתר או ביקור במשרדנו. אנחנו זמינים בכל יום עבודה בין השעות 8:00-18:00.'
-            }
-          ]
-        } : {
-          title: 'שאלות נפוצות ותשובות מפורטות',
-          subtitle: 'תשובות מקצועיות ומפורטות לשאלות הכי חשובות והנפוצות שלכם',
-          items: [
-            {
-              question: 'כמה זמן בדיוק לוקח לבצע פרויקט מקצועי?',
-              answer: 'זמן הביצוע תלוי בהיקף והמורכבות של הפרויקט. פרויקטים קטנים יכולים להסתיים תוך שבוע עד 10 ימים, בעוד פרויקטים גדולים ומורכבים יותר יכולים לקחת מספר שבועות עד חודש וחצי.'
-            },
-            {
-              question: 'איזה סוג אחריות אתם נותנים על העבודה המקצועית?',
-              answer: 'אנחנו נותנים אחריות מלאה וכוללת על כל העבודות שלנו למשך שנה שלמה. האחריות כוללת תיקונים, שדרוגים, חזרה על עבודות שלא בוצעו כראוי, תמיכה טכנית ותחזוקה שוטפת - הכל ללא עלות נוספת.'
-            },
-            {
-              question: 'איך בדיוק אפשר ליצור קשר ולהזמין שירות מקצועי?',
-              answer: 'תוכלו ליצור קשר באמצעות מספר דרכים נוחות: טלפון ישיר, אימייל מקצועי, טופס יצירת קשר באתר או ביקור במשרדנו. אנחנו זמינים בכל יום עבודה בין השעות 8:00-18:00.'
-            }
-          ]
-        },
-        pricing: generatedContent.pricing || null,
-        contact: generatedContent.contact || null
-      };
+    const template = formData?.selectedTemplate;
+    if (!template) {
+      console.log('No template found, using defaults');
+      return getDefaultContent();
     }
-    
-    // Default content if no generated content
+
+    // Use exact same content structure as pageGenerator.ts
+    return {
+      hero: {
+        title: template.hero?.title || 'כותרת ראשית',
+        subtitle: template.hero?.subtitle || 'תת כותרת שמסבירה על השירות או המוצר שלכם',
+        description: template.hero?.description || 'תיאור קצר ומעניין על מה שאתם מציעים',
+        badge: template.hero?.badge || '',
+        button1Text: template.hero?.button1Text || 'התחל עכשיו',
+        button2Text: template.hero?.button2Text || 'למד עוד',
+        button1Icon: template.hero?.button1Icon || '',
+        button2Icon: template.hero?.button2Icon || '',
+        image: template.hero?.image || ''
+      },
+      features: {
+        title: template.features?.title || 'התכונות שלנו',
+        subtitle: template.features?.subtitle || 'גלה את היתרונות הייחודיים שלנו',
+        items: template.features?.items || [
+          { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star-line' },
+          { title: 'תכונה 2', description: 'תיאור התכונה השנייה', icon: 'heart-line' },
+          { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'shield-line' }
+        ]
+      },
+      about: {
+        title: template.about?.title || 'אודותינו',
+        description: template.about?.description || 'אנחנו חברה מובילה בתחום',
+        stats: template.about?.stats || [
+          { number: '24/7', label: 'תמיכה' },
+          { number: '+5', label: 'שנות ניסיון' },
+          { number: '+100', label: 'לקוחות מרוצים' }
+        ]
+      },
+      services: {
+        title: template.services?.title || 'השירותים שלנו',
+        subtitle: template.services?.subtitle || 'פתרונות מקצועיים עבור העסק שלך',
+        items: template.services?.items || [
+          { 
+            title: 'שירות 1', 
+            description: 'תיאור השירות הראשון',
+            price: '₪999',
+            features: ['תכונה 1', 'תכונה 2', 'תכונה 3']
+          },
+          { 
+            title: 'שירות 2', 
+            description: 'תיאור השירות השני',
+            price: '₪1,999',
+            features: ['תכונה 1', 'תכונה 2', 'תכונה 3', 'תכונה 4']
+          }
+        ]
+      },
+      testimonials: {
+        title: template.testimonials?.title || 'מה הלקוחות המרוצים שלנו אומרים עלינו',
+        subtitle: template.testimonials?.subtitle || 'הצלחות אמיתיות של לקוחות אמיתיים - המלצות כנות ומפורטות',
+        items: template.testimonials?.items || [
+          {
+            name: 'דני כהן',
+            role: 'מנהל פיתוח עסקי',
+            content: 'שירות מעולה וצוות מקצועי. המליץ בחום!',
+            rating: 5,
+            image: '/placeholder.svg'
+          },
+          {
+            name: 'רונית לוי',
+            role: 'יזמת ומנכ"לית',
+            content: 'עבודה מדויקת ותוצאות מעבר לציפיות. ממליצה בחום!',
+            rating: 5,
+            image: '/placeholder.svg'
+          },
+          {
+            name: 'אלון רוזנברג',
+            role: 'סמנכ"ל שיווק',
+            content: 'ליווי מקצועי לאורך כל הדרך. שירות יוצא מן הכלל!',
+            rating: 5,
+            image: '/placeholder.svg'
+          }
+        ]
+      },
+      pricing: {
+        title: template.pricing?.title || 'מחירונים',
+        subtitle: template.pricing?.subtitle || 'בחר את החבילה המתאימה לך',
+        plans: template.pricing?.plans || [
+          {
+            name: 'חבילה בסיסית',
+            price: '₪299',
+            period: 'לחודש',
+            features: ['תכונה 1', 'תכונה 2', 'תכונה 3'],
+            buttonText: 'התחל עכשיו',
+            recommended: false
+          },
+          {
+            name: 'חבילה מתקדמת',
+            price: '₪599',
+            period: 'לחודש',
+            features: ['כל התכונות הבסיסיות', 'תכונה מתקדמת 1', 'תכונה מתקדמת 2', 'תמיכה מועדפת'],
+            buttonText: 'בחר חבילה',
+            recommended: true
+          },
+          {
+            name: 'חבילה פרימיום',
+            price: '₪999',
+            period: 'לחודש',
+            features: ['כל התכונות המתקדמות', 'ליווי אישי', 'גישה לבטא', 'תמיכה 24/7'],
+            buttonText: 'פנה אלינו',
+            recommended: false
+          }
+        ]
+      },
+      faq: {
+        title: template.faq?.title || 'שאלות נפוצות',
+        questions: template.faq?.questions || [
+          {
+            question: 'איך אני יכול להתחיל?',
+            answer: 'פשוט לחץ על הכפתור "התחל עכשיו" ואנחנו נדריך אותך שלב אחר שלב.'
+          },
+          {
+            question: 'כמה זמן לוקח התהליך?',
+            answer: 'בדרך כלל התהליך לוקח בין שבוע לשבועיים, תלוי במורכבות הפרויקט.'
+          },
+          {
+            question: 'האם יש תמיכה טכנית?',
+            answer: 'כן, אנחנו מספקים תמיכה טכנית מלאה לכל הלקוחות שלנו.'
+          },
+          {
+            question: 'מה קורה אם אני לא מרוצה?',
+            answer: 'אנחנו מציעים אחריות מלאה והחזר כספי בתוך 30 יום.'
+          },
+          {
+            question: 'האם אפשר לקבל הדגמה?',
+            answer: 'בהחלט! פנה אלינו לתיאום הדגמה אישית של המערכת.'
+          }
+        ]
+      },
+      contact: {
+        title: template.contact?.title || 'צור קשר',
+        subtitle: template.contact?.subtitle || 'נשמח לשמוע ממך ולעזור בכל שאלה',
+        phone: template.contact?.phone || '050-123-4567',
+        email: template.contact?.email || 'info@example.com',
+        address: template.contact?.address || 'תל אביב, ישראל',
+        methods: [
+          {
+            icon: 'phone-line',
+            title: 'טלפון',
+            value: template.contact?.phone || '050-123-4567',
+            description: 'זמינים בימים א׳-ה׳ 9:00-18:00'
+          },
+          {
+            icon: 'mail-line',
+            title: 'אימייל',
+            value: template.contact?.email || 'info@example.com',
+            description: 'נענה תוך 24 שעות'
+          },
+          {
+            icon: 'map-pin-line',
+            title: 'כתובת',
+            value: template.contact?.address || 'תל אביב, ישראל',
+            description: 'בתיאום מראש'
+          }
+        ]
+      }
+    };
+  };
+
+  const getDefaultContent = () => {
     return {
       hero: { 
         title: 'כותרת ראשית', 
-        subtitle: 'כותרת משנה', 
+        subtitle: 'תת כותרת שמסבירה על השירות או המוצר שלכם',
+        description: 'תיאור מפורט של השירות או המוצר שלכם',
+        badge: '',
         button1Text: 'התחל עכשיו', 
         button2Text: 'למד עוד',
-        badge: 'חדש!',
-        description: 'תיאור מפורט של השירות או המוצר שלכם',
         button1Icon: '',
         button2Icon: ''
       },
@@ -240,21 +247,19 @@ const VisualLandingPageEditor = ({
         title: 'התכונות שלנו', 
         subtitle: 'גלה את היתרונות הייחודיים שלנו',
         items: [
-          { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star' },
-          { title: 'תכונה 2', description: 'תיאור התכונה השנייה', icon: 'heart' },
-          { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'zap' }
+          { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star-line' },
+          { title: 'תכונה 2', description: 'תיאור התכונה השנייה', icon: 'heart-line' },
+          { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'shield-line' }
         ]
       },
       about: { 
-        title: 'אודותינו', 
-        subtitle: 'כותרת משנה',
+        title: 'אודותינו',
         description: 'אנחנו חברה מובילה בתחום',
         stats: [
           { number: '24/7', label: 'תמיכה' },
           { number: '+5', label: 'שנות ניסיון' },
           { number: '+100', label: 'לקוחות מרוצים' }
-        ],
-        image: 'תמונה'
+        ]
       },
       services: {
         title: 'השירותים שלנו',
@@ -268,7 +273,7 @@ const VisualLandingPageEditor = ({
           },
           { 
             title: 'שירות 2', 
-            description: 'תיאור השירות השני', 
+            description: 'תיאור השירות השני',
             price: '₪1,999',
             features: ['תכונה 1', 'תכונה 2', 'תכונה 3', 'תכונה 4']
           }
@@ -279,34 +284,107 @@ const VisualLandingPageEditor = ({
         subtitle: 'הצלחות אמיתיות של לקוחות אמיתיים - המלצות כנות ומפורטות',
         items: [
           {
-            name: 'שרה כהן',
-            role: 'מנהלת פרויקטים בכירה',
-            content: 'העבודה עם החברה הייתה חוויה מדהימה ומקצועית. הם הבינו בדיוק מה אנחנו צריכים, הציעו פתרונות יצירתיים וחדשניים, והביאו פתרון שחרג מכל הציפיות שלנו. השירות היה מעולה מהרגע הראשון ועד למסירה הסופית.',
-            rating: 5
+            name: 'דני כהן',
+            role: 'מנהל פיתוח עסקי',
+            content: 'שירות מעולה וצוות מקצועי. המליץ בחום!',
+            rating: 5,
+            image: '/placeholder.svg'
           },
           {
-            name: 'דוד לוי',
-            role: 'בעל עסק ויזם',
-            content: 'השירות היה מקצועי ברמה הגבוהה ביותר, מהיר ויעיל מאוד. הצוות הקשיב לצרכים שלנו, הציע פתרונות מותאמים ועמד בכל הלוחות זמנים. ממליץ בחום לכל מי שמחפש פתרון איכותי, אמין ומקצועי.',
-            rating: 5
+            name: 'רונית לוי',
+            role: 'יזמת ומנכ"לית',
+            content: 'עבודה מדויקת ותוצאות מעבר לציפיות. ממליצה בחום!',
+            rating: 5,
+            image: '/placeholder.svg'
+          },
+          {
+            name: 'אלון רוזנברג',
+            role: 'סמנכ"ל שיווק',
+            content: 'ליווי מקצועי לאורך כל הדרך. שירות יוצא מן הכלל!',
+            rating: 5,
+            image: '/placeholder.svg'
+          }
+        ]
+      },
+      pricing: {
+        title: 'מחירונים',
+        subtitle: 'בחר את החבילה המתאימה לך',
+        plans: [
+          {
+            name: 'חבילה בסיסית',
+            price: '₪299',
+            period: 'לחודש',
+            features: ['תכונה 1', 'תכונה 2', 'תכונה 3'],
+            buttonText: 'התחל עכשיו',
+            recommended: false
+          },
+          {
+            name: 'חבילה מתקדמת',
+            price: '₪599',
+            period: 'לחודש',
+            features: ['כל התכונות הבסיסיות', 'תכונה מתקדמת 1', 'תכונה מתקדמת 2', 'תמיכה מועדפת'],
+            buttonText: 'בחר חבילה',
+            recommended: true
+          },
+          {
+            name: 'חבילה פרימיום',
+            price: '₪999',
+            period: 'לחודש',
+            features: ['כל התכונות המתקדמות', 'ליווי אישי', 'גישה לבטא', 'תמיכה 24/7'],
+            buttonText: 'פנה אלינו',
+            recommended: false
           }
         ]
       },
       faq: {
-        title: 'שאלות נפוצות ותשובות מפורטות',
-        subtitle: 'תשובות מקצועיות ומפורטות לשאלות הכי חשובות והנפוצות שלכם',
-        items: [
+        title: 'שאלות נפוצות',
+        questions: [
           {
-            question: 'כמה זמן בדיוק לוקח לבצע פרויקט מקצועי?',
-            answer: 'זמן הביצוע תלוי בהיקף והמורכבות של הפרויקט. פרויקטים קטנים יכולים להסתיים תוך שבוע עד 10 ימים, בעוד פרויקטים גדולים ומורכבים יותר יכולים לקחת מספר שבועות עד חודש וחצי.'
+            question: 'איך אני יכול להתחיל?',
+            answer: 'פשוט לחץ על הכפתור "התחל עכשיו" ואנחנו נדריך אותך שלב אחר שלב.'
           },
           {
-            question: 'איזה סוג אחריות אתם נותנים על העבודה המקצועית?',
-            answer: 'אנחנו נותנים אחריות מלאה וכוללת על כל העבודות שלנו למשך שנה שלמה. האחריות כוללת תיקונים, שדרוגים, חזרה על עבודות שלא בוצעו כראוי, תמיכה טכנית ותחזוקה שוטפת - הכל ללא עלות נוספת.'
+            question: 'כמה זמן לוקח התהליך?',
+            answer: 'בדרך כלל התהליך לוקח בין שבוע לשבועיים, תלוי במורכבות הפרויקט.'
           },
           {
-            question: 'איך בדיוק אפשר ליצור קשר ולהזמין שירות מקצועי?',
-            answer: 'תוכלו ליצור קשר באמצעות מספר דרכים נוחות: טלפון ישיר, אימייל מקצועי, טופס יצירת קשר באתר או ביקור במשרדנו. אנחנו זמינים בכל יום עבודה בין השעות 8:00-18:00.'
+            question: 'האם יש תמיכה טכנית?',
+            answer: 'כן, אנחנו מספקים תמיכה טכנית מלאה לכל הלקוחות שלנו.'
+          },
+          {
+            question: 'מה קורה אם אני לא מרוצה?',
+            answer: 'אנחנו מציעים אחריות מלאה והחזר כספי בתוך 30 יום.'
+          },
+          {
+            question: 'האם אפשר לקבל הדגמה?',
+            answer: 'בהחלט! פנה אלינו לתיאום הדגמה אישית של המערכת.'
+          }
+        ]
+      },
+      contact: {
+        title: 'צור קשר',
+        subtitle: 'נשמח לשמוע ממך ולעזור בכל שאלה',
+        phone: '050-123-4567',
+        email: 'info@example.com',
+        address: 'תל אביב, ישראל',
+        methods: [
+          {
+            icon: 'phone-line',
+            title: 'טלפון',
+            value: '050-123-4567',
+            description: 'זמינים בימים א׳-ה׳ 9:00-18:00'
+          },
+          {
+            icon: 'mail-line',
+            title: 'אימייל',
+            value: 'info@example.com',
+            description: 'נענה תוך 24 שעות'
+          },
+          {
+            icon: 'map-pin-line',
+            title: 'כתובת',
+            value: 'תל אביב, ישראל',
+            description: 'בתיאום מראש'
           }
         ]
       }
@@ -1708,38 +1786,36 @@ const VisualLandingPageEditor = ({
                       </h2>
                     </div>
                     
-                    <div className="space-y-4 mb-12">
-                      {((editableContent?.faq as any)?.items || [
+                     <div className="space-y-4 mb-12">
+                      {((editableContent?.faq as any)?.questions || [
                         {
-                          question: 'כמה זמן בדיוק לוקח לבצע פרויקט מקצועי?',
-                          answer: 'זמן הביצוע תלוי בהיקף והמורכבות של הפרויקט. פרויקטים קטנים יכולים להסתיים תוך שבוע עד 10 ימים, בעוד פרויקטים גדולים ומורכבים יותר יכולים לקחת מספר שבועות עד חודש וחצי.'
+                          question: 'איך אני יכול להתחיל?',
+                          answer: 'פשוט לחץ על הכפתור "התחל עכשיו" ואנחנו נדריך אותך שלב אחר שלב.'
                         },
                         {
-                          question: 'איזה סוג אחריות אתם נותנים על העבודה המקצועית?',
-                          answer: 'אנחנו נותנים אחריות מלאה וכוללת על כל העבודות שלנו למשך שנה שלמה. האחריות כוללת תיקונים, שדרוגים, חזרה על עבודות שלא בוצעו כראוי, תמיכה טכנית ותחזוקה שוטפת - הכל ללא עלות נוספת.'
+                          question: 'כמה זמן לוקח התהליך?',
+                          answer: 'בדרך כלל התהליך לוקח בין שבוע לשבועיים, תלוי במורכבות הפרויקט.'
                         },
                         {
-                          question: 'איך בדיוק אפשר ליצור קשר ולהזמין שירות מקצועי?',
-                          answer: 'תוכלו ליצור קשר באמצעות מספר דרכים נוחות: טלפון ישיר, אימייל מקצועי, טופס יצירת קשר באתר או ביקור במשרדנו. אנחנו זמינים בכל יום עבודה בין השעות 8:00-18:00.'
+                          question: 'האם יש תמיכה טכנית?',
+                          answer: 'כן, אנחנו מספקים תמיכה טכנית מלאה לכל הלקוחות שלנו.'
+                        },
+                        {
+                          question: 'מה קורה אם אני לא מרוצה?',
+                          answer: 'אנחנו מציעים אחריות מלאה והחזר כספי בתוך 30 יום.'
+                        },
+                        {
+                          question: 'האם אפשר לקבל הדגמה?',
+                          answer: 'בהחלט! פנה אלינו לתיאום הדגמה אישית של המערכת.'
                         }
                       ]).map((qa: any, index: number) => (
-                        <div key={index} className="border border-gray-200 rounded-lg">
-                          <button className="w-full text-right p-4 hover:bg-gray-50 transition-colors">
-                            <h3 
-                              className="font-semibold text-lg"
-                              style={{ color: pageStyles.testimonialsTitleColor }}
-                            >
-                              {qa.question}
-                            </h3>
-                          </button>
-                          <div className="px-4 pb-4">
-                            <p 
-                              className="leading-relaxed"
-                              style={{ color: pageStyles.testimonialsTextColor }}
-                            >
-                              {qa.answer}
-                            </p>
-                          </div>
+                        <div key={index} className="rounded-lg border bg-card text-card-foreground shadow-sm p-6 bg-white/10 backdrop-blur-sm border-white/20">
+                          <h3 className="text-lg font-bold mb-2 text-right" style={{ color: pageStyles.testimonialsTitleColor }}>
+                            {qa.question}
+                          </h3>
+                          <p className="opacity-80 text-right" style={{ color: pageStyles.testimonialsTextColor }}>
+                            {qa.answer}
+                          </p>
                         </div>
                       ))}
                     </div>
