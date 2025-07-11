@@ -14,7 +14,7 @@ interface AdvancedLandingPageGeneratorProps {
   formData: any;
 }
 
-export const AdvancedLandingPageGenerator = ({ 
+const AdvancedLandingPageGenerator = ({ 
   isOpen, 
   onClose, 
   formData 
@@ -207,3 +207,5 @@ export const AdvancedLandingPageGenerator = ({
     </Dialog>
   );
 };
+
+export default AdvancedLandingPageGenerator;
