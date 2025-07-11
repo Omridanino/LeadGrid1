@@ -29,6 +29,30 @@ export const generatePageHTML = (templateData: any) => {
     };
   }
   
+  // Add default sections if missing
+  if (!template.features) {
+    template.features = { title: 'התכונות שלנו', items: [] };
+  }
+  if (!template.testimonials) {
+    template.testimonials = { title: 'מה הלקוחות אומרים', testimonials: [] };
+  }
+  if (!template.about) {
+    template.about = { title: 'עלינו', stats: [] };
+  }
+  if (!template.pricing) {
+    template.pricing = { title: 'מחירים', plans: [] };
+  }
+  if (!template.faq) {
+    template.faq = { title: 'שאלות נפוצות', questions: [] };
+  }
+  
+  // Ensure arrays exist
+  if (!template.features.items) template.features.items = [];
+  if (!template.testimonials.testimonials) template.testimonials.testimonials = [];
+  if (!template.about.stats) template.about.stats = [];
+  if (!template.pricing.plans) template.pricing.plans = [];
+  if (!template.faq.questions) template.faq.questions = [];
+  
   // Robust premium detection with null checks
   const isPremium = (template?.category && template.category.includes('פרימיום')) || 
                     (template?.id && template.id.includes('-pro'));
@@ -48,7 +72,7 @@ export const generatePageHTML = (templateData: any) => {
                 ${gallery.subtitle ? `<p class="text-xl text-slate-300">${gallery.subtitle}</p>` : ''}
             </div>
             <div class="grid grid-cols-1 md:grid-cols-${gallery.columns || 3} gap-6">
-                ${gallery.images.map((img: any) => `
+                ${(gallery.images || []).map((img: any) => `
                     <div class="group overflow-hidden rounded-lg shadow-lg">
                         <img src="${img.src}" alt="${img.alt}" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
                         ${img.caption ? `<div class="p-4 bg-white/10"><p class="text-white text-sm">${img.caption}</p></div>` : ''}
@@ -1113,7 +1137,7 @@ export const generatePageHTML = (templateData: any) => {
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                ${template.features.items.map((feature: any) => {
+                ${(template.features.items || []).map((feature: any) => {
                   if (isPremium) {
                     return `
                       <div class="relative group perspective-1000">
@@ -1202,7 +1226,7 @@ export const generatePageHTML = (templateData: any) => {
             
             <!-- Testimonials grid -->
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                ${template.testimonials.testimonials.map((testimonial: any) => `
+                ${(template.testimonials.testimonials || []).map((testimonial: any) => `
                     <div class="relative group">
                         <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20"></div>
                         <div class="relative z-10 p-6 space-y-4">
@@ -1262,7 +1286,7 @@ export const generatePageHTML = (templateData: any) => {
             
             ${template.about.stats && template.about.stats.length > 0 ? `
                 <div class="grid md:grid-cols-3 gap-8 text-center mb-12">
-                    ${template.about.stats.map((stat: any) => `
+                    ${(template.about.stats || []).map((stat: any) => `
                         <div>
                             <div class="text-4xl font-bold mb-2" style="color: ${template.styles.primaryColor};">${stat.number}</div>
                             <div class="text-lg opacity-80" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${stat.label}</div>
@@ -1320,7 +1344,7 @@ export const generatePageHTML = (templateData: any) => {
             `}
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
-                ${template.pricing.plans.map((plan: any, index: number) => `
+                ${(template.pricing.plans || []).map((plan: any, index: number) => `
                     <div class="relative group perspective-1000 ${plan.recommended ? 'lg:scale-105' : ''}">
                         ${plan.recommended ? `
                             <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
@@ -1345,7 +1369,7 @@ export const generatePageHTML = (templateData: any) => {
                                 </div>
                                 
                                 <ul class="space-y-3">
-                                    ${plan.features.map((feature: string) => `
+                                    ${(plan.features || []).map((feature: string) => `
                                         <li class="flex items-center gap-3 text-blue-100/80">
                                             <span style="color: #4ade80; font-size: 1.25rem;">✓</span>
                                             ${feature}
@@ -1384,7 +1408,7 @@ export const generatePageHTML = (templateData: any) => {
             </div>
             
             <div class="space-y-4 mb-12">
-                ${template.faq.questions.map((qa: any, index: number) => `
+                ${(template.faq.questions || []).map((qa: any, index: number) => `
                     <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 ${isPremium ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}">
                         <h3 class="text-lg font-bold mb-2 text-right" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${qa.question}</h3>
                         <p class="opacity-80 text-right" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${qa.answer}</p>
