@@ -224,7 +224,7 @@ const VisualLandingPageEditor = ({
     setPageStyles(prev => ({ ...prev, [key]: value }));
   };
 
-  const updateSectionStyle = (section: string, key: string, value: string) => {
+  const updateSectionStyle = (section: string, key: string, value: string | string[]) => {
     setSectionStyles(prev => ({
       ...prev,
       [section]: { ...prev[section], [key]: value }
