@@ -126,10 +126,10 @@ const VisualLandingPageEditor = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-7xl h-[95vh] p-0">
-        <div className="flex h-full">
+      <DialogContent className="max-w-7xl h-[95vh] overflow-hidden p-0 flex flex-col">
+        <div className="flex h-full overflow-hidden">
           {/* Left Sidebar - Controls */}
-          <div className="w-80 border-r bg-muted/30 overflow-y-auto">
+          <div className="w-80 border-r bg-muted/30 overflow-y-auto flex-shrink-0">
             <DialogHeader className="p-6 border-b">
               <DialogTitle className="flex items-center gap-2">
                 <Paintbrush className="h-5 w-5" />

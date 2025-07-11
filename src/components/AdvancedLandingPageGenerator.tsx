@@ -91,10 +91,152 @@ const AdvancedLandingPageGenerator = ({
   };
 
   const handleDownload = () => {
-    // TODO: Implement HTML download
+    if (!generatedPage) {
+      toast({
+        title: "שגיאה",
+        description: "אין דף להורדה. אנא צור דף נחיתה תחילה.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // יצירת HTML מלא מהתוכן שנוצר
+    const htmlContent = `
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${generatedPage.hero?.title || 'דף נחיתה'}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; }
+        .hero { background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); color: white; text-align: center; padding: 80px 20px; }
+        .hero .badge { background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 25px; display: inline-block; margin-bottom: 24px; font-size: 14px; }
+        .hero h1 { font-size: 3rem; font-weight: bold; margin-bottom: 24px; }
+        .hero h2 { font-size: 1.5rem; margin-bottom: 16px; }
+        .hero p { font-size: 1.25rem; margin-bottom: 32px; opacity: 0.9; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .hero .buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .btn { padding: 12px 32px; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-block; cursor: pointer; border: none; }
+        .btn-primary { background: white; color: #3b82f6; }
+        .btn-secondary { background: transparent; color: white; border: 2px solid white; }
+        .section { padding: 64px 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .bg-gray { background: #f8fafc; }
+        .text-center { text-align: center; }
+        .grid { display: grid; gap: 32px; }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
+        .card { background: white; padding: 24px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .feature-icon { width: 48px; height: 48px; background: #dbeafe; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; color: #3b82f6; font-size: 24px; }
+        .testimonial-stars { color: #fbbf24; margin-bottom: 16px; }
+        .pricing-price { font-size: 2rem; font-weight: bold; color: #3b82f6; margin-bottom: 24px; }
+        .pricing-features { list-style: none; margin-bottom: 32px; }
+        .pricing-features li { padding: 4px 0; }
+        .pricing-features li::before { content: "✓"; color: #10b981; margin-left: 8px; }
+        .pricing-btn { background: #3b82f6; color: white; width: 100%; }
+        h2 { font-size: 2rem; font-weight: bold; margin-bottom: 16px; }
+        h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 12px; }
+        .subtitle { font-size: 1.25rem; color: #6b7280; margin-bottom: 48px; }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .hero .buttons { flex-direction: column; align-items: center; }
+            .grid-3, .grid-2 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="badge">${generatedPage.hero?.badge || ''}</div>
+            <h1>${generatedPage.hero?.title || ''}</h1>
+            <h2>${generatedPage.hero?.subtitle || ''}</h2>
+            <p>${generatedPage.hero?.description || ''}</p>
+            <div class="buttons">
+                <a href="#" class="btn btn-primary">${generatedPage.hero?.button1Text || 'לחץ כאן'}</a>
+                <a href="#" class="btn btn-secondary">${generatedPage.hero?.button2Text || 'מידע נוסף'}</a>
+            </div>
+        </div>
+    </section>
+
+    ${generatedPage.features ? `
+    <!-- Features Section -->
+    <section class="section bg-gray">
+        <div class="container text-center">
+            <h2>${generatedPage.features.title}</h2>
+            <p class="subtitle">${generatedPage.features.subtitle}</p>
+            <div class="grid grid-3">
+                ${generatedPage.features.items?.map((item: any) => `
+                    <div class="card">
+                        <div class="feature-icon">⭐</div>
+                        <h3>${item.title}</h3>
+                        <p>${item.description}</p>
+                    </div>
+                `).join('') || ''}
+            </div>
+        </div>
+    </section>
+    ` : ''}
+
+    ${generatedPage.testimonials ? `
+    <!-- Testimonials Section -->
+    <section class="section">
+        <div class="container text-center">
+            <h2>${generatedPage.testimonials.title}</h2>
+            <div class="grid grid-2">
+                ${generatedPage.testimonials.testimonials?.map((testimonial: any) => `
+                    <div class="card">
+                        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                        <p>"${testimonial.content}"</p>
+                        <div style="margin-top: 16px;">
+                            <div style="font-weight: 600;">${testimonial.name}</div>
+                            <div style="color: #6b7280; font-size: 14px;">${testimonial.role}</div>
+                        </div>
+                    </div>
+                `).join('') || ''}
+            </div>
+        </div>
+    </section>
+    ` : ''}
+
+    ${generatedPage.pricing ? `
+    <!-- Pricing Section -->
+    <section class="section bg-gray">
+        <div class="container text-center">
+            <h2>${generatedPage.pricing.title}</h2>
+            <div class="grid grid-2">
+                ${generatedPage.pricing.plans?.map((plan: any) => `
+                    <div class="card">
+                        <h3>${plan.name}</h3>
+                        <div class="pricing-price">${plan.price}</div>
+                        <ul class="pricing-features">
+                            ${plan.features?.map((feature: string) => `<li>${feature}</li>`).join('') || ''}
+                        </ul>
+                        <a href="#" class="btn pricing-btn">בחר חבילה</a>
+                    </div>
+                `).join('') || ''}
+            </div>
+        </div>
+    </section>
+    ` : ''}
+</body>
+</html>`;
+
+    // יצירת קובץ להורדה
+    const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${generatedPage.hero?.title?.replace(/[^a-zA-Z0-9]/g, '-') || 'landing-page'}.html`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
     toast({
-      title: "מוריד...",
-      description: "הקובץ יוכן תוך מספר שניות",
+      title: "הורדה הושלמה! 🎉",
+      description: "קובץ ה-HTML נשמר למחשב שלך",
     });
   };
 
@@ -321,29 +463,108 @@ const AdvancedLandingPageGenerator = ({
 
         {/* Preview Modal */}
         <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
-          <DialogContent className="max-w-7xl h-[90vh] overflow-y-auto">
-            <LandingPagePreview
-              content={generatedPage}
-              currentColors={{ 
-                primary: "#3b82f6", 
-                secondary: "#1e40af", 
-                accent: "#f59e0b", 
-                background: "#ffffff", 
-                heroBackground: "#3b82f6",
-                text: "#1f2937",
-                headlineColor: "#1f2937",
-                subheadlineColor: "#6b7280",
-                featuresColor: "#f8fafc",
-                featuresTextColor: "#1f2937",
-                aboutColor: "#ffffff",
-                aboutTextColor: "#1f2937",
-                contactColor: "#f8fafc",
-                contactTextColor: "#1f2937"
-              }}
-              formData={formData}
-              heroImage=""
-              elements={[]}
-            />
+          <DialogContent className="max-w-7xl h-[90vh] overflow-hidden p-0">
+            {generatedPage ? (
+              <div className="w-full h-full overflow-y-auto">
+                <div className="bg-white text-gray-900 min-h-full">
+                  {/* Hero Section */}
+                  <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20 px-6 text-center">
+                    <div className="max-w-4xl mx-auto">
+                      <div className="inline-block bg-white/10 rounded-full px-4 py-2 mb-6">
+                        <span className="text-sm">{generatedPage.hero?.badge}</span>
+                      </div>
+                      <h1 className="text-5xl font-bold mb-6">{generatedPage.hero?.title}</h1>
+                      <h2 className="text-2xl mb-4">{generatedPage.hero?.subtitle}</h2>
+                      <p className="text-xl mb-8 opacity-90">{generatedPage.hero?.description}</p>
+                      <div className="flex gap-4 justify-center">
+                        <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100">
+                          {generatedPage.hero?.button1Text}
+                        </button>
+                        <button className="border border-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10">
+                          {generatedPage.hero?.button2Text}
+                        </button>
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* Features Section */}
+                  {generatedPage.features && (
+                    <section className="py-16 px-6 bg-gray-50">
+                      <div className="max-w-6xl mx-auto text-center">
+                        <h2 className="text-3xl font-bold mb-4">{generatedPage.features.title}</h2>
+                        <p className="text-xl text-gray-600 mb-12">{generatedPage.features.subtitle}</p>
+                        <div className="grid md:grid-cols-3 gap-8">
+                          {generatedPage.features.items?.map((item: any, index: number) => (
+                            <div key={index} className="bg-white p-6 rounded-lg shadow-sm">
+                              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 mx-auto">
+                                <span className="text-blue-600">⭐</span>
+                              </div>
+                              <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
+                              <p className="text-gray-600">{item.description}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </section>
+                  )}
+
+                  {/* Testimonials Section */}
+                  {generatedPage.testimonials && (
+                    <section className="py-16 px-6">
+                      <div className="max-w-4xl mx-auto text-center">
+                        <h2 className="text-3xl font-bold mb-12">{generatedPage.testimonials.title}</h2>
+                        <div className="grid md:grid-cols-2 gap-8">
+                          {generatedPage.testimonials.testimonials?.map((testimonial: any, index: number) => (
+                            <div key={index} className="bg-gray-50 p-6 rounded-lg">
+                              <div className="flex text-yellow-400 mb-4">
+                                {[...Array(5)].map((_, i) => (
+                                  <span key={i}>⭐</span>
+                                ))}
+                              </div>
+                              <p className="text-gray-700 mb-4">"{testimonial.content}"</p>
+                              <div className="font-semibold">{testimonial.name}</div>
+                              <div className="text-gray-600 text-sm">{testimonial.role}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </section>
+                  )}
+
+                  {/* Pricing Section */}
+                  {generatedPage.pricing && (
+                    <section className="py-16 px-6 bg-gray-50">
+                      <div className="max-w-4xl mx-auto text-center">
+                        <h2 className="text-3xl font-bold mb-12">{generatedPage.pricing.title}</h2>
+                        <div className="grid md:grid-cols-2 gap-8">
+                          {generatedPage.pricing.plans?.map((plan: any, index: number) => (
+                            <div key={index} className="bg-white p-8 rounded-lg shadow-sm border">
+                              <h3 className="text-xl font-bold mb-4">{plan.name}</h3>
+                              <div className="text-3xl font-bold text-blue-600 mb-6">{plan.price}</div>
+                              <ul className="space-y-3 mb-8">
+                                {plan.features?.map((feature: string, featureIndex: number) => (
+                                  <li key={featureIndex} className="flex items-center">
+                                    <span className="text-green-500 mr-2">✓</span>
+                                    {feature}
+                                  </li>
+                                ))}
+                              </ul>
+                              <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">
+                                בחר חבילה
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </section>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center">
+                <p>אין תוכן לתצוגה מקדימה</p>
+              </div>
+            )}
           </DialogContent>
         </Dialog>
 
