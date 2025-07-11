@@ -53,27 +53,59 @@ const VisualLandingPageEditor = ({
   formData 
 }: VisualLandingPageEditorProps) => {
   const [activeSection, setActiveSection] = useState('hero');
-  const [editableContent, setEditableContent] = useState(generatedContent || {
-    hero: { 
-      title: 'כותרת ראשית', 
-      subtitle: 'כותרת משנה', 
-      button1Text: 'התחל עכשיו', 
-      button2Text: 'למד עוד',
-      badge: 'חדש!',
-      description: 'תיאור מפורט של השירות או המוצר שלכם',
-      button1Icon: '',
-      button2Icon: ''
-    },
-    features: { 
-      title: 'התכונות שלנו', 
-      subtitle: 'גלה את היתרונות הייחודיים שלנו',
-      items: [
-        { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star' },
-        { title: 'תכונה 2', description: 'תיאור התכונה השנייה', icon: 'heart' },
-        { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'zap' }
-      ]
-    },
-    about: { title: 'אודותינו', description: 'אנחנו חברה מובילה בתחום' }
+  
+  // Use the actual generated content if available, otherwise use defaults
+  const [editableContent, setEditableContent] = useState(() => {
+    if (generatedContent) {
+      return {
+        hero: generatedContent.hero || { 
+          title: 'כותרת ראשית', 
+          subtitle: 'כותרת משנה', 
+          button1Text: 'התחל עכשיו', 
+          button2Text: 'למד עוד',
+          badge: generatedContent.hero?.badge || 'חדש!',
+          description: generatedContent.hero?.description || 'תיאור מפורט של השירות או המוצר שלכם',
+          button1Icon: '',
+          button2Icon: ''
+        },
+        features: generatedContent.features || { 
+          title: 'התכונות שלנו', 
+          subtitle: 'גלה את היתרונות הייחודיים שלנו',
+          items: [
+            { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star' },
+            { title: 'תכונה 2', description: 'תיאור התכונה השנייה', icon: 'heart' },
+            { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'zap' }
+          ]
+        },
+        about: generatedContent.about || { title: 'אודותינו', description: 'אנחנו חברה מובילה בתחום' },
+        testimonials: generatedContent.testimonials || null,
+        pricing: generatedContent.pricing || null,
+        contact: generatedContent.contact || null
+      };
+    }
+    
+    return {
+      hero: { 
+        title: 'כותרת ראשית', 
+        subtitle: 'כותרת משנה', 
+        button1Text: 'התחל עכשיו', 
+        button2Text: 'למד עוד',
+        badge: 'חדש!',
+        description: 'תיאור מפורט של השירות או המוצר שלכם',
+        button1Icon: '',
+        button2Icon: ''
+      },
+      features: { 
+        title: 'התכונות שלנו', 
+        subtitle: 'גלה את היתרונות הייחודיים שלנו',
+        items: [
+          { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star' },
+          { title: 'תכונה 2', description: 'תיאור התכונה השנייה', icon: 'heart' },
+          { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'zap' }
+        ]
+      },
+      about: { title: 'אודותינו', description: 'אנחנו חברה מובילה בתחום' }
+    };
   });
   
   const [pageStyles, setPageStyles] = useState({
