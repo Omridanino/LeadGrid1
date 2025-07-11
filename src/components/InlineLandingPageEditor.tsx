@@ -253,15 +253,55 @@ export const InlineLandingPageEditor: React.FC<InlineLandingPageEditorProps> = (
     );
   }
 
-  // Safe HTML generation with error handling
+  // Safe HTML generation with error handling and fallback content
   let htmlContent = '';
   if (formData?.selectedTemplate) {
     try {
       htmlContent = generatePageHTML(formData.selectedTemplate);
     } catch (error) {
       console.error('Error generating HTML content:', error);
-      htmlContent = '<html><body><h1>שגיאה ביצירת התוכן</h1></body></html>';
+      // Fallback to simple HTML with default content
+      htmlContent = `
+        <html dir="rtl">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>דף נחיתה</title>
+            <script src="https://cdn.tailwindcss.com"></script>
+          </head>
+          <body class="bg-gradient-to-b from-blue-600 to-blue-800 text-white min-h-screen">
+            <div class="container mx-auto px-6 py-20 text-center">
+              <h1 class="text-5xl font-bold mb-6">ברוכים הבאים לאתר שלנו</h1>
+              <p class="text-xl mb-8">פתרונות מקצועיים ואמינים עבורכם</p>
+              <button class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100">
+                צור קשר
+              </button>
+            </div>
+          </body>
+        </html>
+      `;
     }
+  } else {
+    // Default content when no template is selected
+    htmlContent = `
+      <html dir="rtl">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>דף נחיתה</title>
+          <script src="https://cdn.tailwindcss.com"></script>
+        </head>
+        <body class="bg-gradient-to-b from-purple-600 to-blue-800 text-white min-h-screen">
+          <div class="container mx-auto px-6 py-20 text-center">
+            <h1 class="text-4xl font-bold mb-6">צור את דף הנחיתה שלך</h1>
+            <p class="text-lg mb-8">התחל ביצירת דף נחיתה מקצועי וייחודי</p>
+            <div class="space-y-4">
+              <p class="text-sm opacity-75">לחץ על כפתור העריכה כדי להתחיל לערוך את הדף</p>
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
   }
 
   return (
