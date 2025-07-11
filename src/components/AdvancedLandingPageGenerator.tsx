@@ -22,6 +22,7 @@ const AdvancedLandingPageGenerator = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPage, setGeneratedPage] = useState(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
   
   const [showQuickForm, setShowQuickForm] = useState(false);
   const [quickFormData, setQuickFormData] = useState({
@@ -77,16 +78,8 @@ const AdvancedLandingPageGenerator = ({
 
   const handlePreview = () => {
     if (generatedPage?.selectedTemplate || formData?.selectedTemplate) {
-      // Navigate to a new route with editing capabilities enabled by default
-      const templateData = generatedPage?.selectedTemplate || formData?.selectedTemplate;
-      const url = `/generated-landing-page?preview=true&edit=true`;
-      
-      // Store the template data for the new page
-      localStorage.setItem('previewTemplateData', JSON.stringify(templateData));
-      localStorage.setItem('previewFormData', JSON.stringify(formData));
-      
-      // Open in new tab with editing capabilities enabled by default
-      window.open(url, '_blank');
+      // Open editor directly in current dialog
+      setIsEditorOpen(true);
     } else {
       setIsPreviewOpen(true);
     }
@@ -717,6 +710,36 @@ const AdvancedLandingPageGenerator = ({
             )}
           </DialogContent>
         </Dialog>
+
+        
+        {/* Interactive Editor Modal */}
+        <InteractivePreviewEditor 
+          isOpen={isEditorOpen} 
+          onClose={() => setIsEditorOpen(false)}
+          generatedContent={generatedPage}
+          formData={{ ...formData, selectedTemplate: generatedPage?.selectedTemplate || formData?.selectedTemplate }}
+          onSave={(updatedContent) => {
+            setGeneratedPage(updatedContent);
+            // עדכון התבנית גם ב-formData
+            if (formData?.selectedTemplate) {
+              // עדכון התבנית עם השינויים החדשים
+              const updatedFormData = {
+                ...formData,
+                selectedTemplate: {
+                  ...formData.selectedTemplate,
+                  ...updatedContent
+                }
+              };
+              // שמירה ב-localStorage כדי שהשינויים יישמרו
+              localStorage.setItem('formData', JSON.stringify(updatedFormData));
+            }
+            toast({
+              title: "נשמר בהצלחה! ✅",
+              description: "השינויים נשמרו והם יופיעו בתצוגה המקדימה ובהורדה",
+            });
+          }}
+          onDownload={handleDownload}
+        />
 
       </DialogContent>
     </Dialog>
