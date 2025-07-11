@@ -22,7 +22,7 @@ const AdvancedLandingPageGenerator = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPage, setGeneratedPage] = useState(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-  const [isEditorOpen, setIsEditorOpen] = useState(false);
+  
   const [showQuickForm, setShowQuickForm] = useState(false);
   const [quickFormData, setQuickFormData] = useState({
     businessName: '',
@@ -77,7 +77,7 @@ const AdvancedLandingPageGenerator = ({
 
   const handlePreview = () => {
     if (generatedPage?.selectedTemplate || formData?.selectedTemplate) {
-      // Navigate to a new route with editing capabilities
+      // Navigate to a new route with editing capabilities enabled by default
       const templateData = generatedPage?.selectedTemplate || formData?.selectedTemplate;
       const url = `/generated-landing-page?preview=true&edit=true`;
       
@@ -85,24 +85,13 @@ const AdvancedLandingPageGenerator = ({
       localStorage.setItem('previewTemplateData', JSON.stringify(templateData));
       localStorage.setItem('previewFormData', JSON.stringify(formData));
       
-      // Open in new tab with editing capabilities
+      // Open in new tab with editing capabilities enabled by default
       window.open(url, '_blank');
     } else {
       setIsPreviewOpen(true);
     }
   };
 
-  const handleEdit = () => {
-    if (!generatedPage && !formData?.selectedTemplate) {
-      toast({
-        title: "שגיאה",
-        description: "אין דף לעריכה. אנא צור דף נחיתה תחילה.",
-        variant: "destructive",
-      });
-      return;
-    }
-    setIsEditorOpen(true);
-  };
 
   const handleSave = () => {
     toast({
@@ -475,11 +464,7 @@ const AdvancedLandingPageGenerator = ({
                   <div className="flex gap-4">
                     <Button onClick={handlePreview} variant="default">
                       <Eye className="h-4 w-4 mr-2" />
-                      צפה בתצוגה מקדימה
-                    </Button>
-                    <Button onClick={handleEdit} variant="default">
-                      <Edit className="h-4 w-4 mr-2" />
-                      {(generatedPage || formData?.selectedTemplate) ? 'תצוגה מקדימה + עריכה' : 'עריכה (צור דף תחילה)'}
+                      צפה בתצוגה מקדימה עם עורך
                     </Button>
                     <Button onClick={handleSave} variant="outline">
                       <Save className="h-4 w-4 mr-2" />
@@ -733,34 +718,6 @@ const AdvancedLandingPageGenerator = ({
           </DialogContent>
         </Dialog>
 
-        {/* Visual Editor Modal */}
-            <InteractivePreviewEditor 
-              isOpen={isEditorOpen} 
-              onClose={() => setIsEditorOpen(false)}
-              generatedContent={generatedPage}
-              formData={formData}
-              onSave={(updatedContent) => {
-                setGeneratedPage(updatedContent);
-                // עדכון התבנית גם ב-formData
-                if (formData?.selectedTemplate) {
-                  // עדכון התבנית עם השינויים החדשים
-                  const updatedFormData = {
-                    ...formData,
-                    selectedTemplate: {
-                      ...formData.selectedTemplate,
-                      ...updatedContent
-                    }
-                  };
-                  // שמירה ב-localStorage כדי שהשינויים יישמרו
-                  localStorage.setItem('formData', JSON.stringify(updatedFormData));
-                }
-                toast({
-                  title: "נשמר בהצלחה! ✅",
-                  description: "השינויים נשמרו והם יופיעו בתצוגה המקדימה ובהורדה",
-                });
-              }}
-              onDownload={handleDownload}
-            />
       </DialogContent>
     </Dialog>
   );

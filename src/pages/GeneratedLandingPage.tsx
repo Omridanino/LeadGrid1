@@ -42,6 +42,9 @@ const GeneratedLandingPage = () => {
           
           if (shouldEnableEdit) {
             setIsEditMode(true);
+          } else {
+            // Always enable edit mode when accessing via preview
+            setIsEditMode(true);
           }
         } catch (error) {
           console.error("Error loading preview data:", error);
