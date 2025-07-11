@@ -22,7 +22,17 @@ import {
   Layers,
   Square,
   Circle,
-  MousePointer
+  MousePointer,
+  Star,
+  Heart,
+  Zap,
+  Shield,
+  Globe,
+  Users,
+  Trophy,
+  Target,
+  Edit3,
+  Upload
 } from 'lucide-react';
 import { ColorPicker } from '@/components/ui/color-picker';
 
@@ -40,6 +50,7 @@ const VisualLandingPageEditor = ({
   formData 
 }: VisualLandingPageEditorProps) => {
   const [activeSection, setActiveSection] = useState('hero');
+  const [editableContent, setEditableContent] = useState(generatedContent || {});
   const [pageStyles, setPageStyles] = useState({
     primaryColor: '#3b82f6',
     secondaryColor: '#6b7280',
@@ -110,6 +121,19 @@ const VisualLandingPageEditor = ({
     { id: 'modern', name: 'מודרני', class: 'rounded-xl' }
   ];
 
+  const iconOptions = [
+    { id: 'star', icon: Star, name: 'כוכב' },
+    { id: 'heart', icon: Heart, name: 'לב' },
+    { id: 'zap', icon: Zap, name: 'ברק' },
+    { id: 'shield', icon: Shield, name: 'מגן' },
+    { id: 'globe', icon: Globe, name: 'כדור הארץ' },
+    { id: 'users', icon: Users, name: 'משתמשים' },
+    { id: 'trophy', icon: Trophy, name: 'גביע' },
+    { id: 'target', icon: Target, name: 'מטרה' },
+    { id: 'sparkles', icon: Sparkles, name: 'ניצוצות' },
+    { id: 'settings', icon: Settings, name: 'הגדרות' }
+  ];
+
   const sections = [
     { id: 'hero', name: 'דף הבית', icon: Sparkles },
     { id: 'features', name: 'תכונות', icon: Layout },
@@ -129,6 +153,13 @@ const VisualLandingPageEditor = ({
     setSectionStyles(prev => ({
       ...prev,
       [section]: { ...prev[section], [key]: value }
+    }));
+  };
+
+  const updateContent = (section: string, field: string, value: any) => {
+    setEditableContent(prev => ({
+      ...prev,
+      [section]: { ...prev[section], [field]: value }
     }));
   };
 
@@ -180,12 +211,142 @@ const VisualLandingPageEditor = ({
                 </div>
               </div>
 
-              <Tabs defaultValue="colors" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
+                <Tabs defaultValue="content" className="w-full">
+                <TabsList className="grid w-full grid-cols-4">
+                  <TabsTrigger value="content">תוכן</TabsTrigger>
                   <TabsTrigger value="colors">צבעים</TabsTrigger>
                   <TabsTrigger value="layout">פריסה</TabsTrigger>
                   <TabsTrigger value="style">סגנון</TabsTrigger>
                 </TabsList>
+
+                <TabsContent value="content" className="space-y-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-sm flex items-center gap-2">
+                        <Edit3 className="h-4 w-4" />
+                        עריכת תוכן
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {activeSection === 'hero' && (
+                        <>
+                          <div>
+                            <Label className="text-xs">כותרת ראשית</Label>
+                            <Input
+                              value={editableContent?.hero?.title || ''}
+                              onChange={(e) => updateContent('hero', 'title', e.target.value)}
+                              placeholder="כותרת ראשית"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">כותרת משנה</Label>
+                            <Textarea
+                              value={editableContent?.hero?.subtitle || ''}
+                              onChange={(e) => updateContent('hero', 'subtitle', e.target.value)}
+                              placeholder="כותרת משנה"
+                              rows={3}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">טקסט כפתור 1</Label>
+                            <Input
+                              value={editableContent?.hero?.button1Text || ''}
+                              onChange={(e) => updateContent('hero', 'button1Text', e.target.value)}
+                              placeholder="טקסט כפתור ראשי"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">טקסט כפתור 2</Label>
+                            <Input
+                              value={editableContent?.hero?.button2Text || ''}
+                              onChange={(e) => updateContent('hero', 'button2Text', e.target.value)}
+                              placeholder="טקסט כפתור משני"
+                            />
+                          </div>
+                        </>
+                      )}
+
+                      {activeSection === 'about' && (
+                        <>
+                          <div>
+                            <Label className="text-xs">כותרת</Label>
+                            <Input
+                              value={editableContent?.about?.title || ''}
+                              onChange={(e) => updateContent('about', 'title', e.target.value)}
+                              placeholder="כותרת הסקשן"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">תיאור</Label>
+                            <Textarea
+                              value={editableContent?.about?.description || ''}
+                              onChange={(e) => updateContent('about', 'description', e.target.value)}
+                              placeholder="תיאור מפורט"
+                              rows={4}
+                            />
+                          </div>
+                        </>
+                      )}
+
+                      {activeSection === 'features' && editableContent?.features?.items && (
+                        <div className="space-y-3">
+                          {editableContent.features.items.map((item, index) => (
+                            <div key={index} className="p-3 border rounded-lg space-y-2">
+                              <Label className="text-xs">תכונה {index + 1}</Label>
+                              <Input
+                                value={item.title || ''}
+                                onChange={(e) => {
+                                  const newItems = [...editableContent.features.items];
+                                  newItems[index] = { ...item, title: e.target.value };
+                                  updateContent('features', 'items', newItems);
+                                }}
+                                placeholder="כותרת התכונה"
+                              />
+                              <Textarea
+                                value={item.description || ''}
+                                onChange={(e) => {
+                                  const newItems = [...editableContent.features.items];
+                                  newItems[index] = { ...item, description: e.target.value };
+                                  updateContent('features', 'items', newItems);
+                                }}
+                                placeholder="תיאור התכונה"
+                                rows={2}
+                              />
+                              <div>
+                                <Label className="text-xs">אייקון</Label>
+                                <div className="grid grid-cols-5 gap-1 mt-1">
+                                  {iconOptions.map((iconOpt) => (
+                                    <Button
+                                      key={iconOpt.id}
+                                      variant={item.icon === iconOpt.id ? "default" : "outline"}
+                                      size="sm"
+                                      className="p-2"
+                                      onClick={() => {
+                                        const newItems = [...editableContent.features.items];
+                                        newItems[index] = { ...item, icon: iconOpt.id };
+                                        updateContent('features', 'items', newItems);
+                                      }}
+                                    >
+                                      <iconOpt.icon className="h-3 w-3" />
+                                    </Button>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {(activeSection === 'services' || activeSection === 'testimonials' || activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
+                        <div className="text-center py-8 text-muted-foreground">
+                          <Type className="h-8 w-8 mx-auto mb-2" />
+                          <p>עריכת תוכן עבור סקשן {sections.find(s => s.id === activeSection)?.name}</p>
+                          <p className="text-xs">יתווסף בקרוב...</p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
 
                 <TabsContent value="colors" className="space-y-4">
                   <Card>
@@ -397,13 +558,13 @@ const VisualLandingPageEditor = ({
                   >
                     <div className="space-y-6 text-white">
                       <Badge className="bg-white/20 text-white">
-                        {generatedContent?.hero?.badge || '✨ חדשנות ומצוינות'}
+                        {editableContent?.hero?.badge || '✨ חדשנות ומצוינות'}
                       </Badge>
                       <h1 className="text-5xl font-bold">
-                        {generatedContent?.hero?.title || `${formData.businessName} - המובילים בתחום`}
+                        {editableContent?.hero?.title || `${formData.businessName} - המובילים בתחום`}
                       </h1>
                       <p className="text-xl text-white/90 max-w-2xl">
-                        {generatedContent?.hero?.subtitle || 'פתרונות מקצועיים ואמינים ברמה הגבוהה ביותר'}
+                        {editableContent?.hero?.subtitle || 'פתרונות מקצועיים ואמינים ברמה הגבוהה ביותר'}
                       </p>
                       <div className="flex gap-4 justify-center">
                         <Button 
@@ -412,7 +573,7 @@ const VisualLandingPageEditor = ({
                                      pageStyles.buttonStyle === 'square' ? 'rounded-none' :
                                      pageStyles.buttonStyle === 'modern' ? 'rounded-xl' : 'rounded-lg'}`}
                         >
-                          {generatedContent?.hero?.button1Text || 'התחל עכשיו'}
+                          {editableContent?.hero?.button1Text || 'התחל עכשיו'}
                         </Button>
                         <Button 
                           variant="outline" 
@@ -423,7 +584,7 @@ const VisualLandingPageEditor = ({
                             pageStyles.buttonStyle === 'modern' ? 'rounded-xl' : 'rounded-lg'
                           }`}
                         >
-                          {generatedContent?.hero?.button2Text || 'למד עוד'}
+                          {editableContent?.hero?.button2Text || 'למד עוד'}
                         </Button>
                       </div>
                     </div>
@@ -432,31 +593,274 @@ const VisualLandingPageEditor = ({
 
                 {activeSection === 'features' && (
                   <div 
-                    className="py-20 px-12"
+                    className="p-12"
                     style={{ background: sectionStyles.features?.background }}
                   >
                     <div className="text-center mb-12">
-                      <h2 className="text-4xl font-bold mb-4">מה מייחד אותנו</h2>
-                      <p className="text-xl text-muted-foreground">הסיבות שלקוחות בוחרים בנו</p>
+                      <h2 className="text-4xl font-bold mb-4">
+                        {editableContent?.features?.title || 'התכונות שלנו'}
+                      </h2>
+                      <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                        {editableContent?.features?.subtitle || 'גלה את היתרונות הייחודיים שלנו'}
+                      </p>
                     </div>
+                    
                     <div className={`grid gap-8 ${
-                      sectionStyles.features?.columns === 2 ? 'grid-cols-2' :
-                      sectionStyles.features?.columns === 4 ? 'grid-cols-4' : 'grid-cols-3'
+                      sectionStyles.features?.columns === 4 ? 'grid-cols-4' :
+                      sectionStyles.features?.columns === 3 ? 'grid-cols-3' : 'grid-cols-2'
                     }`}>
-                      {[1,2,3,4,5,6].slice(0, sectionStyles.features?.columns || 3).map((i) => (
-                        <Card key={i} className="text-center p-6">
-                          <div className="w-16 h-16 bg-primary rounded-lg flex items-center justify-center mx-auto mb-4">
-                            <Sparkles className="h-8 w-8 text-white" />
-                          </div>
-                          <h3 className="text-xl font-semibold mb-2">תכונה {i}</h3>
-                          <p className="text-muted-foreground">תיאור מפורט של התכונה המיוחדת הזו</p>
+                      {editableContent?.features?.items?.map((feature, index) => {
+                        const IconComponent = iconOptions.find(icon => icon.id === feature.icon)?.icon || Star;
+                        return (
+                          <Card key={index} className="text-center p-6">
+                            <CardContent className="pt-4">
+                              <div className="mb-4 flex justify-center">
+                                <div className="p-3 bg-primary/10 rounded-lg">
+                                  <IconComponent className="h-8 w-8 text-primary" />
+                                </div>
+                              </div>
+                              <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
+                              <p className="text-muted-foreground">{feature.description}</p>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {activeSection === 'about' && (
+                  <div 
+                    className="p-12"
+                    style={{ background: sectionStyles.about?.background }}
+                  >
+                    <div className="max-w-4xl mx-auto">
+                      <div className="grid grid-cols-2 gap-12 items-center">
+                        <div>
+                          <h2 className="text-4xl font-bold mb-6">
+                            {editableContent?.about?.title || 'אודותינו'}
+                          </h2>
+                          <p className="text-lg text-muted-foreground leading-relaxed">
+                            {editableContent?.about?.description || 'אנחנו חברה מובילה בתחום עם ניסיון של שנים רבות. אנו מתמחים במתן פתרונות מקצועיים ואמינים ללקוחותינו.'}
+                          </p>
+                          <Button 
+                            className={`mt-6 ${
+                              pageStyles.buttonStyle === 'pill' ? 'rounded-full' : 
+                              pageStyles.buttonStyle === 'square' ? 'rounded-none' :
+                              pageStyles.buttonStyle === 'modern' ? 'rounded-xl' : 'rounded-lg'
+                            }`}
+                          >
+                            קרא עוד
+                          </Button>
+                        </div>
+                        <div className="bg-muted rounded-lg h-80 flex items-center justify-center">
+                          <ImageIcon className="h-16 w-16 text-muted-foreground" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeSection === 'services' && (
+                  <div 
+                    className="p-12"
+                    style={{ background: sectionStyles.services?.background }}
+                  >
+                    <div className="text-center mb-12">
+                      <h2 className="text-4xl font-bold mb-4">השירותים שלנו</h2>
+                      <p className="text-xl text-muted-foreground">פתרונות מקצועיים המותאמים לצרכים שלכם</p>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-8">
+                      {[1,2,3,4].map((service) => (
+                        <Card key={service} className="p-6">
+                          <CardContent className="pt-4">
+                            <div className="flex items-start gap-4">
+                              <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0">
+                                <Settings className="h-6 w-6 text-primary" />
+                              </div>
+                              <div>
+                                <h3 className="font-semibold text-lg mb-2">שירות {service}</h3>
+                                <p className="text-muted-foreground">תיאור מפורט של השירות ויתרונותיו עבור הלקוח.</p>
+                              </div>
+                            </div>
+                          </CardContent>
                         </Card>
                       ))}
                     </div>
                   </div>
                 )}
 
-                {/* Add more sections as needed */}
+                {activeSection === 'testimonials' && (
+                  <div 
+                    className="p-12"
+                    style={{ background: sectionStyles.testimonials?.background }}
+                  >
+                    <div className="text-center mb-12">
+                      <h2 className="text-4xl font-bold mb-4">מה הלקוחות אומרים</h2>
+                      <p className="text-xl text-muted-foreground">המלצות מלקוחות מרוצים</p>
+                    </div>
+                    
+                    <div className="grid grid-cols-3 gap-8">
+                      {[1,2,3].map((testimonial) => (
+                        <Card key={testimonial} className="p-6">
+                          <CardContent className="pt-4">
+                            <div className="text-center">
+                              <div className="mb-4">
+                                <div className="w-16 h-16 bg-muted rounded-full mx-auto flex items-center justify-center">
+                                  <Users className="h-8 w-8 text-muted-foreground" />
+                                </div>
+                              </div>
+                              <p className="text-muted-foreground mb-4">"שירות מעולה ומקצועי. ממליץ בחום!"</p>
+                              <div>
+                                <p className="font-semibold">לקוח {testimonial}</p>
+                                <p className="text-sm text-muted-foreground">חברה {testimonial}</p>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeSection === 'faq' && (
+                  <div 
+                    className="p-12"
+                    style={{ background: sectionStyles.faq?.background }}
+                  >
+                    <div className="max-w-3xl mx-auto">
+                      <div className="text-center mb-12">
+                        <h2 className="text-4xl font-bold mb-4">שאלות נפוצות</h2>
+                        <p className="text-xl text-muted-foreground">תשובות לשאלות הנפוצות ביותר</p>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        {[1,2,3,4].map((faq) => (
+                          <Card key={faq}>
+                            <CardContent className="p-6">
+                              <h3 className="font-semibold text-lg mb-2">שאלה נפוצה {faq}?</h3>
+                              <p className="text-muted-foreground">תשובה מפורטת לשאלה הנפוצה עם כל המידע הרלוונטי.</p>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeSection === 'pricing' && (
+                  <div 
+                    className="p-12"
+                    style={{ background: sectionStyles.pricing?.background }}
+                  >
+                    <div className="text-center mb-12">
+                      <h2 className="text-4xl font-bold mb-4">מחירים</h2>
+                      <p className="text-xl text-muted-foreground">בחר את החבילה המתאימה לך</p>
+                    </div>
+                    
+                    <div className="grid grid-cols-3 gap-8 max-w-5xl mx-auto">
+                      {['בסיסי', 'מקצועי', 'עסקי'].map((plan, index) => (
+                        <Card key={plan} className={`p-6 relative ${index === 1 ? 'ring-2 ring-primary' : ''}`}>
+                          {index === 1 && (
+                            <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                              הכי פופולרי
+                            </Badge>
+                          )}
+                          <CardContent className="pt-4 text-center">
+                            <h3 className="font-semibold text-xl mb-4">{plan}</h3>
+                            <div className="mb-6">
+                              <span className="text-4xl font-bold">₪{(index + 1) * 99}</span>
+                              <span className="text-muted-foreground">/חודש</span>
+                            </div>
+                            <ul className="space-y-2 mb-6">
+                              {[1,2,3].map((feature) => (
+                                <li key={feature} className="flex items-center justify-center">
+                                  <Star className="h-4 w-4 text-primary mr-2" />
+                                  תכונה {feature}
+                                </li>
+                              ))}
+                            </ul>
+                            <Button 
+                              className={`w-full ${
+                                pageStyles.buttonStyle === 'pill' ? 'rounded-full' : 
+                                pageStyles.buttonStyle === 'square' ? 'rounded-none' :
+                                pageStyles.buttonStyle === 'modern' ? 'rounded-xl' : 'rounded-lg'
+                              }`}
+                              variant={index === 1 ? "default" : "outline"}
+                            >
+                              בחר חבילה
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeSection === 'contact' && (
+                  <div 
+                    className="p-12"
+                    style={{ background: sectionStyles.contact?.background }}
+                  >
+                    <div className="max-w-4xl mx-auto">
+                      <div className="text-center mb-12">
+                        <h2 className="text-4xl font-bold mb-4 text-white">צור קשר</h2>
+                        <p className="text-xl text-white/90">נשמח לשמוע ממך ולסייע בכל שאלה</p>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-12">
+                        <div className="space-y-6">
+                          <div className="flex items-center gap-4 text-white">
+                            <div className="p-3 bg-white/20 rounded-lg">
+                              <MousePointer className="h-6 w-6" />
+                            </div>
+                            <div>
+                              <h3 className="font-semibold">כתובת</h3>
+                              <p className="text-white/80">רחוב הדוגמה 123, תל אביב</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-4 text-white">
+                            <div className="p-3 bg-white/20 rounded-lg">
+                              <Circle className="h-6 w-6" />
+                            </div>
+                            <div>
+                              <h3 className="font-semibold">טלפון</h3>
+                              <p className="text-white/80">03-1234567</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-4 text-white">
+                            <div className="p-3 bg-white/20 rounded-lg">
+                              <Square className="h-6 w-6" />
+                            </div>
+                            <div>
+                              <h3 className="font-semibold">אימייל</h3>
+                              <p className="text-white/80">info@example.com</p>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <Card className="p-6">
+                          <CardContent className="pt-4 space-y-4">
+                            <Input placeholder="שם מלא" />
+                            <Input placeholder="אימייל" />
+                            <Input placeholder="נושא" />
+                            <Textarea placeholder="הודעה" rows={4} />
+                            <Button 
+                              className={`w-full ${
+                                pageStyles.buttonStyle === 'pill' ? 'rounded-full' : 
+                                pageStyles.buttonStyle === 'square' ? 'rounded-none' :
+                                pageStyles.buttonStyle === 'modern' ? 'rounded-xl' : 'rounded-lg'
+                              }`}
+                            >
+                              שלח הודעה
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
