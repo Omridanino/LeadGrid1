@@ -195,6 +195,9 @@ const InteractivePreviewEditor = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-[95vw] h-[95vh] p-0 flex">
+        <DialogHeader className="sr-only">
+          <DialogTitle>תצוגה מקדימה + עריכה</DialogTitle>
+        </DialogHeader>
         {/* Main Preview Area */}
         <div className="flex-1 flex flex-col">
           {/* Top Toolbar */}
