@@ -2,6 +2,33 @@
 export const generatePageHTML = (templateData: any) => {
   const template = templateData;
   
+  // Ensure template has required structure with defaults
+  if (!template) {
+    console.error('No template data provided');
+    return '<html><body><h1>שגיאה: לא נמצא תוכן לדף</h1></body></html>';
+  }
+  
+  // Add default styles if missing
+  if (!template.styles) {
+    template.styles = {
+      heroBackground: '#3b82f6',
+      accentColor: '#3b82f6',
+      secondaryColor: '#6b7280',
+      textColor: '#1f2937'
+    };
+  }
+  
+  // Add default hero if missing
+  if (!template.hero) {
+    template.hero = {
+      title: 'כותרת ראשית',
+      subtitle: 'כותרת משנה',
+      description: 'תיאור הדף',
+      button1Text: 'התחל עכשיו',
+      button2Text: 'מידע נוסף'
+    };
+  }
+  
   // Robust premium detection with null checks
   const isPremium = (template?.category && template.category.includes('פרימיום')) || 
                     (template?.id && template.id.includes('-pro'));
@@ -829,7 +856,7 @@ export const generatePageHTML = (templateData: any) => {
             ${isPremium ? (() => {
               const bgData = getPremiumAnimatedBackground(template.id, 'hero');
               return `${bgData.background}; position: relative; overflow: hidden;`;
-            })() : 'background-color: ' + template.styles.heroBackground + ';'}
+            })() : 'background-color: ' + (template.styles?.heroBackground || '#3b82f6') + ';'}
             padding: 5rem 1.5rem;
             min-height: 100vh;
             display: flex;
@@ -940,12 +967,12 @@ export const generatePageHTML = (templateData: any) => {
 <body class="text-foreground">
 
     <!-- Hero Section -->
-    <section class="hero" ${template.styles.heroBackgroundImage ? `style="background-image: url(${template.styles.heroBackgroundImage}); background-size: cover; background-position: center; background-repeat: no-repeat;"` : ''}>
+    <section class="hero" ${template.styles?.heroBackgroundImage ? `style="background-image: url(${template.styles.heroBackgroundImage}); background-size: cover; background-position: center; background-repeat: no-repeat;"` : ''}>
         ${isPremium ? (() => {
           const bgData = getPremiumAnimatedBackground(template.id, 'hero');
           return generatePremiumBackgroundHTML(bgData.animationType);
         })() : ''}
-        ${template.styles.heroBackgroundImage ? '<div class="absolute inset-0 bg-black/40 z-0"></div>' : ''}
+        ${template.styles?.heroBackgroundImage ? '<div class="absolute inset-0 bg-black/40 z-0"></div>' : ''}
         ${isPremium ? `
         <!-- Premium hero effects based on template -->
         ${template.id === 'tech-consultant-pro' ? `
@@ -1021,10 +1048,10 @@ export const generatePageHTML = (templateData: any) => {
         ` : ''}
         <div class="max-w-6xl mx-auto px-4 relative z-10">
             <div class="text-center">
-                ${template.hero.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroBadgeColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.accentColor)}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : (template.styles.heroBackgroundImage ? 'rgba(255,255,255,0.3)' : template.styles.accentColor)};">${template.hero.badge}</div>` : ''}
-                <h1 class="text-4xl md:text-6xl font-bold mb-4 ${isPremium && template.id === 'neon-academy-pro' ? 'neon-text' : ''}" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroTitleColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; ${isPremium && (template.id === 'blockchain-tech-pro' || template.id === 'nft-future-pro') ? 'background: linear-gradient(45deg, #60a5fa, #a78bfa, #22d3ee); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;' : ''}">${template.hero.title}</h1>
-                <h2 class="text-xl md:text-2xl mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroTextColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.9;">${template.hero.subtitle}</h2>
-                <p class="text-lg mb-8 max-w-4xl mx-auto" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroTextColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.8;">${template.hero.description}</p>
+                ${template.hero?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles?.heroBadgeColor) : (template.styles?.heroBackgroundImage ? 'white' : template.styles?.accentColor || '#3b82f6')}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : (template.styles?.heroBackgroundImage ? 'rgba(255,255,255,0.3)' : template.styles?.accentColor || '#3b82f6')};">${template.hero.badge}</div>` : ''}
+                <h1 class="text-4xl md:text-6xl font-bold mb-4 ${isPremium && template.id === 'neon-academy-pro' ? 'neon-text' : ''}" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles?.heroTitleColor) : (template.styles?.heroBackgroundImage ? 'white' : template.styles?.textColor || '#1f2937')}; ${isPremium && (template.id === 'blockchain-tech-pro' || template.id === 'nft-future-pro') ? 'background: linear-gradient(45deg, #60a5fa, #a78bfa, #22d3ee); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;' : ''}">${template.hero?.title || 'כותרת ראשית'}</h1>
+                <h2 class="text-xl md:text-2xl mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles?.heroTextColor) : (template.styles?.heroBackgroundImage ? 'white' : template.styles?.textColor || '#1f2937')}; opacity: 0.9;">${template.hero?.subtitle || 'כותרת משנה'}</h2>
+                <p class="text-lg mb-8 max-w-4xl mx-auto" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles?.heroTextColor) : (template.styles?.heroBackgroundImage ? 'white' : template.styles?.textColor || '#1f2937')}; opacity: 0.8;">${template.hero?.description || 'תיאור הדף'}</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.accentColor}; ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}">
                         ${template.hero.button1Icon ? `<i class="ri-${template.hero.button1Icon}"></i>` : ''}
