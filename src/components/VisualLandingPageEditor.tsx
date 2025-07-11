@@ -1498,28 +1498,28 @@ const VisualLandingPageEditor = ({
                           className="text-4xl font-bold mb-4"
                           style={{ color: pageStyles.testimonialsTitleColor }}
                         >
-                          {(editableContent?.testimonials as any)?.title || "מה אומרים עלינו?"}
+                          {(editableContent?.testimonials as any)?.title || "מה הלקוחות המרוצים שלנו אומרים עלינו"}
                         </h2>
                         <p 
                           className="text-xl"
                           style={{ color: pageStyles.testimonialsTextColor }}
                         >
-                          {(editableContent?.testimonials as any)?.subtitle || ""}
+                          {(editableContent?.testimonials as any)?.subtitle || "הצלחות אמיתיות של לקוחות אמיתיים - המלצות כנות ומפורטות"}
                         </p>
                       </div>
                       
                       <div className="grid md:grid-cols-2 gap-8">
                         {((editableContent?.testimonials as any)?.items || [
                           {
-                            name: "שרה כהן",
-                            role: "מנהלת שיווק",
-                            content: "העבודה עם שמדשד הייתה חוויה יוצאת דופן. הם הביטו את הצרכים שלנו והביאו לנו אתר שמדבר בעד עצמו.",
+                            name: 'שרה כהן',
+                            role: 'מנהלת פרויקטים בכירה',
+                            content: 'העבודה עם החברה הייתה חוויה מדהימה ומקצועית. הם הבינו בדיוק מה אנחנו צריכים, הציעו פתרונות יצירתיים וחדשניים, והביאו פתרון שחרג מכל הציפיות שלנו. השירות היה מעולה מהרגע הראשון ועד למסירה הסופית.',
                             rating: 5
                           },
                           {
-                            name: "דוד לוי", 
-                            role: "בעל עסק לחומרי בניין",
-                            content: "שמדשד בנו לי אתר מדהים שהכפיל את המכירות שלי תוך חודשיים. השירות והמקצועיות היו ללא דופי.",
+                            name: 'דוד לוי', 
+                            role: 'בעל עסק ויזם',
+                            content: 'השירות היה מקצועי ברמה הגבוהה ביותר, מהיר ויעיל מאוד. הצוות הקשיב לצרכים שלנו, הציע פתרונות מותאמים ועמד בכל הלוחות זמנים. ממליץ בחום לכל מי שמחפש פתרון איכותי, אמין ומקצועי.',
                             rating: 5
                           }
                         ]).map((testimonial: any, index: number) => (
