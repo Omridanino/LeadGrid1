@@ -23,14 +23,30 @@ const AdvancedLandingPageGenerator = ({
   const [generatedPage, setGeneratedPage] = useState(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [showQuickForm, setShowQuickForm] = useState(false);
+  const [quickFormData, setQuickFormData] = useState({
+    businessName: '',
+    industry: '',
+    goals: '',
+    targetAudience: '',
+    businessDescription: ''
+  });
 
   const generateLandingPage = async () => {
+    // בדיקה אם יש מידע בסיסי
+    const dataToUse = formData?.businessName ? formData : quickFormData;
+    
+    if (!dataToUse.businessName || !dataToUse.industry) {
+      setShowQuickForm(true);
+      return;
+    }
+
     setIsGenerating(true);
     try {
-      console.log('Generating landing page with formData:', formData);
+      console.log('Generating landing page with formData:', dataToUse);
       
       const { data, error } = await supabase.functions.invoke('generate-landing-content', {
-        body: { formData }
+        body: { formData: dataToUse }
       });
 
       if (error) {
@@ -40,6 +56,7 @@ const AdvancedLandingPageGenerator = ({
 
       console.log('Generated content:', data);
       setGeneratedPage(data.content);
+      setShowQuickForm(false);
 
       toast({
         title: "הצלחה! 🎉",
@@ -50,7 +67,7 @@ const AdvancedLandingPageGenerator = ({
       console.error('Error generating landing page:', error);
       toast({
         title: "שגיאה",
-        description: "אירעה שגיאה ביצירת דף הנחיתה",
+        description: "אירעה שגיאה ביצירת דף הנחיתה. אנא נסה שוב.",
         variant: "destructive",
       });
     } finally {
@@ -94,7 +111,7 @@ const AdvancedLandingPageGenerator = ({
             </p>
           </div>
 
-          {!generatedPage ? (
+          {!generatedPage && !showQuickForm ? (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -106,11 +123,19 @@ const AdvancedLandingPageGenerator = ({
                 <div className="bg-muted/50 rounded-lg p-4">
                   <h3 className="font-semibold mb-2">פרטי העסק שלך:</h3>
                   <div className="grid grid-cols-2 gap-2 text-sm">
-                    <div><strong>שם העסק:</strong> {formData.businessName}</div>
-                    <div><strong>תחום:</strong> {formData.businessType}</div>
-                    <div><strong>יעד:</strong> {formData.goal}</div>
-                    <div><strong>קהל יעד:</strong> {formData.targetAudience}</div>
+                    <div><strong>שם העסק:</strong> {formData?.businessName || 'לא צוין'}</div>
+                    <div><strong>תחום:</strong> {formData?.businessType || formData?.industry || 'לא צוין'}</div>
+                    <div><strong>יעד:</strong> {formData?.goal || formData?.goals || 'לא צוין'}</div>
+                    <div><strong>קהל יעד:</strong> {formData?.targetAudience || 'לא צוין'}</div>
                   </div>
+                  
+                  {(!formData?.businessName || !formData?.industry) && (
+                    <div className="mt-4 p-3 bg-yellow-100 border border-yellow-300 rounded-lg">
+                      <p className="text-sm text-yellow-800">
+                        ⚠️ חסרים פרטים בסיסיים לצורך יצירת הדף. אנא מלא את הפרטים הנדרשים.
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-2">
@@ -142,6 +167,104 @@ const AdvancedLandingPageGenerator = ({
                     </>
                   )}
                 </Button>
+              </CardContent>
+            </Card>
+          ) : showQuickForm ? (
+            <Card>
+              <CardHeader>
+                <CardTitle>מלא פרטים בסיסיים</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium">שם העסק *</label>
+                    <input
+                      type="text"
+                      className="w-full mt-1 px-3 py-2 border rounded-lg"
+                      value={quickFormData.businessName}
+                      onChange={(e) => setQuickFormData(prev => ({...prev, businessName: e.target.value}))}
+                      placeholder="לדוגמה: חברת טכנולוגיה"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="text-sm font-medium">תחום פעילות *</label>
+                    <select
+                      className="w-full mt-1 px-3 py-2 border rounded-lg"
+                      value={quickFormData.industry}
+                      onChange={(e) => setQuickFormData(prev => ({...prev, industry: e.target.value}))}
+                    >
+                      <option value="">בחר תחום</option>
+                      <option value="טכנולוגיה">טכנולוגיה</option>
+                      <option value="שירותים עסקיים">שירותים עסקיים</option>
+                      <option value="רפואה ובריאות">רפואה ובריאות</option>
+                      <option value="חינוך">חינוך</option>
+                      <option value="מסחר ומכירות">מסחר ומכירות</option>
+                      <option value="נדלן">נדל&quot;ן</option>
+                      <option value="מזון ומסעדנות">מזון ומסעדנות</option>
+                      <option value="אחר">אחר</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="text-sm font-medium">קהל יעד</label>
+                    <input
+                      type="text"
+                      className="w-full mt-1 px-3 py-2 border rounded-lg"
+                      value={quickFormData.targetAudience}
+                      onChange={(e) => setQuickFormData(prev => ({...prev, targetAudience: e.target.value}))}
+                      placeholder="לדוגמה: עסקים קטנים"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="text-sm font-medium">מטרת הדף</label>
+                    <input
+                      type="text"
+                      className="w-full mt-1 px-3 py-2 border rounded-lg"
+                      value={quickFormData.goals}
+                      onChange={(e) => setQuickFormData(prev => ({...prev, goals: e.target.value}))}
+                      placeholder="לדוגמה: קבלת לידים"
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="text-sm font-medium">תיאור קצר של העסק</label>
+                  <textarea
+                    className="w-full mt-1 px-3 py-2 border rounded-lg"
+                    rows={3}
+                    value={quickFormData.businessDescription}
+                    onChange={(e) => setQuickFormData(prev => ({...prev, businessDescription: e.target.value}))}
+                    placeholder="תאר בקצרה מה העסק שלך עושה..."
+                  />
+                </div>
+                
+                <div className="flex gap-3">
+                  <Button 
+                    onClick={generateLandingPage}
+                    disabled={!quickFormData.businessName || !quickFormData.industry || isGenerating}
+                    className="flex-1"
+                  >
+                    {isGenerating ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                        יוצר דף נחיתה...
+                      </>
+                    ) : (
+                      <>
+                        <Wand2 className="h-4 w-4 mr-2" />
+                        צור דף נחיתה
+                      </>
+                    )}
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setShowQuickForm(false)}
+                  >
+                    ביטול
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ) : (
