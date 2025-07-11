@@ -1,76 +1,10 @@
 // Complete HTML Generator - Creates exact HTML from template preview with premium support
 export const generatePageHTML = (templateData: any) => {
   const template = templateData;
+  // More robust premium detection
+  const isPremium = template.category.includes('פרימיום') || template.id.includes('-pro');
   
-  // Ensure template has required structure with defaults
-  if (!template) {
-    console.error('No template data provided');
-    return '<html><body><h1>שגיאה: לא נמצא תוכן לדף</h1></body></html>';
-  }
-  
-  // Add default styles if missing
-  if (!template.styles) {
-    template.styles = {
-      heroBackground: '#3b82f6',
-      accentColor: '#3b82f6',
-      secondaryColor: '#6b7280',
-      textColor: '#1f2937'
-    };
-  }
-  
-  // Add default hero if missing
-  if (!template.hero) {
-    template.hero = {
-      title: 'כותרת ראשית',
-      subtitle: 'כותרת משנה',
-      description: 'תיאור הדף',
-      button1Text: 'התחל עכשיו',
-      button2Text: 'מידע נוסף'
-    };
-  }
-  
-  // Add default sections if missing
-  if (!template.features) {
-    template.features = { title: 'התכונות שלנו', items: [] };
-  }
-  if (!template.testimonials) {
-    template.testimonials = { title: 'מה הלקוחות אומרים', testimonials: [] };
-  }
-  if (!template.about) {
-    template.about = { title: 'עלינו', stats: [] };
-  }
-  if (!template.pricing) {
-    template.pricing = { title: 'מחירים', plans: [] };
-  }
-  if (!template.faq) {
-    template.faq = { title: 'שאלות נפוצות', questions: [] };
-  }
-  if (!template.emotional) {
-    template.emotional = { title: 'הצטרפו אלינו', description: 'תיאור רגשי' };
-  }
-  if (!template.finalCta) {
-    template.finalCta = { title: 'בואו נתחיל', description: 'תיאור קריאה לפעולה' };
-  }
-  if (!template.contact) {
-    template.contact = { title: 'צור קשר', description: 'נשמח לשמוע מכם' };
-  }
-  if (!template.footer) {
-    template.footer = { companyName: template.hero?.title || 'החברה שלנו' };
-  }
-  
-  // Ensure arrays exist
-  if (!template.features.items) template.features.items = [];
-  if (!template.testimonials.testimonials) template.testimonials.testimonials = [];
-  if (!template.about.stats) template.about.stats = [];
-  if (!template.pricing.plans) template.pricing.plans = [];
-  if (!template.faq.questions) template.faq.questions = [];
-  
-  // Robust premium detection with null checks
-  const isPremium = (template?.category && template.category.includes('פרימיום')) || 
-                    (template?.id && template.id.includes('-pro'));
-  
-  console.log('Template ID:', template?.id, 'isPremium:', isPremium);
-  console.log('Template data:', template);
+  console.log('Template ID:', template.id, 'isPremium:', isPremium);
 
   // Helper functions for new content sections - moved to top
   const generateGallerySection = (gallery: any, styles: any, isPremium: boolean) => {
@@ -84,7 +18,7 @@ export const generatePageHTML = (templateData: any) => {
                 ${gallery.subtitle ? `<p class="text-xl text-slate-300">${gallery.subtitle}</p>` : ''}
             </div>
             <div class="grid grid-cols-1 md:grid-cols-${gallery.columns || 3} gap-6">
-                ${(gallery.images || []).map((img: any) => `
+                ${gallery.images.map((img: any) => `
                     <div class="group overflow-hidden rounded-lg shadow-lg">
                         <img src="${img.src}" alt="${img.alt}" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
                         ${img.caption ? `<div class="p-4 bg-white/10"><p class="text-white text-sm">${img.caption}</p></div>` : ''}
@@ -892,7 +826,7 @@ export const generatePageHTML = (templateData: any) => {
             ${isPremium ? (() => {
               const bgData = getPremiumAnimatedBackground(template.id, 'hero');
               return `${bgData.background}; position: relative; overflow: hidden;`;
-            })() : 'background-color: ' + (template.styles?.heroBackground || '#3b82f6') + ';'}
+            })() : 'background-color: ' + template.styles.heroBackground + ';'}
             padding: 5rem 1.5rem;
             min-height: 100vh;
             display: flex;
@@ -1003,12 +937,12 @@ export const generatePageHTML = (templateData: any) => {
 <body class="text-foreground">
 
     <!-- Hero Section -->
-    <section class="hero" ${template.styles?.heroBackgroundImage ? `style="background-image: url(${template.styles.heroBackgroundImage}); background-size: cover; background-position: center; background-repeat: no-repeat;"` : ''}>
+    <section class="hero" ${template.styles.heroBackgroundImage ? `style="background-image: url(${template.styles.heroBackgroundImage}); background-size: cover; background-position: center; background-repeat: no-repeat;"` : ''}>
         ${isPremium ? (() => {
           const bgData = getPremiumAnimatedBackground(template.id, 'hero');
           return generatePremiumBackgroundHTML(bgData.animationType);
         })() : ''}
-        ${template.styles?.heroBackgroundImage ? '<div class="absolute inset-0 bg-black/40 z-0"></div>' : ''}
+        ${template.styles.heroBackgroundImage ? '<div class="absolute inset-0 bg-black/40 z-0"></div>' : ''}
         ${isPremium ? `
         <!-- Premium hero effects based on template -->
         ${template.id === 'tech-consultant-pro' ? `
@@ -1084,10 +1018,10 @@ export const generatePageHTML = (templateData: any) => {
         ` : ''}
         <div class="max-w-6xl mx-auto px-4 relative z-10">
             <div class="text-center">
-                ${template.hero?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles?.heroBadgeColor) : (template.styles?.heroBackgroundImage ? 'white' : template.styles?.accentColor || '#3b82f6')}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : (template.styles?.heroBackgroundImage ? 'rgba(255,255,255,0.3)' : template.styles?.accentColor || '#3b82f6')};">${template.hero.badge}</div>` : ''}
-                <h1 class="text-4xl md:text-6xl font-bold mb-4 ${isPremium && template.id === 'neon-academy-pro' ? 'neon-text' : ''}" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles?.heroTitleColor) : (template.styles?.heroBackgroundImage ? 'white' : template.styles?.textColor || '#1f2937')}; ${isPremium && (template.id === 'blockchain-tech-pro' || template.id === 'nft-future-pro') ? 'background: linear-gradient(45deg, #60a5fa, #a78bfa, #22d3ee); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;' : ''}">${template.hero?.title || 'כותרת ראשית'}</h1>
-                <h2 class="text-xl md:text-2xl mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles?.heroTextColor) : (template.styles?.heroBackgroundImage ? 'white' : template.styles?.textColor || '#1f2937')}; opacity: 0.9;">${template.hero?.subtitle || 'כותרת משנה'}</h2>
-                <p class="text-lg mb-8 max-w-4xl mx-auto" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles?.heroTextColor) : (template.styles?.heroBackgroundImage ? 'white' : template.styles?.textColor || '#1f2937')}; opacity: 0.8;">${template.hero?.description || 'תיאור הדף'}</p>
+                ${template.hero.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroBadgeColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.accentColor)}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : (template.styles.heroBackgroundImage ? 'rgba(255,255,255,0.3)' : template.styles.accentColor)};">${template.hero.badge}</div>` : ''}
+                <h1 class="text-4xl md:text-6xl font-bold mb-4 ${isPremium && template.id === 'neon-academy-pro' ? 'neon-text' : ''}" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroTitleColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; ${isPremium && (template.id === 'blockchain-tech-pro' || template.id === 'nft-future-pro') ? 'background: linear-gradient(45deg, #60a5fa, #a78bfa, #22d3ee); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;' : ''}">${template.hero.title}</h1>
+                <h2 class="text-xl md:text-2xl mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroTextColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.9;">${template.hero.subtitle}</h2>
+                <p class="text-lg mb-8 max-w-4xl mx-auto" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroTextColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.8;">${template.hero.description}</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.accentColor}; ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}">
                         ${template.hero.button1Icon ? `<i class="ri-${template.hero.button1Icon}"></i>` : ''}
@@ -1111,7 +1045,7 @@ export const generatePageHTML = (templateData: any) => {
          })() : ''}
          <div class="max-w-6xl mx-auto px-4 relative z-10">
              <div class="text-center">
-                 ${template.emotional?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'emotional', template.styles?.emotionalBadgeColor) : template.styles?.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles?.accentColor};">${template.emotional.badge}</div>` : ''}
+                 ${template.emotional.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'emotional', template.styles.emotionalBadgeColor) : template.styles.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.accentColor};">${template.emotional.badge}</div>` : ''}
                  <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id, 'emotional', template.styles.emotionalTitleColor) : template.styles.textColor};">${template.emotional.title}</h2>
                  <p class="text-lg max-w-4xl mx-auto opacity-90 mb-8" style="color: ${isPremium ? getPremiumTextColor(template.id, 'emotional', template.styles.emotionalTextColor) : template.styles.textColor};">${template.emotional.description}</p>
                  ${template.emotional.button1Text || template.emotional.button2Text ? `
@@ -1143,13 +1077,13 @@ export const generatePageHTML = (templateData: any) => {
         })() : ''}
         <div class="max-w-7xl mx-auto px-6 relative z-10">
             <div class="text-center mb-16">
-                ${template.features?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'features', template.styles?.featuresBadgeColor) : template.styles?.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles?.primaryColor};">${template.features.badge}</div>` : ''}
+                ${template.features.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'features', template.styles.featuresBadgeColor) : template.styles.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.primaryColor};">${template.features.badge}</div>` : ''}
                 <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'features', template.styles.featuresTitleColor) : template.styles.textColor};">${template.features.title}</h2>
                 ${template.features.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(template.id, 'features', template.styles.featuresTextColor) : template.styles.textColor}; opacity: 0.8;">${template.features.subtitle}</p>` : ''}
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                ${(template.features.items || []).map((feature: any) => {
+                ${template.features.items.map((feature: any) => {
                   if (isPremium) {
                     return `
                       <div class="relative group perspective-1000">
@@ -1231,14 +1165,14 @@ export const generatePageHTML = (templateData: any) => {
             </h2>
             ` : `
             <div class="text-center mb-12">
-                ${template.testimonials?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${template.styles?.primaryColor}; border-color: ${template.styles?.primaryColor};">${template.testimonials.badge}</div>` : ''}
+                ${template.testimonials.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${template.styles.primaryColor}; border-color: ${template.styles.primaryColor};">${template.testimonials.badge}</div>` : ''}
                 <h2 class="text-3xl md:text-4xl font-bold" style="color: ${template.styles.textColor};">${template.testimonials.title}</h2>
             </div>
             `}
             
             <!-- Testimonials grid -->
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                ${(template.testimonials.testimonials || []).map((testimonial: any) => `
+                ${template.testimonials.testimonials.map((testimonial: any) => `
                     <div class="relative group">
                         <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20"></div>
                         <div class="relative z-10 p-6 space-y-4">
@@ -1291,14 +1225,14 @@ export const generatePageHTML = (templateData: any) => {
         })() : ''}
         <div class="max-w-6xl mx-auto px-4 relative z-10">
             <div class="text-center mb-12">
-                ${template.about?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles?.secondaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles?.secondaryColor};">${template.about.badge}</div>` : ''}
+                ${template.about.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.secondaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.secondaryColor};">${template.about.badge}</div>` : ''}
                 <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.about.title}</h2>
                 <p class="text-lg max-w-4xl mx-auto opacity-90" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.about.description}</p>
             </div>
             
             ${template.about.stats && template.about.stats.length > 0 ? `
                 <div class="grid md:grid-cols-3 gap-8 text-center mb-12">
-                    ${(template.about.stats || []).map((stat: any) => `
+                    ${template.about.stats.map((stat: any) => `
                         <div>
                             <div class="text-4xl font-bold mb-2" style="color: ${template.styles.primaryColor};">${stat.number}</div>
                             <div class="text-lg opacity-80" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${stat.label}</div>
@@ -1349,14 +1283,14 @@ export const generatePageHTML = (templateData: any) => {
             </div>
             ` : `
             <div class="text-center mb-12">
-                ${template.pricing?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${template.styles?.primaryColor}; border-color: ${template.styles?.primaryColor};">${template.pricing.badge}</div>` : ''}
+                ${template.pricing.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${template.styles.primaryColor}; border-color: ${template.styles.primaryColor};">${template.pricing.badge}</div>` : ''}
                 <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: ${template.styles.textColor};">${template.pricing.title}</h2>
                 ${template.pricing.subtitle ? `<p class="text-xl opacity-80" style="color: ${template.styles.textColor};">${template.pricing.subtitle}</p>` : ''}
             </div>
             `}
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
-                ${(template.pricing.plans || []).map((plan: any, index: number) => `
+                ${template.pricing.plans.map((plan: any, index: number) => `
                     <div class="relative group perspective-1000 ${plan.recommended ? 'lg:scale-105' : ''}">
                         ${plan.recommended ? `
                             <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
@@ -1381,7 +1315,7 @@ export const generatePageHTML = (templateData: any) => {
                                 </div>
                                 
                                 <ul class="space-y-3">
-                                    ${(plan.features || []).map((feature: string) => `
+                                    ${plan.features.map((feature: string) => `
                                         <li class="flex items-center gap-3 text-blue-100/80">
                                             <span style="color: #4ade80; font-size: 1.25rem;">✓</span>
                                             ${feature}
@@ -1415,12 +1349,12 @@ export const generatePageHTML = (templateData: any) => {
     <section id="faq" class="faq">
         <div class="max-w-4xl mx-auto px-4 relative z-10">
             <div class="text-center mb-12">
-                ${template.faq?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles?.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles?.primaryColor};">${template.faq.badge}</div>` : ''}
+                ${template.faq.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.primaryColor};">${template.faq.badge}</div>` : ''}
                 <h2 class="text-3xl md:text-4xl font-bold" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.faq.title}</h2>
             </div>
             
             <div class="space-y-4 mb-12">
-                ${(template.faq.questions || []).map((qa: any, index: number) => `
+                ${template.faq.questions.map((qa: any, index: number) => `
                     <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 ${isPremium ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}">
                         <h3 class="text-lg font-bold mb-2 text-right" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${qa.question}</h3>
                         <p class="opacity-80 text-right" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${qa.answer}</p>
@@ -1444,7 +1378,7 @@ export const generatePageHTML = (templateData: any) => {
     <!-- Final CTA Section -->
     <section id="final-cta" class="final-cta">
         <div class="max-w-4xl mx-auto text-center px-4 relative z-10">
-            ${template.finalCta?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles?.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles?.accentColor};">${template.finalCta.badge}</div>` : ''}
+            ${template.finalCta.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.accentColor};">${template.finalCta.badge}</div>` : ''}
             <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.finalCta.title}</h2>
             <p class="text-lg mb-8 opacity-90" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.finalCta.description}</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
