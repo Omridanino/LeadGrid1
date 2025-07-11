@@ -136,18 +136,18 @@ const StyleQuestionnaire = ({ isOpen, onClose }: StyleQuestionnaireProps) => {
                       </div>
                       
                       <h4 className="text-white font-bold text-sm mb-2 truncate">
-                        {template.hero.title}
+                        {template.name}
                       </h4>
                       <p className="text-gray-400 text-xs mb-3 line-clamp-2">
-                        {template.hero.subtitle}
+                        {template.category}
                       </p>
                       
                       <div className="flex gap-1">
                         <div className="px-2 py-1 bg-blue-600/80 text-white text-xs rounded-md">
-                          {template.hero.button1Text}
+                          עיצוב {template.category}
                         </div>
                         <div className="px-2 py-1 bg-gray-600/80 text-white text-xs rounded-md">
-                          {template.hero.button2Text}
+                          מוכן לעריכה
                         </div>
                       </div>
                     </div>

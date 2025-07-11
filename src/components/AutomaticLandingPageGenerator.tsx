@@ -17,8 +17,8 @@ import {
   Edit,
   Eye
 } from 'lucide-react';
-// Import functions will be added after creating the utility files
 import { getRandomDesign } from '@/data/designTemplates';
+import { TemplateData } from '@/types/template';
 import TemplateEditor from './ModernTemplateEditor';
 
 interface AutomaticLandingPageGeneratorProps {
