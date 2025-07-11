@@ -194,17 +194,24 @@ export const InlineLandingPageEditor: React.FC<InlineLandingPageEditorProps> = (
 
   const handleDownload = () => {
     if (formData?.selectedTemplate) {
-      const htmlContent = generatePageHTML(formData.selectedTemplate);
-      const blob = new Blob([htmlContent], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${formData.businessName || 'landing-page'}.html`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      toast.success('הדף הורד בהצלחה');
+      try {
+        const htmlContent = generatePageHTML(formData.selectedTemplate);
+        const blob = new Blob([htmlContent], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${formData.businessName || 'landing-page'}.html`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        toast.success('הדף הורד בהצלחה');
+      } catch (error) {
+        console.error('Error generating HTML:', error);
+        toast.error('שגיאה בהורדת הדף');
+      }
+    } else {
+      toast.error('אין תבנית נבחרת להורדה');
     }
   };
 
@@ -246,7 +253,16 @@ export const InlineLandingPageEditor: React.FC<InlineLandingPageEditorProps> = (
     );
   }
 
-  const htmlContent = formData?.selectedTemplate ? generatePageHTML(formData.selectedTemplate) : '';
+  // Safe HTML generation with error handling
+  let htmlContent = '';
+  if (formData?.selectedTemplate) {
+    try {
+      htmlContent = generatePageHTML(formData.selectedTemplate);
+    } catch (error) {
+      console.error('Error generating HTML content:', error);
+      htmlContent = '<html><body><h1>שגיאה ביצירת התוכן</h1></body></html>';
+    }
+  }
 
   return (
     <div className="w-full h-full relative">
