@@ -93,10 +93,24 @@ const VisualLandingPageEditor = ({
         },
         about: generatedContent.about ? {
           title: generatedContent.about.title || 'אודותינו',
-          description: generatedContent.about.description || 'אנחנו חברה מובילה בתחום'
+          subtitle: generatedContent.about.subtitle || 'כותרת משנה',
+          description: generatedContent.about.description || 'אנחנו חברה מובילה בתחום',
+          stats: generatedContent.about.stats || [
+            { number: '24/7', label: 'תמיכה' },
+            { number: '+5', label: 'שנות ניסיון' },
+            { number: '+100', label: 'לקוחות מרוצים' }
+          ],
+          image: generatedContent.about.image || 'תמונה'
         } : {
           title: 'אודותינו',
-          description: 'אנחנו חברה מובילה בתחום'
+          subtitle: 'כותרת משנה', 
+          description: 'אנחנו חברה מובילה בתחום',
+          stats: [
+            { number: '24/7', label: 'תמיכה' },
+            { number: '+5', label: 'שנות ניסיון' },
+            { number: '+100', label: 'לקוחות מרוצים' }
+          ],
+          image: 'תמונה'
         },
         testimonials: generatedContent.testimonials || null,
         pricing: generatedContent.pricing || null,
@@ -125,7 +139,17 @@ const VisualLandingPageEditor = ({
           { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'zap' }
         ]
       },
-      about: { title: 'אודותינו', description: 'אנחנו חברה מובילה בתחום' }
+      about: { 
+        title: 'אודותינו', 
+        subtitle: 'כותרת משנה',
+        description: 'אנחנו חברה מובילה בתחום',
+        stats: [
+          { number: '24/7', label: 'תמיכה' },
+          { number: '+5', label: 'שנות ניסיון' },
+          { number: '+100', label: 'לקוחות מרוצים' }
+        ],
+        image: 'תמונה'
+      }
     };
   };
 
@@ -518,6 +542,14 @@ const VisualLandingPageEditor = ({
                             />
                           </div>
                           <div>
+                            <Label className="text-xs">כותרת משנה</Label>
+                            <Input
+                              value={(editableContent?.about as any)?.subtitle || ''}
+                              onChange={(e) => updateContent('about', 'subtitle', e.target.value)}
+                              placeholder="כותרת משנה"
+                            />
+                          </div>
+                          <div>
                             <Label className="text-xs">תיאור</Label>
                             <Textarea
                               value={editableContent?.about?.description || ''}
@@ -525,6 +557,34 @@ const VisualLandingPageEditor = ({
                               placeholder="תיאור מפורט"
                               rows={4}
                             />
+                          </div>
+                          
+                          <div>
+                            <Label className="text-xs">סטטיסטיקות</Label>
+                            <div className="space-y-2">
+                              {((editableContent?.about as any)?.stats || []).map((stat: any, index: number) => (
+                                <div key={index} className="grid grid-cols-2 gap-2">
+                                  <Input
+                                    value={stat.number || ''}
+                                    onChange={(e) => {
+                                      const newStats = [...((editableContent?.about as any)?.stats || [])];
+                                      newStats[index] = { ...stat, number: e.target.value };
+                                      updateContent('about', 'stats', newStats);
+                                    }}
+                                    placeholder="מספר"
+                                  />
+                                  <Input
+                                    value={stat.label || ''}
+                                    onChange={(e) => {
+                                      const newStats = [...((editableContent?.about as any)?.stats || [])];
+                                      newStats[index] = { ...stat, label: e.target.value };
+                                      updateContent('about', 'stats', newStats);
+                                    }}
+                                    placeholder="תווית"
+                                  />
+                                </div>
+                              ))}
+                            </div>
                           </div>
                           
                           <Button 
