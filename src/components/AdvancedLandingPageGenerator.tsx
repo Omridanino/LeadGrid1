@@ -426,7 +426,7 @@ const AdvancedLandingPageGenerator = ({
                   <div className="flex gap-4">
                     <Button onClick={handlePreview} variant="default">
                       <Eye className="h-4 w-4 mr-2" />
-                      צפה בתצוגה מקדימה
+                      דף הנחיתה שלכם כאן
                     </Button>
                     <Button onClick={handleEdit} variant="default">
                       <Edit className="h-4 w-4 mr-2" />
