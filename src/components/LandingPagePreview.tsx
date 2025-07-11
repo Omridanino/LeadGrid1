@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ColorScheme } from "@/types/colors";
 import { Button } from "@/components/ui/button";
-import { Edit3, Palette, Type, Image } from "lucide-react";
+import { Edit3, Palette, Type } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface LandingPagePreviewProps {
@@ -15,7 +15,16 @@ interface LandingPagePreviewProps {
 const LandingPagePreview = ({ content, currentColors, formData, heroImage, elements }: LandingPagePreviewProps) => {
   const [editMode, setEditMode] = useState(false);
   const [editingElement, setEditingElement] = useState<string | null>(null);
-  const [tempContent, setTempContent] = useState(content);
+  const [tempContent, setTempContent] = useState({
+    headline: formData?.headline || "הכותרת שלכם כאן",
+    subheadline: formData?.subheadline || "תת כותרת מסבירה על השירות",
+    ctaText: formData?.ctaText || "צור קשר",
+    featuresTitle: "השירותים שלנו",
+    aboutTitle: "אודותינו",
+    aboutText: "כאן תוכלו לכתוב על העסק שלכם, הניסיון שלכם והערכים שלכם. ספרו ללקוחות למה כדאי להם לבחור בכם.",
+    contactTitle: "צור קשר",
+    contactText: "נשמח לשמוע מכם! צרו איתנו קשר לקבלת ייעוץ או הצעת מחיר."
+  });
   const [tempColors, setTempColors] = useState(currentColors);
 
   // Show loading if formData is not ready
@@ -30,293 +39,55 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     );
   }
 
-  const generateSimpleHTML = () => {
-    const businessName = formData.businessName || "העסק שלי";
-    const headline = tempContent?.headline || formData.headline || "הכותרת שלכם כאן";
-    const subheadline = tempContent?.subheadline || formData.subheadline || "תת כותרת מסבירה על השירות";
-    const ctaText = tempContent?.ctaText || formData.ctaText || "צור קשר";
-
-    return `
-    <!DOCTYPE html>
-    <html dir="rtl" lang="he">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>${businessName}</title>
-      <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          line-height: 1.6;
-          color: #333;
-        }
-        .hero { 
-          min-height: 100vh; 
-          background: linear-gradient(135deg, ${tempColors.primary} 0%, ${tempColors.secondary} 100%);
-          color: white;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          text-align: center;
-          padding: 2rem;
-          position: relative;
-        }
-        .hero-content { max-width: 800px; }
-        .hero h1 { 
-          font-size: 3.5rem; 
-          font-weight: bold; 
-          margin-bottom: 1rem;
-          color: ${tempColors.headlineColor};
-        }
-        .hero p { 
-          font-size: 1.25rem; 
-          margin-bottom: 2rem; 
-          opacity: 0.9;
-          color: ${tempColors.subheadlineColor};
-        }
-        .cta-button { 
-          background: ${tempColors.accent}; 
-          color: white; 
-          padding: 1rem 2rem; 
-          border: none; 
-          border-radius: 8px; 
-          font-size: 1.1rem; 
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-        .cta-button:hover { 
-          transform: translateY(-2px); 
-          box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-        .features { 
-          padding: 4rem 2rem; 
-          background: ${tempColors.featuresColor};
-        }
-        .features-container { 
-          max-width: 1200px; 
-          margin: 0 auto; 
-          text-align: center;
-        }
-        .features h2 { 
-          font-size: 2.5rem; 
-          margin-bottom: 3rem; 
-          color: ${tempColors.featuresTextColor};
-        }
-        .features-grid { 
-          display: grid; 
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-          gap: 2rem;
-        }
-        .feature-card { 
-          padding: 2rem; 
-          background: white; 
-          border-radius: 12px; 
-          box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-          transition: transform 0.3s ease;
-        }
-        .feature-card:hover { 
-          transform: translateY(-5px);
-        }
-        .about { 
-          padding: 4rem 2rem; 
-          background: ${tempColors.aboutColor};
-        }
-        .about-container { 
-          max-width: 800px; 
-          margin: 0 auto; 
-          text-align: center;
-        }
-        .about h2 { 
-          font-size: 2.5rem; 
-          margin-bottom: 2rem; 
-          color: ${tempColors.aboutTextColor};
-        }
-        .about p { 
-          font-size: 1.1rem; 
-          color: ${tempColors.aboutTextColor}; 
-          opacity: 0.8;
-        }
-        .contact { 
-          padding: 4rem 2rem; 
-          background: ${tempColors.contactColor};
-        }
-        .contact-container { 
-          max-width: 600px; 
-          margin: 0 auto; 
-          text-align: center;
-        }
-        .contact h2 { 
-          font-size: 2.5rem; 
-          margin-bottom: 2rem; 
-          color: ${tempColors.contactTextColor};
-        }
-        .editable {
-          position: relative;
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-        .editable:hover {
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 4px;
-        }
-        .edit-overlay {
-          position: absolute;
-          top: -10px;
-          right: -10px;
-          background: #3b82f6;
-          color: white;
-          border: none;
-          border-radius: 50%;
-          width: 24px;
-          height: 24px;
-          font-size: 12px;
-          cursor: pointer;
-          display: none;
-        }
-        .editable:hover .edit-overlay {
-          display: block;
-        }
-      </style>
-    </head>
-    <body>
-      <section class="hero">
-        <div class="hero-content">
-          <h1 class="editable" data-element="headline">
-            ${headline}
-            <button class="edit-overlay">✏️</button>
-          </h1>
-          <p class="editable" data-element="subheadline">
-            ${subheadline}
-            <button class="edit-overlay">✏️</button>
-          </p>
-          <button class="cta-button editable" data-element="cta">
-            ${ctaText}
-            <button class="edit-overlay">✏️</button>
-          </button>
-        </div>
-      </section>
-
-      ${elements.includes('features') ? `
-      <section class="features">
-        <div class="features-container">
-          <h2 class="editable" data-element="features-title">
-            השירותים שלנו
-            <button class="edit-overlay">✏️</button>
-          </h2>
-          <div class="features-grid">
-            <div class="feature-card">
-              <h3>שירות ראשון</h3>
-              <p>תיאור השירות הראשון שלכם</p>
-            </div>
-            <div class="feature-card">
-              <h3>שירות שני</h3>
-              <p>תיאור השירות השני שלכם</p>
-            </div>
-            <div class="feature-card">
-              <h3>שירות שלישי</h3>
-              <p>תיאור השירות השלישי שלכם</p>
-            </div>
-          </div>
-        </div>
-      </section>
-      ` : ''}
-
-      ${elements.includes('about') ? `
-      <section class="about">
-        <div class="about-container">
-          <h2 class="editable" data-element="about-title">
-            אודותינו
-            <button class="edit-overlay">✏️</button>
-          </h2>
-          <p class="editable" data-element="about-text">
-            כאן תוכלו לכתוב על העסק שלכם, הניסיון שלכם והערכים שלכם. ספרו ללקוחות למה כדאי להם לבחור בכם.
-            <button class="edit-overlay">✏️</button>
-          </p>
-        </div>
-      </section>
-      ` : ''}
-
-      ${elements.includes('contact') ? `
-      <section class="contact">
-        <div class="contact-container">
-          <h2 class="editable" data-element="contact-title">
-            צור קשר
-            <button class="edit-overlay">✏️</button>
-          </h2>
-          <p class="editable" data-element="contact-text">
-            נשמח לשמוע מכם! צרו איתנו קשר לקבלת ייעוץ או הצעת מחיר.
-            <button class="edit-overlay">✏️</button>
-          </p>
-          <button class="cta-button">שלחו הודעה</button>
-        </div>
-      </section>
-      ` : ''}
-
-      <script>
-        document.addEventListener('click', function(e) {
-          if (e.target.classList.contains('edit-overlay')) {
-            e.preventDefault();
-            e.stopPropagation();
-            const elementType = e.target.parentElement.dataset.element;
-            window.parent.postMessage({ type: 'edit-element', element: elementType }, '*');
-          }
-        });
-      </script>
-    </body>
-    </html>
-    `;
+  const handleElementClick = (elementType: string) => {
+    if (editMode) {
+      setEditingElement(elementType);
+    }
   };
 
   const handleElementEdit = (elementType: string, newValue: string) => {
     setTempContent(prev => ({
       ...prev,
-      [elementType.replace('-', '')]: newValue
+      [elementType]: newValue
     }));
   };
 
-  return (
-    <div className="w-full h-full relative">
-      {/* Editing Toolbar */}
+  const EditableElement = ({ 
+    type, 
+    children, 
+    className = "", 
+    tag: Tag = "div",
+    style
+  }: { 
+    type: string; 
+    children: React.ReactNode; 
+    className?: string; 
+    tag?: any;
+    style?: React.CSSProperties;
+  }) => (
+    <Tag
+      className={cn(
+        className,
+        editMode && "cursor-pointer hover:bg-white/10 hover:rounded transition-all duration-200 relative group"
+      )}
+      style={style}
+      onClick={() => handleElementClick(type)}
+    >
+      {children}
       {editMode && (
-        <div className="absolute top-4 left-4 z-50 bg-background/95 backdrop-blur-sm border rounded-lg p-3 shadow-lg">
-          <div className="flex items-center gap-2 mb-3">
-            <Edit3 className="w-4 h-4" />
-            <span className="text-sm font-medium">מצב עריכה</span>
-          </div>
-          <div className="flex flex-col gap-2">
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => setEditingElement('colors')}
-              className="justify-start"
-            >
-              <Palette className="w-3 h-3 mr-2" />
-              עריכת צבעים
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => setEditingElement('text')}
-              className="justify-start"
-            >
-              <Type className="w-3 h-3 mr-2" />
-              עריכת טקסט
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => setEditingElement('images')}
-              className="justify-start"
-            >
-              <Image className="w-3 h-3 mr-2" />
-              עריכת תמונות
-            </Button>
+        <div className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs">
+            ✏️
           </div>
         </div>
       )}
+    </Tag>
+  );
 
+  return (
+    <div className="w-full h-full relative overflow-auto">
       {/* Toggle Edit Mode Button */}
-      <div className="absolute top-4 right-4 z-50">
+      <div className="fixed top-4 right-4 z-50">
         <Button
           size="sm"
           onClick={() => setEditMode(!editMode)}
@@ -332,7 +103,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
 
       {/* Color Editor */}
       {editingElement === 'colors' && (
-        <div className="absolute top-20 left-4 z-50 bg-background border rounded-lg p-4 shadow-lg w-80">
+        <div className="fixed top-20 right-4 z-50 bg-background border rounded-lg p-4 shadow-lg w-80">
           <h3 className="font-medium mb-3">עריכת צבעים</h3>
           <div className="space-y-3">
             <div>
@@ -369,38 +140,127 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
         </div>
       )}
 
-      {/* Preview Frame */}
-      <div className="w-full h-full" style={{ 
-        maxHeight: '100vh', 
-        overflowY: 'auto', 
-        overflowX: 'hidden',
-        scrollBehavior: 'smooth'
-      }}>
-        <iframe
-          srcDoc={generateSimpleHTML()}
-          className="w-full h-full border-0"
-          style={{ minHeight: '100vh' }}
-          title="Landing Page Preview"
-          onLoad={(e) => {
-            // Listen for edit messages from iframe
-            window.addEventListener('message', (event) => {
-              if (event.data.type === 'edit-element') {
-                setEditingElement(event.data.element);
-              }
-            });
+      {/* Editing Toolbar */}
+      {editMode && (
+        <div className="fixed top-20 left-4 z-50 bg-background/95 backdrop-blur-sm border rounded-lg p-3 shadow-lg">
+          <div className="flex items-center gap-2 mb-3">
+            <Edit3 className="w-4 h-4" />
+            <span className="text-sm font-medium">מצב עריכה</span>
+          </div>
+          <div className="flex flex-col gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setEditingElement('colors')}
+              className="justify-start"
+            >
+              <Palette className="w-3 h-3 mr-2" />
+              עריכת צבעים
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setEditingElement('text')}
+              className="justify-start"
+            >
+              <Type className="w-3 h-3 mr-2" />
+              עריכת טקסט
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Landing Page Content */}
+      <div className="w-full">
+        {/* Hero Section */}
+        <section 
+          className="min-h-screen flex items-center justify-center text-center p-8 text-white relative"
+          style={{
+            background: `linear-gradient(135deg, ${tempColors.primary} 0%, ${tempColors.secondary} 100%)`
           }}
-        />
+        >
+          <div className="max-w-4xl">
+            <EditableElement type="headline" tag="h1" className="text-5xl font-bold mb-6">
+              {tempContent.headline}
+            </EditableElement>
+            <EditableElement type="subheadline" tag="p" className="text-xl mb-8 opacity-90">
+              {tempContent.subheadline}
+            </EditableElement>
+            <EditableElement type="ctaText" tag="button" className="bg-accent text-white px-8 py-4 rounded-lg text-lg hover:transform hover:scale-105 transition-all duration-300">
+              {tempContent.ctaText}
+            </EditableElement>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        {elements.includes('features') && (
+          <section className="py-16 px-8" style={{ background: tempColors.featuresColor || '#f8f9fa' }}>
+            <div className="max-w-6xl mx-auto text-center">
+              <EditableElement type="featuresTitle" tag="h2" className="text-4xl font-bold mb-12" style={{ color: tempColors.featuresTextColor || '#333' }}>
+                {tempContent.featuresTitle}
+              </EditableElement>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="bg-white p-8 rounded-xl shadow-lg hover:transform hover:scale-105 transition-all duration-300">
+                  <h3 className="text-xl font-semibold mb-4">שירות ראשון</h3>
+                  <p className="text-gray-600">תיאור השירות הראשון שלכם</p>
+                </div>
+                <div className="bg-white p-8 rounded-xl shadow-lg hover:transform hover:scale-105 transition-all duration-300">
+                  <h3 className="text-xl font-semibold mb-4">שירות שני</h3>
+                  <p className="text-gray-600">תיאור השירות השני שלכם</p>
+                </div>
+                <div className="bg-white p-8 rounded-xl shadow-lg hover:transform hover:scale-105 transition-all duration-300">
+                  <h3 className="text-xl font-semibold mb-4">שירות שלישי</h3>
+                  <p className="text-gray-600">תיאור השירות השלישי שלכם</p>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* About Section */}
+        {elements.includes('about') && (
+          <section className="py-16 px-8" style={{ background: tempColors.aboutColor || '#ffffff' }}>
+            <div className="max-w-4xl mx-auto text-center">
+              <EditableElement type="aboutTitle" tag="h2" className="text-4xl font-bold mb-8" style={{ color: tempColors.aboutTextColor || '#333' }}>
+                {tempContent.aboutTitle}
+              </EditableElement>
+              <EditableElement type="aboutText" tag="p" className="text-lg leading-relaxed" style={{ color: tempColors.aboutTextColor || '#666' }}>
+                {tempContent.aboutText}
+              </EditableElement>
+            </div>
+          </section>
+        )}
+
+        {/* Contact Section */}
+        {elements.includes('contact') && (
+          <section className="py-16 px-8" style={{ background: tempColors.contactColor || '#f8f9fa' }}>
+            <div className="max-w-3xl mx-auto text-center">
+              <EditableElement type="contactTitle" tag="h2" className="text-4xl font-bold mb-8" style={{ color: tempColors.contactTextColor || '#333' }}>
+                {tempContent.contactTitle}
+              </EditableElement>
+              <EditableElement type="contactText" tag="p" className="text-lg mb-8" style={{ color: tempColors.contactTextColor || '#666' }}>
+                {tempContent.contactText}
+              </EditableElement>
+              <button 
+                className="text-white px-8 py-4 rounded-lg text-lg hover:transform hover:scale-105 transition-all duration-300"
+                style={{ background: tempColors.accent }}
+              >
+                שלחו הודעה
+              </button>
+            </div>
+          </section>
+        )}
       </div>
 
       {/* Text Editor Modal */}
-      {editingElement && editingElement !== 'colors' && editingElement !== 'images' && (
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-50">
+      {editingElement && editingElement !== 'colors' && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-background rounded-lg p-6 w-96 max-w-[90vw]">
             <h3 className="font-medium mb-3">עריכת {editingElement}</h3>
             <textarea
               className="w-full h-32 p-3 border rounded-lg resize-none"
               placeholder="הכנס טקסט חדש..."
-              defaultValue={tempContent?.[editingElement.replace('-', '')] || ''}
+              value={tempContent[editingElement as keyof typeof tempContent] || ''}
               onChange={(e) => handleElementEdit(editingElement, e.target.value)}
             />
             <div className="flex justify-end gap-2 mt-4">
