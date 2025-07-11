@@ -64,14 +64,34 @@ const VisualLandingPageEditor = ({
       layout: 'grid',
       columns: 3
     },
+    about: {
+      background: '#ffffff',
+      layout: 'split',
+      alignment: 'left'
+    },
+    services: {
+      background: '#f8fafc',
+      layout: 'grid',
+      columns: 2
+    },
     testimonials: {
       background: '#ffffff',
       layout: 'carousel',
       style: 'cards'
     },
-    pricing: {
+    faq: {
       background: '#f8fafc',
+      layout: 'accordion',
+      style: 'clean'
+    },
+    pricing: {
+      background: '#ffffff',
       layout: 'grid',
+      style: 'modern'
+    },
+    contact: {
+      background: '#3b82f6',
+      layout: 'split',
       style: 'modern'
     }
   });
@@ -91,9 +111,12 @@ const VisualLandingPageEditor = ({
   ];
 
   const sections = [
-    { id: 'hero', name: 'Hero Section', icon: Sparkles },
+    { id: 'hero', name: 'דף הבית', icon: Sparkles },
     { id: 'features', name: 'תכונות', icon: Layout },
+    { id: 'about', name: 'אודותינו', icon: Circle },
+    { id: 'services', name: 'שירותים', icon: Settings },
     { id: 'testimonials', name: 'המלצות', icon: Type },
+    { id: 'faq', name: 'שאלות נפוצות', icon: Eye },
     { id: 'pricing', name: 'מחירים', icon: Square },
     { id: 'contact', name: 'יצירת קשר', icon: MousePointer }
   ];
