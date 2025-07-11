@@ -76,7 +76,20 @@ const AdvancedLandingPageGenerator = ({
   };
 
   const handlePreview = () => {
-    setIsPreviewOpen(true);
+    if (generatedPage?.selectedTemplate || formData?.selectedTemplate) {
+      // Navigate to a new route with editing capabilities
+      const templateData = generatedPage?.selectedTemplate || formData?.selectedTemplate;
+      const url = `/generated-landing-page?preview=true&edit=true`;
+      
+      // Store the template data for the new page
+      localStorage.setItem('previewTemplateData', JSON.stringify(templateData));
+      localStorage.setItem('previewFormData', JSON.stringify(formData));
+      
+      // Open in new tab with editing capabilities
+      window.open(url, '_blank');
+    } else {
+      setIsPreviewOpen(true);
+    }
   };
 
   const handleEdit = () => {
