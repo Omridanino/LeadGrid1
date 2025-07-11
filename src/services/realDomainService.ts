@@ -129,9 +129,10 @@ export const BANK_ACCOUNTS = [
 export const LEADGRID_SERVICE_FEE = 109.99; // ₪109.99 per month
 
 export class RealDomainService {
-  private static readonly GODADDY_API_KEY = process.env.GODADDY_API_KEY;
-  private static readonly GODADDY_API_SECRET = process.env.GODADDY_API_SECRET;
-  private static readonly GODADDY_MODE = process.env.GODADDY_MODE || 'production';
+  // These would be handled by edge functions in production
+  private static readonly GODADDY_API_KEY = '';
+  private static readonly GODADDY_API_SECRET = '';
+  private static readonly GODADDY_MODE = 'production';
 
   // מחירי דומיינים - רווח קבוע של ₪25 לכל דומיין
   static getDomainPricing() {
