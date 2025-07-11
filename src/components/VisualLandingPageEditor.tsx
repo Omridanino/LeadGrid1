@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -58,22 +58,32 @@ const VisualLandingPageEditor = ({
   console.log('VisualLandingPageEditor - generatedContent:', generatedContent);
   console.log('VisualLandingPageEditor - formData:', formData);
   
-  // Use the actual generated content if available, otherwise use defaults
-  const [editableContent, setEditableContent] = useState(() => {
+  // Initialize content with generated data or defaults
+  const initializeContent = () => {
+    console.log('Initializing content with generatedContent:', generatedContent);
+    
     if (generatedContent) {
       return {
-        hero: generatedContent.hero || { 
-          title: 'כותרת ראשית', 
-          subtitle: 'כותרת משנה', 
-          button1Text: 'התחל עכשיו', 
-          button2Text: 'למד עוד',
+        hero: {
+          title: generatedContent.hero?.title || 'כותרת ראשית',
+          subtitle: generatedContent.hero?.subtitle || 'כותרת משנה', 
+          button1Text: generatedContent.hero?.button1Text || 'התחל עכשיו',
+          button2Text: generatedContent.hero?.button2Text || 'למד עוד',
           badge: generatedContent.hero?.badge || 'חדש!',
           description: generatedContent.hero?.description || 'תיאור מפורט של השירות או המוצר שלכם',
           button1Icon: '',
           button2Icon: ''
         },
-        features: generatedContent.features || { 
-          title: 'התכונות שלנו', 
+        features: generatedContent.features ? {
+          title: generatedContent.features.title || 'התכונות שלנו',
+          subtitle: generatedContent.features.subtitle || 'גלה את היתרונות הייחודיים שלנו',
+          items: generatedContent.features.items || [
+            { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star' },
+            { title: 'תכונה 2', description: 'תיאור התכונה השנייה', icon: 'heart' },
+            { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'zap' }
+          ]
+        } : {
+          title: 'התכונות שלנו',
           subtitle: 'גלה את היתרונות הייחודיים שלנו',
           items: [
             { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star' },
@@ -81,13 +91,20 @@ const VisualLandingPageEditor = ({
             { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'zap' }
           ]
         },
-        about: generatedContent.about || { title: 'אודותינו', description: 'אנחנו חברה מובילה בתחום' },
+        about: generatedContent.about ? {
+          title: generatedContent.about.title || 'אודותינו',
+          description: generatedContent.about.description || 'אנחנו חברה מובילה בתחום'
+        } : {
+          title: 'אודותינו',
+          description: 'אנחנו חברה מובילה בתחום'
+        },
         testimonials: generatedContent.testimonials || null,
         pricing: generatedContent.pricing || null,
         contact: generatedContent.contact || null
       };
     }
     
+    // Default content if no generated content
     return {
       hero: { 
         title: 'כותרת ראשית', 
@@ -110,7 +127,18 @@ const VisualLandingPageEditor = ({
       },
       about: { title: 'אודותינו', description: 'אנחנו חברה מובילה בתחום' }
     };
-  });
+  };
+
+  // Use the actual generated content if available, otherwise use defaults  
+  const [editableContent, setEditableContent] = useState(initializeContent);
+
+  // Update content when generatedContent changes
+  useEffect(() => {
+    if (generatedContent) {
+      console.log('useEffect - updating content with new generatedContent:', generatedContent);
+      setEditableContent(initializeContent());
+    }
+  }, [generatedContent]);
   
   const [pageStyles, setPageStyles] = useState({
     primaryColor: '#3b82f6',
