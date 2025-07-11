@@ -1401,14 +1401,31 @@ const VisualLandingPageEditor = ({
                     <div className="grid md:grid-cols-2 gap-8">
                       {((editableContent?.services as any)?.items || []).map((service: any, index: number) => (
                         <div key={index} className="bg-white p-8 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
-                          <h3 className="text-xl font-bold mb-3">{service.title}</h3>
-                          <p className="text-gray-600 mb-4">{service.description}</p>
-                          <div className="text-2xl font-bold text-blue-600 mb-4">{service.price}</div>
+                          <h3 
+                            className="text-xl font-bold mb-3"
+                            style={{ color: pageStyles.servicesTitleColor }}
+                          >
+                            {service.title}
+                          </h3>
+                          <p 
+                            className="mb-4"
+                            style={{ color: pageStyles.servicesTextColor }}
+                          >
+                            {service.description}
+                          </p>
+                          <div 
+                            className="text-2xl font-bold mb-4"
+                            style={{ color: pageStyles.servicesTitleColor }}
+                          >
+                            {service.price}
+                          </div>
                           <ul className="space-y-2 mb-6">
                             {(service.features || []).map((feature: string, featureIndex: number) => (
                               <li key={featureIndex} className="flex items-center text-sm">
                                 <span className="text-green-500 mr-2">✓</span>
-                                {feature}
+                                <span style={{ color: pageStyles.servicesTextColor }}>
+                                  {feature}
+                                </span>
                               </li>
                             ))}
                           </ul>
