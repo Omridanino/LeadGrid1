@@ -1,4 +1,3 @@
-
 export interface TemplateStyles {
   // Background colors for each section
   backgroundColor: string;
@@ -68,7 +67,6 @@ export interface HeroSection {
   button1Icon?: string;
   button2Icon?: string;
   image?: string;
-  backgroundImage?: string;
 }
 
 export interface EmotionalSection {
@@ -304,137 +302,6 @@ export interface TemplateEffects {
   contact?: string | null;
 }
 
-// Advanced features interfaces
-export interface ABTest {
-  id: string;
-  name: string;
-  status: 'draft' | 'running' | 'paused' | 'completed';
-  startDate: string;
-  endDate?: string;
-  variants: {
-    id: string;
-    name: string;
-    traffic: number;
-    conversions: number;
-    visitors: number;
-    changes: any;
-  }[];
-  goal: {
-    type: 'click' | 'form_submit' | 'page_view' | 'custom';
-    target: string;
-    description: string;
-  };
-}
-
-export interface DynamicForm {
-  id: string;
-  title: string;
-  submitText: string;
-  successMessage: string;
-  redirectUrl?: string;
-  emailNotifications: boolean;
-  autoResponse: boolean;
-  autoResponseSubject?: string;
-  autoResponseMessage?: string;
-  webhookUrl?: string;
-  crmIntegration: string;
-  fields: {
-    id: string;
-    type: 'text' | 'email' | 'phone' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'file' | 'date' | 'number';
-    label: string;
-    placeholder?: string;
-    required: boolean;
-    options?: string[];
-    validation?: {
-      minLength?: number;
-      maxLength?: number;
-      pattern?: string;
-    };
-  }[];
-}
-
-export interface AdvancedStyles {
-  desktop?: any;
-  tablet?: any;
-  mobile?: any;
-  design?: {
-    templateId?: string;
-    customizations?: any;
-  };
-  performance?: {
-    imageOptimization?: boolean;
-    lazyLoading?: boolean;
-    minification?: boolean;
-    compression?: boolean;
-    caching?: boolean;
-    preloading?: boolean;
-    webpConversion?: boolean;
-    cssOptimization?: boolean;
-  };
-  seo?: {
-    title: string;
-    description: string;
-    keywords: string;
-    ogImage: string;
-    indexable: boolean;
-  };
-  integrations?: {
-    facebookPixel?: string;
-    googleAnalytics?: string;
-    tiktokPixel?: string;
-    linkedinInsight?: string;
-    gtm?: string;
-    zapierWebhook?: string;
-    customHeadScripts?: string;
-    emailMarketing?: {
-      provider: string;
-      apiKey: string;
-      listId: string;
-    };
-    crm?: {
-      provider: string;
-      apiKey: string;
-      settings: any;
-    };
-  };
-  responsive?: any;
-  analytics?: any;
-  forms?: any;
-  popups?: {
-    enabled: boolean;
-    type: 'exit-intent' | 'timer' | 'scroll';
-    timer?: number;
-    scrollPercentage?: number;
-    title: string;
-    message: string;
-    buttonText: string;
-    showFrequency: 'once' | 'session' | 'always';
-  };
-  interactivity?: {
-    animations: boolean;
-    hoverEffects: boolean;
-    parallaxScrolling: boolean;
-    smoothScrolling: boolean;
-    cursorEffects: boolean;
-  };
-  notifications?: {
-    enabled: boolean;
-    type: 'recent-activity' | 'visitor-count' | 'social-proof';
-    message: string;
-    position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
-    showInterval: number;
-    autoHide: boolean;
-    hideAfter: number;
-  };
-  security?: {
-    enableCaptcha: boolean;
-    enableRateLimit: boolean;
-    blockSuspiciousIPs: boolean;
-    enableCSP: boolean;
-    enableHTTPS: boolean;
-  };
-}
-
 export interface TemplateData {
   id: string;
   name: string;
@@ -462,8 +329,4 @@ export interface TemplateData {
   sectionsOrder?: string[];
   styles: TemplateStyles;
   effects?: TemplateEffects;
-  // Advanced features
-  advancedStyles?: AdvancedStyles;
-  customForms?: DynamicForm[];
-  abTests?: ABTest[];
 }
