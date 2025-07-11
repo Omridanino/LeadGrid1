@@ -18,6 +18,7 @@ import {
   Eye
 } from 'lucide-react';
 import { TemplateData } from '@/types/template';
+import { AdvancedLandingPageGenerator } from './AdvancedLandingPageGenerator';
 
 interface AutomaticLandingPageGeneratorProps {
   isOpen: boolean;

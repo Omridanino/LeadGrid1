@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Wand2, Eye, Download, Save } from 'lucide-react';
+import { Loader2, Wand2, Eye, Download, Save, Edit } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import LandingPagePreview from './LandingPagePreview';
+import VisualLandingPageEditor from './VisualLandingPageEditor';
 
 interface AdvancedLandingPageGeneratorProps {
   isOpen: boolean;
@@ -21,6 +22,7 @@ export const AdvancedLandingPageGenerator = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedPage, setGeneratedPage] = useState(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
 
   const generateLandingPage = async () => {
     setIsGenerating(true);
@@ -58,6 +60,10 @@ export const AdvancedLandingPageGenerator = ({
 
   const handlePreview = () => {
     setIsPreviewOpen(true);
+  };
+
+  const handleEdit = () => {
+    setIsEditorOpen(true);
   };
 
   const handleSave = () => {
@@ -157,6 +163,10 @@ export const AdvancedLandingPageGenerator = ({
                       <Eye className="h-4 w-4 mr-2" />
                       צפה בתצוגה מקדימה
                     </Button>
+                    <Button onClick={handleEdit} variant="default">
+                      <Edit className="h-4 w-4 mr-2" />
+                      עורך חזותי
+                    </Button>
                     <Button onClick={handleSave} variant="outline">
                       <Save className="h-4 w-4 mr-2" />
                       שמור פרויקט
@@ -186,37 +196,13 @@ export const AdvancedLandingPageGenerator = ({
           )}
         </div>
 
-        {/* Preview Modal */}
-        <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
-          <DialogContent className="max-w-6xl h-[90vh] overflow-hidden">
-            <div className="h-full">
-              {generatedPage && (
-                <LandingPagePreview 
-                  content={generatedPage}
-                  currentColors={{
-                    primary: "#3b82f6",
-                    secondary: "#6b7280", 
-                    accent: "#f59e0b",
-                    background: "#ffffff",
-                    text: "#1f2937",
-                    heroBackground: "#f8fafc",
-                    headlineColor: "#1f2937",
-                    subheadlineColor: "#6b7280",
-                    featuresColor: "#374151",
-                    featuresTextColor: "#6b7280",
-                    aboutColor: "#1f2937",
-                    aboutTextColor: "#6b7280",
-                    contactColor: "#374151",
-                    contactTextColor: "#6b7280"
-                  }}
-                  formData={formData}
-                  heroImage=""
-                  elements={[]}
-                />
-              )}
-            </div>
-          </DialogContent>
-        </Dialog>
+        {/* Visual Editor Modal */}
+        <VisualLandingPageEditor
+          isOpen={isEditorOpen}
+          onClose={() => setIsEditorOpen(false)}
+          generatedContent={generatedPage}
+          formData={formData}
+        />
       </DialogContent>
     </Dialog>
   );

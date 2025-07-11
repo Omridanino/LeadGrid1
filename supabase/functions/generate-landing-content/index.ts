@@ -12,32 +12,65 @@ serve(async (req) => {
   }
 
   try {
-    const { businessName, industry, targetAudience, businessDescription, goals } = await req.json();
-
-    const prompt = `אתה קופיירייטר מקצועי ומנוסה. צור תוכן לדף נחיתה עבור:
+    const { formData } = await req.json();
     
-    שם העסק: ${businessName}
-    תחום: ${industry}
-    קהל יעד: ${targetAudience}
-    תיאור העסק: ${businessDescription}
-    מטרות: ${goals}
+    console.log('Generating landing page for:', formData);
 
-    צור תוכן שכולל:
-    1. כותרת ראשית מושכת (hero title)
-    2. תת-כותרת משלימה (subtitle)
-    3. 4 יתרונות מפורטים עם אייקונים מתאימים
-    4. 2 עדויות לקוחות מציאותיות
-    5. מחירון עם שתי חבילות
-    6. שאלות נפוצות (FAQ)
+    const prompt = `
+אתה מומחה בעברית ליצירת דפי נחיתה מקצועיים. צור דף נחיתה מושלם עבור:
 
-    התוכן צריך להיות:
-    - מקצועי אך נגיש
-    - ממוקד בתועלות ללקוח
-    - משכנע ומניע לפעולה
-    - בעברית שוטפת וטבעית
-    - ספציפי לתחום הפעילות
+עסק: ${formData.businessName}
+תחום: ${formData.industry || formData.businessType}
+יעד: ${formData.goals}
+קהל יעד: ${formData.targetAudience}
+תיאור: ${formData.businessDescription}
 
-    החזר JSON מובנה עם כל החלקים.`;
+צור תוכן מלא ומפורט שכולל JSON עם המבנה הבא:
+
+{
+  "hero": {
+    "badge": "באדג' מעורר עניין",
+    "title": "כותרת חזקה שתופסת תשומת לב",
+    "subtitle": "תת-כותרת מסבירה",
+    "description": "תיאור קצר ומשכנע",
+    "button1Text": "כפתור פעולה ראשי",
+    "button2Text": "כפתור פעולה משני"
+  },
+  "features": {
+    "title": "כותרת סקשן התכונות",
+    "subtitle": "תת-כותרת",
+    "items": [
+      {
+        "title": "תכונה 1",
+        "description": "תיאור מפורט",
+        "icon": "star"
+      }
+    ]
+  },
+  "testimonials": {
+    "title": "כותרת המלצות",
+    "testimonials": [
+      {
+        "name": "שם הלקוח",
+        "role": "תפקיד",
+        "content": "תוכן ההמלצה",
+        "rating": 5
+      }
+    ]
+  },
+  "pricing": {
+    "title": "כותרת מחירים",
+    "plans": [
+      {
+        "name": "שם החבילה",
+        "price": "מחיר",
+        "features": ["תכונה 1", "תכונה 2"]
+      }
+    ]
+  }
+}
+
+התוכן צריך להיות מקצועי, משכנע ומותאם לתחום הפעילות.`;
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -46,25 +79,37 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4.1-2025-04-14',
+        model: 'gpt-4o',
         messages: [
-          { role: 'system', content: 'אתה קופיירייטר מקצועי המתמחה ביצירת תוכן שיווקי מקצועי בעברית.' },
+          { 
+            role: 'system', 
+            content: 'אתה מומחה ישראלי ליצירת תוכן שיווקי מקצועי. תיצור תוכן בעברית תקנית ברמה גבוהה ביותר. החזר תמיד JSON תקף בלבד.' 
+          },
           { role: 'user', content: prompt }
         ],
-        max_tokens: 2000,
-        temperature: 0.7
+        response_format: { type: "json_object" },
+        temperature: 0.8,
+        max_tokens: 4000
       }),
     });
 
+    if (!response.ok) {
+      throw new Error(`OpenAI API error: ${response.status}`);
+    }
+
     const data = await response.json();
-    const generatedContent = data.choices[0].message.content;
+    const generatedContent = JSON.parse(data.choices[0].message.content);
 
     return new Response(JSON.stringify({ content: generatedContent }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
+
   } catch (error) {
-    console.error('Error:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    console.error('Error in generate-landing-content function:', error);
+    return new Response(JSON.stringify({ 
+      error: 'Failed to generate content', 
+      details: error.message 
+    }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
