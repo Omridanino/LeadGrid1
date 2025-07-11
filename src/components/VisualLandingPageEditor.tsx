@@ -37,6 +37,7 @@ import {
   Wand2
 } from 'lucide-react';
 import { ColorPicker } from '@/components/ui/color-picker';
+import ImageUpload from './ImageUpload';
 import React from 'react';
 
 interface VisualLandingPageEditorProps {
@@ -587,7 +588,16 @@ const VisualLandingPageEditor = ({
                             </div>
                           </div>
                           
-                          <Button 
+                          <div>
+                            <Label className="text-xs">תמונה</Label>
+                            <ImageUpload
+                              currentImageUrl={(editableContent?.about as any)?.image || ''}
+                              onImageChange={(imageUrl) => updateContent('about', 'image', imageUrl)}
+                              bucket="about-images"
+                            />
+                          </div>
+                          
+                          <Button
                             variant="outline" 
                             size="sm" 
                             onClick={() => addButton('about')}
@@ -1230,8 +1240,16 @@ const VisualLandingPageEditor = ({
                           </div>
                         )}
                       </div>
-                      <div className="bg-gray-100 rounded-lg h-64 flex items-center justify-center">
-                        <span className="text-gray-500">📸 {(editableContent?.about as any)?.image || 'תמונה'}</span>
+                      <div className="bg-gray-100 rounded-lg h-64 flex items-center justify-center overflow-hidden">
+                        {(editableContent?.about as any)?.image && (editableContent?.about as any)?.image !== 'תמונה' ? (
+                          <img 
+                            src={(editableContent?.about as any)?.image} 
+                            alt="תמונת אודות" 
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <span className="text-gray-500">📸 העלה תמונה</span>
+                        )}
                       </div>
                     </div>
                   </div>
