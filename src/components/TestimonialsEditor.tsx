@@ -13,12 +13,51 @@ interface TestimonialsEditorProps {
 }
 
 const TestimonialsEditor = ({ content, onContentChange }: TestimonialsEditorProps) => {
-  const [localContent, setLocalContent] = useState(content);
+  // Initialize with default structure if content is undefined or missing testimonials
+  const [localContent, setLocalContent] = useState(() => {
+    const defaultTestimonials = [
+      {
+        name: "יוסי כהן",
+        role: "מנכ\"ל חברת טכנולוגיה",
+        content: "השירות מעולה ומקצועי. המליץ בחום!",
+        rating: 5
+      },
+      {
+        name: "שרה לוי", 
+        role: "יזמת",
+        content: "קיבלתי בדיוק מה שחיפשתי. תוצאות מדהימות!",
+        rating: 5
+      },
+      {
+        name: "דני רוזן",
+        role: "בעל עסק", 
+        content: "גישה מקצועית ותוצאות מעבר לציפיות.",
+        rating: 5
+      }
+    ];
+    
+    return {
+      ...content,
+      testimonials: {
+        title: content?.testimonials?.title || "המלצות לקוחות",
+        subtitle: content?.testimonials?.subtitle || "מה הלקוחות שלנו אומרים עלינו",
+        items: Array.isArray(content?.testimonials?.items) 
+          ? content.testimonials.items 
+          : defaultTestimonials
+      }
+    };
+  });
 
   const updateTestimonial = (index: number, field: string, value: any) => {
-    const newTestimonials = [...(localContent.testimonials || [])];
+    const newTestimonials = [...(localContent.testimonials?.items || [])];
     newTestimonials[index] = { ...newTestimonials[index], [field]: value };
-    setLocalContent({ ...localContent, testimonials: newTestimonials });
+    setLocalContent({ 
+      ...localContent, 
+      testimonials: { 
+        ...localContent.testimonials, 
+        items: newTestimonials 
+      } 
+    });
   };
 
   const addTestimonial = () => {
@@ -28,13 +67,25 @@ const TestimonialsEditor = ({ content, onContentChange }: TestimonialsEditorProp
       content: "ביקורת מעולה על השירות!",
       rating: 5
     };
-    const newTestimonials = [...(localContent.testimonials || []), newTestimonial];
-    setLocalContent({ ...localContent, testimonials: newTestimonials });
+    const newTestimonials = [...(localContent.testimonials?.items || []), newTestimonial];
+    setLocalContent({ 
+      ...localContent, 
+      testimonials: { 
+        ...localContent.testimonials, 
+        items: newTestimonials 
+      } 
+    });
   };
 
   const removeTestimonial = (index: number) => {
-    const newTestimonials = (localContent.testimonials || []).filter((_: any, i: number) => i !== index);
-    setLocalContent({ ...localContent, testimonials: newTestimonials });
+    const newTestimonials = (localContent.testimonials?.items || []).filter((_: any, i: number) => i !== index);
+    setLocalContent({ 
+      ...localContent, 
+      testimonials: { 
+        ...localContent.testimonials, 
+        items: newTestimonials 
+      } 
+    });
   };
 
   const handleSave = () => {
@@ -52,7 +103,7 @@ const TestimonialsEditor = ({ content, onContentChange }: TestimonialsEditorProp
         <div>
           <Label className="text-white font-semibold text-right block mb-3">רשימת ביקורות</Label>
           <div className="space-y-4">
-            {(localContent.testimonials || []).map((testimonial: any, index: number) => (
+            {(localContent.testimonials?.items || []).map((testimonial: any, index: number) => (
               <div key={index} className="p-4 bg-gray-800 rounded-lg border border-gray-700">
                 <div className="flex justify-between items-center mb-3">
                   <Button
