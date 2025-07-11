@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -32,7 +32,8 @@ import {
   Trophy,
   Target,
   Edit3,
-  Upload
+  Upload,
+  Plus
 } from 'lucide-react';
 import { ColorPicker } from '@/components/ui/color-picker';
 
@@ -61,7 +62,15 @@ const VisualLandingPageEditor = ({
         { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'zap' }
       ]
     },
-    about: { title: 'אודותינו', description: 'אנחנו חברה מובילה בתחום' }
+    about: { title: 'אודותינו', description: 'אנחנו חברה מובילה בתחום' },
+    services: {
+      title: 'השירותים שלנו',
+      subtitle: 'פתרונות מקצועיים המותאמים לצרכים שלכם',
+      items: [
+        { title: 'שירות 1', description: 'תיאור השירות הראשון', icon: 'settings' },
+        { title: 'שירות 2', description: 'תיאור השירות השני', icon: 'globe' }
+      ]
+    }
   });
   
   const [pageStyles, setPageStyles] = useState({
@@ -86,41 +95,58 @@ const VisualLandingPageEditor = ({
   const [sectionStyles, setSectionStyles] = useState({
     hero: {
       background: 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)',
+      backgroundType: 'gradient',
       textAlign: 'center',
       padding: 'large'
     },
     features: {
       background: '#f8fafc',
+      backgroundType: 'solid',
       layout: 'grid',
-      columns: 3
+      columns: 3,
+      cardBackground: '#ffffff',
+      cardBorder: '#e2e8f0',
+      cardText: '#1f2937'
     },
     about: {
       background: '#ffffff',
+      backgroundType: 'solid',
       layout: 'split',
       alignment: 'left'
     },
     services: {
       background: '#f8fafc',
+      backgroundType: 'solid',
       layout: 'grid',
-      columns: 2
+      columns: 2,
+      cardBackground: '#ffffff',
+      cardBorder: '#e2e8f0',
+      cardText: '#1f2937'
     },
     testimonials: {
       background: '#ffffff',
+      backgroundType: 'solid',
       layout: 'carousel',
       style: 'cards'
     },
     faq: {
       background: '#f8fafc',
+      backgroundType: 'solid',
       layout: 'accordion',
       style: 'clean'
     },
     pricing: {
       background: '#ffffff',
+      backgroundType: 'solid',
       layout: 'grid',
-      style: 'modern'
+      style: 'modern',
+      cardBackground: '#ffffff',
+      cardBorder: '#e2e8f0',
+      cardText: '#1f2937'
     },
     contact: {
       background: '#3b82f6',
+      backgroundType: 'solid',
       layout: 'split',
       style: 'modern'
     }
@@ -131,6 +157,28 @@ const VisualLandingPageEditor = ({
     { id: 'gradient', name: 'גרדיאנט', preview: 'bg-gradient-to-r from-blue-500 to-purple-600' },
     { id: 'pattern', name: 'דוגמה', preview: 'bg-blue-500' },
     { id: 'image', name: 'תמונה', preview: 'bg-gray-200' }
+  ];
+
+  const gradientOptions = [
+    { id: 'blue-purple', name: 'כחול-סגול', gradient: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)' },
+    { id: 'pink-orange', name: 'ורוד-כתום', gradient: 'linear-gradient(135deg, #ec4899 0%, #f97316 100%)' },
+    { id: 'green-blue', name: 'ירוק-כחול', gradient: 'linear-gradient(135deg, #10b981 0%, #3b82f6 100%)' },
+    { id: 'purple-pink', name: 'סגול-ורוד', gradient: 'linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)' },
+    { id: 'dark-blue', name: 'כחול כהה', gradient: 'linear-gradient(135deg, #1e40af 0%, #0f172a 100%)' },
+    { id: 'sunset', name: 'שקיעה', gradient: 'linear-gradient(135deg, #f59e0b 0%, #ef4444 100%)' }
+  ];
+
+  const effectOptions = [
+    { id: 'floating-shapes', name: 'צורות צפות', icon: Circle },
+    { id: 'particles', name: 'חלקיקים', icon: Sparkles },
+    { id: 'waves', name: 'גלים', icon: Layers },
+    { id: 'dots-pattern', name: 'דוגמת נקודות', icon: Settings },
+    { id: 'geometric-shapes', name: 'צורות גיאומטריות', icon: Square },
+    { id: 'gradient-overlay', name: 'שכבת גרדיאנט', icon: Palette },
+    { id: 'light-rays', name: 'קרני אור', icon: Zap },
+    { id: 'blur-circles', name: 'עיגולים מטושטשים', icon: Target },
+    { id: 'grid-lines', name: 'קווי רשת', icon: Layout },
+    { id: 'aurora', name: 'זוהר צפוני', icon: Star }
   ];
 
   const buttonStyles = [
@@ -182,18 +230,27 @@ const VisualLandingPageEditor = ({
     }));
   };
 
+  const addNewFeature = () => {
+    const newFeature = { title: 'תכונה חדשה', description: 'תיאור התכונה', icon: 'star' };
+    const newItems = [...(editableContent.features?.items || []), newFeature];
+    updateContent('features', 'items', newItems);
+  };
+
+  const addNewService = () => {
+    const newService = { title: 'שירות חדש', description: 'תיאור השירות', icon: 'settings' };
+    const newItems = [...(editableContent.services?.items || []), newService];
+    updateContent('services', 'items', newItems);
+  };
+
   const handleSave = () => {
-    // TODO: Save to database/local storage
     console.log('Saving page with styles:', { pageStyles, sectionStyles });
   };
 
   const handleDownload = () => {
-    // TODO: Generate and download HTML
     console.log('Downloading page...');
   };
 
   const handlePreview = () => {
-    // TODO: Open preview modal
     console.log('Opening preview...');
   };
 
@@ -231,11 +288,12 @@ const VisualLandingPageEditor = ({
               </div>
 
                 <Tabs defaultValue="content" className="w-full">
-                <TabsList className="grid w-full grid-cols-4">
+                <TabsList className="grid w-full grid-cols-5">
                   <TabsTrigger value="content">תוכן</TabsTrigger>
                   <TabsTrigger value="colors">צבעים</TabsTrigger>
                   <TabsTrigger value="layout">פריסה</TabsTrigger>
                   <TabsTrigger value="style">סגנון</TabsTrigger>
+                  <TabsTrigger value="effects">אפקטים</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="content" className="space-y-4">
@@ -282,6 +340,22 @@ const VisualLandingPageEditor = ({
                               placeholder="טקסט כפתור משני"
                             />
                           </div>
+                          <div>
+                            <Label className="text-xs">אייקוני כפתורים</Label>
+                            <div className="grid grid-cols-5 gap-1 mt-1">
+                              {iconOptions.map((iconOpt) => (
+                                <Button
+                                  key={iconOpt.id}
+                                  variant={editableContent?.hero?.buttonIcon === iconOpt.id ? "default" : "outline"}
+                                  size="sm"
+                                  className="p-2"
+                                  onClick={() => updateContent('hero', 'buttonIcon', iconOpt.id)}
+                                >
+                                  <iconOpt.icon className="h-3 w-3" />
+                                </Button>
+                              ))}
+                            </div>
+                          </div>
                         </>
                       )}
 
@@ -304,11 +378,42 @@ const VisualLandingPageEditor = ({
                               rows={4}
                             />
                           </div>
+                          <div>
+                            <Label className="text-xs">טקסט כפתור</Label>
+                            <Input
+                              value={editableContent?.about?.buttonText || ''}
+                              onChange={(e) => updateContent('about', 'buttonText', e.target.value)}
+                              placeholder="קרא עוד"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">אייקון כפתור</Label>
+                            <div className="grid grid-cols-5 gap-1 mt-1">
+                              {iconOptions.map((iconOpt) => (
+                                <Button
+                                  key={iconOpt.id}
+                                  variant={editableContent?.about?.buttonIcon === iconOpt.id ? "default" : "outline"}
+                                  size="sm"
+                                  className="p-2"
+                                  onClick={() => updateContent('about', 'buttonIcon', iconOpt.id)}
+                                >
+                                  <iconOpt.icon className="h-3 w-3" />
+                                </Button>
+                              ))}
+                            </div>
+                          </div>
                         </>
                       )}
 
                       {activeSection === 'features' && editableContent?.features?.items && (
                         <div className="space-y-3">
+                          <div className="flex justify-between items-center">
+                            <Label className="text-xs">תכונות</Label>
+                            <Button size="sm" variant="outline" onClick={addNewFeature}>
+                              <Plus className="h-3 w-3 mr-1" />
+                              הוסף תכונה
+                            </Button>
+                          </div>
                           {editableContent.features.items.map((item, index) => (
                             <div key={index} className="p-3 border rounded-lg space-y-2">
                               <Label className="text-xs">תכונה {index + 1}</Label>
@@ -356,7 +461,63 @@ const VisualLandingPageEditor = ({
                         </div>
                       )}
 
-                      {(activeSection === 'services' || activeSection === 'testimonials' || activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
+                      {activeSection === 'services' && (
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-center">
+                            <Label className="text-xs">שירותים</Label>
+                            <Button size="sm" variant="outline" onClick={addNewService}>
+                              <Plus className="h-3 w-3 mr-1" />
+                              הוסף שירות
+                            </Button>
+                          </div>
+                          {(editableContent?.services?.items || []).map((item, index) => (
+                            <div key={index} className="p-3 border rounded-lg space-y-2">
+                              <Label className="text-xs">שירות {index + 1}</Label>
+                              <Input
+                                value={item.title || ''}
+                                onChange={(e) => {
+                                  const newItems = [...(editableContent.services?.items || [])];
+                                  newItems[index] = { ...item, title: e.target.value };
+                                  updateContent('services', 'items', newItems);
+                                }}
+                                placeholder="כותרת השירות"
+                              />
+                              <Textarea
+                                value={item.description || ''}
+                                onChange={(e) => {
+                                  const newItems = [...(editableContent.services?.items || [])];
+                                  newItems[index] = { ...item, description: e.target.value };
+                                  updateContent('services', 'items', newItems);
+                                }}
+                                placeholder="תיאור השירות"
+                                rows={2}
+                              />
+                              <div>
+                                <Label className="text-xs">אייקון</Label>
+                                <div className="grid grid-cols-5 gap-1 mt-1">
+                                  {iconOptions.map((iconOpt) => (
+                                    <Button
+                                      key={iconOpt.id}
+                                      variant={item.icon === iconOpt.id ? "default" : "outline"}
+                                      size="sm"
+                                      className="p-2"
+                                      onClick={() => {
+                                        const newItems = [...(editableContent.services?.items || [])];
+                                        newItems[index] = { ...item, icon: iconOpt.id };
+                                        updateContent('services', 'items', newItems);
+                                      }}
+                                    >
+                                      <iconOpt.icon className="h-3 w-3" />
+                                    </Button>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {(activeSection === 'testimonials' || activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
                         <div className="text-center py-8 text-muted-foreground">
                           <Type className="h-8 w-8 mx-auto mb-2" />
                           <p>עריכת תוכן עבור סקשן {sections.find(s => s.id === activeSection)?.name}</p>
@@ -494,7 +655,9 @@ const VisualLandingPageEditor = ({
                                 } else if (bg.id === 'solid') {
                                   updateSectionStyle(activeSection, 'background', '#ffffff');
                                 } else if (bg.id === 'pattern') {
-                                  updateSectionStyle(activeSection, 'background', '#f8fafc');
+                                  updateSectionStyle(activeSection, 'background', 'repeating-linear-gradient(45deg, #f8fafc 0px, #f8fafc 10px, #e2e8f0 10px, #e2e8f0 20px)');
+                                } else if (bg.id === 'image') {
+                                  updateSectionStyle(activeSection, 'background', 'url("data:image/svg+xml,%3csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3e%3cg fill=\'none\' fill-rule=\'evenodd\'%3e%3cg fill=\'%239C92AC\' fill-opacity=\'0.1\'%3e%3ccircle cx=\'30\' cy=\'30\' r=\'4\'/%3e%3c/g%3e%3c/g%3e%3c/svg%3e") #ffffff');
                                 }
                                 updateSectionStyle(activeSection, 'backgroundType', bg.id);
                               }}
@@ -515,6 +678,27 @@ const VisualLandingPageEditor = ({
                           </div>
                         )}
                         
+                        {sectionStyles[activeSection]?.backgroundType === 'gradient' && (
+                          <div>
+                            <Label className="text-xs">בחר גרדיאנט</Label>
+                            <div className="grid grid-cols-2 gap-2 mt-2">
+                              {gradientOptions.map((grad) => (
+                                <div
+                                  key={grad.id}
+                                  className="p-2 border rounded-lg cursor-pointer transition-all hover:scale-105"
+                                  onClick={() => updateSectionStyle(activeSection, 'background', grad.gradient)}
+                                >
+                                  <div 
+                                    className="h-6 rounded mb-1" 
+                                    style={{ background: grad.gradient }}
+                                  ></div>
+                                  <div className="text-xs text-center">{grad.name}</div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        
                         {sectionStyles[activeSection]?.backgroundType === 'image' && (
                           <div>
                             <Label className="text-xs">העלה תמונת רקע</Label>
@@ -524,6 +708,38 @@ const VisualLandingPageEditor = ({
                             </div>
                           </div>
                         )}
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Card Colors */}
+                  {(activeSection === 'features' || activeSection === 'services' || activeSection === 'pricing') && (
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="text-sm">צבעי כרטיסיות</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div>
+                          <Label className="text-xs">צבע רקע כרטיסיות</Label>
+                          <ColorPicker
+                            color={sectionStyles[activeSection]?.cardBackground || '#ffffff'}
+                            onChange={(color) => updateSectionStyle(activeSection, 'cardBackground', color)}
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-xs">צבע גבול כרטיסיות</Label>
+                          <ColorPicker
+                            color={sectionStyles[activeSection]?.cardBorder || '#e2e8f0'}
+                            onChange={(color) => updateSectionStyle(activeSection, 'cardBorder', color)}
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-xs">צבע טקסט כרטיסיות</Label>
+                          <ColorPicker
+                            color={sectionStyles[activeSection]?.cardText || '#1f2937'}
+                            onChange={(color) => updateSectionStyle(activeSection, 'cardText', color)}
+                          />
+                        </div>
                       </CardContent>
                     </Card>
                   )}
@@ -566,8 +782,8 @@ const VisualLandingPageEditor = ({
                             </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="center">מרכז</SelectItem>
-                              <SelectItem value="right">ימין</SelectItem>
                               <SelectItem value="left">שמאל</SelectItem>
+                              <SelectItem value="right">ימין</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -581,45 +797,60 @@ const VisualLandingPageEditor = ({
                     <CardHeader>
                       <CardTitle className="text-sm">סגנון כפתורים</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="space-y-4">
                       <div className="grid grid-cols-2 gap-2">
                         {buttonStyles.map((style) => (
                           <div
                             key={style.id}
-                            className={`p-3 border rounded-lg cursor-pointer transition-all ${
-                              pageStyles.buttonStyle === style.id ? 'ring-2 ring-primary' : ''
+                            className={`p-3 rounded-lg border cursor-pointer transition-all ${
+                              pageStyles.buttonStyle === style.id 
+                                ? 'ring-2 ring-primary' 
+                                : ''
                             }`}
                             onClick={() => updatePageStyle('buttonStyle', style.id)}
                           >
-                            <div className={`h-8 bg-primary text-primary-foreground flex items-center justify-center text-xs ${style.class}`}>
-                              כפתור
-                            </div>
-                            <div className="text-xs text-center mt-2">{style.name}</div>
+                            <div className={`h-8 bg-primary ${style.class} mb-2`}></div>
+                            <div className="text-xs text-center">{style.name}</div>
                           </div>
                         ))}
                       </div>
                     </CardContent>
                   </Card>
+                </TabsContent>
 
+                <TabsContent value="effects" className="space-y-4">
                   <Card>
                     <CardHeader>
-                      <CardTitle className="text-sm">פונט</CardTitle>
+                      <CardTitle className="text-sm">אפקטים ואלמנטים</CardTitle>
                     </CardHeader>
-                    <CardContent>
-                      <Select 
-                        value={pageStyles.fontFamily}
-                        onValueChange={(value) => updatePageStyle('fontFamily', value)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="modern">מודרני</SelectItem>
-                          <SelectItem value="classic">קלאסי</SelectItem>
-                          <SelectItem value="elegant">אלגנטי</SelectItem>
-                          <SelectItem value="bold">נועז</SelectItem>
-                        </SelectContent>
-                      </Select>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-2 gap-2">
+                        {effectOptions.map((effect) => (
+                          <div
+                            key={effect.id}
+                            className={`p-3 border rounded-lg cursor-pointer transition-all hover:scale-105 ${
+                              sectionStyles[activeSection]?.effect === effect.id 
+                                ? 'ring-2 ring-primary bg-primary/5' 
+                                : ''
+                            }`}
+                            onClick={() => {
+                              if (sectionStyles[activeSection]?.effect === effect.id) {
+                                updateSectionStyle(activeSection, 'effect', '');
+                              } else {
+                                updateSectionStyle(activeSection, 'effect', effect.id);
+                              }
+                            }}
+                          >
+                            <div className="flex flex-col items-center">
+                              <effect.icon className="h-6 w-6 mb-2 text-primary" />
+                              <div className="text-xs text-center">{effect.name}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="text-xs text-muted-foreground text-center">
+                        ניתן לבחור אפקט אחד לכל סקשן
+                      </div>
                     </CardContent>
                   </Card>
                 </TabsContent>
@@ -685,13 +916,24 @@ const VisualLandingPageEditor = ({
                       >
                         {editableContent?.hero?.subtitle || 'פתרונות מקצועיים ואמינים ברמה הגבוהה ביותר'}
                       </p>
-                      <div className="flex gap-4 justify-center">
+                      <div 
+                        className={`flex gap-4 ${
+                          sectionStyles.hero?.textAlign === 'right' ? 'justify-end' :
+                          sectionStyles.hero?.textAlign === 'left' ? 'justify-start' :
+                          'justify-center'
+                        }`}
+                      >
                         <Button 
                           size="lg"
                           className={`${pageStyles.buttonStyle === 'pill' ? 'rounded-full' : 
                                      pageStyles.buttonStyle === 'square' ? 'rounded-none' :
                                      pageStyles.buttonStyle === 'modern' ? 'rounded-xl' : 'rounded-lg'}`}
                         >
+                          {editableContent?.hero?.buttonIcon && iconOptions.find(i => i.id === editableContent.hero.buttonIcon) && (
+                            <div className="mr-2">
+                              {React.createElement(iconOptions.find(i => i.id === editableContent.hero.buttonIcon)!.icon, { className: "h-4 w-4" })}
+                            </div>
+                          )}
                           {editableContent?.hero?.button1Text || 'התחל עכשיו'}
                         </Button>
                         <Button 
@@ -737,7 +979,15 @@ const VisualLandingPageEditor = ({
                       {(editableContent?.features?.items || []).map((feature, index) => {
                         const IconComponent = iconOptions.find(icon => icon.id === feature.icon)?.icon || Star;
                         return (
-                          <Card key={index} className="text-center p-6">
+                          <Card 
+                            key={index} 
+                            className="text-center p-6"
+                            style={{ 
+                              backgroundColor: sectionStyles.features?.cardBackground,
+                              borderColor: sectionStyles.features?.cardBorder,
+                              color: sectionStyles.features?.cardText
+                            }}
+                          >
                             <CardContent className="pt-4">
                               <div className="mb-4 flex justify-center">
                                 <div className="p-3 bg-primary/10 rounded-lg">
@@ -746,12 +996,12 @@ const VisualLandingPageEditor = ({
                               </div>
                               <h3 
                                 className="font-semibold text-lg mb-2"
-                                style={{ color: pageStyles.featuresTitleColor }}
+                                style={{ color: sectionStyles.features?.cardText }}
                               >
                                 {feature.title}
                               </h3>
                               <p 
-                                style={{ color: pageStyles.featuresTextColor }}
+                                style={{ color: sectionStyles.features?.cardText }}
                               >
                                 {feature.description}
                               </p>
@@ -778,19 +1028,24 @@ const VisualLandingPageEditor = ({
                             {editableContent?.about?.title || 'אודותינו'}
                           </h2>
                           <p 
-                            className="text-lg leading-relaxed"
+                            className="text-lg leading-relaxed mb-6"
                             style={{ color: pageStyles.aboutTextColor }}
                           >
                             {editableContent?.about?.description || 'אנחנו חברה מובילה בתחום עם ניסיון של שנים רבות. אנו מתמחים במתן פתרונות מקצועיים ואמינים ללקוחותינו.'}
                           </p>
                           <Button 
-                            className={`mt-6 ${
+                            className={`${
                               pageStyles.buttonStyle === 'pill' ? 'rounded-full' : 
                               pageStyles.buttonStyle === 'square' ? 'rounded-none' :
                               pageStyles.buttonStyle === 'modern' ? 'rounded-xl' : 'rounded-lg'
                             }`}
                           >
-                            קרא עוד
+                            {editableContent?.about?.buttonIcon && iconOptions.find(i => i.id === editableContent.about.buttonIcon) && (
+                              <div className="mr-2">
+                                {React.createElement(iconOptions.find(i => i.id === editableContent.about.buttonIcon)!.icon, { className: "h-4 w-4" })}
+                              </div>
+                            )}
+                            {editableContent?.about?.buttonText || 'קרא עוד'}
                           </Button>
                         </div>
                         <div className="bg-muted rounded-lg h-80 flex items-center justify-center">
@@ -812,192 +1067,58 @@ const VisualLandingPageEditor = ({
                     </div>
                     
                     <div className="grid grid-cols-2 gap-8">
-                      {[1,2,3,4].map((service) => (
-                        <Card key={service} className="p-6">
-                          <CardContent className="pt-4">
-                            <div className="flex items-start gap-4">
-                              <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0">
-                                <Settings className="h-6 w-6 text-primary" />
-                              </div>
-                              <div>
-                                <h3 className="font-semibold text-lg mb-2">שירות {service}</h3>
-                                <p className="text-muted-foreground">תיאור מפורט של השירות ויתרונותיו עבור הלקוח.</p>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {activeSection === 'testimonials' && (
-                  <div 
-                    className="p-12"
-                    style={{ background: sectionStyles.testimonials?.background }}
-                  >
-                    <div className="text-center mb-12">
-                      <h2 className="text-4xl font-bold mb-4">מה הלקוחות אומרים</h2>
-                      <p className="text-xl text-muted-foreground">המלצות מלקוחות מרוצים</p>
-                    </div>
-                    
-                    <div className="grid grid-cols-3 gap-8">
-                      {[1,2,3].map((testimonial) => (
-                        <Card key={testimonial} className="p-6">
-                          <CardContent className="pt-4">
-                            <div className="text-center">
-                              <div className="mb-4">
-                                <div className="w-16 h-16 bg-muted rounded-full mx-auto flex items-center justify-center">
-                                  <Users className="h-8 w-8 text-muted-foreground" />
+                      {(editableContent?.services?.items || []).map((service, index) => {
+                        const IconComponent = iconOptions.find(icon => icon.id === service.icon)?.icon || Settings;
+                        return (
+                          <Card 
+                            key={index} 
+                            className="p-6"
+                            style={{ 
+                              backgroundColor: sectionStyles.services?.cardBackground,
+                              borderColor: sectionStyles.services?.cardBorder
+                            }}
+                          >
+                            <CardContent className="pt-4">
+                              <div className="flex items-start gap-4">
+                                <div className="p-2 bg-primary/10 rounded-lg flex-shrink-0">
+                                  <IconComponent className="h-6 w-6 text-primary" />
+                                </div>
+                                <div>
+                                  <h3 
+                                    className="font-semibold text-lg mb-2"
+                                    style={{ color: sectionStyles.services?.cardText }}
+                                  >
+                                    {service.title || `שירות ${index + 1}`}
+                                  </h3>
+                                  <p 
+                                    style={{ color: sectionStyles.services?.cardText }}
+                                  >
+                                    {service.description || 'תיאור מפורט של השירות ויתרונותיו עבור הלקוח.'}
+                                  </p>
                                 </div>
                               </div>
-                              <p className="text-muted-foreground mb-4">"שירות מעולה ומקצועי. ממליץ בחום!"</p>
-                              <div>
-                                <p className="font-semibold">לקוח {testimonial}</p>
-                                <p className="text-sm text-muted-foreground">חברה {testimonial}</p>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {activeSection === 'faq' && (
-                  <div 
-                    className="p-12"
-                    style={{ background: sectionStyles.faq?.background }}
-                  >
-                    <div className="max-w-3xl mx-auto">
-                      <div className="text-center mb-12">
-                        <h2 className="text-4xl font-bold mb-4">שאלות נפוצות</h2>
-                        <p className="text-xl text-muted-foreground">תשובות לשאלות הנפוצות ביותר</p>
-                      </div>
-                      
-                      <div className="space-y-4">
-                        {[1,2,3,4].map((faq) => (
-                          <Card key={faq}>
-                            <CardContent className="p-6">
-                              <h3 className="font-semibold text-lg mb-2">שאלה נפוצה {faq}?</h3>
-                              <p className="text-muted-foreground">תשובה מפורטת לשאלה הנפוצה עם כל המידע הרלוונטי.</p>
                             </CardContent>
                           </Card>
-                        ))}
-                      </div>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
 
-                {activeSection === 'pricing' && (
+                {/* Preview placeholders for other sections */}
+                {(activeSection === 'testimonials' || activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
                   <div 
-                    className="p-12"
-                    style={{ background: sectionStyles.pricing?.background }}
+                    className="p-12 min-h-[400px] flex items-center justify-center"
+                    style={{ background: sectionStyles[activeSection]?.background }}
                   >
-                    <div className="text-center mb-12">
-                      <h2 className="text-4xl font-bold mb-4">מחירים</h2>
-                      <p className="text-xl text-muted-foreground">בחר את החבילה המתאימה לך</p>
-                    </div>
-                    
-                    <div className="grid grid-cols-3 gap-8 max-w-5xl mx-auto">
-                      {['בסיסי', 'מקצועי', 'עסקי'].map((plan, index) => (
-                        <Card key={plan} className={`p-6 relative ${index === 1 ? 'ring-2 ring-primary' : ''}`}>
-                          {index === 1 && (
-                            <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                              הכי פופולרי
-                            </Badge>
-                          )}
-                          <CardContent className="pt-4 text-center">
-                            <h3 className="font-semibold text-xl mb-4">{plan}</h3>
-                            <div className="mb-6">
-                              <span className="text-4xl font-bold">₪{(index + 1) * 99}</span>
-                              <span className="text-muted-foreground">/חודש</span>
-                            </div>
-                            <ul className="space-y-2 mb-6">
-                              {[1,2,3].map((feature) => (
-                                <li key={feature} className="flex items-center justify-center">
-                                  <Star className="h-4 w-4 text-primary mr-2" />
-                                  תכונה {feature}
-                                </li>
-                              ))}
-                            </ul>
-                            <Button 
-                              className={`w-full ${
-                                pageStyles.buttonStyle === 'pill' ? 'rounded-full' : 
-                                pageStyles.buttonStyle === 'square' ? 'rounded-none' :
-                                pageStyles.buttonStyle === 'modern' ? 'rounded-xl' : 'rounded-lg'
-                              }`}
-                              variant={index === 1 ? "default" : "outline"}
-                            >
-                              בחר חבילה
-                            </Button>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {activeSection === 'contact' && (
-                  <div 
-                    className="p-12"
-                    style={{ background: sectionStyles.contact?.background }}
-                  >
-                    <div className="max-w-4xl mx-auto">
-                      <div className="text-center mb-12">
-                        <h2 className="text-4xl font-bold mb-4 text-white">צור קשר</h2>
-                        <p className="text-xl text-white/90">נשמח לשמוע ממך ולסייע בכל שאלה</p>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-12">
-                        <div className="space-y-6">
-                          <div className="flex items-center gap-4 text-white">
-                            <div className="p-3 bg-white/20 rounded-lg">
-                              <MousePointer className="h-6 w-6" />
-                            </div>
-                            <div>
-                              <h3 className="font-semibold">כתובת</h3>
-                              <p className="text-white/80">רחוב הדוגמה 123, תל אביב</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-4 text-white">
-                            <div className="p-3 bg-white/20 rounded-lg">
-                              <Circle className="h-6 w-6" />
-                            </div>
-                            <div>
-                              <h3 className="font-semibold">טלפון</h3>
-                              <p className="text-white/80">03-1234567</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-4 text-white">
-                            <div className="p-3 bg-white/20 rounded-lg">
-                              <Square className="h-6 w-6" />
-                            </div>
-                            <div>
-                              <h3 className="font-semibold">אימייל</h3>
-                              <p className="text-white/80">info@example.com</p>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <Card className="p-6">
-                          <CardContent className="pt-4 space-y-4">
-                            <Input placeholder="שם מלא" />
-                            <Input placeholder="אימייל" />
-                            <Input placeholder="נושא" />
-                            <Textarea placeholder="הודעה" rows={4} />
-                            <Button 
-                              className={`w-full ${
-                                pageStyles.buttonStyle === 'pill' ? 'rounded-full' : 
-                                pageStyles.buttonStyle === 'square' ? 'rounded-none' :
-                                pageStyles.buttonStyle === 'modern' ? 'rounded-xl' : 'rounded-lg'
-                              }`}
-                            >
-                              שלח הודעה
-                            </Button>
-                          </CardContent>
-                        </Card>
-                      </div>
+                    <div className="text-center">
+                      <div className="text-6xl mb-4">🚧</div>
+                      <h2 className="text-2xl font-bold mb-2">
+                        {sections.find(s => s.id === activeSection)?.name}
+                      </h2>
+                      <p className="text-muted-foreground">
+                        תצוגה מקדימה תתווסף בקרוב
+                      </p>
                     </div>
                   </div>
                 )}
