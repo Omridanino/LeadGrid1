@@ -1068,7 +1068,10 @@ const VisualLandingPageEditor = ({
                         className={`${buttonStyles.find(s => s.id === pageStyles.buttonStyle)?.class || 'rounded-lg'} bg-white text-blue-600 hover:bg-gray-100`}
                       >
                         {editableContent?.hero?.button1Icon && iconOptions.find(i => i.id === editableContent.hero.button1Icon) && (
-                          React.createElement(iconOptions.find(i => i.id === editableContent.hero.button1Icon)!.icon, { className: "h-4 w-4 mr-2" })
+                          (() => {
+                            const IconComponent = iconOptions.find(i => i.id === editableContent.hero.button1Icon)?.icon;
+                            return IconComponent ? <IconComponent className="h-4 w-4 mr-2" /> : null;
+                          })()
                         )}
                         {editableContent.hero.button1Text}
                       </Button>
@@ -1080,7 +1083,10 @@ const VisualLandingPageEditor = ({
                         className={`${buttonStyles.find(s => s.id === pageStyles.buttonStyle)?.class || 'rounded-lg'} border-white text-white hover:bg-white/10`}
                       >
                         {editableContent?.hero?.button2Icon && iconOptions.find(i => i.id === editableContent.hero.button2Icon) && (
-                          React.createElement(iconOptions.find(i => i.id === editableContent.hero.button2Icon)!.icon, { className: "h-4 w-4 mr-2" })
+                          (() => {
+                            const IconComponent = iconOptions.find(i => i.id === editableContent.hero.button2Icon)?.icon;
+                            return IconComponent ? <IconComponent className="h-4 w-4 mr-2" /> : null;
+                          })()
                         )}
                         {editableContent.hero.button2Text}
                       </Button>
@@ -1135,19 +1141,39 @@ const VisualLandingPageEditor = ({
               {/* About Section Preview */}
               {activeSection === 'about' && (
                 <div className="p-8 rounded-lg" style={{ background: sectionStyles.about?.background }}>
-                  <div className="max-w-3xl mx-auto text-center">
-                    <h2 
-                      className="text-3xl font-bold mb-6"
-                      style={{ color: pageStyles.aboutTitleColor }}
-                    >
-                      {editableContent?.about?.title || 'אודותינו'}
-                    </h2>
-                    <p 
-                      className="text-lg leading-relaxed"
-                      style={{ color: pageStyles.aboutTextColor }}
-                    >
-                      {editableContent?.about?.description || 'אנחנו חברה מובילה בתחום עם ניסיון רב שנים בפיתוח פתרונות חדשניים ומתקדמים עבור לקוחותינו.'}
-                    </p>
+                  <div className="max-w-6xl mx-auto">
+                    <div className="grid md:grid-cols-2 gap-12 items-center">
+                      <div>
+                        <h2 
+                          className="text-3xl font-bold mb-4"
+                          style={{ color: pageStyles.aboutTitleColor }}
+                        >
+                          {editableContent?.about?.title || 'אודותינו'}
+                        </h2>
+                        <p className="text-xl text-blue-600 mb-6">
+                          {(editableContent?.about as any)?.subtitle || 'כותרת משנה'}
+                        </p>
+                        <p 
+                          className="mb-8 leading-relaxed"
+                          style={{ color: pageStyles.aboutTextColor }}
+                        >
+                          {editableContent?.about?.description || 'אנחנו חברה מובילה בתחום עם ניסיון רב שנים בפיתוח פתרונות חדשניים ומתקדמים עבור לקוחותינו.'}
+                        </p>
+                        {(editableContent?.about as any)?.stats && (
+                          <div className="grid grid-cols-3 gap-6">
+                            {(editableContent.about as any).stats.map((stat: any, index: number) => (
+                              <div key={index} className="text-center">
+                                <div className="text-2xl font-bold text-blue-600">{stat.number}</div>
+                                <div className="text-sm text-gray-600">{stat.label}</div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      <div className="bg-gray-100 rounded-lg h-64 flex items-center justify-center">
+                        <span className="text-gray-500">📸 {(editableContent?.about as any)?.image || 'תמונה'}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
