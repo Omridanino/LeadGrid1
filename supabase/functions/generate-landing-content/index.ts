@@ -75,7 +75,7 @@ serve(async (req) => {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer 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`,
+        'Authorization': `Bearer ${Deno.env.get('New key')}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
