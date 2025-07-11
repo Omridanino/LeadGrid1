@@ -50,13 +50,32 @@ const VisualLandingPageEditor = ({
   formData 
 }: VisualLandingPageEditorProps) => {
   const [activeSection, setActiveSection] = useState('hero');
-  const [editableContent, setEditableContent] = useState(generatedContent || {});
+  const [editableContent, setEditableContent] = useState(generatedContent || {
+    hero: { title: 'כותרת ראשית', subtitle: 'כותרת משנה', button1Text: 'התחל עכשיו', button2Text: 'למד עוד' },
+    features: { 
+      title: 'התכונות שלנו', 
+      subtitle: 'גלה את היתרונות הייחודיים שלנו',
+      items: [
+        { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star' },
+        { title: 'תכונה 2', description: 'תיאור התכונה השנייה', icon: 'heart' },
+        { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'zap' }
+      ]
+    },
+    about: { title: 'אודותינו', description: 'אנחנו חברה מובילה בתחום' }
+  });
+  
   const [pageStyles, setPageStyles] = useState({
     primaryColor: '#3b82f6',
     secondaryColor: '#6b7280',
     accentColor: '#f59e0b',
     backgroundColor: '#ffffff',
     textColor: '#1f2937',
+    heroTitleColor: '#ffffff',
+    heroSubtitleColor: '#ffffff',
+    featuresTitleColor: '#1f2937',
+    featuresTextColor: '#6b7280',
+    aboutTitleColor: '#1f2937',
+    aboutTextColor: '#6b7280',
     heroBackground: 'gradient',
     heroBackgroundImage: '',
     buttonStyle: 'rounded',
@@ -388,29 +407,123 @@ const VisualLandingPageEditor = ({
                     </CardContent>
                   </Card>
 
+                  {/* Section Text Colors */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-sm">צבעי טקסט - {sections.find(s => s.id === activeSection)?.name}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {activeSection === 'hero' && (
+                        <>
+                          <div>
+                            <Label className="text-xs">צבע כותרת ראשית</Label>
+                            <ColorPicker
+                              color={pageStyles.heroTitleColor}
+                              onChange={(color) => updatePageStyle('heroTitleColor', color)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">צבע כותרת משנה</Label>
+                            <ColorPicker
+                              color={pageStyles.heroSubtitleColor}
+                              onChange={(color) => updatePageStyle('heroSubtitleColor', color)}
+                            />
+                          </div>
+                        </>
+                      )}
+                      
+                      {activeSection === 'features' && (
+                        <>
+                          <div>
+                            <Label className="text-xs">צבע כותרת</Label>
+                            <ColorPicker
+                              color={pageStyles.featuresTitleColor}
+                              onChange={(color) => updatePageStyle('featuresTitleColor', color)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">צבע טקסט</Label>
+                            <ColorPicker
+                              color={pageStyles.featuresTextColor}
+                              onChange={(color) => updatePageStyle('featuresTextColor', color)}
+                            />
+                          </div>
+                        </>
+                      )}
+                      
+                      {activeSection === 'about' && (
+                        <>
+                          <div>
+                            <Label className="text-xs">צבע כותרת</Label>
+                            <ColorPicker
+                              color={pageStyles.aboutTitleColor}
+                              onChange={(color) => updatePageStyle('aboutTitleColor', color)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">צבע טקסט</Label>
+                            <ColorPicker
+                              color={pageStyles.aboutTextColor}
+                              onChange={(color) => updatePageStyle('aboutTextColor', color)}
+                            />
+                          </div>
+                        </>
+                      )}
+                    </CardContent>
+                  </Card>
+
                   {/* Section Background */}
                   {activeSection && (
                     <Card>
                       <CardHeader>
                         <CardTitle className="text-sm">רקע הסקשן</CardTitle>
                       </CardHeader>
-                      <CardContent>
+                      <CardContent className="space-y-4">
                         <div className="grid grid-cols-2 gap-2">
                           {backgroundOptions.map((bg) => (
                             <div
                               key={bg.id}
                               className={`p-3 rounded-lg border cursor-pointer transition-all ${
-                                sectionStyles[activeSection]?.background?.includes(bg.id) 
+                                sectionStyles[activeSection]?.backgroundType === bg.id 
                                   ? 'ring-2 ring-primary' 
                                   : ''
                               }`}
-                              onClick={() => updateSectionStyle(activeSection, 'background', bg.id)}
+                              onClick={() => {
+                                if (bg.id === 'gradient') {
+                                  updateSectionStyle(activeSection, 'background', 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)');
+                                } else if (bg.id === 'solid') {
+                                  updateSectionStyle(activeSection, 'background', '#ffffff');
+                                } else if (bg.id === 'pattern') {
+                                  updateSectionStyle(activeSection, 'background', '#f8fafc');
+                                }
+                                updateSectionStyle(activeSection, 'backgroundType', bg.id);
+                              }}
                             >
                               <div className={`h-8 rounded ${bg.preview} mb-2`}></div>
                               <div className="text-xs text-center">{bg.name}</div>
                             </div>
                           ))}
                         </div>
+                        
+                        {sectionStyles[activeSection]?.backgroundType === 'solid' && (
+                          <div>
+                            <Label className="text-xs">צבע רקע</Label>
+                            <ColorPicker
+                              color={typeof sectionStyles[activeSection]?.background === 'string' ? sectionStyles[activeSection]?.background : '#ffffff'}
+                              onChange={(color) => updateSectionStyle(activeSection, 'background', color)}
+                            />
+                          </div>
+                        )}
+                        
+                        {sectionStyles[activeSection]?.backgroundType === 'image' && (
+                          <div>
+                            <Label className="text-xs">העלה תמונת רקע</Label>
+                            <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
+                              <Upload className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
+                              <p className="text-sm text-muted-foreground">גרור תמונה או לחץ להעלאה</p>
+                            </div>
+                          </div>
+                        )}
                       </CardContent>
                     </Card>
                   )}
@@ -556,14 +669,20 @@ const VisualLandingPageEditor = ({
                       textAlign: sectionStyles.hero?.textAlign as any
                     }}
                   >
-                    <div className="space-y-6 text-white">
+                    <div className="space-y-6">
                       <Badge className="bg-white/20 text-white">
                         {editableContent?.hero?.badge || '✨ חדשנות ומצוינות'}
                       </Badge>
-                      <h1 className="text-5xl font-bold">
-                        {editableContent?.hero?.title || `${formData.businessName} - המובילים בתחום`}
+                      <h1 
+                        className="text-5xl font-bold"
+                        style={{ color: pageStyles.heroTitleColor }}
+                      >
+                        {editableContent?.hero?.title || `${formData?.businessName || 'העסק שלנו'} - המובילים בתחום`}
                       </h1>
-                      <p className="text-xl text-white/90 max-w-2xl">
+                      <p 
+                        className="text-xl max-w-2xl"
+                        style={{ color: pageStyles.heroSubtitleColor }}
+                      >
                         {editableContent?.hero?.subtitle || 'פתרונות מקצועיים ואמינים ברמה הגבוהה ביותר'}
                       </p>
                       <div className="flex gap-4 justify-center">
@@ -597,10 +716,16 @@ const VisualLandingPageEditor = ({
                     style={{ background: sectionStyles.features?.background }}
                   >
                     <div className="text-center mb-12">
-                      <h2 className="text-4xl font-bold mb-4">
+                      <h2 
+                        className="text-4xl font-bold mb-4"
+                        style={{ color: pageStyles.featuresTitleColor }}
+                      >
                         {editableContent?.features?.title || 'התכונות שלנו'}
                       </h2>
-                      <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                      <p 
+                        className="text-xl max-w-2xl mx-auto"
+                        style={{ color: pageStyles.featuresTextColor }}
+                      >
                         {editableContent?.features?.subtitle || 'גלה את היתרונות הייחודיים שלנו'}
                       </p>
                     </div>
@@ -609,7 +734,7 @@ const VisualLandingPageEditor = ({
                       sectionStyles.features?.columns === 4 ? 'grid-cols-4' :
                       sectionStyles.features?.columns === 3 ? 'grid-cols-3' : 'grid-cols-2'
                     }`}>
-                      {editableContent?.features?.items?.map((feature, index) => {
+                      {(editableContent?.features?.items || []).map((feature, index) => {
                         const IconComponent = iconOptions.find(icon => icon.id === feature.icon)?.icon || Star;
                         return (
                           <Card key={index} className="text-center p-6">
@@ -619,8 +744,17 @@ const VisualLandingPageEditor = ({
                                   <IconComponent className="h-8 w-8 text-primary" />
                                 </div>
                               </div>
-                              <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
-                              <p className="text-muted-foreground">{feature.description}</p>
+                              <h3 
+                                className="font-semibold text-lg mb-2"
+                                style={{ color: pageStyles.featuresTitleColor }}
+                              >
+                                {feature.title}
+                              </h3>
+                              <p 
+                                style={{ color: pageStyles.featuresTextColor }}
+                              >
+                                {feature.description}
+                              </p>
                             </CardContent>
                           </Card>
                         );
@@ -637,10 +771,16 @@ const VisualLandingPageEditor = ({
                     <div className="max-w-4xl mx-auto">
                       <div className="grid grid-cols-2 gap-12 items-center">
                         <div>
-                          <h2 className="text-4xl font-bold mb-6">
+                          <h2 
+                            className="text-4xl font-bold mb-6"
+                            style={{ color: pageStyles.aboutTitleColor }}
+                          >
                             {editableContent?.about?.title || 'אודותינו'}
                           </h2>
-                          <p className="text-lg text-muted-foreground leading-relaxed">
+                          <p 
+                            className="text-lg leading-relaxed"
+                            style={{ color: pageStyles.aboutTextColor }}
+                          >
                             {editableContent?.about?.description || 'אנחנו חברה מובילה בתחום עם ניסיון של שנים רבות. אנו מתמחים במתן פתרונות מקצועיים ואמינים ללקוחותינו.'}
                           </p>
                           <Button 
