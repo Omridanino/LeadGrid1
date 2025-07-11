@@ -1,13 +1,10 @@
 // Complete HTML Generator - Creates exact HTML from template preview with premium support
 export const generatePageHTML = (templateData: any) => {
   const template = templateData;
+  // More robust premium detection
+  const isPremium = template.category.includes('פרימיום') || template.id.includes('-pro');
   
-  // Safe premium detection with null checks
-  const isPremium = (template?.category && template.category.includes('פרימיום')) || 
-                   (template?.id && template.id.includes('-pro')) || 
-                   false;
-  
-  console.log('Template ID:', template?.id || 'undefined', 'isPremium:', isPremium);
+  console.log('Template ID:', template.id, 'isPremium:', isPremium);
 
   // Helper functions for new content sections - moved to top
   const generateGallerySection = (gallery: any, styles: any, isPremium: boolean) => {
