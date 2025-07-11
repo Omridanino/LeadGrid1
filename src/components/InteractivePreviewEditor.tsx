@@ -43,14 +43,32 @@ const InteractivePreviewEditor = ({
   const [editingElement, setEditingElement] = useState<string | null>(null);
   const [editingText, setEditingText] = useState('');
   const [showStylePanel, setShowStylePanel] = useState(false);
-  const [pageContent, setPageContent] = useState(() => {
-    // אם יש תבנית נבחרת, השתמש בה
-    if (formData?.selectedTemplate) {
-      return formData.selectedTemplate;
-    }
-    // אחרת השתמש בתוכן שנוצר
-    return generatedContent || {};
+  const [pageContent, setPageContent] = useState<any>({
+    hero: { title: 'כותרת ראשית', subtitle: 'כותרת משנה' }
   });
+
+  // Update pageContent when formData changes
+  useEffect(() => {
+    console.log("InteractivePreviewEditor - formData changed:", formData);
+    if (formData?.selectedTemplate) {
+      console.log("Setting pageContent from selectedTemplate:", formData.selectedTemplate);
+      setPageContent(formData.selectedTemplate);
+    } else if (generatedContent) {
+      console.log("Setting pageContent from generatedContent:", generatedContent);
+      setPageContent(generatedContent);
+    } else {
+      console.log("Using default content");
+      setPageContent({
+        hero: { 
+          title: 'כותרת ראשית', 
+          subtitle: 'כותרת משנה',
+          description: 'תיאור הדף',
+          button1Text: 'התחל עכשיו',
+          button2Text: 'למד עוד'
+        }
+      });
+    }
+  }, [formData, generatedContent]);
 
   const [pageStyles, setPageStyles] = useState({
     primaryColor: '#3b82f6',
