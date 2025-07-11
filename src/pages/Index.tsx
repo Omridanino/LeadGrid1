@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import Header from "@/components/Header";
-
+import SimpleHeroSection from "@/components/SimpleHeroSection";
 import ModernFeaturesSection from "@/components/ModernFeaturesSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import Footer from "@/components/Footer";
@@ -25,9 +25,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-black text-white md:text-right text-center" dir="rtl">
       <Header onStartQuestionnaire={handleOpenQuestionnaire} />
-      <div className="text-center py-20">
-        <h1 className="text-4xl font-bold">דף הבית</h1>
-      </div>
+      <SimpleHeroSection onStartQuestionnaire={handleOpenQuestionnaire} />
       <ModernFeaturesSection />
       <TestimonialsSection />
       <Footer />
