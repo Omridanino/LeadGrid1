@@ -54,7 +54,11 @@ const GeneratedLandingPage = () => {
 
   // Handle content updates from inline editor
   const handleContentUpdate = (newContent: any) => {
-    state.setContentWithHistory(newContent);
+    if (state.setContentWithHistory) {
+      state.setContentWithHistory(newContent);
+    } else {
+      state.setContent(newContent);
+    }
     setGeneratedContent(newContent);
     toast.success('השינויים נשמרו');
   };
@@ -96,7 +100,9 @@ const GeneratedLandingPage = () => {
                     size="sm"
                     variant="outline"
                     onClick={() => {
-                      state.saveToHistory(state.content);
+                      if (state.saveToHistory) {
+                        state.saveToHistory(state.content);
+                      }
                       toast.success('הדף נשמר');
                     }}
                   >
