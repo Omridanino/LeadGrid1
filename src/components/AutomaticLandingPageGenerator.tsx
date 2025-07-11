@@ -326,17 +326,13 @@ const AutomaticLandingPageGenerator = ({ isOpen, onClose }: AutomaticLandingPage
     );
   }
 
-  // Template editor functionality removed
-  if (isEditing && generatedTemplate) {
-    return (
-      <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center">
-        <div className="bg-card rounded-lg border w-full max-w-2xl p-8 text-center">
-          <h3 className="text-2xl font-bold mb-4">עורך התבניות זמנית לא זמין</h3>
-          <Button onClick={() => setIsEditing(false)}>חזור</Button>
-        </div>
-      </div>
-    );
-  }
+  return (
+    <AdvancedLandingPageGenerator 
+      isOpen={isOpen}
+      onClose={onClose}
+      formData={formData}
+    />
+  );
 
   return (
     <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center" dir="rtl">

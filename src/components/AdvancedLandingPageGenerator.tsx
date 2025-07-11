@@ -210,6 +210,8 @@ export const AdvancedLandingPageGenerator = ({
                     contactTextColor: "#6b7280"
                   }}
                   formData={formData}
+                  heroImage=""
+                  elements={[]}
                 />
               )}
             </div>
