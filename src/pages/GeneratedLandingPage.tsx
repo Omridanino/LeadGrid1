@@ -85,63 +85,47 @@ const GeneratedLandingPage = () => {
     typeof element === 'string' ? element : element.type || ''
   ).filter(Boolean) || [];
 
-  // If in edit mode, show InteractivePreviewEditor
-  if (isEditMode && state.formData?.selectedTemplate) {
+  // Always show InteractivePreviewEditor when formData is available
+  if (state.formData?.selectedTemplate) {
     return (
-      <div className="min-h-screen bg-black text-white relative" dir="rtl">
-        <InteractivePreviewEditor 
-          isOpen={true}
-          onClose={() => setIsEditMode(false)}
-          generatedContent={null}
-          formData={state.formData}
-          onSave={(updatedContent) => {
-            // Save changes to localStorage
-            const updatedFormData = {
-              ...state.formData,
-              selectedTemplate: {
-                ...state.formData.selectedTemplate,
-                ...updatedContent
-              }
-            };
-            localStorage.setItem('previewFormData', JSON.stringify(updatedFormData));
-            state.setFormData(updatedFormData);
-          }}
-          onDownload={() => {
-            // Handle download
-            import("@/utils/pageGenerator").then(({ generatePageHTML }) => {
-              const htmlContent = generatePageHTML(state.formData.selectedTemplate);
-              const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
-              const url = URL.createObjectURL(blob);
-              const link = document.createElement('a');
-              link.href = url;
-              link.download = `${state.formData.selectedTemplate.hero?.title?.replace(/[^a-zA-Z0-9\u0590-\u05FF]/g, '-') || 'landing-page'}.html`;
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-              URL.revokeObjectURL(url);
-            });
-          }}
-        />
-      </div>
+      <InteractivePreviewEditor 
+        isOpen={true}
+        onClose={() => window.close()}
+        generatedContent={null}
+        formData={state.formData}
+        onSave={(updatedContent) => {
+          // Save changes to localStorage
+          const updatedFormData = {
+            ...state.formData,
+            selectedTemplate: {
+              ...state.formData.selectedTemplate,
+              ...updatedContent
+            }
+          };
+          localStorage.setItem('previewFormData', JSON.stringify(updatedFormData));
+          state.setFormData(updatedFormData);
+        }}
+        onDownload={() => {
+          // Handle download
+          import("@/utils/pageGenerator").then(({ generatePageHTML }) => {
+            const htmlContent = generatePageHTML(state.formData.selectedTemplate);
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${state.formData.selectedTemplate.hero?.title?.replace(/[^a-zA-Z0-9\u0590-\u05FF]/g, '-') || 'landing-page'}.html`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+          });
+        }}
+      />
     );
   }
 
   return (
     <div className="min-h-screen bg-black text-white relative" dir="rtl">
-      {/* Edit Button - Only show if template is available and not already in edit mode */}
-      {state.formData?.selectedTemplate && !isEditMode && (
-        <div className="fixed top-4 left-4 z-50">
-          <Button 
-            onClick={() => setIsEditMode(true)}
-            className="bg-white/10 hover:bg-white/20 text-white border border-white/20"
-          >
-            <Edit className="h-4 w-4 mr-2" />
-            עריכה
-          </Button>
-        </div>
-      )}
-      
-      {/* Main Preview - Full Width */}
       <div className="w-full min-h-screen">
         <LandingPagePreview 
           content={state.content}
