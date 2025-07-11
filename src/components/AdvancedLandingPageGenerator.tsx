@@ -76,7 +76,12 @@ const AdvancedLandingPageGenerator = ({
   };
 
   const handlePreview = () => {
-    setIsPreviewOpen(true);
+    // שמור את הנתונים ב-localStorage לפני פתיחת התצוגה המקדימה
+    localStorage.setItem('generatedContent', JSON.stringify(generatedPage));
+    localStorage.setItem('formData', JSON.stringify(formData));
+    
+    // פתח דף תצוגה מקדימה חדש עם העריכה שלי
+    window.open('/generated-landing-page', '_blank');
   };
 
   const handleEdit = () => {
