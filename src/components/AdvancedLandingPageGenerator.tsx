@@ -319,6 +319,13 @@ const AdvancedLandingPageGenerator = ({
           )}
         </div>
 
+        {/* Preview Modal */}
+        <LandingPagePreview
+          isOpen={isPreviewOpen}
+          onClose={() => setIsPreviewOpen(false)}
+          content={generatedPage}
+        />
+
         {/* Visual Editor Modal */}
         <VisualLandingPageEditor
           isOpen={isEditorOpen}
