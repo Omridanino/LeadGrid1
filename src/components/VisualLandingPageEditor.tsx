@@ -212,6 +212,8 @@ const VisualLandingPageEditor = ({
     featuresTextColor: '#6b7280',
     aboutTitleColor: '#1f2937',
     aboutTextColor: '#6b7280',
+    servicesTitleColor: '#1f2937',
+    servicesTextColor: '#6b7280',
     heroBackground: 'gradient',
     heroBackgroundImage: '',
     buttonStyle: 'rounded',
@@ -924,6 +926,25 @@ const VisualLandingPageEditor = ({
                           </div>
                         </>
                       )}
+                      
+                      {activeSection === 'services' && (
+                        <>
+                          <div>
+                            <Label className="text-xs">צבע כותרת</Label>
+                            <ColorPicker
+                              color={pageStyles.servicesTitleColor}
+                              onChange={(color) => updatePageStyle('servicesTitleColor', color)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">צבע טקסט</Label>
+                            <ColorPicker
+                              color={pageStyles.servicesTextColor}
+                              onChange={(color) => updatePageStyle('servicesTextColor', color)}
+                            />
+                          </div>
+                        </>
+                      )}
                     </CardContent>
                   </Card>
                 </TabsContent>
@@ -1365,10 +1386,16 @@ const VisualLandingPageEditor = ({
               {activeSection === 'services' && (
                 <div className="p-8 rounded-lg bg-gray-50">
                   <div className="max-w-6xl mx-auto text-center">
-                    <h2 className="text-3xl font-bold mb-4">
+                    <h2 
+                      className="text-3xl font-bold mb-4"
+                      style={{ color: pageStyles.servicesTitleColor }}
+                    >
                       {(editableContent?.services as any)?.title || 'השירותים שלנו'}
                     </h2>
-                    <p className="text-xl text-gray-600 mb-12">
+                    <p 
+                      className="text-xl mb-12"
+                      style={{ color: pageStyles.servicesTextColor }}
+                    >
                       {(editableContent?.services as any)?.subtitle || 'פתרונות מקצועיים עבור העסק שלך'}
                     </p>
                     <div className="grid md:grid-cols-2 gap-8">
