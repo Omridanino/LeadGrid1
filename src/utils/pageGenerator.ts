@@ -45,6 +45,18 @@ export const generatePageHTML = (templateData: any) => {
   if (!template.faq) {
     template.faq = { title: 'שאלות נפוצות', questions: [] };
   }
+  if (!template.emotional) {
+    template.emotional = { title: 'הצטרפו אלינו', description: 'תיאור רגשי' };
+  }
+  if (!template.finalCta) {
+    template.finalCta = { title: 'בואו נתחיל', description: 'תיאור קריאה לפעולה' };
+  }
+  if (!template.contact) {
+    template.contact = { title: 'צור קשר', description: 'נשמח לשמוע מכם' };
+  }
+  if (!template.footer) {
+    template.footer = { companyName: template.hero?.title || 'החברה שלנו' };
+  }
   
   // Ensure arrays exist
   if (!template.features.items) template.features.items = [];
@@ -1099,7 +1111,7 @@ export const generatePageHTML = (templateData: any) => {
          })() : ''}
          <div class="max-w-6xl mx-auto px-4 relative z-10">
              <div class="text-center">
-                 ${template.emotional.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'emotional', template.styles.emotionalBadgeColor) : template.styles.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.accentColor};">${template.emotional.badge}</div>` : ''}
+                 ${template.emotional?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'emotional', template.styles?.emotionalBadgeColor) : template.styles?.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles?.accentColor};">${template.emotional.badge}</div>` : ''}
                  <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id, 'emotional', template.styles.emotionalTitleColor) : template.styles.textColor};">${template.emotional.title}</h2>
                  <p class="text-lg max-w-4xl mx-auto opacity-90 mb-8" style="color: ${isPremium ? getPremiumTextColor(template.id, 'emotional', template.styles.emotionalTextColor) : template.styles.textColor};">${template.emotional.description}</p>
                  ${template.emotional.button1Text || template.emotional.button2Text ? `
@@ -1131,7 +1143,7 @@ export const generatePageHTML = (templateData: any) => {
         })() : ''}
         <div class="max-w-7xl mx-auto px-6 relative z-10">
             <div class="text-center mb-16">
-                ${template.features.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'features', template.styles.featuresBadgeColor) : template.styles.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.primaryColor};">${template.features.badge}</div>` : ''}
+                ${template.features?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'features', template.styles?.featuresBadgeColor) : template.styles?.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles?.primaryColor};">${template.features.badge}</div>` : ''}
                 <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'features', template.styles.featuresTitleColor) : template.styles.textColor};">${template.features.title}</h2>
                 ${template.features.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(template.id, 'features', template.styles.featuresTextColor) : template.styles.textColor}; opacity: 0.8;">${template.features.subtitle}</p>` : ''}
             </div>
@@ -1219,7 +1231,7 @@ export const generatePageHTML = (templateData: any) => {
             </h2>
             ` : `
             <div class="text-center mb-12">
-                ${template.testimonials.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${template.styles.primaryColor}; border-color: ${template.styles.primaryColor};">${template.testimonials.badge}</div>` : ''}
+                ${template.testimonials?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${template.styles?.primaryColor}; border-color: ${template.styles?.primaryColor};">${template.testimonials.badge}</div>` : ''}
                 <h2 class="text-3xl md:text-4xl font-bold" style="color: ${template.styles.textColor};">${template.testimonials.title}</h2>
             </div>
             `}
@@ -1279,7 +1291,7 @@ export const generatePageHTML = (templateData: any) => {
         })() : ''}
         <div class="max-w-6xl mx-auto px-4 relative z-10">
             <div class="text-center mb-12">
-                ${template.about.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.secondaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.secondaryColor};">${template.about.badge}</div>` : ''}
+                ${template.about?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles?.secondaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles?.secondaryColor};">${template.about.badge}</div>` : ''}
                 <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.about.title}</h2>
                 <p class="text-lg max-w-4xl mx-auto opacity-90" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.about.description}</p>
             </div>
@@ -1337,7 +1349,7 @@ export const generatePageHTML = (templateData: any) => {
             </div>
             ` : `
             <div class="text-center mb-12">
-                ${template.pricing.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${template.styles.primaryColor}; border-color: ${template.styles.primaryColor};">${template.pricing.badge}</div>` : ''}
+                ${template.pricing?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${template.styles?.primaryColor}; border-color: ${template.styles?.primaryColor};">${template.pricing.badge}</div>` : ''}
                 <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: ${template.styles.textColor};">${template.pricing.title}</h2>
                 ${template.pricing.subtitle ? `<p class="text-xl opacity-80" style="color: ${template.styles.textColor};">${template.pricing.subtitle}</p>` : ''}
             </div>
@@ -1403,7 +1415,7 @@ export const generatePageHTML = (templateData: any) => {
     <section id="faq" class="faq">
         <div class="max-w-4xl mx-auto px-4 relative z-10">
             <div class="text-center mb-12">
-                ${template.faq.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.primaryColor};">${template.faq.badge}</div>` : ''}
+                ${template.faq?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles?.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles?.primaryColor};">${template.faq.badge}</div>` : ''}
                 <h2 class="text-3xl md:text-4xl font-bold" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.faq.title}</h2>
             </div>
             
@@ -1432,7 +1444,7 @@ export const generatePageHTML = (templateData: any) => {
     <!-- Final CTA Section -->
     <section id="final-cta" class="final-cta">
         <div class="max-w-4xl mx-auto text-center px-4 relative z-10">
-            ${template.finalCta.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.accentColor};">${template.finalCta.badge}</div>` : ''}
+            ${template.finalCta?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles?.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles?.accentColor};">${template.finalCta.badge}</div>` : ''}
             <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.finalCta.title}</h2>
             <p class="text-lg mb-8 opacity-90" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.finalCta.description}</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
