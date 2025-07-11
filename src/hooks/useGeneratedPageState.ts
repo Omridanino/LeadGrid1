@@ -70,10 +70,36 @@ export const useGeneratedPageState = () => {
     // Removed all toast notifications from here
   };
 
-  // Add back missing functions
+  // Enhanced content management with history
+  const saveToHistory = (newContent: any) => {
+    try {
+      const history = JSON.parse(localStorage.getItem('contentHistory') || '[]');
+      history.push({
+        content: newContent,
+        timestamp: Date.now()
+      });
+      
+      // Keep only last 10 versions
+      if (history.length > 10) {
+        history.shift();
+      }
+      
+      localStorage.setItem('contentHistory', JSON.stringify(history));
+    } catch (error) {
+      console.error('Failed to save to history:', error);
+    }
+  };
+
   const setGeneratedContent = (newContent: any) => {
     setContent(newContent);
     localStorage.setItem('generatedContent', JSON.stringify(newContent));
+    saveToHistory(newContent);
+  };
+
+  const setContentWithHistory = (newContent: any) => {
+    setContent(newContent);
+    localStorage.setItem('generatedContent', JSON.stringify(newContent));
+    saveToHistory(newContent);
   };
 
   const generateCreativeContent = () => {
@@ -109,6 +135,8 @@ export const useGeneratedPageState = () => {
     elements,
     setElements,
     setGeneratedContent,
-    generateCreativeContent
+    generateCreativeContent,
+    setContentWithHistory,
+    saveToHistory
   };
 };
