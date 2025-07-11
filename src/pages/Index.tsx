@@ -25,7 +25,9 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-black text-white md:text-right text-center" dir="rtl">
       <Header onStartQuestionnaire={handleOpenQuestionnaire} />
-      <ModernHeroSection onStartQuestionnaire={handleOpenQuestionnaire} />
+      <div className="text-center py-20">
+        <h1 className="text-4xl font-bold">דף הבית</h1>
+      </div>
       <ModernFeaturesSection />
       <TestimonialsSection />
       <Footer />

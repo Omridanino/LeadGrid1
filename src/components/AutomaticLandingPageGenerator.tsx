@@ -17,9 +17,7 @@ import {
   Edit,
   Eye
 } from 'lucide-react';
-import { getRandomDesign } from '@/data/designTemplates';
 import { TemplateData } from '@/types/template';
-import TemplateEditor from './ModernTemplateEditor';
 
 interface AutomaticLandingPageGeneratorProps {
   isOpen: boolean;
@@ -229,8 +227,8 @@ const AutomaticLandingPageGenerator = ({ isOpen, onClose }: AutomaticLandingPage
         footer: {
           companyName: formData.businessName
         },
-        styles: getRandomDesign(formData.packageType).styles,
-        effects: getRandomDesign(formData.packageType).effects
+        styles: {},
+        effects: {}
       };
 
       setGeneratedTemplate(template);
@@ -312,15 +310,15 @@ const AutomaticLandingPageGenerator = ({ isOpen, onClose }: AutomaticLandingPage
     );
   }
 
-  // Template editor
+  // Template editor functionality removed
   if (isEditing && generatedTemplate) {
     return (
-      <TemplateEditor
-        template={generatedTemplate}
-        onTemplateChange={handleTemplateChange}
-        onClose={() => setIsEditing(false)}
-        onPublishSuccess={handlePublishSuccess}
-      />
+      <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div className="bg-card rounded-lg border w-full max-w-2xl p-8 text-center">
+          <h3 className="text-2xl font-bold mb-4">עורך התבניות זמנית לא זמין</h3>
+          <Button onClick={() => setIsEditing(false)}>חזור</Button>
+        </div>
+      </div>
     );
   }
 

@@ -14,7 +14,7 @@ interface StyleQuestionnaireProps {
 const StyleQuestionnaire = ({ isOpen, onClose }: StyleQuestionnaireProps) => {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [showTemplateEditor, setShowTemplateEditor] = useState(false);
-  const templates = getAllDesigns();
+  const templates = [];
 
   const handleTemplateSelect = (template) => {
     setSelectedTemplate(template);
@@ -34,11 +34,12 @@ const StyleQuestionnaire = ({ isOpen, onClose }: StyleQuestionnaireProps) => {
 
   if (showTemplateEditor && selectedTemplate) {
     return (
-      <TemplateEditor
-        template={selectedTemplate}
-        onTemplateChange={handleTemplateChange}
-        onClose={handleCloseEditor}
-      />
+      <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div className="bg-card rounded-lg border w-full max-w-2xl p-8 text-center">
+          <h3 className="text-2xl font-bold mb-4">עורך התבניות זמנית לא זמין</h3>
+          <Button onClick={handleCloseEditor}>חזור</Button>
+        </div>
+      </div>
     );
   }
 

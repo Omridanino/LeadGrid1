@@ -54,7 +54,9 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       scrollBehavior: 'smooth'
     }}>
       <div className="w-full min-h-screen" style={{ position: 'relative' }}>
-        <HeroSection onStartQuestionnaire={() => {}} />
+        <div className="text-center py-20">
+          <h1 className="text-4xl font-bold">תצוגה מקדימה של דף הנחיתה</h1>
+        </div>
       </div>
     </div>
   );
