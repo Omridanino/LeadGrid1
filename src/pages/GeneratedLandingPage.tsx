@@ -56,8 +56,6 @@ const GeneratedLandingPage = () => {
           formData={state.formData}
           heroImage={state.heroImage}
           elements={elementsAsStrings}
-          onFormDataUpdate={state.setFormData}
-          onContentUpdate={state.setContent}
         />
       </div>
     </div>

@@ -463,42 +463,219 @@ const AdvancedLandingPageGenerator = ({
 
         {/* Preview Modal */}
         <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
-          <DialogContent className="max-w-7xl h-[95vh] overflow-hidden p-0">
+          <DialogContent className="max-w-7xl h-[90vh] overflow-hidden p-0">
             {generatedPage ? (
-              <LandingPagePreview 
-                content={generatedPage}
-                currentColors={{
-                  primary: "#3b82f6",
-                  secondary: "#8b5cf6", 
-                  accent: "#06b6d4",
-                  background: "#000000",
-                  heroBackground: "#1e40af",
-                  text: "#ffffff",
-                  headlineColor: "#ffffff",
-                  subheadlineColor: "#e0f2fe",
-                  featuresColor: "#ffffff",
-                  featuresTextColor: "#e5e7eb",
-                  aboutColor: "#ffffff",
-                  aboutTextColor: "#d1d5db",
-                  contactColor: "#ffffff",
-                  contactTextColor: "#d1d5db"
-                }}
-                formData={{
-                  businessName: generatedPage.hero?.title || 'עסק חדש',
-                  headline: generatedPage.hero?.title || 'ברוכים הבאים',
-                  subheadline: generatedPage.hero?.subtitle || 'פתרונות מתקדמים',
-                  description: generatedPage.hero?.description || 'תיאור העסק',
-                  sections: generatedPage
-                }}
-                heroImage=""
-                elements={[]}
-                onFormDataUpdate={(updatedData) => {
-                  console.log('Updated form data:', updatedData);
-                }}
-                onContentUpdate={(updatedContent) => {
-                  console.log('Updated content:', updatedContent);
-                }}
-              />
+              <div className="w-full h-full overflow-y-auto">
+                <div className="bg-white text-gray-900 min-h-full">
+                  {/* Hero Section */}
+                  <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20 px-6 text-center">
+                    <div className="max-w-4xl mx-auto">
+                      <div className="inline-block bg-white/10 rounded-full px-4 py-2 mb-6">
+                        <span className="text-sm">{generatedPage.hero?.badge}</span>
+                      </div>
+                      <h1 className="text-5xl font-bold mb-6">{generatedPage.hero?.title}</h1>
+                      <h2 className="text-2xl mb-4">{generatedPage.hero?.subtitle}</h2>
+                      <p className="text-xl mb-8 opacity-90">{generatedPage.hero?.description}</p>
+                      <div className="flex gap-4 justify-center">
+                        <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100">
+                          {generatedPage.hero?.button1Text}
+                        </button>
+                        <button className="border border-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10">
+                          {generatedPage.hero?.button2Text}
+                        </button>
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* About Section */}
+                  {generatedPage.about && (
+                    <section className="py-16 px-6">
+                      <div className="max-w-6xl mx-auto">
+                        <div className="grid md:grid-cols-2 gap-12 items-center">
+                          <div>
+                            <h2 className="text-3xl font-bold mb-4">{generatedPage.about.title}</h2>
+                            <p className="text-xl text-blue-600 mb-6">{generatedPage.about.subtitle}</p>
+                            <p className="text-gray-600 mb-8 leading-relaxed">{generatedPage.about.description}</p>
+                            <div className="grid grid-cols-3 gap-6">
+                              {generatedPage.about.stats?.map((stat: any, index: number) => (
+                                <div key={index} className="text-center">
+                                  <div className="text-2xl font-bold text-blue-600">{stat.number}</div>
+                                  <div className="text-sm text-gray-600">{stat.label}</div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                          <div className="bg-gray-100 rounded-lg h-64 flex items-center justify-center">
+                            <span className="text-gray-500">📸 {generatedPage.about.image}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  )}
+
+                  {/* Services Section */}
+                  {generatedPage.services && (
+                    <section className="py-16 px-6 bg-gray-50">
+                      <div className="max-w-6xl mx-auto text-center">
+                        <h2 className="text-3xl font-bold mb-4">{generatedPage.services.title}</h2>
+                        <p className="text-xl text-gray-600 mb-12">{generatedPage.services.subtitle}</p>
+                        <div className="grid md:grid-cols-2 gap-8">
+                          {generatedPage.services.items?.map((service: any, index: number) => (
+                            <div key={index} className="bg-white p-8 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
+                              <h3 className="text-xl font-bold mb-3">{service.title}</h3>
+                              <p className="text-gray-600 mb-4">{service.description}</p>
+                              <div className="text-2xl font-bold text-blue-600 mb-4">{service.price}</div>
+                              <ul className="space-y-2 mb-6">
+                                {service.features?.map((feature: string, featureIndex: number) => (
+                                  <li key={featureIndex} className="flex items-center text-sm">
+                                    <span className="text-green-500 mr-2">✓</span>
+                                    {feature}
+                                  </li>
+                                ))}
+                              </ul>
+                              <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">
+                                בחר שירות
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </section>
+                  )}
+
+                  {/* Testimonials Section */}
+                  {generatedPage.testimonials && (
+                    <section className="py-16 px-6">
+                      <div className="max-w-4xl mx-auto text-center">
+                        <h2 className="text-3xl font-bold mb-12">{generatedPage.testimonials.title}</h2>
+                        <div className="grid md:grid-cols-2 gap-8">
+                          {generatedPage.testimonials.testimonials?.map((testimonial: any, index: number) => (
+                            <div key={index} className="bg-gray-50 p-6 rounded-lg">
+                              <div className="flex text-yellow-400 mb-4">
+                                {[...Array(5)].map((_, i) => (
+                                  <span key={i}>⭐</span>
+                                ))}
+                              </div>
+                              <p className="text-gray-700 mb-4">"{testimonial.content}"</p>
+                              <div className="font-semibold">{testimonial.name}</div>
+                              <div className="text-gray-600 text-sm">{testimonial.role}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </section>
+                  )}
+
+                  {/* Pricing Section */}
+                  {generatedPage.pricing && (
+                    <section className="py-16 px-6 bg-gray-50">
+                      <div className="max-w-4xl mx-auto text-center">
+                        <h2 className="text-3xl font-bold mb-12">{generatedPage.pricing.title}</h2>
+                        <div className="grid md:grid-cols-2 gap-8">
+                          {generatedPage.pricing.plans?.map((plan: any, index: number) => (
+                            <div key={index} className="bg-white p-8 rounded-lg shadow-sm border">
+                              <h3 className="text-xl font-bold mb-4">{plan.name}</h3>
+                              <div className="text-3xl font-bold text-blue-600 mb-6">{plan.price}</div>
+                              <ul className="space-y-3 mb-8">
+                                {plan.features?.map((feature: string, featureIndex: number) => (
+                                  <li key={featureIndex} className="flex items-center">
+                                    <span className="text-green-500 mr-2">✓</span>
+                                    {feature}
+                                  </li>
+                                ))}
+                              </ul>
+                              <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">
+                                בחר חבילה
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </section>
+                  )}
+
+                  {/* FAQ Section */}
+                  {generatedPage.faq && (
+                    <section className="py-16 px-6">
+                      <div className="max-w-4xl mx-auto text-center">
+                        <h2 className="text-3xl font-bold mb-4">{generatedPage.faq.title}</h2>
+                        <p className="text-xl text-gray-600 mb-12">{generatedPage.faq.subtitle}</p>
+                        <div className="space-y-6 text-right">
+                          {generatedPage.faq.items?.map((item: any, index: number) => (
+                            <div key={index} className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                              <h3 className="text-lg font-semibold mb-3 text-blue-600">{item.question}</h3>
+                              <p className="text-gray-700 leading-relaxed">{item.answer}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </section>
+                  )}
+
+                  {/* Contact Section */}
+                  {generatedPage.contact && (
+                    <section className="py-16 px-6 bg-blue-600 text-white">
+                      <div className="max-w-6xl mx-auto">
+                        <div className="text-center mb-12">
+                          <h2 className="text-3xl font-bold mb-4">{generatedPage.contact.title}</h2>
+                          <p className="text-xl opacity-90 mb-2">{generatedPage.contact.subtitle}</p>
+                          <p className="opacity-80">{generatedPage.contact.description}</p>
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-12">
+                          {/* Contact Form */}
+                          <div className="bg-white rounded-lg p-8 text-gray-900">
+                            <form className="space-y-4">
+                              <div>
+                                <label className="block text-sm font-medium mb-2">{generatedPage.contact.form?.nameLabel}</label>
+                                <input type="text" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium mb-2">{generatedPage.contact.form?.emailLabel}</label>
+                                <input type="email" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium mb-2">{generatedPage.contact.form?.phoneLabel}</label>
+                                <input type="tel" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium mb-2">{generatedPage.contact.form?.messageLabel}</label>
+                                <textarea rows={4} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                              </div>
+                              <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                                {generatedPage.contact.form?.submitText}
+                              </button>
+                            </form>
+                          </div>
+                          {/* Contact Info */}
+                          <div className="space-y-6">
+                            <div className="bg-white/10 rounded-lg p-6">
+                              <h3 className="font-semibold mb-4">פרטי יצירת קשר</h3>
+                              <div className="space-y-3">
+                                <div className="flex items-center">
+                                  <span className="mr-3">📍</span>
+                                  <span>{generatedPage.contact.info?.address}</span>
+                                </div>
+                                <div className="flex items-center">
+                                  <span className="mr-3">📞</span>
+                                  <span>{generatedPage.contact.info?.phone}</span>
+                                </div>
+                                <div className="flex items-center">
+                                  <span className="mr-3">✉️</span>
+                                  <span>{generatedPage.contact.info?.email}</span>
+                                </div>
+                                <div className="flex items-center">
+                                  <span className="mr-3">🕒</span>
+                                  <span>{generatedPage.contact.info?.hours}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  )}
+                </div>
+              </div>
             ) : (
               <div className="w-full h-full flex items-center justify-center">
                 <p>אין תוכן לתצוגה מקדימה</p>
