@@ -184,6 +184,41 @@ const VisualLandingPageEditor = ({
             }
           ]
         },
+        faq: generatedContent.faq ? {
+          title: generatedContent.faq.title || 'שאלות נפוצות ותשובות מפורטות',
+          subtitle: generatedContent.faq.subtitle || 'תשובות מקצועיות ומפורטות לשאלות הכי חשובות והנפוצות שלכם',
+          items: generatedContent.faq.items || [
+            {
+              question: 'כמה זמן בדיוק לוקח לבצע פרויקט מקצועי?',
+              answer: 'זמן הביצוע תלוי בהיקף והמורכבות של הפרויקט. פרויקטים קטנים יכולים להסתיים תוך שבוע עד 10 ימים, בעוד פרויקטים גדולים ומורכבים יותר יכולים לקחת מספר שבועות עד חודש וחצי.'
+            },
+            {
+              question: 'איזה סוג אחריות אתם נותנים על העבודה המקצועית?',
+              answer: 'אנחנו נותנים אחריות מלאה וכוללת על כל העבודות שלנו למשך שנה שלמה. האחריות כוללת תיקונים, שדרוגים, חזרה על עבודות שלא בוצעו כראוי, תמיכה טכנית ותחזוקה שוטפת - הכל ללא עלות נוספת.'
+            },
+            {
+              question: 'איך בדיוק אפשר ליצור קשר ולהזמין שירות מקצועי?',
+              answer: 'תוכלו ליצור קשר באמצעות מספר דרכים נוחות: טלפון ישיר, אימייל מקצועי, טופס יצירת קשר באתר או ביקור במשרדנו. אנחנו זמינים בכל יום עבודה בין השעות 8:00-18:00.'
+            }
+          ]
+        } : {
+          title: 'שאלות נפוצות ותשובות מפורטות',
+          subtitle: 'תשובות מקצועיות ומפורטות לשאלות הכי חשובות והנפוצות שלכם',
+          items: [
+            {
+              question: 'כמה זמן בדיוק לוקח לבצע פרויקט מקצועי?',
+              answer: 'זמן הביצוע תלוי בהיקף והמורכבות של הפרויקט. פרויקטים קטנים יכולים להסתיים תוך שבוע עד 10 ימים, בעוד פרויקטים גדולים ומורכבים יותר יכולים לקחת מספר שבועות עד חודש וחצי.'
+            },
+            {
+              question: 'איזה סוג אחריות אתם נותנים על העבודה המקצועית?',
+              answer: 'אנחנו נותנים אחריות מלאה וכוללת על כל העבודות שלנו למשך שנה שלמה. האחריות כוללת תיקונים, שדרוגים, חזרה על עבודות שלא בוצעו כראוי, תמיכה טכנית ותחזוקה שוטפת - הכל ללא עלות נוספת.'
+            },
+            {
+              question: 'איך בדיוק אפשר ליצור קשר ולהזמין שירות מקצועי?',
+              answer: 'תוכלו ליצור קשר באמצעות מספר דרכים נוחות: טלפון ישיר, אימייל מקצועי, טופס יצירת קשר באתר או ביקור במשרדנו. אנחנו זמינים בכל יום עבודה בין השעות 8:00-18:00.'
+            }
+          ]
+        },
         pricing: generatedContent.pricing || null,
         contact: generatedContent.contact || null
       };
@@ -254,6 +289,24 @@ const VisualLandingPageEditor = ({
             role: 'בעל עסק ויזם',
             content: 'השירות היה מקצועי ברמה הגבוהה ביותר, מהיר ויעיל מאוד. הצוות הקשיב לצרכים שלנו, הציע פתרונות מותאמים ועמד בכל הלוחות זמנים. ממליץ בחום לכל מי שמחפש פתרון איכותי, אמין ומקצועי.',
             rating: 5
+          }
+        ]
+      },
+      faq: {
+        title: 'שאלות נפוצות ותשובות מפורטות',
+        subtitle: 'תשובות מקצועיות ומפורטות לשאלות הכי חשובות והנפוצות שלכם',
+        items: [
+          {
+            question: 'כמה זמן בדיוק לוקח לבצע פרויקט מקצועי?',
+            answer: 'זמן הביצוע תלוי בהיקף והמורכבות של הפרויקט. פרויקטים קטנים יכולים להסתיים תוך שבוע עד 10 ימים, בעוד פרויקטים גדולים ומורכבים יותר יכולים לקחת מספר שבועות עד חודש וחצי.'
+          },
+          {
+            question: 'איזה סוג אחריות אתם נותנים על העבודה המקצועית?',
+            answer: 'אנחנו נותנים אחריות מלאה וכוללת על כל העבודות שלנו למשך שנה שלמה. האחריות כוללת תיקונים, שדרוגים, חזרה על עבודות שלא בוצעו כראוי, תמיכה טכנית ותחזוקה שוטפת - הכל ללא עלות נוספת.'
+          },
+          {
+            question: 'איך בדיוק אפשר ליצור קשר ולהזמין שירות מקצועי?',
+            answer: 'תוכלו ליצור קשר באמצעות מספר דרכים נוחות: טלפון ישיר, אימייל מקצועי, טופס יצירת קשר באתר או ביקור במשרדנו. אנחנו זמינים בכל יום עבודה בין השעות 8:00-18:00.'
           }
         ]
       }
@@ -1561,83 +1614,346 @@ const VisualLandingPageEditor = ({
               {/* Testimonials Section Preview */}
               {activeSection === 'testimonials' && (
                 <section className="py-16" style={{ backgroundColor: pageStyles.testimonialsBackgroundColor }}>
-                  <div className="container mx-auto px-4">
-                    <div className="max-w-6xl mx-auto">
-                      <div className="text-center mb-12">
-                        <h2 
-                          className="text-4xl font-bold mb-4"
-                          style={{ color: pageStyles.testimonialsTitleColor }}
-                        >
-                          {(editableContent?.testimonials as any)?.title || "מה הלקוחות המרוצים שלנו אומרים עלינו"}
-                        </h2>
-                        <p 
-                          className="text-xl"
-                          style={{ color: pageStyles.testimonialsTextColor }}
-                        >
-                          {(editableContent?.testimonials as any)?.subtitle || "הצלחות אמיתיות של לקוחות אמיתיים - המלצות כנות ומפורטות"}
-                        </p>
-                      </div>
-                      
-                      <div className="grid md:grid-cols-2 gap-8">
-                        {((editableContent?.testimonials as any)?.items || [
-                          {
-                            name: 'שרה כהן',
-                            role: 'מנהלת פרויקטים בכירה',
-                            content: 'העבודה עם החברה הייתה חוויה מדהימה ומקצועית. הם הבינו בדיוק מה אנחנו צריכים, הציעו פתרונות יצירתיים וחדשניים, והביאו פתרון שחרג מכל הציפיות שלנו. השירות היה מעולה מהרגע הראשון ועד למסירה הסופית.',
-                            rating: 5
-                          },
-                          {
-                            name: 'דוד לוי', 
-                            role: 'בעל עסק ויזם',
-                            content: 'השירות היה מקצועי ברמה הגבוהה ביותר, מהיר ויעיל מאוד. הצוות הקשיב לצרכים שלנו, הציע פתרונות מותאמים ועמד בכל הלוחות זמנים. ממליץ בחום לכל מי שמחפש פתרון איכותי, אמין ומקצועי.',
-                            rating: 5
-                          }
-                        ]).map((testimonial: any, index: number) => (
-                          <div key={index} className="text-center">
-                            <div className="flex justify-center mb-4">
-                              {[...Array(testimonial.rating || 5)].map((_, i) => (
-                                <span key={i} className="text-yellow-400 text-xl">⭐</span>
+                  <div className="max-w-7xl mx-auto px-6 relative z-10">
+                    <div className="text-center mb-12">
+                      <h2 
+                        className="text-3xl md:text-4xl font-bold"
+                        style={{ color: pageStyles.testimonialsTitleColor }}
+                      >
+                        {(editableContent?.testimonials as any)?.title || "מה הלקוחות המרוצים שלנו אומרים עלינו"}
+                      </h2>
+                    </div>
+                    
+                    {/* Testimonials grid - בדיוק כמו בתצוגה המקדימה */}
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                      {((editableContent?.testimonials as any)?.items || []).map((testimonial: any, index: number) => (
+                        <div key={index} className="relative group">
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20"></div>
+                          <div className="relative z-10 p-6 space-y-4">
+                            {/* Quote icon */}
+                            <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center mb-4">
+                              <span className="text-white text-sm">"</span>
+                            </div>
+                            
+                            {/* Rating */}
+                            <div className="flex mb-3">
+                              {Array(testimonial.rating || 5).fill(0).map((_, i) => (
+                                <span key={i} style={{ color: '#fbbf24', fontSize: '1rem' }}>★</span>
                               ))}
                             </div>
+                            
+                            {/* Content */}
                             <p 
-                              className="text-lg mb-6 leading-relaxed"
+                              className="italic leading-relaxed"
                               style={{ color: pageStyles.testimonialsTextColor }}
                             >
                               "{testimonial.content}"
                             </p>
-                            <div>
-                              <h4 
-                                className="font-bold text-lg"
-                                style={{ color: pageStyles.testimonialsTitleColor }}
-                              >
-                                {testimonial.name}
-                              </h4>
-                              <p 
-                                className="text-sm mt-1"
-                                style={{ color: pageStyles.testimonialsTextColor }}
-                              >
-                                {testimonial.role}
-                              </p>
+                            
+                            {/* Author info */}
+                            <div className="flex items-center gap-3 pt-4">
+                              <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
+                                {testimonial.name?.charAt(0) || 'א'}
+                              </div>
+                              <div>
+                                <p 
+                                  className="font-semibold"
+                                  style={{ color: pageStyles.testimonialsTitleColor }}
+                                >
+                                  {testimonial.name}
+                                </p>
+                                <p 
+                                  className="text-sm opacity-70"
+                                  style={{ color: pageStyles.testimonialsTextColor }}
+                                >
+                                  {testimonial.role}
+                                </p>
+                              </div>
                             </div>
                           </div>
-                        ))}
-                      </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Buttons - כמו בתצוגה המקדימה */}
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <Button 
+                        className="text-white"
+                        style={{ backgroundColor: pageStyles.primaryColor }}
+                      >
+                        צור קשר עכשיו
+                      </Button>
+                      <Button 
+                        variant="outline"
+                        className="text-white border-white"
+                        style={{ backgroundColor: pageStyles.secondaryColor }}
+                      >
+                        קרא עוד
+                      </Button>
                     </div>
                   </div>
                 </section>
               )}
 
-              {/* Other Sections Preview */}
-              {(activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
-                <div className="p-8 rounded-lg bg-gray-50 text-center">
-                  <div className="text-gray-500 mb-4">
-                    <Type className="h-16 w-16 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold">
-                      תצוגה מקדימה של {sections.find(s => s.id === activeSection)?.name}
-                    </h3>
-                    <p className="text-sm mt-2">התצוגה המקדימה תתווסף בקרוב...</p>
+              {/* FAQ Section Preview */}
+              {activeSection === 'faq' && (
+                <section className="py-16" style={{ backgroundColor: pageStyles.testimonialsBackgroundColor }}>
+                  <div className="max-w-4xl mx-auto px-4 relative z-10">
+                    <div className="text-center mb-12">
+                      <h2 
+                        className="text-3xl md:text-4xl font-bold"
+                        style={{ color: pageStyles.testimonialsTitleColor }}
+                      >
+                        {(editableContent?.faq as any)?.title || "שאלות נפוצות ותשובות מפורטות"}
+                      </h2>
+                    </div>
+                    
+                    <div className="space-y-4 mb-12">
+                      {((editableContent?.faq as any)?.items || [
+                        {
+                          question: 'כמה זמן בדיוק לוקח לבצע פרויקט מקצועי?',
+                          answer: 'זמן הביצוע תלוי בהיקף והמורכבות של הפרויקט. פרויקטים קטנים יכולים להסתיים תוך שבוע עד 10 ימים, בעוד פרויקטים גדולים ומורכבים יותר יכולים לקחת מספר שבועות עד חודש וחצי.'
+                        },
+                        {
+                          question: 'איזה סוג אחריות אתם נותנים על העבודה המקצועית?',
+                          answer: 'אנחנו נותנים אחריות מלאה וכוללת על כל העבודות שלנו למשך שנה שלמה. האחריות כוללת תיקונים, שדרוגים, חזרה על עבודות שלא בוצעו כראוי, תמיכה טכנית ותחזוקה שוטפת - הכל ללא עלות נוספת.'
+                        },
+                        {
+                          question: 'איך בדיוק אפשר ליצור קשר ולהזמין שירות מקצועי?',
+                          answer: 'תוכלו ליצור קשר באמצעות מספר דרכים נוחות: טלפון ישיר, אימייל מקצועי, טופס יצירת קשר באתר או ביקור במשרדנו. אנחנו זמינים בכל יום עבודה בין השעות 8:00-18:00.'
+                        }
+                      ]).map((qa: any, index: number) => (
+                        <div key={index} className="border border-gray-200 rounded-lg">
+                          <button className="w-full text-right p-4 hover:bg-gray-50 transition-colors">
+                            <h3 
+                              className="font-semibold text-lg"
+                              style={{ color: pageStyles.testimonialsTitleColor }}
+                            >
+                              {qa.question}
+                            </h3>
+                          </button>
+                          <div className="px-4 pb-4">
+                            <p 
+                              className="leading-relaxed"
+                              style={{ color: pageStyles.testimonialsTextColor }}
+                            >
+                              {qa.answer}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <Button 
+                        className="text-white"
+                        style={{ backgroundColor: pageStyles.primaryColor }}
+                      >
+                        יש לכם שאלה נוספת?
+                      </Button>
+                      <Button 
+                        variant="outline"
+                        className="text-white border-white"
+                        style={{ backgroundColor: pageStyles.secondaryColor }}
+                      >
+                        צור קשר
+                      </Button>
+                    </div>
                   </div>
-                </div>
+                </section>
+              )}
+
+              {/* Pricing Section Preview */}
+              {activeSection === 'pricing' && (
+                <section className="py-16" style={{ backgroundColor: pageStyles.testimonialsBackgroundColor }}>
+                  <div className="max-w-7xl mx-auto px-6 relative z-10">
+                    <div className="text-center mb-12">
+                      <h2 
+                        className="text-3xl md:text-4xl font-bold"
+                        style={{ color: pageStyles.testimonialsTitleColor }}
+                      >
+                        החבילות והמחירים שלנו
+                      </h2>
+                      <p 
+                        className="text-xl mt-4"
+                        style={{ color: pageStyles.testimonialsTextColor }}
+                      >
+                        בחרו את החבילה המתאימה לכם
+                      </p>
+                    </div>
+                    
+                    <div className="grid md:grid-cols-3 gap-8 mb-12">
+                      {[
+                        {
+                          name: 'חבילה בסיסית',
+                          price: '₪999',
+                          description: 'מושלמת לעסקים קטנים ופרויקטים פשוטים',
+                          features: ['עד 3 עמודים', 'עיצוב בסיסי', 'תמיכה למשך חודש', 'אופטימיזציה בסיסית']
+                        },
+                        {
+                          name: 'חבילה מתקדמת',
+                          price: '₪1,999',
+                          description: 'האפשרות הטובה ביותר לרוב העסקים',
+                          features: ['עד 7 עמודים', 'עיצוב מתקדם', 'תמיכה למשך 3 חודשים', 'אופטימיזציה מלאה', 'פורטל ניהול'],
+                          popular: true
+                        },
+                        {
+                          name: 'חבילה מקצועית',
+                          price: '₪3,999',
+                          description: 'פתרון מקצועי לעסקים גדולים',
+                          features: ['אתר ללא הגבלה', 'עיצוב אישי', 'תמיכה למשך שנה', 'אופטימיזציה מתקדמת', 'פורטל ניהול מתקדם', 'אינטגרציות']
+                        }
+                      ].map((plan: any, index: number) => (
+                        <div key={index} className={`relative ${plan.popular ? 'ring-2 ring-blue-500' : ''}`}>
+                          {plan.popular && (
+                            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                              <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm">הכי פופולרי</span>
+                            </div>
+                          )}
+                          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 shadow-xl border border-white/20 h-full">
+                            <h3 
+                              className="text-xl font-bold mb-2"
+                              style={{ color: pageStyles.testimonialsTitleColor }}
+                            >
+                              {plan.name}
+                            </h3>
+                            <div className="text-3xl font-bold mb-4" style={{ color: pageStyles.testimonialsTitleColor }}>
+                              {plan.price}
+                            </div>
+                            <p 
+                              className="mb-6"
+                              style={{ color: pageStyles.testimonialsTextColor }}
+                            >
+                              {plan.description}
+                            </p>
+                            <ul className="space-y-3 mb-8">
+                              {plan.features.map((feature: string, i: number) => (
+                                <li key={i} className="flex items-center text-sm">
+                                  <span className="text-green-400 mr-2">✓</span>
+                                  <span style={{ color: pageStyles.testimonialsTextColor }}>{feature}</span>
+                                </li>
+                              ))}
+                            </ul>
+                            <Button 
+                              className={`w-full ${plan.popular ? 'text-white' : ''}`}
+                              style={{ 
+                                backgroundColor: plan.popular ? pageStyles.primaryColor : pageStyles.secondaryColor 
+                              }}
+                            >
+                              בחר חבילה
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="text-center">
+                      <p 
+                        className="text-lg mb-4"
+                        style={{ color: pageStyles.testimonialsTextColor }}
+                      >
+                        לא מצאתם את מה שאתם מחפשים?
+                      </p>
+                      <Button 
+                        variant="outline"
+                        className="text-white border-white"
+                        style={{ backgroundColor: pageStyles.secondaryColor }}
+                      >
+                        בקשו הצעת מחיר אישית
+                      </Button>
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {/* Contact Section Preview */}
+              {activeSection === 'contact' && (
+                <section className="py-16" style={{ backgroundColor: pageStyles.testimonialsBackgroundColor }}>
+                  <div className="max-w-4xl mx-auto text-center px-4 relative z-10">
+                    <h2 
+                      className="text-3xl md:text-4xl font-bold mb-6"
+                      style={{ color: pageStyles.testimonialsTitleColor }}
+                    >
+                      {(editableContent?.contact as any)?.title || "בואו נתחיל לעבוד יחד על הפרויקט שלכם"}
+                    </h2>
+                    <p 
+                      className="text-xl mb-8 opacity-80"
+                      style={{ color: pageStyles.testimonialsTextColor }}
+                    >
+                      {(editableContent?.contact as any)?.subtitle || "מוכנים להגשים את הפרויקט החשוב הבא שלכם ברמה מקצועית?"}
+                    </p>
+                    
+                    <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-8 max-w-md mx-auto mb-8">
+                      <form className="space-y-4">
+                        <input 
+                          type="text" 
+                          placeholder="השם שלכם" 
+                          className="w-full p-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70"
+                        />
+                        <input 
+                          type="email" 
+                          placeholder="כתובת אימייל" 
+                          className="w-full p-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70"
+                        />
+                        <input 
+                          type="tel" 
+                          placeholder="מספר טלפון" 
+                          className="w-full p-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70"
+                        />
+                        <textarea 
+                          placeholder="ספרו לנו על הפרויקט שלכם..." 
+                          rows={4}
+                          className="w-full p-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70"
+                        ></textarea>
+                        <Button 
+                          className="w-full text-white"
+                          style={{ backgroundColor: pageStyles.primaryColor }}
+                        >
+                          שלח הודעה
+                        </Button>
+                      </form>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-6 text-center">
+                      <div>
+                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                          📞
+                        </div>
+                        <h3 
+                          className="font-bold mb-2"
+                          style={{ color: pageStyles.testimonialsTitleColor }}
+                        >
+                          טלפון ישיר
+                        </h3>
+                        <p style={{ color: pageStyles.testimonialsTextColor }}>050-1234567</p>
+                      </div>
+                      <div>
+                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                          📧
+                        </div>
+                        <h3 
+                          className="font-bold mb-2"
+                          style={{ color: pageStyles.testimonialsTitleColor }}
+                        >
+                          אימייל מקצועי
+                        </h3>
+                        <p style={{ color: pageStyles.testimonialsTextColor }}>info@business.co.il</p>
+                      </div>
+                      <div>
+                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                          📍
+                        </div>
+                        <h3 
+                          className="font-bold mb-2"
+                          style={{ color: pageStyles.testimonialsTitleColor }}
+                        >
+                          כתובת המשרד
+                        </h3>
+                        <p style={{ color: pageStyles.testimonialsTextColor }}>רחוב העסק 123, תל אביב</p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
               )}
             </div>
           </div>
