@@ -6,7 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import LandingPagePreview from './LandingPagePreview';
-import VisualLandingPageEditor from './VisualLandingPageEditor';
+import InteractivePreviewEditor from './InteractivePreviewEditor';
 
 interface AdvancedLandingPageGeneratorProps {
   isOpen: boolean;
@@ -80,7 +80,7 @@ const AdvancedLandingPageGenerator = ({
   };
 
   const handleEdit = () => {
-    if (!generatedPage) {
+    if (!generatedPage && !formData?.selectedTemplate) {
       toast({
         title: "שגיאה",
         description: "אין דף לעריכה. אנא צור דף נחיתה תחילה.",
@@ -466,7 +466,7 @@ const AdvancedLandingPageGenerator = ({
                     </Button>
                     <Button onClick={handleEdit} variant="default">
                       <Edit className="h-4 w-4 mr-2" />
-                      {generatedPage ? 'עורך חזותי' : 'עורך חזותי (צור דף תחילה)'}
+                      {(generatedPage || formData?.selectedTemplate) ? 'תצוגה מקדימה + עריכה' : 'עריכה (צור דף תחילה)'}
                     </Button>
                     <Button onClick={handleSave} variant="outline">
                       <Save className="h-4 w-4 mr-2" />
@@ -721,12 +721,11 @@ const AdvancedLandingPageGenerator = ({
         </Dialog>
 
         {/* Visual Editor Modal */}
-            <VisualLandingPageEditor 
+            <InteractivePreviewEditor 
               isOpen={isEditorOpen} 
               onClose={() => setIsEditorOpen(false)}
               generatedContent={generatedPage}
               formData={formData}
-              templateData={formData?.selectedTemplate} // העברת כל נתוני התבנית
               onSave={(updatedContent) => {
                 setGeneratedPage(updatedContent);
                 // עדכון התבנית גם ב-formData
