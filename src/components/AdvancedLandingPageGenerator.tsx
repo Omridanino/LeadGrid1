@@ -320,11 +320,32 @@ const AdvancedLandingPageGenerator = ({
         </div>
 
         {/* Preview Modal */}
-        <LandingPagePreview
-          isOpen={isPreviewOpen}
-          onClose={() => setIsPreviewOpen(false)}
-          content={generatedPage}
-        />
+        <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
+          <DialogContent className="max-w-7xl h-[90vh] overflow-y-auto">
+            <LandingPagePreview
+              content={generatedPage}
+              currentColors={{ 
+                primary: "#3b82f6", 
+                secondary: "#1e40af", 
+                accent: "#f59e0b", 
+                background: "#ffffff", 
+                heroBackground: "#3b82f6",
+                text: "#1f2937",
+                headlineColor: "#1f2937",
+                subheadlineColor: "#6b7280",
+                featuresColor: "#f8fafc",
+                featuresTextColor: "#1f2937",
+                aboutColor: "#ffffff",
+                aboutTextColor: "#1f2937",
+                contactColor: "#f8fafc",
+                contactTextColor: "#1f2937"
+              }}
+              formData={formData}
+              heroImage=""
+              elements={[]}
+            />
+          </DialogContent>
+        </Dialog>
 
         {/* Visual Editor Modal */}
         <VisualLandingPageEditor
