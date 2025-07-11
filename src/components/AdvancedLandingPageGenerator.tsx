@@ -177,10 +177,10 @@ const AdvancedLandingPageGenerator = ({
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm font-medium">שם העסק *</label>
+                    <label className="text-sm font-medium text-foreground">שם העסק *</label>
                     <input
                       type="text"
-                      className="w-full mt-1 px-3 py-2 border rounded-lg"
+                      className="w-full mt-1 px-3 py-2 border rounded-lg bg-background text-foreground"
                       value={quickFormData.businessName}
                       onChange={(e) => setQuickFormData(prev => ({...prev, businessName: e.target.value}))}
                       placeholder="לדוגמה: חברת טכנולוגיה"
@@ -188,9 +188,9 @@ const AdvancedLandingPageGenerator = ({
                   </div>
                   
                   <div>
-                    <label className="text-sm font-medium">תחום פעילות *</label>
+                    <label className="text-sm font-medium text-foreground">תחום פעילות *</label>
                     <select
-                      className="w-full mt-1 px-3 py-2 border rounded-lg"
+                      className="w-full mt-1 px-3 py-2 border rounded-lg bg-background text-foreground"
                       value={quickFormData.industry}
                       onChange={(e) => setQuickFormData(prev => ({...prev, industry: e.target.value}))}
                     >
@@ -207,10 +207,10 @@ const AdvancedLandingPageGenerator = ({
                   </div>
                   
                   <div>
-                    <label className="text-sm font-medium">קהל יעד</label>
+                    <label className="text-sm font-medium text-foreground">קהל יעד</label>
                     <input
                       type="text"
-                      className="w-full mt-1 px-3 py-2 border rounded-lg"
+                      className="w-full mt-1 px-3 py-2 border rounded-lg bg-background text-foreground"
                       value={quickFormData.targetAudience}
                       onChange={(e) => setQuickFormData(prev => ({...prev, targetAudience: e.target.value}))}
                       placeholder="לדוגמה: עסקים קטנים"
@@ -218,10 +218,10 @@ const AdvancedLandingPageGenerator = ({
                   </div>
                   
                   <div>
-                    <label className="text-sm font-medium">מטרת הדף</label>
+                    <label className="text-sm font-medium text-foreground">מטרת הדף</label>
                     <input
                       type="text"
-                      className="w-full mt-1 px-3 py-2 border rounded-lg"
+                      className="w-full mt-1 px-3 py-2 border rounded-lg bg-background text-foreground"
                       value={quickFormData.goals}
                       onChange={(e) => setQuickFormData(prev => ({...prev, goals: e.target.value}))}
                       placeholder="לדוגמה: קבלת לידים"
@@ -230,9 +230,9 @@ const AdvancedLandingPageGenerator = ({
                 </div>
                 
                 <div>
-                  <label className="text-sm font-medium">תיאור קצר של העסק</label>
+                  <label className="text-sm font-medium text-foreground">תיאור קצר של העסק</label>
                   <textarea
-                    className="w-full mt-1 px-3 py-2 border rounded-lg"
+                    className="w-full mt-1 px-3 py-2 border rounded-lg bg-background text-foreground"
                     rows={3}
                     value={quickFormData.businessDescription}
                     onChange={(e) => setQuickFormData(prev => ({...prev, businessDescription: e.target.value}))}
