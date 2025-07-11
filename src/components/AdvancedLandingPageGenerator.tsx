@@ -177,7 +177,7 @@ const AdvancedLandingPageGenerator = ({
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm font-medium text-foreground">שם העסק *</label>
+                    <label className="text-sm font-medium text-black">שם העסק *</label>
                     <input
                       type="text"
                       className="w-full mt-1 px-3 py-2 border rounded-lg bg-white text-black border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -188,7 +188,7 @@ const AdvancedLandingPageGenerator = ({
                   </div>
                   
                   <div>
-                    <label className="text-sm font-medium text-foreground">תחום פעילות *</label>
+                    <label className="text-sm font-medium text-black">תחום פעילות *</label>
                     <select
                       className="w-full mt-1 px-3 py-2 border rounded-lg bg-white text-black border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                       value={quickFormData.industry}
@@ -207,7 +207,7 @@ const AdvancedLandingPageGenerator = ({
                   </div>
                   
                   <div>
-                    <label className="text-sm font-medium text-foreground">קהל יעד</label>
+                    <label className="text-sm font-medium text-black">קהל יעד</label>
                     <input
                       type="text"
                       className="w-full mt-1 px-3 py-2 border rounded-lg bg-white text-black border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -218,7 +218,7 @@ const AdvancedLandingPageGenerator = ({
                   </div>
                   
                   <div>
-                    <label className="text-sm font-medium text-foreground">מטרת הדף</label>
+                    <label className="text-sm font-medium text-black">מטרת הדף</label>
                     <input
                       type="text"
                       className="w-full mt-1 px-3 py-2 border rounded-lg bg-white text-black border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -230,7 +230,7 @@ const AdvancedLandingPageGenerator = ({
                 </div>
                 
                 <div>
-                  <label className="text-sm font-medium text-foreground">תיאור קצר של העסק</label>
+                  <label className="text-sm font-medium text-black">תיאור קצר של העסק</label>
                   <textarea
                     className="w-full mt-1 px-3 py-2 border rounded-lg bg-white text-black border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                     rows={3}
