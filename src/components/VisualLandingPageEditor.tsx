@@ -54,6 +54,10 @@ const VisualLandingPageEditor = ({
 }: VisualLandingPageEditorProps) => {
   const [activeSection, setActiveSection] = useState('hero');
   
+  // Debug logs to see what data we're receiving
+  console.log('VisualLandingPageEditor - generatedContent:', generatedContent);
+  console.log('VisualLandingPageEditor - formData:', formData);
+  
   // Use the actual generated content if available, otherwise use defaults
   const [editableContent, setEditableContent] = useState(() => {
     if (generatedContent) {

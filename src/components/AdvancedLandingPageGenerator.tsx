@@ -80,6 +80,7 @@ const AdvancedLandingPageGenerator = ({
   };
 
   const handleEdit = () => {
+    console.log('Opening visual editor with generatedPage:', generatedPage);
     setIsEditorOpen(true);
   };
 
