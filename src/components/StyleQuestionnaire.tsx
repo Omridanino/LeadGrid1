@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ChevronRight, X, Zap, Sparkles, Eye, Cpu, Grid3X3, Layers } from "lucide-react";
-import { templates } from '@/data/templates';
+import { getAllDesigns } from '@/data/designTemplates';
 import TemplateEditor from "./ModernTemplateEditor";
 
 interface StyleQuestionnaireProps {
@@ -16,6 +16,7 @@ interface StyleQuestionnaireProps {
 const StyleQuestionnaire = ({ isOpen, onClose }: StyleQuestionnaireProps) => {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [showTemplateEditor, setShowTemplateEditor] = useState(false);
+  const templates = getAllDesigns();
 
   const handleTemplateSelect = (template) => {
     setSelectedTemplate(template);
