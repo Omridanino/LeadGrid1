@@ -113,6 +113,41 @@ const VisualLandingPageEditor = ({
           ],
           image: 'תמונה'
         },
+        services: generatedContent.services ? {
+          title: generatedContent.services.title || 'השירותים שלנו',
+          subtitle: generatedContent.services.subtitle || 'פתרונות מקצועיים עבור העסק שלך',
+          items: generatedContent.services.items || [
+            { 
+              title: 'שירות 1', 
+              description: 'תיאור השירות הראשון',
+              price: '₪999',
+              features: ['תכונה 1', 'תכונה 2', 'תכונה 3']
+            },
+            { 
+              title: 'שירות 2', 
+              description: 'תיאור השירות השני',
+              price: '₪1,999',
+              features: ['תכונה 1', 'תכונה 2', 'תכונה 3', 'תכונה 4']
+            }
+          ]
+        } : {
+          title: 'השירותים שלנו',
+          subtitle: 'פתרונות מקצועיים עבור העסק שלך',
+          items: [
+            { 
+              title: 'שירות 1', 
+              description: 'תיאור השירות הראשון',
+              price: '₪999',
+              features: ['תכונה 1', 'תכונה 2', 'תכונה 3']
+            },
+            { 
+              title: 'שירות 2', 
+              description: 'תיאור השירות השני', 
+              price: '₪1,999',
+              features: ['תכונה 1', 'תכונה 2', 'תכונה 3', 'תכונה 4']
+            }
+          ]
+        },
         testimonials: generatedContent.testimonials || null,
         pricing: generatedContent.pricing || null,
         contact: generatedContent.contact || null
@@ -696,7 +731,77 @@ const VisualLandingPageEditor = ({
                         </div>
                       )}
 
-                      {(activeSection === 'services' || activeSection === 'testimonials' || activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
+                      {activeSection === 'services' && (
+                        <>
+                          <div>
+                            <Label className="text-xs">כותרת</Label>
+                            <Input
+                              value={(editableContent?.services as any)?.title || ''}
+                              onChange={(e) => updateContent('services', 'title', e.target.value)}
+                              placeholder="כותרת הסקשן"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">כותרת משנה</Label>
+                            <Input
+                              value={(editableContent?.services as any)?.subtitle || ''}
+                              onChange={(e) => updateContent('services', 'subtitle', e.target.value)}
+                              placeholder="כותרת משנה"
+                            />
+                          </div>
+                          
+                          <div>
+                            <Label className="text-xs">שירותים</Label>
+                            <div className="space-y-3">
+                              {((editableContent?.services as any)?.items || []).map((service: any, index: number) => (
+                                <div key={index} className="p-3 border rounded-lg space-y-2">
+                                  <Label className="text-xs">שירות {index + 1}</Label>
+                                  <Input
+                                    value={service.title || ''}
+                                    onChange={(e) => {
+                                      const newItems = [...((editableContent?.services as any)?.items || [])];
+                                      newItems[index] = { ...service, title: e.target.value };
+                                      updateContent('services', 'items', newItems);
+                                    }}
+                                    placeholder="שם השירות"
+                                  />
+                                  <Textarea
+                                    value={service.description || ''}
+                                    onChange={(e) => {
+                                      const newItems = [...((editableContent?.services as any)?.items || [])];
+                                      newItems[index] = { ...service, description: e.target.value };
+                                      updateContent('services', 'items', newItems);
+                                    }}
+                                    placeholder="תיאור השירות"
+                                    rows={2}
+                                  />
+                                  <Input
+                                    value={service.price || ''}
+                                    onChange={(e) => {
+                                      const newItems = [...((editableContent?.services as any)?.items || [])];
+                                      newItems[index] = { ...service, price: e.target.value };
+                                      updateContent('services', 'items', newItems);
+                                    }}
+                                    placeholder="מחיר (לדוגמה: ₪999)"
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                          
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={() => addButton('services')}
+                            className="w-full"
+                          >
+                            <Plus className="h-4 w-4 mr-2" />
+                            הוסף כפתור
+                          </Button>
+                        </>
+                      )}
+
+                      {(activeSection === 'testimonials' || activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
                         <div className="text-center py-8 text-muted-foreground">
                           <Type className="h-8 w-8 mx-auto mb-2" />
                           <p>עריכת תוכן עבור סקשן {sections.find(s => s.id === activeSection)?.name}</p>
@@ -1256,8 +1361,42 @@ const VisualLandingPageEditor = ({
                 </div>
               )}
 
+              {/* Services Section Preview */}
+              {activeSection === 'services' && (
+                <div className="p-8 rounded-lg bg-gray-50">
+                  <div className="max-w-6xl mx-auto text-center">
+                    <h2 className="text-3xl font-bold mb-4">
+                      {(editableContent?.services as any)?.title || 'השירותים שלנו'}
+                    </h2>
+                    <p className="text-xl text-gray-600 mb-12">
+                      {(editableContent?.services as any)?.subtitle || 'פתרונות מקצועיים עבור העסק שלך'}
+                    </p>
+                    <div className="grid md:grid-cols-2 gap-8">
+                      {((editableContent?.services as any)?.items || []).map((service: any, index: number) => (
+                        <div key={index} className="bg-white p-8 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
+                          <h3 className="text-xl font-bold mb-3">{service.title}</h3>
+                          <p className="text-gray-600 mb-4">{service.description}</p>
+                          <div className="text-2xl font-bold text-blue-600 mb-4">{service.price}</div>
+                          <ul className="space-y-2 mb-6">
+                            {(service.features || []).map((feature: string, featureIndex: number) => (
+                              <li key={featureIndex} className="flex items-center text-sm">
+                                <span className="text-green-500 mr-2">✓</span>
+                                {feature}
+                              </li>
+                            ))}
+                          </ul>
+                          <Button className="w-full">
+                            בחר שירות
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Other Sections Preview */}
-              {(activeSection === 'services' || activeSection === 'testimonials' || activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
+              {(activeSection === 'testimonials' || activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
                 <div className="p-8 rounded-lg bg-gray-50 text-center">
                   <div className="text-gray-500 mb-4">
                     <Type className="h-16 w-16 mx-auto mb-4" />
