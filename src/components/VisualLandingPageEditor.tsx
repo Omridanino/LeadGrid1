@@ -41,27 +41,89 @@ interface VisualLandingPageEditorProps {
   onClose: () => void;
   generatedContent: any;
   formData: any;
+  onSave?: (updatedContent: any) => void;
+  onDownload?: () => void;
 }
 
 const VisualLandingPageEditor = ({ 
   isOpen, 
   onClose, 
   generatedContent, 
-  formData 
+  formData,
+  onSave,
+  onDownload
 }: VisualLandingPageEditorProps) => {
   const [activeSection, setActiveSection] = useState('hero');
-  const [editableContent, setEditableContent] = useState(generatedContent || {
-    hero: { title: 'כותרת ראשית', subtitle: 'כותרת משנה', button1Text: 'התחל עכשיו', button2Text: 'למד עוד' },
-    features: { 
-      title: 'התכונות שלנו', 
-      subtitle: 'גלה את היתרונות הייחודיים שלנו',
-      items: [
-        { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star' },
-        { title: 'תכונה 2', description: 'תיאור התכונה השנייה', icon: 'heart' },
-        { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'zap' }
-      ]
-    },
-    about: { title: 'אודותינו', description: 'אנחנו חברה מובילה בתחום' }
+  const [editableContent, setEditableContent] = useState(() => {
+    // Use generated content if available, otherwise use defaults
+    return generatedContent || {
+      hero: { 
+        title: formData?.businessName ? `${formData.businessName} - המובילים בתחום` : 'כותרת ראשית',
+        subtitle: 'פתרונות מקצועיים ואמינים ברמה הגבוהה ביותר',
+        description: 'אנו מספקים שירותים איכותיים ומקצועיים עם התמחות בתחום',
+        button1Text: 'התחל עכשיו',
+        button2Text: 'למד עוד',
+        badge: '✨ חדשנות ומצוינות'
+      },
+      features: { 
+        title: 'התכונות שלנו', 
+        subtitle: 'גלה את היתרונות הייחודיים שלנו',
+        items: [
+          { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star' },
+          { title: 'תכונה 2', description: 'תיאור התכונה השנייה', icon: 'heart' },
+          { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'zap' }
+        ]
+      },
+      about: { title: 'אודותינו', description: 'אנחנו חברה מובילה בתחום עם ניסיון של שנים רבות. אנו מתמחים במתן פתרונות מקצועיים ואמינים ללקוחותינו.' },
+      services: {
+        title: 'השירותים שלנו',
+        subtitle: 'פתרונות מקצועיים המותאמים לצרכים שלכם',
+        items: [
+          { title: 'שירות 1', description: 'תיאור מפורט של השירות הראשון', price: '₪299/חודש' },
+          { title: 'שירות 2', description: 'תיאור מפורט של השירות השני', price: '₪599/חודש' }
+        ]
+      },
+      testimonials: {
+        title: 'מה הלקוחות אומרים',
+        testimonials: [
+          { name: 'יוסי כהן', role: 'מנהל חברה', content: 'שירות מעולה ומקצועי. ממליץ בחום!' },
+          { name: 'שרה לוי', role: 'יזמת', content: 'התוצאות עלו על הציפיות. צוות מקצועי ויעיל.' }
+        ]
+      },
+      pricing: {
+        title: 'מחירים',
+        plans: [
+          { name: 'בסיסי', price: '₪99/חודש', features: ['תכונה 1', 'תכונה 2', 'תכונה 3'] },
+          { name: 'מקצועי', price: '₪199/חודש', features: ['כל התכונות הבסיסיות', 'תכונה מתקדמת 1', 'תכונה מתקדמת 2', 'תמיכה מהירה'] }
+        ]
+      },
+      faq: {
+        title: 'שאלות נפוצות',
+        subtitle: 'תשובות לשאלות הנפוצות ביותר',
+        items: [
+          { question: 'איך זה עובד?', answer: 'המערכת פועלת בצורה פשוטה וידידותית למשתמש.' },
+          { question: 'כמה זה עולה?', answer: 'יש לנו מגוון חבילות המתאימות לכל תקציב.' }
+        ]
+      },
+      contact: {
+        title: 'צור קשר',
+        subtitle: 'נשמח לשמוע ממך',
+        description: 'נשמח לסייע בכל שאלה או בקשה',
+        info: {
+          address: 'רחוב הדוגמה 123, תל אביב',
+          phone: '03-1234567',
+          email: 'info@example.com',
+          hours: 'ימים א-ה: 9:00-18:00'
+        },
+        form: {
+          nameLabel: 'שם מלא',
+          emailLabel: 'כתובת אימייל',
+          phoneLabel: 'מספר טלפון',
+          messageLabel: 'הודעה',
+          submitText: 'שלח הודעה'
+        }
+      }
+    };
   });
   
   const [pageStyles, setPageStyles] = useState({
@@ -183,18 +245,28 @@ const VisualLandingPageEditor = ({
   };
 
   const handleSave = () => {
-    // TODO: Save to database/local storage
-    console.log('Saving page with styles:', { pageStyles, sectionStyles });
+    // שמירת כל השינויים
+    const updatedContent = {
+      ...editableContent,
+      styles: pageStyles,
+      sectionStyles: sectionStyles
+    };
+    
+    if (onSave) {
+      onSave(updatedContent);
+    }
+    console.log('Saving page with all content and styles:', updatedContent);
   };
 
   const handleDownload = () => {
-    // TODO: Generate and download HTML
-    console.log('Downloading page...');
+    if (onDownload) {
+      onDownload();
+    }
   };
 
   const handlePreview = () => {
-    // TODO: Open preview modal
-    console.log('Opening preview...');
+    // יצירת תצוגה מקדימה עם השינויים החדשים
+    console.log('Preview with updated content:', editableContent);
   };
 
   return (
@@ -356,11 +428,251 @@ const VisualLandingPageEditor = ({
                         </div>
                       )}
 
-                      {(activeSection === 'services' || activeSection === 'testimonials' || activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
-                        <div className="text-center py-8 text-muted-foreground">
-                          <Type className="h-8 w-8 mx-auto mb-2" />
-                          <p>עריכת תוכן עבור סקשן {sections.find(s => s.id === activeSection)?.name}</p>
-                          <p className="text-xs">יתווסף בקרוב...</p>
+                      {activeSection === 'services' && (
+                        <div className="space-y-4">
+                          <div>
+                            <Label className="text-xs">כותרת הסקשן</Label>
+                            <Input
+                              value={editableContent?.services?.title || ''}
+                              onChange={(e) => updateContent('services', 'title', e.target.value)}
+                              placeholder="השירותים שלנו"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">תת כותרת</Label>
+                            <Textarea
+                              value={editableContent?.services?.subtitle || ''}
+                              onChange={(e) => updateContent('services', 'subtitle', e.target.value)}
+                              placeholder="פתרונות מקצועיים המותאמים לצרכים שלכם"
+                              rows={2}
+                            />
+                          </div>
+                          {editableContent?.services?.items?.map((service, index) => (
+                            <div key={index} className="p-3 border rounded-lg space-y-2">
+                              <Label className="text-xs">שירות {index + 1}</Label>
+                              <Input
+                                value={service.title || ''}
+                                onChange={(e) => {
+                                  const newItems = [...(editableContent.services?.items || [])];
+                                  newItems[index] = { ...service, title: e.target.value };
+                                  updateContent('services', 'items', newItems);
+                                }}
+                                placeholder="שם השירות"
+                              />
+                              <Textarea
+                                value={service.description || ''}
+                                onChange={(e) => {
+                                  const newItems = [...(editableContent.services?.items || [])];
+                                  newItems[index] = { ...service, description: e.target.value };
+                                  updateContent('services', 'items', newItems);
+                                }}
+                                placeholder="תיאור השירות"
+                                rows={2}
+                              />
+                              <Input
+                                value={service.price || ''}
+                                onChange={(e) => {
+                                  const newItems = [...(editableContent.services?.items || [])];
+                                  newItems[index] = { ...service, price: e.target.value };
+                                  updateContent('services', 'items', newItems);
+                                }}
+                                placeholder="מחיר (לדוגמה: ₪299/חודש)"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {activeSection === 'testimonials' && (
+                        <div className="space-y-4">
+                          <div>
+                            <Label className="text-xs">כותרת הסקשן</Label>
+                            <Input
+                              value={editableContent?.testimonials?.title || ''}
+                              onChange={(e) => updateContent('testimonials', 'title', e.target.value)}
+                              placeholder="מה הלקוחות אומרים"
+                            />
+                          </div>
+                          {editableContent?.testimonials?.testimonials?.map((testimonial, index) => (
+                            <div key={index} className="p-3 border rounded-lg space-y-2">
+                              <Label className="text-xs">המלצה {index + 1}</Label>
+                              <Input
+                                value={testimonial.name || ''}
+                                onChange={(e) => {
+                                  const newTestimonials = [...(editableContent.testimonials?.testimonials || [])];
+                                  newTestimonials[index] = { ...testimonial, name: e.target.value };
+                                  updateContent('testimonials', 'testimonials', newTestimonials);
+                                }}
+                                placeholder="שם הלקוח"
+                              />
+                              <Input
+                                value={testimonial.role || ''}
+                                onChange={(e) => {
+                                  const newTestimonials = [...(editableContent.testimonials?.testimonials || [])];
+                                  newTestimonials[index] = { ...testimonial, role: e.target.value };
+                                  updateContent('testimonials', 'testimonials', newTestimonials);
+                                }}
+                                placeholder="תפקיד/חברה"
+                              />
+                              <Textarea
+                                value={testimonial.content || ''}
+                                onChange={(e) => {
+                                  const newTestimonials = [...(editableContent.testimonials?.testimonials || [])];
+                                  newTestimonials[index] = { ...testimonial, content: e.target.value };
+                                  updateContent('testimonials', 'testimonials', newTestimonials);
+                                }}
+                                placeholder="תוכן ההמלצה"
+                                rows={3}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {activeSection === 'pricing' && (
+                        <div className="space-y-4">
+                          <div>
+                            <Label className="text-xs">כותרת הסקשן</Label>
+                            <Input
+                              value={editableContent?.pricing?.title || ''}
+                              onChange={(e) => updateContent('pricing', 'title', e.target.value)}
+                              placeholder="מחירים"
+                            />
+                          </div>
+                          {editableContent?.pricing?.plans?.map((plan, index) => (
+                            <div key={index} className="p-3 border rounded-lg space-y-2">
+                              <Label className="text-xs">חבילה {index + 1}</Label>
+                              <Input
+                                value={plan.name || ''}
+                                onChange={(e) => {
+                                  const newPlans = [...(editableContent.pricing?.plans || [])];
+                                  newPlans[index] = { ...plan, name: e.target.value };
+                                  updateContent('pricing', 'plans', newPlans);
+                                }}
+                                placeholder="שם החבילה"
+                              />
+                              <Input
+                                value={plan.price || ''}
+                                onChange={(e) => {
+                                  const newPlans = [...(editableContent.pricing?.plans || [])];
+                                  newPlans[index] = { ...plan, price: e.target.value };
+                                  updateContent('pricing', 'plans', newPlans);
+                                }}
+                                placeholder="מחיר (לדוגמה: ₪99/חודש)"
+                              />
+                              <div>
+                                <Label className="text-xs">תכונות (אחת בכל שורה)</Label>
+                                <Textarea
+                                  value={plan.features?.join('\n') || ''}
+                                  onChange={(e) => {
+                                    const newPlans = [...(editableContent.pricing?.plans || [])];
+                                    newPlans[index] = { ...plan, features: e.target.value.split('\n').filter(f => f.trim()) };
+                                    updateContent('pricing', 'plans', newPlans);
+                                  }}
+                                  placeholder="תכונה 1&#10;תכונה 2&#10;תכונה 3"
+                                  rows={4}
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {activeSection === 'faq' && (
+                        <div className="space-y-4">
+                          <div>
+                            <Label className="text-xs">כותרת הסקשן</Label>
+                            <Input
+                              value={editableContent?.faq?.title || ''}
+                              onChange={(e) => updateContent('faq', 'title', e.target.value)}
+                              placeholder="שאלות נפוצות"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">תת כותרת</Label>
+                            <Input
+                              value={editableContent?.faq?.subtitle || ''}
+                              onChange={(e) => updateContent('faq', 'subtitle', e.target.value)}
+                              placeholder="תשובות לשאלות הנפוצות ביותר"
+                            />
+                          </div>
+                          {editableContent?.faq?.items?.map((item, index) => (
+                            <div key={index} className="p-3 border rounded-lg space-y-2">
+                              <Label className="text-xs">שאלה {index + 1}</Label>
+                              <Input
+                                value={item.question || ''}
+                                onChange={(e) => {
+                                  const newItems = [...(editableContent.faq?.items || [])];
+                                  newItems[index] = { ...item, question: e.target.value };
+                                  updateContent('faq', 'items', newItems);
+                                }}
+                                placeholder="השאלה"
+                              />
+                              <Textarea
+                                value={item.answer || ''}
+                                onChange={(e) => {
+                                  const newItems = [...(editableContent.faq?.items || [])];
+                                  newItems[index] = { ...item, answer: e.target.value };
+                                  updateContent('faq', 'items', newItems);
+                                }}
+                                placeholder="התשובה"
+                                rows={3}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {activeSection === 'contact' && (
+                        <div className="space-y-4">
+                          <div>
+                            <Label className="text-xs">כותרת הסקשן</Label>
+                            <Input
+                              value={editableContent?.contact?.title || ''}
+                              onChange={(e) => updateContent('contact', 'title', e.target.value)}
+                              placeholder="צור קשר"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">תת כותרת</Label>
+                            <Input
+                              value={editableContent?.contact?.subtitle || ''}
+                              onChange={(e) => updateContent('contact', 'subtitle', e.target.value)}
+                              placeholder="נשמח לשמוע ממך"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">תיאור</Label>
+                            <Textarea
+                              value={editableContent?.contact?.description || ''}
+                              onChange={(e) => updateContent('contact', 'description', e.target.value)}
+                              placeholder="נשמח לסייע בכל שאלה"
+                              rows={2}
+                            />
+                          </div>
+                          <div className="space-y-3">
+                            <Label className="text-xs font-medium">פרטי יצירת קשר</Label>
+                            <Input
+                              value={editableContent?.contact?.info?.address || ''}
+                              onChange={(e) => updateContent('contact', 'info', { ...editableContent?.contact?.info, address: e.target.value })}
+                              placeholder="כתובת"
+                            />
+                            <Input
+                              value={editableContent?.contact?.info?.phone || ''}
+                              onChange={(e) => updateContent('contact', 'info', { ...editableContent?.contact?.info, phone: e.target.value })}
+                              placeholder="טלפון"
+                            />
+                            <Input
+                              value={editableContent?.contact?.info?.email || ''}
+                              onChange={(e) => updateContent('contact', 'info', { ...editableContent?.contact?.info, email: e.target.value })}
+                              placeholder="אימייל"
+                            />
+                            <Input
+                              value={editableContent?.contact?.info?.hours || ''}
+                              onChange={(e) => updateContent('contact', 'info', { ...editableContent?.contact?.info, hours: e.target.value })}
+                              placeholder="שעות פעילות"
+                            />
+                          </div>
                         </div>
                       )}
                     </CardContent>

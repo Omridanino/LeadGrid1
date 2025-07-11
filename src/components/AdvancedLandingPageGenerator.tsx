@@ -80,6 +80,14 @@ const AdvancedLandingPageGenerator = ({
   };
 
   const handleEdit = () => {
+    if (!generatedPage) {
+      toast({
+        title: "שגיאה",
+        description: "אין דף לעריכה. אנא צור דף נחיתה תחילה.",
+        variant: "destructive",
+      });
+      return;
+    }
     setIsEditorOpen(true);
   };
 
@@ -285,9 +293,11 @@ const AdvancedLandingPageGenerator = ({
                   <ul className="text-sm space-y-1 text-muted-foreground">
                     <li>✅ תוכן מותאם אישית באמצעות GPT-4</li>
                     <li>✅ עיצוב מקצועי ורספונסיבי</li>
-                    <li>✅ כל הסקשנים הנדרשים (Hero, Features, Testimonials, וכו')</li>
-                    <li>✅ עורך חזותי לעריכת כל רכיב</li>
-                    <li>✅ אופציות התאמה אישית מלאות</li>
+                    <li>✅ כל הסקשנים הנדרשים (Hero, About, Features, Testimonials, Pricing, FAQ, Contact)</li>
+                    <li>✅ עורך חזותי מתקדם לעריכת כל רכיב</li>
+                    <li>✅ תצוגה מקדימה חיה בזמן אמת</li>
+                    <li>✅ הורדת קובץ HTML מלא ומוכן לשימוש</li>
+                    <li>✅ אופציות התאמה אישית מלאות (צבעים, פונטים, סגנונות)</li>
                   </ul>
                 </div>
 
@@ -430,7 +440,7 @@ const AdvancedLandingPageGenerator = ({
                     </Button>
                     <Button onClick={handleEdit} variant="default">
                       <Edit className="h-4 w-4 mr-2" />
-                      עורך חזותי
+                      {generatedPage ? 'עורך חזותי' : 'עורך חזותי (צור דף תחילה)'}
                     </Button>
                     <Button onClick={handleSave} variant="outline">
                       <Save className="h-4 w-4 mr-2" />
@@ -685,12 +695,20 @@ const AdvancedLandingPageGenerator = ({
         </Dialog>
 
         {/* Visual Editor Modal */}
-        <VisualLandingPageEditor
-          isOpen={isEditorOpen}
-          onClose={() => setIsEditorOpen(false)}
-          generatedContent={generatedPage}
-          formData={formData}
-        />
+            <VisualLandingPageEditor 
+              isOpen={isEditorOpen} 
+              onClose={() => setIsEditorOpen(false)}
+              generatedContent={generatedPage}
+              formData={formData}
+              onSave={(updatedContent) => {
+                setGeneratedPage(updatedContent);
+                toast({
+                  title: "נשמר בהצלחה! ✅",
+                  description: "השינויים נשמרו והם יופיעו בתצוגה המקדימה ובהורדה",
+                });
+              }}
+              onDownload={handleDownload}
+            />
       </DialogContent>
     </Dialog>
   );
