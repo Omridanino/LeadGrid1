@@ -99,7 +99,7 @@ const AdvancedLandingPageGenerator = ({
   };
 
   const handleDownload = () => {
-    if (!generatedPage) {
+    if (!generatedPage && !formData?.selectedTemplate) {
       toast({
         title: "שגיאה",
         description: "אין דף להורדה. אנא צור דף נחיתה תחילה.",
@@ -108,9 +108,35 @@ const AdvancedLandingPageGenerator = ({
       return;
     }
 
-    // יצירת HTML מלא מהתוכן שנוצר
-    const htmlContent = `
-<!DOCTYPE html>
+    // אם יש תבנית נבחרת, השתמש ב-pageGenerator
+    if (formData?.selectedTemplate) {
+      // ייבוא דינמי של pageGenerator ויצירת HTML
+      import("@/utils/pageGenerator").then(({ generatePageHTML }) => {
+        const htmlContent = generatePageHTML(formData.selectedTemplate);
+        
+        // יצירת קובץ להורדה
+        const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${formData.selectedTemplate.hero?.title?.replace(/[^a-zA-Z0-9\u0590-\u05FF]/g, '-') || 'landing-page'}.html`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        toast({
+          title: "הורדה הושלמה! 🎉",
+          description: "קובץ ה-HTML המלא נשמר למחשב שלך עם כל הסקשנים",
+        });
+      });
+      return;
+    }
+
+    // קוד הורדה ישן עבור generatedPage (לתאימות לאחור)
+    if (!generatedPage) return;
+    
+    const htmlContent = `<!DOCTYPE html>
 <html dir="rtl" lang="he">
 <head>
     <meta charset="UTF-8">
@@ -157,77 +183,77 @@ const AdvancedLandingPageGenerator = ({
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <div class="badge">${generatedPage.hero?.badge || ''}</div>
-            <h1>${generatedPage.hero?.title || ''}</h1>
-            <h2>${generatedPage.hero?.subtitle || ''}</h2>
-            <p>${generatedPage.hero?.description || ''}</p>
+            <div class="badge">\${generatedPage.hero?.badge || ''}</div>
+            <h1>\${generatedPage.hero?.title || ''}</h1>
+            <h2>\${generatedPage.hero?.subtitle || ''}</h2>
+            <p>\${generatedPage.hero?.description || ''}</p>
             <div class="buttons">
-                <a href="#" class="btn btn-primary">${generatedPage.hero?.button1Text || 'לחץ כאן'}</a>
-                <a href="#" class="btn btn-secondary">${generatedPage.hero?.button2Text || 'מידע נוסף'}</a>
+                <a href="#" class="btn btn-primary">\${generatedPage.hero?.button1Text || 'לחץ כאן'}</a>
+                <a href="#" class="btn btn-secondary">\${generatedPage.hero?.button2Text || 'מידע נוסף'}</a>
             </div>
         </div>
     </section>
 
-    ${generatedPage.features ? `
+    \${generatedPage.features ? \`
     <!-- Features Section -->
     <section class="section bg-gray">
         <div class="container text-center">
-            <h2>${generatedPage.features.title}</h2>
-            <p class="subtitle">${generatedPage.features.subtitle}</p>
+            <h2>\${generatedPage.features.title}</h2>
+            <p class="subtitle">\${generatedPage.features.subtitle}</p>
             <div class="grid grid-3">
-                ${generatedPage.features.items?.map((item: any) => `
+                \${generatedPage.features.items?.map((item) => \`
                     <div class="card">
                         <div class="feature-icon">⭐</div>
-                        <h3>${item.title}</h3>
-                        <p>${item.description}</p>
+                        <h3>\${item.title}</h3>
+                        <p>\${item.description}</p>
                     </div>
-                `).join('') || ''}
+                \`).join('') || ''}
             </div>
         </div>
     </section>
-    ` : ''}
+    \` : ''}
 
-    ${generatedPage.testimonials ? `
+    \${generatedPage.testimonials ? \`
     <!-- Testimonials Section -->
     <section class="section">
         <div class="container text-center">
-            <h2>${generatedPage.testimonials.title}</h2>
+            <h2>\${generatedPage.testimonials.title}</h2>
             <div class="grid grid-2">
-                ${generatedPage.testimonials.testimonials?.map((testimonial: any) => `
+                \${generatedPage.testimonials.testimonials?.map((testimonial) => \`
                     <div class="card">
                         <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                        <p>"${testimonial.content}"</p>
+                        <p>"\${testimonial.content}"</p>
                         <div style="margin-top: 16px;">
-                            <div style="font-weight: 600;">${testimonial.name}</div>
-                            <div style="color: #6b7280; font-size: 14px;">${testimonial.role}</div>
+                            <div style="font-weight: 600;">\${testimonial.name}</div>
+                            <div style="color: #6b7280; font-size: 14px;">\${testimonial.role}</div>
                         </div>
                     </div>
-                `).join('') || ''}
+                \`).join('') || ''}
             </div>
         </div>
     </section>
-    ` : ''}
+    \` : ''}
 
-    ${generatedPage.pricing ? `
+    \${generatedPage.pricing ? \`
     <!-- Pricing Section -->
     <section class="section bg-gray">
         <div class="container text-center">
-            <h2>${generatedPage.pricing.title}</h2>
+            <h2>\${generatedPage.pricing.title}</h2>
             <div class="grid grid-2">
-                ${generatedPage.pricing.plans?.map((plan: any) => `
+                \${generatedPage.pricing.plans?.map((plan) => \`
                     <div class="card">
-                        <h3>${plan.name}</h3>
-                        <div class="pricing-price">${plan.price}</div>
+                        <h3>\${plan.name}</h3>
+                        <div class="pricing-price">\${plan.price}</div>
                         <ul class="pricing-features">
-                            ${plan.features?.map((feature: string) => `<li>${feature}</li>`).join('') || ''}
+                            \${plan.features?.map((feature) => \`<li>\${feature}</li>\`).join('') || ''}
                         </ul>
                         <a href="#" class="btn pricing-btn">בחר חבילה</a>
                     </div>
-                `).join('') || ''}
+                \`).join('') || ''}
             </div>
         </div>
     </section>
-    ` : ''}
+    \` : ''}
 </body>
 </html>`;
 
@@ -236,7 +262,7 @@ const AdvancedLandingPageGenerator = ({
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `${generatedPage.hero?.title?.replace(/[^a-zA-Z0-9]/g, '-') || 'landing-page'}.html`;
+    link.download = `${generatedPage.hero?.title?.replace(/[^a-zA-Z0-9\u0590-\u05FF]/g, '-') || 'landing-page'}.html`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -700,8 +726,22 @@ const AdvancedLandingPageGenerator = ({
               onClose={() => setIsEditorOpen(false)}
               generatedContent={generatedPage}
               formData={formData}
+              templateData={formData?.selectedTemplate} // העברת כל נתוני התבנית
               onSave={(updatedContent) => {
                 setGeneratedPage(updatedContent);
+                // עדכון התבנית גם ב-formData
+                if (formData?.selectedTemplate) {
+                  // עדכון התבנית עם השינויים החדשים
+                  const updatedFormData = {
+                    ...formData,
+                    selectedTemplate: {
+                      ...formData.selectedTemplate,
+                      ...updatedContent
+                    }
+                  };
+                  // שמירה ב-localStorage כדי שהשינויים יישמרו
+                  localStorage.setItem('formData', JSON.stringify(updatedFormData));
+                }
                 toast({
                   title: "נשמר בהצלחה! ✅",
                   description: "השינויים נשמרו והם יופיעו בתצוגה המקדימה ובהורדה",

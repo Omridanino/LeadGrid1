@@ -41,6 +41,7 @@ interface VisualLandingPageEditorProps {
   onClose: () => void;
   generatedContent: any;
   formData: any;
+  templateData?: any; // נתוני התבנית המלאים
   onSave?: (updatedContent: any) => void;
   onDownload?: () => void;
 }
@@ -50,13 +51,37 @@ const VisualLandingPageEditor = ({
   onClose, 
   generatedContent, 
   formData,
+  templateData,
   onSave,
   onDownload
 }: VisualLandingPageEditorProps) => {
   const [activeSection, setActiveSection] = useState('hero');
   const [editableContent, setEditableContent] = useState(() => {
-    // Use generated content if available, otherwise use defaults
-    return generatedContent || {
+    // אם יש templateData (מתבנית שנבחרה), השתמש בו
+    if (templateData) {
+      console.log('Loading content from templateData:', templateData);
+      return {
+        hero: templateData.hero || {},
+        about: templateData.about || {},
+        features: templateData.features || {},
+        services: templateData.services || {},
+        testimonials: templateData.testimonials || {},
+        pricing: templateData.pricing || {},
+        faq: templateData.faq || {},
+        contact: templateData.contact || {},
+        emotional: templateData.emotional || {},
+        styles: templateData.styles || {}
+      };
+    }
+    
+    // אם יש generatedContent, השתמש בו
+    if (generatedContent) {
+      console.log('Loading content from generatedContent:', generatedContent);
+      return generatedContent;
+    }
+    
+    // ברירת מחדל עם תוכן בסיסי
+    return {
       hero: { 
         title: formData?.businessName ? `${formData.businessName} - המובילים בתחום` : 'כותרת ראשית',
         subtitle: 'פתרונות מקצועיים ואמינים ברמה הגבוהה ביותר',
@@ -74,7 +99,7 @@ const VisualLandingPageEditor = ({
           { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'zap' }
         ]
       },
-      about: { title: 'אודותינו', description: 'אנחנו חברה מובילה בתחום עם ניסיון של שנים רבות. אנו מתמחים במתן פתרונות מקצועיים ואמינים ללקוחותינו.' },
+      about: { title: 'אודותינו', description: 'אנחנו חברה מובילה בתחום עם ניסיון של שנים רבות' },
       services: {
         title: 'השירותים שלנו',
         subtitle: 'פתרונות מקצועיים המותאמים לצרכים שלכם',
@@ -114,15 +139,10 @@ const VisualLandingPageEditor = ({
           phone: '03-1234567',
           email: 'info@example.com',
           hours: 'ימים א-ה: 9:00-18:00'
-        },
-        form: {
-          nameLabel: 'שם מלא',
-          emailLabel: 'כתובת אימייל',
-          phoneLabel: 'מספר טלפון',
-          messageLabel: 'הודעה',
-          submitText: 'שלח הודעה'
         }
-      }
+      },
+      emotional: templateData?.emotional || null,
+      styles: templateData?.styles || {}
     };
   });
   
@@ -217,12 +237,13 @@ const VisualLandingPageEditor = ({
 
   const sections = [
     { id: 'hero', name: 'דף הבית', icon: Sparkles },
-    { id: 'features', name: 'תכונות', icon: Layout },
     { id: 'about', name: 'אודותינו', icon: Circle },
+    { id: 'features', name: 'תכונות', icon: Layout },
     { id: 'services', name: 'שירותים', icon: Settings },
+    { id: 'emotional', name: 'סקשן רגשי', icon: Heart },
     { id: 'testimonials', name: 'המלצות', icon: Type },
-    { id: 'faq', name: 'שאלות נפוצות', icon: Eye },
     { id: 'pricing', name: 'מחירים', icon: Square },
+    { id: 'faq', name: 'שאלות נפוצות', icon: Eye },
     { id: 'contact', name: 'יצירת קשר', icon: MousePointer }
   ];
 
@@ -245,17 +266,27 @@ const VisualLandingPageEditor = ({
   };
 
   const handleSave = () => {
-    // שמירת כל השינויים
+    // שמירת כל השינויים כולל הסקשן הרגשי והתוכן המלא
     const updatedContent = {
       ...editableContent,
       styles: pageStyles,
-      sectionStyles: sectionStyles
+      sectionStyles: sectionStyles,
+      // וידוא שכל הסקשנים נשמרים
+      hero: editableContent.hero || {},
+      about: editableContent.about || {},
+      features: editableContent.features || {},
+      services: editableContent.services || {},
+      emotional: editableContent.emotional || null,
+      testimonials: editableContent.testimonials || {},
+      pricing: editableContent.pricing || {},
+      faq: editableContent.faq || {},
+      contact: editableContent.contact || {}
     };
     
     if (onSave) {
       onSave(updatedContent);
     }
-    console.log('Saving page with all content and styles:', updatedContent);
+    console.log('Saving complete page content:', updatedContent);
   };
 
   const handleDownload = () => {
@@ -352,6 +383,59 @@ const VisualLandingPageEditor = ({
                               value={editableContent?.hero?.button2Text || ''}
                               onChange={(e) => updateContent('hero', 'button2Text', e.target.value)}
                               placeholder="טקסט כפתור משני"
+                            />
+                          </div>
+                        </>
+                      )}
+
+                      {activeSection === 'emotional' && editableContent?.emotional && (
+                        <>
+                          <div>
+                            <Label className="text-xs">כותרת הסקשן</Label>
+                            <Input
+                              value={editableContent?.emotional?.title || ''}
+                              onChange={(e) => updateContent('emotional', 'title', e.target.value)}
+                              placeholder="כותרת רגשית"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">תת כותרת</Label>
+                            <Textarea
+                              value={editableContent?.emotional?.subtitle || ''}
+                              onChange={(e) => updateContent('emotional', 'subtitle', e.target.value)}
+                              placeholder="תת כותרת רגשית"
+                              rows={2}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">תיאור</Label>
+                            <Textarea
+                              value={editableContent?.emotional?.description || ''}
+                              onChange={(e) => updateContent('emotional', 'description', e.target.value)}
+                              placeholder="תיאור רגשי מפורט"
+                              rows={4}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">טקסט כפתור</Label>
+                            <Input
+                              value={editableContent?.emotional?.button?.text || ''}
+                              onChange={(e) => updateContent('emotional', 'button', {
+                                ...editableContent?.emotional?.button,
+                                text: e.target.value
+                              })}
+                              placeholder="טקסט הכפתור"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">לינק הכפתור</Label>
+                            <Input
+                              value={editableContent?.emotional?.button?.link || ''}
+                              onChange={(e) => updateContent('emotional', 'button', {
+                                ...editableContent?.emotional?.button,
+                                link: e.target.value
+                              })}
+                              placeholder="#"
                             />
                           </div>
                         </>
