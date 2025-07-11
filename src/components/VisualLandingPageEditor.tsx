@@ -419,14 +419,14 @@ const VisualLandingPageEditor = ({
                                 placeholder="טקסט כפתור ראשי"
                               />
                               <Select
-                                value={editableContent?.hero?.button1Icon || ''}
-                                onValueChange={(value) => updateContent('hero', 'button1Icon', value)}
+                                value={editableContent?.hero?.button1Icon || 'none'}
+                                onValueChange={(value) => updateContent('hero', 'button1Icon', value === 'none' ? '' : value)}
                               >
                                 <SelectTrigger className="w-20">
                                   <SelectValue placeholder="🔽" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  <SelectItem value="">ללא</SelectItem>
+                                  <SelectItem value="none">ללא</SelectItem>
                                   {iconOptions.map((icon) => (
                                     <SelectItem key={icon.id} value={icon.id}>
                                       <icon.icon className="h-4 w-4" />
@@ -445,14 +445,14 @@ const VisualLandingPageEditor = ({
                                 placeholder="טקסט כפתור משני"
                               />
                               <Select
-                                value={editableContent?.hero?.button2Icon || ''}
-                                onValueChange={(value) => updateContent('hero', 'button2Icon', value)}
+                                value={editableContent?.hero?.button2Icon || 'none'}
+                                onValueChange={(value) => updateContent('hero', 'button2Icon', value === 'none' ? '' : value)}
                               >
                                 <SelectTrigger className="w-20">
                                   <SelectValue placeholder="🔽" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  <SelectItem value="">ללא</SelectItem>
+                                  <SelectItem value="none">ללא</SelectItem>
                                   {iconOptions.map((icon) => (
                                     <SelectItem key={icon.id} value={icon.id}>
                                       <icon.icon className="h-4 w-4" />
