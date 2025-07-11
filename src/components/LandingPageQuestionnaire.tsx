@@ -1,5 +1,5 @@
 
-import TemplateSelector from "./TemplateSelector";
+import AutomaticLandingPageGenerator from "./AutomaticLandingPageGenerator";
 
 interface LandingPageQuestionnaireProps {
   isOpen: boolean;
@@ -7,7 +7,7 @@ interface LandingPageQuestionnaireProps {
 }
 
 const LandingPageQuestionnaire = ({ isOpen, onClose }: LandingPageQuestionnaireProps) => {
-  return <TemplateSelector isOpen={isOpen} onClose={onClose} />;
+  return <AutomaticLandingPageGenerator isOpen={isOpen} onClose={onClose} />;
 };
 
 export default LandingPageQuestionnaire;
