@@ -75,7 +75,7 @@ serve(async (req) => {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
+        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY') || Deno.env.get('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')}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -106,6 +106,8 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Error in generate-landing-content function:', error);
+    console.error('OPENAI_API_KEY exists:', !!Deno.env.get('OPENAI_API_KEY'));
+    
     return new Response(JSON.stringify({ 
       error: 'Failed to generate content', 
       details: error.message 
