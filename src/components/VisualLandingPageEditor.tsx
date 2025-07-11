@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import TestimonialsEditor from './TestimonialsEditor';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -214,6 +215,9 @@ const VisualLandingPageEditor = ({
     aboutTextColor: '#6b7280',
     servicesTitleColor: '#1f2937',
     servicesTextColor: '#6b7280',
+    testimonialsTitleColor: '#1f2937',
+    testimonialsTextColor: '#6b7280',
+    testimonialsBackgroundColor: '#f9fafb',
     heroBackground: 'gradient',
     heroBackgroundImage: '',
     buttonStyle: 'rounded',
@@ -803,7 +807,26 @@ const VisualLandingPageEditor = ({
                         </>
                       )}
 
-                      {(activeSection === 'testimonials' || activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
+                      {activeSection === 'testimonials' && (
+                        <div className="space-y-4">
+                          <TestimonialsEditor 
+                            content={editableContent} 
+                            onContentChange={setEditableContent} 
+                          />
+                          
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={() => addButton(activeSection)}
+                            className="w-full"
+                          >
+                            <Plus className="h-4 w-4 mr-2" />
+                            הוסף כפתור
+                          </Button>
+                        </div>
+                      )}
+
+                      {(activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
                         <div className="text-center py-8 text-muted-foreground">
                           <Type className="h-8 w-8 mx-auto mb-2" />
                           <p>עריכת תוכן עבור סקשן {sections.find(s => s.id === activeSection)?.name}</p>
@@ -941,6 +964,32 @@ const VisualLandingPageEditor = ({
                             <ColorPicker
                               color={pageStyles.servicesTextColor}
                               onChange={(color) => updatePageStyle('servicesTextColor', color)}
+                            />
+                          </div>
+                        </>
+                      )}
+                      
+                      {activeSection === 'testimonials' && (
+                        <>
+                          <div>
+                            <Label className="text-xs">צבע כותרת</Label>
+                            <ColorPicker
+                              color={pageStyles.testimonialsTitleColor}
+                              onChange={(color) => updatePageStyle('testimonialsTitleColor', color)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">צבע טקסט</Label>
+                            <ColorPicker
+                              color={pageStyles.testimonialsTextColor}
+                              onChange={(color) => updatePageStyle('testimonialsTextColor', color)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">צבע רקע</Label>
+                            <ColorPicker
+                              color={pageStyles.testimonialsBackgroundColor}
+                              onChange={(color) => updatePageStyle('testimonialsBackgroundColor', color)}
                             />
                           </div>
                         </>
@@ -1439,8 +1488,88 @@ const VisualLandingPageEditor = ({
                 </div>
               )}
 
+              {/* Testimonials Section Preview */}
+              {activeSection === 'testimonials' && (
+                <div className="p-8 rounded-lg bg-gray-50">
+                  <div className="max-w-6xl mx-auto">
+                    <div className="text-center mb-12">
+                      <h2 
+                        className="text-4xl font-bold mb-4"
+                        style={{ color: pageStyles.testimonialsTitleColor }}
+                      >
+                        {(editableContent?.testimonials as any)?.title || "המלצות לקוחות"}
+                      </h2>
+                      <p 
+                        className="text-xl"
+                        style={{ color: pageStyles.testimonialsTextColor }}
+                      >
+                        {(editableContent?.testimonials as any)?.subtitle || "מה הלקוחות שלנו אומרים עלינו"}
+                      </p>
+                    </div>
+                    
+                    <div className="grid md:grid-cols-3 gap-8">
+                      {((editableContent?.testimonials as any)?.items || [
+                        {
+                          name: "יוסי כהן",
+                          role: "מנכ\"ל חברת טכנולוגיה",
+                          content: "השירות מעולה ומקצועי. המליץ בחום!",
+                          rating: 5
+                        },
+                        {
+                          name: "שרה לוי",
+                          role: "יזמת",
+                          content: "קיבלתי בדיוק מה שחיפשתי. תוצאות מדהימות!",
+                          rating: 5
+                        },
+                        {
+                          name: "דני רוזן",
+                          role: "בעל עסק",
+                          content: "גישה מקצועית ותוצאות מעבר לציפיות.",
+                          rating: 5
+                        }
+                      ]).map((testimonial: any, index: number) => (
+                        <div key={index} className="bg-white p-6 rounded-lg shadow-sm border">
+                          <div className="flex items-center mb-4">
+                            {[...Array(testimonial.rating || 5)].map((_, i) => (
+                              <span key={i} className="text-yellow-400">⭐</span>
+                            ))}
+                          </div>
+                          <p 
+                            className="mb-4 italic"
+                            style={{ color: pageStyles.testimonialsTextColor }}
+                          >
+                            "{testimonial.content}"
+                          </p>
+                          <div className="flex items-center">
+                            <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center mr-3">
+                              <span className="text-sm font-bold text-gray-600">
+                                {testimonial.name?.charAt(0) || "L"}
+                              </span>
+                            </div>
+                            <div>
+                              <h4 
+                                className="font-bold"
+                                style={{ color: pageStyles.testimonialsTitleColor }}
+                              >
+                                {testimonial.name}
+                              </h4>
+                              <p 
+                                className="text-sm"
+                                style={{ color: pageStyles.testimonialsTextColor }}
+                              >
+                                {testimonial.role}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Other Sections Preview */}
-              {(activeSection === 'testimonials' || activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
+              {(activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
                 <div className="p-8 rounded-lg bg-gray-50 text-center">
                   <div className="text-gray-500 mb-4">
                     <Type className="h-16 w-16 mx-auto mb-4" />
