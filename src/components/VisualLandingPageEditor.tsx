@@ -1490,24 +1490,41 @@ const VisualLandingPageEditor = ({
 
               {/* Testimonials Section Preview */}
               {activeSection === 'testimonials' && (
-                <div className="p-8 rounded-lg bg-gray-50">
-                  <div className="max-w-6xl mx-auto">
-                    <div className="text-center mb-12">
+                <section className="py-24 relative overflow-hidden" style={{ background: pageStyles.testimonialsBackgroundColor }}>
+                  {/* Background Effects */}
+                  <div className="absolute inset-0">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5" />
+                    <div className="absolute top-1/4 left-1/6 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
+                    <div className="absolute bottom-1/4 right-1/6 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '3s' }} />
+                    <div className="absolute top-3/4 left-1/2 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
+                  </div>
+
+                  <div className="container mx-auto px-6 relative z-10">
+                    {/* Section Header */}
+                    <div className="text-center mb-20">
                       <h2 
-                        className="text-4xl font-bold mb-4"
-                        style={{ color: pageStyles.testimonialsTitleColor }}
+                        className="text-4xl md:text-5xl lg:text-6xl font-black mb-6"
+                        style={{
+                          color: pageStyles.testimonialsTitleColor,
+                          textShadow: '0 0 30px rgba(255, 255, 255, 0.2)',
+                          letterSpacing: '-0.02em'
+                        }}
                       >
-                        {(editableContent?.testimonials as any)?.title || "המלצות לקוחות"}
+                        {(editableContent?.testimonials as any)?.title || "המלצות מ"}
+                        <span className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent">
+                          לקוחות מובילים
+                        </span>
                       </h2>
                       <p 
-                        className="text-xl"
+                        className="text-xl max-w-3xl mx-auto leading-relaxed"
                         style={{ color: pageStyles.testimonialsTextColor }}
                       >
                         {(editableContent?.testimonials as any)?.subtitle || "מה הלקוחות שלנו אומרים עלינו"}
                       </p>
                     </div>
                     
-                    <div className="grid md:grid-cols-3 gap-8">
+                    {/* Testimonials Grid */}
+                    <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-8 max-w-7xl mx-auto">
                       {((editableContent?.testimonials as any)?.items || [
                         {
                           name: "יוסי כהן",
@@ -1528,44 +1545,64 @@ const VisualLandingPageEditor = ({
                           rating: 5
                         }
                       ]).map((testimonial: any, index: number) => (
-                        <div key={index} className="bg-white p-6 rounded-lg shadow-sm border">
-                          <div className="flex items-center mb-4">
-                            {[...Array(testimonial.rating || 5)].map((_, i) => (
-                              <span key={i} className="text-yellow-400">⭐</span>
-                            ))}
-                          </div>
-                          <p 
-                            className="mb-4 italic"
-                            style={{ color: pageStyles.testimonialsTextColor }}
-                          >
-                            "{testimonial.content}"
-                          </p>
-                          <div className="flex items-center">
-                            <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center mr-3">
-                              <span className="text-sm font-bold text-gray-600">
-                                {testimonial.name?.charAt(0) || "L"}
-                              </span>
-                            </div>
-                            <div>
-                              <h4 
-                                className="font-bold"
-                                style={{ color: pageStyles.testimonialsTitleColor }}
-                              >
-                                {testimonial.name}
-                              </h4>
-                              <p 
-                                className="text-sm"
+                        <div key={index} className="group relative">
+                          {/* Liquid glass card effect */}
+                          <div className="relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-[20px] p-8 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:transform hover:scale-105">
+                            {/* Glow effect */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 blur-lg rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            
+                            {/* Content */}
+                            <div className="relative z-10">
+                              {/* Stars */}
+                              <div className="flex items-center justify-center mb-6">
+                                <div className="flex space-x-1">
+                                  {[...Array(testimonial.rating || 5)].map((_, i) => (
+                                    <div key={i} className="w-6 h-6 text-yellow-400 animate-pulse" style={{ animationDelay: `${i * 0.1}s` }}>
+                                      ⭐
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                              
+                              {/* Quote */}
+                              <blockquote 
+                                className="text-lg mb-8 italic text-center leading-relaxed"
                                 style={{ color: pageStyles.testimonialsTextColor }}
                               >
-                                {testimonial.role}
-                              </p>
+                                "{testimonial.content}"
+                              </blockquote>
+                              
+                              {/* Author */}
+                              <div className="flex items-center justify-center">
+                                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mr-4 shadow-lg">
+                                  <span 
+                                    className="text-white font-bold text-lg"
+                                  >
+                                    {testimonial.name?.charAt(0) || "L"}
+                                  </span>
+                                </div>
+                                <div className="text-center">
+                                  <h4 
+                                    className="font-bold text-lg"
+                                    style={{ color: pageStyles.testimonialsTitleColor }}
+                                  >
+                                    {testimonial.name}
+                                  </h4>
+                                  <p 
+                                    className="text-sm opacity-80"
+                                    style={{ color: pageStyles.testimonialsTextColor }}
+                                  >
+                                    {testimonial.role}
+                                  </p>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
                       ))}
                     </div>
                   </div>
-                </div>
+                </section>
               )}
 
               {/* Other Sections Preview */}
