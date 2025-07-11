@@ -229,8 +229,8 @@ const AutomaticLandingPageGenerator = ({ isOpen, onClose }: AutomaticLandingPage
         footer: {
           companyName: formData.businessName
         },
-        styles: randomDesign.styles,
-        effects: randomDesign.effects
+        styles: getRandomDesign(formData.packageType).styles,
+        effects: getRandomDesign(formData.packageType).effects
       };
 
       setGeneratedTemplate(template);
