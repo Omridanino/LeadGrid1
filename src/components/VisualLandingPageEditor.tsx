@@ -1862,13 +1862,100 @@ const VisualLandingPageEditor = ({
 
               {/* Contact Section Preview */}
               {activeSection === 'contact' && (
-                <div className="p-8 rounded-lg bg-gray-50 text-center">
-                  <div className="text-gray-500 mb-4">
-                    <Type className="h-16 w-16 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold">
-                      תצוגה מקדימה של {sections.find(s => s.id === activeSection)?.name}
-                    </h3>
-                    <p className="text-sm mt-2">התצוגה המקדימה תתווסף בקרוב...</p>
+                <div 
+                  className="py-16 px-6"
+                  style={{backgroundColor: pageStyles.primaryColor || '#3b82f6'}}
+                >
+                  <div className="max-w-6xl mx-auto">
+                    {/* Section Header */}
+                    <div className="text-center mb-12">
+                      <h2 
+                        className="text-3xl md:text-4xl font-bold text-white mb-4"
+                      >
+                        {'נשמח לשמוע ממכם'}
+                      </h2>
+                      <p 
+                        className="text-xl text-white/90"
+                      >
+                        {'השאירו פרטים ונחזור אליכם במהרה'}
+                      </p>
+                    </div>
+                    
+                    {/* Contact Content */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                      {/* Contact Details */}
+                      <div className="space-y-6">
+                        <h3 className="text-xl font-bold text-white mb-6">פרטי יצירת קשר</h3>
+                        
+                        <div className="flex items-center gap-4 text-white">
+                          <div className="w-6 h-6 text-red-400">📍</div>
+                          <span>רח' הראשונים 1, תל אביב</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-4 text-white">
+                          <div className="w-6 h-6 text-red-400">📞</div>
+                          <span>03-1234567</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-4 text-white">
+                          <div className="w-6 h-6 text-blue-400">📧</div>
+                          <span>info@weinstudio.co.il</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-4 text-white">
+                          <div className="w-6 h-6 text-yellow-400">🕒</div>
+                          <span>א'-ה' 9:00-18:00</span>
+                        </div>
+                      </div>
+                      
+                      {/* Contact Form */}
+                      <div className="bg-white rounded-lg p-6 shadow-lg">
+                        <div className="space-y-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2 text-right">שם מלא</label>
+                            <input 
+                              type="text" 
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md text-right"
+                              placeholder=""
+                            />
+                          </div>
+                          
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2 text-right">כתובת מייל</label>
+                            <input 
+                              type="email" 
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md text-right"
+                              placeholder=""
+                            />
+                          </div>
+                          
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2 text-right">טלפון</label>
+                            <input 
+                              type="tel" 
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md text-right"
+                              placeholder=""
+                            />
+                          </div>
+                          
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2 text-right">הודעה</label>
+                            <textarea 
+                              rows={4}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md text-right"
+                              placeholder=""
+                            ></textarea>
+                          </div>
+                          
+                          <button 
+                            className="w-full py-3 font-medium rounded-lg transition-colors duration-200 text-white"
+                            style={{backgroundColor: pageStyles.primaryColor || '#3b82f6'}}
+                          >
+                            שליחה
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
