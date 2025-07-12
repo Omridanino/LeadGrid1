@@ -354,31 +354,23 @@ const VisualLandingPageEditor = ({
     if (generatedContent || formData) {
       console.log('useEffect - updating content with new data:', { generatedContent, formData });
       
-      // First try to get content from localStorage (which contains the latest generated content)
-      try {
-        const savedGeneratedContent = localStorage.getItem('generatedContent');
-        if (savedGeneratedContent) {
-          const parsedSavedContent = JSON.parse(savedGeneratedContent);
-          console.log('Found saved generated content in localStorage:', parsedSavedContent);
-          
-          // Use the saved generated content instead of the passed prop
-          const updatedContent = initializeContentWithData(parsedSavedContent, formData);
-          setEditableContent(updatedContent);
-          return;
-        }
-      } catch (error) {
-        console.log('No saved generated content found:', error);
+      // Always prioritize the passed generatedContent over localStorage
+      if (generatedContent) {
+        console.log('Using passed generatedContent:', generatedContent);
+        const updatedContent = initializeContentWithData(generatedContent, formData);
+        setEditableContent(updatedContent);
+      } else {
+        // Only use initializeContent if no generatedContent is passed
+        console.log('Using initializeContent as fallback');
+        setEditableContent(initializeContent());
       }
-      
-      // Fallback to passed generatedContent
-      setEditableContent(initializeContent());
     }
   }, [generatedContent, formData]);
 
   // Only load saved data if no generated content is available
   useEffect(() => {
     try {
-      // Priority: 1. Generated content, 2. Saved content from localStorage
+      // ONLY load from localStorage if we have no generated content AND no form data
       if (!generatedContent && !formData && isOpen) {
         const savedContent = localStorage.getItem('editableContent');
         if (savedContent) {
@@ -390,7 +382,7 @@ const VisualLandingPageEditor = ({
     } catch (error) {
       console.log('No saved content found or error loading:', error);
     }
-  }, [isOpen, generatedContent, formData]);
+  }, [isOpen]); // Remove generatedContent and formData from dependencies to prevent conflicts
   
   const [pageStyles, setPageStyles] = useState(() => {
     try {
