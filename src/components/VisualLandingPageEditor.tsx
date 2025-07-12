@@ -1701,108 +1701,79 @@ const VisualLandingPageEditor = ({
               {/* Pricing Section Preview */}
               {activeSection === 'pricing' && (
                 <div 
-                  className="py-16 px-6 relative overflow-hidden"
-                  style={{backgroundColor: pageStyles.backgroundColor || '#ffffff'}}
+                  className="py-16 px-6"
+                  style={{backgroundColor: '#ffffff'}}
                 >
-                  <div className="max-w-7xl mx-auto px-6 relative z-10">
+                  <div className="max-w-6xl mx-auto">
                     {/* Section Header */}
                     <div className="text-center mb-12">
-                      {editableContent?.pricing?.badge && (
-                        <div 
-                          className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4"
-                          style={{
-                            color: pageStyles.primaryColor, 
-                            borderColor: pageStyles.primaryColor
-                          }}
-                        >
-                          {editableContent.pricing.badge}
-                        </div>
-                      )}
                       <h2 
                         className="text-3xl md:text-4xl font-bold mb-4"
-                        style={{color: pageStyles.textColor}}
+                        style={{color: pageStyles.textColor || '#1f2937'}}
                       >
-                        {editableContent?.pricing?.title || 'מחירים שקופים'}
+                        {editableContent?.pricing?.title || 'חבילות מחיר'}
                       </h2>
                       {editableContent?.pricing?.subtitle && (
                         <p 
-                          className="text-xl opacity-80"
-                          style={{color: pageStyles.textColor}}
+                          className="text-xl"
+                          style={{color: pageStyles.textColor || '#374151'}}
                         >
                           {editableContent.pricing.subtitle}
                         </p>
                       )}
                     </div>
                     
-                    {/* Pricing Plans Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
+                    {/* Pricing Plans Grid - עיצוב פשוט */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-4xl mx-auto">
                       {(editableContent?.pricing?.plans || []).map((plan: any, index: number) => (
-                        <div key={index} className={`relative group perspective-1000 ${plan.recommended ? 'lg:scale-105' : ''}`}>
-                          {plan.recommended && (
-                            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
-                              <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 px-4 py-2 rounded-full text-sm font-bold flex items-center gap-1 shadow-lg">
-                                <span style={{color: 'currentColor'}}>★</span>
-                                מומלץ
-                              </div>
-                            </div>
-                          )}
+                        <div key={index} className="bg-white border border-gray-200 rounded-lg p-8 text-center shadow-sm">
+                          <h3 
+                            className="text-xl font-bold mb-6"
+                            style={{color: pageStyles.textColor || '#1f2937'}}
+                          >
+                            {plan.name}
+                          </h3>
                           
-                          <div className="relative transform-gpu transition-all duration-500 preserve-3d group-hover:rotateY-5">
-                            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20"></div>
-                            
-                            {plan.recommended && (
-                              <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 rounded-2xl blur-sm"></div>
-                            )}
-                            
-                            <div className="relative z-10 p-8 space-y-6">
-                              <h3 className="text-2xl font-bold text-white text-center">{plan.name}</h3>
-                              
-                              <div className="text-center">
-                                <div className="text-4xl md:text-5xl font-bold text-white mb-2">{plan.price}</div>
-                                <div className="text-blue-200/70">{plan.period}</div>
-                              </div>
-                              
-                              <ul className="space-y-3">
-                                {(plan.features || []).map((feature: string, featureIndex: number) => (
-                                  <li key={featureIndex} className="flex items-center gap-3 text-blue-100/80">
-                                    <span style={{color: '#4ade80', fontSize: '1.25rem'}}>✓</span>
-                                    {feature}
-                                  </li>
-                                ))}
-                              </ul>
-                              
-                              <a 
-                                href="#contact" 
-                                className="w-full py-3 font-medium rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg inline-flex items-center justify-center text-center"
-                                style={{
-                                  background: plan.recommended ? 'linear-gradient(to right, #fbbf24, #f97316)' : 'linear-gradient(to right, #3b82f6, #8b5cf6)',
-                                  color: plan.recommended ? '#111827' : '#ffffff'
-                                }}
-                              >
-                                {plan.buttonText}
-                              </a>
+                          <div className="mb-6">
+                            <div 
+                              className="text-3xl md:text-4xl font-bold mb-2"
+                              style={{color: pageStyles.primaryColor || '#3b82f6'}}
+                            >
+                              {plan.price}
+                            </div>
+                            <div 
+                              className="text-sm"
+                              style={{color: pageStyles.textColor || '#6b7280'}}
+                            >
+                              {plan.period}
                             </div>
                           </div>
+                          
+                          <ul className="space-y-3 mb-8 text-right">
+                            {(plan.features || []).map((feature: string, featureIndex: number) => (
+                              <li key={featureIndex} className="flex items-center justify-start gap-3">
+                                <span style={{color: '#10b981', fontSize: '1rem'}}>✓</span>
+                                <span 
+                                  className="text-sm"
+                                  style={{color: pageStyles.textColor || '#374151'}}
+                                >
+                                  {feature}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                          
+                          <button 
+                            className="w-full py-3 font-medium rounded-lg transition-colors duration-200"
+                            style={{
+                              backgroundColor: pageStyles.primaryColor || '#3b82f6',
+                              color: '#ffffff'
+                            }}
+                          >
+                            {plan.buttonText}
+                          </button>
                         </div>
                       ))}
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      <a 
-                        href="#contact" 
-                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
-                        style={{backgroundColor: pageStyles.primaryColor}}
-                      >
-                        {editableContent?.pricing?.button1Text || 'השווה חבילות'}
-                      </a>
-                      <a 
-                        href="#faq" 
-                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
-                        style={{backgroundColor: pageStyles.secondaryColor}}
-                      >
-                        {editableContent?.pricing?.button2Text || 'שאל שאלה'}
-                      </a>
                     </div>
                   </div>
                 </div>
