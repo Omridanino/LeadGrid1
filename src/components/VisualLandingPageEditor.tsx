@@ -1544,14 +1544,14 @@ const VisualLandingPageEditor = ({
               {activeSection === 'testimonials' && (
                 <div 
                   className="py-16 px-6 relative overflow-hidden"
-                  style={{backgroundColor: pageStyles.backgroundColor || '#f8fafc'}}
+                  style={{backgroundColor: '#ffffff'}}
                 >
                   <div className="max-w-6xl mx-auto px-6 relative z-10">
-                    {/* Section Header */}
+                    {/* Section Header - עיצוב פשוט */}
                     <div className="text-center mb-12">
                       {editableContent?.testimonials?.badge && (
                         <div 
-                          className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold mb-4"
+                          className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4"
                           style={{
                             color: pageStyles.primaryColor, 
                             borderColor: pageStyles.primaryColor
@@ -1562,69 +1562,67 @@ const VisualLandingPageEditor = ({
                       )}
                       <h2 
                         className="text-3xl md:text-4xl font-bold"
-                        style={{color: pageStyles.textColor}}
+                        style={{color: pageStyles.textColor || '#1f2937'}}
                       >
-                        {editableContent?.testimonials?.title || 'המלצות מלקוחות'}
+                        {editableContent?.testimonials?.title || 'המלצות מלקוחותינו'}
                       </h2>
                     </div>
                     
-                    {/* Testimonials Grid */}
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                    {/* Testimonials Grid - עיצוב פשוט ללא זכוכית */}
+                    <div className="grid md:grid-cols-2 gap-8 mb-12">
                       {(editableContent?.testimonials?.testimonials || []).map((testimonial: any, index: number) => (
-                        <div key={index} className="relative group">
-                          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20"></div>
-                          <div className="relative z-10 p-6 space-y-4">
-                            {/* Quote icon */}
-                            <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center mb-4">
-                              <span className="text-white text-sm">"</span>
-                            </div>
-                            
-                            {/* Rating */}
-                            <div className="flex mb-3">
-                              {Array(testimonial.rating || 5).fill(0).map((_, starIndex) => (
-                                <span key={starIndex} style={{color: '#fbbf24', fontSize: '1rem'}}>★</span>
-                              ))}
-                            </div>
-                            
-                            {/* Content */}
-                            <p className="text-blue-100/90 italic leading-relaxed">"{testimonial.content}"</p>
-                            
-                            {/* Author info */}
-                            <div className="flex items-center gap-3 pt-4">
-                              <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
-                                {testimonial.name?.charAt(0) || 'א'}
-                              </div>
-                              <div>
-                                <p className="text-white font-semibold">{testimonial.name}</p>
-                                <p className="text-blue-200/70 text-sm">{testimonial.role}</p>
-                              </div>
-                            </div>
+                        <div key={index} className="text-center p-8 bg-white border border-gray-200 rounded-lg">
+                          {/* Rating */}
+                          <div className="flex justify-center mb-4">
+                            {Array(testimonial.rating || 5).fill(0).map((_, starIndex) => (
+                              <span key={starIndex} style={{color: '#fbbf24', fontSize: '1.2rem'}}>★</span>
+                            ))}
+                          </div>
+                          
+                          {/* Content */}
+                          <p 
+                            className="text-lg italic leading-relaxed mb-6"
+                            style={{color: pageStyles.textColor || '#374151'}}
+                          >
+                            "{testimonial.content}"
+                          </p>
+                          
+                          {/* Author info */}
+                          <div>
+                            <p 
+                              className="font-semibold text-lg"
+                              style={{color: pageStyles.textColor || '#1f2937'}}
+                            >
+                              {testimonial.name}
+                            </p>
+                            <p 
+                              className="text-sm"
+                              style={{color: pageStyles.secondaryColor || '#6b7280'}}
+                            >
+                              {testimonial.role}
+                            </p>
                           </div>
                         </div>
                       ))}
                     </div>
 
                     {/* Action Buttons */}
-                    {(editableContent?.testimonials?.button1Text || editableContent?.testimonials?.button2Text) && (
-                      <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        {editableContent?.testimonials?.button1Text && (
-                          <button 
-                            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
-                            style={{backgroundColor: pageStyles.primaryColor}}
-                          >
-                            {editableContent.testimonials.button1Text}
-                          </button>
-                        )}
-                        {editableContent?.testimonials?.button2Text && (
-                          <button 
-                            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
-                            style={{backgroundColor: pageStyles.secondaryColor}}
-                          >
-                            {editableContent.testimonials.button2Text}
-                          </button>
-                        )}
-                      </div>
-                    )}
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <a 
+                        href="#contact" 
+                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
+                        style={{backgroundColor: pageStyles.primaryColor || '#3b82f6'}}
+                      >
+                        {editableContent?.testimonials?.button1Text || 'קבל הצעת מחיר'}
+                      </a>
+                      <a 
+                        href="#about" 
+                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
+                        style={{backgroundColor: pageStyles.secondaryColor || '#6b7280'}}
+                      >
+                        {editableContent?.testimonials?.button2Text || 'צפה בעוד המלצות'}
+                      </a>
+                    </div>
                   </div>
                 </div>
               )}
