@@ -278,143 +278,305 @@ const VisualLandingPageEditor = ({
       setEditableContent(initializeContent());
     }
   }, [generatedContent]);
+
+  // Load saved data on component mount
+  useEffect(() => {
+    try {
+      const savedContent = localStorage.getItem('editableContent');
+      if (savedContent && isOpen) {
+        const parsed = JSON.parse(savedContent);
+        setEditableContent(parsed);
+      }
+    } catch (error) {
+      console.log('No saved content found');
+    }
+  }, [isOpen]);
   
-  const [pageStyles, setPageStyles] = useState({
-    primaryColor: '#3b82f6',
-    secondaryColor: '#6b7280',
-    accentColor: '#f59e0b',
-    backgroundColor: '#ffffff',
-    textColor: '#1f2937',
-    heroTitleColor: '#ffffff',
-    heroSubtitleColor: '#ffffff',
-    featuresTitleColor: '#1f2937',
-    featuresTextColor: '#6b7280',
-    aboutTitleColor: '#1f2937',
-    aboutTextColor: '#6b7280',
-    servicesTitleColor: '#1f2937',
-    servicesTextColor: '#6b7280',
-    contactTitleColor: '#ffffff',
-    contactTextColor: '#ffffff',
-    heroBackground: 'gradient',
-    heroBackgroundImage: '',
-    buttonStyle: 'rounded',
-    fontFamily: 'modern',
-    sectionSpacing: 'normal'
+  const [pageStyles, setPageStyles] = useState(() => {
+    try {
+      const savedStyles = localStorage.getItem('pageStyles');
+      return savedStyles ? JSON.parse(savedStyles) : {
+        primaryColor: '#3b82f6',
+        secondaryColor: '#6b7280',
+        accentColor: '#f59e0b',
+        backgroundColor: '#ffffff',
+        textColor: '#1f2937',
+        heroTitleColor: '#ffffff',
+        heroSubtitleColor: '#ffffff',
+        featuresTitleColor: '#1f2937',
+        featuresTextColor: '#6b7280',
+        aboutTitleColor: '#1f2937',
+        aboutTextColor: '#6b7280',
+        servicesTitleColor: '#1f2937',
+        servicesTextColor: '#6b7280',
+        contactTitleColor: '#ffffff',
+        contactTextColor: '#ffffff',
+        heroBackground: 'gradient',
+        heroBackgroundImage: '',
+        buttonStyle: 'rounded',
+        fontFamily: 'modern',
+        sectionSpacing: 'normal'
+      };
+    } catch {
+      return {
+        primaryColor: '#3b82f6',
+        secondaryColor: '#6b7280',
+        accentColor: '#f59e0b',
+        backgroundColor: '#ffffff',
+        textColor: '#1f2937',
+        heroTitleColor: '#ffffff',
+        heroSubtitleColor: '#ffffff',
+        featuresTitleColor: '#1f2937',
+        featuresTextColor: '#6b7280',
+        aboutTitleColor: '#1f2937',
+        aboutTextColor: '#6b7280',
+        servicesTitleColor: '#1f2937',
+        servicesTextColor: '#6b7280',
+        contactTitleColor: '#ffffff',
+        contactTextColor: '#ffffff',
+        heroBackground: 'gradient',
+        heroBackgroundImage: '',
+        buttonStyle: 'rounded',
+        fontFamily: 'modern',
+        sectionSpacing: 'normal'
+      };
+    }
   });
 
-  const [sectionStyles, setSectionStyles] = useState({
-    hero: {
-      background: 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)',
-      textAlign: 'center',
-      padding: 'large',
-      backgroundType: 'gradient',
-      gradient: 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)',
-      backgroundColor: '#3b82f6',
-      titleColor: '#ffffff',
-      subtitleColor: '#ffffff',
-      textColor: '#ffffff',
-      buttonColor: '#ffffff',
-      buttonTextColor: '#3b82f6',
-      buttonGradient: '',
-      effects: [] as string[]
-    },
-    features: {
-      background: '#f8fafc',
-      layout: 'grid',
-      columns: 3,
-      backgroundType: 'solid',
-      gradient: '',
-      backgroundColor: '#f8fafc',
-      titleColor: '#1f2937',
-      subtitleColor: '#6b7280',
-      textColor: '#374151',
-      buttonColor: '#3b82f6',
-      buttonTextColor: '#ffffff',
-      buttonGradient: '',
-      effects: [] as string[]
-    },
-    about: {
-      background: '#ffffff',
-      layout: 'split',
-      alignment: 'left',
-      backgroundType: 'solid',
-      titleColor: '#1f2937',
-      subtitleColor: '#6b7280',
-      textColor: '#374151',
-      buttonColor: '#3b82f6',
-      buttonTextColor: '#ffffff',
-      buttonGradient: '',
-      effects: []
-    },
-    services: {
-      background: '#f8fafc',
-      layout: 'grid',
-      columns: 2,
-      backgroundType: 'solid',
-      titleColor: '#1f2937',
-      subtitleColor: '#6b7280',
-      textColor: '#374151',
-      buttonColor: '#3b82f6',
-      buttonTextColor: '#ffffff',
-      buttonGradient: '',
-      effects: []
-    },
-    testimonials: {
-      background: '#ffffff',
-      layout: 'carousel',
-      style: 'cards',
-      backgroundType: 'solid',
-      titleColor: '#1f2937',
-      subtitleColor: '#6b7280',
-      textColor: '#374151',
-      cardBackground: '#f8fafc',
-      buttonColor: '#3b82f6',
-      buttonTextColor: '#ffffff',
-      buttonGradient: '',
-      effects: []
-    },
-    faq: {
-      background: '#f8fafc',
-      layout: 'accordion',
-      style: 'clean',
-      backgroundType: 'solid',
-      titleColor: '#1f2937',
-      subtitleColor: '#6b7280',
-      questionColor: '#374151',
-      answerColor: '#6b7280',
-      buttonColor: '#3b82f6',
-      buttonTextColor: '#ffffff',
-      buttonGradient: '',
-      effects: []
-    },
-    pricing: {
-      background: '#ffffff',
-      layout: 'grid',
-      style: 'modern',
-      backgroundType: 'solid',
-      titleColor: '#1f2937',
-      subtitleColor: '#6b7280',
-      textColor: '#374151',
-      cardBackground: '#ffffff',
-      recommendedColor: '#3b82f6',
-      buttonColor: '#3b82f6',
-      buttonTextColor: '#ffffff',
-      buttonGradient: '',
-      effects: []
-    },
-    contact: {
-      background: '#3b82f6',
-      layout: 'split',
-      style: 'modern',
-      backgroundType: 'solid',
-      titleColor: '#ffffff',
-      subtitleColor: '#ffffff',
-      textColor: '#ffffff',
-      formBackground: '#ffffff',
-      buttonColor: '#ffffff',
-      buttonTextColor: '#3b82f6',
-      buttonGradient: '',
-      effects: []
+  const [sectionStyles, setSectionStyles] = useState(() => {
+    try {
+      const savedSectionStyles = localStorage.getItem('sectionStyles');
+      return savedSectionStyles ? JSON.parse(savedSectionStyles) : {
+        hero: {
+          background: 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)',
+          textAlign: 'center',
+          padding: 'large',
+          backgroundType: 'gradient',
+          gradient: 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)',
+          backgroundColor: '#3b82f6',
+          titleColor: '#ffffff',
+          subtitleColor: '#ffffff',
+          textColor: '#ffffff',
+          buttonColor: '#ffffff',
+          buttonTextColor: '#3b82f6',
+          buttonGradient: '',
+          effects: [] as string[]
+        },
+        features: {
+          background: '#f8fafc',
+          layout: 'grid',
+          columns: 3,
+          backgroundType: 'solid',
+          gradient: '',
+          backgroundColor: '#f8fafc',
+          titleColor: '#1f2937',
+          subtitleColor: '#6b7280',
+          textColor: '#374151',
+          buttonColor: '#3b82f6',
+          buttonTextColor: '#ffffff',
+          buttonGradient: '',
+          effects: [] as string[]
+        },
+        about: {
+          background: '#ffffff',
+          layout: 'split',
+          alignment: 'left',
+          backgroundType: 'solid',
+          titleColor: '#1f2937',
+          subtitleColor: '#6b7280',
+          textColor: '#374151',
+          buttonColor: '#3b82f6',
+          buttonTextColor: '#ffffff',
+          buttonGradient: '',
+          effects: []
+        },
+        services: {
+          background: '#f8fafc',
+          layout: 'grid',
+          columns: 2,
+          backgroundType: 'solid',
+          titleColor: '#1f2937',
+          subtitleColor: '#6b7280',
+          textColor: '#374151',
+          buttonColor: '#3b82f6',
+          buttonTextColor: '#ffffff',
+          buttonGradient: '',
+          effects: []
+        },
+        testimonials: {
+          background: '#ffffff',
+          layout: 'carousel',
+          style: 'cards',
+          backgroundType: 'solid',
+          titleColor: '#1f2937',
+          subtitleColor: '#6b7280',
+          textColor: '#374151',
+          cardBackground: '#f8fafc',
+          buttonColor: '#3b82f6',
+          buttonTextColor: '#ffffff',
+          buttonGradient: '',
+          effects: []
+        },
+        faq: {
+          background: '#f8fafc',
+          layout: 'accordion',
+          style: 'clean',
+          backgroundType: 'solid',
+          titleColor: '#1f2937',
+          subtitleColor: '#6b7280',
+          questionColor: '#374151',
+          answerColor: '#6b7280',
+          buttonColor: '#3b82f6',
+          buttonTextColor: '#ffffff',
+          buttonGradient: '',
+          effects: []
+        },
+        pricing: {
+          background: '#ffffff',
+          layout: 'grid',
+          style: 'modern',
+          backgroundType: 'solid',
+          titleColor: '#1f2937',
+          subtitleColor: '#6b7280',
+          textColor: '#374151',
+          cardBackground: '#ffffff',
+          recommendedColor: '#3b82f6',
+          buttonColor: '#3b82f6',
+          buttonTextColor: '#ffffff',
+          buttonGradient: '',
+          effects: []
+        },
+        contact: {
+          background: '#3b82f6',
+          layout: 'split',
+          style: 'modern',
+          backgroundType: 'solid',
+          titleColor: '#ffffff',
+          subtitleColor: '#ffffff',
+          textColor: '#ffffff',
+          formBackground: '#ffffff',
+          buttonColor: '#ffffff',
+          buttonTextColor: '#3b82f6',
+          buttonGradient: '',
+          effects: []
+        }
+      };
+    } catch {
+      return {
+        hero: {
+          background: 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)',
+          textAlign: 'center',
+          padding: 'large',
+          backgroundType: 'gradient',
+          gradient: 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)',
+          backgroundColor: '#3b82f6',
+          titleColor: '#ffffff',
+          subtitleColor: '#ffffff',
+          textColor: '#ffffff',
+          buttonColor: '#ffffff',
+          buttonTextColor: '#3b82f6',
+          buttonGradient: '',
+          effects: [] as string[]
+        },
+        features: {
+          background: '#f8fafc',
+          layout: 'grid',
+          columns: 3,
+          backgroundType: 'solid',
+          gradient: '',
+          backgroundColor: '#f8fafc',
+          titleColor: '#1f2937',
+          subtitleColor: '#6b7280',
+          textColor: '#374151',
+          buttonColor: '#3b82f6',
+          buttonTextColor: '#ffffff',
+          buttonGradient: '',
+          effects: [] as string[]
+        },
+        about: {
+          background: '#ffffff',
+          layout: 'split',
+          alignment: 'left',
+          backgroundType: 'solid',
+          titleColor: '#1f2937',
+          subtitleColor: '#6b7280',
+          textColor: '#374151',
+          buttonColor: '#3b82f6',
+          buttonTextColor: '#ffffff',
+          buttonGradient: '',
+          effects: []
+        },
+        services: {
+          background: '#f8fafc',
+          layout: 'grid',
+          columns: 2,
+          backgroundType: 'solid',
+          titleColor: '#1f2937',
+          subtitleColor: '#6b7280',
+          textColor: '#374151',
+          buttonColor: '#3b82f6',
+          buttonTextColor: '#ffffff',
+          buttonGradient: '',
+          effects: []
+        },
+        testimonials: {
+          background: '#ffffff',
+          layout: 'carousel',
+          style: 'cards',
+          backgroundType: 'solid',
+          titleColor: '#1f2937',
+          subtitleColor: '#6b7280',
+          textColor: '#374151',
+          cardBackground: '#f8fafc',
+          buttonColor: '#3b82f6',
+          buttonTextColor: '#ffffff',
+          buttonGradient: '',
+          effects: []
+        },
+        faq: {
+          background: '#f8fafc',
+          layout: 'accordion',
+          style: 'clean',
+          backgroundType: 'solid',
+          titleColor: '#1f2937',
+          subtitleColor: '#6b7280',
+          questionColor: '#374151',
+          answerColor: '#6b7280',
+          buttonColor: '#3b82f6',
+          buttonTextColor: '#ffffff',
+          buttonGradient: '',
+          effects: []
+        },
+        pricing: {
+          background: '#ffffff',
+          layout: 'grid',
+          style: 'modern',
+          backgroundType: 'solid',
+          titleColor: '#1f2937',
+          subtitleColor: '#6b7280',
+          textColor: '#374151',
+          cardBackground: '#ffffff',
+          recommendedColor: '#3b82f6',
+          buttonColor: '#3b82f6',
+          buttonTextColor: '#ffffff',
+          buttonGradient: '',
+          effects: []
+        },
+        contact: {
+          background: '#3b82f6',
+          layout: 'split',
+          style: 'modern',
+          backgroundType: 'solid',
+          titleColor: '#ffffff',
+          subtitleColor: '#ffffff',
+          textColor: '#ffffff',
+          formBackground: '#ffffff',
+          buttonColor: '#ffffff',
+          buttonTextColor: '#3b82f6',
+          buttonGradient: '',
+          effects: []
+        }
+      };
     }
   });
 
@@ -491,14 +653,22 @@ const VisualLandingPageEditor = ({
   ];
 
   const updatePageStyle = (key: string, value: string) => {
-    setPageStyles(prev => ({ ...prev, [key]: value }));
+    setPageStyles(prev => {
+      const newStyles = { ...prev, [key]: value };
+      localStorage.setItem('pageStyles', JSON.stringify(newStyles));
+      return newStyles;
+    });
   };
 
   const updateSectionStyle = (section: string, key: string, value: string | string[]) => {
-    setSectionStyles(prev => ({
-      ...prev,
-      [section]: { ...prev[section], [key]: value }
-    }));
+    setSectionStyles(prev => {
+      const newStyles = {
+        ...prev,
+        [section]: { ...prev[section], [key]: value }
+      };
+      localStorage.setItem('sectionStyles', JSON.stringify(newStyles));
+      return newStyles;
+    });
   };
 
   const updateSectionColor = (section: string, colorType: string, color: string) => {
@@ -631,14 +801,54 @@ const VisualLandingPageEditor = ({
   };
 
   const handleSave = () => {
-    console.log('Saving page with styles:', { pageStyles, sectionStyles });
+    console.log('Saving page with styles:', { pageStyles, sectionStyles, editableContent });
+    // Save all data to localStorage
+    localStorage.setItem('savedLandingPage', JSON.stringify({
+      content: editableContent,
+      pageStyles,
+      sectionStyles,
+      timestamp: Date.now()
+    }));
+    
+    // Notify parent if callback exists
+    if (onContentUpdate) {
+      onContentUpdate(editableContent);
+    }
+    
+    alert('הדף נשמר בהצלחה!');
   };
 
   const handleDownload = () => {
-    console.log('Downloading page...');
+    const data = {
+      content: editableContent,
+      pageStyles,
+      sectionStyles,
+      timestamp: Date.now()
+    };
+    
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `landing-page-${Date.now()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    console.log('Downloaded page data');
   };
 
   const handlePreview = () => {
+    // Open preview in new window
+    const previewData = {
+      content: editableContent,
+      pageStyles,
+      sectionStyles
+    };
+    
+    localStorage.setItem('previewData', JSON.stringify(previewData));
+    window.open('/preview', '_blank');
     console.log('Opening preview...');
   };
 
@@ -1962,7 +2172,12 @@ const VisualLandingPageEditor = ({
                   >
                     {editableContent?.hero?.button1Text && (
                       <Button 
-                        className={`${buttonStyles.find(s => s.id === pageStyles.buttonStyle)?.class || 'rounded-lg'} bg-white text-blue-600 hover:bg-gray-100`}
+                        className={`${buttonStyles.find(s => s.id === pageStyles.buttonStyle)?.class || 'rounded-lg'}`}
+                        style={{
+                          backgroundColor: sectionStyles.hero?.buttonColor || pageStyles.primaryColor,
+                          color: sectionStyles.hero?.buttonTextColor || '#ffffff',
+                          ...(sectionStyles.hero?.buttonGradient && { background: sectionStyles.hero.buttonGradient })
+                        }}
                       >
                         {editableContent?.hero?.button1Icon && iconOptions.find(i => i.id === editableContent.hero.button1Icon) && (
                           (() => {
@@ -1977,7 +2192,12 @@ const VisualLandingPageEditor = ({
                     {editableContent?.hero?.button2Text && (
                       <Button 
                         variant="outline" 
-                        className={`${buttonStyles.find(s => s.id === pageStyles.buttonStyle)?.class || 'rounded-lg'} border-white text-white hover:bg-white/10`}
+                        className={`${buttonStyles.find(s => s.id === pageStyles.buttonStyle)?.class || 'rounded-lg'}`}
+                        style={{
+                          borderColor: sectionStyles.hero?.buttonColor || pageStyles.primaryColor,
+                          color: sectionStyles.hero?.buttonColor || pageStyles.primaryColor,
+                          backgroundColor: 'transparent'
+                        }}
                       >
                         {editableContent?.hero?.button2Icon && iconOptions.find(i => i.id === editableContent.hero.button2Icon) && (
                           (() => {
@@ -1998,13 +2218,13 @@ const VisualLandingPageEditor = ({
                   <div className="text-center mb-12">
                     <h2 
                       className="text-3xl font-bold mb-4"
-                      style={{ color: pageStyles.featuresTitleColor }}
+                      style={{ color: sectionStyles.features?.titleColor || pageStyles.featuresTitleColor }}
                     >
                       {editableContent?.features?.title || 'התכונות שלנו'}
                     </h2>
                     <p 
                       className="text-lg"
-                      style={{ color: pageStyles.featuresTextColor }}
+                      style={{ color: sectionStyles.features?.subtitleColor || pageStyles.featuresTextColor }}
                     >
                       {editableContent?.features?.subtitle || 'גלה את היתרונות הייחודיים שלנו'}
                     </p>
@@ -2020,15 +2240,28 @@ const VisualLandingPageEditor = ({
                         className="p-6 text-center"
                         style={{ backgroundColor: item.cardColor || '#ffffff' }}
                       >
-                        <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <div 
+                          className="w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4"
+                          style={{ backgroundColor: sectionStyles.features?.buttonColor || pageStyles.primaryColor + '20' }}
+                        >
                           {iconOptions.find(i => i.id === item.icon) && 
                             React.createElement(iconOptions.find(i => i.id === item.icon)!.icon, { 
-                              className: "h-6 w-6 text-blue-600" 
+                              className: "h-6 w-6",
+                              style: { color: sectionStyles.features?.buttonColor || pageStyles.primaryColor }
                             })
                           }
                         </div>
-                        <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
-                        <p className="text-gray-600">{item.description}</p>
+                        <h3 
+                          className="text-lg font-semibold mb-2"
+                          style={{ color: sectionStyles.features?.textColor || '#1f2937' }}
+                        >
+                          {item.title}
+                        </h3>
+                        <p 
+                          style={{ color: sectionStyles.features?.textColor || '#6b7280' }}
+                        >
+                          {item.description}
+                        </p>
                       </Card>
                     )) || []}
                   </div>
