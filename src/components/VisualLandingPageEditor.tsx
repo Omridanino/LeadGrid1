@@ -269,7 +269,7 @@ const VisualLandingPageEditor = ({
   };
 
   // Use the actual generated content if available, otherwise use defaults  
-  const [editableContent, setEditableContent] = useState(initializeContent);
+  const [editableContent, setEditableContent] = useState(() => initializeContent());
 
   // Update content when generatedContent changes
   useEffect(() => {
@@ -517,21 +517,36 @@ const VisualLandingPageEditor = ({
       const newContent = {
         ...prev,
         [section]: {
-          ...prev[section]
+          ...(prev[section] || {})
         }
       };
 
       // Handle different section types
       if (section === 'features' || section === 'services') {
-        newContent[section].items = [...(prev[section]?.items || []), item];
+        if (!newContent[section].items) {
+          newContent[section].items = [];
+        }
+        newContent[section].items = [...newContent[section].items, item];
       } else if (section === 'testimonials') {
-        newContent[section].testimonials = [...(prev[section]?.testimonials || []), item];
+        if (!newContent[section].testimonials) {
+          newContent[section].testimonials = [];
+        }
+        newContent[section].testimonials = [...newContent[section].testimonials, item];
       } else if (section === 'pricing') {
-        newContent[section].plans = [...(prev[section]?.plans || []), item];
+        if (!newContent[section].plans) {
+          newContent[section].plans = [];
+        }
+        newContent[section].plans = [...newContent[section].plans, item];
       } else if (section === 'faq') {
-        newContent[section].questions = [...(prev[section]?.questions || []), item];
+        if (!newContent[section].questions) {
+          newContent[section].questions = [];
+        }
+        newContent[section].questions = [...newContent[section].questions, item];
       } else if (section === 'about') {
-        newContent[section].stats = [...(prev[section]?.stats || []), item];
+        if (!newContent[section].stats) {
+          newContent[section].stats = [];
+        }
+        newContent[section].stats = [...newContent[section].stats, item];
       }
 
       // Notify parent component about content changes
@@ -548,19 +563,26 @@ const VisualLandingPageEditor = ({
 
   const updateContent = (section: string, field: string, value: any) => {
     console.log(`Updating ${section}.${field} to:`, value);
-    const newContent = {
-      ...editableContent,
-      [section]: { ...editableContent[section], [field]: value }
-    };
-    setEditableContent(newContent);
     
-    // Notify parent component about content changes
-    if (onContentUpdate) {
-      onContentUpdate(newContent);
-    }
-    
-    // Also save to localStorage for persistence
-    localStorage.setItem('editableContent', JSON.stringify(newContent));
+    setEditableContent(prev => {
+      const newContent = {
+        ...prev,
+        [section]: { 
+          ...(prev[section] || {}), 
+          [field]: value 
+        }
+      };
+      
+      // Notify parent component about content changes
+      if (onContentUpdate) {
+        onContentUpdate(newContent);
+      }
+      
+      // Also save to localStorage for persistence
+      localStorage.setItem('editableContent', JSON.stringify(newContent));
+      
+      return newContent;
+    });
   };
 
   const addButton = (section: string) => {
@@ -671,7 +693,7 @@ const VisualLandingPageEditor = ({
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      {activeSection === 'hero' && (
+                      {activeSection === 'hero' && editableContent?.hero && (
                         <>
                           <div>
                             <Label className="text-xs">תג</Label>
@@ -771,7 +793,7 @@ const VisualLandingPageEditor = ({
                         </>
                       )}
 
-                      {activeSection === 'about' && (
+                      {activeSection === 'about' && editableContent?.about && (
                         <>
                           <div>
                             <Label className="text-xs">כותרת</Label>
@@ -859,7 +881,7 @@ const VisualLandingPageEditor = ({
                         </>
                       )}
 
-                      {activeSection === 'features' && editableContent?.features?.items && (
+                      {activeSection === 'features' && editableContent?.features && (
                         <div className="space-y-3">
                           <div>
                             <Label className="text-xs">כותרת הסקשן</Label>
@@ -957,7 +979,7 @@ const VisualLandingPageEditor = ({
                         </div>
                       )}
 
-                      {activeSection === 'services' && (
+                      {activeSection === 'services' && editableContent?.services && (
                         <>
                           <div>
                             <Label className="text-xs">כותרת</Label>
