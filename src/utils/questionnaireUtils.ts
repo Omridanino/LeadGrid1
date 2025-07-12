@@ -10,13 +10,9 @@ export interface FormData {
   competitionDifference: string;
   targetAudience: string;
   clientProblems: string;
-  clientPainPoints: string; // שאלה חדשה
-  successStories: string; // שאלה חדשה
-  urgencyMessage: string; // שאלה חדשה
   mainGoal: string;
   keyFeatures: string;
   contactInfo: string;
-  brandColors: string;
   designStyle: string;
   navigationStyle: string;
   selectedElements: string[];
@@ -34,13 +30,9 @@ export const initialFormData: FormData = {
   competitionDifference: "",
   targetAudience: "",
   clientProblems: "",
-  clientPainPoints: "",
-  successStories: "",
-  urgencyMessage: "",
   mainGoal: "",
   keyFeatures: "",
   contactInfo: "",
-  brandColors: "",
   designStyle: "gradient",
   navigationStyle: "floating",
   selectedElements: []
@@ -80,8 +72,6 @@ export const getStepTitle = (step: number): string => {
       return "סגנון עיצוב";
     case 4:
       return "בחירת אלמנטים";
-    case 5:
-      return "צבעים ויצירת קשר";
     default:
       return "";
   }

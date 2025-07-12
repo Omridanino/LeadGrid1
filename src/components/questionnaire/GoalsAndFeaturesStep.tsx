@@ -10,9 +10,6 @@ interface GoalsAndFeaturesStepProps {
     competitionDifference: string;
     targetAudience: string;
     clientProblems: string;
-    clientPainPoints: string;
-    successStories: string;
-    urgencyMessage: string;
     mainGoal: string;
   };
   updateFormData: (field: string, value: string) => void;
@@ -82,45 +79,6 @@ export const GoalsAndFeaturesStep = ({ formData, updateFormData }: GoalsAndFeatu
           rows={4}
         />
         <p className="text-sm text-gray-400 mt-1">הבנת הצרכים של הלקוחות היא המפתח להצלחה</p>
-      </div>
-
-      <div>
-        <Label htmlFor="clientPainPoints" className="text-white font-semibold">מה הכאבים והקשיים הגדולים ביותר של הלקוחות שלך? *</Label>
-        <Textarea
-          id="clientPainPoints"
-          value={formData.clientPainPoints}
-          onChange={(e) => updateFormData('clientPainPoints', e.target.value)}
-          className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
-          placeholder="מה הבעיות הכי קשות שהלקוחות שלך מתמודדים איתן? מה מרגיז אותם? איך זה משפיע על החיים שלהם? מה הם מפסידים בגלל הבעיה הזו? איזה רגשות זה מעורר בהם? תן דוגמאות ממשיות..."
-          rows={4}
-        />
-        <p className="text-sm text-gray-400 mt-1">שאלה זו תעזור ליצור קופי רגשי וחזק יותר</p>
-      </div>
-
-      <div>
-        <Label htmlFor="successStories" className="text-white font-semibold">ספר על סיפור הצלחה מרגש של לקוח *</Label>
-        <Textarea
-          id="successStories"
-          value={formData.successStories}
-          onChange={(e) => updateFormData('successStories', e.target.value)}
-          className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
-          placeholder="בחר לקוח שהשגת עבורו תוצאות מעולות. איך היה המצב שלו לפני? מה השינוי שחל? איזה תוצאות קיבל? איך זה השפיע על החיים שלו? מה הוא אמר לך? תן פרטים מדויקים ומספרים אם יש..."
-          rows={5}
-        />
-        <p className="text-sm text-gray-400 mt-1">סיפורי הצלחה הם הכלי הכי חזק לשכנוע לקוחות פוטנציאליים</p>
-      </div>
-
-      <div>
-        <Label htmlFor="urgencyMessage" className="text-white font-semibold">למה חשוב לפעול עכשיו? *</Label>
-        <Textarea
-          id="urgencyMessage"
-          value={formData.urgencyMessage}
-          onChange={(e) => updateFormData('urgencyMessage', e.target.value)}
-          className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
-          placeholder="מה קורה אם הלקוח לא יפעל עכשיו? מה הוא מפסיד? איזה הזדמנויות עלולות לחמוק? האם יש מחירים מיוחדים? זמינות מוגבלת? עונתיות? מה יהיה יותר קשה או יקר מאוחר יותר?"
-          rows={4}
-        />
-        <p className="text-sm text-gray-400 mt-1">יצירת דחיפות תעזור ללקוחות להחליט מהר יותר</p>
       </div>
 
       <div>
