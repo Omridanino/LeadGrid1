@@ -1378,17 +1378,17 @@ export const generatePageHTML = (templateData: any) => {
     <!-- Final CTA Section -->
     <section id="final-cta" class="final-cta">
         <div class="max-w-4xl mx-auto text-center px-4 relative z-10">
-            ${template.finalCta.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.accentColor};">${template.finalCta.badge}</div>` : ''}
-            <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.finalCta.title}</h2>
-            <p class="text-lg mb-8 opacity-90" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.finalCta.description}</p>
+            ${template.finalCta?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.accentColor};">${template.finalCta.badge}</div>` : ''}
+            <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.finalCta?.title || 'Get Started Today'}</h2>
+            <p class="text-lg mb-8 opacity-90" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.finalCta?.description || 'Join thousands of satisfied customers'}</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}" style="background-color: ${template.styles.accentColor};">
-                    ${template.finalCta.button1Icon ? `<i class="ri-${template.finalCta.button1Icon}"></i>` : ''}
-                    ${template.finalCta.button1Text}
+                    ${template.finalCta?.button1Icon ? `<i class="ri-${template.finalCta.button1Icon}"></i>` : ''}
+                    ${template.finalCta?.button1Text || 'Contact Us'}
                 </a>
                 <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}" style="background-color: ${template.styles.secondaryColor};">
-                    ${template.finalCta.button2Icon ? `<i class="ri-${template.finalCta.button2Icon}"></i>` : ''}
-                    ${template.finalCta.button2Text}
+                    ${template.finalCta?.button2Icon ? `<i class="ri-${template.finalCta.button2Icon}"></i>` : ''}
+                    ${template.finalCta?.button2Text || 'Learn More'}
                 </a>
             </div>
         </div>
