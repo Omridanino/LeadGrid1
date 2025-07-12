@@ -240,6 +240,26 @@ const VisualLandingPageEditor = ({
           button1Text: 'צור קשר',
           button2Text: 'קבל הצעה'
         },
+        whyUs: generatedContent.whyUs || {
+          title: 'למה לבחור בנו',
+          subtitle: 'הסיבות שיגרמו לכם לעבוד איתנו',
+          items: []
+        },
+        whatWeGive: generatedContent.whatWeGive || {
+          title: 'מה אנחנו נותנים',
+          subtitle: 'השירותים והפתרונות שלנו',
+          services: []
+        },
+        gallery: generatedContent.gallery || {
+          title: 'הגלריה שלנו',
+          subtitle: 'עבודות שביצענו',
+          images: []
+        },
+        process: generatedContent.process || {
+          title: 'התהליך שלנו',
+          subtitle: 'איך אנחנו עובדים',
+          steps: []
+        },
         contact: generatedContent.contact || {
           title: 'נשמח לשמוע ממכם',
           subtitle: 'השאירו פרטים ונחזור אליכם במהרה',
@@ -282,6 +302,42 @@ const VisualLandingPageEditor = ({
           { number: '+100', label: 'לקוחות מרוצים' }
         ],
         image: 'תמונה'
+      },
+      whyUs: {
+        title: 'למה לבחור בנו',
+        subtitle: 'הסיבות שיגרמו לכם לעבוד איתנו',
+        items: [
+          { title: 'סיבה 1', description: 'תיאור הסיבה הראשונה', icon: 'star' },
+          { title: 'סיבה 2', description: 'תיאור הסיבה השנייה', icon: 'trophy' },
+          { title: 'סיבה 3', description: 'תיאור הסיבה השלישית', icon: 'shield' }
+        ]
+      },
+      whatWeGive: {
+        title: 'מה אנחנו נותנים',
+        subtitle: 'השירותים והפתרונות שלנו',
+        services: [
+          { title: 'שירות 1', description: 'תיאור השירות הראשון', icon: 'tools' },
+          { title: 'שירות 2', description: 'תיאור השירות השני', icon: 'briefcase' },
+          { title: 'שירות 3', description: 'תיאור השירות השלישי', icon: 'lightbulb' }
+        ]
+      },
+      gallery: {
+        title: 'הגלריה שלנו',
+        subtitle: 'עבודות שביצענו',
+        images: [
+          { src: 'תמונה 1', alt: 'תמונה 1', caption: 'כותרת תמונה 1' },
+          { src: 'תמונה 2', alt: 'תמונה 2', caption: 'כותרת תמונה 2' },
+          { src: 'תמונה 3', alt: 'תמונה 3', caption: 'כותרת תמונה 3' }
+        ]
+      },
+      process: {
+        title: 'התהליך שלנו',
+        subtitle: 'איך אנחנו עובדים',
+        steps: [
+          { title: 'שלב 1', description: 'תיאור השלב הראשון', duration: '1-2 ימים' },
+          { title: 'שלב 2', description: 'תיאור השלב השני', duration: '3-5 ימים' },
+          { title: 'שלב 3', description: 'תיאור השלב השלישי', duration: '1 שבוע' }
+        ]
       }
     };
   };
@@ -335,6 +391,26 @@ const VisualLandingPageEditor = ({
         title: 'התעריפים שלנו',
         subtitle: 'בחרו את החבילה המתאימה לכם',
         items: []
+      },
+      whyUs: generatedData.whyUs || {
+        title: 'למה לבחור בנו',
+        subtitle: 'הסיבות שיגרמו לכם לעבוד איתנו',
+        items: []
+      },
+      whatWeGive: generatedData.whatWeGive || {
+        title: 'מה אנחנו נותנים',
+        subtitle: 'השירותים והפתרונות שלנו',
+        services: []
+      },
+      gallery: generatedData.gallery || {
+        title: 'הגלריה שלנו',
+        subtitle: 'עבודות שביצענו',
+        images: []
+      },
+      process: generatedData.process || {
+        title: 'התהליך שלנו',
+        subtitle: 'איך אנחנו עובדים',
+        steps: []
       },
       contact: generatedData.contact || {
         title: 'נשמח לשמוע ממכם',
@@ -737,6 +813,10 @@ const VisualLandingPageEditor = ({
     { id: 'hero', name: 'דף הבית', icon: Sparkles },
     { id: 'features', name: 'תכונות', icon: Layout },
     { id: 'about', name: 'אודותינו', icon: Circle },
+    { id: 'whyUs', name: 'למה לבחור בנו', icon: Trophy },
+    { id: 'whatWeGive', name: 'מה אנחנו נותנים', icon: Target },
+    { id: 'gallery', name: 'גלריה', icon: ImageIcon },
+    { id: 'process', name: 'התהליך שלנו', icon: Users },
     { id: 'services', name: 'שירותים', icon: Settings },
     { id: 'testimonials', name: 'המלצות', icon: Type },
     { id: 'faq', name: 'שאלות נפוצות', icon: Eye },
