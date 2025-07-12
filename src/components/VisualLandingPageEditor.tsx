@@ -1804,11 +1804,26 @@ const VisualLandingPageEditor = ({
                       >
                         {editableContent?.faq?.title || 'שאלות נפוצות'}
                       </h2>
+                      {(editableContent?.faq?.subtitle || 'תשובות לשאלות הכי חשובות') && (
+                        <p 
+                          className="text-lg text-center mt-4"
+                          style={{color: pageStyles.textColor || '#6b7280'}}
+                        >
+                          {editableContent?.faq?.subtitle || 'תשובות לשאלות הכי חשובות'}
+                        </p>
+                      )}
                     </div>
                     
                     {/* FAQ Items */}
                     <div className="space-y-4 mb-12">
-                      {(editableContent?.faq?.questions || []).map((qa: any, index: number) => (
+                      {((editableContent?.faq?.questions && editableContent.faq.questions.length > 0) 
+                        ? editableContent.faq.questions 
+                        : [
+                            { question: 'כמה זמן לוקח לראות תוצאות?', answer: 'בדרך כלל, ניתן לראות תוצאות ראשוניות בתוך 3 חודשים, אך זה יכול להשתנות בהתאם לסוג העסק ולתחום הפעילות.' },
+                            { question: 'האם השירותים שלכם מתאימים לכל סוגי העסקים?', answer: 'כן, אנחנו מתאימים את השירותים שלנו לכל סוגי העסקים, קטנים וגדולים כאחד.' },
+                            { question: 'איך אתכם מתחילים?', answer: 'פשוט צרו איתנו קשר דרך הטופס ואנחנו נחזור אליכם במהרה עם כל המידע הדרוש.' }
+                          ]
+                      ).map((qa: any, index: number) => (
                         <div key={index} className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
                           <h3 
                             className="text-lg font-bold mb-2 text-right"
