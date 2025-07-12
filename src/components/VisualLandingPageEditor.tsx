@@ -797,6 +797,10 @@ const VisualLandingPageEditor = ({
     
     updateContent(section, `button${newButtonIndex}Text`, `כפתור ${newButtonIndex}`);
     updateContent(section, `button${newButtonIndex}Icon`, '');
+    updateContent(section, `button${newButtonIndex}Color`, pageStyles.primaryColor);
+    updateContent(section, `button${newButtonIndex}TextColor`, '#ffffff');
+    updateContent(section, `button${newButtonIndex}Gradient`, '');
+    updateContent(section, `button${newButtonIndex}Style`, 'solid');
   };
 
   const addEffect = (section: string, effectId: string) => {
@@ -846,6 +850,52 @@ const VisualLandingPageEditor = ({
     };
     
     return effects.map(effect => classMap[effect] || '').join(' ');
+  };
+
+  const renderButton = (section: string, buttonIndex: string) => {
+    const content = editableContent[section] || {};
+    const buttonText = content[`button${buttonIndex}Text`];
+    const buttonIcon = content[`button${buttonIndex}Icon`];
+    const buttonColor = content[`button${buttonIndex}Color`] || pageStyles.primaryColor;
+    const buttonTextColor = content[`button${buttonIndex}TextColor`] || '#ffffff';
+    const buttonGradient = content[`button${buttonIndex}Gradient`];
+    const buttonStyle = content[`button${buttonIndex}Style`] || 'solid';
+    
+    if (!buttonText) return null;
+    
+    const IconComponent = buttonIcon ? iconOptions.find(i => i.id === buttonIcon)?.icon : null;
+    
+    return (
+      <Button 
+        key={`${section}-button-${buttonIndex}`}
+        className={`${buttonStyles.find(s => s.id === pageStyles.buttonStyle)?.class || 'rounded-lg'}`}
+        style={{
+          backgroundColor: buttonStyle === 'gradient' && buttonGradient ? 'transparent' : buttonColor,
+          color: buttonTextColor,
+          background: buttonStyle === 'gradient' && buttonGradient ? buttonGradient : buttonColor,
+          border: 'none'
+        }}
+      >
+        {IconComponent && <IconComponent className="h-4 w-4 mr-2" />}
+        {buttonText}
+      </Button>
+    );
+  };
+
+  const renderAllButtons = (section: string) => {
+    const content = editableContent[section] || {};
+    const buttonKeys = Object.keys(content).filter(key => key.includes('button') && key.includes('Text'));
+    
+    if (buttonKeys.length === 0) return null;
+    
+    return (
+      <div className="flex gap-4 flex-wrap justify-center mt-8">
+        {buttonKeys.map(buttonKey => {
+          const buttonIndex = buttonKey.replace('button', '').replace('Text', '');
+          return renderButton(section, buttonIndex);
+        })}
+      </div>
+    );
   };
 
   const handleSave = () => {
@@ -1911,6 +1961,148 @@ const VisualLandingPageEditor = ({
                       )}
                     </CardContent>
                   </Card>
+
+                  {/* Button Styling */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-sm">עיצוב כפתורים - {sections.find(s => s.id === activeSection)?.name}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {(() => {
+                        const currentContent = editableContent[activeSection] || {};
+                        const buttonKeys = Object.keys(currentContent).filter(key => key.includes('button') && key.includes('Text'));
+                        
+                        return buttonKeys.map((buttonKey) => {
+                          const buttonIndex = buttonKey.replace('button', '').replace('Text', '');
+                          const buttonText = currentContent[buttonKey];
+                          
+                          return (
+                            <div key={buttonKey} className="p-3 border rounded-lg space-y-3">
+                              <Label className="text-xs font-medium">כפתור: {buttonText}</Label>
+                              
+                              <div>
+                                <Label className="text-xs">טקסט הכפתור</Label>
+                                <Input
+                                  value={currentContent[buttonKey] || ''}
+                                  onChange={(e) => updateContent(activeSection, buttonKey, e.target.value)}
+                                  placeholder="טקסט הכפתור"
+                                />
+                              </div>
+                              
+                              <div>
+                                <Label className="text-xs">אייקון</Label>
+                                <div className="grid grid-cols-6 gap-1 mt-1">
+                                  <Button
+                                    variant={!currentContent[`button${buttonIndex}Icon`] ? "default" : "outline"}
+                                    size="sm"
+                                    className="p-2"
+                                    onClick={() => updateContent(activeSection, `button${buttonIndex}Icon`, '')}
+                                  >
+                                    ללא
+                                  </Button>
+                                  {iconOptions.slice(0, 5).map((iconOpt) => (
+                                    <Button
+                                      key={iconOpt.id}
+                                      variant={currentContent[`button${buttonIndex}Icon`] === iconOpt.id ? "default" : "outline"}
+                                      size="sm"
+                                      className="p-2"
+                                      onClick={() => updateContent(activeSection, `button${buttonIndex}Icon`, iconOpt.id)}
+                                    >
+                                      <iconOpt.icon className="h-3 w-3" />
+                                    </Button>
+                                  ))}
+                                </div>
+                              </div>
+                              
+                              <div>
+                                <Label className="text-xs">סגנון כפתור</Label>
+                                <div className="grid grid-cols-2 gap-2 mt-1">
+                                  <Button
+                                    variant={currentContent[`button${buttonIndex}Style`] === 'solid' ? "default" : "outline"}
+                                    size="sm"
+                                    onClick={() => updateContent(activeSection, `button${buttonIndex}Style`, 'solid')}
+                                  >
+                                    מלא
+                                  </Button>
+                                  <Button
+                                    variant={currentContent[`button${buttonIndex}Style`] === 'gradient' ? "default" : "outline"}
+                                    size="sm"
+                                    onClick={() => updateContent(activeSection, `button${buttonIndex}Style`, 'gradient')}
+                                  >
+                                    גרדיאנט
+                                  </Button>
+                                </div>
+                              </div>
+                              
+                              <div>
+                                <Label className="text-xs">צבע רקע</Label>
+                                <ColorPicker
+                                  color={currentContent[`button${buttonIndex}Color`] || pageStyles.primaryColor}
+                                  onChange={(color) => updateContent(activeSection, `button${buttonIndex}Color`, color)}
+                                />
+                              </div>
+                              
+                              <div>
+                                <Label className="text-xs">צבע טקסט</Label>
+                                <ColorPicker
+                                  color={currentContent[`button${buttonIndex}TextColor`] || '#ffffff'}
+                                  onChange={(color) => updateContent(activeSection, `button${buttonIndex}TextColor`, color)}
+                                />
+                              </div>
+                              
+                              {currentContent[`button${buttonIndex}Style`] === 'gradient' && (
+                                <div>
+                                  <Label className="text-xs">גרדיאנט</Label>
+                                  <div className="grid grid-cols-2 gap-2 mt-1">
+                                    {buttonGradientOptions.slice(1).map((gradient) => (
+                                      <Button
+                                        key={gradient.id}
+                                        variant={currentContent[`button${buttonIndex}Gradient`] === gradient.value ? "default" : "outline"}
+                                        size="sm"
+                                        onClick={() => updateContent(activeSection, `button${buttonIndex}Gradient`, gradient.value)}
+                                        className="h-12 p-0"
+                                      >
+                                        <div 
+                                          className="w-full h-full rounded"
+                                          style={{ background: gradient.value }}
+                                        ></div>
+                                      </Button>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                              
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  // מחיקת הכפתור
+                                  updateContent(activeSection, buttonKey, undefined);
+                                  updateContent(activeSection, `button${buttonIndex}Icon`, undefined);
+                                  updateContent(activeSection, `button${buttonIndex}Color`, undefined);
+                                  updateContent(activeSection, `button${buttonIndex}TextColor`, undefined);
+                                  updateContent(activeSection, `button${buttonIndex}Gradient`, undefined);
+                                  updateContent(activeSection, `button${buttonIndex}Style`, undefined);
+                                }}
+                                className="w-full text-red-600 border-red-300 hover:bg-red-50"
+                              >
+                                מחק כפתור
+                              </Button>
+                            </div>
+                          );
+                        });
+                      })()}
+                      
+                      <Button
+                        variant="outline"
+                        onClick={() => addButton(activeSection)}
+                        className="w-full"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        הוסף כפתור חדש
+                      </Button>
+                    </CardContent>
+                  </Card>
                 </TabsContent>
 
                 <TabsContent value="layout" className="space-y-4">
@@ -2319,6 +2511,7 @@ const VisualLandingPageEditor = ({
                       </Card>
                     )) || []}
                   </div>
+                  {renderAllButtons('features')}
                 </div>
               )}
 
@@ -2366,6 +2559,7 @@ const VisualLandingPageEditor = ({
                         )}
                       </div>
                     </div>
+                    {renderAllButtons('about')}
                   </div>
                 </div>
               )}
@@ -2423,6 +2617,7 @@ const VisualLandingPageEditor = ({
                         </div>
                       ))}
                     </div>
+                    {renderAllButtons('services')}
                   </div>
                 </div>
               )}
@@ -2492,6 +2687,7 @@ const VisualLandingPageEditor = ({
                         </div>
                       ))}
                     </div>
+                    {renderAllButtons('testimonials')}
                   </div>
                 </div>
               )}
@@ -2573,6 +2769,7 @@ const VisualLandingPageEditor = ({
                         </div>
                       ))}
                     </div>
+                    {renderAllButtons('pricing')}
                   </div>
                 </div>
               )}
@@ -2649,6 +2846,7 @@ const VisualLandingPageEditor = ({
                         {editableContent?.faq?.button2Text || 'קבל הצעה'}
                       </button>
                     </div>
+                    {renderAllButtons('faq')}
                   </div>
                 </div>
               )}
@@ -2749,6 +2947,7 @@ const VisualLandingPageEditor = ({
                         </div>
                       </div>
                     </div>
+                    {renderAllButtons('contact')}
                   </div>
                 </div>
               )}
