@@ -1,6 +1,7 @@
 
 import { generatePageHTML } from "@/utils/pageGenerator";
 import { ColorScheme } from "@/types/colors";
+import { EmotionalSection } from "@/components/EmotionalSection";
 
 
 interface LandingPagePreviewProps {
@@ -77,7 +78,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     );
   }
 
-  // Fallback to original hero section
+  // Fallback to sections display - show each section individually
   return (
     <div className="w-full h-full" style={{ 
       maxHeight: '100vh', 
@@ -85,10 +86,25 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       overflowX: 'hidden',
       scrollBehavior: 'smooth'
     }}>
-      <div className="w-full min-h-screen" style={{ position: 'relative' }}>
-        <div className="text-center py-20">
-          <h1 className="text-4xl font-bold">תצוגה מקדימה של דף הנחיתה</h1>
+      <div className="w-full min-h-screen" style={{ position: 'relative', backgroundColor: '#0f0f23' }}>
+        {/* Hero Placeholder */}
+        <div className="text-center py-20 bg-gradient-to-br from-blue-900 to-purple-900">
+          <h1 className="text-4xl font-bold text-white mb-4">
+            {content?.hero?.title || formData?.businessName || 'דף הנחיתה שלך'}
+          </h1>
+          <p className="text-xl text-gray-300">
+            {content?.hero?.subtitle || 'תיאור העסק שלך יופיע כאן'}
+          </p>
         </div>
+
+        {/* Emotional Section */}
+        {content?.emotional && (
+          <EmotionalSection 
+            content={{ emotionalSection: content.emotional }}
+            currentColors={currentColors}
+            formData={formData}
+          />
+        )}
       </div>
     </div>
   );
