@@ -240,13 +240,6 @@ const VisualLandingPageEditor = ({
           button1Text: 'צור קשר',
           button2Text: 'קבל הצעה'
         },
-        'final-cta': generatedContent.finalCta || {
-          title: 'מוכנים להתחיל?',
-          description: 'בואו נתחיל לעבוד יחד היום ונראה תוצאות מדהימות',
-          button1Text: 'התחל עכשיו',
-          button2Text: 'צור קשר',
-          badge: 'הזדמנות אחרונה'
-        },
         contact: generatedContent.contact || {
           title: 'נשמח לשמוע ממכם',
           subtitle: 'השאירו פרטים ונחזור אליכם במהרה',
@@ -342,13 +335,6 @@ const VisualLandingPageEditor = ({
         title: 'התעריפים שלנו',
         subtitle: 'בחרו את החבילה המתאימה לכם',
         items: []
-      },
-      'final-cta': generatedData.finalCta || {
-        title: 'מוכנים להתחיל?',
-        description: 'בואו נתחיל לעבוד יחד היום ונראה תוצאות מדהימות',
-        button1Text: 'התחל עכשיו',
-        button2Text: 'צור קשר',
-        badge: 'הזדמנות אחרונה'
       },
       contact: generatedData.contact || {
         title: 'נשמח לשמוע ממכם',
@@ -552,19 +538,6 @@ const VisualLandingPageEditor = ({
           buttonGradient: '',
           effects: []
         },
-        'final-cta': {
-          background: '#1f2937',
-          layout: 'center',
-          style: 'modern',
-          backgroundType: 'solid',
-          titleColor: '#ffffff',
-          subtitleColor: '#ffffff',
-          textColor: '#ffffff',
-          buttonColor: '#3b82f6',
-          buttonTextColor: '#ffffff',
-          buttonGradient: '',
-          effects: []
-        },
         contact: {
           background: '#3b82f6',
           layout: 'split',
@@ -763,12 +736,11 @@ const VisualLandingPageEditor = ({
   const sections = [
     { id: 'hero', name: 'דף הבית', icon: Sparkles },
     { id: 'features', name: 'תכונות', icon: Layout },
-    { id: 'testimonials', name: 'המלצות', icon: Type },
     { id: 'about', name: 'אודותינו', icon: Circle },
     { id: 'services', name: 'שירותים', icon: Settings },
-    { id: 'pricing', name: 'מחירים', icon: Square },
+    { id: 'testimonials', name: 'המלצות', icon: Type },
     { id: 'faq', name: 'שאלות נפוצות', icon: Eye },
-    { id: 'final-cta', name: 'קריאה לפעולה', icon: Target },
+    { id: 'pricing', name: 'מחירים', icon: Square },
     { id: 'contact', name: 'יצירת קשר', icon: MousePointer }
   ];
 
@@ -1749,57 +1721,6 @@ const VisualLandingPageEditor = ({
                               value={editableContent?.faq?.button2Text || ''}
                               onChange={(e) => updateContent('faq', 'button2Text', e.target.value)}
                               placeholder="קבל הצעה"
-                            />
-                          </div>
-                        </>
-                      )}
-
-                      {/* Final CTA Content Editor */}
-                      {activeSection === 'final-cta' && editableContent?.['final-cta'] && (
-                        <>
-                          <div>
-                            <Label className="text-xs">תג</Label>
-                            <Input
-                              value={editableContent?.['final-cta']?.badge || ''}
-                              onChange={(e) => updateContent('final-cta', 'badge', e.target.value)}
-                              placeholder="הזדמנות אחרונה"
-                            />
-                          </div>
-
-                          <div>
-                            <Label className="text-xs">כותרת ראשית</Label>
-                            <Input
-                              value={editableContent?.['final-cta']?.title || ''}
-                              onChange={(e) => updateContent('final-cta', 'title', e.target.value)}
-                              placeholder="מוכנים להתחיל?"
-                            />
-                          </div>
-                          
-                          <div>
-                            <Label className="text-xs">תיאור</Label>
-                            <Textarea
-                              value={editableContent?.['final-cta']?.description || ''}
-                              onChange={(e) => updateContent('final-cta', 'description', e.target.value)}
-                              placeholder="בואו נתחיל לעבוד יחד היום ונראה תוצאות מדהימות"
-                              rows={3}
-                            />
-                          </div>
-
-                          <div>
-                            <Label className="text-xs">טקסט כפתור ראשון</Label>
-                            <Input
-                              value={editableContent?.['final-cta']?.button1Text || ''}
-                              onChange={(e) => updateContent('final-cta', 'button1Text', e.target.value)}
-                              placeholder="התחל עכשיו"
-                            />
-                          </div>
-
-                          <div>
-                            <Label className="text-xs">טקסט כפתור שני</Label>
-                            <Input
-                              value={editableContent?.['final-cta']?.button2Text || ''}
-                              onChange={(e) => updateContent('final-cta', 'button2Text', e.target.value)}
-                              placeholder="צור קשר"
                             />
                           </div>
                         </>
@@ -3012,47 +2933,6 @@ const VisualLandingPageEditor = ({
                       </button>
                     </div>
                     {renderAllButtons('faq')}
-                  </div>
-                </div>
-              )}
-
-              {/* Final CTA Section Preview */}
-              {activeSection === 'final-cta' && (
-                <div 
-                  className="py-20 px-6"
-                  style={{backgroundColor: '#1f2937'}}
-                >
-                  <div className="max-w-4xl mx-auto text-center">
-                    {editableContent?.['final-cta']?.badge && (
-                      <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4 text-orange-300 border-orange-400">
-                        {editableContent?.['final-cta']?.badge}
-                      </div>
-                    )}
-                    <h2 
-                      className="text-3xl md:text-4xl font-bold text-white mb-6"
-                    >
-                      {editableContent?.['final-cta']?.title || 'מוכנים להתחיל?'}
-                    </h2>
-                    <p 
-                      className="text-lg text-white/90 mb-8"
-                    >
-                      {editableContent?.['final-cta']?.description || 'בואו נתחיל לעבוד יחד היום ונראה תוצאות מדהימות'}
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      <button 
-                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
-                        style={{backgroundColor: pageStyles.primaryColor || '#3b82f6'}}
-                      >
-                        {editableContent?.['final-cta']?.button1Text || 'התחל עכשיו'}
-                      </button>
-                      <button 
-                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
-                        style={{backgroundColor: pageStyles.secondaryColor || '#6b7280'}}
-                      >
-                        {editableContent?.['final-cta']?.button2Text || 'צור קשר'}
-                      </button>
-                    </div>
-                    {renderAllButtons('final-cta')}
                   </div>
                 </div>
               )}

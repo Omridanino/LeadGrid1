@@ -855,16 +855,6 @@ export const generatePageHTML = (templateData: any) => {
             overflow: hidden;
         }
         
-        .services { 
-            ${isPremium ? (() => {
-              const bgData = getPremiumAnimatedBackground(template.id, 'services');
-              return `${bgData.background}; position: relative; overflow: hidden;`;
-            })() : 'background-color: ' + template.styles.servicesBackground + ';'}
-            padding: 4rem 1.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-        
         .testimonials { 
             ${isPremium ? (() => {
               const bgData = getPremiumAnimatedBackground(template.id, 'testimonials');
@@ -1152,56 +1142,6 @@ export const generatePageHTML = (templateData: any) => {
             </div>
         </div>
     </section>
-
-    <!-- Services Section -->
-    ${template.services ? `
-    <section id="services" class="services">
-        ${isPremium ? (() => {
-          const bgData = getPremiumAnimatedBackground(template.id, 'services');
-          return generatePremiumBackgroundHTML(bgData.animationType);
-        })() : ''}
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
-            <div class="text-center mb-16">
-                ${template.services.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'services') : template.styles.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.primaryColor};">${template.services.badge}</div>` : ''}
-                <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'services') : template.styles.textColor};">${template.services.title}</h2>
-                ${template.services.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(template.id, 'services') : template.styles.textColor}; opacity: 0.8;">${template.services.subtitle}</p>` : ''}
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                ${template.services.items.map((service: any) => `
-                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-8 ${isPremium ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}">
-                        <div class="mb-4">
-                            <h3 class="text-xl font-bold" style="color: ${isPremium ? getPremiumTextColor(template.id, 'services') : template.styles.textColor};">${service.title}</h3>
-                            ${service.price ? `<div class="text-2xl font-bold mt-2" style="color: ${template.styles.primaryColor};">${service.price}</div>` : ''}
-                        </div>
-                        <p class="mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'services') : template.styles.textColor}; opacity: 0.8;">${service.description}</p>
-                        ${service.features && service.features.length > 0 ? `
-                        <ul class="space-y-2">
-                            ${service.features.map((feature: string) => `
-                                <li class="flex items-center gap-2" style="color: ${isPremium ? getPremiumTextColor(template.id, 'services') : template.styles.textColor};">
-                                    <span style="color: #22c55e;">✓</span>
-                                    ${feature}
-                                </li>
-                            `).join('')}
-                        </ul>
-                        ` : ''}
-                    </div>
-                `).join('')}
-            </div>
-
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.primaryColor};">
-                    ${template.services.button1Icon ? `<i class="ri-${template.services.button1Icon}"></i>` : ''}
-                    ${template.services.button1Text || 'צור קשר'}
-                </a>
-                <a href="#pricing" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.secondaryColor};">
-                    ${template.services.button2Icon ? `<i class="ri-${template.services.button2Icon}"></i>` : ''}
-                    ${template.services.button2Text || 'ראה מחירים'}
-                </a>
-            </div>
-        </div>
-    </section>
-    ` : ''}
 
     <!-- Testimonials Section -->
     <section id="testimonials" class="testimonials">
