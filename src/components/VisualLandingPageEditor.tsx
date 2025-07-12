@@ -1546,24 +1546,7 @@ const VisualLandingPageEditor = ({
                   className="py-16 px-6 relative overflow-hidden"
                   style={{backgroundColor: pageStyles.backgroundColor || '#f8fafc'}}
                 >
-                  {/* Background particles if any testimonials exist */}
-                  {(editableContent?.testimonials?.testimonials || []).length > 0 && (
-                    <div className="absolute inset-0">
-                      {Array.from({length: 20}, (_, i) => (
-                        <div 
-                          key={i}
-                          className="absolute w-2 h-2 bg-blue-400/20 rounded-full animate-pulse" 
-                          style={{
-                            left: `${Math.random() * 100}%`, 
-                            top: `${Math.random() * 100}%`, 
-                            animationDelay: `${i * 0.2}s`
-                          }}
-                        />
-                      ))}
-                    </div>
-                  )}
-                  
-                  <div className="max-w-6xl mx-auto relative z-10">
+                  <div className="max-w-6xl mx-auto px-6 relative z-10">
                     {/* Section Header */}
                     <div className="text-center mb-12">
                       {editableContent?.testimonials?.badge && (
