@@ -41,21 +41,12 @@ const AdvancedLandingPageGenerator = ({
       return;
     }
 
-    // הוספת הסקשנים הקבועים
-    const dataWithFixedElements = {
-      ...dataToUse,
-      selectedElements: ['hero', 'emotional', 'services', 'whyUs', 'pricing', 'competitive', 'faq', 'contact']
-    };
-
     setIsGenerating(true);
     try {
-      console.log('Generating landing page with formData:', dataWithFixedElements);
+      console.log('Generating landing page with formData:', dataToUse);
       
       const { data, error } = await supabase.functions.invoke('generate-landing-content', {
-        body: { 
-          formData: dataWithFixedElements,
-          selectedElements: dataWithFixedElements.selectedElements
-        }
+        body: { formData: dataToUse }
       });
 
       if (error) {
@@ -291,16 +282,13 @@ const AdvancedLandingPageGenerator = ({
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="font-semibold">הסקשנים שיפקו בדף שלך:</h3>
+                  <h3 className="font-semibold">מה המערכת תיצור עבורך:</h3>
                   <ul className="text-sm space-y-1 text-muted-foreground">
-                    <li>✅ סקשן הירו עם אנימציות מתקדמות</li>
-                    <li>✅ פסקת רגש לחיבור עם הלקוחות</li>
-                    <li>✅ השירותים שלכם בפירוט</li>
-                    <li>✅ למה דווקא אתכם - היתרונות הייחודיים</li>
-                    <li>✅ מחירים וחבילות שקופות</li>
-                    <li>✅ היתרון התחרותי שלכם</li>
-                    <li>✅ שאלות נפוצות ותשובות</li>
-                    <li>✅ צור קשר מתקדם</li>
+                    <li>✅ תוכן מותאם אישית באמצעות GPT-4</li>
+                    <li>✅ עיצוב מקצועי ורספונסיבי</li>
+                    <li>✅ כל הסקשנים הנדרשים (Hero, Features, Testimonials, וכו')</li>
+                    <li>✅ עורך חזותי לעריכת כל רכיב</li>
+                    <li>✅ אופציות התאמה אישית מלאות</li>
                   </ul>
                 </div>
 
