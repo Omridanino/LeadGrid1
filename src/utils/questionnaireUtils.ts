@@ -13,6 +13,7 @@ export interface FormData {
   mainGoal: string;
   keyFeatures: string;
   contactInfo: string;
+  brandColors: string;
   designStyle: string;
   navigationStyle: string;
   selectedElements: string[];
@@ -33,6 +34,7 @@ export const initialFormData: FormData = {
   mainGoal: "",
   keyFeatures: "",
   contactInfo: "",
+  brandColors: "",
   designStyle: "gradient",
   navigationStyle: "floating",
   selectedElements: []
@@ -72,6 +74,8 @@ export const getStepTitle = (step: number): string => {
       return "סגנון עיצוב";
     case 4:
       return "בחירת אלמנטים";
+    case 5:
+      return "מיתוג וצבעים";
     default:
       return "";
   }
