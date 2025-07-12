@@ -34,12 +34,48 @@ const Index = () => {
 
   // If visual editor is open, show only the editor
   if (isVisualEditorOpen) {
+    // Create demo content for the visual editor
+    const demoContent = {
+      hero: {
+        title: "ברוכים הבאים לעסק שלכם",
+        subtitle: "פתרונות מתקדמים לצרכים שלכם",
+        description: "אנחנו מספקים שירותים איכותיים ומקצועיים שיעזרו לכם להשיג את המטרות שלכם ולהצליח בעסק.",
+        button1Text: "התחל עכשיו",
+        button2Text: "למד עוד",
+        badge: "חדש!"
+      },
+      features: {
+        title: "התכונות שלנו",
+        subtitle: "גלה את היתרונות הייחודיים שלנו",
+        items: [
+          { title: "איכות גבוהה", description: "אנו מתחייבים לספק שירותים באיכות הגבוהה ביותר", icon: "star" },
+          { title: "תמיכה 24/7", description: "צוות התמיכה שלנו זמין עבורכם בכל שעות היממה", icon: "heart" },
+          { title: "חדשנות מתמדת", description: "אנו תמיד מעדכנים ומשפרים את השירותים שלנו", icon: "zap" }
+        ]
+      },
+      about: {
+        title: "אודותינו",
+        subtitle: "מי אנחנו ומה אנחנו עושים",
+        description: "אנחנו חברה מובילה בתחום עם ניסיון רב שנים. המטרה שלנו היא לספק ללקוחותינו את השירות הטוב ביותר ולעזור להם להצליח."
+      },
+      contact: {
+        title: "נשמח לשמוע ממכם",
+        subtitle: "השאירו פרטים ונחזור אליכם במהרה"
+      }
+    };
+
+    const demoFormData = {
+      companyName: "החברה שלי",
+      businessType: "שירותים מקצועיים",
+      selectedTemplate: demoContent
+    };
+
     return (
       <VisualLandingPageEditor 
         isOpen={isVisualEditorOpen}
         onClose={handleCloseVisualEditor}
-        generatedContent={{}}
-        formData={{}}
+        generatedContent={demoContent}
+        formData={demoFormData}
         onContentUpdate={(data) => {
           console.log('Content updated:', data);
         }}
