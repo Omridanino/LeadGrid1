@@ -176,10 +176,6 @@ export const generatePageHTML = (templateData: any) => {
                      sectionType === 'contact' ? 'linear-gradient(to bottom, rgb(15, 23, 42), rgb(55, 65, 81))' :
                      sectionType === 'faq' ? 'linear-gradient(to bottom, rgb(55, 65, 81), rgb(30, 41, 59))' :
                      sectionType === 'final-cta' ? 'linear-gradient(135deg, rgb(55, 65, 81) 0%, rgb(15, 23, 42) 100%)' :
-                     sectionType === 'whyUs' ? 'linear-gradient(to bottom, rgb(30, 41, 59), rgb(55, 65, 81))' :
-                     sectionType === 'whatWeGive' ? 'linear-gradient(to bottom, rgb(55, 65, 81), rgb(30, 41, 59))' :
-                     sectionType === 'gallery' ? 'linear-gradient(to bottom, rgb(15, 23, 42), rgb(30, 41, 59))' :
-                     sectionType === 'process' ? 'linear-gradient(to bottom, rgb(30, 41, 59), rgb(15, 23, 42))' :
                      'linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(30, 41, 59) 100%)',
           animationType: 'dynamicGradients'
         };
@@ -196,10 +192,6 @@ export const generatePageHTML = (templateData: any) => {
                      sectionType === 'contact' ? 'linear-gradient(to bottom, rgb(0, 0, 0), rgb(88, 28, 135))' :
                      sectionType === 'faq' ? 'linear-gradient(to bottom, rgb(88, 28, 135), rgb(0, 0, 0))' :
                      sectionType === 'final-cta' ? 'linear-gradient(135deg, rgb(124, 58, 237) 0%, rgb(0, 0, 0) 100%)' :
-                     sectionType === 'whyUs' ? 'linear-gradient(to bottom, rgb(124, 58, 237), rgb(88, 28, 135))' :
-                     sectionType === 'whatWeGive' ? 'linear-gradient(to bottom, rgb(88, 28, 135), rgb(124, 58, 237))' :
-                     sectionType === 'gallery' ? 'linear-gradient(to bottom, rgb(0, 0, 0), rgb(124, 58, 237))' :
-                     sectionType === 'process' ? 'linear-gradient(to bottom, rgb(124, 58, 237), rgb(0, 0, 0))' :
                      'linear-gradient(135deg, rgb(124, 58, 237) 0%, rgb(0, 0, 0) 100%)',
           animationType: 'advancedSparkles'
         };
@@ -216,10 +208,6 @@ export const generatePageHTML = (templateData: any) => {
                      sectionType === 'contact' ? 'linear-gradient(to bottom, rgb(30, 27, 75), rgb(30, 64, 175))' :
                      sectionType === 'faq' ? 'linear-gradient(to bottom, rgb(30, 64, 175), rgb(49, 46, 129))' :
                      sectionType === 'final-cta' ? 'linear-gradient(135deg, rgb(30, 64, 175) 0%, rgb(30, 27, 75) 100%)' :
-                     sectionType === 'whyUs' ? 'linear-gradient(to bottom, rgb(49, 46, 129), rgb(30, 64, 175))' :
-                     sectionType === 'whatWeGive' ? 'linear-gradient(to bottom, rgb(30, 64, 175), rgb(49, 46, 129))' :
-                     sectionType === 'gallery' ? 'linear-gradient(to bottom, rgb(30, 27, 75), rgb(49, 46, 129))' :
-                     sectionType === 'process' ? 'linear-gradient(to bottom, rgb(49, 46, 129), rgb(30, 27, 75))' :
                      'linear-gradient(135deg, rgb(49, 46, 129) 0%, rgb(30, 64, 175) 100%)',
           animationType: 'animatedPaths'
         };
@@ -236,10 +224,6 @@ export const generatePageHTML = (templateData: any) => {
                      sectionType === 'contact' ? 'linear-gradient(to bottom, rgb(192, 132, 252), rgb(252, 165, 165))' :
                      sectionType === 'faq' ? 'linear-gradient(to bottom, rgb(254, 215, 170), rgb(252, 165, 165))' :
                      sectionType === 'final-cta' ? 'linear-gradient(135deg, rgb(252, 165, 165) 0%, rgb(192, 132, 252) 100%)' :
-                     sectionType === 'whyUs' ? 'linear-gradient(to bottom, rgb(254, 215, 170), rgb(252, 165, 165))' :
-                     sectionType === 'whatWeGive' ? 'linear-gradient(to bottom, rgb(252, 165, 165), rgb(192, 132, 252))' :
-                     sectionType === 'gallery' ? 'linear-gradient(to bottom, rgb(192, 132, 252), rgb(254, 215, 170))' :
-                     sectionType === 'process' ? 'linear-gradient(to bottom, rgb(254, 215, 170), rgb(192, 132, 252))' :
                      'linear-gradient(135deg, rgb(253, 186, 116) 0%, rgb(251, 113, 133) 100%)',
           animationType: 'fluidBlob'
         };
@@ -256,10 +240,6 @@ export const generatePageHTML = (templateData: any) => {
                      sectionType === 'contact' ? 'linear-gradient(to bottom, rgb(17, 24, 39), rgb(15, 23, 42))' :
                      sectionType === 'faq' ? 'linear-gradient(to bottom, rgb(30, 64, 175), rgb(30, 41, 59))' :
                      sectionType === 'final-cta' ? 'linear-gradient(135deg, rgb(30, 64, 175) 0%, rgb(15, 23, 42) 100%)' :
-                     sectionType === 'whyUs' ? 'linear-gradient(to bottom, rgb(30, 41, 59), rgb(17, 24, 39))' :
-                     sectionType === 'whatWeGive' ? 'linear-gradient(to bottom, rgb(17, 24, 39), rgb(30, 64, 175))' :
-                     sectionType === 'gallery' ? 'linear-gradient(to bottom, rgb(30, 64, 175), rgb(30, 41, 59))' :
-                     sectionType === 'process' ? 'linear-gradient(to bottom, rgb(15, 23, 42), rgb(17, 24, 39))' :
                      'linear-gradient(135deg, rgb(51, 65, 85) 0%, rgb(30, 64, 175) 100%)',
           animationType: 'premium3D'
         };
@@ -276,10 +256,6 @@ export const generatePageHTML = (templateData: any) => {
                      sectionType === 'contact' ? 'linear-gradient(to bottom, rgb(168, 85, 247), rgb(236, 72, 153))' :
                      sectionType === 'faq' ? 'linear-gradient(to bottom, rgb(88, 28, 135), rgb(139, 92, 246))' :
                      sectionType === 'final-cta' ? 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(236, 72, 153) 100%)' :
-                     sectionType === 'whyUs' ? 'linear-gradient(to bottom, rgb(139, 92, 246), rgb(88, 28, 135))' :
-                     sectionType === 'whatWeGive' ? 'linear-gradient(to bottom, rgb(88, 28, 135), rgb(168, 85, 247))' :
-                     sectionType === 'gallery' ? 'linear-gradient(to bottom, rgb(168, 85, 247), rgb(139, 92, 246))' :
-                     sectionType === 'process' ? 'linear-gradient(to bottom, rgb(236, 72, 153), rgb(168, 85, 247))' :
                      'linear-gradient(135deg, rgb(30, 27, 75) 0%, rgb(139, 92, 246) 100%)',
           animationType: 'holographicFlow'
         };
@@ -1241,166 +1217,6 @@ export const generatePageHTML = (templateData: any) => {
         </div>
     </section>
 
-    <!-- Why Us Section -->
-    ${template.whyUs ? `
-    <section id="whyUs" class="py-20" style="background: ${isPremium ? (() => {
-      const bgData = getPremiumAnimatedBackground(template.id, 'whyUs');
-      return bgData.background;
-    })() : template.styles.backgroundColor};">
-        ${isPremium ? (() => {
-          const bgData = getPremiumAnimatedBackground(template.id, 'whyUs');
-          return generatePremiumBackgroundHTML(bgData.animationType);
-        })() : ''}
-        <div class="max-w-6xl mx-auto px-6 relative z-10">
-            <div class="text-center mb-16">
-                ${template.whyUs.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.primaryColor};">${template.whyUs.badge}</div>` : ''}
-                <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.whyUs.title}</h2>
-                ${template.whyUs.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor}; opacity: 0.8;">${template.whyUs.subtitle}</p>` : ''}
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                ${(template.whyUs.items || []).map((item: any) => `
-                    <div class="relative group ${isPremium ? 'perspective-1000' : ''}">
-                        ${isPremium ? `
-                        <div class="relative transform-gpu transition-all duration-300 preserve-3d group-hover:rotateY-5">
-                            <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20"></div>
-                            <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"></div>
-                            <div class="relative z-10 p-8 space-y-4">
-                                <div class="w-16 h-16 bg-gradient-to-br ${getPremiumIconColors(template.id)} rounded-xl flex items-center justify-center shadow-lg">
-                                    <i class="ri-${item.icon} text-2xl text-white"></i>
-                                </div>
-                                <h3 class="text-xl font-bold text-white bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">${item.title}</h3>
-                                <p class="text-blue-100/80 leading-relaxed">${item.description}</p>
-                            </div>
-                        </div>
-                        ` : `
-                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-                            <div class="text-4xl mb-4" style="color: ${template.styles.primaryColor};">
-                                <i class="ri-${item.icon}"></i>
-                            </div>
-                            <h3 class="text-xl font-bold mb-2" style="color: ${template.styles.textColor};">${item.title}</h3>
-                            <p style="color: ${template.styles.textColor}; opacity: 0.8;">${item.description}</p>
-                        </div>
-                        `}
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    </section>
-    ` : ''}
-
-    <!-- What We Give Section -->
-    ${template.whatWeGive ? `
-    <section id="whatWeGive" class="py-20" style="background: ${isPremium ? (() => {
-      const bgData = getPremiumAnimatedBackground(template.id, 'whatWeGive');
-      return bgData.background;
-    })() : template.styles.backgroundColor};">
-        ${isPremium ? (() => {
-          const bgData = getPremiumAnimatedBackground(template.id, 'whatWeGive');
-          return generatePremiumBackgroundHTML(bgData.animationType);
-        })() : ''}
-        <div class="max-w-6xl mx-auto px-6 relative z-10">
-            <div class="text-center mb-16">
-                ${template.whatWeGive.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.accentColor};">${template.whatWeGive.badge}</div>` : ''}
-                <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.whatWeGive.title}</h2>
-                ${template.whatWeGive.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor}; opacity: 0.8;">${template.whatWeGive.subtitle}</p>` : ''}
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div class="space-y-8">
-                    ${(template.whatWeGive.services || []).map((service: any) => `
-                        <div class="flex items-start gap-4 ${isPremium ? 'p-6 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20' : ''}">
-                            <div class="w-12 h-12 ${isPremium ? `bg-gradient-to-br ${getPremiumIconColors(template.id)}` : `bg-${template.styles.primaryColor}`} rounded-lg flex items-center justify-center flex-shrink-0">
-                                <i class="ri-${service.icon} text-xl text-white"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold mb-2" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${service.title}</h3>
-                                <p style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor}; opacity: 0.8;">${service.description}</p>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-                ${template.whatWeGive.image ? `
-                <div class="relative">
-                    <img src="${template.whatWeGive.image}" alt="${template.whatWeGive.title}" class="w-full h-auto rounded-2xl shadow-2xl" />
-                </div>
-                ` : ''}
-            </div>
-        </div>
-    </section>
-    ` : ''}
-
-    <!-- Gallery Section -->
-    ${template.gallery ? `
-    <section id="gallery" class="py-20" style="background: ${isPremium ? (() => {
-      const bgData = getPremiumAnimatedBackground(template.id, 'gallery');
-      return bgData.background;
-    })() : template.styles.backgroundColor};">
-        ${isPremium ? (() => {
-          const bgData = getPremiumAnimatedBackground(template.id, 'gallery');
-          return generatePremiumBackgroundHTML(bgData.animationType);
-        })() : ''}
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
-            <div class="text-center mb-16">
-                ${template.gallery.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.primaryColor};">${template.gallery.badge}</div>` : ''}
-                <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.gallery.title}</h2>
-                ${template.gallery.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor}; opacity: 0.8;">${template.gallery.subtitle}</p>` : ''}
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                ${(template.gallery.images || []).map((img: any, index: number) => `
-                    <div class="group relative overflow-hidden rounded-2xl ${isPremium ? 'backdrop-blur-sm bg-white/10 border border-white/20' : 'bg-white shadow-lg'} transition-all duration-300 hover:scale-105">
-                        <div class="aspect-video overflow-hidden">
-                            <img src="${img.src}" alt="${img.alt || `תמונה ${index + 1}`}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-                        </div>
-                        ${img.caption ? `
-                        <div class="p-4">
-                            <p class="text-sm" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor}; opacity: 0.9;">${img.caption}</p>
-                        </div>
-                        ` : ''}
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    </section>
-    ` : ''}
-
-    <!-- Process Section -->
-    ${template.process ? `
-    <section id="process" class="py-20" style="background: ${isPremium ? (() => {
-      const bgData = getPremiumAnimatedBackground(template.id, 'process');
-      return bgData.background;
-    })() : template.styles.backgroundColor};">
-        ${isPremium ? (() => {
-          const bgData = getPremiumAnimatedBackground(template.id, 'process');
-          return generatePremiumBackgroundHTML(bgData.animationType);
-        })() : ''}
-        <div class="max-w-6xl mx-auto px-6 relative z-10">
-            <div class="text-center mb-16">
-                ${template.process.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.accentColor};">${template.process.badge}</div>` : ''}
-                <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.process.title}</h2>
-                ${template.process.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor}; opacity: 0.8;">${template.process.subtitle}</p>` : ''}
-            </div>
-            
-            <div class="space-y-8">
-                ${(template.process.steps || []).map((step: any, index: number) => `
-                    <div class="flex items-start gap-6 ${isPremium ? 'p-8 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20' : 'p-6 bg-white rounded-lg shadow-lg'}">
-                        <div class="flex-shrink-0">
-                            <div class="w-16 h-16 ${isPremium ? `bg-gradient-to-br ${getPremiumIconColors(template.id)}` : `bg-${template.styles.primaryColor}`} rounded-full flex items-center justify-center text-white font-bold text-xl">
-                                ${index + 1}
-                            </div>
-                        </div>
-                        <div class="flex-1">
-                            <h3 class="text-2xl font-bold mb-3" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${step.title}</h3>
-                            <p class="text-lg" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor}; opacity: 0.8;">${step.description}</p>
-                            ${step.duration ? `<p class="text-sm mt-2" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.accentColor};">⏱ ${step.duration}</p>` : ''}
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    </section>
-    ` : ''}
 
     <!-- About Section -->
     <section id="about" class="about">
