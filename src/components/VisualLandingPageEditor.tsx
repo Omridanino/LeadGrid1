@@ -315,6 +315,7 @@ const VisualLandingPageEditor = ({
       textColor: '#ffffff',
       buttonColor: '#ffffff',
       buttonTextColor: '#3b82f6',
+      buttonGradient: '',
       effects: [] as string[]
     },
     features: {
@@ -329,6 +330,7 @@ const VisualLandingPageEditor = ({
       textColor: '#374151',
       buttonColor: '#3b82f6',
       buttonTextColor: '#ffffff',
+      buttonGradient: '',
       effects: [] as string[]
     },
     about: {
@@ -341,6 +343,7 @@ const VisualLandingPageEditor = ({
       textColor: '#374151',
       buttonColor: '#3b82f6',
       buttonTextColor: '#ffffff',
+      buttonGradient: '',
       effects: []
     },
     services: {
@@ -353,6 +356,7 @@ const VisualLandingPageEditor = ({
       textColor: '#374151',
       buttonColor: '#3b82f6',
       buttonTextColor: '#ffffff',
+      buttonGradient: '',
       effects: []
     },
     testimonials: {
@@ -366,6 +370,7 @@ const VisualLandingPageEditor = ({
       cardBackground: '#f8fafc',
       buttonColor: '#3b82f6',
       buttonTextColor: '#ffffff',
+      buttonGradient: '',
       effects: []
     },
     faq: {
@@ -379,6 +384,7 @@ const VisualLandingPageEditor = ({
       answerColor: '#6b7280',
       buttonColor: '#3b82f6',
       buttonTextColor: '#ffffff',
+      buttonGradient: '',
       effects: []
     },
     pricing: {
@@ -393,6 +399,7 @@ const VisualLandingPageEditor = ({
       recommendedColor: '#3b82f6',
       buttonColor: '#3b82f6',
       buttonTextColor: '#ffffff',
+      buttonGradient: '',
       effects: []
     },
     contact: {
@@ -406,6 +413,7 @@ const VisualLandingPageEditor = ({
       formBackground: '#ffffff',
       buttonColor: '#ffffff',
       buttonTextColor: '#3b82f6',
+      buttonGradient: '',
       effects: []
     }
   });
@@ -426,6 +434,16 @@ const VisualLandingPageEditor = ({
     { id: 'teal-blue', name: 'ירוק ים-כחול', value: 'linear-gradient(135deg, #14b8a6 0%, #3b82f6 100%)' },
     { id: 'indigo-purple', name: 'אינדיגו-סגול', value: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)' },
     { id: 'yellow-orange', name: 'צהוב-כתום', value: 'linear-gradient(135deg, #eab308 0%, #f97316 100%)' }
+  ];
+
+  const buttonGradientOptions = [
+    { id: 'solid', name: 'צבע אחיד', value: '' },
+    { id: 'blue-gradient', name: 'כחול דרגתי', value: 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)' },
+    { id: 'purple-gradient', name: 'סגול דרגתי', value: 'linear-gradient(135deg, #8b5cf6 0%, #6b21a8 100%)' },
+    { id: 'pink-gradient', name: 'ורוד דרגתי', value: 'linear-gradient(135deg, #ec4899 0%, #be185d 100%)' },
+    { id: 'green-gradient', name: 'ירוק דרגתי', value: 'linear-gradient(135deg, #10b981 0%, #047857 100%)' },
+    { id: 'orange-gradient', name: 'כתום דרגתי', value: 'linear-gradient(135deg, #f97316 0%, #c2410c 100%)' },
+    { id: 'multi-gradient', name: 'מרובה צבעים', value: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }
   ];
 
   const buttonStyles = [
@@ -494,20 +512,42 @@ const VisualLandingPageEditor = ({
   };
 
   const addNewItem = (section: string, item: any) => {
-    setEditableContent(prev => ({
-      ...prev,
-      [section]: {
-        ...prev[section],
-        items: [...(prev[section].items || []), item],
-        testimonials: section === 'testimonials' ? [...(prev[section].testimonials || []), item] : prev[section].testimonials,
-        plans: section === 'pricing' ? [...(prev[section].plans || []), item] : prev[section].plans,
-        questions: section === 'faq' ? [...(prev[section].questions || []), item] : prev[section].questions,
-        stats: section === 'about' ? [...(prev[section].stats || []), item] : prev[section].stats
+    console.log(`Adding new item to ${section}:`, item);
+    setEditableContent(prev => {
+      const newContent = {
+        ...prev,
+        [section]: {
+          ...prev[section]
+        }
+      };
+
+      // Handle different section types
+      if (section === 'features' || section === 'services') {
+        newContent[section].items = [...(prev[section]?.items || []), item];
+      } else if (section === 'testimonials') {
+        newContent[section].testimonials = [...(prev[section]?.testimonials || []), item];
+      } else if (section === 'pricing') {
+        newContent[section].plans = [...(prev[section]?.plans || []), item];
+      } else if (section === 'faq') {
+        newContent[section].questions = [...(prev[section]?.questions || []), item];
+      } else if (section === 'about') {
+        newContent[section].stats = [...(prev[section]?.stats || []), item];
       }
-    }));
+
+      // Notify parent component about content changes
+      if (onContentUpdate) {
+        onContentUpdate(newContent);
+      }
+      
+      // Save to localStorage for persistence
+      localStorage.setItem('editableContent', JSON.stringify(newContent));
+      
+      return newContent;
+    });
   };
 
   const updateContent = (section: string, field: string, value: any) => {
+    console.log(`Updating ${section}.${field} to:`, value);
     const newContent = {
       ...editableContent,
       [section]: { ...editableContent[section], [field]: value }
@@ -524,9 +564,12 @@ const VisualLandingPageEditor = ({
   };
 
   const addButton = (section: string) => {
+    console.log(`Adding button to section: ${section}`);
     const currentContent = editableContent[section] || {};
-    const buttonCount = Object.keys(currentContent).filter(key => key.startsWith('button')).length;
-    const newButtonIndex = buttonCount + 1;
+    const existingButtons = Object.keys(currentContent).filter(key => key.includes('button') && key.includes('Text'));
+    const newButtonIndex = existingButtons.length + 1;
+    
+    console.log(`Found ${existingButtons.length} existing buttons, adding button ${newButtonIndex}`);
     
     updateContent(section, `button${newButtonIndex}Text`, `כפתור ${newButtonIndex}`);
     updateContent(section, `button${newButtonIndex}Icon`, '');
@@ -1217,11 +1260,13 @@ const VisualLandingPageEditor = ({
                                 variant="outline"
                                 size="sm"
                                 onClick={() => {
-                                  const currentQuestions = editableContent?.faq?.questions || [];
+                                  console.log('Adding FAQ question...');
+                                  const currentQuestions = [...(editableContent?.faq?.questions || [])];
                                   console.log('Current questions before adding:', currentQuestions);
-                                  const newQuestions = [...currentQuestions, { question: 'שאלה חדשה', answer: 'תשובה חדשה' }];
-                                  console.log('New questions after adding:', newQuestions);
-                                  updateContent('faq', 'questions', newQuestions);
+                                  const newQuestion = { question: 'שאלה חדשה', answer: 'תשובה חדשה' };
+                                  const updatedQuestions = [...currentQuestions, newQuestion];
+                                  console.log('New questions after adding:', updatedQuestions);
+                                  updateContent('faq', 'questions', updatedQuestions);
                                 }}
                                 className="flex-1"
                               >

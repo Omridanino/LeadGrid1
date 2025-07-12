@@ -26,7 +26,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
 
   // If we have a selected template, show the generated HTML
   if (formData?.selectedTemplate) {
-    // Merge the generated content with any user edits
+    // Merge the generated content with any user edits and current colors
     const templateWithContent = {
       ...formData.selectedTemplate,
       features: content?.features || formData.selectedTemplate.features,
@@ -36,10 +36,28 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       testimonials: content?.testimonials || formData.selectedTemplate.testimonials,
       pricing: content?.pricing || formData.selectedTemplate.pricing,
       faq: content?.faq || formData.selectedTemplate.faq,
-      contact: content?.contact || formData.selectedTemplate.contact
+      contact: content?.contact || formData.selectedTemplate.contact,
+      // Apply current color scheme
+      styles: {
+        ...formData.selectedTemplate.styles,
+        ...currentColors,
+        primaryColor: currentColors.primary,
+        secondaryColor: currentColors.secondary,
+        accentColor: currentColors.accent,
+        backgroundColor: currentColors.background,
+        textColor: currentColors.text,
+        heroTitleColor: currentColors.headlineColor,
+        heroSubtitleColor: currentColors.subheadlineColor,
+        featuresTitleColor: currentColors.featuresColor,
+        featuresTextColor: currentColors.featuresTextColor,
+        aboutTitleColor: currentColors.aboutColor,
+        aboutTextColor: currentColors.aboutTextColor,
+        contactTitleColor: currentColors.contactColor,
+        contactTextColor: currentColors.contactTextColor
+      }
     };
     
-    console.log('Template with merged content:', templateWithContent);
+    console.log('Template with merged content and colors:', templateWithContent);
     const htmlContent = generatePageHTML(templateWithContent);
     
     return (
