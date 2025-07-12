@@ -65,6 +65,8 @@ const VisualLandingPageEditor = ({
   const initializeContent = () => {
     console.log('Initializing content with generatedContent:', generatedContent);
     console.log('FormData business info:', formData?.businessInfo);
+    console.log('Generated whyUs:', generatedContent?.whyUs);
+    console.log('Generated whatWeGive:', generatedContent?.whatWeGive);
     
     // Use AI generated content if available, otherwise use form data or defaults
     const businessName = formData?.businessInfo?.businessName || 'שם העסק';
@@ -119,6 +121,42 @@ const VisualLandingPageEditor = ({
             { number: '+100', label: 'לקוחות מרוצים' }
           ],
           image: 'תמונה'
+        },
+        whyUs: generatedContent.whyUs || {
+          title: 'למה לבחור בנו',
+          subtitle: 'הסיבות שיגרמו לכם לעבוד איתנו',
+          items: [
+            { title: 'סיבה 1', description: 'תיאור הסיבה הראשונה', icon: 'star' },
+            { title: 'סיבה 2', description: 'תיאור הסיבה השנייה', icon: 'trophy' },
+            { title: 'סיבה 3', description: 'תיאור הסיבה השלישית', icon: 'shield' }
+          ]
+        },
+        whatWeGive: generatedContent.whatWeGive || {
+          title: 'מה אנחנו נותנים',
+          subtitle: 'השירותים והפתרונות שלנו',
+          services: [
+            { title: 'שירות 1', description: 'תיאור השירות הראשון', icon: 'tools' },
+            { title: 'שירות 2', description: 'תיאור השירות השני', icon: 'briefcase' },
+            { title: 'שירות 3', description: 'תיאור השירות השלישי', icon: 'lightbulb' }
+          ]
+        },
+        gallery: generatedContent.gallery || {
+          title: 'הגלריה שלנו',
+          subtitle: 'עבודות שביצענו',
+          images: [
+            { src: 'תמונה 1', alt: 'תמונה 1', caption: 'כותרת תמונה 1' },
+            { src: 'תמונה 2', alt: 'תמונה 2', caption: 'כותרת תמונה 2' },
+            { src: 'תמונה 3', alt: 'תמונה 3', caption: 'כותרת תמונה 3' }
+          ]
+        },
+        process: generatedContent.process || {
+          title: 'התהליך שלנו',
+          subtitle: 'איך אנחנו עובדים',
+          steps: [
+            { title: 'שלב 1', description: 'תיאור השלב הראשון', duration: '1-2 ימים' },
+            { title: 'שלב 2', description: 'תיאור השלב השני', duration: '3-5 ימים' },
+            { title: 'שלב 3', description: 'תיאור השלב השלישי', duration: '1 שבוע' }
+          ]
         },
         services: generatedContent.services ? {
           title: generatedContent.services.title || 'השירותים שלנו',
@@ -240,26 +278,6 @@ const VisualLandingPageEditor = ({
           button1Text: 'צור קשר',
           button2Text: 'קבל הצעה'
         },
-        whyUs: generatedContent.whyUs || {
-          title: 'למה לבחור בנו',
-          subtitle: 'הסיבות שיגרמו לכם לעבוד איתנו',
-          items: []
-        },
-        whatWeGive: generatedContent.whatWeGive || {
-          title: 'מה אנחנו נותנים',
-          subtitle: 'השירותים והפתרונות שלנו',
-          services: []
-        },
-        gallery: generatedContent.gallery || {
-          title: 'הגלריה שלנו',
-          subtitle: 'עבודות שביצענו',
-          images: []
-        },
-        process: generatedContent.process || {
-          title: 'התהליך שלנו',
-          subtitle: 'איך אנחנו עובדים',
-          steps: []
-        },
         contact: generatedContent.contact || {
           title: 'נשמח לשמוע ממכם',
           subtitle: 'השאירו פרטים ונחזור אליכם במהרה',
@@ -343,7 +361,53 @@ const VisualLandingPageEditor = ({
   };
 
   // Use the actual generated content if available, otherwise use defaults  
-  const [editableContent, setEditableContent] = useState(() => initializeContent());
+  const [editableContent, setEditableContent] = useState(() => {
+    const initialContent = initializeContent();
+    
+    // Ensure all sections exist, even if empty
+    const completeContent = {
+      ...initialContent,
+      whyUs: initialContent.whyUs || {
+        title: 'למה לבחור בנו',
+        subtitle: 'הסיבות שיגרמו לכם לעבוד איתנו',
+        items: [
+          { title: 'סיבה 1', description: 'תיאור הסיבה הראשונה', icon: 'star' },
+          { title: 'סיבה 2', description: 'תיאור הסיבה השנייה', icon: 'trophy' },
+          { title: 'סיבה 3', description: 'תיאור הסיבה השלישית', icon: 'shield' }
+        ]
+      },
+      whatWeGive: initialContent.whatWeGive || {
+        title: 'מה אנחנו נותנים',
+        subtitle: 'השירותים והפתרונות שלנו',
+        services: [
+          { title: 'שירות 1', description: 'תיאור השירות הראשון', icon: 'tools' },
+          { title: 'שירות 2', description: 'תיאור השירות השני', icon: 'briefcase' },
+          { title: 'שירות 3', description: 'תיאור השירות השלישי', icon: 'lightbulb' }
+        ]
+      },
+      gallery: initialContent.gallery || {
+        title: 'הגלריה שלנו',
+        subtitle: 'עבודות שביצענו',
+        images: [
+          { src: 'תמונה 1', alt: 'תמונה 1', caption: 'כותרת תמונה 1' },
+          { src: 'תמונה 2', alt: 'תמונה 2', caption: 'כותרת תמונה 2' },
+          { src: 'תמונה 3', alt: 'תמונה 3', caption: 'כותרת תמונה 3' }
+        ]
+      },
+      process: initialContent.process || {
+        title: 'התהליך שלנו',
+        subtitle: 'איך אנחנו עובדים',
+        steps: [
+          { title: 'שלב 1', description: 'תיאור השלב הראשון', duration: '1-2 ימים' },
+          { title: 'שלב 2', description: 'תיאור השלב השני', duration: '3-5 ימים' },
+          { title: 'שלב 3', description: 'תיאור השלב השלישי', duration: '1 שבוע' }
+        ]
+      }
+    };
+    
+    console.log('Complete content with all sections:', completeContent);
+    return completeContent;
+  });
 
   // Helper function to initialize content with specific generated data
   const initializeContentWithData = (generatedData: any, formDataParam: any) => {
@@ -429,11 +493,14 @@ const VisualLandingPageEditor = ({
   useEffect(() => {
     if (generatedContent || formData) {
       console.log('useEffect - updating content with new data:', { generatedContent, formData });
+      console.log('Generated content whyUs:', generatedContent?.whyUs);
+      console.log('Generated content whatWeGive:', generatedContent?.whatWeGive);
       
       // Always prioritize the passed generatedContent over localStorage
       if (generatedContent) {
         console.log('Using passed generatedContent:', generatedContent);
         const updatedContent = initializeContentWithData(generatedContent, formData);
+        console.log('Updated content with new sections:', updatedContent);
         setEditableContent(updatedContent);
       } else {
         // Only use initializeContent if no generatedContent is passed

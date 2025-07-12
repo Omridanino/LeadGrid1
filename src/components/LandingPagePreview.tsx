@@ -65,10 +65,11 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     };
     
     console.log('Template with merged content and colors:', templateWithContent);
-    console.log('Has whyUs?', !!templateWithContent.whyUs);
-    console.log('Has whatWeGive?', !!templateWithContent.whatWeGive);
-    console.log('Has gallery?', !!templateWithContent.gallery);
-    console.log('Has process?', !!templateWithContent.process);
+    console.log('Has whyUs?', !!templateWithContent.whyUs, templateWithContent.whyUs);
+    console.log('Has whatWeGive?', !!templateWithContent.whatWeGive, templateWithContent.whatWeGive);
+    console.log('Has gallery?', !!templateWithContent.gallery, templateWithContent.gallery);
+    console.log('Has process?', !!templateWithContent.process, templateWithContent.process);
+    console.log('Content prop:', content);
     const htmlContent = generatePageHTML(templateWithContent);
     
     return (
