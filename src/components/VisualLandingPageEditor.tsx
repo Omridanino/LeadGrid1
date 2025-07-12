@@ -666,19 +666,38 @@ const VisualLandingPageEditor = ({
         ...prev,
         [section]: { ...prev[section], [key]: value }
       };
+      
+      // Update background when backgroundType or gradient changes
+      if (key === 'backgroundType' || key === 'gradient') {
+        const sectionStyle = newStyles[section];
+        if (key === 'backgroundType') {
+          if (value === 'gradient' && sectionStyle.gradient) {
+            newStyles[section].background = sectionStyle.gradient;
+          } else if (value === 'solid' && sectionStyle.backgroundColor) {
+            newStyles[section].background = sectionStyle.backgroundColor;
+          }
+        } else if (key === 'gradient') {
+          newStyles[section].background = value as string;
+        }
+      }
+      
       localStorage.setItem('sectionStyles', JSON.stringify(newStyles));
       return newStyles;
     });
   };
 
   const updateSectionColor = (section: string, colorType: string, color: string) => {
-    setSectionStyles(prev => ({
-      ...prev,
-      [section]: { 
-        ...prev[section], 
-        [`${colorType}Color`]: color 
-      }
-    }));
+    setSectionStyles(prev => {
+      const newStyles = {
+        ...prev,
+        [section]: { 
+          ...prev[section], 
+          [`${colorType}Color`]: color 
+        }
+      };
+      localStorage.setItem('sectionStyles', JSON.stringify(newStyles));
+      return newStyles;
+    });
   };
 
   const addNewItem = (section: string, item: any) => {
@@ -798,6 +817,22 @@ const VisualLandingPageEditor = ({
       };
     }
     return { background: section.background };
+  };
+
+  const getEffectClasses = (effects: string[] = []) => {
+    const classMap: Record<string, string> = {
+      'glow': 'drop-shadow-lg',
+      'shadow': 'shadow-2xl',
+      'blur': 'backdrop-blur-sm',
+      'float': 'animate-pulse',
+      'pulse': 'animate-pulse',
+      'gradient-text': 'bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent',
+      'glass': 'bg-white/10 backdrop-blur-md border border-white/20',
+      'neon': 'shadow-lg shadow-blue-500/50',
+      'particle': 'animate-bounce'
+    };
+    
+    return effects.map(effect => classMap[effect] || '').join(' ');
   };
 
   const handleSave = () => {
@@ -1363,7 +1398,7 @@ const VisualLandingPageEditor = ({
                         </div>
                       )}
 
-                      {activeSection === 'pricing' && (
+                      {activeSection === 'pricing' && editableContent?.pricing && (
                         <div className="space-y-3">
                           <div>
                             <Label className="text-xs">כותרת הסקשן</Label>
@@ -1442,7 +1477,7 @@ const VisualLandingPageEditor = ({
                       )}
 
                       {/* FAQ Content Editor */}
-                      {activeSection === 'faq' && (
+                      {activeSection === 'faq' && editableContent?.faq && (
                         <>
                           <div>
                             <Label className="text-xs">כותרת ראשית</Label>
@@ -1538,7 +1573,7 @@ const VisualLandingPageEditor = ({
                       )}
 
                       {/* Contact Content Editor */}
-                      {activeSection === 'contact' && (
+                      {activeSection === 'contact' && editableContent?.contact && (
                         <>
                           <div>
                             <Label className="text-xs">כותרת ראשית</Label>
@@ -1953,7 +1988,7 @@ const VisualLandingPageEditor = ({
                         <div>
                           <Label className="text-xs">מספר עמודות</Label>
                           <Select 
-                            value={sectionStyles.features?.columns?.toString()}
+                            value={sectionStyles.features?.columns?.toString() || '3'}
                             onValueChange={(value) => updateSectionStyle('features', 'columns', value)}
                           >
                             <SelectTrigger>
@@ -2129,7 +2164,7 @@ const VisualLandingPageEditor = ({
               {/* Hero Section Preview */}
               {activeSection === 'hero' && (
                 <div 
-                  className={`min-h-[500px] p-8 rounded-lg ${getAlignmentClass(sectionStyles.hero?.textAlign || 'center')} flex flex-col`}
+                  className={`min-h-[500px] p-8 rounded-lg ${getAlignmentClass(sectionStyles.hero?.textAlign || 'center')} flex flex-col ${getEffectClasses(sectionStyles.hero?.effects)}`}
                   style={getBackgroundStyle(sectionStyles.hero)}
                 >
                   {editableContent?.hero?.badge && (
@@ -2176,7 +2211,8 @@ const VisualLandingPageEditor = ({
                         style={{
                           backgroundColor: sectionStyles.hero?.buttonColor || pageStyles.primaryColor,
                           color: sectionStyles.hero?.buttonTextColor || '#ffffff',
-                          ...(sectionStyles.hero?.buttonGradient && { background: sectionStyles.hero.buttonGradient })
+                          ...(sectionStyles.hero?.buttonGradient && { background: sectionStyles.hero.buttonGradient }),
+                          border: 'none'
                         }}
                       >
                         {editableContent?.hero?.button1Icon && iconOptions.find(i => i.id === editableContent.hero.button1Icon) && (
@@ -2214,7 +2250,7 @@ const VisualLandingPageEditor = ({
 
               {/* Features Section Preview */}
               {activeSection === 'features' && (
-                <div className="p-8 rounded-lg" style={{ background: sectionStyles.features?.background }}>
+                <div className={`p-8 rounded-lg ${getEffectClasses(sectionStyles.features?.effects)}`} style={{ background: sectionStyles.features?.background }}>
                   <div className="text-center mb-12">
                     <h2 
                       className="text-3xl font-bold mb-4"
@@ -2232,7 +2268,7 @@ const VisualLandingPageEditor = ({
                   
                   <div 
                     className={`grid gap-6`}
-                    style={{ gridTemplateColumns: `repeat(${sectionStyles.features?.columns || 3}, 1fr)` }}
+                    style={{ gridTemplateColumns: `repeat(${parseInt(sectionStyles.features?.columns?.toString()) || 3}, 1fr)` }}
                   >
                     {editableContent?.features?.items?.map((item, index) => (
                       <Card 
