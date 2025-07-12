@@ -1770,7 +1770,7 @@ const VisualLandingPageEditor = ({
                               color: '#ffffff'
                             }}
                           >
-                            {plan.buttonText}
+                            בחר חבילה
                           </button>
                         </div>
                       ))}
