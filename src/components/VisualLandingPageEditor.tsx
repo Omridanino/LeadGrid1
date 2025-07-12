@@ -176,11 +176,40 @@ const VisualLandingPageEditor = ({
               rating: 4,
               results: "דוחות מקצועיים ומדידים"
             }
-          ],
-          button1Text: 'קבל הצעת מחיר',
-          button2Text: 'צפה בעוד המלצות'
+          ]
         },
-        pricing: generatedContent.pricing || null,
+        pricing: generatedContent.pricing || {
+          title: 'מחירים שקופים',
+          subtitle: 'בחר את החבילה המתאימה לך',
+          plans: [
+            {
+              name: 'בסיסי',
+              price: '₪99',
+              period: 'לחודש',
+              features: ['עד 1,000 לידים', 'תמיכה בסיסית', 'דוחות חודשיים'],
+              buttonText: 'התחל עכשיו',
+              recommended: false
+            },
+            {
+              name: 'מקצועי',
+              price: '₪249',
+              period: 'לחודש',
+              features: ['עד 5,000 לידים', 'תמיכה מועדפת', 'דוחות שבועיים', 'אינטגרציות'],
+              buttonText: 'הפופולרי ביותר',
+              recommended: true
+            },
+            {
+              name: 'ארגוני',
+              price: '₪499',
+              period: 'לחודש',
+              features: ['לידים ללא הגבלה', 'תמיכה 24/7', 'דוחות יומיים', 'כל האינטגרציות'],
+              buttonText: 'צור קשר',
+              recommended: false
+            }
+          ],
+          button1Text: 'השווה חבילות',
+          button2Text: 'שאל שאלה'
+        },
         contact: generatedContent.contact || null
       };
     }
@@ -904,7 +933,67 @@ const VisualLandingPageEditor = ({
                         </div>
                       )}
 
-                      {(activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
+                      {activeSection === 'pricing' && (
+                        <div className="space-y-3">
+                          <div>
+                            <Label className="text-xs">כותרת הסקשן</Label>
+                            <Input
+                              value={editableContent?.pricing?.title || ''}
+                              onChange={(e) => updateContent('pricing', 'title', e.target.value)}
+                              placeholder="כותרת הסקשן"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">כותרת משנה</Label>
+                            <Input
+                              value={editableContent?.pricing?.subtitle || ''}
+                              onChange={(e) => updateContent('pricing', 'subtitle', e.target.value)}
+                              placeholder="כותרת משנה"
+                            />
+                          </div>
+                          
+                          <div>
+                            <Label className="text-xs">חבילות מחיר</Label>
+                            <div className="space-y-3">
+                              {(editableContent?.pricing?.plans || []).map((plan: any, index: number) => (
+                                <div key={index} className="p-3 border rounded-lg space-y-2">
+                                  <Label className="text-xs">חבילה {index + 1}</Label>
+                                  <Input
+                                    value={plan.name || ''}
+                                    onChange={(e) => {
+                                      const newPlans = [...(editableContent?.pricing?.plans || [])];
+                                      newPlans[index] = { ...plan, name: e.target.value };
+                                      updateContent('pricing', 'plans', newPlans);
+                                    }}
+                                    placeholder="שם החבילה"
+                                  />
+                                  <Input
+                                    value={plan.price || ''}
+                                    onChange={(e) => {
+                                      const newPlans = [...(editableContent?.pricing?.plans || [])];
+                                      newPlans[index] = { ...plan, price: e.target.value };
+                                      updateContent('pricing', 'plans', newPlans);
+                                    }}
+                                    placeholder="מחיר (לדוגמה: ₪99)"
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                          
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={() => addButton('pricing')}
+                            className="w-full"
+                          >
+                            <Plus className="h-4 w-4 mr-2" />
+                            הוסף כפתור
+                          </Button>
+                        </div>
+                      )}
+
+                      {(activeSection === 'faq' || activeSection === 'contact') && (
                         <div className="text-center py-8 text-muted-foreground">
                           <Type className="h-8 w-8 mx-auto mb-2" />
                           <p>עריכת תוכן עבור סקשן {sections.find(s => s.id === activeSection)?.name}</p>
@@ -1605,22 +1694,114 @@ const VisualLandingPageEditor = ({
                         </div>
                       ))}
                     </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Pricing Section Preview */}
+              {activeSection === 'pricing' && (
+                <div 
+                  className="py-16 px-6 relative overflow-hidden"
+                  style={{backgroundColor: pageStyles.backgroundColor || '#ffffff'}}
+                >
+                  <div className="max-w-7xl mx-auto px-6 relative z-10">
+                    {/* Section Header */}
+                    <div className="text-center mb-12">
+                      {editableContent?.pricing?.badge && (
+                        <div 
+                          className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4"
+                          style={{
+                            color: pageStyles.primaryColor, 
+                            borderColor: pageStyles.primaryColor
+                          }}
+                        >
+                          {editableContent.pricing.badge}
+                        </div>
+                      )}
+                      <h2 
+                        className="text-3xl md:text-4xl font-bold mb-4"
+                        style={{color: pageStyles.textColor}}
+                      >
+                        {editableContent?.pricing?.title || 'מחירים שקופים'}
+                      </h2>
+                      {editableContent?.pricing?.subtitle && (
+                        <p 
+                          className="text-xl opacity-80"
+                          style={{color: pageStyles.textColor}}
+                        >
+                          {editableContent.pricing.subtitle}
+                        </p>
+                      )}
+                    </div>
+                    
+                    {/* Pricing Plans Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
+                      {(editableContent?.pricing?.plans || []).map((plan: any, index: number) => (
+                        <div key={index} className={`relative group perspective-1000 ${plan.recommended ? 'lg:scale-105' : ''}`}>
+                          {plan.recommended && (
+                            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
+                              <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 px-4 py-2 rounded-full text-sm font-bold flex items-center gap-1 shadow-lg">
+                                <span style={{color: 'currentColor'}}>★</span>
+                                מומלץ
+                              </div>
+                            </div>
+                          )}
+                          
+                          <div className="relative transform-gpu transition-all duration-500 preserve-3d group-hover:rotateY-5">
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20"></div>
+                            
+                            {plan.recommended && (
+                              <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 rounded-2xl blur-sm"></div>
+                            )}
+                            
+                            <div className="relative z-10 p-8 space-y-6">
+                              <h3 className="text-2xl font-bold text-white text-center">{plan.name}</h3>
+                              
+                              <div className="text-center">
+                                <div className="text-4xl md:text-5xl font-bold text-white mb-2">{plan.price}</div>
+                                <div className="text-blue-200/70">{plan.period}</div>
+                              </div>
+                              
+                              <ul className="space-y-3">
+                                {(plan.features || []).map((feature: string, featureIndex: number) => (
+                                  <li key={featureIndex} className="flex items-center gap-3 text-blue-100/80">
+                                    <span style={{color: '#4ade80', fontSize: '1.25rem'}}>✓</span>
+                                    {feature}
+                                  </li>
+                                ))}
+                              </ul>
+                              
+                              <a 
+                                href="#contact" 
+                                className="w-full py-3 font-medium rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg inline-flex items-center justify-center text-center"
+                                style={{
+                                  background: plan.recommended ? 'linear-gradient(to right, #fbbf24, #f97316)' : 'linear-gradient(to right, #3b82f6, #8b5cf6)',
+                                  color: plan.recommended ? '#111827' : '#ffffff'
+                                }}
+                              >
+                                {plan.buttonText}
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
 
                     {/* Action Buttons */}
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                       <a 
                         href="#contact" 
                         className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
-                        style={{backgroundColor: pageStyles.primaryColor || '#3b82f6'}}
+                        style={{backgroundColor: pageStyles.primaryColor}}
                       >
-                        {editableContent?.testimonials?.button1Text || 'קבל הצעת מחיר'}
+                        {editableContent?.pricing?.button1Text || 'השווה חבילות'}
                       </a>
                       <a 
-                        href="#about" 
+                        href="#faq" 
                         className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
-                        style={{backgroundColor: pageStyles.secondaryColor || '#6b7280'}}
+                        style={{backgroundColor: pageStyles.secondaryColor}}
                       >
-                        {editableContent?.testimonials?.button2Text || 'צפה בעוד המלצות'}
+                        {editableContent?.pricing?.button2Text || 'שאל שאלה'}
                       </a>
                     </div>
                   </div>
@@ -1628,7 +1809,7 @@ const VisualLandingPageEditor = ({
               )}
 
               {/* Other Sections Preview */}
-              {(activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
+              {(activeSection === 'faq' || activeSection === 'contact') && (
                 <div className="p-8 rounded-lg bg-gray-50 text-center">
                   <div className="text-gray-500 mb-4">
                     <Type className="h-16 w-16 mx-auto mb-4" />
