@@ -210,6 +210,16 @@ const VisualLandingPageEditor = ({
           button1Text: 'השווה חבילות',
           button2Text: 'שאל שאלה'
         },
+        faq: generatedContent.faq || {
+          title: 'שאלות נפוצות',
+          questions: [
+            { question: 'מה כלול בשירות?', answer: 'השירות כולל את כל מה שאתם צריכים להצלחה.' },
+            { question: 'כמה זמן לוקח?', answer: 'התהליך לוקח בין שבוע לשבועיים בממוצע.' },
+            { question: 'איך אפשר ליצור קשר?', answer: 'אתם יכולים ליצור קשר בטלפון, אימייל או ווטסאפ.' }
+          ],
+          button1Text: 'צור קשר',
+          button2Text: 'קבל הצעה'
+        },
         contact: generatedContent.contact || null
       };
     }
@@ -1792,17 +1802,13 @@ const VisualLandingPageEditor = ({
                         className="text-3xl md:text-4xl font-bold"
                         style={{color: pageStyles.textColor || '#1f2937'}}
                       >
-                        {'שאלות נפוצות'}
+                        {editableContent?.faq?.title || 'שאלות נפוצות'}
                       </h2>
                     </div>
                     
                     {/* FAQ Items */}
                     <div className="space-y-4 mb-12">
-                      {[
-                        { question: 'מה כלול בשירות?', answer: 'השירות כולל את כל מה שאתם צריכים להצלחה.' },
-                        { question: 'כמה זמן לוקח?', answer: 'התהליך לוקח בין שבוע לשבועיים בממוצע.' },
-                        { question: 'איך אפשר ליצור קשר?', answer: 'אתם יכולים ליצור קשר בטלפון, אימייל או ווטסאפ.' }
-                      ].map((qa: any, index: number) => (
+                      {(editableContent?.faq?.questions || []).map((qa: any, index: number) => (
                         <div key={index} className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
                           <h3 
                             className="text-lg font-bold mb-2 text-right"
@@ -1826,13 +1832,13 @@ const VisualLandingPageEditor = ({
                         className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
                         style={{backgroundColor: pageStyles.primaryColor || '#3b82f6'}}
                       >
-                        {'צור קשר'}
+                        {editableContent?.faq?.button1Text || 'צור קשר'}
                       </button>
                       <button 
                         className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
                         style={{backgroundColor: pageStyles.secondaryColor || '#6b7280'}}
                       >
-                        {'קבל הצעה'}
+                        {editableContent?.faq?.button2Text || 'קבל הצעה'}
                       </button>
                     </div>
                   </div>
