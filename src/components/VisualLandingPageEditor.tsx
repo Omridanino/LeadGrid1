@@ -212,8 +212,21 @@ const VisualLandingPageEditor = ({
           button1Text: 'השווה חבילות',
           button2Text: 'שאל שאלה'
         },
-        faq: generatedContent.faq || {
+        faq: generatedContent.faq ? {
+          title: generatedContent.faq.title || 'שאלות נפוצות',
+          subtitle: generatedContent.faq.subtitle || 'תשובות לשאלות הכי חשובות',
+          questions: [
+            ...(generatedContent.faq.questions || []),
+            ...(generatedContent.faq.items || []).map((item: any) => ({
+              question: item.question,
+              answer: item.answer
+            }))
+          ],
+          button1Text: generatedContent.faq.button1Text || 'צור קשר',
+          button2Text: generatedContent.faq.button2Text || 'קבל הצעה'
+        } : {
           title: 'שאלות נפוצות',
+          subtitle: 'תשובות לשאלות הכי חשובות',
           questions: [
             { question: 'מה כלול בשירות?', answer: 'השירות כולל את כל מה שאתם צריכים להצלחה.' },
             { question: 'כמה זמן לוקח?', answer: 'התהליך לוקח בין שבוע לשבועיים בממוצע.' },
@@ -1497,31 +1510,36 @@ const VisualLandingPageEditor = ({
                             />
                           </div>
 
-                          <div>
+                           <div>
                             <Label className="text-xs">שאלות ותשובות</Label>
-                            {(editableContent?.faq?.questions || []).map((qa: any, index: number) => (
-                              <div key={index} className="space-y-2 p-3 border rounded">
-                                <Input
-                                  value={qa.question || ''}
-                                  onChange={(e) => {
-                                    const questions = [...(editableContent?.faq?.questions || [])];
-                                    questions[index] = { ...questions[index], question: e.target.value };
-                                    updateContent('faq', 'questions', questions);
-                                  }}
-                                  placeholder="שאלה"
-                                />
-                                <Textarea
-                                  value={qa.answer || ''}
-                                  onChange={(e) => {
-                                    const questions = [...(editableContent?.faq?.questions || [])];
-                                    questions[index] = { ...questions[index], answer: e.target.value };
-                                    updateContent('faq', 'questions', questions);
-                                  }}
-                                  placeholder="תשובה"
-                                  rows={2}
-                                />
-                              </div>
-                            ))}
+                            {(() => {
+                              // קודם נבדוק אם יש שאלות ב-questions (שכבר כולל איחוד)
+                              const allQuestions = editableContent?.faq?.questions || [];
+                              
+                              return allQuestions.map((qa: any, index: number) => (
+                                <div key={index} className="space-y-2 p-3 border rounded">
+                                  <Input
+                                    value={qa.question || ''}
+                                    onChange={(e) => {
+                                      const questions = [...allQuestions];
+                                      questions[index] = { ...questions[index], question: e.target.value };
+                                      updateContent('faq', 'questions', questions);
+                                    }}
+                                    placeholder="שאלה"
+                                  />
+                                  <Textarea
+                                    value={qa.answer || ''}
+                                    onChange={(e) => {
+                                      const questions = [...allQuestions];
+                                      questions[index] = { ...questions[index], answer: e.target.value };
+                                      updateContent('faq', 'questions', questions);
+                                    }}
+                                    placeholder="תשובה"
+                                    rows={2}
+                                  />
+                                </div>
+                              ));
+                            })()}
                             <div className="flex gap-2">
                               <Button
                                 variant="outline"
@@ -2586,14 +2604,18 @@ const VisualLandingPageEditor = ({
                     
                     {/* FAQ Items */}
                     <div className="space-y-4 mb-12">
-                      {((editableContent?.faq?.questions && editableContent.faq.questions.length > 0) 
-                        ? editableContent.faq.questions 
-                        : [
-                            { question: 'כמה זמן לוקח לראות תוצאות?', answer: 'בדרך כלל, ניתן לראות תוצאות ראשוניות בתוך 3 חודשים, אך זה יכול להשתנות בהתאם לסוג העסק ולתחום הפעילות.' },
-                            { question: 'האם השירותים שלכם מתאימים לכל סוגי העסקים?', answer: 'כן, אנחנו מתאימים את השירותים שלנו לכל סוגי העסקים, קטנים וגדולים כאחד.' },
-                            { question: 'איך אתכם מתחילים?', answer: 'פשוט צרו איתנו קשר דרך הטופס ואנחנו נחזור אליכם במהרה עם כל המידע הדרוש.' }
-                          ]
-                      ).map((qa: any, index: number) => (
+                      {(() => {
+                        // השתמש ב-questions שכבר כולל איחוד מכל המקורות
+                        const allQuestions = editableContent?.faq?.questions || [];
+                        
+                        // אם אין שאלות, להראות ברירת מחדל
+                        const questionsToShow = allQuestions.length > 0 ? allQuestions : [
+                          { question: 'כמה זמן לוקח לראות תוצאות?', answer: 'בדרך כלל, ניתן לראות תוצאות ראשוניות בתוך 3 חודשים, אך זה יכול להשתנות בהתאם לסוג העסק ולתחום הפעילות.' },
+                          { question: 'האם השירותים שלכם מתאימים לכל סוגי העסקים?', answer: 'כן, אנחנו מתאימים את השירותים שלנו לכל סוגי העסקים, קטנים וגדולים כאחד.' },
+                          { question: 'איך אתכם מתחילים?', answer: 'פשוט צרו איתנו קשר דרך הטופס ואנחנו נחזור אליכם במהרה עם כל המידע הדרוש.' }
+                        ];
+                        
+                        return questionsToShow.map((qa: any, index: number) => (
                         <div key={index} className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
                           <h3 
                             className="text-lg font-bold mb-2 text-right"
@@ -2608,7 +2630,8 @@ const VisualLandingPageEditor = ({
                             {qa.answer}
                           </p>
                         </div>
-                      ))}
+                        ));
+                      })()}
                     </div>
 
                     {/* Action Buttons */}
