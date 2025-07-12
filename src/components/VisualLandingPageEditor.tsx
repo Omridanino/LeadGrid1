@@ -291,6 +291,8 @@ const VisualLandingPageEditor = ({
     aboutTextColor: '#6b7280',
     servicesTitleColor: '#1f2937',
     servicesTextColor: '#6b7280',
+    contactTitleColor: '#ffffff',
+    contactTextColor: '#ffffff',
     heroBackground: 'gradient',
     heroBackgroundImage: '',
     buttonStyle: 'rounded',
@@ -306,6 +308,11 @@ const VisualLandingPageEditor = ({
       backgroundType: 'gradient',
       gradient: 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)',
       backgroundColor: '#3b82f6',
+      titleColor: '#ffffff',
+      subtitleColor: '#ffffff',
+      textColor: '#ffffff',
+      buttonColor: '#ffffff',
+      buttonTextColor: '#3b82f6',
       effects: [] as string[]
     },
     features: {
@@ -315,6 +322,11 @@ const VisualLandingPageEditor = ({
       backgroundType: 'solid',
       gradient: '',
       backgroundColor: '#f8fafc',
+      titleColor: '#1f2937',
+      subtitleColor: '#6b7280',
+      textColor: '#374151',
+      buttonColor: '#3b82f6',
+      buttonTextColor: '#ffffff',
       effects: [] as string[]
     },
     about: {
@@ -322,6 +334,11 @@ const VisualLandingPageEditor = ({
       layout: 'split',
       alignment: 'left',
       backgroundType: 'solid',
+      titleColor: '#1f2937',
+      subtitleColor: '#6b7280',
+      textColor: '#374151',
+      buttonColor: '#3b82f6',
+      buttonTextColor: '#ffffff',
       effects: []
     },
     services: {
@@ -329,6 +346,11 @@ const VisualLandingPageEditor = ({
       layout: 'grid',
       columns: 2,
       backgroundType: 'solid',
+      titleColor: '#1f2937',
+      subtitleColor: '#6b7280',
+      textColor: '#374151',
+      buttonColor: '#3b82f6',
+      buttonTextColor: '#ffffff',
       effects: []
     },
     testimonials: {
@@ -336,6 +358,12 @@ const VisualLandingPageEditor = ({
       layout: 'carousel',
       style: 'cards',
       backgroundType: 'solid',
+      titleColor: '#1f2937',
+      subtitleColor: '#6b7280',
+      textColor: '#374151',
+      cardBackground: '#f8fafc',
+      buttonColor: '#3b82f6',
+      buttonTextColor: '#ffffff',
       effects: []
     },
     faq: {
@@ -343,6 +371,12 @@ const VisualLandingPageEditor = ({
       layout: 'accordion',
       style: 'clean',
       backgroundType: 'solid',
+      titleColor: '#1f2937',
+      subtitleColor: '#6b7280',
+      questionColor: '#374151',
+      answerColor: '#6b7280',
+      buttonColor: '#3b82f6',
+      buttonTextColor: '#ffffff',
       effects: []
     },
     pricing: {
@@ -350,6 +384,13 @@ const VisualLandingPageEditor = ({
       layout: 'grid',
       style: 'modern',
       backgroundType: 'solid',
+      titleColor: '#1f2937',
+      subtitleColor: '#6b7280',
+      textColor: '#374151',
+      cardBackground: '#ffffff',
+      recommendedColor: '#3b82f6',
+      buttonColor: '#3b82f6',
+      buttonTextColor: '#ffffff',
       effects: []
     },
     contact: {
@@ -357,6 +398,12 @@ const VisualLandingPageEditor = ({
       layout: 'split',
       style: 'modern',
       backgroundType: 'solid',
+      titleColor: '#ffffff',
+      subtitleColor: '#ffffff',
+      textColor: '#ffffff',
+      formBackground: '#ffffff',
+      buttonColor: '#ffffff',
+      buttonTextColor: '#3b82f6',
       effects: []
     }
   });
@@ -431,6 +478,30 @@ const VisualLandingPageEditor = ({
     setSectionStyles(prev => ({
       ...prev,
       [section]: { ...prev[section], [key]: value }
+    }));
+  };
+
+  const updateSectionColor = (section: string, colorType: string, color: string) => {
+    setSectionStyles(prev => ({
+      ...prev,
+      [section]: { 
+        ...prev[section], 
+        [`${colorType}Color`]: color 
+      }
+    }));
+  };
+
+  const addNewItem = (section: string, item: any) => {
+    setEditableContent(prev => ({
+      ...prev,
+      [section]: {
+        ...prev[section],
+        items: [...(prev[section].items || []), item],
+        testimonials: section === 'testimonials' ? [...(prev[section].testimonials || []), item] : prev[section].testimonials,
+        plans: section === 'pricing' ? [...(prev[section].plans || []), item] : prev[section].plans,
+        questions: section === 'faq' ? [...(prev[section].questions || []), item] : prev[section].questions,
+        stats: section === 'about' ? [...(prev[section].stats || []), item] : prev[section].stats
+      }
     }));
   };
 
@@ -711,15 +782,26 @@ const VisualLandingPageEditor = ({
                             />
                           </div>
                           
-                          <Button
-                            variant="outline" 
-                            size="sm" 
-                            onClick={() => addButton('about')}
-                            className="w-full"
-                          >
-                            <Plus className="h-4 w-4 mr-2" />
-                            הוסף כפתור
-                          </Button>
+                          <div className="flex gap-2">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => addNewItem('about', { number: '100+', label: 'סטטיסטיקה חדשה' })}
+                              className="flex-1"
+                            >
+                              <Plus className="h-4 w-4 mr-2" />
+                              הוסף סטטיסטיקה
+                            </Button>
+                            <Button
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => addButton('about')}
+                              className="flex-1"
+                            >
+                              <Plus className="h-4 w-4 mr-2" />
+                              הוסף כפתור
+                            </Button>
+                          </div>
                         </>
                       )}
 
@@ -798,15 +880,26 @@ const VisualLandingPageEditor = ({
                             </div>
                           ))}
                           
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            onClick={() => addButton('features')}
-                            className="w-full"
-                          >
-                            <Plus className="h-4 w-4 mr-2" />
-                            הוסף כפתור
-                          </Button>
+                          <div className="flex gap-2">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => addNewItem('features', { title: 'תכונה חדשה', description: 'תיאור התכונה', icon: 'star' })}
+                              className="flex-1"
+                            >
+                              <Plus className="h-4 w-4 mr-2" />
+                              הוסף תכונה
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => addButton('features')}
+                              className="flex-1"
+                            >
+                              <Plus className="h-4 w-4 mr-2" />
+                              הוסף כפתור
+                            </Button>
+                          </div>
                         </div>
                       )}
 
@@ -868,15 +961,31 @@ const VisualLandingPageEditor = ({
                             </div>
                           </div>
                           
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            onClick={() => addButton('services')}
-                            className="w-full"
-                          >
-                            <Plus className="h-4 w-4 mr-2" />
-                            הוסף כפתור
-                          </Button>
+                          <div className="flex gap-2">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => addNewItem('services', { 
+                                title: 'שירות חדש', 
+                                description: 'תיאור השירות',
+                                price: '₪999',
+                                features: ['תכונה 1', 'תכונה 2'] 
+                              })}
+                              className="flex-1"
+                            >
+                              <Plus className="h-4 w-4 mr-2" />
+                              הוסף שירות
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => addButton('services')}
+                              className="flex-1"
+                            >
+                              <Plus className="h-4 w-4 mr-2" />
+                              הוסף כפתור
+                            </Button>
+                          </div>
                         </>
                       )}
 
@@ -938,15 +1047,33 @@ const VisualLandingPageEditor = ({
                             </div>
                           </div>
                           
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            onClick={() => addButton('testimonials')}
-                            className="w-full"
-                          >
-                            <Plus className="h-4 w-4 mr-2" />
-                            הוסף כפתור
-                          </Button>
+                          <div className="flex gap-2">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => addNewItem('testimonials', {
+                                name: 'לקוח חדש',
+                                role: 'תפקיד',
+                                company: 'חברה',
+                                content: 'המלצה מצוינת',
+                                rating: 5,
+                                results: 'תוצאות מעולות'
+                              })}
+                              className="flex-1"
+                            >
+                              <Plus className="h-4 w-4 mr-2" />
+                              הוסף המלצה
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => addButton('testimonials')}
+                              className="flex-1"
+                            >
+                              <Plus className="h-4 w-4 mr-2" />
+                              הוסף כפתור
+                            </Button>
+                          </div>
                         </div>
                       )}
 
@@ -998,15 +1125,33 @@ const VisualLandingPageEditor = ({
                             </div>
                           </div>
                           
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            onClick={() => addButton('pricing')}
-                            className="w-full"
-                          >
-                            <Plus className="h-4 w-4 mr-2" />
-                            הוסף כפתור
-                          </Button>
+                          <div className="flex gap-2">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => addNewItem('pricing', {
+                                name: 'חבילה חדשה',
+                                price: '₪199',
+                                period: 'לחודש',
+                                features: ['תכונה 1', 'תכונה 2'],
+                                buttonText: 'בחר חבילה',
+                                recommended: false
+                              })}
+                              className="flex-1"
+                            >
+                              <Plus className="h-4 w-4 mr-2" />
+                              הוסף חבילה
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => addButton('pricing')}
+                              className="flex-1"
+                            >
+                              <Plus className="h-4 w-4 mr-2" />
+                              הוסף כפתור
+                            </Button>
+                          </div>
                         </div>
                       )}
 
@@ -1147,6 +1292,31 @@ const VisualLandingPageEditor = ({
                               placeholder="א'-ה' 9:00-18:00"
                             />
                           </div>
+
+                          <div className="flex gap-2">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => {
+                                const fields = [...(editableContent?.contact?.formFields || ['name', 'email', 'phone', 'message'])];
+                                fields.push('שדה חדש');
+                                updateContent('contact', 'formFields', fields);
+                              }}
+                              className="flex-1"
+                            >
+                              <Plus className="h-4 w-4 mr-2" />
+                              הוסף שדה טופס
+                            </Button>
+                            <Button
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => addButton('contact')}
+                              className="flex-1"
+                            >
+                              <Plus className="h-4 w-4 mr-2" />
+                              הוסף כפתור
+                            </Button>
+                          </div>
                         </>
                       )}
                     </CardContent>
@@ -1270,6 +1440,117 @@ const VisualLandingPageEditor = ({
                             <ColorPicker
                               color={pageStyles.servicesTextColor}
                               onChange={(color) => updatePageStyle('servicesTextColor', color)}
+                            />
+                          </div>
+                        </>
+                      )}
+
+                      {activeSection === 'testimonials' && (
+                        <>
+                          <div>
+                            <Label className="text-xs">צבע כותרת</Label>
+                            <ColorPicker
+                              color={sectionStyles[activeSection]?.titleColor || '#1f2937'}
+                              onChange={(color) => updateSectionColor(activeSection, 'title', color)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">צבע טקסט</Label>
+                            <ColorPicker
+                              color={sectionStyles[activeSection]?.textColor || '#374151'}
+                              onChange={(color) => updateSectionColor(activeSection, 'text', color)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">צבע רקע כרטיס</Label>
+                            <ColorPicker
+                              color={sectionStyles[activeSection]?.cardBackground || '#ffffff'}
+                              onChange={(color) => updateSectionColor(activeSection, 'cardBackground', color)}
+                            />
+                          </div>
+                        </>
+                      )}
+
+                      {activeSection === 'pricing' && (
+                        <>
+                          <div>
+                            <Label className="text-xs">צבע כותרת</Label>
+                            <ColorPicker
+                              color={sectionStyles[activeSection]?.titleColor || '#1f2937'}
+                              onChange={(color) => updateSectionColor(activeSection, 'title', color)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">צבע טקסט</Label>
+                            <ColorPicker
+                              color={sectionStyles[activeSection]?.textColor || '#374151'}
+                              onChange={(color) => updateSectionColor(activeSection, 'text', color)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">צבע רקע כרטיס</Label>
+                            <ColorPicker
+                              color={sectionStyles[activeSection]?.cardBackground || '#ffffff'}
+                              onChange={(color) => updateSectionColor(activeSection, 'cardBackground', color)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">צבע חבילה מומלצת</Label>
+                            <ColorPicker
+                              color={sectionStyles[activeSection]?.recommendedColor || '#3b82f6'}
+                              onChange={(color) => updateSectionColor(activeSection, 'recommended', color)}
+                            />
+                          </div>
+                        </>
+                      )}
+
+                      {activeSection === 'faq' && (
+                        <>
+                          <div>
+                            <Label className="text-xs">צבע כותרת</Label>
+                            <ColorPicker
+                              color={sectionStyles[activeSection]?.titleColor || '#1f2937'}
+                              onChange={(color) => updateSectionColor(activeSection, 'title', color)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">צבע טקסט שאלות</Label>
+                            <ColorPicker
+                              color={sectionStyles[activeSection]?.questionColor || '#374151'}
+                              onChange={(color) => updateSectionColor(activeSection, 'question', color)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">צבע טקסט תשובות</Label>
+                            <ColorPicker
+                              color={sectionStyles[activeSection]?.answerColor || '#6b7280'}
+                              onChange={(color) => updateSectionColor(activeSection, 'answer', color)}
+                            />
+                          </div>
+                        </>
+                      )}
+
+                      {activeSection === 'contact' && (
+                        <>
+                          <div>
+                            <Label className="text-xs">צבע כותרת</Label>
+                            <ColorPicker
+                              color={pageStyles.contactTitleColor}
+                              onChange={(color) => updatePageStyle('contactTitleColor', color)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">צבע טקסט</Label>
+                            <ColorPicker
+                              color={pageStyles.contactTextColor}
+                              onChange={(color) => updatePageStyle('contactTextColor', color)}
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">צבע רקע טופס</Label>
+                            <ColorPicker
+                              color={sectionStyles[activeSection]?.formBackground || '#ffffff'}
+                              onChange={(color) => updateSectionColor(activeSection, 'formBackground', color)}
                             />
                           </div>
                         </>
