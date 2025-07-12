@@ -1779,8 +1779,68 @@ const VisualLandingPageEditor = ({
                 </div>
               )}
 
-              {/* Other Sections Preview */}
-              {(activeSection === 'faq' || activeSection === 'contact') && (
+              {/* FAQ Section Preview */}
+              {activeSection === 'faq' && (
+                <div 
+                  className="py-16 px-6"
+                  style={{backgroundColor: '#f8fafc'}}
+                >
+                  <div className="max-w-4xl mx-auto">
+                    {/* Section Header */}
+                    <div className="text-center mb-12">
+                      <h2 
+                        className="text-3xl md:text-4xl font-bold"
+                        style={{color: pageStyles.textColor || '#1f2937'}}
+                      >
+                        {'שאלות נפוצות'}
+                      </h2>
+                    </div>
+                    
+                    {/* FAQ Items */}
+                    <div className="space-y-4 mb-12">
+                      {[
+                        { question: 'מה כלול בשירות?', answer: 'השירות כולל את כל מה שאתם צריכים להצלחה.' },
+                        { question: 'כמה זמן לוקח?', answer: 'התהליך לוקח בין שבוע לשבועיים בממוצע.' },
+                        { question: 'איך אפשר ליצור קשר?', answer: 'אתם יכולים ליצור קשר בטלפון, אימייל או ווטסאפ.' }
+                      ].map((qa: any, index: number) => (
+                        <div key={index} className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
+                          <h3 
+                            className="text-lg font-bold mb-2 text-right"
+                            style={{color: pageStyles.textColor || '#1f2937'}}
+                          >
+                            {qa.question}
+                          </h3>
+                          <p 
+                            className="opacity-80 text-right"
+                            style={{color: pageStyles.textColor || '#374151'}}
+                          >
+                            {qa.answer}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <button 
+                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
+                        style={{backgroundColor: pageStyles.primaryColor || '#3b82f6'}}
+                      >
+                        {'צור קשר'}
+                      </button>
+                      <button 
+                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
+                        style={{backgroundColor: pageStyles.secondaryColor || '#6b7280'}}
+                      >
+                        {'קבל הצעה'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Contact Section Preview */}
+              {activeSection === 'contact' && (
                 <div className="p-8 rounded-lg bg-gray-50 text-center">
                   <div className="text-gray-500 mb-4">
                     <Type className="h-16 w-16 mx-auto mb-4" />
