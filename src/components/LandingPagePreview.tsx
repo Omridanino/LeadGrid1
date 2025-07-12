@@ -37,6 +37,10 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       pricing: content?.pricing || formData.selectedTemplate.pricing,
       faq: content?.faq || formData.selectedTemplate.faq,
       contact: content?.contact || formData.selectedTemplate.contact,
+      whyUs: content?.whyUs || formData.selectedTemplate.whyUs,
+      whatWeGive: content?.whatWeGive || formData.selectedTemplate.whatWeGive,
+      gallery: content?.gallery || formData.selectedTemplate.gallery,
+      process: content?.process || formData.selectedTemplate.process,
       // Apply current color scheme
       styles: {
         ...formData.selectedTemplate.styles,
