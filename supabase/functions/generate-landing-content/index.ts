@@ -12,9 +12,13 @@ serve(async (req) => {
   }
 
   try {
-    const { formData } = await req.json();
+    const { formData, selectedElements } = await req.json();
+    
+    // הסקשנים הקבועים שיופיעו בכל דף
+    const fixedElements = selectedElements || ['hero', 'emotional', 'services', 'whyUs', 'pricing', 'competitive', 'faq', 'contact'];
     
     console.log('Generating landing page for:', formData);
+    console.log('Selected elements:', fixedElements);
 
     const prompt = `
 אתה מומחה בעברית ליצירת דפי נחיתה מקצועיים. צור דף נחיתה מושלם עבור:
@@ -24,51 +28,29 @@ serve(async (req) => {
 יעד: ${formData.goals}
 קהל יעד: ${formData.targetAudience}
 תיאור: ${formData.businessDescription}
+נקודות כאב לקוחות: ${formData.customerPain || ''}
+סיפורי הצלחה: ${formData.successStories || ''}
+דחיפות: ${formData.urgency || ''}
 
-צור תוכן מלא ומפורט שכולל JSON עם המבנה הבא:
+צור תוכן מלא ומפורט שכולל JSON עם המבנה הבא (כולל רק הסקשנים הנבחרים):
 
 {
-  "hero": {
+  ${fixedElements.includes('hero') ? `"hero": {
     "badge": "באדג' מעורר עניין",
     "title": "כותרת חזקה שתופסת תשומת לב",
     "subtitle": "תת-כותרת מסבירה",
     "description": "תיאור קצר ומשכנע",
     "button1Text": "כפתור פעולה ראשי",
     "button2Text": "כפתור פעולה משני"
-  },
-  "features": {
-    "title": "כותרת סקשן התכונות",
-    "subtitle": "תת-כותרת",
-    "items": [
-      {
-        "title": "תכונה 1",
-        "description": "תיאור מפורט",
-        "icon": "star"
-      },
-      {
-        "title": "תכונה 2", 
-        "description": "תיאור מפורט",
-        "icon": "heart"
-      },
-      {
-        "title": "תכונה 3",
-        "description": "תיאור מפורט", 
-        "icon": "shield"
-      }
-    ]
-  },
-  "about": {
-    "title": "כותרת אודותינו",
-    "subtitle": "מי אנחנו ומה המטרה שלנו",
-    "description": "תיאור מפורט על החברה והערכים",
-    "image": "תיאור תמונה רלוונטית",
-    "stats": [
-      {"number": "100+", "label": "לקוחות מרוצים"},
-      {"number": "5+", "label": "שנות ניסיון"},
-      {"number": "24/7", "label": "תמיכה"}
-    ]
-  },
-  "services": {
+  },` : ''}
+  ${fixedElements.includes('emotional') ? `"emotional": {
+    "title": "כותרת רגשית חזקה",
+    "subtitle": "תת-כותרת שיוצרת חיבור",
+    "description": "תיאור רגשי שמדבר ללב הלקוח",
+    "button1Text": "כפתור קריאה לפעולה",
+    "button2Text": "כפתור משני"
+  },` : ''}
+  ${fixedElements.includes('services') ? `"services": {
     "title": "השירותים שלנו",
     "subtitle": "מה אנחנו מציעים",
     "items": [
@@ -85,46 +67,30 @@ serve(async (req) => {
         "features": ["תכונה 1", "תכונה 2"]
       }
     ]
-  },
-  "testimonials": {
-    "title": "כותרת המלצות",
-    "testimonials": [
+  },` : ''}
+  ${fixedElements.includes('whyUs') ? `"whyUs": {
+    "title": "למה דווקא אנחנו?",
+    "subtitle": "מה מייחד אותנו מהמתחרים",
+    "reasons": [
       {
-        "name": "שם הלקוח",
-        "role": "תפקיד",
-        "content": "תוכן ההמלצה",
-        "rating": 5,
-        "image": "תיאור תמונת הלקוח"
+        "title": "יתרון 1",
+        "description": "תיאור מפורט של היתרון",
+        "icon": "star"
       },
       {
-        "name": "שם לקוח 2",
-        "role": "תפקיד",
-        "content": "תוכן ההמלצה",
-        "rating": 5,
-        "image": "תיאור תמונת הלקוח"
+        "title": "יתרון 2",
+        "description": "תיאור מפורט של היתרון",
+        "icon": "heart"
+      },
+      {
+        "title": "יתרון 3",
+        "description": "תיאור מפורט של היתרון",
+        "icon": "shield"
       }
     ]
-  },
-  "faq": {
-    "title": "שאלות נפוצות",
-    "subtitle": "תשובות לשאלות הכי חשובות",
-    "items": [
-      {
-        "question": "שאלה 1?",
-        "answer": "תשובה מפורטת לשאלה"
-      },
-      {
-        "question": "שאלה 2?", 
-        "answer": "תשובה מפורטת לשאלה"
-      },
-      {
-        "question": "שאלה 3?",
-        "answer": "תשובה מפורטת לשאלה"
-      }
-    ]
-  },
-  "pricing": {
-    "title": "כותרת מחירים",
+  },` : ''}
+  ${fixedElements.includes('pricing') ? `"pricing": {
+    "title": "מחירים וחבילות",
     "subtitle": "בחר את החבילה המתאימה לך",
     "plans": [
       {
@@ -149,8 +115,55 @@ serve(async (req) => {
         "popular": false
       }
     ]
-  },
-  "contact": {
+  },` : ''}
+  ${fixedElements.includes('competitive') ? `"competitive": {
+    "title": "היתרון התחרותי שלנו",
+    "subtitle": "מה מייחד אותנו במיוחד",
+    "advantages": [
+      {
+        "title": "יתרון תחרותי 1",
+        "description": "הסבר מפורט על היתרון הזה",
+        "icon": "trophy"
+      },
+      {
+        "title": "יתרון תחרותי 2",
+        "description": "הסבר מפורט על היתרון הזה",
+        "icon": "target"
+      },
+      {
+        "title": "יתרון תחרותי 3",
+        "description": "הסבר מפורט על היתרון הזה",
+        "icon": "zap"
+      }
+    ]
+  },` : ''}
+  ${fixedElements.includes('faq') ? `"faq": {
+    "title": "שאלות נפוצות",
+    "subtitle": "תשובות לשאלות הכי חשובות",
+    "items": [
+      {
+        "question": "שאלה 1?",
+        "answer": "תשובה מפורטת לשאלה"
+      },
+      {
+        "question": "שאלה 2?", 
+        "answer": "תשובה מפורטת לשאלה"
+      },
+      {
+        "question": "שאלה 3?",
+        "answer": "תשובה מפורטת לשאלה"
+      },
+      {
+        "question": "שאלה 4?",
+        "answer": "תשובה מפורטת לשאלה"
+      },
+      {
+        "question": "שאלה 5?",
+        "answer": "תשובה מפורטת לשאלה"
+      }
+    ]
+  },` : ''}
+  ${fixedElements.includes('contact') ? `"contact": {
     "title": "צרו קשר",
     "subtitle": "נשמח לשמוע מכם",
     "description": "השאירו פרטים ונחזור אליכם בהקדם",
@@ -167,10 +180,10 @@ serve(async (req) => {
       "email": "כתובת מייל",
       "hours": "שעות פעילות"
     }
-  }
+  }` : ''}
 }
 
-התוכן צריך להיות מקצועי, משכנע ומותאם לתחום הפעילות.`;
+התוכן צריך להיות מקצועי, משכנע ומותאם לתחום הפעילות. וודא שה-JSON תקין ללא פסיקים מיותרים.`;
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
