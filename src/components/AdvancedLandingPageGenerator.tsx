@@ -7,7 +7,6 @@ import { toast } from '@/hooks/use-toast';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import LandingPagePreview from './LandingPagePreview';
 import VisualLandingPageEditor from './VisualLandingPageEditor';
-import { elementOptions } from '@/constants/questionnaireElements';
 
 interface AdvancedLandingPageGeneratorProps {
   isOpen: boolean;
@@ -30,13 +29,7 @@ const AdvancedLandingPageGenerator = ({
     industry: '',
     goals: '',
     targetAudience: '',
-    businessDescription: '',
-    // 3 שאלות נוספות לקופי טוב יותר
-    customerPain: '',
-    successStories: '',
-    urgency: '',
-    // בחירת סקשנים
-    selectedElements: ['hero', 'emotional', 'whyUs', 'whatWeGive', 'testimonials', 'contact'] // ברירת מחדל
+    businessDescription: ''
   });
 
   const generateLandingPage = async () => {
@@ -51,13 +44,9 @@ const AdvancedLandingPageGenerator = ({
     setIsGenerating(true);
     try {
       console.log('Generating landing page with formData:', dataToUse);
-      console.log('Selected sections:', dataToUse.selectedElements);
       
       const { data, error } = await supabase.functions.invoke('generate-landing-content', {
-        body: { 
-          formData: dataToUse,
-          selectedElements: dataToUse.selectedElements || ['hero', 'emotional', 'whyUs', 'whatWeGive', 'testimonials', 'contact']
-        }
+        body: { formData: dataToUse }
       });
 
       if (error) {
@@ -66,20 +55,7 @@ const AdvancedLandingPageGenerator = ({
       }
 
       console.log('Generated content:', data);
-      
-      // וידוא שהתוכן כולל רק את הסקשנים שנבחרו
-      const selectedSections = dataToUse.selectedElements || ['hero', 'emotional', 'whyUs', 'whatWeGive', 'testimonials', 'contact'];
-      const filteredContent = {};
-      
-      // העתקת רק הסקשנים שנבחרו
-      selectedSections.forEach(section => {
-        if (data.content[section]) {
-          filteredContent[section] = data.content[section];
-        }
-      });
-      
-      console.log('Filtered content for selected sections:', filteredContent);
-      setGeneratedPage(filteredContent);
+      setGeneratedPage(data.content);
       setShowQuickForm(false);
 
       toast({
@@ -407,82 +383,6 @@ const AdvancedLandingPageGenerator = ({
                   />
                 </div>
                 
-                {/* 3 שאלות נוספות לקופי טוב יותר */}
-                <div>
-                  <label className="text-sm font-medium text-black">איזה בעיה העסק שלך פותר ללקוחות?</label>
-                  <textarea
-                    className="w-full mt-1 px-3 py-2 border rounded-lg bg-white text-black border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    rows={2}
-                    value={quickFormData.customerPain}
-                    onChange={(e) => setQuickFormData(prev => ({...prev, customerPain: e.target.value}))}
-                    placeholder="לדוגמה: חסכון בזמן, הגדלת המכירות, פתרון טכני..."
-                  />
-                </div>
-                
-                <div>
-                  <label className="text-sm font-medium text-black">ספר על הצלחה או תוצאה מרשימה שהשגת ללקוח</label>
-                  <textarea
-                    className="w-full mt-1 px-3 py-2 border rounded-lg bg-white text-black border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    rows={2}
-                    value={quickFormData.successStories}
-                    onChange={(e) => setQuickFormData(prev => ({...prev, successStories: e.target.value}))}
-                    placeholder="לדוגמה: הגדלנו את המכירות ב-50%, חסכנו 10 שעות שבועיות..."
-                  />
-                </div>
-                
-                <div>
-                  <label className="text-sm font-medium text-black">למה הלקוחות צריכים לפעול עכשיו? (דחיפות)</label>
-                  <textarea
-                    className="w-full mt-1 px-3 py-2 border rounded-lg bg-white text-black border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    rows={2}
-                    value={quickFormData.urgency}
-                    onChange={(e) => setQuickFormData(prev => ({...prev, urgency: e.target.value}))}
-                    placeholder="לדוגמה: הצעה מוגבלת, מקומות אחרונים, מחירים עולים..."
-                  />
-                </div>
-                
-                {/* בחירת סקשנים */}
-                <div className="border-t pt-4">
-                  <label className="text-sm font-medium text-black mb-3 block">איזה סקשנים תרצה בדף הנחיתה שלך?</label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-60 overflow-y-auto">
-                    {elementOptions.map((element) => (
-                      <div key={element.id} className="flex items-start space-x-2 space-x-reverse">
-                        <input
-                          type="checkbox"
-                          id={element.id}
-                          checked={quickFormData.selectedElements.includes(element.id)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setQuickFormData(prev => ({
-                                ...prev,
-                                selectedElements: [...prev.selectedElements, element.id]
-                              }));
-                            } else {
-                              setQuickFormData(prev => ({
-                                ...prev,
-                                selectedElements: prev.selectedElements.filter(id => id !== element.id)
-                              }));
-                            }
-                          }}
-                          className="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                        />
-                        <div className="flex-1">
-                          <label htmlFor={element.id} className="text-sm font-medium text-black cursor-pointer flex items-center gap-2">
-                            {element.label}
-                            {element.recommended && (
-                              <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">מומלץ</span>
-                            )}
-                          </label>
-                          <p className="text-xs text-gray-600 mt-1">{element.description}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="text-xs text-gray-500 mt-2">
-                    נבחרו {quickFormData.selectedElements.length} סקשנים מתוך {elementOptions.length}
-                  </p>
-                </div>
-                
                 <div className="flex gap-3">
                   <Button 
                     onClick={generateLandingPage}
@@ -791,7 +691,6 @@ const AdvancedLandingPageGenerator = ({
           onClose={() => setIsEditorOpen(false)}
           generatedContent={generatedPage}
           formData={formData}
-          selectedElements={quickFormData.selectedElements}
           onContentUpdate={(updatedContent) => {
             console.log('Content updated in editor:', updatedContent);
             setGeneratedPage(updatedContent);

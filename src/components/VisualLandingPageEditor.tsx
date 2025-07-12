@@ -46,7 +46,6 @@ interface VisualLandingPageEditorProps {
   generatedContent: any;
   formData: any;
   onContentUpdate?: (content: any) => void;
-  selectedElements?: string[]; // הסקשנים שנבחרו בשאלון
 }
 
 const VisualLandingPageEditor = ({ 
@@ -54,8 +53,7 @@ const VisualLandingPageEditor = ({
   onClose, 
   generatedContent, 
   formData,
-  onContentUpdate,
-  selectedElements
+  onContentUpdate
 }: VisualLandingPageEditorProps) => {
   const [activeSection, setActiveSection] = useState('hero');
   
@@ -265,11 +263,6 @@ const VisualLandingPageEditor = ({
         button1Icon: '',
         button2Icon: ''
       },
-      emotional: {
-        title: 'הרגש שמניע אותנו',
-        subtitle: 'אנחנו מבינים את הצרכים שלכם',
-        description: 'כל לקוח הוא עולם ומלואו. אנחנו כאן כדי לתת לכם את הפתרון המושלם.'
-      },
       features: { 
         title: 'התכונות שלנו', 
         subtitle: 'גלה את היתרונות הייחודיים שלנו',
@@ -277,33 +270,6 @@ const VisualLandingPageEditor = ({
           { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star' },
           { title: 'תכונה 2', description: 'תיאור התכונה השנייה', icon: 'heart' },
           { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'zap' }
-        ]
-      },
-      whyUs: {
-        title: 'למה לבחור בנו?',
-        subtitle: 'הסיבות המשכנעות ביותר',
-        items: [
-          { title: 'ניסיון רב', description: 'שנות ניסיון בתחום', icon: 'trophy' },
-          { title: 'שירות מעולה', description: 'שירות אישי ומקצועי', icon: 'star' },
-          { title: 'מחירים הוגנים', description: 'מחירים תחרותיים', icon: 'heart' }
-        ]
-      },
-      whatWeGive: {
-        title: 'מה אנחנו נותנים לכם',
-        subtitle: 'הערך המוסף שלנו',
-        items: [
-          { title: 'פתרונות מותאמים', description: 'פתרון מיוחד לכל לקוח', icon: 'zap' },
-          { title: 'תמיכה מלאה', description: 'ליווי לאורך כל הדרך', icon: 'shield' },
-          { title: 'תוצאות מוכחות', description: 'הצלחות מתועדות', icon: 'target' }
-        ]
-      },
-      services: {
-        title: 'השירותים שלנו',
-        subtitle: 'מגוון שירותים מקצועיים',
-        items: [
-          { title: 'שירות 1', description: 'תיאור השירות הראשון', icon: 'settings' },
-          { title: 'שירות 2', description: 'תיאור השירות השני', icon: 'globe' },
-          { title: 'שירות 3', description: 'תיאור השירות השלישי', icon: 'users' }
         ]
       },
       about: { 
@@ -316,137 +282,6 @@ const VisualLandingPageEditor = ({
           { number: '+100', label: 'לקוחות מרוצים' }
         ],
         image: 'תמונה'
-      },
-      process: {
-        title: 'התהליך שלנו',
-        subtitle: 'שלבי העבודה המקצועיים',
-        steps: [
-          { number: '01', title: 'ייעוץ ראשוני', description: 'פגישת היכרות וגיבוש דרישות' },
-          { number: '02', title: 'תכנון והצעה', description: 'הכנת תכנית עבודה מפורטת' },
-          { number: '03', title: 'ביצוע', description: 'יישום הפרויקט בצורה מקצועית' },
-          { number: '04', title: 'מסירה ותמיכה', description: 'מסירת העבודה וליווי שוטף' }
-        ]
-      },
-      gallery: {
-        title: 'הגלריה שלנו',
-        subtitle: 'עבודות שביצענו',
-        categories: ['הכל', 'קטגוריה 1', 'קטגוריה 2', 'קטגוריה 3'],
-        images: []
-      },
-      stats: {
-        title: 'המספרים מדברים',
-        subtitle: 'הנתונים המרשימים שלנו',
-        stats: [
-          { number: '500+', label: 'פרויקטים', icon: 'trophy' },
-          { number: '98%', label: 'שביעות רצון', icon: 'heart' },
-          { number: '24/7', label: 'תמיכה', icon: 'shield' },
-          { number: '10+', label: 'שנות ניסיון', icon: 'star' }
-        ]
-      },
-      team: {
-        title: 'הצוות שלנו',
-        subtitle: 'האנשים שיעזרו לכם להגשים את החלום',
-        members: [
-          { name: 'חבר צוות 1', role: 'תפקיד', image: '', bio: 'תיאור קצר' },
-          { name: 'חבר צוות 2', role: 'תפקיד', image: '', bio: 'תיאור קצר' },
-          { name: 'חבר צוות 3', role: 'תפקיד', image: '', bio: 'תיאור קצר' }
-        ]
-      },
-      achievements: {
-        title: 'ההישגים שלנו',
-        subtitle: 'פרסים והכרה בתחום',
-        achievements: [
-          { title: 'פרס מצוינות', year: '2024', description: 'פרס לשירות מעולה' },
-          { title: 'הכרה בתחום', year: '2023', description: 'הכרה מהתעשייה' },
-          { title: 'אות איכות', year: '2022', description: 'אות על איכות השירות' }
-        ]
-      },
-      'app-showcase': {
-        title: 'המוצר שלנו',
-        subtitle: 'טכנולוגיה מתקדמת לרשותכם',
-        features: [
-          { title: 'תכונה מרכזית', description: 'תיאור התכונה המרכזית' },
-          { title: 'ממשק ידידותי', description: 'קל לשימוש ואינטואיטיבי' },
-          { title: 'ביצועים גבוהים', description: 'מהירות ויעילות מקסימלית' }
-        ]
-      },
-      partners: {
-        title: 'השותפים שלנו',
-        subtitle: 'עובדים עם הטובים ביותר',
-        partners: [
-          { name: 'שותף 1', logo: '', description: 'תיאור השותפות' },
-          { name: 'שותף 2', logo: '', description: 'תיאור השותפות' },
-          { name: 'שותף 3', logo: '', description: 'תיאור השותפות' }
-        ]
-      },
-      testimonials: {
-        title: 'המלצות מלקוחות מובילים',
-        badge: 'עדויות אמיתיות',
-        testimonials: [
-          { name: 'לקוח 1', company: 'חברה', text: 'שירות מעולה!', rating: 5 },
-          { name: 'לקוח 2', company: 'חברה', text: 'מקצועיים ביותר!', rating: 5 },
-          { name: 'לקוח 3', company: 'חברה', text: 'ממליץ בחום!', rating: 5 }
-        ]
-      },
-      news: {
-        title: 'חדשות ועדכונים',
-        subtitle: 'הישארו מעודכנים',
-        articles: [
-          { title: 'כתבה 1', date: '2024-01-01', excerpt: 'תקציר הכתבה' },
-          { title: 'כתבה 2', date: '2024-01-02', excerpt: 'תקציר הכתבה' },
-          { title: 'כתבה 3', date: '2024-01-03', excerpt: 'תקציר הכתבה' }
-        ]
-      },
-      competitive: {
-        title: 'היתרונות התחרותיים שלנו',
-        subtitle: 'למה אנחנו הטובים ביותר',
-        advantages: [
-          { title: 'טכנולוגיה מתקדמת', description: 'השימוש בטכנולוגיה החדישה' },
-          { title: 'צוות מנוסה', description: 'הצוות המנוסה והמקצועי ביותר' },
-          { title: 'מחירים תחרותיים', description: 'מחירים הוגנים וללא הפתעות' }
-        ]
-      },
-      'before-after': {
-        title: 'לפני ואחרי',
-        subtitle: 'התוצאות המרשימות שלנו',
-        cases: [
-          { title: 'פרויקט 1', before: '', after: '', description: 'תיאור השינוי' },
-          { title: 'פרויקט 2', before: '', after: '', description: 'תיאור השינוי' },
-          { title: 'פרויקט 3', before: '', after: '', description: 'תיאור השינוי' }
-        ]
-      },
-      faq: {
-        title: 'שאלות נפוצות',
-        subtitle: 'מענה לשאלות הנפוצות ביותר',
-        questions: [
-          { question: 'שאלה 1', answer: 'תשובה מפורטת' },
-          { question: 'שאלה 2', answer: 'תשובה מפורטת' },
-          { question: 'שאלה 3', answer: 'תשובה מפורטת' }
-        ]
-      },
-      pricing: {
-        title: 'התעריפים שלנו',
-        subtitle: 'בחרו את החבילה המתאימה לכם',
-        items: [
-          { name: 'חבילה בסיסית', price: '₪199', features: ['תכונה 1', 'תכונה 2'] },
-          { name: 'חבילה מתקדמת', price: '₪399', features: ['תכונה 1', 'תכונה 2', 'תכונה 3'] },
-          { name: 'חבילה פרימיום', price: '₪599', features: ['כל התכונות', 'תמיכה מלאה'] }
-        ]
-      },
-      contact: {
-        title: 'נשמח לשמוע ממכם',
-        subtitle: 'השאירו פרטים ונחזור אליכם במהרה',
-        address: 'כתובת העסק',
-        phone: 'מספר טלפון',
-        email: 'כתובת מייל',
-        hours: 'א\'-ה\' 9:00-18:00'
-      },
-      'final-cta': {
-        badge: 'הצטרפו עכשיו',
-        title: 'מוכנים להתחיל?',
-        description: 'הגיע הזמן לקחת את העסק שלכם לשלב הבא',
-        button1Text: 'התחל עכשיו',
-        button2Text: 'צור קשר'
       }
     };
   };
@@ -471,29 +306,9 @@ const VisualLandingPageEditor = ({
         button1Icon: '',
         button2Icon: ''
       },
-      emotional: generatedData.emotional || {
-        title: 'הרגש שמניע אותנו',
-        subtitle: 'אנחנו מבינים את הצרכים שלכם',
-        description: 'כל לקוח הוא עולם ומלואו. אנחנו כאן כדי לתת לכם את הפתרון המושלם.'
-      },
       features: generatedData.features || {
         title: 'השירותים שלנו',
         subtitle: 'פתרונות מתקדמים עבור העסק שלכם',
-        items: []
-      },
-      whyUs: generatedData.whyUs || {
-        title: 'למה לבחור בנו?',
-        subtitle: 'הסיבות המשכנעות ביותר',
-        items: []
-      },
-      whatWeGive: generatedData.whatWeGive || {
-        title: 'מה אנחנו נותנים לכם',
-        subtitle: 'הערך המוסף שלנו',
-        items: []
-      },
-      services: generatedData.services || {
-        title: 'השירותים שלנו',
-        subtitle: 'מגוון שירותים מקצועיים',
         items: []
       },
       about: generatedData.about || {
@@ -502,61 +317,14 @@ const VisualLandingPageEditor = ({
         description: businessDescription,
         stats: []
       },
-      process: generatedData.process || {
-        title: 'התהליך שלנו',
-        subtitle: 'שלבי העבודה המקצועיים',
-        steps: []
-      },
-      gallery: generatedData.gallery || {
-        title: 'הגלריה שלנו',
-        subtitle: 'עבודות שביצענו',
-        categories: ['הכל'],
-        images: []
-      },
-      stats: generatedData.stats || {
-        title: 'המספרים מדברים',
-        subtitle: 'הנתונים המרשימים שלנו',
-        stats: []
-      },
-      team: generatedData.team || {
-        title: 'הצוות שלנו',
-        subtitle: 'האנשים שיעזרו לכם להגשים את החלום',
-        members: []
-      },
-      achievements: generatedData.achievements || {
-        title: 'ההישגים שלנו',
-        subtitle: 'פרסים והכרה בתחום',
-        achievements: []
-      },
-      'app-showcase': generatedData['app-showcase'] || {
-        title: 'המוצר שלנו',
-        subtitle: 'טכנולוגיה מתקדמת לרשותכם',
-        features: []
-      },
-      partners: generatedData.partners || {
-        title: 'השותפים שלנו',
-        subtitle: 'עובדים עם הטובים ביותר',
-        partners: []
+      services: generatedData.services || {
+        title: 'השירותים שלנו',
+        items: []
       },
       testimonials: generatedData.testimonials || {
         title: 'המלצות מלקוחות מובילים',
         badge: 'עדויות אמיתיות',
         testimonials: []
-      },
-      news: generatedData.news || {
-        title: 'חדשות ועדכונים',
-        subtitle: 'הישארו מעודכנים',
-        articles: []
-      },
-      competitive: generatedData.competitive || {
-        title: 'היתרונות התחרותיים שלנו',
-        subtitle: 'למה אנחנו הטובים ביותר',
-        advantages: []
-      },
-      'before-after': generatedData['before-after'] || {
-        title: 'לפני ואחרי',
-        subtitle: 'התוצאות המרשימות שלנו',
-        cases: []
       },
       faq: generatedData.faq || {
         title: 'שאלות נפוצות',
@@ -575,13 +343,6 @@ const VisualLandingPageEditor = ({
         phone: formDataParam?.businessInfo?.phone || 'מספר טלפון',
         email: formDataParam?.businessInfo?.email || 'כתובת מייל',
         hours: 'א\'-ה\' 9:00-18:00'
-      },
-      'final-cta': generatedData['final-cta'] || {
-        badge: 'הצטרפו עכשיו',
-        title: 'מוכנים להתחיל?',
-        description: 'הגיע הזמן לקחת את העסק שלכם לשלב הבא',
-        button1Text: 'התחל עכשיו',
-        button2Text: 'צור קשר'
       }
     };
     
@@ -972,35 +733,16 @@ const VisualLandingPageEditor = ({
     { id: 'wave', name: 'גלים', description: 'אנימציית גלים' }
   ];
 
-  const allSections = [
+  const sections = [
     { id: 'hero', name: 'דף הבית', icon: Sparkles },
-    { id: 'emotional', name: 'רגש התחום', icon: Heart },
     { id: 'features', name: 'תכונות', icon: Layout },
-    { id: 'whyUs', name: 'למה אנחנו', icon: Star },
-    { id: 'whatWeGive', name: 'מה אנחנו נותנים', icon: Zap },
-    { id: 'services', name: 'שירותים', icon: Settings },
     { id: 'about', name: 'אודותינו', icon: Circle },
-    { id: 'process', name: 'תהליך השירות', icon: Target },
-    { id: 'gallery', name: 'גלריה', icon: ImageIcon },
-    { id: 'stats', name: 'נתונים', icon: Trophy },
-    { id: 'team', name: 'הצוות', icon: Users },
-    { id: 'achievements', name: 'הישגים', icon: Trophy },
-    { id: 'app-showcase', name: 'הצגת מוצר', icon: Globe },
-    { id: 'partners', name: 'שותפים', icon: Users },
+    { id: 'services', name: 'שירותים', icon: Settings },
     { id: 'testimonials', name: 'המלצות', icon: Type },
-    { id: 'news', name: 'חדשות', icon: Eye },
-    { id: 'competitive', name: 'יתרונות', icon: Shield },
-    { id: 'before-after', name: 'לפני ואחרי', icon: Layers },
     { id: 'faq', name: 'שאלות נפוצות', icon: Eye },
     { id: 'pricing', name: 'מחירים', icon: Square },
-    { id: 'contact', name: 'יצירת קשר', icon: MousePointer },
-    { id: 'final-cta', name: 'קריאה סופית', icon: Wand2 }
+    { id: 'contact', name: 'יצירת קשר', icon: MousePointer }
   ];
-
-  // פילטר הסקשנים בהתאם לבחירה בשאלון
-  const sections = selectedElements 
-    ? allSections.filter(section => selectedElements.includes(section.id))
-    : allSections.filter(section => ['hero', 'emotional', 'whyUs', 'whatWeGive', 'testimonials', 'contact'].includes(section.id));
 
   const updatePageStyle = (key: string, value: string) => {
     setPageStyles(prev => {
