@@ -430,24 +430,24 @@ const VisualLandingPageEditor = ({
         </Button>
       </div>
       
-      {/* Main Content */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Left Sidebar - Controls */}
-        <div className="w-72 border-r bg-muted/30 overflow-y-auto flex-shrink-0">
-          <div className="p-4 space-y-6">
+      {/* Main Content - Split View */}
+      <div className="flex flex-1 h-full">
+        {/* Left Panel - Editor */}
+        <div className="w-1/3 border-r bg-gray-50 overflow-y-auto">
+          <div className="p-4 space-y-4">
             {/* Section Selector */}
             <div>
-              <Label className="text-sm font-medium mb-3 block">בחר סקשן לעריכה</Label>
-              <div className="grid grid-cols-1 gap-2">
+              <Label className="text-sm font-medium mb-2 block">בחר סקשן לעריכה</Label>
+              <div className="grid grid-cols-1 gap-1">
                 {sections.map((section) => (
                   <Button
                     key={section.id}
                     variant={activeSection === section.id ? "default" : "outline"}
                     size="sm"
                     onClick={() => setActiveSection(section.id)}
-                    className="justify-start"
+                    className="justify-start text-xs h-8"
                   >
-                    <section.icon className="h-4 w-4 mr-2" />
+                    <section.icon className="h-3 w-3 mr-1" />
                     {section.name}
                   </Button>
                 ))}
@@ -455,33 +455,33 @@ const VisualLandingPageEditor = ({
                   variant={activeSection === 'styles' ? "default" : "outline"}
                   size="sm"
                   onClick={() => setActiveSection('styles')}
-                  className="justify-start"
+                  className="justify-start text-xs h-8"
                 >
-                  <Palette className="h-4 w-4 mr-2" />
+                  <Palette className="h-3 w-3 mr-1" />
                   צבעים ועיצוב
                 </Button>
               </div>
             </div>
 
-            {/* Editor for current section */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">
+            {/* Editor Section */}
+            <Card className="text-sm">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm">
                   {activeSection === 'styles' ? 'עיצוב הדף' : 
                    sections.find(s => s.id === activeSection)?.name || 'עריכה'}
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-3">
                 {renderCurrentEditor()}
               </CardContent>
             </Card>
           </div>
         </div>
         
-        {/* Right Side - Live Preview */}
-        <div className="flex-1 overflow-y-auto bg-gray-50">
-          <div className="p-4">
-            <div className="bg-white rounded-lg shadow-sm border overflow-hidden" style={{ minHeight: "80vh" }}>
+        {/* Right Panel - Live Preview */}
+        <div className="w-2/3 bg-white overflow-hidden">
+          <div className="h-full overflow-y-auto">
+            <div className="w-full h-full">
               <LandingPagePreview 
                 content={editableContent}
                 currentColors={{
