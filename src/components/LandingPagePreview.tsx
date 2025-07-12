@@ -88,6 +88,61 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     );
   }
 
+  // If no selectedTemplate but we have content, create a basic template structure
+  if (!formData?.selectedTemplate && content) {
+    const basicTemplate = {
+      id: 'generated-template',
+      category: 'בסיסי',
+      hero: content.hero || {},
+      emotional: content.emotional || {},
+      whyUs: content.whyUs || {},
+      whatWeGive: content.whatWeGive || {},
+      gallery: content.gallery || {},
+      process: content.process || {},
+      features: content.features || {},
+      about: content.about || {},
+      services: content.services || {},
+      testimonials: content.testimonials || {},
+      pricing: content.pricing || {},
+      faq: content.faq || {},
+      contact: content.contact || {},
+      styles: {
+        primaryColor: currentColors.primary,
+        secondaryColor: currentColors.secondary,
+        accentColor: currentColors.accent,
+        backgroundColor: currentColors.background,
+        textColor: currentColors.text,
+        heroTitleColor: currentColors.headlineColor,
+        heroSubtitleColor: currentColors.subheadlineColor,
+        featuresTitleColor: currentColors.featuresColor,
+        featuresTextColor: currentColors.featuresTextColor,
+        aboutTitleColor: currentColors.aboutColor,
+        aboutTextColor: currentColors.aboutTextColor,
+        contactTitleColor: currentColors.contactColor,
+        contactTextColor: currentColors.contactTextColor
+      }
+    };
+
+    console.log('Using basic template with generated content:', basicTemplate);
+    const htmlContent = generatePageHTML(basicTemplate);
+
+    return (
+      <div className="w-full h-full" style={{ 
+        maxHeight: '100vh', 
+        overflowY: 'auto', 
+        overflowX: 'hidden',
+        scrollBehavior: 'smooth'
+      }}>
+        <iframe
+          srcDoc={htmlContent}
+          className="w-full h-full border-0"
+          style={{ minHeight: '100vh' }}
+          title="Landing Page Preview"
+        />
+      </div>
+    );
+  }
+
   // Fallback to original hero section
   return (
     <div className="w-full h-full" style={{ 

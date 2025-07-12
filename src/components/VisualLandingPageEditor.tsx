@@ -926,13 +926,33 @@ const VisualLandingPageEditor = ({
     console.log(`Updating ${section}.${field} to:`, value);
     
     setEditableContent(prev => {
-      const newContent = {
-        ...prev,
-        [section]: { 
+      const newContent = { ...prev };
+      
+      // Handle nested field paths like "items.0.title"
+      if (field.includes('.')) {
+        const fieldParts = field.split('.');
+        let current = newContent[section] || {};
+        
+        // Navigate to the parent of the target field
+        for (let i = 0; i < fieldParts.length - 1; i++) {
+          const part = fieldParts[i];
+          if (!current[part]) {
+            current[part] = isNaN(Number(fieldParts[i + 1])) ? {} : [];
+          }
+          current = current[part];
+        }
+        
+        // Set the final value
+        current[fieldParts[fieldParts.length - 1]] = value;
+        
+        newContent[section] = { ...(prev[section] || {}), ...newContent[section] };
+      } else {
+        // Simple field update
+        newContent[section] = { 
           ...(prev[section] || {}), 
           [field]: value 
-        }
-      };
+        };
+      }
       
       // Notify parent component about content changes
       if (onContentUpdate) {
@@ -1803,6 +1823,154 @@ const VisualLandingPageEditor = ({
                               placeholder="קבל הצעה"
                             />
                           </div>
+                        </>
+                      )}
+
+                      {/* WhyUs Content Editor */}
+                      {activeSection === 'whyUs' && editableContent?.whyUs && (
+                        <>
+                          <div>
+                            <Label className="text-xs">כותרת ראשית</Label>
+                            <Input
+                              value={editableContent?.whyUs?.title || ''}
+                              onChange={(e) => updateContent('whyUs', 'title', e.target.value)}
+                              placeholder="למה לבחור בנו?"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">כותרת משנה</Label>
+                            <Input
+                              value={editableContent?.whyUs?.subtitle || ''}
+                              onChange={(e) => updateContent('whyUs', 'subtitle', e.target.value)}
+                              placeholder="הסיבות שיגרמו לכם לעבוד איתנו"
+                            />
+                          </div>
+                          {editableContent?.whyUs?.items?.map((item: any, index: number) => (
+                            <div key={index} className="border p-4 rounded-lg space-y-2">
+                              <Label className="text-xs">סיבה {index + 1}</Label>
+                              <Input
+                                value={item.title || ''}
+                                onChange={(e) => updateContent('whyUs', `items.${index}.title`, e.target.value)}
+                                placeholder="כותרת הסיבה"
+                              />
+                              <Textarea
+                                value={item.description || ''}
+                                onChange={(e) => updateContent('whyUs', `items.${index}.description`, e.target.value)}
+                                placeholder="תיאור הסיבה"
+                              />
+                            </div>
+                          ))}
+                        </>
+                      )}
+
+                      {/* WhatWeGive Content Editor */}
+                      {activeSection === 'whatWeGive' && editableContent?.whatWeGive && (
+                        <>
+                          <div>
+                            <Label className="text-xs">כותרת ראשית</Label>
+                            <Input
+                              value={editableContent?.whatWeGive?.title || ''}
+                              onChange={(e) => updateContent('whatWeGive', 'title', e.target.value)}
+                              placeholder="מה אנחנו נותנים"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">כותרת משנה</Label>
+                            <Input
+                              value={editableContent?.whatWeGive?.subtitle || ''}
+                              onChange={(e) => updateContent('whatWeGive', 'subtitle', e.target.value)}
+                              placeholder="השירותים והפתרונות שלנו"
+                            />
+                          </div>
+                          {editableContent?.whatWeGive?.services?.map((service: any, index: number) => (
+                            <div key={index} className="border p-4 rounded-lg space-y-2">
+                              <Label className="text-xs">שירות {index + 1}</Label>
+                              <Input
+                                value={service.title || ''}
+                                onChange={(e) => updateContent('whatWeGive', `services.${index}.title`, e.target.value)}
+                                placeholder="שם השירות"
+                              />
+                              <Textarea
+                                value={service.description || ''}
+                                onChange={(e) => updateContent('whatWeGive', `services.${index}.description`, e.target.value)}
+                                placeholder="תיאור השירות"
+                              />
+                            </div>
+                          ))}
+                        </>
+                      )}
+
+                      {/* Gallery Content Editor */}
+                      {activeSection === 'gallery' && editableContent?.gallery && (
+                        <>
+                          <div>
+                            <Label className="text-xs">כותרת ראשית</Label>
+                            <Input
+                              value={editableContent?.gallery?.title || ''}
+                              onChange={(e) => updateContent('gallery', 'title', e.target.value)}
+                              placeholder="הגלריה שלנו"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">כותרת משנה</Label>
+                            <Input
+                              value={editableContent?.gallery?.subtitle || ''}
+                              onChange={(e) => updateContent('gallery', 'subtitle', e.target.value)}
+                              placeholder="עבודות שביצענו"
+                            />
+                          </div>
+                          {editableContent?.gallery?.images?.map((image: any, index: number) => (
+                            <div key={index} className="border p-4 rounded-lg space-y-2">
+                              <Label className="text-xs">תמונה {index + 1}</Label>
+                              <Input
+                                value={image.caption || ''}
+                                onChange={(e) => updateContent('gallery', `images.${index}.caption`, e.target.value)}
+                                placeholder="כותרת התמונה"
+                              />
+                            </div>
+                          ))}
+                        </>
+                      )}
+
+                      {/* Process Content Editor */}
+                      {activeSection === 'process' && editableContent?.process && (
+                        <>
+                          <div>
+                            <Label className="text-xs">כותרת ראשית</Label>
+                            <Input
+                              value={editableContent?.process?.title || ''}
+                              onChange={(e) => updateContent('process', 'title', e.target.value)}
+                              placeholder="התהליך שלנו"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">כותרת משנה</Label>
+                            <Input
+                              value={editableContent?.process?.subtitle || ''}
+                              onChange={(e) => updateContent('process', 'subtitle', e.target.value)}
+                              placeholder="איך אנחנו עובדים"
+                            />
+                          </div>
+                          {editableContent?.process?.steps?.map((step: any, index: number) => (
+                            <div key={index} className="border p-4 rounded-lg space-y-2">
+                              <Label className="text-xs">שלב {index + 1}</Label>
+                              <Input
+                                value={step.title || ''}
+                                onChange={(e) => updateContent('process', `steps.${index}.title`, e.target.value)}
+                                placeholder="כותרת השלב"
+                              />
+                              <Textarea
+                                value={step.description || ''}
+                                onChange={(e) => updateContent('process', `steps.${index}.description`, e.target.value)}
+                                placeholder="תיאור השלב"
+                              />
+                              <Input
+                                value={step.duration || ''}
+                                onChange={(e) => updateContent('process', `steps.${index}.duration`, e.target.value)}
+                                placeholder="משך זמן"
+                              />
+                            </div>
+                          ))}
                         </>
                       )}
 
