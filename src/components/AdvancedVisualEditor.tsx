@@ -120,7 +120,7 @@ const AdvancedVisualEditor = ({
   const addButton = (section: string) => {
     console.log(`Adding button to ${section}`);
     const currentSection = editableContent[section] || {};
-    const buttonKeys = Object.keys(currentSection).filter(key => key.includes('button') && key.includes('Text'));
+    const buttonKeys = Object.keys(currentSection || {}).filter(key => key && key.includes && key.includes('button') && key.includes('Text'));
     const nextButtonIndex = buttonKeys.length + 1;
     
     updateContent(section, `button${nextButtonIndex}Text`, `כפתור ${nextButtonIndex}`);
@@ -485,8 +485,8 @@ const AdvancedVisualEditor = ({
       </div>
 
       {/* Existing Buttons */}
-      {editableContent?.hero && Object.keys(editableContent.hero)
-        .filter(key => key.includes('button') && key.includes('Text'))
+      {editableContent?.hero && Object.keys(editableContent.hero || {})
+        .filter(key => key && key.includes && key.includes('button') && key.includes('Text'))
         .map((buttonKey, index) => {
           const buttonNumber = buttonKey.replace('buttonText', '').replace('button', '');
           const iconKey = `button${buttonNumber}Icon`;
@@ -620,8 +620,8 @@ const AdvancedVisualEditor = ({
       </div>
 
       {/* Buttons */}
-      {editableContent?.features && Object.keys(editableContent.features)
-        .filter(key => key.includes('button') && key.includes('Text'))
+      {editableContent?.features && Object.keys(editableContent.features || {})
+        .filter(key => key && key.includes && key.includes('button') && key.includes('Text'))
         .map((buttonKey, index) => {
           const buttonNumber = buttonKey.replace('buttonText', '').replace('button', '');
           const iconKey = `button${buttonNumber}Icon`;
@@ -746,8 +746,8 @@ const AdvancedVisualEditor = ({
       </div>
 
       {/* Buttons */}
-      {editableContent?.about && Object.keys(editableContent.about)
-        .filter(key => key.includes('button') && key.includes('Text'))
+      {editableContent?.about && Object.keys(editableContent.about || {})
+        .filter(key => key && key.includes && key.includes('button') && key.includes('Text'))
         .map((buttonKey, index) => {
           const buttonNumber = buttonKey.replace('buttonText', '').replace('button', '');
           const iconKey = `button${buttonNumber}Icon`;
@@ -907,8 +907,8 @@ const AdvancedVisualEditor = ({
       </div>
 
       {/* Buttons */}
-      {editableContent?.services && Object.keys(editableContent.services)
-        .filter(key => key.includes('button') && key.includes('Text'))
+      {editableContent?.services && Object.keys(editableContent.services || {})
+        .filter(key => key && key.includes && key.includes('button') && key.includes('Text'))
         .map((buttonKey, index) => {
           const buttonNumber = buttonKey.replace('buttonText', '').replace('button', '');
           const iconKey = `button${buttonNumber}Icon`;
@@ -1035,8 +1035,8 @@ const AdvancedVisualEditor = ({
       </div>
 
       {/* Buttons */}
-      {editableContent?.testimonials && Object.keys(editableContent.testimonials)
-        .filter(key => key.includes('button') && key.includes('Text'))
+      {editableContent?.testimonials && Object.keys(editableContent.testimonials || {})
+        .filter(key => key && key.includes && key.includes('button') && key.includes('Text'))
         .map((buttonKey, index) => {
           const buttonNumber = buttonKey.replace('buttonText', '').replace('button', '');
           const iconKey = `button${buttonNumber}Icon`;
@@ -1210,8 +1210,8 @@ const AdvancedVisualEditor = ({
       </div>
 
       {/* Buttons */}
-      {editableContent?.pricing && Object.keys(editableContent.pricing)
-        .filter(key => key.includes('button') && key.includes('Text'))
+      {editableContent?.pricing && Object.keys(editableContent.pricing || {})
+        .filter(key => key && key.includes && key.includes('button') && key.includes('Text'))
         .map((buttonKey, index) => {
           const buttonNumber = buttonKey.replace('buttonText', '').replace('button', '');
           const iconKey = `button${buttonNumber}Icon`;
@@ -1326,8 +1326,8 @@ const AdvancedVisualEditor = ({
       </div>
 
       {/* Buttons */}
-      {editableContent?.faq && Object.keys(editableContent.faq)
-        .filter(key => key.includes('button') && key.includes('Text'))
+      {editableContent?.faq && Object.keys(editableContent.faq || {})
+        .filter(key => key && key.includes && key.includes('button') && key.includes('Text'))
         .map((buttonKey, index) => {
           const buttonNumber = buttonKey.replace('buttonText', '').replace('button', '');
           const iconKey = `button${buttonNumber}Icon`;
@@ -1526,8 +1526,8 @@ const AdvancedVisualEditor = ({
       </div>
 
       {/* Buttons */}
-      {editableContent?.contact && Object.keys(editableContent.contact)
-        .filter(key => key.includes('button') && key.includes('Text'))
+      {editableContent?.contact && Object.keys(editableContent.contact || {})
+        .filter(key => key && key.includes && key.includes('button') && key.includes('Text'))
         .map((buttonKey, index) => {
           const buttonNumber = buttonKey.replace('buttonText', '').replace('button', '');
           const iconKey = `button${buttonNumber}Icon`;
