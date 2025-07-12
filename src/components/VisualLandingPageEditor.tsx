@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import TestimonialsEditor from './TestimonialsEditor';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -8,7 +7,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { extractLandingPageData, generateCleanHTML, type LandingPageData } from '@/services/landingPageDataService';
 import { Badge } from '@/components/ui/badge';
 import { 
   Palette, 
@@ -61,186 +59,110 @@ const VisualLandingPageEditor = ({
   console.log('VisualLandingPageEditor - generatedContent:', generatedContent);
   console.log('VisualLandingPageEditor - formData:', formData);
   
-  // Initialize content with exact template data from formData (like pageGenerator.ts)
+  // Initialize content with generated data or defaults
   const initializeContent = () => {
-    console.log('Initializing content with formData:', formData);
+    console.log('Initializing content with generatedContent:', generatedContent);
     
-    const template = formData?.selectedTemplate;
-    if (!template) {
-      console.log('No template found, using defaults');
-      return getDefaultContent();
+    if (generatedContent) {
+      return {
+        hero: {
+          title: generatedContent.hero?.title || 'כותרת ראשית',
+          subtitle: generatedContent.hero?.subtitle || 'כותרת משנה', 
+          button1Text: generatedContent.hero?.button1Text || 'התחל עכשיו',
+          button2Text: generatedContent.hero?.button2Text || 'למד עוד',
+          badge: generatedContent.hero?.badge || 'חדש!',
+          description: generatedContent.hero?.description || 'תיאור מפורט של השירות או המוצר שלכם',
+          button1Icon: '',
+          button2Icon: ''
+        },
+        features: generatedContent.features ? {
+          title: generatedContent.features.title || 'התכונות שלנו',
+          subtitle: generatedContent.features.subtitle || 'גלה את היתרונות הייחודיים שלנו',
+          items: generatedContent.features.items || [
+            { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star' },
+            { title: 'תכונה 2', description: 'תיאור התכונה השנייה', icon: 'heart' },
+            { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'zap' }
+          ]
+        } : {
+          title: 'התכונות שלנו',
+          subtitle: 'גלה את היתרונות הייחודיים שלנו',
+          items: [
+            { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star' },
+            { title: 'תכונה 2', description: 'תיאור התכונה השנייה', icon: 'heart' },
+            { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'zap' }
+          ]
+        },
+        about: generatedContent.about ? {
+          title: generatedContent.about.title || 'אודותינו',
+          subtitle: generatedContent.about.subtitle || 'כותרת משנה',
+          description: generatedContent.about.description || 'אנחנו חברה מובילה בתחום',
+          stats: generatedContent.about.stats || [
+            { number: '24/7', label: 'תמיכה' },
+            { number: '+5', label: 'שנות ניסיון' },
+            { number: '+100', label: 'לקוחות מרוצים' }
+          ],
+          image: generatedContent.about.image || 'תמונה'
+        } : {
+          title: 'אודותינו',
+          subtitle: 'כותרת משנה', 
+          description: 'אנחנו חברה מובילה בתחום',
+          stats: [
+            { number: '24/7', label: 'תמיכה' },
+            { number: '+5', label: 'שנות ניסיון' },
+            { number: '+100', label: 'לקוחות מרוצים' }
+          ],
+          image: 'תמונה'
+        },
+        services: generatedContent.services ? {
+          title: generatedContent.services.title || 'השירותים שלנו',
+          subtitle: generatedContent.services.subtitle || 'פתרונות מקצועיים עבור העסק שלך',
+          items: generatedContent.services.items || [
+            { 
+              title: 'שירות 1', 
+              description: 'תיאור השירות הראשון',
+              price: '₪999',
+              features: ['תכונה 1', 'תכונה 2', 'תכונה 3']
+            },
+            { 
+              title: 'שירות 2', 
+              description: 'תיאור השירות השני',
+              price: '₪1,999',
+              features: ['תכונה 1', 'תכונה 2', 'תכונה 3', 'תכונה 4']
+            }
+          ]
+        } : {
+          title: 'השירותים שלנו',
+          subtitle: 'פתרונות מקצועיים עבור העסק שלך',
+          items: [
+            { 
+              title: 'שירות 1', 
+              description: 'תיאור השירות הראשון',
+              price: '₪999',
+              features: ['תכונה 1', 'תכונה 2', 'תכונה 3']
+            },
+            { 
+              title: 'שירות 2', 
+              description: 'תיאור השירות השני', 
+              price: '₪1,999',
+              features: ['תכונה 1', 'תכונה 2', 'תכונה 3', 'תכונה 4']
+            }
+          ]
+        },
+        testimonials: generatedContent.testimonials || null,
+        pricing: generatedContent.pricing || null,
+        contact: generatedContent.contact || null
+      };
     }
-
-    // Use exact same content structure as pageGenerator.ts
-    return {
-      hero: {
-        title: template.hero?.title || 'כותרת ראשית',
-        subtitle: template.hero?.subtitle || 'תת כותרת שמסבירה על השירות או המוצר שלכם',
-        description: template.hero?.description || 'תיאור קצר ומעניין על מה שאתם מציעים',
-        badge: template.hero?.badge || '',
-        button1Text: template.hero?.button1Text || 'התחל עכשיו',
-        button2Text: template.hero?.button2Text || 'למד עוד',
-        button1Icon: template.hero?.button1Icon || '',
-        button2Icon: template.hero?.button2Icon || '',
-        image: template.hero?.image || ''
-      },
-      features: {
-        title: template.features?.title || 'התכונות שלנו',
-        subtitle: template.features?.subtitle || 'גלה את היתרונות הייחודיים שלנו',
-        items: template.features?.items || [
-          { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star-line' },
-          { title: 'תכונה 2', description: 'תיאור התכונה השנייה', icon: 'heart-line' },
-          { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'shield-line' }
-        ]
-      },
-      about: {
-        title: template.about?.title || 'אודותינו',
-        description: template.about?.description || 'אנחנו חברה מובילה בתחום',
-        stats: template.about?.stats || [
-          { number: '24/7', label: 'תמיכה' },
-          { number: '+5', label: 'שנות ניסיון' },
-          { number: '+100', label: 'לקוחות מרוצים' }
-        ]
-      },
-      services: {
-        title: template.services?.title || 'השירותים שלנו',
-        subtitle: template.services?.subtitle || 'פתרונות מקצועיים עבור העסק שלך',
-        items: template.services?.items || [
-          { 
-            title: 'שירות 1', 
-            description: 'תיאור השירות הראשון',
-            price: '₪999',
-            features: ['תכונה 1', 'תכונה 2', 'תכונה 3']
-          },
-          { 
-            title: 'שירות 2', 
-            description: 'תיאור השירות השני',
-            price: '₪1,999',
-            features: ['תכונה 1', 'תכונה 2', 'תכונה 3', 'תכונה 4']
-          }
-        ]
-      },
-      testimonials: {
-        title: template.testimonials?.title || 'מה הלקוחות המרוצים שלנו אומרים עלינו',
-        subtitle: template.testimonials?.subtitle || 'הצלחות אמיתיות של לקוחות אמיתיים - המלצות כנות ומפורטות',
-        items: template.testimonials?.items || [
-          {
-            name: 'דני כהן',
-            role: 'מנהל פיתוח עסקי',
-            content: 'שירות מעולה וצוות מקצועי. המליץ בחום!',
-            rating: 5,
-            image: '/placeholder.svg'
-          },
-          {
-            name: 'רונית לוי',
-            role: 'יזמת ומנכ"לית',
-            content: 'עבודה מדויקת ותוצאות מעבר לציפיות. ממליצה בחום!',
-            rating: 5,
-            image: '/placeholder.svg'
-          },
-          {
-            name: 'אלון רוזנברג',
-            role: 'סמנכ"ל שיווק',
-            content: 'ליווי מקצועי לאורך כל הדרך. שירות יוצא מן הכלל!',
-            rating: 5,
-            image: '/placeholder.svg'
-          }
-        ]
-      },
-      pricing: {
-        title: template.pricing?.title || 'מחירונים',
-        subtitle: template.pricing?.subtitle || 'בחר את החבילה המתאימה לך',
-        plans: template.pricing?.plans || [
-          {
-            name: 'חבילה בסיסית',
-            price: '₪299',
-            period: 'לחודש',
-            features: ['תכונה 1', 'תכונה 2', 'תכונה 3'],
-            buttonText: 'התחל עכשיו',
-            recommended: false
-          },
-          {
-            name: 'חבילה מתקדמת',
-            price: '₪599',
-            period: 'לחודש',
-            features: ['כל התכונות הבסיסיות', 'תכונה מתקדמת 1', 'תכונה מתקדמת 2', 'תמיכה מועדפת'],
-            buttonText: 'בחר חבילה',
-            recommended: true
-          },
-          {
-            name: 'חבילה פרימיום',
-            price: '₪999',
-            period: 'לחודש',
-            features: ['כל התכונות המתקדמות', 'ליווי אישי', 'גישה לבטא', 'תמיכה 24/7'],
-            buttonText: 'פנה אלינו',
-            recommended: false
-          }
-        ]
-      },
-      faq: {
-        title: template.faq?.title || 'שאלות נפוצות',
-        questions: template.faq?.questions || [
-          {
-            question: 'איך אני יכול להתחיל?',
-            answer: 'פשוט לחץ על הכפתור "התחל עכשיו" ואנחנו נדריך אותך שלב אחר שלב.'
-          },
-          {
-            question: 'כמה זמן לוקח התהליך?',
-            answer: 'בדרך כלל התהליך לוקח בין שבוע לשבועיים, תלוי במורכבות הפרויקט.'
-          },
-          {
-            question: 'האם יש תמיכה טכנית?',
-            answer: 'כן, אנחנו מספקים תמיכה טכנית מלאה לכל הלקוחות שלנו.'
-          },
-          {
-            question: 'מה קורה אם אני לא מרוצה?',
-            answer: 'אנחנו מציעים אחריות מלאה והחזר כספי בתוך 30 יום.'
-          },
-          {
-            question: 'האם אפשר לקבל הדגמה?',
-            answer: 'בהחלט! פנה אלינו לתיאום הדגמה אישית של המערכת.'
-          }
-        ]
-      },
-      contact: {
-        title: template.contact?.title || 'צור קשר',
-        subtitle: template.contact?.subtitle || 'נשמח לשמוע ממך ולעזור בכל שאלה',
-        phone: template.contact?.phone || '050-123-4567',
-        email: template.contact?.email || 'info@example.com',
-        address: template.contact?.address || 'תל אביב, ישראל',
-        methods: [
-          {
-            icon: 'phone-line',
-            title: 'טלפון',
-            value: template.contact?.phone || '050-123-4567',
-            description: 'זמינים בימים א׳-ה׳ 9:00-18:00'
-          },
-          {
-            icon: 'mail-line',
-            title: 'אימייל',
-            value: template.contact?.email || 'info@example.com',
-            description: 'נענה תוך 24 שעות'
-          },
-          {
-            icon: 'map-pin-line',
-            title: 'כתובת',
-            value: template.contact?.address || 'תל אביב, ישראל',
-            description: 'בתיאום מראש'
-          }
-        ]
-      }
-    };
-  };
-
-  const getDefaultContent = () => {
+    
+    // Default content if no generated content
     return {
       hero: { 
         title: 'כותרת ראשית', 
-        subtitle: 'תת כותרת שמסבירה על השירות או המוצר שלכם',
-        description: 'תיאור מפורט של השירות או המוצר שלכם',
-        badge: '',
+        subtitle: 'כותרת משנה', 
         button1Text: 'התחל עכשיו', 
         button2Text: 'למד עוד',
+        badge: 'חדש!',
+        description: 'תיאור מפורט של השירות או המוצר שלכם',
         button1Icon: '',
         button2Icon: ''
       },
@@ -248,146 +170,21 @@ const VisualLandingPageEditor = ({
         title: 'התכונות שלנו', 
         subtitle: 'גלה את היתרונות הייחודיים שלנו',
         items: [
-          { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star-line' },
-          { title: 'תכונה 2', description: 'תיאור התכונה השנייה', icon: 'heart-line' },
-          { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'shield-line' }
+          { title: 'תכונה 1', description: 'תיאור התכונה הראשונה', icon: 'star' },
+          { title: 'תכונה 2', description: 'תיאור התכונה השנייה', icon: 'heart' },
+          { title: 'תכונה 3', description: 'תיאור התכונה השלישית', icon: 'zap' }
         ]
       },
       about: { 
-        title: 'אודותינו',
+        title: 'אודותינו', 
+        subtitle: 'כותרת משנה',
         description: 'אנחנו חברה מובילה בתחום',
         stats: [
           { number: '24/7', label: 'תמיכה' },
           { number: '+5', label: 'שנות ניסיון' },
           { number: '+100', label: 'לקוחות מרוצים' }
-        ]
-      },
-      services: {
-        title: 'השירותים שלנו',
-        subtitle: 'פתרונות מקצועיים עבור העסק שלך',
-        items: [
-          { 
-            title: 'שירות 1', 
-            description: 'תיאור השירות הראשון',
-            price: '₪999',
-            features: ['תכונה 1', 'תכונה 2', 'תכונה 3']
-          },
-          { 
-            title: 'שירות 2', 
-            description: 'תיאור השירות השני',
-            price: '₪1,999',
-            features: ['תכונה 1', 'תכונה 2', 'תכונה 3', 'תכונה 4']
-          }
-        ]
-      },
-      testimonials: {
-        title: 'מה הלקוחות המרוצים שלנו אומרים עלינו',
-        subtitle: 'הצלחות אמיתיות של לקוחות אמיתיים - המלצות כנות ומפורטות',
-        items: [
-          {
-            name: 'דני כהן',
-            role: 'מנהל פיתוח עסקי',
-            content: 'שירות מעולה וצוות מקצועי. המליץ בחום!',
-            rating: 5,
-            image: '/placeholder.svg'
-          },
-          {
-            name: 'רונית לוי',
-            role: 'יזמת ומנכ"לית',
-            content: 'עבודה מדויקת ותוצאות מעבר לציפיות. ממליצה בחום!',
-            rating: 5,
-            image: '/placeholder.svg'
-          },
-          {
-            name: 'אלון רוזנברג',
-            role: 'סמנכ"ל שיווק',
-            content: 'ליווי מקצועי לאורך כל הדרך. שירות יוצא מן הכלל!',
-            rating: 5,
-            image: '/placeholder.svg'
-          }
-        ]
-      },
-      pricing: {
-        title: 'מחירונים',
-        subtitle: 'בחר את החבילה המתאימה לך',
-        plans: [
-          {
-            name: 'חבילה בסיסית',
-            price: '₪299',
-            period: 'לחודש',
-            features: ['תכונה 1', 'תכונה 2', 'תכונה 3'],
-            buttonText: 'התחל עכשיו',
-            recommended: false
-          },
-          {
-            name: 'חבילה מתקדמת',
-            price: '₪599',
-            period: 'לחודש',
-            features: ['כל התכונות הבסיסיות', 'תכונה מתקדמת 1', 'תכונה מתקדמת 2', 'תמיכה מועדפת'],
-            buttonText: 'בחר חבילה',
-            recommended: true
-          },
-          {
-            name: 'חבילה פרימיום',
-            price: '₪999',
-            period: 'לחודש',
-            features: ['כל התכונות המתקדמות', 'ליווי אישי', 'גישה לבטא', 'תמיכה 24/7'],
-            buttonText: 'פנה אלינו',
-            recommended: false
-          }
-        ]
-      },
-      faq: {
-        title: 'שאלות נפוצות',
-        questions: [
-          {
-            question: 'איך אני יכול להתחיל?',
-            answer: 'פשוט לחץ על הכפתור "התחל עכשיו" ואנחנו נדריך אותך שלב אחר שלב.'
-          },
-          {
-            question: 'כמה זמן לוקח התהליך?',
-            answer: 'בדרך כלל התהליך לוקח בין שבוע לשבועיים, תלוי במורכבות הפרויקט.'
-          },
-          {
-            question: 'האם יש תמיכה טכנית?',
-            answer: 'כן, אנחנו מספקים תמיכה טכנית מלאה לכל הלקוחות שלנו.'
-          },
-          {
-            question: 'מה קורה אם אני לא מרוצה?',
-            answer: 'אנחנו מציעים אחריות מלאה והחזר כספי בתוך 30 יום.'
-          },
-          {
-            question: 'האם אפשר לקבל הדגמה?',
-            answer: 'בהחלט! פנה אלינו לתיאום הדגמה אישית של המערכת.'
-          }
-        ]
-      },
-      contact: {
-        title: 'צור קשר',
-        subtitle: 'נשמח לשמוע ממך ולעזור בכל שאלה',
-        phone: '050-123-4567',
-        email: 'info@example.com',
-        address: 'תל אביב, ישראל',
-        methods: [
-          {
-            icon: 'phone-line',
-            title: 'טלפון',
-            value: '050-123-4567',
-            description: 'זמינים בימים א׳-ה׳ 9:00-18:00'
-          },
-          {
-            icon: 'mail-line',
-            title: 'אימייל',
-            value: 'info@example.com',
-            description: 'נענה תוך 24 שעות'
-          },
-          {
-            icon: 'map-pin-line',
-            title: 'כתובת',
-            value: 'תל אביב, ישראל',
-            description: 'בתיאום מראש'
-          }
-        ]
+        ],
+        image: 'תמונה'
       }
     };
   };
@@ -417,9 +214,6 @@ const VisualLandingPageEditor = ({
     aboutTextColor: '#6b7280',
     servicesTitleColor: '#1f2937',
     servicesTextColor: '#6b7280',
-    testimonialsTitleColor: '#1f2937',
-    testimonialsTextColor: '#6b7280',
-    testimonialsBackgroundColor: '#f9fafb',
     heroBackground: 'gradient',
     heroBackgroundImage: '',
     buttonStyle: 'rounded',
@@ -1009,26 +803,7 @@ const VisualLandingPageEditor = ({
                         </>
                       )}
 
-                      {activeSection === 'testimonials' && (
-                        <div className="space-y-4">
-                          <TestimonialsEditor 
-                            content={editableContent} 
-                            onContentChange={setEditableContent} 
-                          />
-                          
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            onClick={() => addButton(activeSection)}
-                            className="w-full"
-                          >
-                            <Plus className="h-4 w-4 mr-2" />
-                            הוסף כפתור
-                          </Button>
-                        </div>
-                      )}
-
-                      {(activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
+                      {(activeSection === 'testimonials' || activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
                         <div className="text-center py-8 text-muted-foreground">
                           <Type className="h-8 w-8 mx-auto mb-2" />
                           <p>עריכת תוכן עבור סקשן {sections.find(s => s.id === activeSection)?.name}</p>
@@ -1166,32 +941,6 @@ const VisualLandingPageEditor = ({
                             <ColorPicker
                               color={pageStyles.servicesTextColor}
                               onChange={(color) => updatePageStyle('servicesTextColor', color)}
-                            />
-                          </div>
-                        </>
-                      )}
-                      
-                      {activeSection === 'testimonials' && (
-                        <>
-                          <div>
-                            <Label className="text-xs">צבע כותרת</Label>
-                            <ColorPicker
-                              color={pageStyles.testimonialsTitleColor}
-                              onChange={(color) => updatePageStyle('testimonialsTitleColor', color)}
-                            />
-                          </div>
-                          <div>
-                            <Label className="text-xs">צבע טקסט</Label>
-                            <ColorPicker
-                              color={pageStyles.testimonialsTextColor}
-                              onChange={(color) => updatePageStyle('testimonialsTextColor', color)}
-                            />
-                          </div>
-                          <div>
-                            <Label className="text-xs">צבע רקע</Label>
-                            <ColorPicker
-                              color={pageStyles.testimonialsBackgroundColor}
-                              onChange={(color) => updatePageStyle('testimonialsBackgroundColor', color)}
                             />
                           </div>
                         </>
@@ -1690,347 +1439,17 @@ const VisualLandingPageEditor = ({
                 </div>
               )}
 
-              {/* Testimonials Section Preview */}
-              {activeSection === 'testimonials' && (
-                <section className="py-16" style={{ backgroundColor: pageStyles.testimonialsBackgroundColor }}>
-                  <div className="max-w-7xl mx-auto px-6 relative z-10">
-                    <div className="text-center mb-12">
-                      <h2 
-                        className="text-3xl md:text-4xl font-bold"
-                        style={{ color: pageStyles.testimonialsTitleColor }}
-                      >
-                        {(editableContent?.testimonials as any)?.title || "מה הלקוחות המרוצים שלנו אומרים עלינו"}
-                      </h2>
-                    </div>
-                    
-                    {/* Testimonials grid - בדיוק כמו בתצוגה המקדימה */}
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                      {((editableContent?.testimonials as any)?.items || []).map((testimonial: any, index: number) => (
-                        <div key={index} className="relative group">
-                          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20"></div>
-                          <div className="relative z-10 p-6 space-y-4">
-                            {/* Quote icon */}
-                            <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center mb-4">
-                              <span className="text-white text-sm">"</span>
-                            </div>
-                            
-                            {/* Rating */}
-                            <div className="flex mb-3">
-                              {Array(testimonial.rating || 5).fill(0).map((_, i) => (
-                                <span key={i} style={{ color: '#fbbf24', fontSize: '1rem' }}>★</span>
-                              ))}
-                            </div>
-                            
-                            {/* Content */}
-                            <p 
-                              className="italic leading-relaxed"
-                              style={{ color: pageStyles.testimonialsTextColor }}
-                            >
-                              "{testimonial.content}"
-                            </p>
-                            
-                            {/* Author info */}
-                            <div className="flex items-center gap-3 pt-4">
-                              <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
-                                {testimonial.name?.charAt(0) || 'א'}
-                              </div>
-                              <div>
-                                <p 
-                                  className="font-semibold"
-                                  style={{ color: pageStyles.testimonialsTitleColor }}
-                                >
-                                  {testimonial.name}
-                                </p>
-                                <p 
-                                  className="text-sm opacity-70"
-                                  style={{ color: pageStyles.testimonialsTextColor }}
-                                >
-                                  {testimonial.role}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Buttons - כמו בתצוגה המקדימה */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      <Button 
-                        className="text-white"
-                        style={{ backgroundColor: pageStyles.primaryColor }}
-                      >
-                        צור קשר עכשיו
-                      </Button>
-                      <Button 
-                        variant="outline"
-                        className="text-white border-white"
-                        style={{ backgroundColor: pageStyles.secondaryColor }}
-                      >
-                        קרא עוד
-                      </Button>
-                    </div>
+              {/* Other Sections Preview */}
+              {(activeSection === 'testimonials' || activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
+                <div className="p-8 rounded-lg bg-gray-50 text-center">
+                  <div className="text-gray-500 mb-4">
+                    <Type className="h-16 w-16 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold">
+                      תצוגה מקדימה של {sections.find(s => s.id === activeSection)?.name}
+                    </h3>
+                    <p className="text-sm mt-2">התצוגה המקדימה תתווסף בקרוב...</p>
                   </div>
-                </section>
-              )}
-
-              {/* FAQ Section Preview */}
-              {activeSection === 'faq' && (
-                <section className="py-16" style={{ backgroundColor: pageStyles.testimonialsBackgroundColor }}>
-                  <div className="max-w-4xl mx-auto px-4 relative z-10">
-                    <div className="text-center mb-12">
-                      <h2 
-                        className="text-3xl md:text-4xl font-bold"
-                        style={{ color: pageStyles.testimonialsTitleColor }}
-                      >
-                        {(editableContent?.faq as any)?.title || "שאלות נפוצות ותשובות מפורטות"}
-                      </h2>
-                    </div>
-                    
-                     <div className="space-y-4 mb-12">
-                      {((editableContent?.faq as any)?.questions || [
-                        {
-                          question: 'איך אני יכול להתחיל?',
-                          answer: 'פשוט לחץ על הכפתור "התחל עכשיו" ואנחנו נדריך אותך שלב אחר שלב.'
-                        },
-                        {
-                          question: 'כמה זמן לוקח התהליך?',
-                          answer: 'בדרך כלל התהליך לוקח בין שבוע לשבועיים, תלוי במורכבות הפרויקט.'
-                        },
-                        {
-                          question: 'האם יש תמיכה טכנית?',
-                          answer: 'כן, אנחנו מספקים תמיכה טכנית מלאה לכל הלקוחות שלנו.'
-                        },
-                        {
-                          question: 'מה קורה אם אני לא מרוצה?',
-                          answer: 'אנחנו מציעים אחריות מלאה והחזר כספי בתוך 30 יום.'
-                        },
-                        {
-                          question: 'האם אפשר לקבל הדגמה?',
-                          answer: 'בהחלט! פנה אלינו לתיאום הדגמה אישית של המערכת.'
-                        }
-                      ]).map((qa: any, index: number) => (
-                        <div key={index} className="rounded-lg border bg-card text-card-foreground shadow-sm p-6 bg-white/10 backdrop-blur-sm border-white/20">
-                          <h3 className="text-lg font-bold mb-2 text-right" style={{ color: pageStyles.testimonialsTitleColor }}>
-                            {qa.question}
-                          </h3>
-                          <p className="opacity-80 text-right" style={{ color: pageStyles.testimonialsTextColor }}>
-                            {qa.answer}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      <Button 
-                        className="text-white"
-                        style={{ backgroundColor: pageStyles.primaryColor }}
-                      >
-                        יש לכם שאלה נוספת?
-                      </Button>
-                      <Button 
-                        variant="outline"
-                        className="text-white border-white"
-                        style={{ backgroundColor: pageStyles.secondaryColor }}
-                      >
-                        צור קשר
-                      </Button>
-                    </div>
-                  </div>
-                </section>
-              )}
-
-              {/* Pricing Section Preview */}
-              {activeSection === 'pricing' && (
-                <section className="py-16" style={{ backgroundColor: pageStyles.testimonialsBackgroundColor }}>
-                  <div className="max-w-7xl mx-auto px-6 relative z-10">
-                    <div className="text-center mb-12">
-                      <h2 
-                        className="text-3xl md:text-4xl font-bold"
-                        style={{ color: pageStyles.testimonialsTitleColor }}
-                      >
-                        החבילות והמחירים שלנו
-                      </h2>
-                      <p 
-                        className="text-xl mt-4"
-                        style={{ color: pageStyles.testimonialsTextColor }}
-                      >
-                        בחרו את החבילה המתאימה לכם
-                      </p>
-                    </div>
-                    
-                    <div className="grid md:grid-cols-3 gap-8 mb-12">
-                      {[
-                        {
-                          name: 'חבילה בסיסית',
-                          price: '₪999',
-                          description: 'מושלמת לעסקים קטנים ופרויקטים פשוטים',
-                          features: ['עד 3 עמודים', 'עיצוב בסיסי', 'תמיכה למשך חודש', 'אופטימיזציה בסיסית']
-                        },
-                        {
-                          name: 'חבילה מתקדמת',
-                          price: '₪1,999',
-                          description: 'האפשרות הטובה ביותר לרוב העסקים',
-                          features: ['עד 7 עמודים', 'עיצוב מתקדם', 'תמיכה למשך 3 חודשים', 'אופטימיזציה מלאה', 'פורטל ניהול'],
-                          popular: true
-                        },
-                        {
-                          name: 'חבילה מקצועית',
-                          price: '₪3,999',
-                          description: 'פתרון מקצועי לעסקים גדולים',
-                          features: ['אתר ללא הגבלה', 'עיצוב אישי', 'תמיכה למשך שנה', 'אופטימיזציה מתקדמת', 'פורטל ניהול מתקדם', 'אינטגרציות']
-                        }
-                      ].map((plan: any, index: number) => (
-                        <div key={index} className={`relative ${plan.popular ? 'ring-2 ring-blue-500' : ''}`}>
-                          {plan.popular && (
-                            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                              <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm">הכי פופולרי</span>
-                            </div>
-                          )}
-                          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 shadow-xl border border-white/20 h-full">
-                            <h3 
-                              className="text-xl font-bold mb-2"
-                              style={{ color: pageStyles.testimonialsTitleColor }}
-                            >
-                              {plan.name}
-                            </h3>
-                            <div className="text-3xl font-bold mb-4" style={{ color: pageStyles.testimonialsTitleColor }}>
-                              {plan.price}
-                            </div>
-                            <p 
-                              className="mb-6"
-                              style={{ color: pageStyles.testimonialsTextColor }}
-                            >
-                              {plan.description}
-                            </p>
-                            <ul className="space-y-3 mb-8">
-                              {plan.features.map((feature: string, i: number) => (
-                                <li key={i} className="flex items-center text-sm">
-                                  <span className="text-green-400 mr-2">✓</span>
-                                  <span style={{ color: pageStyles.testimonialsTextColor }}>{feature}</span>
-                                </li>
-                              ))}
-                            </ul>
-                            <Button 
-                              className={`w-full ${plan.popular ? 'text-white' : ''}`}
-                              style={{ 
-                                backgroundColor: plan.popular ? pageStyles.primaryColor : pageStyles.secondaryColor 
-                              }}
-                            >
-                              בחר חבילה
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="text-center">
-                      <p 
-                        className="text-lg mb-4"
-                        style={{ color: pageStyles.testimonialsTextColor }}
-                      >
-                        לא מצאתם את מה שאתם מחפשים?
-                      </p>
-                      <Button 
-                        variant="outline"
-                        className="text-white border-white"
-                        style={{ backgroundColor: pageStyles.secondaryColor }}
-                      >
-                        בקשו הצעת מחיר אישית
-                      </Button>
-                    </div>
-                  </div>
-                </section>
-              )}
-
-              {/* Contact Section Preview */}
-              {activeSection === 'contact' && (
-                <section className="py-16" style={{ backgroundColor: pageStyles.testimonialsBackgroundColor }}>
-                  <div className="max-w-4xl mx-auto text-center px-4 relative z-10">
-                    <h2 
-                      className="text-3xl md:text-4xl font-bold mb-6"
-                      style={{ color: pageStyles.testimonialsTitleColor }}
-                    >
-                      {(editableContent?.contact as any)?.title || "בואו נתחיל לעבוד יחד על הפרויקט שלכם"}
-                    </h2>
-                    <p 
-                      className="text-xl mb-8 opacity-80"
-                      style={{ color: pageStyles.testimonialsTextColor }}
-                    >
-                      {(editableContent?.contact as any)?.subtitle || "מוכנים להגשים את הפרויקט החשוב הבא שלכם ברמה מקצועית?"}
-                    </p>
-                    
-                    <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-8 max-w-md mx-auto mb-8">
-                      <form className="space-y-4">
-                        <input 
-                          type="text" 
-                          placeholder="השם שלכם" 
-                          className="w-full p-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70"
-                        />
-                        <input 
-                          type="email" 
-                          placeholder="כתובת אימייל" 
-                          className="w-full p-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70"
-                        />
-                        <input 
-                          type="tel" 
-                          placeholder="מספר טלפון" 
-                          className="w-full p-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70"
-                        />
-                        <textarea 
-                          placeholder="ספרו לנו על הפרויקט שלכם..." 
-                          rows={4}
-                          className="w-full p-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/70"
-                        ></textarea>
-                        <Button 
-                          className="w-full text-white"
-                          style={{ backgroundColor: pageStyles.primaryColor }}
-                        >
-                          שלח הודעה
-                        </Button>
-                      </form>
-                    </div>
-
-                    <div className="grid md:grid-cols-3 gap-6 text-center">
-                      <div>
-                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                          📞
-                        </div>
-                        <h3 
-                          className="font-bold mb-2"
-                          style={{ color: pageStyles.testimonialsTitleColor }}
-                        >
-                          טלפון ישיר
-                        </h3>
-                        <p style={{ color: pageStyles.testimonialsTextColor }}>050-1234567</p>
-                      </div>
-                      <div>
-                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                          📧
-                        </div>
-                        <h3 
-                          className="font-bold mb-2"
-                          style={{ color: pageStyles.testimonialsTitleColor }}
-                        >
-                          אימייל מקצועי
-                        </h3>
-                        <p style={{ color: pageStyles.testimonialsTextColor }}>info@business.co.il</p>
-                      </div>
-                      <div>
-                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                          📍
-                        </div>
-                        <h3 
-                          className="font-bold mb-2"
-                          style={{ color: pageStyles.testimonialsTitleColor }}
-                        >
-                          כתובת המשרד
-                        </h3>
-                        <p style={{ color: pageStyles.testimonialsTextColor }}>רחוב העסק 123, תל אביב</p>
-                      </div>
-                    </div>
-                  </div>
-                </section>
+                </div>
               )}
             </div>
           </div>
