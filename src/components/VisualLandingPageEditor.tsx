@@ -419,13 +419,13 @@ const VisualLandingPageEditor = ({
   return (
     <div className="fixed inset-0 bg-white z-50 flex flex-col">
       {/* Top Header */}
-      <div className="flex items-center justify-between p-4 border-b bg-white">
+      <div className="flex items-center justify-between p-3 border-b bg-white">
         <div className="flex items-center gap-2">
-          <Paintbrush className="h-5 w-5" />
-          <h1 className="text-lg font-semibold">עורך חזותי - {formData?.companyName || 'דף הנחיתה שלי'}</h1>
+          <Paintbrush className="h-4 w-4" />
+          <h1 className="text-base font-semibold">עורך חזותי - {formData?.companyName || 'דף הנחיתה שלי'}</h1>
         </div>
-        <Button variant="outline" onClick={onClose}>
-          <X className="h-4 w-4 mr-2" />
+        <Button variant="outline" size="sm" onClick={onClose}>
+          <X className="h-4 w-4 mr-1" />
           סגור
         </Button>
       </div>
@@ -433,7 +433,7 @@ const VisualLandingPageEditor = ({
       {/* Main Content */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar - Controls */}
-        <div className="w-80 border-r bg-muted/30 overflow-y-auto flex-shrink-0">
+        <div className="w-72 border-r bg-muted/30 overflow-y-auto flex-shrink-0">
           <div className="p-4 space-y-6">
             {/* Section Selector */}
             <div>
@@ -479,35 +479,39 @@ const VisualLandingPageEditor = ({
         </div>
         
         {/* Right Side - Live Preview */}
-        <div className="flex-1 overflow-hidden">
-          <LandingPagePreview 
-            content={editableContent}
-            currentColors={{
-              primary: pageStyles.primaryColor,
-              secondary: pageStyles.secondaryColor,
-              accent: pageStyles.accentColor,
-              background: pageStyles.backgroundColor,
-              text: pageStyles.textColor,
-              headlineColor: pageStyles.heroTitleColor,
-              subheadlineColor: pageStyles.heroSubtitleColor,
-              featuresColor: pageStyles.featuresTitleColor,
-              featuresTextColor: pageStyles.featuresTextColor,
-              aboutColor: pageStyles.aboutTitleColor,
-              aboutTextColor: pageStyles.aboutTextColor,
-              contactColor: pageStyles.contactTitleColor,
-              contactTextColor: pageStyles.contactTextColor,
-              heroBackground: pageStyles.heroBackground
-            }}
-            formData={{
-              ...formData,
-              selectedTemplate: {
-                ...editableContent,
-                styles: pageStyles
-              }
-            }}
-            heroImage=""
-            elements={[]}
-          />
+        <div className="flex-1 overflow-y-auto bg-gray-50">
+          <div className="p-4">
+            <div className="bg-white rounded-lg shadow-sm border overflow-hidden" style={{ minHeight: "80vh" }}>
+              <LandingPagePreview 
+                content={editableContent}
+                currentColors={{
+                  primary: pageStyles.primaryColor,
+                  secondary: pageStyles.secondaryColor,
+                  accent: pageStyles.accentColor,
+                  background: pageStyles.backgroundColor,
+                  text: pageStyles.textColor,
+                  headlineColor: pageStyles.heroTitleColor,
+                  subheadlineColor: pageStyles.heroSubtitleColor,
+                  featuresColor: pageStyles.featuresTitleColor,
+                  featuresTextColor: pageStyles.featuresTextColor,
+                  aboutColor: pageStyles.aboutTitleColor,
+                  aboutTextColor: pageStyles.aboutTextColor,
+                  contactColor: pageStyles.contactTitleColor,
+                  contactTextColor: pageStyles.contactTextColor,
+                  heroBackground: pageStyles.heroBackground
+                }}
+                formData={{
+                  ...formData,
+                  selectedTemplate: {
+                    ...editableContent,
+                    styles: pageStyles
+                  }
+                }}
+                heroImage=""
+                elements={[]}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
