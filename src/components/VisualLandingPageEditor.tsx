@@ -1542,87 +1542,88 @@ const VisualLandingPageEditor = ({
 
               {/* Testimonials Section Preview */}
               {activeSection === 'testimonials' && (
-                <div className="p-8 rounded-lg bg-black relative overflow-hidden">
-                  {/* Background Effects */}
+                <div 
+                  className="p-8 rounded-lg relative overflow-hidden"
+                  style={{
+                    backgroundColor: '#000000',
+                    background: 'linear-gradient(to bottom, rgb(15, 23, 42), rgb(0, 0, 0))'
+                  }}
+                >
+                  {/* Background particles */}
                   <div className="absolute inset-0">
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5" />
-                    <div className="absolute top-1/4 left-1/6 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
-                    <div className="absolute bottom-1/4 right-1/6 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '3s' }} />
+                    {Array.from({length: 20}, (_, i) => (
+                      <div 
+                        key={i}
+                        className="absolute w-2 h-2 bg-blue-400/20 rounded-full animate-pulse" 
+                        style={{
+                          left: `${Math.random() * 100}%`, 
+                          top: `${Math.random() * 100}%`, 
+                          animationDelay: `${i * 0.2}s`
+                        }}
+                      />
+                    ))}
                   </div>
-
-                  <div className="max-w-6xl mx-auto relative z-10">
+                  
+                  <div className="max-w-6xl mx-auto px-6 relative z-10">
                     {/* Section Header */}
                     <div className="text-center mb-12">
-                      <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
-                        המלצות מ
-                        <span className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent">
-                          לקוחות מובילים
-                        </span>
+                      <h2 
+                        className="text-4xl md:text-5xl font-bold mb-16 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent"
+                      >
+                        {editableContent?.testimonials?.title || 'המלצות מלקוחות מובילים'}
                       </h2>
-                      <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                        עדויות מקצועיות מעסקים מובילים החווים שיפור משמעותי בביצועים
-                        <br />
-                        עם תוצאות מדידות וערך עסקי ברור
-                      </p>
                     </div>
-
+                    
                     {/* Testimonials Grid */}
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                       {(editableContent?.testimonials?.testimonials || []).map((testimonial: any, index: number) => (
-                        <div key={index} className="group relative">
-                          <div 
-                            className="relative p-8 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden h-full"
-                            style={{
-                              background: `linear-gradient(135deg, 
-                                rgba(255, 255, 255, 0.08), 
-                                rgba(255, 255, 255, 0.02))`,
-                              boxShadow: `
-                                inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                                0 25px 50px rgba(0, 0, 0, 0.4),
-                                0 0 0 1px rgba(255, 255, 255, 0.05)
-                              `,
-                            }}
-                          >
-                            {/* Quote Icon */}
-                            <div className="flex justify-between items-start mb-6">
-                              <Star className="w-8 h-8 text-gray-500" />
-                              <div className="inline-block px-3 py-1 text-xs bg-blue-600/20 text-blue-300 rounded-full border border-blue-500/30">
-                                {testimonial.results || 'תוצאות מצוינות'}
-                              </div>
+                        <div key={index} className="relative group">
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20"></div>
+                          <div className="relative z-10 p-6 space-y-4">
+                            {/* Quote icon */}
+                            <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center mb-4">
+                              <span className="text-white text-sm">"</span>
                             </div>
-
-                            {/* Stars */}
-                            <div className="flex mb-6">
-                              {[...Array(testimonial.rating || 5)].map((_, i) => (
-                                <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                            
+                            {/* Rating */}
+                            <div className="flex mb-3">
+                              {Array(testimonial.rating || 5).fill(0).map((_, starIndex) => (
+                                <span key={starIndex} style={{color: '#fbbf24', fontSize: '1rem'}}>★</span>
                               ))}
                             </div>
-
+                            
                             {/* Content */}
-                            <blockquote className="text-lg text-gray-300 mb-8 leading-relaxed">
-                              "{testimonial.content}"
-                            </blockquote>
-
-                            {/* Author Info */}
-                            <div className="flex items-center">
-                              <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center text-white font-bold mr-4">
+                            <p className="text-blue-100/90 italic leading-relaxed">"{testimonial.content}"</p>
+                            
+                            {/* Author info */}
+                            <div className="flex items-center gap-3 pt-4">
+                              <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
                                 {testimonial.name?.charAt(0) || 'א'}
                               </div>
                               <div>
-                                <div className="font-bold text-white text-lg">
-                                  {testimonial.name}
-                                </div>
-                                <div className="text-gray-400">
-                                  {testimonial.role}
-                                </div>
-                                <div className="text-sm text-gray-500">
-                                  {testimonial.company}
-                                </div>
+                                <p className="text-white font-semibold">{testimonial.name}</p>
+                                <p className="text-blue-200/70 text-sm">{testimonial.role}</p>
                               </div>
                             </div>
                           </div>
                         </div>
                       ))}
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <button 
+                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
+                        style={{backgroundColor: '#3b82f6'}}
+                      >
+                        {editableContent?.testimonials?.button1Text || 'קבל הצעת מחיר'}
+                      </button>
+                      <button 
+                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
+                        style={{backgroundColor: '#6b7280'}}
+                      >
+                        {editableContent?.testimonials?.button2Text || 'צפה בעוד המלצות'}
+                      </button>
                     </div>
                   </div>
                 </div>
