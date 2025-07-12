@@ -507,22 +507,37 @@ const VisualLandingPageEditor = ({
 
   // Update content when generatedContent or formData changes
   useEffect(() => {
+    console.log('VisualLandingPageEditor useEffect triggered!');
+    console.log('generatedContent:', generatedContent);
+    console.log('formData:', formData);
+    console.log('editableContent current:', editableContent);
+    
     if (generatedContent || formData) {
       console.log('useEffect - updating content with new data:', { generatedContent, formData });
       console.log('Generated content whyUs:', generatedContent?.whyUs);
       console.log('Generated content whatWeGive:', generatedContent?.whatWeGive);
+      console.log('Generated content gallery:', generatedContent?.gallery);
+      console.log('Generated content process:', generatedContent?.process);
       
       // Always prioritize the passed generatedContent over localStorage
       if (generatedContent) {
         console.log('Using passed generatedContent:', generatedContent);
         const updatedContent = initializeContentWithData(generatedContent, formData);
         console.log('Updated content with new sections:', updatedContent);
+        console.log('Updated content whyUs:', updatedContent?.whyUs);
+        console.log('Updated content whatWeGive:', updatedContent?.whatWeGive);
+        console.log('Updated content gallery:', updatedContent?.gallery);
+        console.log('Updated content process:', updatedContent?.process);
         setEditableContent(updatedContent);
       } else {
         // Only use initializeContent if no generatedContent is passed
         console.log('Using initializeContent as fallback');
-        setEditableContent(initializeContent());
+        const defaultContent = initializeContent();
+        console.log('Default content:', defaultContent);
+        setEditableContent(defaultContent);
       }
+    } else {
+      console.log('No generatedContent or formData provided!');
     }
   }, [generatedContent, formData]);
 

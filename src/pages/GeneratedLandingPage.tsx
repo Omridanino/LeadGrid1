@@ -32,10 +32,19 @@ const GeneratedLandingPage = () => {
 
   // Generate content when formData is available and no template is selected
   useEffect(() => {
+    console.log('GeneratedLandingPage useEffect - generating content check');
+    console.log('state.formData:', state.formData);
+    console.log('state.content:', state.content);
+    console.log('state.formData.selectedTemplate:', state.formData?.selectedTemplate);
+    
     if (state.formData && !state.content && !state.formData.selectedTemplate) {
       console.log("Generating content for formData:", state.formData);
       const newContent = generateCreativeContent();
       console.log("Generated content:", newContent);
+      console.log('Generated content whyUs:', newContent?.whyUs);
+      console.log('Generated content whatWeGive:', newContent?.whatWeGive);
+      console.log('Generated content gallery:', newContent?.gallery);
+      console.log('Generated content process:', newContent?.process);
       state.setContent(newContent);
       setGeneratedContent(newContent);
     }

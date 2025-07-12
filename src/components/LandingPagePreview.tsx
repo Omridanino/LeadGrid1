@@ -12,6 +12,15 @@ interface LandingPagePreviewProps {
 }
 
 const LandingPagePreview = ({ content, currentColors, formData, heroImage, elements }: LandingPagePreviewProps) => {
+  console.log('=== LandingPagePreview START ===');
+  console.log('LandingPagePreview - content received:', content);
+  console.log('LandingPagePreview - formData received:', formData);
+  console.log('LandingPagePreview - content?.whyUs:', content?.whyUs);
+  console.log('LandingPagePreview - content?.whatWeGive:', content?.whatWeGive);
+  console.log('LandingPagePreview - content?.gallery:', content?.gallery);
+  console.log('LandingPagePreview - content?.process:', content?.process);
+  console.log('LandingPagePreview - formData?.selectedTemplate:', formData?.selectedTemplate);
+  console.log('=== LandingPagePreview ANALYSIS ===');
   // Show loading or placeholder if formData is not ready
   if (!formData) {
     return (

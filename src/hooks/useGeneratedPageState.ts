@@ -72,6 +72,11 @@ export const useGeneratedPageState = () => {
 
   // Add back missing functions
   const setGeneratedContent = (newContent: any) => {
+    console.log('useGeneratedPageState - setGeneratedContent called with:', newContent);
+    console.log('New content whyUs:', newContent?.whyUs);
+    console.log('New content whatWeGive:', newContent?.whatWeGive);
+    console.log('New content gallery:', newContent?.gallery);
+    console.log('New content process:', newContent?.process);
     setContent(newContent);
     localStorage.setItem('generatedContent', JSON.stringify(newContent));
   };
