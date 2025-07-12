@@ -861,6 +861,13 @@ const VisualLandingPageEditor = ({
     const buttonGradient = content[`button${buttonIndex}Gradient`];
     const buttonStyle = content[`button${buttonIndex}Style`] || 'solid';
     
+    console.log(`Rendering button for section ${section}, index ${buttonIndex}:`, {
+      buttonText,
+      buttonIcon,
+      buttonColor,
+      content: editableContent[section]
+    });
+    
     if (!buttonText) return null;
     
     const IconComponent = buttonIcon ? iconOptions.find(i => i.id === buttonIcon)?.icon : null;
