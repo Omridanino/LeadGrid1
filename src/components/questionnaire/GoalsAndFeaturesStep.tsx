@@ -11,6 +11,9 @@ interface GoalsAndFeaturesStepProps {
     targetAudience: string;
     clientProblems: string;
     mainGoal: string;
+    workProcess: string;
+    pastProjects: string;
+    whyChooseUs: string;
   };
   updateFormData: (field: string, value: string) => void;
 }
@@ -96,6 +99,45 @@ export const GoalsAndFeaturesStep = ({ formData, updateFormData }: GoalsAndFeatu
             <SelectItem value="booking" className="text-white hover:bg-gray-700 cursor-pointer focus:bg-gray-700">קביעת תורים ושירותים</SelectItem>
           </SelectContent>
         </Select>
+      </div>
+
+      <div>
+        <Label htmlFor="whyChooseUs" className="text-white font-semibold">למה לקוחות צריכים לבחור בך? (לסקשן "למה לבחור בנו")</Label>
+        <Textarea
+          id="whyChooseUs"
+          value={formData.whyChooseUs}
+          onChange={(e) => updateFormData('whyChooseUs', e.target.value)}
+          className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
+          placeholder="רשום 3-5 סיבות מרכזיות למה לבחור בך: איזה ניסיון יש לך? איזה הישגים? איזה גישה מיוחדת? איזה תוצאות הלקוחות מקבלים? איזה שירות או יחס מיוחד אתה נותן? מה הכי מרשים בקורות החיים שלך?"
+          rows={4}
+        />
+        <p className="text-sm text-gray-400 mt-1">הסיבות האלה יופיעו בסקשן מיוחד בדף שלך</p>
+      </div>
+
+      <div>
+        <Label htmlFor="workProcess" className="text-white font-semibold">איך נראה התהליך של עבודה איתך? (לסקשן "התהליך שלנו")</Label>
+        <Textarea
+          id="workProcess"
+          value={formData.workProcess}
+          onChange={(e) => updateFormData('workProcess', e.target.value)}
+          className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
+          placeholder="תאר את השלבים של עבודה איתך מתחילה עד סוף: איך מתחילים? מה קורה בכל שלב? כמה זמן לוקח כל שלב? איך אתה מתקשר עם הלקוח? מה הלקוח צריך להכין? איך נראה המוצר הסופי?"
+          rows={4}
+        />
+        <p className="text-sm text-gray-400 mt-1">זה יעזור ללקוחות להבין מה לצפות מהעבודה איתך</p>
+      </div>
+
+      <div>
+        <Label htmlFor="pastProjects" className="text-white font-semibold">איזה פרויקטים או עבודות מוצלחות עשית? (לגלריה)</Label>
+        <Textarea
+          id="pastProjects"
+          value={formData.pastProjects}
+          onChange={(e) => updateFormData('pastProjects', e.target.value)}
+          className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
+          placeholder="תאר 3-5 פרויקטים מוצלחים שעשית: מה הייתה המטרה? מה עשית? איזה תוצאות השגת? איזה אתגרים פתרת? איזה פידבק קיבלת מהלקוח? תן פרטים קונקרטיים וכמותיים אם יש..."
+          rows={4}
+        />
+        <p className="text-sm text-gray-400 mt-1">הפרויקטים האלה יוצגו בגלריה כדוגמאות לעבודה שלך</p>
       </div>
     </div>
   );
