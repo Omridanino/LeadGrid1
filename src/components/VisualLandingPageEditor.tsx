@@ -1543,34 +1543,45 @@ const VisualLandingPageEditor = ({
               {/* Testimonials Section Preview */}
               {activeSection === 'testimonials' && (
                 <div 
-                  className="p-8 rounded-lg relative overflow-hidden"
-                  style={{
-                    backgroundColor: '#000000',
-                    background: 'linear-gradient(to bottom, rgb(15, 23, 42), rgb(0, 0, 0))'
-                  }}
+                  className="py-16 px-6 relative overflow-hidden"
+                  style={{backgroundColor: pageStyles.backgroundColor || '#f8fafc'}}
                 >
-                  {/* Background particles */}
-                  <div className="absolute inset-0">
-                    {Array.from({length: 20}, (_, i) => (
-                      <div 
-                        key={i}
-                        className="absolute w-2 h-2 bg-blue-400/20 rounded-full animate-pulse" 
-                        style={{
-                          left: `${Math.random() * 100}%`, 
-                          top: `${Math.random() * 100}%`, 
-                          animationDelay: `${i * 0.2}s`
-                        }}
-                      />
-                    ))}
-                  </div>
+                  {/* Background particles if any testimonials exist */}
+                  {(editableContent?.testimonials?.testimonials || []).length > 0 && (
+                    <div className="absolute inset-0">
+                      {Array.from({length: 20}, (_, i) => (
+                        <div 
+                          key={i}
+                          className="absolute w-2 h-2 bg-blue-400/20 rounded-full animate-pulse" 
+                          style={{
+                            left: `${Math.random() * 100}%`, 
+                            top: `${Math.random() * 100}%`, 
+                            animationDelay: `${i * 0.2}s`
+                          }}
+                        />
+                      ))}
+                    </div>
+                  )}
                   
-                  <div className="max-w-6xl mx-auto px-6 relative z-10">
+                  <div className="max-w-6xl mx-auto relative z-10">
                     {/* Section Header */}
                     <div className="text-center mb-12">
+                      {editableContent?.testimonials?.badge && (
+                        <div 
+                          className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold mb-4"
+                          style={{
+                            color: pageStyles.primaryColor, 
+                            borderColor: pageStyles.primaryColor
+                          }}
+                        >
+                          {editableContent.testimonials.badge}
+                        </div>
+                      )}
                       <h2 
-                        className="text-4xl md:text-5xl font-bold mb-16 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent"
+                        className="text-3xl md:text-4xl font-bold"
+                        style={{color: pageStyles.textColor}}
                       >
-                        {editableContent?.testimonials?.title || 'המלצות מלקוחות מובילים'}
+                        {editableContent?.testimonials?.title || 'המלצות מלקוחות'}
                       </h2>
                     </div>
                     
@@ -1611,20 +1622,26 @@ const VisualLandingPageEditor = ({
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      <button 
-                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
-                        style={{backgroundColor: '#3b82f6'}}
-                      >
-                        {editableContent?.testimonials?.button1Text || 'קבל הצעת מחיר'}
-                      </button>
-                      <button 
-                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
-                        style={{backgroundColor: '#6b7280'}}
-                      >
-                        {editableContent?.testimonials?.button2Text || 'צפה בעוד המלצות'}
-                      </button>
-                    </div>
+                    {(editableContent?.testimonials?.button1Text || editableContent?.testimonials?.button2Text) && (
+                      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        {editableContent?.testimonials?.button1Text && (
+                          <button 
+                            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
+                            style={{backgroundColor: pageStyles.primaryColor}}
+                          >
+                            {editableContent.testimonials.button1Text}
+                          </button>
+                        )}
+                        {editableContent?.testimonials?.button2Text && (
+                          <button 
+                            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white"
+                            style={{backgroundColor: pageStyles.secondaryColor}}
+                          >
+                            {editableContent.testimonials.button2Text}
+                          </button>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
