@@ -3,9 +3,10 @@ import { ArrowLeft } from "lucide-react";
 
 interface SimpleHeroSectionProps {
   onStartQuestionnaire: () => void;
+  onOpenLiveEditor?: () => void;
 }
 
-const SimpleHeroSection = ({ onStartQuestionnaire }: SimpleHeroSectionProps) => {
+const SimpleHeroSection = ({ onStartQuestionnaire, onOpenLiveEditor }: SimpleHeroSectionProps) => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* Background Effects */}
@@ -49,6 +50,16 @@ const SimpleHeroSection = ({ onStartQuestionnaire }: SimpleHeroSectionProps) => 
               התחל עכשיו
               <ArrowLeft className="mr-2 h-5 w-5" />
             </Button>
+            
+            {onOpenLiveEditor && (
+              <Button
+                onClick={onOpenLiveEditor}
+                size="lg"
+                className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105"
+              >
+                עורך תוכן חי ✨
+              </Button>
+            )}
             
             <Button
               variant="outline"
