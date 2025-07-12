@@ -61,19 +61,24 @@ const VisualLandingPageEditor = ({
   console.log('VisualLandingPageEditor - generatedContent:', generatedContent);
   console.log('VisualLandingPageEditor - formData:', formData);
   
-  // Initialize content with generated data or defaults
+  // Initialize content with AI generated data or defaults
   const initializeContent = () => {
     console.log('Initializing content with generatedContent:', generatedContent);
+    console.log('FormData business info:', formData?.businessInfo);
+    
+    // Use AI generated content if available, otherwise use form data or defaults
+    const businessName = formData?.businessInfo?.businessName || 'שם העסק';
+    const businessDescription = formData?.businessInfo?.businessDescription || 'תיאור העסק';
     
     if (generatedContent) {
       return {
         hero: {
-          title: generatedContent.hero?.title || 'כותרת ראשית',
-          subtitle: generatedContent.hero?.subtitle || 'כותרת משנה', 
+          title: generatedContent.hero?.title || businessName,
+          subtitle: generatedContent.hero?.subtitle || businessDescription, 
           button1Text: generatedContent.hero?.button1Text || 'התחל עכשיו',
           button2Text: generatedContent.hero?.button2Text || 'למד עוד',
           badge: generatedContent.hero?.badge || 'חדש!',
-          description: generatedContent.hero?.description || 'תיאור מפורט של השירות או המוצר שלכם',
+          description: generatedContent.hero?.description || businessDescription,
           button1Icon: '',
           button2Icon: ''
         },
@@ -238,9 +243,9 @@ const VisualLandingPageEditor = ({
         contact: generatedContent.contact || {
           title: 'נשמח לשמוע ממכם',
           subtitle: 'השאירו פרטים ונחזור אליכם במהרה',
-          address: 'רח\' הראשונים 1, תל אביב',
-          phone: '03-1234567',
-          email: 'info@weinstudio.co.il',
+          address: formData?.businessInfo?.address || 'כתובת העסק',
+          phone: formData?.businessInfo?.phone || 'מספר טלפון',
+          email: formData?.businessInfo?.email || 'כתובת מייל',
           hours: 'א\'-ה\' 9:00-18:00'
         }
       };
@@ -284,13 +289,13 @@ const VisualLandingPageEditor = ({
   // Use the actual generated content if available, otherwise use defaults  
   const [editableContent, setEditableContent] = useState(() => initializeContent());
 
-  // Update content when generatedContent changes
+  // Update content when generatedContent or formData changes
   useEffect(() => {
-    if (generatedContent) {
-      console.log('useEffect - updating content with new generatedContent:', generatedContent);
+    if (generatedContent || formData) {
+      console.log('useEffect - updating content with new data:', { generatedContent, formData });
       setEditableContent(initializeContent());
     }
-  }, [generatedContent]);
+  }, [generatedContent, formData]);
 
   // Load saved data on component mount
   useEffect(() => {
@@ -1691,7 +1696,7 @@ const VisualLandingPageEditor = ({
                             <Input
                               value={editableContent?.contact?.email || ''}
                               onChange={(e) => updateContent('contact', 'email', e.target.value)}
-                              placeholder="info@weinstudio.co.il"
+                              placeholder={formData?.businessInfo?.email || "כתובת מייל העסק"}
                             />
                           </div>
 
@@ -2892,12 +2897,12 @@ const VisualLandingPageEditor = ({
                          
                          <div className="flex items-center gap-4 text-white">
                            <div className="w-6 h-6 text-red-400">📞</div>
-                           <span>{editableContent?.contact?.phone || '03-1234567'}</span>
+                           <span>{editableContent?.contact?.phone || formData?.businessInfo?.phone || 'מספר טלפון'}</span>
                          </div>
                          
                          <div className="flex items-center gap-4 text-white">
                            <div className="w-6 h-6 text-blue-400">📧</div>
-                           <span>{editableContent?.contact?.email || 'info@weinstudio.co.il'}</span>
+                           <span>{editableContent?.contact?.email || formData?.businessInfo?.email || 'כתובת מייל'}</span>
                          </div>
                          
                          <div className="flex items-center gap-4 text-white">
