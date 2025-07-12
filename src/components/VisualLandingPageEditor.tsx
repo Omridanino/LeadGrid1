@@ -220,7 +220,14 @@ const VisualLandingPageEditor = ({
           button1Text: 'צור קשר',
           button2Text: 'קבל הצעה'
         },
-        contact: generatedContent.contact || null
+        contact: generatedContent.contact || {
+          title: 'נשמח לשמוע ממכם',
+          subtitle: 'השאירו פרטים ונחזור אליכם במהרה',
+          address: 'רח\' הראשונים 1, תל אביב',
+          phone: '03-1234567',
+          email: 'info@weinstudio.co.il',
+          hours: 'א\'-ה\' 9:00-18:00'
+        }
       };
     }
     
@@ -1003,22 +1010,144 @@ const VisualLandingPageEditor = ({
                         </div>
                       )}
 
-                      {(activeSection === 'faq' || activeSection === 'contact') && (
-                        <div className="text-center py-8 text-muted-foreground">
-                          <Type className="h-8 w-8 mx-auto mb-2" />
-                          <p>עריכת תוכן עבור סקשן {sections.find(s => s.id === activeSection)?.name}</p>
-                          <p className="text-xs">יתווסף בקרוב...</p>
+                      {/* FAQ Content Editor */}
+                      {activeSection === 'faq' && (
+                        <>
+                          <div>
+                            <Label className="text-xs">כותרת ראשית</Label>
+                            <Input
+                              value={editableContent?.faq?.title || ''}
+                              onChange={(e) => updateContent('faq', 'title', e.target.value)}
+                              placeholder="שאלות נפוצות"
+                            />
+                          </div>
                           
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            onClick={() => addButton(activeSection)}
-                            className="w-full mt-4"
-                          >
-                            <Plus className="h-4 w-4 mr-2" />
-                            הוסף כפתור
-                          </Button>
-                        </div>
+                          <div>
+                            <Label className="text-xs">תת-כותרת</Label>
+                            <Input
+                              value={editableContent?.faq?.subtitle || ''}
+                              onChange={(e) => updateContent('faq', 'subtitle', e.target.value)}
+                              placeholder="תשובות לשאלות הכי חשובות"
+                            />
+                          </div>
+
+                          <div>
+                            <Label className="text-xs">שאלות ותשובות</Label>
+                            {(editableContent?.faq?.questions || []).map((qa: any, index: number) => (
+                              <div key={index} className="space-y-2 p-3 border rounded">
+                                <Input
+                                  value={qa.question || ''}
+                                  onChange={(e) => {
+                                    const questions = [...(editableContent?.faq?.questions || [])];
+                                    questions[index] = { ...questions[index], question: e.target.value };
+                                    updateContent('faq', 'questions', questions);
+                                  }}
+                                  placeholder="שאלה"
+                                />
+                                <Textarea
+                                  value={qa.answer || ''}
+                                  onChange={(e) => {
+                                    const questions = [...(editableContent?.faq?.questions || [])];
+                                    questions[index] = { ...questions[index], answer: e.target.value };
+                                    updateContent('faq', 'questions', questions);
+                                  }}
+                                  placeholder="תשובה"
+                                  rows={2}
+                                />
+                              </div>
+                            ))}
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                const questions = [...(editableContent?.faq?.questions || [])];
+                                questions.push({ question: 'שאלה חדשה', answer: 'תשובה חדשה' });
+                                updateContent('faq', 'questions', questions);
+                              }}
+                              className="w-full mt-2"
+                            >
+                              <Plus className="h-4 w-4 mr-2" />
+                              הוסף שאלה
+                            </Button>
+                          </div>
+
+                          <div>
+                            <Label className="text-xs">טקסט כפתור ראשון</Label>
+                            <Input
+                              value={editableContent?.faq?.button1Text || ''}
+                              onChange={(e) => updateContent('faq', 'button1Text', e.target.value)}
+                              placeholder="צור קשר"
+                            />
+                          </div>
+
+                          <div>
+                            <Label className="text-xs">טקסט כפתור שני</Label>
+                            <Input
+                              value={editableContent?.faq?.button2Text || ''}
+                              onChange={(e) => updateContent('faq', 'button2Text', e.target.value)}
+                              placeholder="קבל הצעה"
+                            />
+                          </div>
+                        </>
+                      )}
+
+                      {/* Contact Content Editor */}
+                      {activeSection === 'contact' && (
+                        <>
+                          <div>
+                            <Label className="text-xs">כותרת ראשית</Label>
+                            <Input
+                              value={editableContent?.contact?.title || ''}
+                              onChange={(e) => updateContent('contact', 'title', e.target.value)}
+                              placeholder="נשמח לשמוע ממכם"
+                            />
+                          </div>
+                          
+                          <div>
+                            <Label className="text-xs">תת-כותרת</Label>
+                            <Input
+                              value={editableContent?.contact?.subtitle || ''}
+                              onChange={(e) => updateContent('contact', 'subtitle', e.target.value)}
+                              placeholder="השאירו פרטים ונחזור אליכם במהרה"
+                            />
+                          </div>
+
+                          <div>
+                            <Label className="text-xs">כתובת</Label>
+                            <Input
+                              value={editableContent?.contact?.address || ''}
+                              onChange={(e) => updateContent('contact', 'address', e.target.value)}
+                              placeholder="רח' הראשונים 1, תל אביב"
+                            />
+                          </div>
+
+                          <div>
+                            <Label className="text-xs">טלפון</Label>
+                            <Input
+                              value={editableContent?.contact?.phone || ''}
+                              onChange={(e) => updateContent('contact', 'phone', e.target.value)}
+                              placeholder="03-1234567"
+                            />
+                          </div>
+
+                          <div>
+                            <Label className="text-xs">אימייל</Label>
+                            <Input
+                              value={editableContent?.contact?.email || ''}
+                              onChange={(e) => updateContent('contact', 'email', e.target.value)}
+                              placeholder="info@weinstudio.co.il"
+                            />
+                          </div>
+
+                          <div>
+                            <Label className="text-xs">שעות פעילות</Label>
+                            <Input
+                              value={editableContent?.contact?.hours || ''}
+                              onChange={(e) => updateContent('contact', 'hours', e.target.value)}
+                              placeholder="א'-ה' 9:00-18:00"
+                            />
+                          </div>
+                        </>
                       )}
                     </CardContent>
                   </Card>
@@ -1872,12 +2001,12 @@ const VisualLandingPageEditor = ({
                       <h2 
                         className="text-3xl md:text-4xl font-bold text-white mb-4"
                       >
-                        {'נשמח לשמוע ממכם'}
+                        {editableContent?.contact?.title || 'נשמח לשמוע ממכם'}
                       </h2>
                       <p 
                         className="text-xl text-white/90"
                       >
-                        {'השאירו פרטים ונחזור אליכם במהרה'}
+                        {editableContent?.contact?.subtitle || 'השאירו פרטים ונחזור אליכם במהרה'}
                       </p>
                     </div>
                     
@@ -1887,25 +2016,25 @@ const VisualLandingPageEditor = ({
                       <div className="space-y-6">
                         <h3 className="text-xl font-bold text-white mb-6">פרטי יצירת קשר</h3>
                         
-                        <div className="flex items-center gap-4 text-white">
-                          <div className="w-6 h-6 text-red-400">📍</div>
-                          <span>רח' הראשונים 1, תל אביב</span>
-                        </div>
-                        
-                        <div className="flex items-center gap-4 text-white">
-                          <div className="w-6 h-6 text-red-400">📞</div>
-                          <span>03-1234567</span>
-                        </div>
-                        
-                        <div className="flex items-center gap-4 text-white">
-                          <div className="w-6 h-6 text-blue-400">📧</div>
-                          <span>info@weinstudio.co.il</span>
-                        </div>
-                        
-                        <div className="flex items-center gap-4 text-white">
-                          <div className="w-6 h-6 text-yellow-400">🕒</div>
-                          <span>א'-ה' 9:00-18:00</span>
-                        </div>
+                         <div className="flex items-center gap-4 text-white">
+                           <div className="w-6 h-6 text-red-400">📍</div>
+                           <span>{editableContent?.contact?.address || 'רח\' הראשונים 1, תל אביב'}</span>
+                         </div>
+                         
+                         <div className="flex items-center gap-4 text-white">
+                           <div className="w-6 h-6 text-red-400">📞</div>
+                           <span>{editableContent?.contact?.phone || '03-1234567'}</span>
+                         </div>
+                         
+                         <div className="flex items-center gap-4 text-white">
+                           <div className="w-6 h-6 text-blue-400">📧</div>
+                           <span>{editableContent?.contact?.email || 'info@weinstudio.co.il'}</span>
+                         </div>
+                         
+                         <div className="flex items-center gap-4 text-white">
+                           <div className="w-6 h-6 text-yellow-400">🕒</div>
+                           <span>{editableContent?.contact?.hours || 'א\'-ה\' 9:00-18:00'}</span>
+                         </div>
                       </div>
                       
                       {/* Contact Form */}
