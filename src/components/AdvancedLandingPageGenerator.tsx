@@ -49,14 +49,6 @@ const AdvancedLandingPageGenerator = ({
     contactTextColor: '#ffffff'
   });
 
-  const handleContentUpdate = (updatedContent: any) => {
-    setEditableContent(updatedContent);
-    setGeneratedPage(updatedContent);
-  };
-
-  const handleColorUpdate = (colors: any) => {
-    setCurrentColors(colors);
-  };
 
   const generateLandingPage = async () => {
     // בדיקה אם יש מידע בסיסי
