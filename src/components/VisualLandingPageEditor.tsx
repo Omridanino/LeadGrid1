@@ -45,13 +45,15 @@ interface VisualLandingPageEditorProps {
   onClose: () => void;
   generatedContent: any;
   formData: any;
+  onContentUpdate?: (content: any) => void;
 }
 
 const VisualLandingPageEditor = ({ 
   isOpen, 
   onClose, 
   generatedContent, 
-  formData 
+  formData,
+  onContentUpdate
 }: VisualLandingPageEditorProps) => {
   const [activeSection, setActiveSection] = useState('hero');
   
@@ -506,10 +508,19 @@ const VisualLandingPageEditor = ({
   };
 
   const updateContent = (section: string, field: string, value: any) => {
-    setEditableContent(prev => ({
-      ...prev,
-      [section]: { ...prev[section], [field]: value }
-    }));
+    const newContent = {
+      ...editableContent,
+      [section]: { ...editableContent[section], [field]: value }
+    };
+    setEditableContent(newContent);
+    
+    // Notify parent component about content changes
+    if (onContentUpdate) {
+      onContentUpdate(newContent);
+    }
+    
+    // Also save to localStorage for persistence
+    localStorage.setItem('editableContent', JSON.stringify(newContent));
   };
 
   const addButton = (section: string) => {
@@ -1201,19 +1212,32 @@ const VisualLandingPageEditor = ({
                                 />
                               </div>
                             ))}
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => {
-                                const questions = [...(editableContent?.faq?.questions || [])];
-                                questions.push({ question: 'שאלה חדשה', answer: 'תשובה חדשה' });
-                                updateContent('faq', 'questions', questions);
-                              }}
-                              className="w-full mt-2"
-                            >
-                              <Plus className="h-4 w-4 mr-2" />
-                              הוסף שאלה
-                            </Button>
+                            <div className="flex gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  const currentQuestions = editableContent?.faq?.questions || [];
+                                  console.log('Current questions before adding:', currentQuestions);
+                                  const newQuestions = [...currentQuestions, { question: 'שאלה חדשה', answer: 'תשובה חדשה' }];
+                                  console.log('New questions after adding:', newQuestions);
+                                  updateContent('faq', 'questions', newQuestions);
+                                }}
+                                className="flex-1"
+                              >
+                                <Plus className="h-4 w-4 mr-2" />
+                                הוסף שאלה
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => addButton('faq')}
+                                className="flex-1"
+                              >
+                                <Plus className="h-4 w-4 mr-2" />
+                                הוסף כפתור
+                              </Button>
+                            </div>
                           </div>
 
                           <div>

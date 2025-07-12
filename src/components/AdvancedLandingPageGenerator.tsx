@@ -691,6 +691,10 @@ const AdvancedLandingPageGenerator = ({
           onClose={() => setIsEditorOpen(false)}
           generatedContent={generatedPage}
           formData={formData}
+          onContentUpdate={(updatedContent) => {
+            console.log('Content updated in editor:', updatedContent);
+            setGeneratedPage(updatedContent);
+          }}
         />
       </DialogContent>
     </Dialog>

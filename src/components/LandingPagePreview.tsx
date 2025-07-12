@@ -26,7 +26,21 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
 
   // If we have a selected template, show the generated HTML
   if (formData?.selectedTemplate) {
-    const htmlContent = generatePageHTML(formData.selectedTemplate);
+    // Merge the generated content with any user edits
+    const templateWithContent = {
+      ...formData.selectedTemplate,
+      features: content?.features || formData.selectedTemplate.features,
+      hero: content?.hero || formData.selectedTemplate.hero,
+      about: content?.about || formData.selectedTemplate.about,
+      services: content?.services || formData.selectedTemplate.services,
+      testimonials: content?.testimonials || formData.selectedTemplate.testimonials,
+      pricing: content?.pricing || formData.selectedTemplate.pricing,
+      faq: content?.faq || formData.selectedTemplate.faq,
+      contact: content?.contact || formData.selectedTemplate.contact
+    };
+    
+    console.log('Template with merged content:', templateWithContent);
+    const htmlContent = generatePageHTML(templateWithContent);
     
     return (
       <div className="w-full h-full" style={{ 
