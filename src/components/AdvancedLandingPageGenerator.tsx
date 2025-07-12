@@ -31,6 +31,32 @@ const AdvancedLandingPageGenerator = ({
     targetAudience: '',
     businessDescription: ''
   });
+  const [editableContent, setEditableContent] = useState(null);
+  const [currentColors, setCurrentColors] = useState({
+    primary: '#3b82f6',
+    secondary: '#6b7280',
+    accent: '#f59e0b',
+    background: '#ffffff',
+    heroBackground: 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)',
+    text: '#1f2937',
+    headlineColor: '#ffffff',
+    subheadlineColor: '#ffffff',
+    featuresColor: '#1f2937',
+    featuresTextColor: '#6b7280',
+    aboutColor: '#1f2937',
+    aboutTextColor: '#6b7280',
+    contactColor: '#ffffff',
+    contactTextColor: '#ffffff'
+  });
+
+  const handleContentUpdate = (updatedContent: any) => {
+    setEditableContent(updatedContent);
+    setGeneratedPage(updatedContent);
+  };
+
+  const handleColorUpdate = (colors: any) => {
+    setCurrentColors(colors);
+  };
 
   const generateLandingPage = async () => {
     // בדיקה אם יש מידע בסיסי
@@ -81,7 +107,17 @@ const AdvancedLandingPageGenerator = ({
 
   const handleEdit = () => {
     console.log('Opening visual editor with generatedPage:', generatedPage);
+    setEditableContent(generatedPage);
     setIsEditorOpen(true);
+  };
+
+  const handleContentUpdate = (updatedContent: any) => {
+    setEditableContent(updatedContent);
+    setGeneratedPage(updatedContent);
+  };
+
+  const handleColorUpdate = (colors: any) => {
+    setCurrentColors(colors);
   };
 
   const handleSave = () => {
