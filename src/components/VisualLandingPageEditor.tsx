@@ -459,22 +459,38 @@ const VisualLandingPageEditor = ({
       whyUs: generatedData.whyUs || {
         title: 'למה לבחור בנו',
         subtitle: 'הסיבות שיגרמו לכם לעבוד איתנו',
-        items: []
+        items: [
+          { title: 'ניסיון רב', description: 'שנים של ניסיון בתחום', icon: 'trophy-line' },
+          { title: 'שירות מעולה', description: 'שירות לקוחות ברמה הגבוהה ביותר', icon: 'customer-service-line' },
+          { title: 'תוצאות מוכחות', description: 'רקורד מוכח של הצלחות', icon: 'award-line' }
+        ]
       },
       whatWeGive: generatedData.whatWeGive || {
         title: 'מה אנחנו נותנים',
         subtitle: 'השירותים והפתרונות שלנו',
-        services: []
+        services: [
+          { title: 'ייעוץ מקצועי', description: 'ייעוץ מותאם אישית לצרכים שלכם', icon: 'user-star-line' },
+          { title: 'תמיכה 24/7', description: 'תמיכה מלאה בכל שעות היממה', icon: 'time-line' },
+          { title: 'פתרונות חדשניים', description: 'פתרונות מתקדמים וחדשניים', icon: 'lightbulb-line' }
+        ]
       },
       gallery: generatedData.gallery || {
         title: 'הגלריה שלנו',
         subtitle: 'עבודות שביצענו',
-        images: []
+        images: [
+          { src: '/api/placeholder/400/300', alt: 'פרויקט 1', caption: 'פרויקט מוצלח ראשון' },
+          { src: '/api/placeholder/400/300', alt: 'פרויקט 2', caption: 'פרויקט מוצלח שני' },
+          { src: '/api/placeholder/400/300', alt: 'פרויקט 3', caption: 'פרויקט מוצלח שלישי' }
+        ]
       },
       process: generatedData.process || {
         title: 'התהליך שלנו',
         subtitle: 'איך אנחנו עובדים',
-        steps: []
+        steps: [
+          { title: 'שלב ראשון', description: 'תיאור השלב הראשון', duration: '1-2 ימים', icon: 'number-1' },
+          { title: 'שלב שני', description: 'תיאור השלב השני', duration: '3-5 ימים', icon: 'number-2' },
+          { title: 'שלב שלישי', description: 'תיאור השלב השלישי', duration: '1 שבוע', icon: 'number-3' }
+        ]
       },
       contact: generatedData.contact || {
         title: 'נשמח לשמוע ממכם',
