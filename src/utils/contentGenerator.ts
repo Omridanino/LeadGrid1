@@ -188,46 +188,72 @@ export const generateRichContent = (formData: any) => {
         }
       ]
     },
-    gallery: {
-      title: 'הגלריה המקצועית והמרשימה שלנו',
-      subtitle: 'רק חלק מהפרויקטים המרשימים, המקצועיים והמוצלחים שביצענו עבור לקוחותinו',
-      description: 'כל פרויקט בגלריה המקצועית שלנו מספר סיפור מרתק של הצלחה, חדשנות טכנולוגית, מקצועיות גבוהה ושיתוף פעולה מוצלח עם הלקוחות שלנו. אנחנו גאים בכל עבודה מקצועית שביצענו ושמחים לחלוק את ההצלחות הללו איתכם כהשראה ודוגמה למה שאנחנו מסוגלים להשיג יחד.',
-      categories: ['פרויקטים חדשניים ומתקדמים', 'שדרוגים מקצועיים ושיפורים', 'פתרונות מיוחדים ויצירתיים', 'עיצובים יפים ופונקציונליים']
+    whyUs: {
+      badge: `למה בדיוק ${businessName}`,
+      title: `למה לבחור ב${businessName}?`,
+      subtitle: `מה מייחד אותנו בתחום ${businessType}`,
+      items: [
+        {
+          title: 'ניסיון מוכח ומקצועיות גבוהה',
+          description: `שנות ניסיון רבות בתחום ${businessType} עם מאות פרויקטים מוצלחים ולקוחות מרוצים שחוזרים אלינו שוב ושוב.`,
+          icon: 'star-fill'
+        },
+        {
+          title: 'צוות מומחים מקצועי',
+          description: 'צוות המומחים שלנו הוא מהשורה הראשונה בתחום, עם הכשרה מתמדת ועדכון טכנולוגי שוטף.',
+          icon: 'shield-check-fill'
+        },
+        {
+          title: 'התאמה אישית לכל לקוח',
+          description: `אנחנו מתאימים את הפתרונות שלנו לצרכים הייחודיים של כל לקוח, מבינים את האתגרים שלכם ומספקים פתרון מדויק.`,
+          icon: 'trophy-fill'
+        }
+      ]
     },
-    contact: {
-      title: 'בואו נתחיל לעבוד יחד על הפרויקט שלכם',
-      subtitle: 'מוכנים להגשים את הפרויקט החשוב הבא שלכם ברמה מקצועית?',
-      description: 'צרו קשר עוד היום ובואו נתחיל יחד לתכנן ולבנות את הפרויקט המקצועי שלכם. אנחנו כאן כדי להקשיב בקשב רב, לייעץ במקצועיות, לתכנן בקפידה ולהביא את החזון והרעיונות שלכם למציאות מרשימה ומוצלחת.',
-      contactMethods: [
+    whatWeGive: {
+      badge: 'השירותים שלנו',
+      title: 'מה אנחנו נותנים לכם',
+      subtitle: `הפתרונות המקצועיים שאנחנו מספקים בתחום ${businessType}`,
+      services: [
         {
-          type: 'טלפון ישיר',
-          value: '050-1234567',
-          icon: '📞',
-          description: 'זמינים בכל יום עבודה בין השעות 8:00-18:00 לשיחה מקצועית'
+          title: 'ייעוץ מקצועי והכוונה',
+          description: 'ייעוץ מקצועי מעמיק להבנת הצרכים שלכם ותכנון הפתרון המתאים ביותר.',
+          icon: 'tools'
         },
         {
-          type: 'אימייל מקצועי',
-          value: 'info@business.co.il',
-          icon: '📧',
-          description: 'נחזור אליכם תוך 24 שעות עם מענה מקצועי ומלא'
+          title: 'ביצוע מקצועי ומהיר',
+          description: 'ביצוע הפרויקט ברמה הגבוהה ביותר, בלוחות זמנים קצרים ועמידה בתקציב.',
+          icon: 'briefcase-fill'
         },
         {
-          type: 'כתובת המשרד',
-          value: 'רחוב העסק 123, תל אביב',
-          icon: '📍',
-          description: 'בואו לבקר אותנו במשרד המקצועי שלנו לפגישה אישית'
+          title: 'תמיכה ושירות לאחר מכירה',
+          description: 'ליווי מתמשך, תמיכה טכנית ושירות לאחר מכירה למשך תקופה ארוכה.',
+          icon: 'lightbulb-fill'
         }
       ],
-      cta: {
-        primary: 'מוכנים להתחיל פרויקט מקצועי?',
-        secondary: 'שלחו לנו הודעה מפורטת ונחזור אליכם תוך 24 שעות עם הצעת מחיר מקצועית ומפורטת',
-        benefits: [
-          'ייעוץ ראשוני מקצועי לחלוטין בחינם',
-          'הצעת מחיר מפורטת ושקופה',
-          'פגישה אישית ללא התחייבות כלשהי',
-          'תכנון ראשוני והערכת זמנים'
-        ]
-      }
+      image: `תיאור תמונה של ${businessName} בפעולה מקצועית`
+    },
+    gallery: {
+      badge: 'הגלריה שלנו',
+      title: 'עבודות שביצענו',
+      subtitle: `תמונות מפרויקטים ועבודות מקצועיות שביצענו בתחום ${businessType}`,
+      images: [
+        {
+          src: `תיאור תמונה של פרויקט ${businessType} 1`,
+          alt: 'פרויקט מקצועי 1',
+          caption: 'פרויקט מוצלח שביצענו עבור לקוח מרוצה'
+        },
+        {
+          src: `תיאור תמונה של פרויקט ${businessType} 2`,
+          alt: 'פרויקט מקצועי 2',
+          caption: 'עבודה איכותית ברמה גבוהה'
+        },
+        {
+          src: `תיאור תמונה של פרויקט ${businessType} 3`,
+          alt: 'פרויקט מקצועי 3',
+          caption: 'פתרון יצירתי ומקצועי'
+        }
+      ]
     }
   };
 };

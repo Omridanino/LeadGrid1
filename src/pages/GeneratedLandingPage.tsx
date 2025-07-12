@@ -46,6 +46,11 @@ const GeneratedLandingPage = () => {
     typeof element === 'string' ? element : element.type || ''
   ).filter(Boolean) || [];
 
+  console.log('GeneratedLandingPage - state.content:', state.content);
+  console.log('GeneratedLandingPage - state.formData:', state.formData);
+  console.log('GeneratedLandingPage - content whyUs:', state.content?.whyUs);
+  console.log('GeneratedLandingPage - content whatWeGive:', state.content?.whatWeGive);
+
   return (
     <div className="min-h-screen bg-black text-white relative" dir="rtl">
       {/* Main Preview - Full Width */}
