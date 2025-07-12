@@ -148,7 +148,38 @@ const VisualLandingPageEditor = ({
             }
           ]
         },
-        testimonials: generatedContent.testimonials || null,
+        testimonials: generatedContent.testimonials || {
+          title: 'המלצות מלקוחות מובילים',
+          badge: 'עדויות אמיתיות',
+          testimonials: [
+            {
+              name: "דן כהן",
+              role: "מנכ'ל ומייסד",
+              company: "TechFlow Solutions",
+              content: "תוך שבועיים ראיתי שיפור משמעותי במדדי ההמרה. המערכת מספקת תובנות עסקיות ברורות ומסייעת לזהות הזדמנויות בצורה מדויקת.",
+              rating: 5,
+              results: "שיפור מדיד בהמרות"
+            },
+            {
+              name: "שרה לוי",
+              role: "סמנכ'לית שיווק",
+              company: "E-commerce Enterprise",
+              content: "הכלי חסך זמן רב בניתוח נתונים ומספק המלצות אסטרטגיות מבוססות נתונים. התוצאות מדידות והתמיכה מצוינת.",
+              rating: 5,
+              results: "יעילות תפעולית מוגברת"
+            },
+            {
+              name: "מיכאל אברמוב",
+              role: "מייסד ובעלים",
+              company: "Digital Marketing Agency",
+              content: "פלטפורמה מקצועית המאפשרת להציג ללקוחות תוצאות ברורות ומדידות. הממשק אינטואיטיבי והתמיכה הטכנית מהירה.",
+              rating: 4,
+              results: "דוחות מקצועיים ומדידים"
+            }
+          ],
+          button1Text: 'קבל הצעת מחיר',
+          button2Text: 'צפה בעוד המלצות'
+        },
         pricing: generatedContent.pricing || null,
         contact: generatedContent.contact || null
       };
@@ -803,7 +834,77 @@ const VisualLandingPageEditor = ({
                         </>
                       )}
 
-                      {(activeSection === 'testimonials' || activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
+                      {activeSection === 'testimonials' && (
+                        <div className="space-y-3">
+                          <div>
+                            <Label className="text-xs">כותרת הסקשן</Label>
+                            <Input
+                              value={editableContent?.testimonials?.title || ''}
+                              onChange={(e) => updateContent('testimonials', 'title', e.target.value)}
+                              placeholder="כותרת הסקשן"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">תווית</Label>
+                            <Input
+                              value={editableContent?.testimonials?.badge || ''}
+                              onChange={(e) => updateContent('testimonials', 'badge', e.target.value)}
+                              placeholder="תווית הסקשן"
+                            />
+                          </div>
+                          
+                          <div>
+                            <Label className="text-xs">המלצות</Label>
+                            <div className="space-y-3">
+                              {(editableContent?.testimonials?.testimonials || []).map((testimonial: any, index: number) => (
+                                <div key={index} className="p-3 border rounded-lg space-y-2">
+                                  <Label className="text-xs">המלצה {index + 1}</Label>
+                                  <Input
+                                    value={testimonial.name || ''}
+                                    onChange={(e) => {
+                                      const newTestimonials = [...(editableContent?.testimonials?.testimonials || [])];
+                                      newTestimonials[index] = { ...testimonial, name: e.target.value };
+                                      updateContent('testimonials', 'testimonials', newTestimonials);
+                                    }}
+                                    placeholder="שם המליץ"
+                                  />
+                                  <Input
+                                    value={testimonial.role || ''}
+                                    onChange={(e) => {
+                                      const newTestimonials = [...(editableContent?.testimonials?.testimonials || [])];
+                                      newTestimonials[index] = { ...testimonial, role: e.target.value };
+                                      updateContent('testimonials', 'testimonials', newTestimonials);
+                                    }}
+                                    placeholder="תפקיד"
+                                  />
+                                  <Textarea
+                                    value={testimonial.content || ''}
+                                    onChange={(e) => {
+                                      const newTestimonials = [...(editableContent?.testimonials?.testimonials || [])];
+                                      newTestimonials[index] = { ...testimonial, content: e.target.value };
+                                      updateContent('testimonials', 'testimonials', newTestimonials);
+                                    }}
+                                    placeholder="תוכן ההמלצה"
+                                    rows={3}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                          
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={() => addButton('testimonials')}
+                            className="w-full"
+                          >
+                            <Plus className="h-4 w-4 mr-2" />
+                            הוסף כפתור
+                          </Button>
+                        </div>
+                      )}
+
+                      {(activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
                         <div className="text-center py-8 text-muted-foreground">
                           <Type className="h-8 w-8 mx-auto mb-2" />
                           <p>עריכת תוכן עבור סקשן {sections.find(s => s.id === activeSection)?.name}</p>
@@ -1439,8 +1540,96 @@ const VisualLandingPageEditor = ({
                 </div>
               )}
 
+              {/* Testimonials Section Preview */}
+              {activeSection === 'testimonials' && (
+                <div className="p-8 rounded-lg bg-black relative overflow-hidden">
+                  {/* Background Effects */}
+                  <div className="absolute inset-0">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5" />
+                    <div className="absolute top-1/4 left-1/6 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
+                    <div className="absolute bottom-1/4 right-1/6 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '3s' }} />
+                  </div>
+
+                  <div className="max-w-6xl mx-auto relative z-10">
+                    {/* Section Header */}
+                    <div className="text-center mb-12">
+                      <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
+                        המלצות מ
+                        <span className="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent">
+                          לקוחות מובילים
+                        </span>
+                      </h2>
+                      <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                        עדויות מקצועיות מעסקים מובילים החווים שיפור משמעותי בביצועים
+                        <br />
+                        עם תוצאות מדידות וערך עסקי ברור
+                      </p>
+                    </div>
+
+                    {/* Testimonials Grid */}
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                      {(editableContent?.testimonials?.testimonials || []).map((testimonial: any, index: number) => (
+                        <div key={index} className="group relative">
+                          <div 
+                            className="relative p-8 rounded-2xl backdrop-blur-xl border border-white/10 overflow-hidden h-full"
+                            style={{
+                              background: `linear-gradient(135deg, 
+                                rgba(255, 255, 255, 0.08), 
+                                rgba(255, 255, 255, 0.02))`,
+                              boxShadow: `
+                                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                                0 25px 50px rgba(0, 0, 0, 0.4),
+                                0 0 0 1px rgba(255, 255, 255, 0.05)
+                              `,
+                            }}
+                          >
+                            {/* Quote Icon */}
+                            <div className="flex justify-between items-start mb-6">
+                              <Star className="w-8 h-8 text-gray-500" />
+                              <div className="inline-block px-3 py-1 text-xs bg-blue-600/20 text-blue-300 rounded-full border border-blue-500/30">
+                                {testimonial.results || 'תוצאות מצוינות'}
+                              </div>
+                            </div>
+
+                            {/* Stars */}
+                            <div className="flex mb-6">
+                              {[...Array(testimonial.rating || 5)].map((_, i) => (
+                                <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                              ))}
+                            </div>
+
+                            {/* Content */}
+                            <blockquote className="text-lg text-gray-300 mb-8 leading-relaxed">
+                              "{testimonial.content}"
+                            </blockquote>
+
+                            {/* Author Info */}
+                            <div className="flex items-center">
+                              <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-xl flex items-center justify-center text-white font-bold mr-4">
+                                {testimonial.name?.charAt(0) || 'א'}
+                              </div>
+                              <div>
+                                <div className="font-bold text-white text-lg">
+                                  {testimonial.name}
+                                </div>
+                                <div className="text-gray-400">
+                                  {testimonial.role}
+                                </div>
+                                <div className="text-sm text-gray-500">
+                                  {testimonial.company}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Other Sections Preview */}
-              {(activeSection === 'testimonials' || activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
+              {(activeSection === 'faq' || activeSection === 'pricing' || activeSection === 'contact') && (
                 <div className="p-8 rounded-lg bg-gray-50 text-center">
                   <div className="text-gray-500 mb-4">
                     <Type className="h-16 w-16 mx-auto mb-4" />
