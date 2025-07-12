@@ -26,25 +26,20 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
 
   // If we have a selected template, show the generated HTML
   if (formData?.selectedTemplate) {
-    // Ensure we have a valid template structure
-    const baseTemplate = formData.selectedTemplate || {};
-    
     // Merge the generated content with any user edits and current colors
     const templateWithContent = {
-      id: baseTemplate.id || 'default-template',
-      category: baseTemplate.category || '',
-      ...baseTemplate,
-      features: content?.features || baseTemplate.features || { title: '', items: [] },
-      hero: content?.hero || baseTemplate.hero || { title: '', subtitle: '' },
-      about: content?.about || baseTemplate.about || { title: '', content: '' },
-      services: content?.services || baseTemplate.services || { title: '', items: [] },
-      testimonials: content?.testimonials || baseTemplate.testimonials || { title: '', items: [] },
-      pricing: content?.pricing || baseTemplate.pricing || { title: '', plans: [] },
-      faq: content?.faq || baseTemplate.faq || { title: '', questions: [] },
-      contact: content?.contact || baseTemplate.contact || { title: '', content: '' },
+      ...formData.selectedTemplate,
+      features: content?.features || formData.selectedTemplate.features,
+      hero: content?.hero || formData.selectedTemplate.hero,
+      about: content?.about || formData.selectedTemplate.about,
+      services: content?.services || formData.selectedTemplate.services,
+      testimonials: content?.testimonials || formData.selectedTemplate.testimonials,
+      pricing: content?.pricing || formData.selectedTemplate.pricing,
+      faq: content?.faq || formData.selectedTemplate.faq,
+      contact: content?.contact || formData.selectedTemplate.contact,
       // Apply current color scheme
       styles: {
-        ...baseTemplate.styles,
+        ...formData.selectedTemplate.styles,
         ...currentColors,
         primaryColor: currentColors.primary,
         secondaryColor: currentColors.secondary,

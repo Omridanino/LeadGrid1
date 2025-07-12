@@ -1,8 +1,8 @@
 // Complete HTML Generator - Creates exact HTML from template preview with premium support
 export const generatePageHTML = (templateData: any) => {
   const template = templateData;
-  // More robust premium detection with null checks
-  const isPremium = (template.category && template.category.includes('פרימיום')) || (template.id && template.id.includes('-pro'));
+  // More robust premium detection
+  const isPremium = template.category.includes('פרימיום') || template.id.includes('-pro');
   
   console.log('Template ID:', template.id, 'isPremium:', isPremium);
 
@@ -1354,12 +1354,12 @@ export const generatePageHTML = (templateData: any) => {
             </div>
             
             <div class="space-y-4 mb-12">
-                ${template.faq?.questions?.map((qa: any, index: number) => `
+                ${template.faq.questions.map((qa: any, index: number) => `
                     <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 ${isPremium ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}">
                         <h3 class="text-lg font-bold mb-2 text-right" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${qa.question}</h3>
                         <p class="opacity-80 text-right" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${qa.answer}</p>
                     </div>
-                `).join('') || ''}
+                `).join('')}
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -1378,17 +1378,17 @@ export const generatePageHTML = (templateData: any) => {
     <!-- Final CTA Section -->
     <section id="final-cta" class="final-cta">
         <div class="max-w-4xl mx-auto text-center px-4 relative z-10">
-            ${template.finalCta?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.accentColor};">${template.finalCta.badge}</div>` : ''}
-            <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.finalCta?.title || 'Get Started Today'}</h2>
-            <p class="text-lg mb-8 opacity-90" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.finalCta?.description || 'Join thousands of satisfied customers'}</p>
+            ${template.finalCta.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.accentColor};">${template.finalCta.badge}</div>` : ''}
+            <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.finalCta.title}</h2>
+            <p class="text-lg mb-8 opacity-90" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.finalCta.description}</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}" style="background-color: ${template.styles.accentColor};">
-                    ${template.finalCta?.button1Icon ? `<i class="ri-${template.finalCta.button1Icon}"></i>` : ''}
-                    ${template.finalCta?.button1Text || 'Contact Us'}
+                    ${template.finalCta.button1Icon ? `<i class="ri-${template.finalCta.button1Icon}"></i>` : ''}
+                    ${template.finalCta.button1Text}
                 </a>
                 <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}" style="background-color: ${template.styles.secondaryColor};">
-                    ${template.finalCta?.button2Icon ? `<i class="ri-${template.finalCta.button2Icon}"></i>` : ''}
-                    ${template.finalCta?.button2Text || 'Learn More'}
+                    ${template.finalCta.button2Icon ? `<i class="ri-${template.finalCta.button2Icon}"></i>` : ''}
+                    ${template.finalCta.button2Text}
                 </a>
             </div>
         </div>
@@ -1431,7 +1431,7 @@ export const generatePageHTML = (templateData: any) => {
     <!-- Footer -->
     <footer class="footer">
         <div class="text-center">
-            <p style="color: ${isPremium ? getPremiumTextColor(template.id) : '#ffffff'};">&copy; 2024 ${template.footer?.companyName || 'החברה שלך'}. כל הזכויות שמורות.</p>
+            <p style="color: ${isPremium ? getPremiumTextColor(template.id) : '#ffffff'};">&copy; 2024 ${template.footer.companyName}. כל הזכויות שמורות.</p>
         </div>
     </footer>
 
