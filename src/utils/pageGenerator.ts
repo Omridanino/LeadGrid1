@@ -1067,6 +1067,154 @@ export const generatePageHTML = (templateData: any) => {
              </div>
          </div>
      </section>
+     ` : ''}
+
+    <!-- WhyUs Section -->
+    ${template.whyUs ? `
+     <section class="relative py-20 overflow-hidden" style="${isPremium ? (() => {
+       const bgData = getPremiumAnimatedBackground(template.id, 'whyUs');
+       return bgData.background + '; position: relative; overflow: hidden;';
+     })() : 'background-color: ' + template.styles.backgroundColor + ';'}">
+         ${isPremium ? (() => {
+           const bgData = getPremiumAnimatedBackground(template.id, 'whyUs');
+           return generatePremiumBackgroundHTML(bgData.animationType || 'dynamicGradients');
+         })() : ''}
+         <div class="relative z-10 max-w-7xl mx-auto px-6">
+           <div class="text-center mb-16">
+             ${template.whyUs.badge ? `<div class="inline-block px-3 py-1 text-xs font-medium rounded-full ${isPremium ? 'bg-white/10 border border-white/20 text-white backdrop-blur-sm' : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} mb-4">${template.whyUs.badge}</div>` : ''}
+             <h2 class="text-4xl md:text-6xl font-bold mb-6" style="color: ${getPremiumTextColor(template.id, 'whyUs')};">
+               ${template.whyUs.title}
+             </h2>
+             ${template.whyUs.subtitle ? `<p class="text-xl md:text-2xl" style="color: ${getPremiumTextColor(template.id, 'whyUs')}; opacity: 0.9;">${template.whyUs.subtitle}</p>` : ''}
+           </div>
+           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+             ${template.whyUs.items ? template.whyUs.items.map((item: any, index: number) => `
+               <div class="group ${isPremium ? 'bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10' : 'bg-white/10 border border-white/20'} rounded-2xl p-8 transition-all duration-300 hover:scale-105">
+                 <div class="w-16 h-16 mb-6 rounded-xl bg-gradient-to-br ${getPremiumIconColors(template.id)} flex items-center justify-center">
+                   <i class="ri-${item.icon || 'star-fill'} text-2xl text-white"></i>
+                 </div>
+                 <h3 class="text-2xl font-bold mb-4" style="color: ${getPremiumTextColor(template.id, 'whyUs')};">${item.title}</h3>
+                 <p class="text-lg leading-relaxed" style="color: ${getPremiumTextColor(template.id, 'whyUs')}; opacity: 0.8;">${item.description}</p>
+               </div>
+             `).join('') : ''}
+           </div>
+         </div>
+     </section>
+    ` : ''}
+
+    <!-- WhatWeGive Section -->
+    ${template.whatWeGive ? `
+     <section class="relative py-20 overflow-hidden" style="${isPremium ? (() => {
+       const bgData = getPremiumAnimatedBackground(template.id, 'whatWeGive');
+       return bgData.background + '; position: relative; overflow: hidden;';
+     })() : 'background-color: ' + template.styles.backgroundColor + ';'}">
+         ${isPremium ? (() => {
+           const bgData = getPremiumAnimatedBackground(template.id, 'whatWeGive');
+           return generatePremiumBackgroundHTML(bgData.animationType || 'dynamicGradients');
+         })() : ''}
+         <div class="relative z-10 max-w-7xl mx-auto px-6">
+           <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+             <div>
+               ${template.whatWeGive.badge ? `<div class="inline-block px-3 py-1 text-xs font-medium rounded-full ${isPremium ? 'bg-white/10 border border-white/20 text-white backdrop-blur-sm' : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} mb-4">${template.whatWeGive.badge}</div>` : ''}
+               <h2 class="text-4xl md:text-6xl font-bold mb-6" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')};">
+                 ${template.whatWeGive.title}
+               </h2>
+               ${template.whatWeGive.subtitle ? `<p class="text-xl md:text-2xl mb-8" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')}; opacity: 0.9;">${template.whatWeGive.subtitle}</p>` : ''}
+               <div class="space-y-6">
+                 ${template.whatWeGive.services ? template.whatWeGive.services.map((service: any) => `
+                   <div class="flex items-start space-x-4 rtl:space-x-reverse">
+                     <div class="w-12 h-12 rounded-lg bg-gradient-to-br ${getPremiumIconColors(template.id)} flex items-center justify-center flex-shrink-0">
+                       <i class="ri-${service.icon || 'check-line'} text-xl text-white"></i>
+                     </div>
+                     <div>
+                       <h3 class="text-xl font-bold mb-2" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')};">${service.title}</h3>
+                       <p class="text-lg" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')}; opacity: 0.8;">${service.description}</p>
+                     </div>
+                   </div>
+                 `).join('') : ''}
+               </div>
+             </div>
+             <div class="relative">
+               ${template.whatWeGive.image ? `<div class="aspect-square bg-gradient-to-br ${getPremiumIconColors(template.id)} rounded-3xl flex items-center justify-center">
+                 <p class="text-white text-center p-8 text-lg">${template.whatWeGive.image}</p>
+               </div>` : ''}
+             </div>
+           </div>
+         </div>
+     </section>
+    ` : ''}
+
+    <!-- Gallery Section -->
+    ${template.gallery ? `
+     <section class="relative py-20 overflow-hidden" style="${isPremium ? (() => {
+       const bgData = getPremiumAnimatedBackground(template.id, 'gallery');
+       return bgData.background + '; position: relative; overflow: hidden;';
+     })() : 'background-color: ' + template.styles.backgroundColor + ';'}">
+         ${isPremium ? (() => {
+           const bgData = getPremiumAnimatedBackground(template.id, 'gallery');
+           return generatePremiumBackgroundHTML(bgData.animationType || 'dynamicGradients');
+         })() : ''}
+         <div class="relative z-10 max-w-7xl mx-auto px-6">
+           <div class="text-center mb-16">
+             ${template.gallery.badge ? `<div class="inline-block px-3 py-1 text-xs font-medium rounded-full ${isPremium ? 'bg-white/10 border border-white/20 text-white backdrop-blur-sm' : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} mb-4">${template.gallery.badge}</div>` : ''}
+             <h2 class="text-4xl md:text-6xl font-bold mb-6" style="color: ${getPremiumTextColor(template.id, 'gallery')};">
+               ${template.gallery.title}
+             </h2>
+             ${template.gallery.subtitle ? `<p class="text-xl md:text-2xl" style="color: ${getPremiumTextColor(template.id, 'gallery')}; opacity: 0.9;">${template.gallery.subtitle}</p>` : ''}
+           </div>
+           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+             ${template.gallery.images ? template.gallery.images.map((img: any) => `
+               <div class="group overflow-hidden rounded-2xl ${isPremium ? 'bg-white/5 backdrop-blur-sm border border-white/10' : 'bg-white/10 border border-white/20'} hover:scale-105 transition-all duration-300">
+                 <div class="aspect-video bg-gradient-to-br ${getPremiumIconColors(template.id)} flex items-center justify-center">
+                   <p class="text-white text-center p-4">${img.src || img.caption}</p>
+                 </div>
+                 ${img.caption ? `<div class="p-6">
+                   <p class="text-lg" style="color: ${getPremiumTextColor(template.id, 'gallery')};">${img.caption}</p>
+                 </div>` : ''}
+               </div>
+             `).join('') : ''}
+           </div>
+         </div>
+     </section>
+    ` : ''}
+
+    <!-- Process Section -->
+    ${template.process ? `
+     <section class="relative py-20 overflow-hidden" style="${isPremium ? (() => {
+       const bgData = getPremiumAnimatedBackground(template.id, 'process');
+       return bgData.background + '; position: relative; overflow: hidden;';
+     })() : 'background-color: ' + template.styles.backgroundColor + ';'}">
+         ${isPremium ? (() => {
+           const bgData = getPremiumAnimatedBackground(template.id, 'process');
+           return generatePremiumBackgroundHTML(bgData.animationType || 'dynamicGradients');
+         })() : ''}
+         <div class="relative z-10 max-w-7xl mx-auto px-6">
+           <div class="text-center mb-16">
+             ${template.process.badge ? `<div class="inline-block px-3 py-1 text-xs font-medium rounded-full ${isPremium ? 'bg-white/10 border border-white/20 text-white backdrop-blur-sm' : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} mb-4">${template.process.badge}</div>` : ''}
+             <h2 class="text-4xl md:text-6xl font-bold mb-6" style="color: ${getPremiumTextColor(template.id, 'process')};">
+               ${template.process.title}
+             </h2>
+             ${template.process.subtitle ? `<p class="text-xl md:text-2xl" style="color: ${getPremiumTextColor(template.id, 'process')}; opacity: 0.9;">${template.process.subtitle}</p>` : ''}
+           </div>
+           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+             ${template.process.steps ? template.process.steps.map((step: any, index: number) => `
+               <div class="relative group">
+                 <div class="${isPremium ? 'bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10' : 'bg-white/10 border border-white/20'} rounded-2xl p-8 transition-all duration-300 hover:scale-105">
+                   <div class="w-16 h-16 mb-6 rounded-xl bg-gradient-to-br ${getPremiumIconColors(template.id)} flex items-center justify-center">
+                     <span class="text-2xl font-bold text-white">${index + 1}</span>
+                   </div>
+                   <h3 class="text-xl font-bold mb-4" style="color: ${getPremiumTextColor(template.id, 'process')};">${step.title}</h3>
+                   <p class="text-lg mb-4" style="color: ${getPremiumTextColor(template.id, 'process')}; opacity: 0.8;">${step.description}</p>
+                   ${step.duration ? `<p class="text-sm font-medium" style="color: ${getPremiumTextColor(template.id, 'process')}; opacity: 0.6;">${step.duration}</p>` : ''}
+                 </div>
+                 ${index < (template.process.steps.length - 1) ? `
+                   <div class="hidden lg:block absolute top-1/2 left-full w-8 h-0.5 bg-gradient-to-r ${getPremiumIconColors(template.id)} transform -translate-y-1/2 z-10"></div>
+                 ` : ''}
+               </div>
+             `).join('') : ''}
+           </div>
+         </div>
+     </section>
     ` : ''}
 
     <!-- Features Section -->
