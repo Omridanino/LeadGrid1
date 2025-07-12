@@ -6,10 +6,9 @@ import { motion, AnimatePresence } from "framer-motion";
 
 interface HeaderProps {
   onStartQuestionnaire: () => void;
-  onOpenLiveEditor?: () => void;
 }
 
-const Header = ({ onStartQuestionnaire, onOpenLiveEditor }: HeaderProps) => {
+const Header = ({ onStartQuestionnaire }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Liquid Glass Icon Component
@@ -111,31 +110,13 @@ const Header = ({ onStartQuestionnaire, onOpenLiveEditor }: HeaderProps) => {
             ))}
           </nav>
 
-          {/* CTA Buttons - Desktop */}
+          {/* CTA Button - Desktop */}
           <motion.div 
-            className="hidden lg:flex gap-3"
+            className="hidden lg:block"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.6 }}
           >
-            {onOpenLiveEditor && (
-              <motion.button
-                onClick={onOpenLiveEditor}
-                className="relative group px-4 py-2 rounded-xl font-medium text-white overflow-hidden"
-                style={{
-                  background: `linear-gradient(135deg, 
-                    rgba(255, 255, 255, 0.1) 0%, 
-                    rgba(255, 255, 255, 0.05) 100%)`,
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  backdropFilter: 'blur(10px)',
-                }}
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <span className="relative z-10 text-sm">עורך חי</span>
-              </motion.button>
-            )}
-            
             <motion.button
               onClick={onStartQuestionnaire}
               className="relative group px-6 py-3 rounded-xl font-semibold text-white overflow-hidden"
@@ -222,30 +203,6 @@ const Header = ({ onStartQuestionnaire, onOpenLiveEditor }: HeaderProps) => {
                     {item.label}
                   </motion.a>
                 ))}
-                
-                {onOpenLiveEditor && (
-                  <motion.button
-                    onClick={() => {
-                      onOpenLiveEditor();
-                      setIsMenuOpen(false);
-                    }}
-                    className="w-full mt-4 px-6 py-3 rounded-xl font-semibold text-white"
-                    style={{
-                      background: `linear-gradient(135deg, 
-                        rgba(255, 255, 255, 0.1) 0%, 
-                        rgba(255, 255, 255, 0.05) 100%)`,
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      backdropFilter: 'blur(10px)',
-                    }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    עורך תוכן חי ✨
-                  </motion.button>
-                )}
-                
                 <motion.button
                   onClick={() => {
                     onStartQuestionnaire();

@@ -6,7 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import LandingPagePreview from './LandingPagePreview';
-import AdvancedVisualEditor from './AdvancedVisualEditor';
+import VisualLandingPageEditor from './VisualLandingPageEditor';
 
 interface AdvancedLandingPageGeneratorProps {
   isOpen: boolean;
@@ -685,14 +685,14 @@ const AdvancedLandingPageGenerator = ({
           </DialogContent>
         </Dialog>
 
-        {/* Advanced Visual Editor Modal */}
-        <AdvancedVisualEditor
+        {/* Visual Editor Modal */}
+        <VisualLandingPageEditor
           isOpen={isEditorOpen}
           onClose={() => setIsEditorOpen(false)}
           generatedContent={generatedPage}
           formData={formData}
           onContentUpdate={(updatedContent) => {
-            console.log('Content updated in advanced editor:', updatedContent);
+            console.log('Content updated in editor:', updatedContent);
             setGeneratedPage(updatedContent);
           }}
         />
