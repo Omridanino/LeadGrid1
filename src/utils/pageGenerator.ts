@@ -4,6 +4,11 @@ export const generatePageHTML = (templateData: any) => {
   // More robust premium detection
   const isPremium = template.category.includes('פרימיום') || template.id.includes('-pro');
   
+  console.log('pageGenerator - received template:', template);
+  console.log('pageGenerator - whyUs data:', template.whyUs);
+  console.log('pageGenerator - whatWeGive data:', template.whatWeGive);
+  console.log('pageGenerator - gallery data:', template.gallery);
+  console.log('pageGenerator - process data:', template.process);
   console.log('Template ID:', template.id, 'isPremium:', isPremium);
 
   // Helper functions for new content sections - moved to top

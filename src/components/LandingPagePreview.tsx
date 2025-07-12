@@ -27,16 +27,18 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
   // If we have a selected template, show the generated HTML
   if (formData?.selectedTemplate) {
     // Merge the generated content with any user edits and current colors
+    // Prioritize generated content over template defaults
     const templateWithContent = {
       ...formData.selectedTemplate,
       features: content?.features || formData.selectedTemplate.features,
       hero: content?.hero || formData.selectedTemplate.hero,
       emotional: content?.emotional || formData.selectedTemplate.emotional,
       about: content?.about || formData.selectedTemplate.about,
-      whyUs: content?.whyUs || formData.selectedTemplate.whyUs,
-      whatWeGive: content?.whatWeGive || formData.selectedTemplate.whatWeGive,
-      gallery: content?.gallery || formData.selectedTemplate.gallery,
-      process: content?.process || formData.selectedTemplate.process,
+      // For new sections, prioritize generated content since template might not have them
+      whyUs: content?.whyUs || formData.selectedTemplate.whyUs || null,
+      whatWeGive: content?.whatWeGive || formData.selectedTemplate.whatWeGive || null,
+      gallery: content?.gallery || formData.selectedTemplate.gallery || null,
+      process: content?.process || formData.selectedTemplate.process || null,
       services: content?.services || formData.selectedTemplate.services,
       testimonials: content?.testimonials || formData.selectedTemplate.testimonials,
       pricing: content?.pricing || formData.selectedTemplate.pricing,
@@ -63,6 +65,10 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     };
     
     console.log('Template with merged content and colors:', templateWithContent);
+    console.log('Has whyUs?', !!templateWithContent.whyUs);
+    console.log('Has whatWeGive?', !!templateWithContent.whatWeGive);
+    console.log('Has gallery?', !!templateWithContent.gallery);
+    console.log('Has process?', !!templateWithContent.process);
     const htmlContent = generatePageHTML(templateWithContent);
     
     return (
