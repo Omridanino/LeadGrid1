@@ -46,6 +46,7 @@ interface VisualLandingPageEditorProps {
   generatedContent: any;
   formData: any;
   onContentUpdate?: (content: any) => void;
+  selectedElements?: string[]; // הסקשנים שנבחרו בשאלון
 }
 
 const VisualLandingPageEditor = ({ 
@@ -53,7 +54,8 @@ const VisualLandingPageEditor = ({
   onClose, 
   generatedContent, 
   formData,
-  onContentUpdate
+  onContentUpdate,
+  selectedElements
 }: VisualLandingPageEditorProps) => {
   const [activeSection, setActiveSection] = useState('hero');
   
@@ -970,7 +972,7 @@ const VisualLandingPageEditor = ({
     { id: 'wave', name: 'גלים', description: 'אנימציית גלים' }
   ];
 
-  const sections = [
+  const allSections = [
     { id: 'hero', name: 'דף הבית', icon: Sparkles },
     { id: 'emotional', name: 'רגש התחום', icon: Heart },
     { id: 'features', name: 'תכונות', icon: Layout },
@@ -994,6 +996,11 @@ const VisualLandingPageEditor = ({
     { id: 'contact', name: 'יצירת קשר', icon: MousePointer },
     { id: 'final-cta', name: 'קריאה סופית', icon: Wand2 }
   ];
+
+  // פילטר הסקשנים בהתאם לבחירה בשאלון
+  const sections = selectedElements 
+    ? allSections.filter(section => selectedElements.includes(section.id))
+    : allSections.filter(section => ['hero', 'emotional', 'whyUs', 'whatWeGive', 'testimonials', 'contact'].includes(section.id));
 
   const updatePageStyle = (key: string, value: string) => {
     setPageStyles(prev => {

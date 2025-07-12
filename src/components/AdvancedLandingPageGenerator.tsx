@@ -51,9 +51,13 @@ const AdvancedLandingPageGenerator = ({
     setIsGenerating(true);
     try {
       console.log('Generating landing page with formData:', dataToUse);
+      console.log('Selected sections:', dataToUse.selectedElements);
       
       const { data, error } = await supabase.functions.invoke('generate-landing-content', {
-        body: { formData: dataToUse }
+        body: { 
+          formData: dataToUse,
+          selectedElements: dataToUse.selectedElements || ['hero', 'emotional', 'whyUs', 'whatWeGive', 'testimonials', 'contact']
+        }
       });
 
       if (error) {
@@ -62,7 +66,20 @@ const AdvancedLandingPageGenerator = ({
       }
 
       console.log('Generated content:', data);
-      setGeneratedPage(data.content);
+      
+      // וידוא שהתוכן כולל רק את הסקשנים שנבחרו
+      const selectedSections = dataToUse.selectedElements || ['hero', 'emotional', 'whyUs', 'whatWeGive', 'testimonials', 'contact'];
+      const filteredContent = {};
+      
+      // העתקת רק הסקשנים שנבחרו
+      selectedSections.forEach(section => {
+        if (data.content[section]) {
+          filteredContent[section] = data.content[section];
+        }
+      });
+      
+      console.log('Filtered content for selected sections:', filteredContent);
+      setGeneratedPage(filteredContent);
       setShowQuickForm(false);
 
       toast({
@@ -774,6 +791,7 @@ const AdvancedLandingPageGenerator = ({
           onClose={() => setIsEditorOpen(false)}
           generatedContent={generatedPage}
           formData={formData}
+          selectedElements={quickFormData.selectedElements}
           onContentUpdate={(updatedContent) => {
             console.log('Content updated in editor:', updatedContent);
             setGeneratedPage(updatedContent);
