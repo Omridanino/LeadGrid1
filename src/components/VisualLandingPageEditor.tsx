@@ -289,26 +289,108 @@ const VisualLandingPageEditor = ({
   // Use the actual generated content if available, otherwise use defaults  
   const [editableContent, setEditableContent] = useState(() => initializeContent());
 
+  // Helper function to initialize content with specific generated data
+  const initializeContentWithData = (generatedData: any, formDataParam: any) => {
+    const businessName = formDataParam?.businessInfo?.businessName || 'שם העסק';
+    const businessDescription = formDataParam?.businessInfo?.businessDescription || 'תיאור העסק';
+    
+    // Use the full initializeContent function but with the new generated data
+    const baseContent = {
+      hero: {
+        title: generatedData.hero?.title || businessName,
+        subtitle: generatedData.hero?.subtitle || businessDescription, 
+        button1Text: generatedData.hero?.button1Text || 'התחל עכשיו',
+        button2Text: generatedData.hero?.button2Text || 'למד עוד',
+        badge: generatedData.hero?.badge || 'חדש!',
+        description: generatedData.hero?.description || businessDescription,
+        button1Icon: '',
+        button2Icon: ''
+      },
+      features: generatedData.features || {
+        title: 'השירותים שלנו',
+        subtitle: 'פתרונות מתקדמים עבור העסק שלכם',
+        items: []
+      },
+      about: generatedData.about || {
+        title: 'קצת עלינו',
+        subtitle: 'צוות מקצועי עם ניסיון עשיר',
+        description: businessDescription,
+        stats: []
+      },
+      services: generatedData.services || {
+        title: 'השירותים שלנו',
+        items: []
+      },
+      testimonials: generatedData.testimonials || {
+        title: 'המלצות מלקוחות מובילים',
+        badge: 'עדויות אמיתיות',
+        testimonials: []
+      },
+      faq: generatedData.faq || {
+        title: 'שאלות נפוצות',
+        subtitle: 'מענה לשאלות הנפוצות ביותר',
+        questions: []
+      },
+      pricing: generatedData.pricing || {
+        title: 'התעריפים שלנו',
+        subtitle: 'בחרו את החבילה המתאימה לכם',
+        items: []
+      },
+      contact: generatedData.contact || {
+        title: 'נשמח לשמוע ממכם',
+        subtitle: 'השאירו פרטים ונחזור אליכם במהרה',
+        address: formDataParam?.businessInfo?.address || 'כתובת העסק',
+        phone: formDataParam?.businessInfo?.phone || 'מספר טלפון',
+        email: formDataParam?.businessInfo?.email || 'כתובת מייל',
+        hours: 'א\'-ה\' 9:00-18:00'
+      }
+    };
+    
+    return baseContent;
+  };
+
   // Update content when generatedContent or formData changes
   useEffect(() => {
     if (generatedContent || formData) {
       console.log('useEffect - updating content with new data:', { generatedContent, formData });
+      
+      // First try to get content from localStorage (which contains the latest generated content)
+      try {
+        const savedGeneratedContent = localStorage.getItem('generatedContent');
+        if (savedGeneratedContent) {
+          const parsedSavedContent = JSON.parse(savedGeneratedContent);
+          console.log('Found saved generated content in localStorage:', parsedSavedContent);
+          
+          // Use the saved generated content instead of the passed prop
+          const updatedContent = initializeContentWithData(parsedSavedContent, formData);
+          setEditableContent(updatedContent);
+          return;
+        }
+      } catch (error) {
+        console.log('No saved generated content found:', error);
+      }
+      
+      // Fallback to passed generatedContent
       setEditableContent(initializeContent());
     }
   }, [generatedContent, formData]);
 
-  // Load saved data on component mount
+  // Only load saved data if no generated content is available
   useEffect(() => {
     try {
-      const savedContent = localStorage.getItem('editableContent');
-      if (savedContent && isOpen) {
-        const parsed = JSON.parse(savedContent);
-        setEditableContent(parsed);
+      // Priority: 1. Generated content, 2. Saved content from localStorage
+      if (!generatedContent && !formData && isOpen) {
+        const savedContent = localStorage.getItem('editableContent');
+        if (savedContent) {
+          console.log('Loading content from localStorage (no generated content available):', savedContent);
+          const parsed = JSON.parse(savedContent);
+          setEditableContent(parsed);
+        }
       }
     } catch (error) {
-      console.log('No saved content found');
+      console.log('No saved content found or error loading:', error);
     }
-  }, [isOpen]);
+  }, [isOpen, generatedContent, formData]);
   
   const [pageStyles, setPageStyles] = useState(() => {
     try {
