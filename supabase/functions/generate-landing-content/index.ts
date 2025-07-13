@@ -306,7 +306,8 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Error in generate-landing-content function:', error);
-    console.error('OPENAI_API_KEY exists:', !!Deno.env.get('OPENAI_API_KEY'));
+    console.error('New key exists:', !!Deno.env.get('New key'));
+    console.error('Environment variables available:', Object.keys(Deno.env.toObject()));
     
     return new Response(JSON.stringify({ 
       error: 'Failed to generate content', 
@@ -315,5 +316,6 @@ serve(async (req) => {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
+  }
   }
 });
