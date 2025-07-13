@@ -575,29 +575,32 @@ const AdvancedLandingPageGenerator = ({
                     </section>
                   )}
 
-                  {/* Services Section */}
-                  {generatedPage.services && (
-                    <section className="py-16 px-6 bg-gray-50">
+                  {/* Why Choose Us Section - מדוע לבחור בנו */}
+                  {generatedPage.whyUs && (
+                    <section className="py-20 px-6 bg-gradient-to-br from-blue-50 to-indigo-100">
                       <div className="max-w-6xl mx-auto text-center">
-                        <h2 className="text-3xl font-bold mb-4">{generatedPage.services.title}</h2>
-                        <p className="text-xl text-gray-600 mb-12">{generatedPage.services.subtitle}</p>
-                        <div className="grid md:grid-cols-2 gap-8">
-                          {generatedPage.services.items?.map((service: any, index: number) => (
-                            <div key={index} className="bg-white p-8 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
-                              <h3 className="text-xl font-bold mb-3">{service.title}</h3>
-                              <p className="text-gray-600 mb-4">{service.description}</p>
-                              <div className="text-2xl font-bold text-blue-600 mb-4">{service.price}</div>
-                              <ul className="space-y-2 mb-6">
-                                {service.features?.map((feature: string, featureIndex: number) => (
-                                  <li key={featureIndex} className="flex items-center text-sm">
-                                    <span className="text-green-500 mr-2">✓</span>
-                                    {feature}
-                                  </li>
-                                ))}
-                              </ul>
-                              <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">
-                                בחר שירות
-                              </button>
+                        {generatedPage.whyUs.badge && (
+                          <div className="inline-block bg-blue-100 text-blue-600 rounded-full px-6 py-2 mb-6">
+                            <span className="text-sm font-medium">{generatedPage.whyUs.badge}</span>
+                          </div>
+                        )}
+                        <h2 className="text-4xl font-bold mb-6 text-gray-900">{generatedPage.whyUs.title}</h2>
+                        {generatedPage.whyUs.subtitle && (
+                          <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">{generatedPage.whyUs.subtitle}</p>
+                        )}
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                          {generatedPage.whyUs.reasons?.map((reason: any, index: number) => (
+                            <div key={index} className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <span className="text-2xl">{reason.icon || '✨'}</span>
+                              </div>
+                              <h3 className="text-xl font-bold mb-4 text-gray-900">{reason.title}</h3>
+                              <p className="text-gray-600 leading-relaxed">{reason.description}</p>
+                              {reason.feature && (
+                                <div className="mt-4 inline-block bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
+                                  {reason.feature}
+                                </div>
+                              )}
                             </div>
                           ))}
                         </div>
@@ -703,24 +706,6 @@ const AdvancedLandingPageGenerator = ({
                     </section>
                   )}
 
-                  {/* Heading Section */}
-                  {generatedPage.heading && (
-                    <section className={`py-16 px-6 ${generatedPage.heading.size === 'xl' ? 'py-24' : generatedPage.heading.size === 'large' ? 'py-20' : generatedPage.heading.size === 'small' ? 'py-12' : 'py-16'}`}>
-                      <div className="max-w-6xl mx-auto text-center">
-                        {generatedPage.heading.badge && (
-                          <div className="inline-block bg-blue-100 text-blue-600 rounded-full px-4 py-2 mb-6">
-                            <span className="text-sm font-medium">{generatedPage.heading.badge}</span>
-                          </div>
-                        )}
-                        <h2 className={`font-bold mb-6 text-gray-900 ${generatedPage.heading.size === 'xl' ? 'text-6xl' : generatedPage.heading.size === 'large' ? 'text-5xl' : generatedPage.heading.size === 'small' ? 'text-2xl' : 'text-4xl'}`}>
-                          {generatedPage.heading.title}
-                        </h2>
-                        {generatedPage.heading.subtitle && (
-                          <p className="text-xl text-gray-700 max-w-4xl mx-auto">{generatedPage.heading.subtitle}</p>
-                        )}
-                      </div>
-                    </section>
-                  )}
 
                   {/* Text Section */}
                   {generatedPage.text && (
@@ -770,7 +755,7 @@ const AdvancedLandingPageGenerator = ({
 
                   {/* Social Bar Section */}
                   {generatedPage.socialBar && (
-                    <section className="py-16 px-6 bg-gradient-to-r from-purple-600 to-pink-600">
+                    <section className="py-16 px-6 bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700">
                       <div className="max-w-4xl mx-auto text-center">
                         {generatedPage.socialBar.badge && (
                           <div className="inline-block bg-white/20 text-white rounded-full px-4 py-2 mb-6">
@@ -783,13 +768,38 @@ const AdvancedLandingPageGenerator = ({
                         {generatedPage.socialBar.subtitle && (
                           <p className="text-xl text-white/90 mb-8">{generatedPage.socialBar.subtitle}</p>
                         )}
-                        <div className="flex justify-center space-x-6">
-                          {generatedPage.socialBar.socialLinks?.map((link: any, index: number) => (
-                            <a key={index} href={link.url} className="bg-white/20 hover:bg-white/30 text-white p-4 rounded-full transition-colors">
-                              <span className="text-2xl">{link.icon}</span>
-                              <span className="sr-only">{link.platform}</span>
-                            </a>
-                          ))}
+                        <div className="flex justify-center gap-6 flex-wrap">
+                          {generatedPage.socialBar.platforms?.map((platform: any, index: number) => {
+                            const getIcon = (name: string) => {
+                              switch(name.toLowerCase()) {
+                                case 'facebook': return '📘';
+                                case 'instagram': return '📷';
+                                case 'linkedin': return '💼';
+                                case 'whatsapp': return '💬';
+                                case 'twitter': return '🐦';
+                                case 'youtube': return '📺';
+                                case 'tiktok': return '🎵';
+                                default: return '🔗';
+                              }
+                            };
+                            
+                            return (
+                              <a 
+                                key={index} 
+                                href={platform.url || '#'} 
+                                className="group bg-white/20 hover:bg-white/30 text-white p-4 rounded-full transition-all duration-300 transform hover:scale-110 hover:shadow-lg flex items-center gap-2"
+                                aria-label={platform.label}
+                              >
+                                <span className="text-2xl">{getIcon(platform.name)}</span>
+                                <span className="text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                  {platform.name}
+                                </span>
+                              </a>
+                            );
+                          })}
+                        </div>
+                        <div className="mt-8 text-white/80 text-sm">
+                          <p>🚀 הצטרפו לקהילה שלנו ברשתות החברתיות לעדכונים ותכנים בלעדיים</p>
                         </div>
                       </div>
                     </section>
