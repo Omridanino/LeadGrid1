@@ -140,6 +140,10 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     console.log('BASIC TEMPLATE - process:', basicTemplate.process);
     const htmlContent = generatePageHTML(basicTemplate);
     console.log('Generated HTML content length:', htmlContent.length);
+    console.log('HTML contains whyUs:', htmlContent.includes('WhyUs Section'));
+    console.log('HTML contains whatWeGive:', htmlContent.includes('WhatWeGive Section'));
+    console.log('HTML contains gallery:', htmlContent.includes('Gallery Section'));
+    console.log('HTML contains process:', htmlContent.includes('Process Section'));
 
     return (
       <div className="w-full h-full" style={{ 

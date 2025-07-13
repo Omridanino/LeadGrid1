@@ -12,6 +12,88 @@ export const generatePageHTML = (templateData: any) => {
   console.log('Template ID:', template.id, 'isPremium:', isPremium);
 
   // Helper functions for new content sections - moved to top
+  // NEW SECTIONS GENERATORS - why us, what we give, process
+  const generateWhyUsSection = (whyUs: any, styles: any, isPremium: boolean) => {
+    if (!whyUs || !whyUs.items || whyUs.items.length === 0) return '';
+    return `
+    <!-- Why Us Section -->
+    <section class="why-us py-20" style="background: ${isPremium ? 'linear-gradient(135deg, rgba(55,65,81,0.9), rgba(30,64,175,0.9))' : styles.backgroundColor};">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                ${whyUs.badge ? `<div class="inline-block px-3 py-1 text-xs bg-blue-600/20 text-blue-300 rounded-full border border-blue-500/30 mb-4">${whyUs.badge}</div>` : ''}
+                <h2 class="text-4xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor};">${whyUs.title}</h2>
+                ${whyUs.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor}; opacity: 0.8;">${whyUs.subtitle}</p>` : ''}
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                ${whyUs.items.map((item: any) => `
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 ${isPremium ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}">
+                        <div class="text-4xl mb-4" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.primaryColor};">
+                            <i class="ri-${item.icon}"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor};">${item.title}</h3>
+                        <p style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor}; opacity: 0.8;">${item.description}</p>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    </section>`;
+  };
+
+  const generateWhatWeGiveSection = (whatWeGive: any, styles: any, isPremium: boolean) => {
+    if (!whatWeGive || !whatWeGive.services || whatWeGive.services.length === 0) return '';
+    return `
+    <!-- What We Give Section -->
+    <section class="what-we-give py-20" style="background: ${isPremium ? 'linear-gradient(135deg, rgba(30,64,175,0.9), rgba(55,65,81,0.9))' : styles.backgroundColor};">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                ${whatWeGive.badge ? `<div class="inline-block px-3 py-1 text-xs bg-blue-600/20 text-blue-300 rounded-full border border-blue-500/30 mb-4">${whatWeGive.badge}</div>` : ''}
+                <h2 class="text-4xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor};">${whatWeGive.title}</h2>
+                ${whatWeGive.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor}; opacity: 0.8;">${whatWeGive.subtitle}</p>` : ''}
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                ${whatWeGive.services.map((service: any) => `
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 ${isPremium ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}">
+                        <div class="text-4xl mb-4" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.primaryColor};">
+                            <i class="ri-${service.icon}"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor};">${service.title}</h3>
+                        <p style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor}; opacity: 0.8;">${service.description}</p>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    </section>`;
+  };
+
+  const generateProcessSection = (process: any, styles: any, isPremium: boolean) => {
+    if (!process || !process.steps || process.steps.length === 0) return '';
+    return `
+    <!-- Process Section -->
+    <section class="process py-20" style="background: ${isPremium ? 'linear-gradient(135deg, rgba(55,65,81,0.9), rgba(30,64,175,0.9))' : styles.backgroundColor};">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                ${process.badge ? `<div class="inline-block px-3 py-1 text-xs bg-blue-600/20 text-blue-300 rounded-full border border-blue-500/30 mb-4">${process.badge}</div>` : ''}
+                <h2 class="text-4xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor};">${process.title}</h2>
+                ${process.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor}; opacity: 0.8;">${process.subtitle}</p>` : ''}
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                ${process.steps.map((step: any, index: number) => `
+                    <div class="relative group">
+                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 ${isPremium ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}">
+                            <div class="w-16 h-16 mb-6 rounded-xl bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                                <span class="text-2xl font-bold text-white">${index + 1}</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor};">${step.title}</h3>
+                            <p class="text-lg mb-4" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor}; opacity: 0.8;">${step.description}</p>
+                            ${step.duration ? `<p class="text-sm font-medium" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor}; opacity: 0.6;">${step.duration}</p>` : ''}
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    </section>`;
+  };
+
   const generateGallerySection = (gallery: any, styles: any, isPremium: boolean) => {
     if (!gallery || !gallery.images || gallery.images.length === 0) return '';
     return `
