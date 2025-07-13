@@ -134,7 +134,12 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     };
 
     console.log('Using basic template with generated content:', basicTemplate);
+    console.log('BASIC TEMPLATE - whyUs:', basicTemplate.whyUs);
+    console.log('BASIC TEMPLATE - whatWeGive:', basicTemplate.whatWeGive);
+    console.log('BASIC TEMPLATE - gallery:', basicTemplate.gallery);
+    console.log('BASIC TEMPLATE - process:', basicTemplate.process);
     const htmlContent = generatePageHTML(basicTemplate);
+    console.log('Generated HTML content length:', htmlContent.length);
 
     return (
       <div className="w-full h-full" style={{ 
