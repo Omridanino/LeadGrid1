@@ -589,16 +589,16 @@ const AdvancedLandingPageGenerator = ({
                           <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">{generatedPage.whyUs.subtitle}</p>
                         )}
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                          {generatedPage.whyUs.reasons?.map((reason: any, index: number) => (
+                          {generatedPage.whyUs.items?.map((item: any, index: number) => (
                             <div key={index} className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
                               <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <span className="text-2xl">{reason.icon || '✨'}</span>
+                                <span className="text-2xl">{item.icon || '✨'}</span>
                               </div>
-                              <h3 className="text-xl font-bold mb-4 text-gray-900">{reason.title}</h3>
-                              <p className="text-gray-600 leading-relaxed">{reason.description}</p>
-                              {reason.feature && (
+                              <h3 className="text-xl font-bold mb-4 text-gray-900">{item.title}</h3>
+                              <p className="text-gray-600 leading-relaxed">{item.description}</p>
+                              {item.feature && (
                                 <div className="mt-4 inline-block bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
-                                  {reason.feature}
+                                  {item.feature}
                                 </div>
                               )}
                             </div>
