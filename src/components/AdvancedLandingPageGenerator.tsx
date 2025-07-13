@@ -576,37 +576,53 @@ const AdvancedLandingPageGenerator = ({
                   )}
 
                   {/* Why Choose Us Section - מדוע לבחור בנו */}
-                  {generatedPage.whyUs && (
-                    <section className="py-20 px-6 bg-gradient-to-br from-blue-50 to-indigo-100">
-                      <div className="max-w-6xl mx-auto text-center">
-                        {generatedPage.whyUs.badge && (
-                          <div className="inline-block bg-blue-100 text-blue-600 rounded-full px-6 py-2 mb-6">
-                            <span className="text-sm font-medium">{generatedPage.whyUs.badge}</span>
-                          </div>
-                        )}
-                        <h2 className="text-4xl font-bold mb-6 text-gray-900">{generatedPage.whyUs.title}</h2>
-                        {generatedPage.whyUs.subtitle && (
-                          <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">{generatedPage.whyUs.subtitle}</p>
-                        )}
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                          {generatedPage.whyUs.items?.map((item: any, index: number) => (
-                            <div key={index} className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
-                              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <span className="text-2xl">{item.icon || '✨'}</span>
-                              </div>
-                              <h3 className="text-xl font-bold mb-4 text-gray-900">{item.title}</h3>
-                              <p className="text-gray-600 leading-relaxed">{item.description}</p>
-                              {item.feature && (
-                                <div className="mt-4 inline-block bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
-                                  {item.feature}
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </section>
-                  )}
+                   {generatedPage.process && (
+                     <section className="py-20 px-6 bg-gradient-to-br from-blue-50 to-indigo-100">
+                       <div className="max-w-6xl mx-auto text-center">
+                         {generatedPage.process.badge && (
+                           <div className="inline-block bg-blue-100 text-blue-600 rounded-full px-6 py-2 mb-6">
+                             <span className="text-sm font-medium">{generatedPage.process.badge}</span>
+                           </div>
+                         )}
+                         <h2 className="text-4xl font-bold mb-6 text-gray-900">{generatedPage.process.title}</h2>
+                         {generatedPage.process.subtitle && (
+                           <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">{generatedPage.process.subtitle}</p>
+                         )}
+                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                           {generatedPage.process.steps?.map((step: any, index: number) => {
+                             const getStepIcon = () => {
+                               switch(index + 1) {
+                                 case 1: return "📋";
+                                 case 2: return "🚀";
+                                 case 3: return "✅";
+                                 case 4: return "📊";
+                                 case 5: return "🎯";
+                                 default: return "💼";
+                               }
+                             };
+                             
+                             return (
+                               <div key={index} className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 relative">
+                                 <div className="absolute -top-4 -right-4 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                   {index + 1}
+                                 </div>
+                                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                                   <span className="text-2xl">{getStepIcon()}</span>
+                                 </div>
+                                 <h3 className="text-xl font-bold mb-4 text-gray-900">{step.title}</h3>
+                                 <p className="text-gray-600 leading-relaxed">{step.description}</p>
+                                 {step.duration && (
+                                   <div className="mt-4 inline-block bg-green-50 text-green-700 px-3 py-1 rounded-full text-sm font-medium">
+                                     ⏱️ {step.duration}
+                                   </div>
+                                 )}
+                               </div>
+                             );
+                           })}
+                         </div>
+                       </div>
+                     </section>
+                   )}
 
                   {/* Testimonials Section */}
                   {generatedPage.testimonials && (
@@ -753,57 +769,46 @@ const AdvancedLandingPageGenerator = ({
                     </section>
                   )}
 
-                  {/* Social Bar Section */}
-                  {generatedPage.socialBar && (
-                    <section className="py-16 px-6 bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700">
-                      <div className="max-w-4xl mx-auto text-center">
-                        {generatedPage.socialBar.badge && (
-                          <div className="inline-block bg-white/20 text-white rounded-full px-4 py-2 mb-6">
-                            <span className="text-sm font-medium">{generatedPage.socialBar.badge}</span>
-                          </div>
-                        )}
-                        {generatedPage.socialBar.title && (
-                          <h2 className="text-3xl font-bold mb-6 text-white">{generatedPage.socialBar.title}</h2>
-                        )}
-                        {generatedPage.socialBar.subtitle && (
-                          <p className="text-xl text-white/90 mb-8">{generatedPage.socialBar.subtitle}</p>
-                        )}
-                        <div className="flex justify-center gap-6 flex-wrap">
-                          {generatedPage.socialBar.platforms?.map((platform: any, index: number) => {
-                            const getIcon = (name: string) => {
-                              switch(name.toLowerCase()) {
-                                case 'facebook': return '📘';
-                                case 'instagram': return '📷';
-                                case 'linkedin': return '💼';
-                                case 'whatsapp': return '💬';
-                                case 'twitter': return '🐦';
-                                case 'youtube': return '📺';
-                                case 'tiktok': return '🎵';
-                                default: return '🔗';
-                              }
-                            };
-                            
-                            return (
-                              <a 
-                                key={index} 
-                                href={platform.url || '#'} 
-                                className="group bg-white/20 hover:bg-white/30 text-white p-4 rounded-full transition-all duration-300 transform hover:scale-110 hover:shadow-lg flex items-center gap-2"
-                                aria-label={platform.label}
-                              >
-                                <span className="text-2xl">{getIcon(platform.name)}</span>
-                                <span className="text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                  {platform.name}
-                                </span>
-                              </a>
-                            );
-                          })}
-                        </div>
-                        <div className="mt-8 text-white/80 text-sm">
-                          <p>🚀 הצטרפו לקהילה שלנו ברשתות החברתיות לעדכונים ותכנים בלעדיים</p>
-                        </div>
-                      </div>
-                    </section>
-                  )}
+                   {/* Social Bar Section */}
+                   {generatedPage.socialBar && generatedPage.socialBar.platforms && (
+                     <section className="py-16 px-6 bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700">
+                       <div className="max-w-4xl mx-auto text-center">
+                         <div className="flex justify-center gap-6 flex-wrap">
+                           {generatedPage.socialBar.platforms.map((platform: any, index: number) => {
+                             const getIcon = (name: string) => {
+                               switch(name.toLowerCase()) {
+                                 case 'facebook': return '📘';
+                                 case 'instagram': return '📷';
+                                 case 'linkedin': return '💼';
+                                 case 'whatsapp': return '💬';
+                                 case 'twitter': return '🐦';
+                                 case 'youtube': return '📺';
+                                 case 'tiktok': return '🎵';
+                                 default: return '🔗';
+                               }
+                             };
+                             
+                             return (
+                               <a 
+                                 key={index} 
+                                 href={platform.url || '#'} 
+                                 className="group bg-white/20 hover:bg-white/30 text-white p-4 rounded-full transition-all duration-300 transform hover:scale-110 hover:shadow-lg flex items-center gap-2"
+                                 aria-label={platform.label}
+                               >
+                                 <span className="text-2xl">{getIcon(platform.name)}</span>
+                                 <span className="text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                   {platform.name}
+                                 </span>
+                               </a>
+                             );
+                           })}
+                         </div>
+                         <div className="mt-8 text-white/80 text-sm">
+                           <p>🚀 הצטרפו לקהילה שלנו ברשתות החברתיות לעדכונים ותכנים בלעדיים</p>
+                         </div>
+                       </div>
+                     </section>
+                   )}
 
                   {/* Contact Section */}
                   {generatedPage.contact && (

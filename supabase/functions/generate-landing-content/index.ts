@@ -42,28 +42,33 @@ serve(async (req) => {
      "quote": "ציטוט מעורר השראה",
      "author": "מקור הציטוט"
    },
-  "whyUs": {
-    "badge": "למה בדיוק אנחנו",
-    "title": "למה לבחור בנו?",
-    "subtitle": "מה מייחד אותנו מהמתחרים",
-    "items": [
-      {
-        "title": "יתרון 1",
-        "description": "הסבר מפורט על היתרון",
-        "icon": "star-fill"
-      },
-      {
-        "title": "יתרון 2",
-        "description": "הסבר מפורט על היתרון",
-        "icon": "shield-check-fill"
-      },
-      {
-        "title": "יתרון 3",
-        "description": "הסבר מפורט על היתרון",
-        "icon": "trophy-fill"
-      }
-    ]
-  },
+   "process": {
+     "badge": "איך אנחנו עובדים",
+     "title": "תהליך העבודה שלנו",
+     "subtitle": "כך נוביל אתכם להצלחה בשלבים מדויקים ומותאמים אישית",
+     "steps": [
+       {
+         "title": "היכרות וייעוץ ראשוני",
+         "description": "פגישה מקצועית להבנת הצרכים והמטרות שלכם",
+         "duration": "שבוע 1"
+       },
+       {
+         "title": "תכנון ואסטרטגיה",
+         "description": "פיתוח תוכנית עבודה מפורטת ומותאמת אישית",
+         "duration": "שבוע 2-3"
+       },
+       {
+         "title": "ביצוע והטמעה",
+         "description": "יישום הפתרון בצורה מקצועית ויעילה",
+         "duration": "שבוע 4-8"
+       },
+       {
+         "title": "מעקב ותמיכה",
+         "description": "ליווי מתמשך להבטחת הצלחה מלאה",
+         "duration": "מתמשך"
+       }
+     ]
+   },
   "whatWeGive": {
     "badge": "השירותים שלנו",
     "title": "מה אנחנו נותנים לכם",
@@ -106,33 +111,6 @@ serve(async (req) => {
         "src": "תיאור תמונה של פרויקט 3",
         "alt": "פרויקט 3", 
         "caption": "תיאור קצר של הפרויקט"
-      }
-    ]
-  },
-  "process": {
-    "badge": "איך אנחנו עובדים",
-    "title": "התהליך שלנו",
-    "subtitle": "שלבי העבודה מההתחלה ועד הסיום",
-    "steps": [
-      {
-        "title": "שלב 1",
-        "description": "תיאור מפורט של השלב הראשון",
-        "duration": "1-2 ימי עבודה"
-      },
-      {
-        "title": "שלב 2",
-        "description": "תיאור מפורט של השלב השני",
-        "duration": "3-5 ימי עבודה"
-      },
-      {
-        "title": "שלב 3",
-        "description": "תיאור מפורט של השלב השלישי",
-        "duration": "2-3 ימי עבודה"
-      },
-      {
-        "title": "שלב 4",
-        "description": "תיאור מפורט של השלב הרביעי",
-        "duration": "1 יום עבודה"
       }
     ]
   },
@@ -286,15 +264,14 @@ serve(async (req) => {
     "thumbnail": "תיאור תמונה ממוזערת לסרטון",
     "badge": "תווית אופציונלית"
   },
-  "socialBar": {
-    "title": "עקבו אחרינו",
-    "platforms": [
-      {"name": "Facebook", "icon": "facebook", "url": "#", "label": "עמוד הפייסבוק"},
-      {"name": "Instagram", "icon": "instagram", "url": "#", "label": "האינסטגרם"},
-      {"name": "LinkedIn", "icon": "linkedin", "url": "#", "label": "הלינקדאין"},
-      {"name": "WhatsApp", "icon": "whatsapp", "url": "#", "label": "וואטסאפ"}
-    ]
-   }
+   "socialBar": {
+     "platforms": [
+       {"name": "Facebook", "icon": "facebook", "url": "#", "label": "עמוד הפייסבוק"},
+       {"name": "Instagram", "icon": "instagram", "url": "#", "label": "האינסטגרם"},
+       {"name": "LinkedIn", "icon": "linkedin", "url": "#", "label": "הלינקדאין"},
+       {"name": "WhatsApp", "icon": "whatsapp", "url": "#", "label": "וואטסאפ"}
+     ]
+    }
  }
 
 התוכן צריך להיות מקצועי, משכנע ומותאם לתחום הפעילות.`;
