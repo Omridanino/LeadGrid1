@@ -29,7 +29,10 @@ const AdvancedLandingPageGenerator = ({
     industry: '',
     goals: '',
     targetAudience: '',
-    businessDescription: ''
+    businessDescription: '',
+    whyChooseUs: '',
+    workProcess: '',
+    pastProjects: ''
   });
 
   const generateLandingPage = async () => {
@@ -380,6 +383,39 @@ const AdvancedLandingPageGenerator = ({
                     value={quickFormData.businessDescription}
                     onChange={(e) => setQuickFormData(prev => ({...prev, businessDescription: e.target.value}))}
                     placeholder="תאר בקצרה מה העסק שלך עושה..."
+                  />
+                </div>
+                
+                <div>
+                  <label className="text-sm font-medium text-black">למה לבחור בכם? (3-5 סיבות)</label>
+                  <textarea
+                    className="w-full mt-1 px-3 py-2 border rounded-lg bg-white text-black border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    rows={3}
+                    value={quickFormData.whyChooseUs}
+                    onChange={(e) => setQuickFormData(prev => ({...prev, whyChooseUs: e.target.value}))}
+                    placeholder="למשל:&#10;ניסיון של 10 שנים בתחום&#10;שירות אישי ומקצועי&#10;מחירים הוגנים ותוצאות מובטחות"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-black">איך נראה התהליך של עבודה איתכם?</label>
+                  <textarea
+                    className="w-full mt-1 px-3 py-2 border rounded-lg bg-white text-black border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    rows={3}
+                    value={quickFormData.workProcess}
+                    onChange={(e) => setQuickFormData(prev => ({...prev, workProcess: e.target.value}))}
+                    placeholder="למשל:&#10;1. פגישת ייעוץ ראשונית&#10;2. תכנון מפורט ועיצוב&#10;3. ביצוע הפרויקט&#10;4. מסירה ותמיכה"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-black">פרויקטים מוצלחים שעשיתם (לגלריה)</label>
+                  <textarea
+                    className="w-full mt-1 px-3 py-2 border rounded-lg bg-white text-black border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    rows={3}
+                    value={quickFormData.pastProjects}
+                    onChange={(e) => setQuickFormData(prev => ({...prev, pastProjects: e.target.value}))}
+                    placeholder="למשל:&#10;אתר לחברת הייטק - הגדיל מכירות ב-300%&#10;קמפיין שיווקי לרשת מסעדות&#10;מערכת ניהול לעסק קטן"
                   />
                 </div>
                 
