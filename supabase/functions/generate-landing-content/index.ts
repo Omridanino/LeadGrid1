@@ -36,12 +36,12 @@ serve(async (req) => {
     "button1Text": "כפתור פעולה ראשי",
     "button2Text": "כפתור פעולה משני"
   },
-  "emotional": {
-    "title": "כותרת רגשית",
-    "content": "פסקה שיוצרת קשר רגשי עם הקהל יעד, מדברת על כאבים וחלומות",
-    "quote": "ציטוט מעורר השראה",
-    "author": "מקור הציטוט"
-  },
+   "emotional": {
+     "title": "כותרת רגשית",
+     "content": "פסקה שיוצרת קשר רגשי עם הקהל יעד, מדברת על כאבים וחלומות",
+     "quote": "ציטוט מעורר השראה",
+     "author": "מקור הציטוט"
+   },
   "whyUs": {
     "badge": "למה בדיוק אנחנו",
     "title": "למה לבחור בנו?",
@@ -267,8 +267,35 @@ serve(async (req) => {
       "email": "כתובת מייל",
       "hours": "שעות פעילות"
     }
-  }
-}
+  },
+  "heading": {
+    "title": "כותרת ראשית",
+    "subtitle": "כותרת משנה",
+    "size": "large",
+    "badge": "תווית אופציונלית"
+  },
+  "text": {
+    "title": "כותרת הטקסט",
+    "content": "תוכן הטקסט המפורט",
+    "badge": "תווית אופציונלית"
+  },
+  "video": {
+    "title": "כותרת הסרטון",
+    "subtitle": "תיאור הסרטון",
+    "videoUrl": "תיאור של תוכן הסרטון",
+    "thumbnail": "תיאור תמונה ממוזערת לסרטון",
+    "badge": "תווית אופציונלית"
+  },
+  "socialBar": {
+    "title": "עקבו אחרינו",
+    "platforms": [
+      {"name": "Facebook", "icon": "facebook", "url": "#", "label": "עמוד הפייסבוק"},
+      {"name": "Instagram", "icon": "instagram", "url": "#", "label": "האינסטגרם"},
+      {"name": "LinkedIn", "icon": "linkedin", "url": "#", "label": "הלינקדאין"},
+      {"name": "WhatsApp", "icon": "whatsapp", "url": "#", "label": "וואטסאפ"}
+    ]
+   }
+ }
 
 התוכן צריך להיות מקצועי, משכנע ומותאם לתחום הפעילות.`;
 

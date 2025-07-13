@@ -237,6 +237,33 @@ export const generateRichContent = (formData: any) => {
           }
         ]
     },
+    heading: {
+      title: `${businessName} - הפתרון המקצועי שלכם`,
+      subtitle: `כותרת משנה מקצועית עבור ${businessType}`,
+      size: 'large',
+      badge: 'כותרת מרכזית'
+    },
+    text: {
+      title: `המידע החשוב ביותר על ${businessName}`,
+      content: `טקסט מפורט ומקצועי על השירותים והיתרונות של ${businessName} בתחום ${businessType}. אנחנו מציעים פתרונות איכותיים ומקצועיים המותאמים לצרכים הייחודיים של כל לקוח.`,
+      badge: 'מידע חשוב'
+    },
+    video: {
+      title: `סרטון המציג את ${businessName}`,
+      subtitle: 'צפו בעבודות שלנו בפעולה',
+      videoUrl: 'תיאור של סרטון מקצועי המציג את העבודות והשירותים',
+      thumbnail: `תיאור תמונה של תמונה ממוזערת לסרטון של ${businessName}`,
+      badge: 'הסרטון שלנו'
+    },
+    socialBar: {
+      title: 'עקבו אחרינו ברשתות החברתיות',
+      platforms: [
+        { name: 'Facebook', icon: 'facebook', url: '#', label: 'עמוד הפייסבוק שלנו' },
+        { name: 'Instagram', icon: 'instagram', url: '#', label: 'האינסטגרם שלנו' },
+        { name: 'LinkedIn', icon: 'linkedin', url: '#', label: 'הלינקדאין שלנו' },
+        { name: 'WhatsApp', icon: 'whatsapp', url: '#', label: 'צרו קשר בוואטסאפ' }
+      ]
+    },
     process: {
       title: 'התהליך המקצועי והמובנה שלנו',
       subtitle: formData.workProcess ? 'איך נראה התהליך של עבודה איתנו' : 'ארבעה שלבים ברורים ומסודרים למימוש מושלם של החלום שלכם',
