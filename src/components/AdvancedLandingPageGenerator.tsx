@@ -674,6 +674,127 @@ const AdvancedLandingPageGenerator = ({
                     </section>
                   )}
 
+                  {/* Gallery Section */}
+                  {generatedPage.gallery && (
+                    <section className="py-20 px-6 bg-gray-50">
+                      <div className="max-w-6xl mx-auto text-center">
+                        {generatedPage.gallery.badge && (
+                          <div className="inline-block bg-blue-100 text-blue-600 rounded-full px-4 py-2 mb-6">
+                            <span className="text-sm font-medium">{generatedPage.gallery.badge}</span>
+                          </div>
+                        )}
+                        <h2 className="text-4xl font-bold mb-6 text-gray-900">{generatedPage.gallery.title}</h2>
+                        {generatedPage.gallery.subtitle && (
+                          <p className="text-xl text-gray-700 mb-12 max-w-4xl mx-auto">{generatedPage.gallery.subtitle}</p>
+                        )}
+                        <div className={`grid gap-6 ${generatedPage.gallery.columns === 4 ? 'grid-cols-2 md:grid-cols-4' : generatedPage.gallery.columns === 3 ? 'grid-cols-1 md:grid-cols-3' : 'grid-cols-1 md:grid-cols-2'}`}>
+                          {generatedPage.gallery.images?.map((image: any, index: number) => (
+                            <div key={index} className="rounded-lg overflow-hidden shadow-md">
+                              <img src={image.src} alt={image.alt || `תמונה ${index + 1}`} className="w-full h-64 object-cover" />
+                              {image.caption && (
+                                <div className="p-4 bg-white">
+                                  <p className="text-gray-700">{image.caption}</p>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </section>
+                  )}
+
+                  {/* Heading Section */}
+                  {generatedPage.heading && (
+                    <section className={`py-16 px-6 ${generatedPage.heading.size === 'xl' ? 'py-24' : generatedPage.heading.size === 'large' ? 'py-20' : generatedPage.heading.size === 'small' ? 'py-12' : 'py-16'}`}>
+                      <div className="max-w-6xl mx-auto text-center">
+                        {generatedPage.heading.badge && (
+                          <div className="inline-block bg-blue-100 text-blue-600 rounded-full px-4 py-2 mb-6">
+                            <span className="text-sm font-medium">{generatedPage.heading.badge}</span>
+                          </div>
+                        )}
+                        <h2 className={`font-bold mb-6 text-gray-900 ${generatedPage.heading.size === 'xl' ? 'text-6xl' : generatedPage.heading.size === 'large' ? 'text-5xl' : generatedPage.heading.size === 'small' ? 'text-2xl' : 'text-4xl'}`}>
+                          {generatedPage.heading.title}
+                        </h2>
+                        {generatedPage.heading.subtitle && (
+                          <p className="text-xl text-gray-700 max-w-4xl mx-auto">{generatedPage.heading.subtitle}</p>
+                        )}
+                      </div>
+                    </section>
+                  )}
+
+                  {/* Text Section */}
+                  {generatedPage.text && (
+                    <section className="py-16 px-6">
+                      <div className="max-w-4xl mx-auto">
+                        {generatedPage.text.badge && (
+                          <div className="text-center mb-6">
+                            <div className="inline-block bg-blue-100 text-blue-600 rounded-full px-4 py-2">
+                              <span className="text-sm font-medium">{generatedPage.text.badge}</span>
+                            </div>
+                          </div>
+                        )}
+                        {generatedPage.text.title && (
+                          <h2 className="text-3xl font-bold mb-6 text-gray-900 text-center">{generatedPage.text.title}</h2>
+                        )}
+                        <div className={`text-gray-700 leading-relaxed ${generatedPage.text.textSize === 'large' ? 'text-xl' : generatedPage.text.textSize === 'small' ? 'text-sm' : 'text-base'} ${generatedPage.text.alignment === 'center' ? 'text-center' : generatedPage.text.alignment === 'left' ? 'text-left' : 'text-right'}`}>
+                          {generatedPage.text.content}
+                        </div>
+                      </div>
+                    </section>
+                  )}
+
+                  {/* Video Section */}
+                  {generatedPage.video && (
+                    <section className="py-20 px-6 bg-black">
+                      <div className="max-w-4xl mx-auto text-center">
+                        {generatedPage.video.badge && (
+                          <div className="inline-block bg-blue-100 text-blue-600 rounded-full px-4 py-2 mb-6">
+                            <span className="text-sm font-medium">{generatedPage.video.badge}</span>
+                          </div>
+                        )}
+                        {generatedPage.video.title && (
+                          <h2 className="text-4xl font-bold mb-6 text-white">{generatedPage.video.title}</h2>
+                        )}
+                        {generatedPage.video.subtitle && (
+                          <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">{generatedPage.video.subtitle}</p>
+                        )}
+                        <div className="relative rounded-lg overflow-hidden shadow-2xl">
+                          <video controls className="w-full h-auto" poster={generatedPage.video.thumbnail}>
+                            <source src={generatedPage.video.url} type="video/mp4" />
+                            הדפדפן שלך לא תומך בוידאו
+                          </video>
+                        </div>
+                      </div>
+                    </section>
+                  )}
+
+                  {/* Social Bar Section */}
+                  {generatedPage.socialBar && (
+                    <section className="py-16 px-6 bg-gradient-to-r from-purple-600 to-pink-600">
+                      <div className="max-w-4xl mx-auto text-center">
+                        {generatedPage.socialBar.badge && (
+                          <div className="inline-block bg-white/20 text-white rounded-full px-4 py-2 mb-6">
+                            <span className="text-sm font-medium">{generatedPage.socialBar.badge}</span>
+                          </div>
+                        )}
+                        {generatedPage.socialBar.title && (
+                          <h2 className="text-3xl font-bold mb-6 text-white">{generatedPage.socialBar.title}</h2>
+                        )}
+                        {generatedPage.socialBar.subtitle && (
+                          <p className="text-xl text-white/90 mb-8">{generatedPage.socialBar.subtitle}</p>
+                        )}
+                        <div className="flex justify-center space-x-6">
+                          {generatedPage.socialBar.socialLinks?.map((link: any, index: number) => (
+                            <a key={index} href={link.url} className="bg-white/20 hover:bg-white/30 text-white p-4 rounded-full transition-colors">
+                              <span className="text-2xl">{link.icon}</span>
+                              <span className="sr-only">{link.platform}</span>
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    </section>
+                  )}
+
                   {/* Contact Section */}
                   {generatedPage.contact && (
                     <section className="py-16 px-6 bg-blue-600 text-white">
