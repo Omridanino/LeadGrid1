@@ -1124,8 +1124,11 @@ export const generatePageHTML = (templateData: any) => {
     </section>
 
     <!-- Emotional Section -->
-    ${template.emotional ? `
-     <section class="emotional">
+    ${template.emotional && template.emotional.title ? `
+     <section class="emotional" style="${isPremium ? (() => {
+       const bgData = getPremiumAnimatedBackground(template.id, 'emotional');
+       return bgData.background + '; position: relative; overflow: hidden;';
+     })() : 'background-color: ' + template.styles.backgroundColor + '; padding: 80px 0;'}">
          ${isPremium ? (() => {
            const bgData = getPremiumAnimatedBackground(template.id, 'emotional');
            return generatePremiumBackgroundHTML(bgData.animationType);
@@ -1134,9 +1137,15 @@ export const generatePageHTML = (templateData: any) => {
              <div class="text-center">
                  ${template.emotional.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'emotional', template.styles.emotionalBadgeColor) : template.styles.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.accentColor};">${template.emotional.badge}</div>` : ''}
                  <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id, 'emotional', template.styles.emotionalTitleColor) : template.styles.textColor};">${template.emotional.title}</h2>
-                 <p class="text-lg max-w-4xl mx-auto opacity-90 mb-8" style="color: ${isPremium ? getPremiumTextColor(template.id, 'emotional', template.styles.emotionalTextColor) : template.styles.textColor};">${template.emotional.description}</p>
+                 <p class="text-lg max-w-4xl mx-auto opacity-90 mb-8" style="color: ${isPremium ? getPremiumTextColor(template.id, 'emotional', template.styles.emotionalTextColor) : template.styles.textColor};">${template.emotional.content || template.emotional.description || ''}</p>
+                 ${template.emotional.quote ? `
+                 <blockquote class="text-xl italic mb-4 max-w-3xl mx-auto" style="color: ${isPremium ? getPremiumTextColor(template.id, 'emotional') : template.styles.textColor}; opacity: 0.9;">
+                     "${template.emotional.quote}"
+                 </blockquote>
+                 ${template.emotional.author ? `<cite class="text-sm" style="color: ${isPremium ? getPremiumTextColor(template.id, 'emotional') : template.styles.textColor}; opacity: 0.7;">- ${template.emotional.author}</cite>` : ''}
+                 ` : ''}
                  ${template.emotional.button1Text || template.emotional.button2Text ? `
-                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                 <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
                      ${template.emotional.button1Text ? `
                      <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white ${isPremium ? 'glass-effect' : ''}" style="background-color: ${template.styles.primaryColor}; ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}">
                          ${template.emotional.button1Icon ? `<i class="ri-${template.emotional.button1Icon}"></i>` : ''}
