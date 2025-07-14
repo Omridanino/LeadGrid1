@@ -158,6 +158,23 @@ const VisualLandingPageEditor = ({
             { title: 'שלב 3', description: 'תיאור השלב השלישי', duration: '1 שבוע' }
           ]
         },
+        benefits: generatedContent.benefits || {
+          title: 'היתרונות שלנו',
+          subtitle: 'מה תרווחו מעבודה איתנו',
+          items: [
+            { title: 'יתרון ראשי 1', description: 'תיאור היתרון הראשון', icon: 'trending-up' },
+            { title: 'יתרון ראשי 2', description: 'תיאור היתרון השני', icon: 'shield' },
+            { title: 'יתרון ראשי 3', description: 'תיאור היתרון השלישי', icon: 'star' }
+          ]
+        },
+        socialBar: generatedContent.socialBar || {
+          platforms: [
+            { name: 'Facebook', icon: 'facebook', url: '#', label: 'עמוד הפייסבוק' },
+            { name: 'Instagram', icon: 'instagram', url: '#', label: 'האינסטגרם' },
+            { name: 'LinkedIn', icon: 'linkedin', url: '#', label: 'הלינקדאין' },
+            { name: 'WhatsApp', icon: 'whatsapp', url: '#', label: 'וואטסאפ' }
+          ]
+        },
         services: generatedContent.services ? {
           title: generatedContent.services.title || 'השירותים שלנו',
           subtitle: generatedContent.services.subtitle || 'פתרונות מקצועיים עבור העסק שלך',
@@ -356,6 +373,23 @@ const VisualLandingPageEditor = ({
           { title: 'שלב 2', description: 'תיאור השלב השני', duration: '3-5 ימים' },
           { title: 'שלב 3', description: 'תיאור השלב השלישי', duration: '1 שבוע' }
         ]
+      },
+      benefits: {
+        title: 'היתרונות שלנו',
+        subtitle: 'מה תרווחו מעבודה איתנו',
+        items: [
+          { title: 'יתרון ראשי 1', description: 'תיאור היתרון הראשון', icon: 'trending-up' },
+          { title: 'יתרון ראשי 2', description: 'תיאור היתרון השני', icon: 'shield' },
+          { title: 'יתרון ראשי 3', description: 'תיאור היתרון השלישי', icon: 'star' }
+        ]
+      },
+      socialBar: {
+        platforms: [
+          { name: 'Facebook', icon: 'facebook', url: '#', label: 'עמוד הפייסבוק' },
+          { name: 'Instagram', icon: 'instagram', url: '#', label: 'האינסטגרם' },
+          { name: 'LinkedIn', icon: 'linkedin', url: '#', label: 'הלינקדאין' },
+          { name: 'WhatsApp', icon: 'whatsapp', url: '#', label: 'וואטסאפ' }
+        ]
       }
     };
   };
@@ -490,6 +524,23 @@ const VisualLandingPageEditor = ({
           { title: 'שלב ראשון', description: 'תיאור השלב הראשון', duration: '1-2 ימים', icon: 'number-1' },
           { title: 'שלב שני', description: 'תיאור השלב השני', duration: '3-5 ימים', icon: 'number-2' },
           { title: 'שלב שלישי', description: 'תיאור השלב השלישי', duration: '1 שבוע', icon: 'number-3' }
+        ]
+      },
+      benefits: generatedData.benefits || {
+        title: 'היתרונות שלנו',
+        subtitle: 'מה תרווחו מעבודה איתנו',
+        items: [
+          { title: 'יתרון ראשי 1', description: 'תיאור היתרון הראשון', icon: 'trending-up' },
+          { title: 'יתרון ראשי 2', description: 'תיאור היתרון השני', icon: 'shield' },
+          { title: 'יתרון ראשי 3', description: 'תיאור היתרון השלישי', icon: 'star' }
+        ]
+      },
+      socialBar: generatedData.socialBar || {
+        platforms: [
+          { name: 'Facebook', icon: 'facebook', url: '#', label: 'עמוד הפייסבוק' },
+          { name: 'Instagram', icon: 'instagram', url: '#', label: 'האינסטגרם' },
+          { name: 'LinkedIn', icon: 'linkedin', url: '#', label: 'הלינקדאין' },
+          { name: 'WhatsApp', icon: 'whatsapp', url: '#', label: 'וואטסאפ' }
         ]
       },
       contact: generatedData.contact || {
@@ -912,6 +963,7 @@ const VisualLandingPageEditor = ({
     { id: 'features', name: 'תכונות', icon: Layout },
     { id: 'about', name: 'אודותינו', icon: Circle },
     { id: 'whyUs', name: 'למה לבחור בנו', icon: Trophy },
+    { id: 'benefits', name: 'היתרונות שלנו', icon: Star },
     { id: 'whatWeGive', name: 'מה אנחנו נותנים', icon: Target },
     { id: 'gallery', name: 'גלריה', icon: ImageIcon },
     { id: 'process', name: 'התהליך שלנו', icon: Users },
@@ -919,6 +971,7 @@ const VisualLandingPageEditor = ({
     { id: 'testimonials', name: 'המלצות', icon: Type },
     { id: 'faq', name: 'שאלות נפוצות', icon: Eye },
     { id: 'pricing', name: 'מחירים', icon: Square },
+    { id: 'socialBar', name: 'רשתות חברתיות', icon: Globe },
     { id: 'contact', name: 'יצירת קשר', icon: MousePointer }
   ];
 
@@ -1992,6 +2045,73 @@ const VisualLandingPageEditor = ({
                                 value={service.description || ''}
                                 onChange={(e) => updateContent('whatWeGive', `services.${index}.description`, e.target.value)}
                                 placeholder="תיאור השירות"
+                              />
+                            </div>
+                          ))}
+                        </>
+                      )}
+
+                      {/* Benefits Content Editor */}
+                      {activeSection === 'benefits' && editableContent?.benefits && (
+                        <>
+                          <div>
+                            <Label className="text-xs">כותרת ראשית</Label>
+                            <Input
+                              value={editableContent?.benefits?.title || ''}
+                              onChange={(e) => updateContent('benefits', 'title', e.target.value)}
+                              placeholder="היתרונות שלנו"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-xs">כותרת משנה</Label>
+                            <Input
+                              value={editableContent?.benefits?.subtitle || ''}
+                              onChange={(e) => updateContent('benefits', 'subtitle', e.target.value)}
+                              placeholder="מה תרווחו מעבודה איתנו"
+                            />
+                          </div>
+                          {editableContent?.benefits?.items?.map((item: any, index: number) => (
+                            <div key={index} className="border p-4 rounded-lg space-y-2">
+                              <Label className="text-xs">יתרון {index + 1}</Label>
+                              <Input
+                                value={item.title || ''}
+                                onChange={(e) => updateContent('benefits', `items.${index}.title`, e.target.value)}
+                                placeholder="כותרת היתרון"
+                              />
+                              <Textarea
+                                value={item.description || ''}
+                                onChange={(e) => updateContent('benefits', `items.${index}.description`, e.target.value)}
+                                placeholder="תיאור היתרון"
+                              />
+                            </div>
+                          ))}
+                        </>
+                      )}
+
+                      {/* Social Bar Content Editor */}
+                      {activeSection === 'socialBar' && editableContent?.socialBar && (
+                        <>
+                          <div>
+                            <Label className="text-xs">רשתות חברתיות</Label>
+                            <p className="text-xs text-gray-500 mb-4">נהל את הרשתות החברתיות שלך</p>
+                          </div>
+                          {editableContent?.socialBar?.platforms?.map((platform: any, index: number) => (
+                            <div key={index} className="border p-4 rounded-lg space-y-2">
+                              <Label className="text-xs">רשת חברתית {index + 1}</Label>
+                              <Input
+                                value={platform.name || ''}
+                                onChange={(e) => updateContent('socialBar', `platforms.${index}.name`, e.target.value)}
+                                placeholder="שם הרשת (Facebook, Instagram, etc.)"
+                              />
+                              <Input
+                                value={platform.url || ''}
+                                onChange={(e) => updateContent('socialBar', `platforms.${index}.url`, e.target.value)}
+                                placeholder="קישור לרשת החברתית"
+                              />
+                              <Input
+                                value={platform.label || ''}
+                                onChange={(e) => updateContent('socialBar', `platforms.${index}.label`, e.target.value)}
+                                placeholder="תיאור (עמוד הפייסבוק שלנו)"
                               />
                             </div>
                           ))}
