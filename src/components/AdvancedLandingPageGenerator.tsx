@@ -505,19 +505,25 @@ const AdvancedLandingPageGenerator = ({
               <div className="w-full h-full overflow-y-auto">
                 <div className="bg-white text-gray-900 min-h-full">
                   {/* Hero Section */}
-                  <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20 px-6 text-center">
-                    <div className="max-w-4xl mx-auto">
-                      <div className="inline-block bg-white/10 rounded-full px-4 py-2 mb-6">
-                        <span className="text-sm">{generatedPage.hero?.badge}</span>
+                  <section className="bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950 text-white py-20 px-6 text-center relative overflow-hidden">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-10">
+                      <div className="absolute top-10 left-10 w-32 h-32 border border-purple-400/30 rounded-full"></div>
+                      <div className="absolute top-40 right-20 w-20 h-20 border border-indigo-400/20 rounded-full"></div>
+                      <div className="absolute bottom-20 left-1/3 w-16 h-16 border border-purple-300/20 rounded-full"></div>
+                    </div>
+                    <div className="max-w-4xl mx-auto relative z-10">
+                      <div className="inline-block bg-purple-500/20 rounded-full px-4 py-2 mb-6 border border-purple-400/30">
+                        <span className="text-sm text-purple-300">{generatedPage.hero?.badge}</span>
                       </div>
                       <h1 className="text-5xl font-bold mb-6">{generatedPage.hero?.title}</h1>
-                      <h2 className="text-2xl mb-4">{generatedPage.hero?.subtitle}</h2>
-                      <p className="text-xl mb-8 opacity-90">{generatedPage.hero?.description}</p>
+                      <h2 className="text-2xl mb-4 text-gray-300">{generatedPage.hero?.subtitle}</h2>
+                      <p className="text-xl mb-8 text-gray-300">{generatedPage.hero?.description}</p>
                       <div className="flex gap-4 justify-center">
-                        <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100">
+                        <button className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-purple-600 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105">
                           {generatedPage.hero?.button1Text}
                         </button>
-                        <button className="border border-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10">
+                        <button className="border border-purple-400/50 bg-white/5 backdrop-blur-sm px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
                           {generatedPage.hero?.button2Text}
                         </button>
                       </div>
@@ -526,22 +532,27 @@ const AdvancedLandingPageGenerator = ({
 
                   {/* Emotional Section */}
                   {generatedPage.emotional && (
-                    <section className="py-20 px-6 bg-gradient-to-b from-gray-50 to-white">
-                      <div className="max-w-6xl mx-auto text-center">
+                    <section className="py-20 px-6 bg-gradient-to-b from-slate-800 to-slate-900 text-white relative overflow-hidden">
+                      {/* Background Pattern */}
+                      <div className="absolute inset-0 opacity-5">
+                        <div className="absolute top-20 right-10 w-40 h-40 border border-purple-400/30 rounded-full"></div>
+                        <div className="absolute bottom-20 left-10 w-32 h-32 border border-indigo-400/20 rounded-full"></div>
+                      </div>
+                      <div className="max-w-6xl mx-auto text-center relative z-10">
                         {generatedPage.emotional.badge && (
-                          <div className="inline-block bg-blue-100 text-blue-600 rounded-full px-4 py-2 mb-6">
+                          <div className="inline-block bg-purple-500/20 text-purple-300 rounded-full px-4 py-2 mb-6 border border-purple-400/30">
                             <span className="text-sm font-medium">{generatedPage.emotional.badge}</span>
                           </div>
                         )}
-                        <h2 className="text-4xl font-bold mb-6 text-gray-900">{generatedPage.emotional.title}</h2>
-                        <p className="text-xl text-gray-700 mb-8 max-w-4xl mx-auto leading-relaxed">{generatedPage.emotional.content}</p>
+                        <h2 className="text-4xl font-bold mb-6">{generatedPage.emotional.title}</h2>
+                        <p className="text-xl text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed">{generatedPage.emotional.content}</p>
                         {generatedPage.emotional.quote && (
                           <div className="max-w-3xl mx-auto">
-                            <blockquote className="text-2xl italic text-gray-600 mb-4">
+                            <blockquote className="text-2xl italic text-purple-300 mb-4">
                               "{generatedPage.emotional.quote}"
                             </blockquote>
                             {generatedPage.emotional.author && (
-                              <cite className="text-lg text-gray-500">- {generatedPage.emotional.author}</cite>
+                              <cite className="text-lg text-gray-400">- {generatedPage.emotional.author}</cite>
                             )}
                           </div>
                         )}
@@ -551,24 +562,29 @@ const AdvancedLandingPageGenerator = ({
 
                   {/* About Section */}
                   {generatedPage.about && (
-                    <section className="py-16 px-6">
-                      <div className="max-w-6xl mx-auto">
+                    <section className="py-16 px-6 bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950 text-white relative overflow-hidden">
+                      {/* Background Pattern */}
+                      <div className="absolute inset-0 opacity-10">
+                        <div className="absolute top-10 left-20 w-24 h-24 border border-purple-400/30 rounded-full"></div>
+                        <div className="absolute bottom-10 right-20 w-32 h-32 border border-indigo-400/20 rounded-full"></div>
+                      </div>
+                      <div className="max-w-6xl mx-auto relative z-10">
                         <div className="grid md:grid-cols-2 gap-12 items-center">
                           <div>
                             <h2 className="text-3xl font-bold mb-4">{generatedPage.about.title}</h2>
-                            <p className="text-xl text-blue-600 mb-6">{generatedPage.about.subtitle}</p>
-                            <p className="text-gray-600 mb-8 leading-relaxed">{generatedPage.about.description}</p>
+                            <p className="text-xl text-purple-300 mb-6">{generatedPage.about.subtitle}</p>
+                            <p className="text-gray-300 mb-8 leading-relaxed">{generatedPage.about.description}</p>
                             <div className="grid grid-cols-3 gap-6">
                               {generatedPage.about.stats?.map((stat: any, index: number) => (
-                                <div key={index} className="text-center">
-                                  <div className="text-2xl font-bold text-blue-600">{stat.number}</div>
-                                  <div className="text-sm text-gray-600">{stat.label}</div>
+                                <div key={index} className="text-center bg-white/5 rounded-lg p-4 backdrop-blur-sm border border-white/10">
+                                  <div className="text-2xl font-bold text-purple-300">{stat.number}</div>
+                                  <div className="text-sm text-gray-400">{stat.label}</div>
                                 </div>
                               ))}
                             </div>
                           </div>
-                          <div className="bg-gray-100 rounded-lg h-64 flex items-center justify-center">
-                            <span className="text-gray-500">📸 {generatedPage.about.image}</span>
+                          <div className="bg-white/5 backdrop-blur-sm rounded-lg h-64 flex items-center justify-center border border-white/10">
+                            <span className="text-purple-300">📸 {generatedPage.about.image}</span>
                           </div>
                         </div>
                       </div>
@@ -693,48 +709,58 @@ const AdvancedLandingPageGenerator = ({
                      </section>
                    )}
 
-                   {/* Testimonials Section */}
-                   {generatedPage.testimonials && (
-                     <section className="py-16 px-6">
-                       <div className="max-w-4xl mx-auto text-center">
-                         <h2 className="text-3xl font-bold mb-12">{generatedPage.testimonials.title}</h2>
-                         <div className="grid md:grid-cols-2 gap-8">
-                           {generatedPage.testimonials.testimonials?.map((testimonial: any, index: number) => (
-                             <div key={index} className="bg-gray-50 p-6 rounded-lg">
-                               <div className="flex text-yellow-400 mb-4">
-                                 {[...Array(5)].map((_, i) => (
-                                   <span key={i}>⭐</span>
-                                 ))}
-                               </div>
-                               <p className="text-gray-700 mb-4">"{testimonial.content}"</p>
-                               <div className="font-semibold">{testimonial.name}</div>
-                               <div className="text-gray-600 text-sm">{testimonial.role}</div>
-                             </div>
-                           ))}
-                         </div>
-                       </div>
-                     </section>
-                   )}
+                  {/* Testimonials Section */}
+                  {generatedPage.testimonials && (
+                    <section className="py-16 px-6 bg-gradient-to-br from-slate-800 to-slate-900 text-white relative overflow-hidden">
+                      {/* Background Pattern */}
+                      <div className="absolute inset-0 opacity-5">
+                        <div className="absolute top-20 left-10 w-32 h-32 border border-purple-400/30 rounded-full"></div>
+                        <div className="absolute bottom-10 right-20 w-24 h-24 border border-indigo-400/20 rounded-full"></div>
+                      </div>
+                      <div className="max-w-4xl mx-auto text-center relative z-10">
+                        <h2 className="text-3xl font-bold mb-12">{generatedPage.testimonials.title}</h2>
+                        <div className="grid md:grid-cols-2 gap-8">
+                          {generatedPage.testimonials.testimonials?.map((testimonial: any, index: number) => (
+                            <div key={index} className="bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-300">
+                              <div className="flex text-yellow-400 mb-4">
+                                {[...Array(5)].map((_, i) => (
+                                  <span key={i}>⭐</span>
+                                ))}
+                              </div>
+                              <p className="text-gray-300 mb-4">"{testimonial.content}"</p>
+                              <div className="font-semibold text-purple-300">{testimonial.name}</div>
+                              <div className="text-gray-400 text-sm">{testimonial.role}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </section>
+                  )}
 
                   {/* Pricing Section */}
                   {generatedPage.pricing && (
-                    <section className="py-16 px-6 bg-gray-50">
-                      <div className="max-w-4xl mx-auto text-center">
+                    <section className="py-16 px-6 bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950 text-white relative overflow-hidden">
+                      {/* Background Pattern */}
+                      <div className="absolute inset-0 opacity-10">
+                        <div className="absolute top-20 right-10 w-28 h-28 border border-purple-400/30 rounded-full"></div>
+                        <div className="absolute bottom-20 left-10 w-36 h-36 border border-indigo-400/20 rounded-full"></div>
+                      </div>
+                      <div className="max-w-4xl mx-auto text-center relative z-10">
                         <h2 className="text-3xl font-bold mb-12">{generatedPage.pricing.title}</h2>
                         <div className="grid md:grid-cols-2 gap-8">
                           {generatedPage.pricing.plans?.map((plan: any, index: number) => (
-                            <div key={index} className="bg-white p-8 rounded-lg shadow-sm border">
-                              <h3 className="text-xl font-bold mb-4">{plan.name}</h3>
-                              <div className="text-3xl font-bold text-blue-600 mb-6">{plan.price}</div>
+                            <div key={index} className="bg-white/5 backdrop-blur-sm p-8 rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-2">
+                              <h3 className="text-xl font-bold mb-4 text-purple-300">{plan.name}</h3>
+                              <div className="text-3xl font-bold text-white mb-6">{plan.price}</div>
                               <ul className="space-y-3 mb-8">
                                 {plan.features?.map((feature: string, featureIndex: number) => (
-                                  <li key={featureIndex} className="flex items-center">
-                                    <span className="text-green-500 mr-2">✓</span>
+                                  <li key={featureIndex} className="flex items-center text-gray-300">
+                                    <span className="text-green-400 mr-2">✓</span>
                                     {feature}
                                   </li>
                                 ))}
                               </ul>
-                              <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">
+                              <button className="w-full bg-gradient-to-r from-purple-500 to-indigo-600 text-white py-3 rounded-lg font-semibold hover:from-purple-600 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105">
                                 בחר חבילה
                               </button>
                             </div>
@@ -747,24 +773,29 @@ const AdvancedLandingPageGenerator = ({
 
                   {/* Gallery Section */}
                   {generatedPage.gallery && (
-                    <section className="py-20 px-6 bg-gray-50">
-                      <div className="max-w-6xl mx-auto text-center">
+                    <section className="py-20 px-6 bg-gradient-to-br from-slate-800 to-slate-900 text-white relative overflow-hidden">
+                      {/* Background Pattern */}
+                      <div className="absolute inset-0 opacity-5">
+                        <div className="absolute top-10 left-20 w-40 h-40 border border-purple-400/30 rounded-full"></div>
+                        <div className="absolute bottom-20 right-10 w-32 h-32 border border-indigo-400/20 rounded-full"></div>
+                      </div>
+                      <div className="max-w-6xl mx-auto text-center relative z-10">
                         {generatedPage.gallery.badge && (
-                          <div className="inline-block bg-blue-100 text-blue-600 rounded-full px-4 py-2 mb-6">
+                          <div className="inline-block bg-purple-500/20 text-purple-300 rounded-full px-4 py-2 mb-6 border border-purple-400/30">
                             <span className="text-sm font-medium">{generatedPage.gallery.badge}</span>
                           </div>
                         )}
-                        <h2 className="text-4xl font-bold mb-6 text-gray-900">{generatedPage.gallery.title}</h2>
+                        <h2 className="text-4xl font-bold mb-6">{generatedPage.gallery.title}</h2>
                         {generatedPage.gallery.subtitle && (
-                          <p className="text-xl text-gray-700 mb-12 max-w-4xl mx-auto">{generatedPage.gallery.subtitle}</p>
+                          <p className="text-xl text-gray-300 mb-12 max-w-4xl mx-auto">{generatedPage.gallery.subtitle}</p>
                         )}
                         <div className={`grid gap-6 ${generatedPage.gallery.columns === 4 ? 'grid-cols-2 md:grid-cols-4' : generatedPage.gallery.columns === 3 ? 'grid-cols-1 md:grid-cols-3' : 'grid-cols-1 md:grid-cols-2'}`}>
                           {generatedPage.gallery.images?.map((image: any, index: number) => (
-                            <div key={index} className="rounded-lg overflow-hidden shadow-md">
+                            <div key={index} className="rounded-lg overflow-hidden shadow-md border border-white/10 hover:border-purple-400/50 transition-all duration-300 transform hover:-translate-y-2">
                               <img src={image.src} alt={image.alt || `תמונה ${index + 1}`} className="w-full h-64 object-cover" />
                               {image.caption && (
-                                <div className="p-4 bg-white">
-                                  <p className="text-gray-700">{image.caption}</p>
+                                <div className="p-4 bg-white/5 backdrop-blur-sm">
+                                  <p className="text-gray-300">{image.caption}</p>
                                 </div>
                               )}
                             </div>
@@ -777,19 +808,24 @@ const AdvancedLandingPageGenerator = ({
 
                   {/* Text Section */}
                   {generatedPage.text && (
-                    <section className="py-16 px-6">
-                      <div className="max-w-4xl mx-auto">
+                    <section className="py-16 px-6 bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950 text-white relative overflow-hidden">
+                      {/* Background Pattern */}
+                      <div className="absolute inset-0 opacity-10">
+                        <div className="absolute top-20 right-20 w-24 h-24 border border-purple-400/30 rounded-full"></div>
+                        <div className="absolute bottom-10 left-20 w-32 h-32 border border-indigo-400/20 rounded-full"></div>
+                      </div>
+                      <div className="max-w-4xl mx-auto relative z-10">
                         {generatedPage.text.badge && (
                           <div className="text-center mb-6">
-                            <div className="inline-block bg-blue-100 text-blue-600 rounded-full px-4 py-2">
+                            <div className="inline-block bg-purple-500/20 text-purple-300 rounded-full px-4 py-2 border border-purple-400/30">
                               <span className="text-sm font-medium">{generatedPage.text.badge}</span>
                             </div>
                           </div>
                         )}
                         {generatedPage.text.title && (
-                          <h2 className="text-3xl font-bold mb-6 text-gray-900 text-center">{generatedPage.text.title}</h2>
+                          <h2 className="text-3xl font-bold mb-6 text-center">{generatedPage.text.title}</h2>
                         )}
-                        <div className={`text-gray-700 leading-relaxed ${generatedPage.text.textSize === 'large' ? 'text-xl' : generatedPage.text.textSize === 'small' ? 'text-sm' : 'text-base'} ${generatedPage.text.alignment === 'center' ? 'text-center' : generatedPage.text.alignment === 'left' ? 'text-left' : 'text-right'}`}>
+                        <div className={`text-gray-300 leading-relaxed ${generatedPage.text.textSize === 'large' ? 'text-xl' : generatedPage.text.textSize === 'small' ? 'text-sm' : 'text-base'} ${generatedPage.text.alignment === 'center' ? 'text-center' : generatedPage.text.alignment === 'left' ? 'text-left' : 'text-right'}`}>
                           {generatedPage.text.content}
                         </div>
                       </div>
@@ -881,8 +917,13 @@ const AdvancedLandingPageGenerator = ({
 
                    {/* Social Bar Section */}
                    {generatedPage.socialBar && generatedPage.socialBar.platforms && (
-                     <section className="py-16 px-6 bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700">
-                       <div className="max-w-4xl mx-auto text-center">
+                     <section className="py-16 px-6 bg-gradient-to-br from-slate-900 via-purple-950 to-indigo-950 text-white relative overflow-hidden">
+                       {/* Background Pattern */}
+                       <div className="absolute inset-0 opacity-10">
+                         <div className="absolute top-10 left-10 w-32 h-32 border border-purple-400/30 rounded-full"></div>
+                         <div className="absolute bottom-10 right-10 w-24 h-24 border border-indigo-400/20 rounded-full"></div>
+                       </div>
+                       <div className="max-w-4xl mx-auto text-center relative z-10">
                          <div className="flex justify-center gap-6 flex-wrap">
                            {generatedPage.socialBar.platforms.map((platform: any, index: number) => {
                              const getIcon = (name: string) => {
@@ -902,7 +943,7 @@ const AdvancedLandingPageGenerator = ({
                                <a 
                                  key={index} 
                                  href={platform.url || '#'} 
-                                 className="group bg-white/20 hover:bg-white/30 text-white p-4 rounded-full transition-all duration-300 transform hover:scale-110 hover:shadow-lg flex items-center gap-2"
+                                 className="group bg-white/5 hover:bg-white/10 text-white p-4 rounded-full transition-all duration-300 transform hover:scale-110 hover:shadow-lg flex items-center gap-2 border border-white/10 backdrop-blur-sm"
                                  aria-label={platform.label}
                                >
                                  <span className="text-2xl">{getIcon(platform.name)}</span>
@@ -913,7 +954,7 @@ const AdvancedLandingPageGenerator = ({
                              );
                            })}
                          </div>
-                         <div className="mt-8 text-white/80 text-sm">
+                         <div className="mt-8 text-gray-300 text-sm">
                            <p>🚀 הצטרפו לקהילה שלנו ברשתות החברתיות לעדכונים ותכנים בלעדיים</p>
                          </div>
                        </div>
@@ -922,57 +963,62 @@ const AdvancedLandingPageGenerator = ({
 
                   {/* Contact Section */}
                   {generatedPage.contact && (
-                    <section className="py-16 px-6 bg-blue-600 text-white">
-                      <div className="max-w-6xl mx-auto">
+                    <section className="py-16 px-6 bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950 text-white relative overflow-hidden">
+                      {/* Background Pattern */}
+                      <div className="absolute inset-0 opacity-10">
+                        <div className="absolute top-20 left-20 w-40 h-40 border border-purple-400/30 rounded-full"></div>
+                        <div className="absolute bottom-20 right-20 w-32 h-32 border border-indigo-400/20 rounded-full"></div>
+                      </div>
+                      <div className="max-w-6xl mx-auto relative z-10">
                         <div className="text-center mb-12">
                           <h2 className="text-3xl font-bold mb-4">{generatedPage.contact.title}</h2>
-                          <p className="text-xl opacity-90 mb-2">{generatedPage.contact.subtitle}</p>
-                          <p className="opacity-80">{generatedPage.contact.description}</p>
+                          <p className="text-xl text-gray-300 mb-2">{generatedPage.contact.subtitle}</p>
+                          <p className="text-gray-400">{generatedPage.contact.description}</p>
                         </div>
                         <div className="grid md:grid-cols-2 gap-12">
                           {/* Contact Form */}
-                          <div className="bg-white rounded-lg p-8 text-gray-900">
+                          <div className="bg-white/5 backdrop-blur-sm rounded-lg p-8 border border-white/10">
                             <form className="space-y-4">
                               <div>
-                                <label className="block text-sm font-medium mb-2">{generatedPage.contact.form?.nameLabel}</label>
-                                <input type="text" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                                <label className="block text-sm font-medium mb-2 text-gray-300">{generatedPage.contact.form?.nameLabel}</label>
+                                <input type="text" className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-white placeholder-gray-400" />
                               </div>
                               <div>
-                                <label className="block text-sm font-medium mb-2">{generatedPage.contact.form?.emailLabel}</label>
-                                <input type="email" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                                <label className="block text-sm font-medium mb-2 text-gray-300">{generatedPage.contact.form?.emailLabel}</label>
+                                <input type="email" className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-white placeholder-gray-400" />
                               </div>
                               <div>
-                                <label className="block text-sm font-medium mb-2">{generatedPage.contact.form?.phoneLabel}</label>
-                                <input type="tel" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                                <label className="block text-sm font-medium mb-2 text-gray-300">{generatedPage.contact.form?.phoneLabel}</label>
+                                <input type="tel" className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-white placeholder-gray-400" />
                               </div>
                               <div>
-                                <label className="block text-sm font-medium mb-2">{generatedPage.contact.form?.messageLabel}</label>
-                                <textarea rows={4} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                                <label className="block text-sm font-medium mb-2 text-gray-300">{generatedPage.contact.form?.messageLabel}</label>
+                                <textarea rows={4} className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-white placeholder-gray-400"></textarea>
                               </div>
-                              <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                              <button type="submit" className="w-full bg-gradient-to-r from-purple-500 to-indigo-600 text-white py-3 rounded-lg font-semibold hover:from-purple-600 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105">
                                 {generatedPage.contact.form?.submitText}
                               </button>
                             </form>
                           </div>
                           {/* Contact Info */}
                           <div className="space-y-6">
-                            <div className="bg-white/10 rounded-lg p-6">
-                              <h3 className="font-semibold mb-4">פרטי יצירת קשר</h3>
+                            <div className="bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10">
+                              <h3 className="font-semibold mb-4 text-purple-300">פרטי יצירת קשר</h3>
                               <div className="space-y-3">
-                                <div className="flex items-center">
-                                  <span className="mr-3">📍</span>
+                                <div className="flex items-center text-gray-300">
+                                  <span className="mr-3 text-purple-400">📍</span>
                                   <span>{generatedPage.contact.info?.address}</span>
                                 </div>
-                                <div className="flex items-center">
-                                  <span className="mr-3">📞</span>
+                                <div className="flex items-center text-gray-300">
+                                  <span className="mr-3 text-purple-400">📞</span>
                                   <span>{generatedPage.contact.info?.phone}</span>
                                 </div>
-                                <div className="flex items-center">
-                                  <span className="mr-3">✉️</span>
+                                <div className="flex items-center text-gray-300">
+                                  <span className="mr-3 text-purple-400">✉️</span>
                                   <span>{generatedPage.contact.info?.email}</span>
                                 </div>
-                                <div className="flex items-center">
-                                  <span className="mr-3">🕒</span>
+                                <div className="flex items-center text-gray-300">
+                                  <span className="mr-3 text-purple-400">🕒</span>
                                   <span>{generatedPage.contact.info?.hours}</span>
                                 </div>
                               </div>
