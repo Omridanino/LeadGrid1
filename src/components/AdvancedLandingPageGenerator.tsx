@@ -638,16 +638,23 @@ const AdvancedLandingPageGenerator = ({
 
                    {/* Why Choose Us Section */}
                    {generatedPage.whyUs && (
-                     <section className="py-20 px-6 bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-                       <div className="max-w-6xl mx-auto text-center">
+                     <section className="py-20 px-6 bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950 text-white relative overflow-hidden">
+                       {/* Background Pattern */}
+                       <div className="absolute inset-0 opacity-10">
+                         <div className="absolute top-20 left-20 w-40 h-40 border border-purple-400/30 rounded-full"></div>
+                         <div className="absolute top-60 right-32 w-24 h-24 border border-indigo-400/20 rounded-full"></div>
+                         <div className="absolute bottom-32 left-1/3 w-32 h-32 border border-purple-300/20 rounded-full"></div>
+                       </div>
+                       
+                       <div className="max-w-6xl mx-auto text-center relative z-10">
                          {generatedPage.whyUs.badge && (
-                           <div className="inline-block bg-indigo-100 text-indigo-600 rounded-full px-6 py-2 mb-6">
+                           <div className="inline-block bg-purple-500/20 text-purple-300 rounded-full px-6 py-2 mb-6 border border-purple-400/30">
                              <span className="text-sm font-medium">{generatedPage.whyUs.badge}</span>
                            </div>
                          )}
-                         <h2 className="text-4xl font-bold mb-6 text-gray-900">{generatedPage.whyUs.title}</h2>
+                         <h2 className="text-4xl font-bold mb-6 text-white">{generatedPage.whyUs.title}</h2>
                          {generatedPage.whyUs.subtitle && (
-                           <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">{generatedPage.whyUs.subtitle}</p>
+                           <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">{generatedPage.whyUs.subtitle}</p>
                          )}
                          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                            {generatedPage.whyUs.items?.map((item: any, index: number) => {
@@ -664,16 +671,16 @@ const AdvancedLandingPageGenerator = ({
                              };
                              
                              return (
-                               <div key={index} className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-3 border border-gray-100 relative overflow-hidden">
-                                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 to-purple-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                 <div className="relative z-10">
-                                   <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                                     <span className="text-2xl">{getIcon(item.icon)}</span>
+                               <div key={index} className="group relative">
+                                 <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-indigo-500/20 rounded-2xl blur-xl group-hover:blur-lg transition-all duration-300"></div>
+                                 <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-2">
+                                   <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                                     <span className="text-2xl text-white">{getIcon(item.icon)}</span>
                                    </div>
-                                   <h3 className="text-xl font-bold mb-4 text-gray-900 group-hover:text-indigo-600 transition-colors duration-300">{item.title}</h3>
-                                   <p className="text-gray-600 leading-relaxed mb-4">{item.description}</p>
+                                   <h3 className="text-xl font-bold mb-4 text-white group-hover:text-purple-300 transition-colors duration-300">{item.title}</h3>
+                                   <p className="text-gray-300 leading-relaxed mb-4">{item.description}</p>
                                    {item.stats && (
-                                     <div className="inline-block bg-green-50 text-green-700 px-4 py-2 rounded-full text-sm font-medium border border-green-200">
+                                     <div className="inline-block bg-purple-500/20 text-purple-300 px-4 py-2 rounded-full text-sm font-medium border border-purple-400/30">
                                        📊 {item.stats}
                                      </div>
                                    )}
