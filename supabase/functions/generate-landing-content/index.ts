@@ -12,9 +12,9 @@ serve(async (req) => {
   }
 
   try {
-    const { formData } = await req.json();
+    const { formData, designStyle = 'glass' } = await req.json();
     
-    console.log('Generating landing page for:', formData);
+    console.log('Generating landing page for:', formData, 'with design:', designStyle);
 
     const prompt = `
 אתה מומחה בעברית ליצירת דפי נחיתה מקצועיים עם כתיבה אנושית ומושכת. 
@@ -25,6 +25,13 @@ serve(async (req) => {
 יעד: ${formData.goals || 'הגדלת מכירות ומציאת לקוחות חדשים'}
 קהל יעד: ${formData.targetAudience || 'בעלי עסקים ולקוחות פרטיים'}
 תיאור: ${formData.businessDescription || 'עסק מקצועי המציע שירותים איכותיים'}
+עיצוב נבחר: ${designStyle}
+
+בהתאם לעיצוב שנבחר (${designStyle}), התאם את התוכן לסגנון הבא:
+${designStyle === 'glass' ? '- השתמש בתמות זכוכיתיות ונוזליות, שקיפות ואלגנטיות' : ''}
+${designStyle === 'geometric' ? '- השתמש בתמות גיאומטריות, צורות מדויקות ועיצוב מודרני' : ''}
+${designStyle === 'metal' ? '- השתמש בתמות מתכתיות, יוקרה ופרסטיז'ה' : ''}
+${designStyle === 'gradient' ? '- השתמש בתמות צבעוניות, חיוניות ואנרגיה' : ''}
 
 כללים לכתיבה:
 1. כתוב בשפה פשוטה וברורה, אנושית ומעניינת

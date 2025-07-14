@@ -24,6 +24,7 @@ const AdvancedLandingPageGenerator = ({
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [showQuickForm, setShowQuickForm] = useState(false);
+  const [selectedDesign, setSelectedDesign] = useState('glass');
   const [quickFormData, setQuickFormData] = useState({
     businessName: '',
     industry: '',
@@ -49,7 +50,7 @@ const AdvancedLandingPageGenerator = ({
       console.log('Generating landing page with formData:', dataToUse);
       
       const { data, error } = await supabase.functions.invoke('generate-landing-content', {
-        body: { formData: dataToUse }
+        body: { formData: dataToUse, designStyle: selectedDesign }
       });
 
       if (error) {
@@ -293,6 +294,68 @@ const AdvancedLandingPageGenerator = ({
                     <li>✅ עורך חזותי לעריכת כל רכיב</li>
                     <li>✅ אופציות התאמה אישית מלאות</li>
                   </ul>
+                </div>
+
+                {/* בחירת עיצוב */}
+                <div className="space-y-3">
+                  <h3 className="font-semibold">בחר עיצוב לדף:</h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div 
+                      className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                        selectedDesign === 'glass' 
+                          ? 'border-blue-500 bg-blue-50 dark:bg-blue-950' 
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                      onClick={() => setSelectedDesign('glass')}
+                    >
+                      <h4 className="font-medium">🪟 זכוכית נוזלית</h4>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        עיצוב מודרני עם אפקטים זכוכיתיים ונוזליים
+                      </p>
+                    </div>
+                    
+                    <div 
+                      className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                        selectedDesign === 'geometric' 
+                          ? 'border-purple-500 bg-purple-50 dark:bg-purple-950' 
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                      onClick={() => setSelectedDesign('geometric')}
+                    >
+                      <h4 className="font-medium">🔺 גיאומטרי</h4>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        עיצוב עם צורות גיאומטריות ואפקטים תלת מימדיים
+                      </p>
+                    </div>
+                    
+                    <div 
+                      className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                        selectedDesign === 'metal' 
+                          ? 'border-amber-500 bg-amber-50 dark:bg-amber-950' 
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                      onClick={() => setSelectedDesign('metal')}
+                    >
+                      <h4 className="font-medium">🥇 מתכתי יוקרתי</h4>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        עיצוב עם אפקטים מתכתיים ומראה יוקרתי
+                      </p>
+                    </div>
+                    
+                    <div 
+                      className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                        selectedDesign === 'gradient' 
+                          ? 'border-pink-500 bg-pink-50 dark:bg-pink-950' 
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                      onClick={() => setSelectedDesign('gradient')}
+                    >
+                      <h4 className="font-medium">🌈 גרדיאנטים</h4>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        עיצוב עם גרדיאנטים צבעוניים ואפקטים תלת מימדיים
+                      </p>
+                    </div>
+                  </div>
                 </div>
 
                 <Button 
@@ -1117,6 +1180,7 @@ const AdvancedLandingPageGenerator = ({
           onClose={() => setIsEditorOpen(false)}
           generatedContent={generatedPage}
           formData={formData}
+          selectedDesign={selectedDesign}
           onContentUpdate={(updatedContent) => {
             console.log('Content updated in editor:', updatedContent);
             setGeneratedPage(updatedContent);

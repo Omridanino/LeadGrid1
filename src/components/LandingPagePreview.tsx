@@ -5,13 +5,14 @@ import { ColorScheme } from "@/types/colors";
 
 interface LandingPagePreviewProps {
   content: any;
-  currentColors: ColorScheme;
+  currentColors?: ColorScheme;
   formData: any;
-  heroImage: string;
-  elements: string[];
+  heroImage?: string;
+  elements?: string[];
+  selectedDesign?: string;
 }
 
-const LandingPagePreview = ({ content, currentColors, formData, heroImage, elements }: LandingPagePreviewProps) => {
+const LandingPagePreview = ({ content, currentColors, formData, heroImage, elements, selectedDesign = 'glass' }: LandingPagePreviewProps) => {
   console.log('=== LandingPagePreview START ===');
   console.log('LandingPagePreview - content received:', content);
   console.log('LandingPagePreview - formData received:', formData);
