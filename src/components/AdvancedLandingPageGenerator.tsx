@@ -624,28 +624,78 @@ const AdvancedLandingPageGenerator = ({
                      </section>
                    )}
 
-                  {/* Testimonials Section */}
-                  {generatedPage.testimonials && (
-                    <section className="py-16 px-6">
-                      <div className="max-w-4xl mx-auto text-center">
-                        <h2 className="text-3xl font-bold mb-12">{generatedPage.testimonials.title}</h2>
-                        <div className="grid md:grid-cols-2 gap-8">
-                          {generatedPage.testimonials.testimonials?.map((testimonial: any, index: number) => (
-                            <div key={index} className="bg-gray-50 p-6 rounded-lg">
-                              <div className="flex text-yellow-400 mb-4">
-                                {[...Array(5)].map((_, i) => (
-                                  <span key={i}>⭐</span>
-                                ))}
-                              </div>
-                              <p className="text-gray-700 mb-4">"{testimonial.content}"</p>
-                              <div className="font-semibold">{testimonial.name}</div>
-                              <div className="text-gray-600 text-sm">{testimonial.role}</div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </section>
-                  )}
+                   {/* Why Choose Us Section */}
+                   {generatedPage.whyUs && (
+                     <section className="py-20 px-6 bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+                       <div className="max-w-6xl mx-auto text-center">
+                         {generatedPage.whyUs.badge && (
+                           <div className="inline-block bg-indigo-100 text-indigo-600 rounded-full px-6 py-2 mb-6">
+                             <span className="text-sm font-medium">{generatedPage.whyUs.badge}</span>
+                           </div>
+                         )}
+                         <h2 className="text-4xl font-bold mb-6 text-gray-900">{generatedPage.whyUs.title}</h2>
+                         {generatedPage.whyUs.subtitle && (
+                           <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">{generatedPage.whyUs.subtitle}</p>
+                         )}
+                         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                           {generatedPage.whyUs.items?.map((item: any, index: number) => {
+                             const getIcon = (iconName: string) => {
+                               switch(iconName) {
+                                 case 'award': return '🏆';
+                                 case 'users': return '👥';
+                                 case 'shield-check': return '🛡️';
+                                 case 'dollar-sign': return '💰';
+                                 case 'star': return '⭐';
+                                 case 'heart': return '❤️';
+                                 default: return '✨';
+                               }
+                             };
+                             
+                             return (
+                               <div key={index} className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-3 border border-gray-100 relative overflow-hidden">
+                                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 to-purple-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                 <div className="relative z-10">
+                                   <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                                     <span className="text-2xl">{getIcon(item.icon)}</span>
+                                   </div>
+                                   <h3 className="text-xl font-bold mb-4 text-gray-900 group-hover:text-indigo-600 transition-colors duration-300">{item.title}</h3>
+                                   <p className="text-gray-600 leading-relaxed mb-4">{item.description}</p>
+                                   {item.stats && (
+                                     <div className="inline-block bg-green-50 text-green-700 px-4 py-2 rounded-full text-sm font-medium border border-green-200">
+                                       📊 {item.stats}
+                                     </div>
+                                   )}
+                                 </div>
+                               </div>
+                             );
+                           })}
+                         </div>
+                       </div>
+                     </section>
+                   )}
+
+                   {/* Testimonials Section */}
+                   {generatedPage.testimonials && (
+                     <section className="py-16 px-6">
+                       <div className="max-w-4xl mx-auto text-center">
+                         <h2 className="text-3xl font-bold mb-12">{generatedPage.testimonials.title}</h2>
+                         <div className="grid md:grid-cols-2 gap-8">
+                           {generatedPage.testimonials.testimonials?.map((testimonial: any, index: number) => (
+                             <div key={index} className="bg-gray-50 p-6 rounded-lg">
+                               <div className="flex text-yellow-400 mb-4">
+                                 {[...Array(5)].map((_, i) => (
+                                   <span key={i}>⭐</span>
+                                 ))}
+                               </div>
+                               <p className="text-gray-700 mb-4">"{testimonial.content}"</p>
+                               <div className="font-semibold">{testimonial.name}</div>
+                               <div className="text-gray-600 text-sm">{testimonial.role}</div>
+                             </div>
+                           ))}
+                         </div>
+                       </div>
+                     </section>
+                   )}
 
                   {/* Pricing Section */}
                   {generatedPage.pricing && (
@@ -744,30 +794,49 @@ const AdvancedLandingPageGenerator = ({
                     </section>
                   )}
 
-                  {/* Video Section */}
-                  {generatedPage.video && (
-                    <section className="py-20 px-6 bg-black">
-                      <div className="max-w-4xl mx-auto text-center">
-                        {generatedPage.video.badge && (
-                          <div className="inline-block bg-blue-100 text-blue-600 rounded-full px-4 py-2 mb-6">
-                            <span className="text-sm font-medium">{generatedPage.video.badge}</span>
-                          </div>
-                        )}
-                        {generatedPage.video.title && (
-                          <h2 className="text-4xl font-bold mb-6 text-white">{generatedPage.video.title}</h2>
-                        )}
-                        {generatedPage.video.subtitle && (
-                          <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">{generatedPage.video.subtitle}</p>
-                        )}
-                        <div className="relative rounded-lg overflow-hidden shadow-2xl">
-                          <video controls className="w-full h-auto" poster={generatedPage.video.thumbnail}>
-                            <source src={generatedPage.video.url} type="video/mp4" />
-                            הדפדפן שלך לא תומך בוידאו
-                          </video>
-                        </div>
-                      </div>
-                    </section>
-                  )}
+                   {/* CTA Section */}
+                   {generatedPage.cta && (
+                     <section className="py-20 px-6 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600">
+                       <div className="max-w-4xl mx-auto text-center">
+                         {generatedPage.cta.badge && (
+                           <div className="inline-block bg-white/20 text-white rounded-full px-6 py-2 mb-6 border border-white/30">
+                             <span className="text-sm font-medium">{generatedPage.cta.badge}</span>
+                           </div>
+                         )}
+                         <h2 className="text-4xl font-bold mb-6 text-white">{generatedPage.cta.title}</h2>
+                         {generatedPage.cta.subtitle && (
+                           <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto">{generatedPage.cta.subtitle}</p>
+                         )}
+                         {generatedPage.cta.description && (
+                           <p className="text-lg text-white/80 mb-10 max-w-2xl mx-auto">{generatedPage.cta.description}</p>
+                         )}
+                         
+                         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
+                           {generatedPage.cta.button1Text && (
+                             <button className="bg-white text-indigo-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                               {generatedPage.cta.button1Text}
+                             </button>
+                           )}
+                           {generatedPage.cta.button2Text && (
+                             <button className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-indigo-600 transition-all duration-300 transform hover:scale-105">
+                               {generatedPage.cta.button2Text}
+                             </button>
+                           )}
+                         </div>
+
+                         {generatedPage.cta.features && (
+                           <div className="grid md:grid-cols-3 gap-6 max-w-2xl mx-auto">
+                             {generatedPage.cta.features.map((feature: string, index: number) => (
+                               <div key={index} className="flex items-center justify-center text-white/90">
+                                 <span className="text-green-400 mr-2">✓</span>
+                                 <span className="text-sm">{feature}</span>
+                               </div>
+                             ))}
+                           </div>
+                         )}
+                       </div>
+                     </section>
+                   )}
 
                    {/* Social Bar Section */}
                    {generatedPage.socialBar && generatedPage.socialBar.platforms && (
