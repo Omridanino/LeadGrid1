@@ -806,44 +806,26 @@ const AdvancedLandingPageGenerator = ({
                   )}
 
 
-                  {/* Text Section */}
-                  {generatedPage.text && (
-                    <section className="py-16 px-6 bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950 text-white relative overflow-hidden">
-                      {/* Background Pattern */}
-                      <div className="absolute inset-0 opacity-10">
-                        <div className="absolute top-20 right-20 w-24 h-24 border border-purple-400/30 rounded-full"></div>
-                        <div className="absolute bottom-10 left-20 w-32 h-32 border border-indigo-400/20 rounded-full"></div>
-                      </div>
-                      <div className="max-w-4xl mx-auto relative z-10">
-                        {generatedPage.text.badge && (
-                          <div className="text-center mb-6">
-                            <div className="inline-block bg-purple-500/20 text-purple-300 rounded-full px-4 py-2 border border-purple-400/30">
-                              <span className="text-sm font-medium">{generatedPage.text.badge}</span>
-                            </div>
-                          </div>
-                        )}
-                        {generatedPage.text.title && (
-                          <h2 className="text-3xl font-bold mb-6 text-center">{generatedPage.text.title}</h2>
-                        )}
-                        <div className={`text-gray-300 leading-relaxed ${generatedPage.text.textSize === 'large' ? 'text-xl' : generatedPage.text.textSize === 'small' ? 'text-sm' : 'text-base'} ${generatedPage.text.alignment === 'center' ? 'text-center' : generatedPage.text.alignment === 'left' ? 'text-left' : 'text-right'}`}>
-                          {generatedPage.text.content}
-                        </div>
-                      </div>
-                    </section>
-                  )}
 
                    {/* Benefits Section */}
                    {generatedPage.benefits && (
-                     <section className="py-20 px-6 bg-gradient-to-br from-emerald-50 to-teal-100">
-                       <div className="max-w-6xl mx-auto text-center">
+                     <section className="py-20 px-6 bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950 text-white relative overflow-hidden">
+                       {/* Background Pattern */}
+                       <div className="absolute inset-0 opacity-10">
+                         <div className="absolute top-20 left-20 w-40 h-40 border border-purple-400/30 rounded-full"></div>
+                         <div className="absolute top-60 right-32 w-24 h-24 border border-indigo-400/20 rounded-full"></div>
+                         <div className="absolute bottom-32 left-1/3 w-32 h-32 border border-purple-300/20 rounded-full"></div>
+                       </div>
+                       
+                       <div className="max-w-6xl mx-auto text-center relative z-10">
                          {generatedPage.benefits.badge && (
-                           <div className="inline-block bg-emerald-100 text-emerald-700 rounded-full px-6 py-2 mb-6">
+                           <div className="inline-block bg-purple-500/20 text-purple-300 rounded-full px-6 py-2 mb-6 border border-purple-400/30">
                              <span className="text-sm font-medium">{generatedPage.benefits.badge}</span>
                            </div>
                          )}
-                         <h2 className="text-4xl font-bold mb-6 text-gray-900">{generatedPage.benefits.title}</h2>
+                         <h2 className="text-4xl font-bold mb-6 text-white">{generatedPage.benefits.title}</h2>
                          {generatedPage.benefits.subtitle && (
-                           <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">{generatedPage.benefits.subtitle}</p>
+                           <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">{generatedPage.benefits.subtitle}</p>
                          )}
                          <div className="grid md:grid-cols-3 gap-8">
                            {generatedPage.benefits.items?.map((item: any, index: number) => {
@@ -860,14 +842,14 @@ const AdvancedLandingPageGenerator = ({
                              };
                              
                              return (
-                               <div key={index} className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-3 border border-emerald-100 relative overflow-hidden">
-                                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 to-teal-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                 <div className="relative z-10">
-                                   <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                                     <span className="text-2xl">{getIcon(item.icon)}</span>
+                               <div key={index} className="group relative">
+                                 <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-indigo-500/20 rounded-2xl blur-xl group-hover:blur-lg transition-all duration-300"></div>
+                                 <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-2">
+                                   <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                                     <span className="text-2xl text-white">{getIcon(item.icon)}</span>
                                    </div>
-                                   <h3 className="text-xl font-bold mb-4 text-gray-900 group-hover:text-emerald-600 transition-colors duration-300">{item.title}</h3>
-                                   <p className="text-gray-600 leading-relaxed">{item.description}</p>
+                                   <h3 className="text-xl font-bold mb-4 text-white group-hover:text-purple-300 transition-colors duration-300">{item.title}</h3>
+                                   <p className="text-gray-300 leading-relaxed">{item.description}</p>
                                  </div>
                                </div>
                              );
@@ -879,33 +861,43 @@ const AdvancedLandingPageGenerator = ({
 
                    {/* FAQ Section */}
                    {generatedPage.faq && (
-                     <section className="py-20 px-6 bg-gradient-to-br from-gray-50 to-blue-50">
-                       <div className="max-w-4xl mx-auto">
+                     <section className="py-20 px-6 bg-gradient-to-br from-slate-800 to-slate-900 text-white relative overflow-hidden">
+                       {/* Background Pattern */}
+                       <div className="absolute inset-0 opacity-10">
+                         <div className="absolute top-10 left-10 w-32 h-32 border border-purple-400/30 rounded-full"></div>
+                         <div className="absolute bottom-20 right-20 w-40 h-40 border border-indigo-400/20 rounded-full"></div>
+                         <div className="absolute top-1/2 left-1/2 w-24 h-24 border border-purple-300/20 rounded-full"></div>
+                       </div>
+                       
+                       <div className="max-w-4xl mx-auto relative z-10">
                          <div className="text-center mb-12">
                            {generatedPage.faq.badge && (
-                             <div className="inline-block bg-blue-100 text-blue-700 rounded-full px-6 py-2 mb-6">
+                             <div className="inline-block bg-purple-500/20 text-purple-300 rounded-full px-6 py-2 mb-6 border border-purple-400/30">
                                <span className="text-sm font-medium">{generatedPage.faq.badge}</span>
                              </div>
                            )}
-                           <h2 className="text-4xl font-bold mb-6 text-gray-900">{generatedPage.faq.title}</h2>
+                           <h2 className="text-4xl font-bold mb-6 text-white">{generatedPage.faq.title}</h2>
                            {generatedPage.faq.subtitle && (
-                             <p className="text-xl text-gray-600 max-w-3xl mx-auto">{generatedPage.faq.subtitle}</p>
+                             <p className="text-xl text-gray-300 max-w-3xl mx-auto">{generatedPage.faq.subtitle}</p>
                            )}
                          </div>
                          <div className="space-y-6">
                            {generatedPage.faq.items?.map((item: any, index: number) => (
-                             <div key={index} className="group bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100">
-                               <div className="flex items-start gap-4">
-                                 <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                                   {index + 1}
-                                 </div>
-                                 <div className="flex-1">
-                                   <h3 className="text-xl font-bold mb-3 text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
-                                     {item.question}
-                                   </h3>
-                                   <p className="text-gray-600 leading-relaxed">
-                                     {item.answer}
-                                   </p>
+                             <div key={index} className="group relative">
+                               <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-indigo-500/10 rounded-2xl blur-xl group-hover:blur-lg transition-all duration-300"></div>
+                               <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1">
+                                 <div className="flex items-start gap-4">
+                                   <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                     {index + 1}
+                                   </div>
+                                   <div className="flex-1">
+                                     <h3 className="text-xl font-bold mb-3 text-white group-hover:text-purple-300 transition-colors duration-300">
+                                       {item.question}
+                                     </h3>
+                                     <p className="text-gray-300 leading-relaxed">
+                                       {item.answer}
+                                     </p>
+                                   </div>
                                  </div>
                                </div>
                              </div>
