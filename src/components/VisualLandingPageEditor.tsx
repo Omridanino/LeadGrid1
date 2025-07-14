@@ -34,7 +34,9 @@ import {
   Edit3,
   Upload,
   Plus,
-  Wand2
+  Wand2,
+  ArrowRight,
+  Trash2
 } from 'lucide-react';
 import { ColorPicker } from '@/components/ui/color-picker';
 import ImageUpload from './ImageUpload';
@@ -966,7 +968,7 @@ const VisualLandingPageEditor = ({
     { id: 'benefits', name: 'היתרונות שלנו', icon: Star },
     { id: 'whatWeGive', name: 'מה אנחנו נותנים', icon: Target },
     { id: 'gallery', name: 'גלריה', icon: ImageIcon },
-    { id: 'process', name: 'התהליך שלנו', icon: Users },
+    { id: 'process', name: 'התהליך שלנו', icon: ArrowRight },
     { id: 'services', name: 'שירותים', icon: Settings },
     { id: 'testimonials', name: 'המלצות', icon: Type },
     { id: 'faq', name: 'שאלות נפוצות', icon: Eye },
@@ -3322,6 +3324,49 @@ const VisualLandingPageEditor = ({
                       ))}
                     </div>
                     {renderAllButtons('pricing')}
+                  </div>
+                </div>
+              )}
+
+              {/* Process Section Preview */}
+              {activeSection === 'process' && (
+                <div className="p-8 rounded-lg bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 text-white">
+                  <div className="max-w-6xl mx-auto text-center">
+                    <h2 className="text-3xl font-bold mb-4">
+                      {editableContent?.process?.title || 'תהליך העבודה שלנו'}
+                    </h2>
+                    <p className="text-xl text-gray-300 mb-12">
+                      {editableContent?.process?.subtitle || 'כך נוביל אתכם להצלחה בשלבים מדויקים ומותאמים אישית'}
+                    </p>
+                    
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                      {(editableContent?.process?.steps || []).map((step: any, index: number) => (
+                        <div key={index} className="group relative">
+                          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-indigo-500/20 rounded-2xl blur-xl group-hover:blur-lg transition-all duration-300"></div>
+                          <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-2">
+                            <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                              <span className="text-2xl font-bold text-white">{index + 1}</span>
+                            </div>
+                            <h3 className="text-xl font-bold mb-4 group-hover:text-purple-300 transition-colors duration-300">
+                              {step.title}
+                            </h3>
+                            <p className="text-gray-300 leading-relaxed mb-4">
+                              {step.description}
+                            </p>
+                            {step.duration && (
+                              <div className="inline-block bg-purple-500/20 text-purple-300 px-4 py-2 rounded-full text-sm font-medium border border-purple-400/30">
+                                📅 {step.duration}
+                              </div>
+                            )}
+                          </div>
+                          {/* Connection line for desktop */}
+                          {index < (editableContent?.process?.steps || []).length - 1 && (
+                            <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-purple-400 to-transparent"></div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    {renderAllButtons('process')}
                   </div>
                 </div>
               )}

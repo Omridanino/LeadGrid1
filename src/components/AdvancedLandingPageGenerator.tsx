@@ -560,36 +560,84 @@ const AdvancedLandingPageGenerator = ({
                     </section>
                   )}
 
-                  {/* About Section */}
-                  {generatedPage.about && (
-                    <section className="py-16 px-6 bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950 text-white relative overflow-hidden">
-                      {/* Background Pattern */}
-                      <div className="absolute inset-0 opacity-10">
-                        <div className="absolute top-10 left-20 w-24 h-24 border border-purple-400/30 rounded-full"></div>
-                        <div className="absolute bottom-10 right-20 w-32 h-32 border border-indigo-400/20 rounded-full"></div>
-                      </div>
-                      <div className="max-w-6xl mx-auto relative z-10">
-                        <div className="grid md:grid-cols-2 gap-12 items-center">
-                          <div>
-                            <h2 className="text-3xl font-bold mb-4">{generatedPage.about.title}</h2>
-                            <p className="text-xl text-purple-300 mb-6">{generatedPage.about.subtitle}</p>
-                            <p className="text-gray-300 mb-8 leading-relaxed">{generatedPage.about.description}</p>
-                            <div className="grid grid-cols-3 gap-6">
-                              {generatedPage.about.stats?.map((stat: any, index: number) => (
-                                <div key={index} className="text-center bg-white/5 rounded-lg p-4 backdrop-blur-sm border border-white/10">
-                                  <div className="text-2xl font-bold text-purple-300">{stat.number}</div>
-                                  <div className="text-sm text-gray-400">{stat.label}</div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                          <div className="bg-white/5 backdrop-blur-sm rounded-lg h-64 flex items-center justify-center border border-white/10">
-                            <span className="text-purple-300">📸 {generatedPage.about.image}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </section>
-                  )}
+                   {/* About Section */}
+                   {generatedPage.about && (
+                     <section className="py-16 px-6 bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950 text-white relative overflow-hidden">
+                       {/* Background Pattern */}
+                       <div className="absolute inset-0 opacity-10">
+                         <div className="absolute top-10 left-20 w-24 h-24 border border-purple-400/30 rounded-full"></div>
+                         <div className="absolute bottom-10 right-20 w-32 h-32 border border-indigo-400/20 rounded-full"></div>
+                       </div>
+                       <div className="max-w-6xl mx-auto relative z-10">
+                         <div className="grid md:grid-cols-2 gap-12 items-center">
+                           <div>
+                             <h2 className="text-3xl font-bold mb-4">{generatedPage.about.title}</h2>
+                             <p className="text-xl text-purple-300 mb-6">{generatedPage.about.subtitle}</p>
+                             <p className="text-gray-300 mb-8 leading-relaxed">{generatedPage.about.description}</p>
+                             <div className="grid grid-cols-3 gap-6">
+                               {generatedPage.about.stats?.map((stat: any, index: number) => (
+                                 <div key={index} className="text-center bg-white/5 rounded-lg p-4 backdrop-blur-sm border border-white/10">
+                                   <div className="text-2xl font-bold text-purple-300">{stat.number}</div>
+                                   <div className="text-sm text-gray-400">{stat.label}</div>
+                                 </div>
+                               ))}
+                             </div>
+                           </div>
+                           <div className="bg-white/5 backdrop-blur-sm rounded-lg h-64 flex items-center justify-center border border-white/10">
+                             <span className="text-purple-300">📸 {generatedPage.about.image}</span>
+                           </div>
+                         </div>
+                       </div>
+                     </section>
+                   )}
+
+                   {/* Work Process Section - תהליך העבודה */}
+                   {generatedPage.process && (
+                     <section className="py-20 px-6 bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 text-white relative overflow-hidden">
+                       {/* Background Pattern */}
+                       <div className="absolute inset-0 opacity-10">
+                         <div className="absolute top-10 left-10 w-32 h-32 border border-purple-400/30 rounded-full"></div>
+                         <div className="absolute top-40 right-20 w-20 h-20 border border-indigo-400/20 rounded-full"></div>
+                         <div className="absolute bottom-20 left-1/3 w-16 h-16 border border-purple-300/20 rounded-full"></div>
+                       </div>
+                       
+                       <div className="max-w-6xl mx-auto text-center relative z-10">
+                         {generatedPage.process.badge && (
+                           <div className="inline-block bg-purple-500/20 text-purple-300 rounded-full px-6 py-2 mb-6 border border-purple-400/30">
+                             <span className="text-sm font-medium">{generatedPage.process.badge}</span>
+                           </div>
+                         )}
+                         <h2 className="text-4xl font-bold mb-6">{generatedPage.process.title}</h2>
+                         {generatedPage.process.subtitle && (
+                           <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto">{generatedPage.process.subtitle}</p>
+                         )}
+                         
+                         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                           {generatedPage.process.steps?.map((step: any, index: number) => (
+                             <div key={index} className="group relative">
+                               <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-indigo-500/20 rounded-2xl blur-xl group-hover:blur-lg transition-all duration-300"></div>
+                               <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-2">
+                                 <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                                   <span className="text-2xl font-bold text-white">{index + 1}</span>
+                                 </div>
+                                 <h3 className="text-xl font-bold mb-4 group-hover:text-purple-300 transition-colors duration-300">{step.title}</h3>
+                                 <p className="text-gray-300 leading-relaxed mb-4">{step.description}</p>
+                                 {step.duration && (
+                                   <div className="inline-block bg-purple-500/20 text-purple-300 px-4 py-2 rounded-full text-sm font-medium border border-purple-400/30">
+                                     📅 {step.duration}
+                                   </div>
+                                 )}
+                               </div>
+                               {/* Connection line for desktop */}
+                               {index < generatedPage.process.steps.length - 1 && (
+                                 <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-gradient-to-r from-purple-400 to-transparent"></div>
+                               )}
+                             </div>
+                           ))}
+                         </div>
+                       </div>
+                     </section>
+                   )}
 
                    {/* Services Section - השירותים שלנו */}
                    {generatedPage.whatWeGive && (
