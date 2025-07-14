@@ -47,7 +47,6 @@ interface VisualLandingPageEditorProps {
   onClose: () => void;
   generatedContent: any;
   formData: any;
-  selectedDesign?: string;
   onContentUpdate?: (content: any) => void;
 }
 
@@ -56,7 +55,6 @@ const VisualLandingPageEditor = ({
   onClose, 
   generatedContent, 
   formData,
-  selectedDesign = 'glass',
   onContentUpdate
 }: VisualLandingPageEditorProps) => {
   const [activeSection, setActiveSection] = useState('hero');
