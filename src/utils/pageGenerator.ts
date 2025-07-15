@@ -5,7 +5,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
   const template = templateData;
   const theme = designTheme || getDefaultTheme();
   // More robust premium detection
-  const isPremium = template.category.includes('פרימיום') || template.id.includes('-pro');
+  const isPremium = template?.category?.includes('פרימיום') || template?.id?.includes('-pro');
   
   console.log('generatePageHTML - selected theme:', theme);
   console.log('generatePageHTML - theme styles:', theme.styles);
