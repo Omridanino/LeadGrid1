@@ -1,6 +1,137 @@
 // Complete HTML Generator - Creates exact HTML from template preview with premium support
 import { DesignTheme, getDefaultTheme } from '@/types/designThemes';
 
+// Helper function to get appropriate hero HTML based on theme
+const getHeroHTML = (template: any, theme: DesignTheme, isPremium: boolean) => {
+  const heroType = theme.components.hero;
+  
+  switch (heroType) {
+    case 'luxury':
+      return getLuxuryHeroHTML(template, theme, isPremium);
+    case 'brutalist':
+      return getBrutalistHeroHTML(template, theme, isPremium);
+    case 'cyberpunk':
+      return getCyberpunkHeroHTML(template, theme, isPremium);
+    case 'organic':
+      return getOrganicHeroHTML(template, theme, isPremium);
+    case 'glass':
+    default:
+      return getGlassHeroHTML(template, theme, isPremium);
+  }
+};
+
+// Glass hero (original default)
+const getGlassHeroHTML = (template: any, theme: DesignTheme, isPremium: boolean) => {
+  return `
+    ${isPremium ? (() => {
+      const bgData = getPremiumAnimatedBackground(template.id, 'hero');
+      return generatePremiumBackgroundHTML(bgData.animationType);
+    })() : ''}
+    <div class="max-w-7xl mx-auto px-6 pt-20 pb-32 relative z-10">
+      <!-- Glass hero content -->
+      ${template.hero?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : theme.styles.primary}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : theme.styles.primary};">${template.hero.badge}</div>` : ''}
+      <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : theme.styles.heroText};">${template.hero?.title || template.businessName || 'העסק שלך'}</h1>
+      <p class="text-xl md:text-2xl mb-8 max-w-3xl" style="color: ${isPremium ? getPremiumTextColor(template.id) : theme.styles.heroText}; opacity: 0.9;">${template.hero?.subtitle || 'השירות המקצועי ביותר בתחום'}</p>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${theme.styles.primary};">
+          ${template.hero?.ctaIcon ? `<i class="ri-${template.hero.ctaIcon}"></i>` : ''}
+          ${template.hero?.ctaButton || 'צור קשר'}
+        </a>
+      </div>
+    </div>
+  `;
+};
+
+// Luxury hero with diagonal elements
+const getLuxuryHeroHTML = (template: any, theme: DesignTheme, isPremium: boolean) => {
+  return `
+    <div class="absolute inset-0">
+      <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-bl from-amber-500/10 to-transparent skew-x-12 origin-top-right"></div>
+      <div class="absolute bottom-0 left-0 w-2/3 h-2/3 bg-gradient-to-tr from-amber-600/5 to-transparent -skew-x-12 origin-bottom-left"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-6 pt-20 pb-32 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-16 items-center min-h-screen">
+        <div class="space-y-8">
+          ${template.hero?.badge ? `<span class="bg-gradient-to-r from-amber-400 to-amber-600 text-slate-900 px-6 py-2 text-sm font-bold tracking-wider font-serif uppercase">${template.hero.badge}</span>` : ''}
+          <h1 class="text-6xl lg:text-7xl font-bold leading-none font-serif bg-gradient-to-br from-amber-200 via-amber-300 to-amber-500 bg-clip-text text-transparent">${template.hero?.title || template.businessName || 'העסק היוקרתי'}</h1>
+          <p class="text-xl lg:text-2xl text-amber-100/80 leading-relaxed font-serif max-w-xl">${template.hero?.subtitle || 'השירות המקצועי והיוקרתי ביותר בתחום'}</p>
+          <div class="flex flex-col sm:flex-row gap-6 pt-4">
+            <button class="px-8 py-4 bg-gradient-to-r from-amber-400 to-amber-500 text-slate-900 font-bold text-lg font-serif tracking-wide">${template.hero?.ctaButton || 'התחל עכשיו'}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+};
+
+// Brutalist hero with giant typography
+const getBrutalistHeroHTML = (template: any, theme: DesignTheme, isPremium: boolean) => {
+  return `
+    <div class="absolute inset-0 opacity-5">
+      <div class="w-full h-full" style="background-image: linear-gradient(90deg, black 1px, transparent 1px), linear-gradient(180deg, black 1px, transparent 1px); background-size: 40px 40px;"></div>
+    </div>
+    <div class="absolute top-20 right-10 w-32 h-32 bg-black"></div>
+    <div class="max-w-7xl mx-auto px-8 py-20 relative z-10">
+      <h1 class="text-9xl lg:text-[12rem] xl:text-[14rem] font-black leading-none text-black tracking-tighter">${(template.hero?.title || template.businessName || 'BRAND').toUpperCase()}</h1>
+      <div class="grid lg:grid-cols-12 gap-8 mb-20">
+        <div class="lg:col-span-6 space-y-8">
+          <div class="bg-gray-100 p-8 border-4 border-black">
+            <p class="text-2xl font-mono leading-relaxed text-black">${template.hero?.subtitle || 'UNCOMPROMISING QUALITY. MAXIMUM EFFICIENCY.'}</p>
+          </div>
+        </div>
+        <div class="lg:col-span-3 space-y-6">
+          <button class="w-full bg-black text-white p-6 font-mono font-black text-lg uppercase tracking-wider">${template.hero?.ctaButton || 'EXECUTE'}</button>
+        </div>
+      </div>
+    </div>
+  `;
+};
+
+// Cyberpunk hero with neon effects
+const getCyberpunkHeroHTML = (template: any, theme: DesignTheme, isPremium: boolean) => {
+  return `
+    <div class="absolute inset-0 opacity-30">
+      <div class="w-full h-full" style="background-image: linear-gradient(90deg, rgba(255,0,255,0.3) 1px, transparent 1px), linear-gradient(180deg, rgba(0,255,255,0.3) 1px, transparent 1px); background-size: 60px 60px;"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-6 py-20 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-16 items-center min-h-[80vh]">
+        <div class="space-y-8">
+          ${template.hero?.badge ? `<div class="inline-flex items-center gap-2 bg-gradient-to-r from-magenta-500/20 to-cyan-500/20 border border-cyan-400 px-4 py-2 backdrop-blur-sm"><span class="font-mono text-cyan-400 text-sm uppercase tracking-wider">${template.hero.badge}</span></div>` : ''}
+          <h1 class="text-6xl lg:text-8xl font-black leading-none font-mono bg-gradient-to-r from-magenta-400 via-cyan-400 to-yellow-400 bg-clip-text text-transparent" style="text-shadow: 0 0 20px rgba(255,0,255,0.5);">${template.hero?.title || template.businessName || 'CYBERTECH'}</h1>
+          <p class="text-xl lg:text-2xl text-cyan-100 leading-relaxed font-mono max-w-xl">${template.hero?.subtitle || 'העתיד כאן. טכנולוגיה מתקדמת ללא גבולות'}</p>
+          <div class="flex flex-col sm:flex-row gap-4 pt-4">
+            <button class="px-8 py-4 bg-gradient-to-r from-magenta-500 to-cyan-500 text-white font-mono font-bold uppercase tracking-wider">${template.hero?.ctaButton || 'INITIALIZE'}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+};
+
+// Organic hero with flowing elements
+const getOrganicHeroHTML = (template: any, theme: DesignTheme, isPremium: boolean) => {
+  return `
+    <div class="absolute inset-0">
+      <svg class="absolute inset-0 w-full h-full" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+        <path d="M0,300 Q300,100 600,300 T1200,300 L1200,800 L0,800 Z" fill="rgba(34, 197, 94, 0.1)" />
+        <path d="M0,500 Q400,200 800,500 T1200,500 L1200,800 L0,800 Z" fill="rgba(251, 191, 36, 0.08)" />
+      </svg>
+    </div>
+    <div class="max-w-7xl mx-auto px-6 py-20 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-16 items-center min-h-[80vh]">
+        <div class="space-y-8">
+          ${template.hero?.badge ? `<div class="inline-flex items-center gap-2 bg-emerald-100/80 border border-emerald-200 rounded-full px-6 py-3 backdrop-blur-sm"><span class="font-sans text-emerald-700 text-sm">${template.hero.badge}</span></div>` : ''}
+          <h1 class="text-6xl lg:text-7xl font-bold leading-tight font-sans bg-gradient-to-r from-emerald-600 via-blue-600 to-amber-600 bg-clip-text text-transparent">${template.hero?.title || template.businessName || 'העסק הטבעי שלך'}</h1>
+          <p class="text-xl lg:text-2xl text-emerald-800 leading-relaxed font-sans max-w-xl">${template.hero?.subtitle || 'פתרונות טבעיים ואנושיים שיוצרים חיבור אמיתי'}</p>
+          <div class="flex flex-col sm:flex-row gap-4 pt-6">
+            <button class="px-8 py-4 bg-gradient-to-r from-emerald-500 to-blue-500 text-white font-sans font-bold text-lg rounded-full shadow-lg">${template.hero?.ctaButton || 'בואו נתחיל'}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+};
+
 export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) => {
   const template = templateData;
   const theme = designTheme || getDefaultTheme();
@@ -1077,83 +1208,8 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
 
     <!-- Hero Section -->
     <section class="hero" ${template.styles.heroBackgroundImage ? `style="background-image: url(${template.styles.heroBackgroundImage}); background-size: cover; background-position: center; background-repeat: no-repeat;"` : ''}>
-        ${isPremium ? (() => {
-          const bgData = getPremiumAnimatedBackground(template.id, 'hero');
-          return generatePremiumBackgroundHTML(bgData.animationType);
-        })() : ''}
-        ${template.styles.heroBackgroundImage ? '<div class="absolute inset-0 bg-black/40 z-0"></div>' : ''}
-        ${isPremium ? `
-        <!-- Premium hero effects based on template -->
-        ${template.id === 'tech-consultant-pro' ? `
-        <!-- Floating glass panels -->
-        ${Array.from({length: 6}, (_, i) => `
-            <div class="absolute backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl" style="
-                width: ${80 + i * 20}px; 
-                height: ${60 + i * 15}px; 
-                left: ${10 + i * 15}%; 
-                top: ${15 + (i % 3) * 25}%; 
-                transform: rotate(${i * 30}deg);
-                animation: float ${15 + i * 2}s infinite ease-in-out;
-                animation-delay: ${i * 2}s;
-                opacity: 0.1;
-            "></div>
-        `).join('')}
-        ` : ''}
-        ${template.id === 'neon-academy-pro' ? `
-        <!-- Neon city skyline -->
-        <div class="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-purple-900/50 to-transparent">
-            ${Array.from({length: 20}, (_, i) => `
-                <div class="absolute bg-purple-600 opacity-30" style="
-                    width: ${20 + Math.random() * 30}px;
-                    height: ${100 + Math.random() * 100}px;
-                    left: ${i * 5}%;
-                    bottom: 0;
-                    animation: neonGlow 3s infinite ease-in-out;
-                    animation-delay: ${i * 0.1}s;
-                "></div>
-            `).join('')}
-        </div>
-        ` : ''}
-        ${template.id === 'blockchain-tech-pro' ? `
-        <!-- Particle network -->
-        <div class="absolute inset-0 opacity-30">
-            ${Array.from({length: 50}, (_, i) => `
-                <div class="absolute w-1 h-1 bg-blue-400 rounded-full" style="
-                    left: ${Math.random() * 100}%;
-                    top: ${Math.random() * 100}%;
-                    animation: particles 4s infinite ease-in-out;
-                    animation-delay: ${i * 0.1}s;
-                "></div>
-            `).join('')}
-        </div>
-        ` : ''}
-        ${template.id === 'creative-3d-pro' ? `
-        <!-- 3D clay shapes -->
-        ${Array.from({length: 8}, (_, i) => `
-            <div class="absolute rounded-full opacity-80" style="
-                width: ${60 + i * 10}px;
-                height: ${60 + i * 10}px;
-                background: linear-gradient(135deg, ${['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#f38ba8', '#a8e6cf'][i]}, ${['#ff8e8e', '#6eddd6', '#67c3d7', '#a8d4ba', '#fed85d', '#ffb3f5', '#f5a3c7', '#b8ebd5'][i]});
-                left: ${5 + i * 11}%;
-                top: ${10 + (i % 4) * 20}%;
-                box-shadow: 0 ${10 + i * 2}px ${20 + i * 3}px rgba(0,0,0,0.1);
-                animation: float3d ${8 + i}s infinite ease-in-out;
-                animation-delay: ${i * 0.5}s;
-            "></div>
-        `).join('')}
-        ` : ''}
-        ${template.id === 'authkit-tech-pro' ? `
-        <!-- Matrix rain effect -->
-        <div class="absolute inset-0 opacity-20">
-            ${Array.from({length: 50}, (_, i) => `
-                <div class="absolute w-px h-20 bg-gradient-to-b from-transparent via-blue-400 to-transparent" style="
-                    left: ${i * 2}%;
-                    animation: matrixRain 3s infinite linear;
-                    animation-delay: ${i * 0.3}s;
-                "></div>
-            `).join('')}
-        </div>
-        ` : ''}
+        ${getHeroHTML(template, theme, isPremium)}
+    </section>
         ` : ''}
         <div class="max-w-6xl mx-auto px-4 relative z-10">
             <div class="text-center">
