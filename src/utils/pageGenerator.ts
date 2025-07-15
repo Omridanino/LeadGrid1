@@ -7,6 +7,9 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
   // More robust premium detection
   const isPremium = template.category.includes('פרימיום') || template.id.includes('-pro');
   
+  console.log('generatePageHTML - selected theme:', theme);
+  console.log('generatePageHTML - theme styles:', theme.styles);
+  
   console.log('pageGenerator - received template:', template);
   console.log('pageGenerator - whyUs data:', template.whyUs);
   console.log('pageGenerator - whatWeGive data:', template.whatWeGive);
@@ -17,28 +20,24 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
   // Helper functions for new content sections - moved to top
   // NEW SECTIONS GENERATORS - why us, what we give, process
   
-  // Get design-specific styling
-  const getDesignStyles = (theme: DesignTheme, sectionType: string = '') => {
-    const baseStyles = {
-      background: theme.styles.background,
-      text: theme.styles.text,
-      primary: theme.styles.primary,
-      secondary: theme.styles.secondary,
-      accent: theme.styles.accent,
-      borderRadius: theme.styles.borderRadius,
-      fontFamily: theme.styles.fontFamily,
-      shadows: theme.styles.shadows || '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-    };
+  // Get design-specific styling based on selected theme
+  const themeStyles = {
+    primaryColor: theme.styles.primary,
+    secondaryColor: theme.styles.secondary,
+    accentColor: theme.styles.accent,
+    backgroundColor: theme.styles.background,
+    textColor: theme.styles.text,
+    borderRadius: theme.styles.borderRadius,
+    fontFamily: theme.styles.fontFamily,
+    shadows: theme.styles.shadows || '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+    heroBackground: theme.styles.heroBackground || theme.styles.background,
+    heroText: theme.styles.heroText || theme.styles.text
+  };
 
-    // Section-specific backgrounds
-    switch (sectionType) {
-      case 'hero':
-        return { ...baseStyles, background: theme.styles.heroBackground, text: theme.styles.heroText };
-      case 'features':
-        return { ...baseStyles, background: theme.styles.featuresBackground, text: theme.styles.featuresText };
-      default:
-        return baseStyles;
-    }
+  // Override template styles with theme styles
+  const effectiveStyles = {
+    ...template.styles,
+    ...themeStyles
   };
 
   const generateWhyUsSection = (whyUs: any, styles: any, isPremium: boolean) => {
@@ -793,10 +792,35 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
     </script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <style>
-        body {
-            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-            direction: rtl;
+        /* Theme-specific root variables */
+        :root {
+            --theme-primary: ${theme.styles.primary};
+            --theme-secondary: ${theme.styles.secondary};
+            --theme-accent: ${theme.styles.accent};
+            --theme-background: ${theme.styles.background};
+            --theme-text: ${theme.styles.text};
+            --theme-border-radius: ${theme.styles.borderRadius || '8px'};
+            --theme-shadow: ${theme.styles.shadows || '0 4px 6px -1px rgba(0, 0, 0, 0.1)'};
         }
+        
+        body {
+            font-family: ${theme.styles.fontFamily || "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif"};
+            direction: rtl;
+            background: ${theme.styles.background};
+            color: ${theme.styles.text};
+        }
+        
+        /* Apply theme colors to all sections */
+        .hero { background: ${theme.styles.heroBackground || theme.styles.background} !important; }
+        .emotional { background: ${theme.styles.background} !important; }
+        .features { background: ${theme.styles.background} !important; }
+        .testimonials { background: ${theme.styles.background} !important; }
+        .about { background: ${theme.styles.background} !important; }
+        .pricing { background: ${theme.styles.background} !important; }
+        .faq { background: ${theme.styles.background} !important; }
+        .contact { background: ${theme.styles.background} !important; }
+        .final-cta { background: ${theme.styles.background} !important; }
+        .footer { background: ${theme.styles.background} !important; }
         
         /* Premium Animations */
         @keyframes float {
@@ -1138,11 +1162,11 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
                 <h2 class="text-xl md:text-2xl mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroTextColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.9;">${template.hero.subtitle}</h2>
                 <p class="text-lg mb-8 max-w-4xl mx-auto" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroTextColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.8;">${template.hero.description}</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.accentColor}; ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}">
+                    <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${effectiveStyles.accentColor}; ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}">
                         ${template.hero.button1Icon ? `<i class="ri-${template.hero.button1Icon}"></i>` : ''}
                         ${template.hero.button1Text}
                     </a>
-                    <a href="#features" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.secondaryColor}; ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}">
+                    <a href="#features" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${effectiveStyles.secondaryColor}; ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}">
                         ${template.hero.button2Icon ? `<i class="ri-${template.hero.button2Icon}"></i>` : ''}
                         ${template.hero.button2Text}
                     </a>
