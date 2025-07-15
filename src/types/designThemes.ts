@@ -35,10 +35,10 @@ export interface DesignTheme {
     animations?: string;
   };
   components: {
-    hero: 'glass' | 'minimal' | 'gradient' | 'premium' | 'friendly' | 'luxury' | 'brutalist' | 'cyberpunk' | 'organic';
-    buttons: 'glass' | 'minimal' | 'gradient' | 'premium' | 'friendly' | 'luxury' | 'brutalist' | 'cyberpunk' | 'organic';
-    cards: 'glass' | 'minimal' | 'gradient' | 'premium' | 'friendly' | 'luxury' | 'brutalist' | 'cyberpunk' | 'organic';
-    sections: 'glass' | 'minimal' | 'gradient' | 'premium' | 'friendly' | 'luxury' | 'brutalist' | 'cyberpunk' | 'organic';
+    hero: 'glass' | 'minimal' | 'gradient' | 'premium' | 'friendly';
+    buttons: 'glass' | 'minimal' | 'gradient' | 'premium' | 'friendly';
+    cards: 'glass' | 'minimal' | 'gradient' | 'premium' | 'friendly';
+    sections: 'glass' | 'minimal' | 'gradient' | 'premium' | 'friendly';
   };
 }
 
@@ -83,151 +83,150 @@ export const designThemes: DesignTheme[] = [
     }
   },
 
-  // 2. Luxury Premium - יוקרתי עם אלכסונים זהובים ודמויות
+  // 2. Luxury Premium
   {
     id: 'luxury-premium',
     name: 'יוקרה פרימיום',
-    description: 'עיצוב יוקרתי עם קווים אלכסוניים, זהב ודמויות אלגנטיות',
+    description: 'עיצוב יוקרתי עם צבעים כהים, זהב ואלגנטיות מרבית',
     thumbnail: '/design-previews/luxury-premium.png',
     category: 'יוקרה',
     styles: {
       primary: 'hsl(45, 100%, 50%)', // זהב
-      secondary: 'hsl(0, 0%, 8%)', // שחור עמוק  
-      accent: 'hsl(16, 100%, 66%)', // נחושת
-      background: 'linear-gradient(135deg, hsl(0, 0%, 2%) 0%, hsl(45, 10%, 8%) 50%, hsl(0, 0%, 5%) 100%)',
-      text: 'hsl(45, 50%, 85%)',
+      secondary: 'hsl(0, 0%, 95%)', // לבן כמעט
+      accent: 'hsl(45, 100%, 60%)', // זהב בהיר
+      background: 'hsl(0, 0%, 8%)', // שחור עמוק
+      text: 'hsl(0, 0%, 95%)',
       
-      heroBackground: 'linear-gradient(45deg, hsl(0, 0%, 2%) 0%, hsl(45, 20%, 10%) 40%, hsl(0, 0%, 8%) 100%)',
-      heroText: 'hsl(45, 80%, 90%)',
-      featuresBackground: 'linear-gradient(-45deg, hsl(0, 0%, 3%) 0%, hsl(45, 15%, 6%) 100%)',
-      featuresText: 'hsl(45, 60%, 80%)',
+      heroBackground: 'linear-gradient(135deg, hsl(0, 0%, 8%) 0%, hsl(0, 0%, 12%) 100%)',
+      heroText: 'hsl(0, 0%, 95%)',
+      featuresBackground: 'hsl(0, 0%, 10%)',
+      featuresText: 'hsl(0, 0%, 90%)',
       
       fontFamily: '"Playfair Display", "Frank Ruhl Libre", serif',
-      headingFont: '"Cinzel", "Playfair Display", serif',
+      headingFont: '"Playfair Display", "Frank Ruhl Libre", serif',
       
-      borderRadius: '0px', // קווים חדים
-      spacing: '4rem', // ריווחים גדולים
-      
-      gradient: 'linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,138,101,0.1))',
-      shadows: '0 20px 60px 0 rgba(255, 215, 0, 0.3), inset 0 1px 0 rgba(255,215,0,0.1)',
-      animations: 'sophisticated' // אנימציות מתוחכמות
-    },
-    components: {
-      hero: 'luxury', // היירו יהיה עם קווים אלכסוניים ודמויות
-      buttons: 'luxury', // כפתורים זהובים עם אפקטים
-      cards: 'luxury', // כרטיסים עם מסגרות זהב
-      sections: 'luxury' // סקשנים עם רקעים אלכסוניים
-    }
-  },
-
-  // 3. Brutalist Mono - ברוטליסטי מונוכרום עם טיפוגרפיה ענקית
-  {
-    id: 'brutalist-mono',
-    name: 'ברוטליסט מונו',
-    description: 'עיצוב ברוטליסטי עם טיפוגרפיה ענקית, גרידים קשיחים ומינימליזם קיצוני',
-    thumbnail: '/design-previews/brutalist-mono.png',
-    category: 'ברוטליסטי',
-    styles: {
-      primary: 'hsl(0, 0%, 0%)', // שחור טהור
-      secondary: 'hsl(0, 0%, 20%)', // אפור כהה
-      accent: 'hsl(0, 0%, 100%)', // לבן טהור
-      background: 'hsl(0, 0%, 98%)', // לבן כמעט
-      text: 'hsl(0, 0%, 5%)',
-      
-      heroBackground: 'hsl(0, 0%, 100%)',
-      heroText: 'hsl(0, 0%, 0%)',
-      featuresBackground: 'hsl(0, 0%, 95%)',
-      featuresText: 'hsl(0, 0%, 10%)',
-      
-      fontFamily: '"Roboto Mono", "Courier New", monospace',
-      headingFont: '"Arial Black", "Helvetica", sans-serif',
-      
-      borderRadius: '0px', // ללא עיגולים בכלל
-      spacing: '5rem', // ריווחים ענקיים
-      
-      gradient: 'none', // ללא גרדיאנטים
-      shadows: 'none', // ללא צללים
-      animations: 'harsh' // אנימציות קשות וחדות
-    },
-    components: {
-      hero: 'brutalist', // היירו עם טיפוגרפיה ענקית ובלוקים
-      buttons: 'brutalist', // כפתורים מרובעים וקשיחים
-      cards: 'brutalist', // כרטיסים בלוקיים ללא עיגולים
-      sections: 'brutalist' // סקשנים בגריד קשיח
-    }
-  },
-
-  // 4. Cyberpunk Neon - סייברפאנק עם ניונים וגליצ'ים
-  {
-    id: 'cyberpunk-neon',
-    name: 'סייברפאנק ניאון',
-    description: 'עיצוב עתידני עם אפקטי ניאון, גליצ\'ים ואסתטיקה סייברפאנק',
-    thumbnail: '/design-previews/cyberpunk-neon.png',
-    category: 'עתידני',
-    styles: {
-      primary: 'hsl(300, 100%, 70%)', // מגנטה ניאון
-      secondary: 'hsl(180, 100%, 50%)', // ציאן ניאון
-      accent: 'hsl(60, 100%, 50%)', // צהוב ניאון
-      background: 'linear-gradient(135deg, hsl(240, 100%, 5%) 0%, hsl(300, 50%, 3%) 50%, hsl(240, 100%, 2%) 100%)',
-      text: 'hsl(120, 100%, 75%)',
-      
-      heroBackground: 'radial-gradient(circle at 30% 70%, hsl(300, 100%, 20%) 0%, hsl(240, 100%, 5%) 50%, hsl(180, 100%, 10%) 100%)',
-      heroText: 'hsl(300, 100%, 90%)',
-      featuresBackground: 'linear-gradient(45deg, hsl(240, 100%, 3%) 0%, hsl(300, 80%, 5%) 100%)',
-      featuresText: 'hsl(180, 100%, 80%)',
-      
-      fontFamily: '"Orbitron", "Roboto Mono", monospace',
-      headingFont: '"Exo 2", "Orbitron", sans-serif',
-      
-      borderRadius: '2px', // עיגולים מינימליים
+      borderRadius: '4px',
       spacing: '2rem',
       
-      gradient: 'linear-gradient(135deg, rgba(255,0,255,0.2), rgba(0,255,255,0.1))',
-      shadows: '0 0 30px rgba(255,0,255,0.5), 0 0 60px rgba(0,255,255,0.3), inset 0 0 20px rgba(255,255,0,0.1)',
-      animations: 'glitch' // אנימציות גליצ'
+      gradient: 'linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,215,0,0.05))',
+      shadows: '0 4px 20px 0 rgba(255, 215, 0, 0.15)',
+      animations: 'elegant'
     },
     components: {
-      hero: 'cyberpunk', // היירו עם אפקטי ניאון וגליצ'ים
-      buttons: 'cyberpunk', // כפתורים עם ניאון וזוהר
-      cards: 'cyberpunk', // כרטיסים עם מסגרות ניאון
-      sections: 'cyberpunk' // סקשנים עם רקעים טכנולוגיים
+      hero: 'premium',
+      buttons: 'premium',
+      cards: 'premium',
+      sections: 'premium'
     }
   },
 
-  // 5. Organic Nature - אורגני טבעי עם איורים ועקומות
+  // 3. Hyper Minimalistic
   {
-    id: 'organic-nature',
-    name: 'אורגני טבעי',
-    description: 'עיצוב אורגני עם עקומות טבעיות, איורים ורקעים מצוירים',
-    thumbnail: '/design-previews/organic-nature.png',
-    category: 'טבעי',
+    id: 'hyper-minimal',
+    name: 'מינימליסטי היפר',
+    description: 'עיצוב נקי ומינימלי עם המון חלל ריק וטיפוגרפיה חדה',
+    thumbnail: '/design-previews/hyper-minimal.png',
+    category: 'מינימליסטי',
     styles: {
-      primary: 'hsl(140, 60%, 45%)', // ירוק יער
-      secondary: 'hsl(25, 75%, 60%)', // חום חם
-      accent: 'hsl(200, 70%, 50%)', // כחול שמיים
-      background: 'radial-gradient(ellipse at center, hsl(45, 40%, 95%) 0%, hsl(120, 20%, 92%) 100%)',
-      text: 'hsl(140, 30%, 20%)',
+      primary: 'hsl(0, 0%, 9%)', // שחור כמעט
+      secondary: 'hsl(0, 0%, 96%)', // לבן כמעט
+      accent: 'hsl(0, 0%, 50%)', // אפור בינוני
+      background: 'hsl(0, 0%, 100%)', // לבן טהור
+      text: 'hsl(0, 0%, 9%)',
       
-      heroBackground: 'linear-gradient(135deg, hsl(45, 60%, 92%) 0%, hsl(120, 40%, 88%) 50%, hsl(200, 30%, 90%) 100%)',
-      heroText: 'hsl(140, 50%, 15%)',
-      featuresBackground: 'radial-gradient(circle at 80% 20%, hsl(45, 50%, 94%) 0%, hsl(120, 30%, 90%) 100%)',
-      featuresText: 'hsl(140, 40%, 25%)',
+      heroBackground: 'hsl(0, 0%, 100%)',
+      heroText: 'hsl(0, 0%, 9%)',
+      featuresBackground: 'hsl(0, 0%, 98%)',
+      featuresText: 'hsl(0, 0%, 15%)',
       
-      fontFamily: '"Poppins", "Assistant", sans-serif',
-      headingFont: '"Comfortaa", "Varela Round", sans-serif',
+      fontFamily: '"Inter", "Heebo", sans-serif',
+      headingFont: '"Inter", "Heebo", sans-serif',
       
-      borderRadius: '25px', // עיגולים אורגניים
-      spacing: '2.5rem',
+      borderRadius: '2px',
+      spacing: '3rem',
       
-      gradient: 'linear-gradient(135deg, rgba(34,197,94,0.1), rgba(59,130,246,0.05))',
-      shadows: '0 10px 40px 0 rgba(34, 197, 94, 0.15), 0 4px 20px 0 rgba(139, 69, 19, 0.1)',
-      animations: 'organic' // אנימציות זורמות ואורגניות
+      shadows: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+      animations: 'subtle'
     },
     components: {
-      hero: 'organic', // היירו עם איורים טבעיים ועקומות
-      buttons: 'organic', // כפתורים עגולים ורכים
-      cards: 'organic', // כרטיסים עם צורות אורגניות
-      sections: 'organic' // סקשנים עם רקעים מצוירים
+      hero: 'minimal',
+      buttons: 'minimal',
+      cards: 'minimal',
+      sections: 'minimal'
+    }
+  },
+
+  // 4. Futuristic Tech Gradient
+  {
+    id: 'futuristic-gradient',
+    name: 'עתידני גרדיאנט',
+    description: 'עיצוב עתידני עם גרדיאנטים דינמיים ואנימציות מתקדמות',
+    thumbnail: '/design-previews/futuristic-gradient.png',
+    category: 'עתידני',
+    styles: {
+      primary: 'hsl(271, 91%, 65%)', // סגול-ורוד
+      secondary: 'hsl(193, 95%, 68%)', // טורקיז
+      accent: 'hsl(158, 64%, 52%)', // ירוק
+      background: 'linear-gradient(135deg, hsl(240, 10%, 3.9%) 0%, hsl(240, 5.9%, 10%) 50%, hsl(240, 10%, 3.9%) 100%)',
+      text: 'hsl(0, 0%, 98%)',
+      
+      heroBackground: 'linear-gradient(135deg, hsl(271, 91%, 65%) 0%, hsl(193, 95%, 68%) 50%, hsl(158, 64%, 52%) 100%)',
+      heroText: 'hsl(0, 0%, 98%)',
+      featuresBackground: 'linear-gradient(45deg, hsl(240, 10%, 3.9%), hsl(240, 5.9%, 10%))',
+      featuresText: 'hsl(0, 0%, 95%)',
+      
+      fontFamily: '"Inter", "Heebo", sans-serif',
+      headingFont: '"Inter", "Heebo", sans-serif',
+      
+      borderRadius: '8px',
+      spacing: '1.5rem',
+      
+      gradient: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))',
+      shadows: '0 0 50px rgba(139, 92, 246, 0.3)',
+      animations: 'dynamic'
+    },
+    components: {
+      hero: 'gradient',
+      buttons: 'gradient',
+      cards: 'gradient',
+      sections: 'gradient'
+    }
+  },
+
+  // 5. Friendly Human Storytelling
+  {
+    id: 'friendly-human',
+    name: 'אנושי ידידותי',
+    description: 'עיצוב חם ואישי עם צבעים פסטליים ותחושה מזמינה',
+    thumbnail: '/design-previews/friendly-human.png',
+    category: 'ידידותי',
+    styles: {
+      primary: 'hsl(340, 82%, 52%)', // ורוד בהיר
+      secondary: 'hsl(200, 18%, 46%)', // כחול-אפור
+      accent: 'hsl(158, 64%, 52%)', // תכלת
+      background: 'hsl(0, 0%, 100%)', // לבן
+      text: 'hsl(224, 71%, 4%)',
+      
+      heroBackground: 'linear-gradient(135deg, hsl(13, 100%, 96%) 0%, hsl(340, 100%, 95%) 50%, hsl(200, 100%, 95%) 100%)',
+      heroText: 'hsl(224, 71%, 4%)',
+      featuresBackground: 'hsl(60, 9%, 98%)',
+      featuresText: 'hsl(224, 71%, 4%)',
+      
+      fontFamily: '"Inter", "Heebo", sans-serif',
+      headingFont: '"Inter", "Heebo", sans-serif',
+      
+      borderRadius: '16px',
+      spacing: '1.5rem',
+      
+      gradient: 'linear-gradient(135deg, rgba(251, 113, 133, 0.1), rgba(147, 197, 253, 0.1))',
+      shadows: '0 4px 16px 0 rgba(251, 113, 133, 0.1)',
+      animations: 'gentle'
+    },
+    components: {
+      hero: 'friendly',
+      buttons: 'friendly',
+      cards: 'friendly',
+      sections: 'friendly'
     }
   }
 ];

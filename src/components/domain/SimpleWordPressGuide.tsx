@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Copy, CheckCircle, Code, ExternalLink, FileText, Play, Monitor, Settings, Eye, ArrowRight } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-import { generatePageHTML } from '@/utils/pageGeneratorNew';
+import { generatePageHTML } from '@/utils/pageGenerator';
 
 interface SimpleWordPressGuideProps {
   onBack: () => void;

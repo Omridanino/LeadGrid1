@@ -1,5 +1,5 @@
 
-import { generatePageHTML } from '@/utils/pageGeneratorNew';
+import { generatePageHTML } from '@/utils/pageGenerator';
 import { TemplateData } from '@/types/template';
 
 export class RealPublishingService {
