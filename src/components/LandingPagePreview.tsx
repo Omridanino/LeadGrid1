@@ -54,6 +54,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       testimonials: content?.testimonials || formData.selectedTemplate.testimonials,
       pricing: content?.pricing || formData.selectedTemplate.pricing,
       faq: content?.faq || formData.selectedTemplate.faq,
+      finalCta: content?.finalCta || formData.selectedTemplate.finalCta || null,
       contact: content?.contact || formData.selectedTemplate.contact,
       // Apply current color scheme
       styles: {
@@ -118,6 +119,7 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
       testimonials: content.testimonials || {},
       pricing: content.pricing || {},
       faq: content.faq || {},
+      finalCta: content.finalCta || {},
       contact: content.contact || {},
       styles: {
         primaryColor: currentColors.primary,
