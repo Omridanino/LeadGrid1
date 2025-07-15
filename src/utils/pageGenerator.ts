@@ -1728,7 +1728,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
     <!-- Footer -->
     <footer class="footer">
         <div class="text-center">
-            <p style="color: ${isPremium ? getPremiumTextColor(template.id) : '#ffffff'};">&copy; 2024 ${template.footer.companyName}. כל הזכויות שמורות.</p>
+            <p style="color: ${isPremium ? getPremiumTextColor(template.id) : '#ffffff'};">&copy; 2024 ${template.footer?.companyName || template.hero?.title || 'החברה'}. כל הזכויות שמורות.</p>
         </div>
     </footer>
 
