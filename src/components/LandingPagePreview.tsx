@@ -1,5 +1,5 @@
 
-import { generatePageHTML } from "@/utils/pageGenerator";
+import { generatePageHTML } from "@/utils/pageGeneratorNew";
 import { ColorScheme } from "@/types/colors";
 import { DesignTheme } from "@/types/designThemes";
 

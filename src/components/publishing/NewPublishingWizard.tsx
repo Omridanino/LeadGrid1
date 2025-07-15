@@ -26,7 +26,7 @@ import { TemplateData } from '@/types/template';
 import { PublishingProgress } from './PublishingProgress';
 import { RealPublishingService } from '@/services/realPublishingService';
 import { GitHubTokenForm } from './GitHubTokenForm';
-import { generatePageHTML } from '@/utils/pageGenerator';
+import { generatePageHTML } from '@/utils/pageGeneratorNew';
 
 interface NewPublishingWizardProps {
   template: TemplateData;
