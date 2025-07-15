@@ -1651,12 +1651,12 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             </div>
             
             <div class="space-y-4 mb-12">
-                ${template.faq.questions.map((qa: any, index: number) => `
+                ${template.faq.questions?.map((qa: any, index: number) => `
                     <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 ${isPremium ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}">
                         <h3 class="text-lg font-bold mb-2 text-right" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${qa.question}</h3>
                         <p class="opacity-80 text-right" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${qa.answer}</p>
                     </div>
-                `).join('')}
+                `).join('') || ''}
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
