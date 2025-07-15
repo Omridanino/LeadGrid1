@@ -7,6 +7,8 @@ import { toast } from '@/hooks/use-toast';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import LandingPagePreview from './LandingPagePreview';
 import VisualLandingPageEditor from './VisualLandingPageEditor';
+import DesignThemeSelector from './DesignThemeSelector';
+import { DesignTheme, getDefaultTheme } from '@/types/designThemes';
 
 interface AdvancedLandingPageGeneratorProps {
   isOpen: boolean;
@@ -24,6 +26,8 @@ const AdvancedLandingPageGenerator = ({
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [showQuickForm, setShowQuickForm] = useState(false);
+  const [selectedDesignTheme, setSelectedDesignTheme] = useState<DesignTheme>(getDefaultTheme());
+  const [showDesignSelector, setShowDesignSelector] = useState(false);
   const [quickFormData, setQuickFormData] = useState({
     businessName: '',
     industry: '',
@@ -49,7 +53,11 @@ const AdvancedLandingPageGenerator = ({
       console.log('Generating landing page with formData:', dataToUse);
       
       const { data, error } = await supabase.functions.invoke('generate-landing-content', {
-        body: { formData: dataToUse }
+        body: { 
+          formData: dataToUse, 
+          designTheme: selectedDesignTheme.id,
+          designStyle: selectedDesignTheme.name 
+        }
       });
 
       if (error) {
@@ -257,7 +265,7 @@ const AdvancedLandingPageGenerator = ({
             </p>
           </div>
 
-          {!generatedPage && !showQuickForm ? (
+          {!generatedPage && !showQuickForm && !showDesignSelector ? (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -295,24 +303,35 @@ const AdvancedLandingPageGenerator = ({
                   </ul>
                 </div>
 
-                <Button 
-                  onClick={generateLandingPage} 
-                  disabled={isGenerating}
-                  className="w-full"
-                  size="lg"
-                >
-                  {isGenerating ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                      יוצר דף נחיתה מושלם...
-                    </>
-                  ) : (
-                    <>
-                      <Wand2 className="h-4 w-4 mr-2" />
-                      צור דף נחיתה עכשיו
-                    </>
-                  )}
-                </Button>
+                <div className="space-y-3">
+                  <Button 
+                    onClick={() => setShowDesignSelector(true)}
+                    variant="outline"
+                    className="w-full"
+                    size="lg"
+                  >
+                    🎨 בחר עיצוב ({selectedDesignTheme.name})
+                  </Button>
+                  
+                  <Button 
+                    onClick={generateLandingPage} 
+                    disabled={isGenerating}
+                    className="w-full"
+                    size="lg"
+                  >
+                    {isGenerating ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                        יוצר דף נחיתה מושלם...
+                      </>
+                    ) : (
+                      <>
+                        <Wand2 className="h-4 w-4 mr-2" />
+                        צור דף נחיתה עכשיו
+                      </>
+                    )}
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ) : showQuickForm ? (
@@ -1111,12 +1130,30 @@ const AdvancedLandingPageGenerator = ({
           </DialogContent>
         </Dialog>
 
+        {/* Design Theme Selector Modal */}
+        <Dialog open={showDesignSelector} onOpenChange={setShowDesignSelector}>
+          <DialogContent className="max-w-6xl h-[90vh] overflow-y-auto">
+            <DesignThemeSelector
+              selectedTheme={selectedDesignTheme}
+              onThemeSelect={(theme) => {
+                setSelectedDesignTheme(theme);
+                setShowDesignSelector(false);
+                toast({
+                  title: "עיצוב נבחר! 🎨",
+                  description: `העיצוב "${theme.name}" נבחר בהצלחה`,
+                });
+              }}
+            />
+          </DialogContent>
+        </Dialog>
+
         {/* Visual Editor Modal */}
         <VisualLandingPageEditor
           isOpen={isEditorOpen}
           onClose={() => setIsEditorOpen(false)}
           generatedContent={generatedPage}
           formData={formData}
+          selectedDesignTheme={selectedDesignTheme}
           onContentUpdate={(updatedContent) => {
             console.log('Content updated in editor:', updatedContent);
             setGeneratedPage(updatedContent);

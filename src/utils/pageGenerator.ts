@@ -1,6 +1,9 @@
 // Complete HTML Generator - Creates exact HTML from template preview with premium support
-export const generatePageHTML = (templateData: any) => {
+import { DesignTheme, getDefaultTheme } from '@/types/designThemes';
+
+export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) => {
   const template = templateData;
+  const theme = designTheme || getDefaultTheme();
   // More robust premium detection
   const isPremium = template.category.includes('פרימיום') || template.id.includes('-pro');
   
@@ -13,6 +16,31 @@ export const generatePageHTML = (templateData: any) => {
 
   // Helper functions for new content sections - moved to top
   // NEW SECTIONS GENERATORS - why us, what we give, process
+  
+  // Get design-specific styling
+  const getDesignStyles = (theme: DesignTheme, sectionType: string = '') => {
+    const baseStyles = {
+      background: theme.styles.background,
+      text: theme.styles.text,
+      primary: theme.styles.primary,
+      secondary: theme.styles.secondary,
+      accent: theme.styles.accent,
+      borderRadius: theme.styles.borderRadius,
+      fontFamily: theme.styles.fontFamily,
+      shadows: theme.styles.shadows || '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+    };
+
+    // Section-specific backgrounds
+    switch (sectionType) {
+      case 'hero':
+        return { ...baseStyles, background: theme.styles.heroBackground, text: theme.styles.heroText };
+      case 'features':
+        return { ...baseStyles, background: theme.styles.featuresBackground, text: theme.styles.featuresText };
+      default:
+        return baseStyles;
+    }
+  };
+
   const generateWhyUsSection = (whyUs: any, styles: any, isPremium: boolean) => {
     if (!whyUs || !whyUs.items || whyUs.items.length === 0) return '';
     return `

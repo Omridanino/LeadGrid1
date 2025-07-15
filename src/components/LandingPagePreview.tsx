@@ -1,6 +1,7 @@
 
 import { generatePageHTML } from "@/utils/pageGenerator";
 import { ColorScheme } from "@/types/colors";
+import { DesignTheme } from "@/types/designThemes";
 
 
 interface LandingPagePreviewProps {
@@ -9,9 +10,10 @@ interface LandingPagePreviewProps {
   formData: any;
   heroImage: string;
   elements: string[];
+  selectedDesignTheme?: DesignTheme;
 }
 
-const LandingPagePreview = ({ content, currentColors, formData, heroImage, elements }: LandingPagePreviewProps) => {
+const LandingPagePreview = ({ content, currentColors, formData, heroImage, elements, selectedDesignTheme }: LandingPagePreviewProps) => {
   console.log('=== LandingPagePreview START ===');
   console.log('LandingPagePreview - content received:', content);
   console.log('LandingPagePreview - formData received:', formData);
@@ -79,7 +81,8 @@ const LandingPagePreview = ({ content, currentColors, formData, heroImage, eleme
     console.log('Has gallery?', !!templateWithContent.gallery, templateWithContent.gallery);
     console.log('Has process?', !!templateWithContent.process, templateWithContent.process);
     console.log('Content prop:', content);
-    const htmlContent = generatePageHTML(templateWithContent);
+    console.log('Selected design theme:', selectedDesignTheme);
+    const htmlContent = generatePageHTML(templateWithContent, selectedDesignTheme);
     
     return (
       <div className="w-full h-full" style={{ 
