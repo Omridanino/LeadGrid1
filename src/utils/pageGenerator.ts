@@ -20,6 +20,37 @@ const getHeroHTML = (template: any, theme: DesignTheme, isPremium: boolean) => {
   }
 };
 
+// Helper functions for premium themes
+const getPremiumAnimatedBackground = (templateId: string, section: string) => {
+  return {
+    animationType: 'glass',
+    background: 'linear-gradient(135deg, rgba(15,23,42,0.95) 0%, rgba(30,64,175,0.95) 50%, rgba(88,28,135,0.95) 100%)'
+  };
+};
+
+const generatePremiumBackgroundHTML = (animationType: string) => {
+  return `<div class="absolute inset-0 bg-gradient-to-br from-slate-950 via-purple-950 to-slate-900"></div>`;
+};
+
+const getPremiumTextColor = (templateId: string, section?: string, fallback?: string) => {
+  return fallback || '#ffffff';
+};
+  
+  switch (heroType) {
+    case 'luxury':
+      return getLuxuryHeroHTML(template, theme, isPremium);
+    case 'brutalist':
+      return getBrutalistHeroHTML(template, theme, isPremium);
+    case 'cyberpunk':
+      return getCyberpunkHeroHTML(template, theme, isPremium);
+    case 'organic':
+      return getOrganicHeroHTML(template, theme, isPremium);
+    case 'glass':
+    default:
+      return getGlassHeroHTML(template, theme, isPremium);
+  }
+};
+
 // Glass hero (original default)
 const getGlassHeroHTML = (template: any, theme: DesignTheme, isPremium: boolean) => {
   return `
@@ -1209,26 +1240,6 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
     <!-- Hero Section -->
     <section class="hero" ${template.styles.heroBackgroundImage ? `style="background-image: url(${template.styles.heroBackgroundImage}); background-size: cover; background-position: center; background-repeat: no-repeat;"` : ''}>
         ${getHeroHTML(template, theme, isPremium)}
-    </section>
-        ` : ''}
-        <div class="max-w-6xl mx-auto px-4 relative z-10">
-            <div class="text-center">
-                ${template.hero.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroBadgeColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.accentColor)}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : (template.styles.heroBackgroundImage ? 'rgba(255,255,255,0.3)' : template.styles.accentColor)};">${template.hero.badge}</div>` : ''}
-                <h1 class="text-4xl md:text-6xl font-bold mb-4 ${isPremium && template.id === 'neon-academy-pro' ? 'neon-text' : ''}" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroTitleColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; ${isPremium && (template.id === 'blockchain-tech-pro' || template.id === 'nft-future-pro') ? 'background: linear-gradient(45deg, #60a5fa, #a78bfa, #22d3ee); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;' : ''}">${template.hero.title}</h1>
-                <h2 class="text-xl md:text-2xl mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroTextColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.9;">${template.hero.subtitle}</h2>
-                <p class="text-lg mb-8 max-w-4xl mx-auto" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroTextColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.8;">${template.hero.description}</p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${effectiveStyles.accentColor}; ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}">
-                        ${template.hero.button1Icon ? `<i class="ri-${template.hero.button1Icon}"></i>` : ''}
-                        ${template.hero.button1Text}
-                    </a>
-                    <a href="#features" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${effectiveStyles.secondaryColor}; ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}">
-                        ${template.hero.button2Icon ? `<i class="ri-${template.hero.button2Icon}"></i>` : ''}
-                        ${template.hero.button2Text}
-                    </a>
-                </div>
-            </div>
-        </div>
     </section>
 
     <!-- Emotional Section -->
