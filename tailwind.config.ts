@@ -68,6 +68,17 @@ export default {
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
+			fontFamily: {
+				sans: ['"Inter"', '"Heebo"', "sans-serif"],
+				hebrew: ['"Heebo"', '"Assistant"', "sans-serif"],
+				playfair: ['"Playfair Display"', '"Frank Ruhl Libre"', "serif"],
+				cinzel: ['"Cinzel"', '"Playfair Display"', "serif"], 
+				mono: ['"Roboto Mono"', "monospace"],
+				orbitron: ['"Orbitron"', "monospace"],
+				exo: ['"Exo 2"', "sans-serif"],
+				poppins: ['"Poppins"', '"Assistant"', "sans-serif"],
+				comfortaa: ['"Comfortaa"', '"Varela Round"', "sans-serif"],
+			},
 			keyframes: {
 				'accordion-down': {
 					from: {
