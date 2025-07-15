@@ -521,8 +521,33 @@ const AdvancedLandingPageGenerator = ({
         <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
           <DialogContent className="max-w-7xl h-[90vh] overflow-hidden p-0">
             {generatedPage ? (
+              <LandingPagePreview
+                content={generatedPage}
+                currentColors={{
+                  primary: selectedDesignTheme.styles.primary,
+                  secondary: selectedDesignTheme.styles.secondary,
+                  accent: selectedDesignTheme.styles.accent,
+                  background: selectedDesignTheme.styles.background,
+                  text: selectedDesignTheme.styles.text,
+                  headlineColor: selectedDesignTheme.styles.heroText,
+                  subheadlineColor: selectedDesignTheme.styles.heroText,
+                  featuresColor: selectedDesignTheme.styles.featuresText,
+                  featuresTextColor: selectedDesignTheme.styles.featuresText,
+                  aboutColor: selectedDesignTheme.styles.text,
+                  aboutTextColor: selectedDesignTheme.styles.text,
+                  contactColor: selectedDesignTheme.styles.text,
+                  contactTextColor: selectedDesignTheme.styles.text
+                }}
+                formData={{
+                  selectedTemplate: generatedPage,
+                  businessName: formData?.businessName || quickFormData.businessName
+                }}
+                heroImage=""
+                elements={[]}
+                selectedDesignTheme={selectedDesignTheme}
+              />
+            ) : (
               <div className="w-full h-full overflow-y-auto">
-                <div className="bg-white text-gray-900 min-h-full">
                   {/* Hero Section */}
                   <section className="bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950 text-white py-20 px-6 text-center relative overflow-hidden">
                     {/* Background Pattern */}
