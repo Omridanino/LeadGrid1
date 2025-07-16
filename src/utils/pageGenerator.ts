@@ -957,6 +957,22 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
           }
         }
         
+        @keyframes float {
+          0%, 100% { 
+            transform: translateY(0px) scale(1);
+            opacity: 0.7;
+          }
+          50% { 
+            transform: translateY(-20px) scale(1.1);
+            opacity: 1;
+          }
+        }
+        
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        
         /* Premium Effects */
         ${getPremiumStyles()}
         
@@ -1076,6 +1092,112 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
 <body class="text-foreground">
 
     <!-- Hero Section -->
+    ${theme.id === 'luxury-premium' ? `
+    <!-- Luxury Premium Hero -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden" style="background: linear-gradient(135deg, hsl(0, 0%, 3%) 0%, hsl(0, 0%, 8%) 30%, hsl(45, 15%, 6%) 70%, hsl(0, 0%, 5%) 100%);">
+      
+      <!-- Luxury Golden Particles -->
+      <div class="absolute inset-0">
+        ${Array.from({length: 30}, (_, i) => `
+          <div class="absolute rounded-full opacity-70" style="
+            width: ${2 + Math.random() * 4}px;
+            height: ${2 + Math.random() * 4}px;
+            background: linear-gradient(135deg, hsl(45, 100%, 60%), hsl(38, 100%, 45%));
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation: float ${8 + Math.random() * 12}s infinite ease-in-out;
+            animation-delay: ${Math.random() * 5}s;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+          "></div>
+        `).join('')}
+      </div>
+
+      <!-- Golden Geometric Shapes -->
+      <div class="absolute inset-0">
+        ${Array.from({length: 6}, (_, i) => `
+          <div class="absolute border opacity-30" style="
+            width: ${100 + i * 20}px;
+            height: ${100 + i * 20}px;
+            left: ${10 + i * 15}%;
+            top: ${15 + (i % 3) * 25}%;
+            border-color: rgba(255, 215, 0, 0.4);
+            border-width: 1px;
+            border-radius: ${i % 2 === 0 ? '50%' : '8px'};
+            transform: rotate(${i * 45}deg);
+            animation: spin ${20 + i * 5}s linear infinite;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), transparent);
+          "></div>
+        `).join('')}
+      </div>
+
+      <!-- Luxury Gradient Overlay -->
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/40"></div>
+
+      <!-- Content -->
+      <div class="relative z-10 max-w-6xl mx-auto px-6 text-center">
+        ${template.hero.badge ? `
+          <div class="inline-flex items-center rounded-full border px-4 py-2 text-xs font-semibold mb-6 backdrop-blur-sm" style="
+            color: hsl(45, 100%, 70%);
+            border-color: rgba(255, 215, 0, 0.3);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 193, 7, 0.05));
+          ">
+            ${template.hero.badge}
+          </div>
+        ` : ''}
+        
+        <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight" style="
+          background: linear-gradient(135deg, hsl(45, 100%, 70%), hsl(38, 100%, 55%), hsl(45, 100%, 65%));
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+          font-family: 'Playfair Display', 'Frank Ruhl Libre', serif;
+        ">
+          ${template.hero.title}
+        </h1>
+        
+        <h2 class="text-2xl md:text-3xl mb-8 font-light" style="
+          color: hsl(0, 0%, 85%);
+          font-family: 'Playfair Display', 'Frank Ruhl Libre', serif;
+        ">
+          ${template.hero.subtitle}
+        </h2>
+        
+        <p class="text-lg md:text-xl mb-12 max-w-4xl mx-auto leading-relaxed" style="
+          color: hsl(0, 0%, 75%);
+          opacity: 0.9;
+        ">
+          ${template.hero.description}
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-6 justify-center">
+          <a href="#contact" class="group relative inline-flex items-center justify-center gap-3 px-8 py-4 text-lg font-semibold rounded-lg transition-all duration-300 hover:scale-105" style="
+            background: linear-gradient(135deg, hsl(45, 100%, 60%), hsl(38, 100%, 45%));
+            color: hsl(0, 0%, 10%);
+            box-shadow: 0 8px 32px rgba(255, 215, 0, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+          ">
+            ${template.hero.button1Icon ? `<i class="ri-${template.hero.button1Icon}"></i>` : ''}
+            ${template.hero.button1Text}
+          </a>
+          
+          <a href="#features" class="group relative inline-flex items-center justify-center gap-3 px-8 py-4 text-lg font-semibold rounded-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm" style="
+            background: rgba(255, 255, 255, 0.1);
+            color: hsl(0, 0%, 95%);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+          ">
+            ${template.hero.button2Icon ? `<i class="ri-${template.hero.button2Icon}"></i>` : ''}
+            ${template.hero.button2Text}
+          </a>
+        </div>
+      </div>
+
+      <!-- Bottom Fade -->
+      <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/40 to-transparent"></div>
+    </section>
+    ` : `
+    <!-- Regular Hero -->
     <section class="hero" ${template.styles.heroBackgroundImage ? `style="background-image: url(${template.styles.heroBackgroundImage}); background-size: cover; background-position: center; background-repeat: no-repeat;"` : ''}>
         ${isPremium ? (() => {
           const bgData = getPremiumAnimatedBackground(template.id, 'hero');
@@ -1174,6 +1296,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             </div>
         </div>
     </section>
+    `}
 
     <!-- Emotional Section -->
     ${template.emotional && template.emotional.title ? `

@@ -35,7 +35,7 @@ export interface DesignTheme {
     animations?: string;
   };
   components: {
-    hero: 'glass' | 'minimal' | 'gradient' | 'premium' | 'friendly';
+    hero: 'glass' | 'minimal' | 'gradient' | 'premium' | 'friendly' | 'luxury-premium';
     buttons: 'glass' | 'minimal' | 'gradient' | 'premium' | 'friendly';
     cards: 'glass' | 'minimal' | 'gradient' | 'premium' | 'friendly';
     sections: 'glass' | 'minimal' | 'gradient' | 'premium' | 'friendly';
@@ -91,13 +91,13 @@ export const designThemes: DesignTheme[] = [
     thumbnail: '/design-previews/luxury-premium.png',
     category: 'יוקרה',
     styles: {
-      primary: 'hsl(45, 100%, 50%)', // זהב
+      primary: 'linear-gradient(135deg, hsl(45, 100%, 60%), hsl(38, 100%, 45%))', // זהב גרדיאנט
       secondary: 'hsl(0, 0%, 95%)', // לבן כמעט
-      accent: 'hsl(45, 100%, 60%)', // זהב בהיר
+      accent: 'linear-gradient(135deg, hsl(45, 100%, 70%), hsl(38, 100%, 55%))', // זהב בהיר גרדיאנט
       background: 'hsl(0, 0%, 8%)', // שחור עמוק
       text: 'hsl(0, 0%, 95%)',
       
-      heroBackground: 'linear-gradient(135deg, hsl(0, 0%, 8%) 0%, hsl(0, 0%, 12%) 100%)',
+      heroBackground: 'linear-gradient(135deg, hsl(0, 0%, 5%) 0%, hsl(0, 0%, 12%) 30%, hsl(45, 20%, 8%) 70%, hsl(0, 0%, 8%) 100%)',
       heroText: 'hsl(0, 0%, 95%)',
       featuresBackground: 'hsl(0, 0%, 10%)',
       featuresText: 'hsl(0, 0%, 90%)',
@@ -105,15 +105,15 @@ export const designThemes: DesignTheme[] = [
       fontFamily: '"Playfair Display", "Frank Ruhl Libre", serif',
       headingFont: '"Playfair Display", "Frank Ruhl Libre", serif',
       
-      borderRadius: '4px',
+      borderRadius: '8px',
       spacing: '2rem',
       
-      gradient: 'linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,215,0,0.05))',
-      shadows: '0 4px 20px 0 rgba(255, 215, 0, 0.15)',
+      gradient: 'linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,193,7,0.1))',
+      shadows: '0 8px 32px 0 rgba(255, 215, 0, 0.3)',
       animations: 'elegant'
     },
     components: {
-      hero: 'premium',
+      hero: 'luxury-premium',
       buttons: 'premium',
       cards: 'premium',
       sections: 'premium'
