@@ -1296,7 +1296,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             -webkit-text-fill-color: transparent;
             background-clip: text;
             animation: neonGlow 2s ease-in-out infinite alternate;
-            text-shadow: 0 0 30px hsl(300, 100%, 50%), 0 0 60px hsl(180, 100%, 50%), 0 0 90px hsl(60, 100%, 50%);
+            text-shadow: 0 0 15px hsl(300, 100%, 50%), 0 0 25px hsl(180, 100%, 50%);
           ">
             ${template.hero.title}
           </h1>
@@ -1336,12 +1336,12 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
     <!-- Neon Cyber CSS Animations -->
     <style>
       @keyframes neonGlow {
-        0%, 100% {
-          text-shadow: 0 0 30px hsl(300, 100%, 50%), 0 0 60px hsl(180, 100%, 50%), 0 0 90px hsl(60, 100%, 50%);
-        }
-        50% {
-          text-shadow: 0 0 20px hsl(300, 100%, 50%), 0 0 40px hsl(180, 100%, 50%), 0 0 60px hsl(60, 100%, 50%);
-        }
+         0%, 100% {
+           text-shadow: 0 0 15px hsl(300, 100%, 50%), 0 0 25px hsl(180, 100%, 50%);
+         }
+         50% {
+           text-shadow: 0 0 10px hsl(300, 100%, 50%), 0 0 20px hsl(180, 100%, 50%);
+         }
       }
       
       @keyframes flicker {
@@ -1924,7 +1924,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
               -webkit-text-fill-color: transparent;
               background-clip: text;
               animation: neonGlow 2s ease-in-out infinite alternate;
-              text-shadow: 0 0 30px hsl(300, 100%, 50%), 0 0 60px hsl(180, 100%, 50%);
+              text-shadow: 0 0 15px hsl(300, 100%, 50%), 0 0 25px hsl(180, 100%, 50%);
               font-family: 'Orbitron', monospace;
             ">
               ${template.testimonials.title}
