@@ -1700,11 +1700,11 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.primaryColor};">
+                <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform text-black font-bold' : 'text-white'}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, hsl(45, 100%, 70%), hsl(38, 100%, 55%), hsl(45, 95%, 65%)); box-shadow: 0 12px 40px rgba(255, 215, 0, 0.5), 0 4px 20px rgba(255, 193, 7, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); border: 2px solid rgba(255, 215, 0, 0.6); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);' : 'background-color: ' + template.styles.primaryColor + ';'}">
                     ${template.features.button1Icon ? `<i class="ri-${template.features.button1Icon}"></i>` : ''}
                     ${template.features.button1Text || 'צור קשר'}
                 </a>
-                <a href="#testimonials" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.secondaryColor};">
+                <a href="#testimonials" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform backdrop-blur-sm text-white font-bold' : 'text-white'}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 215, 0, 0.1)); border: 2px solid rgba(255, 215, 0, 0.5); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2); text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);' : 'background-color: ' + template.styles.secondaryColor + ';'}">
                     ${template.features.button2Icon ? `<i class="ri-${template.features.button2Icon}"></i>` : ''}
                     ${template.features.button2Text || 'לקוחות מספרים'}
                 </a>
@@ -1722,14 +1722,14 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
         <!-- Animated background particles -->
         <div class="absolute inset-0">
             ${Array.from({length: 20}, (_, i) => `
-                <div class="absolute w-2 h-2 bg-blue-400/20 rounded-full animate-pulse" style="left: ${Math.random() * 100}%; top: ${Math.random() * 100}%; animation-delay: ${i * 0.2}s;"></div>
+                <div class="absolute w-2 h-2 ${theme.id === 'luxury-premium' ? 'bg-yellow-400/20' : 'bg-blue-400/20'} rounded-full animate-pulse" style="left: ${Math.random() * 100}%; top: ${Math.random() * 100}%; animation-delay: ${i * 0.2}s;"></div>
             `).join('')}
         </div>
         ` : ''}
         
         <div class="max-w-6xl mx-auto px-6 relative z-10">
             ${isPremium ? `
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 ${theme.id === 'luxury-premium' ? 'bg-gradient-to-r from-yellow-200 to-yellow-300 bg-clip-text text-transparent' : 'bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent'}">
                 ${template.testimonials.title}
             </h2>
             ` : `
@@ -1746,7 +1746,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
                         <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20"></div>
                         <div class="relative z-10 p-6 space-y-4">
                             <!-- Quote icon -->
-                            <div class="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center mb-4">
+                            <div class="w-8 h-8 bg-gradient-to-br ${theme.id === 'luxury-premium' ? 'from-yellow-400 to-yellow-600' : 'from-blue-400 to-purple-500'} rounded-full flex items-center justify-center mb-4">
                                 <span class="text-white text-sm">"</span>
                             </div>
                             
@@ -1774,11 +1774,11 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.primaryColor};">
+                <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform text-black font-bold' : 'text-white'}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, hsl(45, 100%, 70%), hsl(38, 100%, 55%), hsl(45, 95%, 65%)); box-shadow: 0 12px 40px rgba(255, 215, 0, 0.5), 0 4px 20px rgba(255, 193, 7, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); border: 2px solid rgba(255, 215, 0, 0.6); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);' : 'background-color: ' + template.styles.primaryColor + ';'}">
                     ${template.testimonials.button1Icon ? `<i class="ri-${template.testimonials.button1Icon}"></i>` : ''}
                     ${template.testimonials.button1Text || 'צור קשר'}
                 </a>
-                <a href="#about" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.secondaryColor};">
+                <a href="#about" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform backdrop-blur-sm text-white font-bold' : 'text-white'}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 215, 0, 0.1)); border: 2px solid rgba(255, 215, 0, 0.5); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2); text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);' : 'background-color: ' + template.styles.secondaryColor + ';'}">
                     ${template.testimonials.button2Icon ? `<i class="ri-${template.testimonials.button2Icon}"></i>` : ''}
                     ${template.testimonials.button2Text || 'אודותינו'}
                 </a>
