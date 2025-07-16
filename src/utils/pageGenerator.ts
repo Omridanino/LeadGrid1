@@ -267,12 +267,37 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
     return style;
   };
 
-  // Premium animated backgrounds with CSS animations - match exact premium-section.tsx gradients
+  // Premium animated backgrounds with CSS animations - Enhanced Luxury Premium
   const getPremiumAnimatedBackground = (templateId: string, sectionType: string) => {
     const baseStyles = {
       position: 'relative',
       overflow: 'hidden',
     };
+
+    // Special Luxury Premium backgrounds - Much more luxurious
+    if (theme.id === 'luxury-premium') {
+      return {
+        ...baseStyles,
+        background: sectionType === 'hero' ? 
+          'linear-gradient(135deg, hsl(0, 0%, 1%) 0%, hsl(0, 0%, 6%) 20%, hsl(45, 25%, 4%) 50%, hsl(38, 30%, 6%) 80%, hsl(0, 0%, 2%) 100%)' :
+          sectionType === 'features' ? 
+          'linear-gradient(135deg, hsl(0, 0%, 3%) 0%, hsl(45, 20%, 6%) 30%, hsl(38, 25%, 5%) 70%, hsl(0, 0%, 4%) 100%)' :
+          sectionType === 'emotional' ? 
+          'linear-gradient(135deg, hsl(0, 0%, 2%) 0%, hsl(45, 15%, 5%) 50%, hsl(0, 0%, 3%) 100%)' :
+          sectionType === 'testimonials' ? 
+          'linear-gradient(135deg, hsl(0, 0%, 4%) 0%, hsl(45, 18%, 7%) 50%, hsl(0, 0%, 5%) 100%)' :
+          sectionType === 'about' ? 
+          'linear-gradient(135deg, hsl(0, 0%, 3%) 0%, hsl(38, 20%, 6%) 50%, hsl(0, 0%, 4%) 100%)' :
+          sectionType === 'pricing' ? 
+          'linear-gradient(135deg, hsl(0, 0%, 2%) 0%, hsl(45, 22%, 8%) 30%, hsl(38, 25%, 6%) 70%, hsl(0, 0%, 3%) 100%)' :
+          sectionType === 'faq' ? 
+          'linear-gradient(135deg, hsl(0, 0%, 4%) 0%, hsl(45, 16%, 6%) 50%, hsl(0, 0%, 5%) 100%)' :
+          sectionType === 'contact' ? 
+          'linear-gradient(135deg, hsl(0, 0%, 1%) 0%, hsl(45, 28%, 8%) 50%, hsl(0, 0%, 3%) 100%)' :
+          'linear-gradient(135deg, hsl(0, 0%, 3%) 0%, hsl(45, 20%, 6%) 50%, hsl(0, 0%, 4%) 100%)',
+        animationType: 'luxuryPremium'
+      };
+    }
 
     // Debug log
     console.log('Getting background for template:', templateId, 'section:', sectionType);
@@ -383,8 +408,79 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
     }
   };
 
-  // Generate premium background HTML with animations
+  // Generate premium background HTML with animations - Enhanced for Luxury Premium
   const generatePremiumBackgroundHTML = (animationType: string) => {
+    // Special Luxury Premium backgrounds
+    if (animationType === 'luxuryPremium') {
+      return `
+      <div style="position: absolute; inset: 0; overflow: hidden;">
+        <!-- Luxury Golden Particles -->
+        <div style="position: absolute; inset: 0;">
+          ${[...Array(40)].map((_, i) => `
+            <div style="
+              position: absolute;
+              width: ${3 + Math.random() * 5}px;
+              height: ${3 + Math.random() * 5}px;
+              left: ${Math.random() * 100}%;
+              top: ${Math.random() * 100}%;
+              background: linear-gradient(135deg, hsl(45, 100%, 75%), hsl(38, 100%, 60%));
+              border-radius: 50%;
+              animation: luxuryFloat ${6 + Math.random() * 8}s infinite ease-in-out ${Math.random() * 4}s;
+              box-shadow: 0 0 ${8 + Math.random() * 15}px rgba(255, 215, 0, 0.6), 0 0 ${4 + Math.random() * 8}px rgba(255, 193, 7, 0.4);
+              opacity: 0.8;
+            "></div>
+          `).join('')}
+        </div>
+        
+        <!-- Luxury Geometric Shapes -->
+        <div style="position: absolute; inset: 0;">
+          ${[...Array(8)].map((_, i) => `
+            <div style="
+              position: absolute;
+              width: ${100 + i * 20}px;
+              height: ${100 + i * 20}px;
+              left: ${8 + i * 11}%;
+              top: ${10 + (i % 4) * 20}%;
+              border: 2px solid rgba(255, 215, 0, 0.5);
+              border-radius: ${i % 3 === 0 ? '50%' : i % 3 === 1 ? '15px' : '0%'};
+              background: linear-gradient(135deg, rgba(255, 215, 0, 0.08), rgba(255, 193, 7, 0.05), transparent);
+              animation: luxurySpin ${20 + i * 6}s linear infinite;
+              box-shadow: 0 0 25px rgba(255, 215, 0, 0.2), inset 0 0 15px rgba(255, 215, 0, 0.1);
+              opacity: 0.4;
+            "></div>
+          `).join('')}
+        </div>
+        
+        <!-- Luxury Glow Effects -->
+        <div style="position: absolute; inset: 0;">
+          ${[...Array(10)].map((_, i) => `
+            <div style="
+              position: absolute;
+              width: ${40 + i * 8}px;
+              height: ${40 + i * 8}px;
+              left: ${Math.random() * 100}%;
+              top: ${Math.random() * 100}%;
+              background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, rgba(255, 193, 7, 0.2) 50%, transparent 100%);
+              border-radius: 50%;
+              animation: luxuryGlow ${8 + i * 2}s infinite ease-in-out ${i * 0.5}s;
+              filter: blur(1px);
+            "></div>
+          `).join('')}
+        </div>
+        
+        <!-- Luxury Background Gradients -->
+        <div style="
+          position: absolute; 
+          inset: 0; 
+          background: 
+            radial-gradient(circle at 25% 35%, rgba(255, 215, 0, 0.12) 0%, transparent 50%),
+            radial-gradient(circle at 75% 65%, rgba(255, 193, 7, 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 50% 20%, rgba(255, 235, 59, 0.06) 0%, transparent 50%);
+          animation: luxuryPulse 8s infinite ease-in-out;
+        "></div>
+      </div>`;
+    }
+    
     switch (animationType) {
       case 'dynamicGradients':
         return `
@@ -910,6 +1006,50 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
           75% { 
             border-radius: 70% 30% 60% 40% / 40% 50% 60% 30%;
             transform: rotate(270deg) scale(1.05);
+          }
+        }
+        
+        /* Luxury Premium Animations */
+        @keyframes luxuryFloat {
+          0%, 100% { 
+            transform: translateY(0px) scale(1) rotate(0deg);
+            opacity: 0.8;
+          }
+          33% { 
+            transform: translateY(-20px) scale(1.2) rotate(120deg);
+            opacity: 1;
+          }
+          66% { 
+            transform: translateY(-10px) scale(1.1) rotate(240deg);
+            opacity: 0.9;
+          }
+        }
+        
+        @keyframes luxurySpin {
+          from { transform: rotate(0deg) scale(1); }
+          50% { transform: rotate(180deg) scale(1.1); }
+          to { transform: rotate(360deg) scale(1); }
+        }
+        
+        @keyframes luxuryGlow {
+          0%, 100% { 
+            opacity: 0.3;
+            transform: scale(1);
+          }
+          50% { 
+            opacity: 0.7;
+            transform: scale(1.3);
+          }
+        }
+        
+        @keyframes luxuryPulse {
+          0%, 100% { 
+            opacity: 0.8;
+            transform: scale(1);
+          }
+          50% { 
+            opacity: 1;
+            transform: scale(1.1);
           }
         }
         
