@@ -1434,13 +1434,13 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
                 <h2 class="text-xl md:text-2xl mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroTextColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.9;">${template.hero.subtitle}</h2>
                 <p class="text-lg mb-8 max-w-4xl mx-auto" style="color: ${isPremium ? getPremiumTextColor(template.id, 'hero', template.styles.heroTextColor) : (template.styles.heroBackgroundImage ? 'white' : template.styles.textColor)}; opacity: 0.8;">${template.hero.description}</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${effectiveStyles.accentColor}; ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}">
+                    <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform text-black font-bold' : 'text-white'}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, hsl(45, 100%, 70%), hsl(38, 100%, 55%), hsl(45, 95%, 65%)); box-shadow: 0 12px 40px rgba(255, 215, 0, 0.5), 0 4px 20px rgba(255, 193, 7, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); border: 2px solid rgba(255, 215, 0, 0.6); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);' : 'background-color: ' + effectiveStyles.accentColor + '; ' + (isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : '')}">
                         ${template.hero.button1Icon ? `<i class="ri-${template.hero.button1Icon}"></i>` : ''}
-                        ${template.hero.button1Text}
+                        ${template.hero.button1Text || 'התחל עכשיו'}
                     </a>
-                    <a href="#features" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${effectiveStyles.secondaryColor}; ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}">
+                    <a href="#features" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform backdrop-blur-sm text-white font-bold' : 'text-white'}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 215, 0, 0.1)); border: 2px solid rgba(255, 215, 0, 0.5); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2); text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);' : 'background-color: ' + effectiveStyles.secondaryColor + '; ' + (isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : '')}">
                         ${template.hero.button2Icon ? `<i class="ri-${template.hero.button2Icon}"></i>` : ''}
-                        ${template.hero.button2Text}
+                        ${template.hero.button2Text || 'למד עוד'}
                     </a>
                 </div>
             </div>
@@ -1472,15 +1472,15 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
                  ${template.emotional.button1Text || template.emotional.button2Text ? `
                  <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
                      ${template.emotional.button1Text ? `
-                     <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white ${isPremium ? 'glass-effect' : ''}" style="background-color: ${template.styles.primaryColor}; ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}">
-                         ${template.emotional.button1Icon ? `<i class="ri-${template.emotional.button1Icon}"></i>` : ''}
-                         ${template.emotional.button1Text}
-                     </a>
-                     ` : ''}
-                     ${template.emotional.button2Text ? `
-                     <a href="#about" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white ${isPremium ? 'glass-effect' : ''}" style="background-color: ${template.styles.secondaryColor}; ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}">
-                         ${template.emotional.button2Icon ? `<i class="ri-${template.emotional.button2Icon}"></i>` : ''}
-                         ${template.emotional.button2Text}
+                      <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform text-black font-bold' : 'text-white'} ${isPremium ? 'glass-effect' : ''}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, hsl(45, 100%, 70%), hsl(38, 100%, 55%), hsl(45, 95%, 65%)); box-shadow: 0 12px 40px rgba(255, 215, 0, 0.5), 0 4px 20px rgba(255, 193, 7, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); border: 2px solid rgba(255, 215, 0, 0.6); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);' : 'background-color: ' + template.styles.primaryColor + '; ' + (isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : '')}">
+                          ${template.emotional.button1Icon ? `<i class="ri-${template.emotional.button1Icon}"></i>` : ''}
+                          ${template.emotional.button1Text || 'צור קשר'}
+                      </a>
+                      ` : ''}
+                      ${template.emotional.button2Text ? `
+                      <a href="#about" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform backdrop-blur-sm text-white font-bold' : 'text-white'} ${isPremium ? 'glass-effect' : ''}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 215, 0, 0.1)); border: 2px solid rgba(255, 215, 0, 0.5); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2); text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);' : 'background-color: ' + template.styles.secondaryColor + '; ' + (isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : '')}">
+                          ${template.emotional.button2Icon ? `<i class="ri-${template.emotional.button2Icon}"></i>` : ''}
+                          ${template.emotional.button2Text || 'אודותינו'}
                      </a>
                      ` : ''}
                  </div>
@@ -1812,13 +1812,13 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             ` : ''}
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.primaryColor};">
+                <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform text-black font-bold' : 'text-white'}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, hsl(45, 100%, 70%), hsl(38, 100%, 55%), hsl(45, 95%, 65%)); box-shadow: 0 12px 40px rgba(255, 215, 0, 0.5), 0 4px 20px rgba(255, 193, 7, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); border: 2px solid rgba(255, 215, 0, 0.6); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);' : 'background-color: ' + template.styles.primaryColor + ';'}">
                     ${template.about.button1Icon ? `<i class="ri-${template.about.button1Icon}"></i>` : ''}
-                    ${template.about.button1Text}
+                    ${template.about.button1Text || 'צור קשר'}
                 </a>
-                <a href="#pricing" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.secondaryColor};">
+                <a href="#pricing" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform backdrop-blur-sm text-white font-bold' : 'text-white'}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 215, 0, 0.1)); border: 2px solid rgba(255, 215, 0, 0.5); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2); text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);' : 'background-color: ' + template.styles.secondaryColor + ';'}">
                     ${template.about.button2Icon ? `<i class="ri-${template.about.button2Icon}"></i>` : ''}
-                    ${template.about.button2Text}
+                    ${template.about.button2Text || 'מחירים'}
                 </a>
             </div>
         </div>
@@ -1903,13 +1903,13 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.primaryColor};">
+                <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform text-black font-bold' : 'text-white'}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, hsl(45, 100%, 70%), hsl(38, 100%, 55%), hsl(45, 95%, 65%)); box-shadow: 0 12px 40px rgba(255, 215, 0, 0.5), 0 4px 20px rgba(255, 193, 7, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); border: 2px solid rgba(255, 215, 0, 0.6); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);' : 'background-color: ' + template.styles.primaryColor + ';'}">
                     ${template.pricing.button1Icon ? `<i class="ri-${template.pricing.button1Icon}"></i>` : ''}
-                    ${template.pricing.button1Text}
+                    ${template.pricing.button1Text || 'צור קשר'}
                 </a>
-                <a href="#faq" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.secondaryColor};">
+                <a href="#faq" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform backdrop-blur-sm text-white font-bold' : 'text-white'}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 215, 0, 0.1)); border: 2px solid rgba(255, 215, 0, 0.5); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2); text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);' : 'background-color: ' + template.styles.secondaryColor + ';'}">
                     ${template.pricing.button2Icon ? `<i class="ri-${template.pricing.button2Icon}"></i>` : ''}
-                    ${template.pricing.button2Text}
+                    ${template.pricing.button2Text || 'שאלות נפוצות'}
                 </a>
             </div>
         </div>
@@ -1933,13 +1933,13 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.primaryColor};">
+                <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform text-black font-bold' : 'text-white'}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, hsl(45, 100%, 70%), hsl(38, 100%, 55%), hsl(45, 95%, 65%)); box-shadow: 0 12px 40px rgba(255, 215, 0, 0.5), 0 4px 20px rgba(255, 193, 7, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); border: 2px solid rgba(255, 215, 0, 0.6); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);' : 'background-color: ' + template.styles.primaryColor + ';'}">
                     ${template.faq.button1Icon ? `<i class="ri-${template.faq.button1Icon}"></i>` : ''}
-                    ${template.faq.button1Text}
+                    ${template.faq.button1Text || 'צור קשר'}
                 </a>
-                <a href="#final-cta" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.secondaryColor};">
+                <a href="#final-cta" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform backdrop-blur-sm text-white font-bold' : 'text-white'}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 215, 0, 0.1)); border: 2px solid rgba(255, 215, 0, 0.5); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2); text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);' : 'background-color: ' + template.styles.secondaryColor + ';'}">
                     ${template.faq.button2Icon ? `<i class="ri-${template.faq.button2Icon}"></i>` : ''}
-                    ${template.faq.button2Text}
+                    ${template.faq.button2Text || 'התחל עכשיו'}
                 </a>
             </div>
         </div>
@@ -1979,8 +1979,8 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
                     <input type="email" placeholder="אימייל" class="w-full px-3 py-2 border border-input rounded-md text-right ${isPremium ? 'bg-white/10 border-white/20 text-white placeholder:text-white/70' : ''}" />
                     <input type="tel" placeholder="טלפון" class="w-full px-3 py-2 border border-input rounded-md text-right ${isPremium ? 'bg-white/10 border-white/20 text-white placeholder:text-white/70' : ''}" />
                     <textarea placeholder="הודעה" rows="4" class="w-full px-3 py-2 border border-input rounded-md text-right ${isPremium ? 'bg-white/10 border-white/20 text-white placeholder:text-white/70' : ''}"></textarea>
-                    <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 w-full text-white ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}" style="background-color: ${template.styles.primaryColor};">
-                        ${template.contact.buttonText}
+                    <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 w-full ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform text-black font-bold' : 'text-white'} ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, hsl(45, 100%, 70%), hsl(38, 100%, 55%), hsl(45, 95%, 65%)); box-shadow: 0 12px 40px rgba(255, 215, 0, 0.5), 0 4px 20px rgba(255, 193, 7, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); border: 2px solid rgba(255, 215, 0, 0.6); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);' : 'background-color: ' + template.styles.primaryColor + ';'}">
+                        ${template.contact.buttonText || 'שלח הודעה'}
                     </button>
                 </form>
             </div>
