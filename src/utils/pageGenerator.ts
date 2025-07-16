@@ -42,8 +42,63 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
 
   const generateWhyUsSection = (whyUs: any, styles: any, isPremium: boolean) => {
     if (!whyUs || !whyUs.items || whyUs.items.length === 0) return '';
-    return `
-    <!-- Why Us Section -->
+    
+    const neonCyberSection = theme.id === 'neon-cyber' ? `
+    <section class="why-us py-20 relative overflow-hidden" style="background: linear-gradient(135deg, hsl(240, 20%, 8%) 0%, hsl(260, 30%, 12%) 30%, hsl(280, 25%, 10%) 70%, hsl(240, 20%, 8%) 100%);">
+        <!-- Neon Grid Background -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 98px, rgba(0, 255, 255, 0.1) 100px), repeating-linear-gradient(90deg, transparent, transparent 98px, rgba(255, 0, 255, 0.1) 100px);"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                ${whyUs.badge ? `<div class="inline-block px-3 py-1 text-xs rounded-full mb-4" style="background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%)); color: white; border: 1px solid hsl(300, 100%, 50%); box-shadow: 0 0 15px hsl(300, 100%, 50%);">${whyUs.badge}</div>` : ''}
+                <h2 class="text-4xl font-bold mb-4" style="
+                    background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%), hsl(60, 100%, 50%));
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    text-shadow: 0 0 10px hsl(300, 100%, 50%);
+                    font-family: 'Orbitron', monospace;
+                ">${whyUs.title}</h2>
+                ${whyUs.subtitle ? `<p class="text-xl text-gray-300 mb-8" style="text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);">${whyUs.subtitle}</p>` : ''}
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                ${whyUs.items.map((item: any) => `
+                    <div class="relative group">
+                        <div class="relative overflow-hidden rounded-xl p-6 transition-all duration-300 hover:scale-105" style="
+                            background: linear-gradient(135deg, rgba(255, 0, 255, 0.1) 0%, rgba(0, 255, 255, 0.1) 100%);
+                            border: 1px solid rgba(255, 0, 255, 0.3);
+                            box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
+                        ">
+                            <div class="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="
+                                background: radial-gradient(circle at 50% 50%, rgba(255, 0, 255, 0.1) 0%, transparent 70%);
+                            "></div>
+                            
+                            <div class="relative z-10 space-y-4">
+                                <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="
+                                    background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%));
+                                    box-shadow: 0 0 15px hsl(300, 100%, 50%);
+                                ">
+                                    <i class="ri-${item.icon} text-xl text-white"></i>
+                                </div>
+                                
+                                <h3 class="text-xl font-bold" style="
+                                    color: hsl(180, 100%, 50%);
+                                    text-shadow: 0 0 8px hsl(180, 100%, 50%);
+                                    font-family: 'Orbitron', monospace;
+                                ">${item.title}</h3>
+                                
+                                <p class="text-gray-300 leading-relaxed" style="
+                                    text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+                                ">${item.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    </section>` : `
     <section class="why-us py-20" style="background: ${isPremium ? (theme.id === 'luxury-premium' ? 'linear-gradient(135deg, hsl(0, 0%, 3%) 0%, hsl(45, 20%, 6%) 30%, hsl(38, 25%, 5%) 70%, hsl(0, 0%, 4%) 100%)' : 'linear-gradient(135deg, rgba(55,65,81,0.9), rgba(30,64,175,0.9))') : styles.backgroundColor};">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
@@ -64,12 +119,69 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             </div>
         </div>
     </section>`;
+    
+    return neonCyberSection;
   };
 
   const generateWhatWeGiveSection = (whatWeGive: any, styles: any, isPremium: boolean) => {
     if (!whatWeGive || !whatWeGive.services || whatWeGive.services.length === 0) return '';
-    return `
-    <!-- What We Give Section -->
+    
+    const neonCyberSection = theme.id === 'neon-cyber' ? `
+    <section class="what-we-give py-20 relative overflow-hidden" style="background: linear-gradient(135deg, hsl(240, 20%, 8%) 0%, hsl(260, 30%, 12%) 30%, hsl(280, 25%, 10%) 70%, hsl(240, 20%, 8%) 100%);">
+        <!-- Neon Grid Background -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute inset-0" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 98px, rgba(0, 255, 255, 0.1) 100px), repeating-linear-gradient(90deg, transparent, transparent 98px, rgba(255, 0, 255, 0.1) 100px);"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                ${whatWeGive.badge ? `<div class="inline-block px-3 py-1 text-xs rounded-full mb-4" style="background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%)); color: white; border: 1px solid hsl(300, 100%, 50%); box-shadow: 0 0 15px hsl(300, 100%, 50%);">${whatWeGive.badge}</div>` : ''}
+                <h2 class="text-4xl font-bold mb-4" style="
+                    background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%), hsl(60, 100%, 50%));
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    text-shadow: 0 0 10px hsl(300, 100%, 50%);
+                    font-family: 'Orbitron', monospace;
+                ">${whatWeGive.title}</h2>
+                ${whatWeGive.subtitle ? `<p class="text-xl text-gray-300 mb-8" style="text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);">${whatWeGive.subtitle}</p>` : ''}
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                ${whatWeGive.services.map((service: any) => `
+                    <div class="relative group">
+                        <div class="relative overflow-hidden rounded-xl p-6 transition-all duration-300 hover:scale-105" style="
+                            background: linear-gradient(135deg, rgba(255, 0, 255, 0.1) 0%, rgba(0, 255, 255, 0.1) 100%);
+                            border: 1px solid rgba(255, 0, 255, 0.3);
+                            box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
+                        ">
+                            <div class="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="
+                                background: radial-gradient(circle at 50% 50%, rgba(255, 0, 255, 0.1) 0%, transparent 70%);
+                            "></div>
+                            
+                            <div class="relative z-10 space-y-4">
+                                <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="
+                                    background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%));
+                                    box-shadow: 0 0 15px hsl(300, 100%, 50%);
+                                ">
+                                    <i class="ri-${service.icon} text-xl text-white"></i>
+                                </div>
+                                
+                                <h3 class="text-xl font-bold" style="
+                                    color: hsl(180, 100%, 50%);
+                                    text-shadow: 0 0 8px hsl(180, 100%, 50%);
+                                    font-family: 'Orbitron', monospace;
+                                ">${service.title}</h3>
+                                
+                                <p class="text-gray-300 leading-relaxed" style="
+                                    text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+                                ">${service.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    </section>` : `
     <section class="what-we-give py-20" style="background: ${isPremium ? (theme.id === 'luxury-premium' ? 'linear-gradient(135deg, hsl(0, 0%, 2%) 0%, hsl(45, 15%, 5%) 50%, hsl(0, 0%, 3%) 100%)' : 'linear-gradient(135deg, rgba(30,64,175,0.9), rgba(55,65,81,0.9))') : styles.backgroundColor};">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
@@ -90,6 +202,8 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             </div>
         </div>
     </section>`;
+    
+    return neonCyberSection;
   };
 
   const generateProcessSection = (process: any, styles: any, isPremium: boolean) => {
@@ -1888,6 +2002,34 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                ${theme.id === 'neon-cyber' ? `
+                <a href="#contact" class="group relative overflow-hidden rounded-full px-8 py-4 text-lg font-bold transition-all duration-300 hover:scale-110" style="
+                    background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%));
+                    color: white;
+                    box-shadow: 0 0 20px hsl(300, 100%, 50%);
+                    border: 2px solid hsl(300, 100%, 50%);
+                    font-family: 'Orbitron', monospace;
+                ">
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                    <span class="relative z-10">
+                        ${template.features.button1Icon ? `<i class="ri-${template.features.button1Icon}"></i>` : ''}
+                        ${template.features.button1Text || 'צור קשר'}
+                    </span>
+                </a>
+                <a href="#testimonials" class="group relative overflow-hidden rounded-full px-8 py-4 text-lg font-bold transition-all duration-300 hover:scale-110" style="
+                    background: transparent;
+                    color: hsl(180, 100%, 50%);
+                    border: 2px solid hsl(180, 100%, 50%);
+                    box-shadow: 0 0 15px hsl(180, 100%, 50%);
+                    font-family: 'Orbitron', monospace;
+                ">
+                    <div class="absolute inset-0 bg-gradient-to-r from-hsl(180, 100%, 50%) to-hsl(300, 100%, 50%) opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                    <span class="relative z-10">
+                        ${template.features.button2Icon ? `<i class="ri-${template.features.button2Icon}"></i>` : ''}
+                        ${template.features.button2Text || 'לקוחות מספרים'}
+                    </span>
+                </a>
+                ` : `
                 <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform text-black font-bold' : 'text-white'}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, hsl(45, 100%, 70%), hsl(38, 100%, 55%), hsl(45, 95%, 65%)); box-shadow: 0 12px 40px rgba(255, 215, 0, 0.5), 0 4px 20px rgba(255, 193, 7, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); border: 2px solid rgba(255, 215, 0, 0.6); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);' : 'background-color: ' + template.styles.primaryColor + ';'}">
                     ${template.features.button1Icon ? `<i class="ri-${template.features.button1Icon}"></i>` : ''}
                     ${template.features.button1Text || 'צור קשר'}
@@ -1896,6 +2038,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
                     ${template.features.button2Icon ? `<i class="ri-${template.features.button2Icon}"></i>` : ''}
                     ${template.features.button2Text || 'לקוחות מספרים'}
                 </a>
+                `}
             </div>
         </div>
     </section>
@@ -2075,6 +2218,26 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
 
     <!-- About Section -->
     <section id="about" class="about">
+        ${theme.id === 'neon-cyber' ? `
+        <!-- Neon Cyber About Section -->
+        <div class="relative overflow-hidden py-20" style="background: linear-gradient(135deg, hsl(240, 20%, 8%) 0%, hsl(260, 30%, 12%) 30%, hsl(280, 25%, 10%) 70%, hsl(240, 20%, 8%) 100%);">
+            <!-- Neon Grid Background -->
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute inset-0" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 98px, rgba(0, 255, 255, 0.1) 100px), repeating-linear-gradient(90deg, transparent, transparent 98px, rgba(255, 0, 255, 0.1) 100px);"></div>
+            </div>
+            
+            <div class="max-w-6xl mx-auto px-4 relative z-10">
+                <div class="text-center mb-12">
+                    ${template.about.badge ? `<div class="inline-block px-3 py-1 text-xs rounded-full mb-4" style="background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%)); color: white; border: 1px solid hsl(300, 100%, 50%); box-shadow: 0 0 15px hsl(300, 100%, 50%);">${template.about.badge}</div>` : ''}
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6" style="
+                        background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%), hsl(60, 100%, 50%));
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        background-clip: text;
+                        text-shadow: 0 0 10px hsl(300, 100%, 50%);
+                        font-family: 'Orbitron', monospace;
+                    ">${template.about.title}</h2>
+        ` : `
         ${isPremium ? (() => {
           const bgData = getPremiumAnimatedBackground(template.id, 'about');
           return generatePremiumBackgroundHTML(bgData.animationType);
@@ -2083,6 +2246,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             <div class="text-center mb-12">
                 ${template.about.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.secondaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.secondaryColor};">${template.about.badge}</div>` : ''}
                 <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.about.title}</h2>
+        `}
                 <p class="text-lg max-w-4xl mx-auto opacity-90" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.about.description}</p>
             </div>
             
