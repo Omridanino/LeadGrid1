@@ -1328,7 +1328,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             border: 1px solid rgba(255, 215, 0, 0.3);
           ">
             ${template.hero.button1Icon ? `<i class="ri-${template.hero.button1Icon}"></i>` : ''}
-            ${template.hero.button1Text}
+            ${template.hero.button1Text || 'התחל עכשיו'}
           </a>
           
           <a href="#features" class="group relative inline-flex items-center justify-center gap-3 px-8 py-4 text-lg font-semibold rounded-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm" style="
@@ -1338,7 +1338,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
           ">
             ${template.hero.button2Icon ? `<i class="ri-${template.hero.button2Icon}"></i>` : ''}
-            ${template.hero.button2Text}
+            ${template.hero.button2Text || 'למד עוד'}
           </a>
         </div>
       </div>
@@ -1702,11 +1702,11 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.primaryColor};">
                     ${template.features.button1Icon ? `<i class="ri-${template.features.button1Icon}"></i>` : ''}
-                    ${template.features.button1Text}
+                    ${template.features.button1Text || 'צור קשר'}
                 </a>
                 <a href="#testimonials" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.secondaryColor};">
                     ${template.features.button2Icon ? `<i class="ri-${template.features.button2Icon}"></i>` : ''}
-                    ${template.features.button2Text}
+                    ${template.features.button2Text || 'לקוחות מספרים'}
                 </a>
             </div>
         </div>
@@ -1776,11 +1776,11 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.primaryColor};">
                     ${template.testimonials.button1Icon ? `<i class="ri-${template.testimonials.button1Icon}"></i>` : ''}
-                    ${template.testimonials.button1Text}
+                    ${template.testimonials.button1Text || 'צור קשר'}
                 </a>
                 <a href="#about" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white" style="background-color: ${template.styles.secondaryColor};">
                     ${template.testimonials.button2Icon ? `<i class="ri-${template.testimonials.button2Icon}"></i>` : ''}
-                    ${template.testimonials.button2Text}
+                    ${template.testimonials.button2Text || 'אודותינו'}
                 </a>
             </div>
         </div>
@@ -1893,8 +1893,8 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
                                     `).join('')}
                                 </ul>
                                 
-                                <a href="#contact" class="w-full py-3 font-medium rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg inline-flex items-center justify-center text-center" style="background: ${plan.recommended ? 'linear-gradient(to right, #fbbf24, #f97316)' : 'linear-gradient(to right, #3b82f6, #8b5cf6)'}; color: ${plan.recommended ? '#111827' : '#ffffff'};">
-                                    ${plan.buttonText}
+                                <a href="#contact" class="w-full py-3 font-medium rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg inline-flex items-center justify-center text-center" style="background: ${plan.recommended ? 'linear-gradient(to right, #fbbf24, #f97316)' : (theme.id === 'luxury-premium' ? 'linear-gradient(to right, #d4af37, #b8860b)' : 'linear-gradient(to right, #3b82f6, #8b5cf6)')}; color: ${plan.recommended ? '#111827' : '#ffffff'};">
+                                    ${plan.buttonText || 'בחר תוכנית'}
                                 </a>
                             </div>
                         </div>
