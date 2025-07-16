@@ -120,39 +120,39 @@ export const designThemes: DesignTheme[] = [
     }
   },
 
-  // 3. Hyper Minimalistic
+  // 3. Neon Cyber
   {
-    id: 'hyper-minimal',
-    name: 'מינימליסטי היפר',
-    description: 'עיצוב נקי ומינימלי עם המון חלל ריק וטיפוגרפיה חדה',
-    thumbnail: '/design-previews/hyper-minimal.png',
-    category: 'מינימליסטי',
+    id: 'neon-cyber',
+    name: 'נאון סייבר',
+    description: 'עיצוב עתידני עם אפקטי נאון וגרדיאנטים סייבר',
+    thumbnail: '/design-previews/neon-cyber.png',
+    category: 'עתידני',
     styles: {
-      primary: 'hsl(0, 0%, 9%)', // שחור כמעט
-      secondary: 'hsl(0, 0%, 96%)', // לבן כמעט
-      accent: 'hsl(0, 0%, 50%)', // אפור בינוני
-      background: 'hsl(0, 0%, 100%)', // לבן טהור
-      text: 'hsl(0, 0%, 9%)',
+      primary: 'hsl(300, 100%, 50%)', // ורוד נאון
+      secondary: 'hsl(180, 100%, 50%)', // ציאן נאון
+      accent: 'hsl(60, 100%, 50%)', // צהוב נאון
+      background: 'hsl(240, 20%, 8%)', // כחול כהה כמעט שחור
+      text: 'hsl(0, 0%, 95%)', // לבן כמעט
       
-      heroBackground: 'hsl(0, 0%, 100%)',
-      heroText: 'hsl(0, 0%, 9%)',
-      featuresBackground: 'hsl(0, 0%, 98%)',
-      featuresText: 'hsl(0, 0%, 15%)',
+      heroBackground: 'linear-gradient(135deg, hsl(240, 20%, 8%), hsl(260, 30%, 12%))',
+      heroText: 'hsl(0, 0%, 95%)',
+      featuresBackground: 'hsl(240, 25%, 10%)',
+      featuresText: 'hsl(0, 0%, 90%)',
       
-      fontFamily: '"Inter", "Heebo", sans-serif',
-      headingFont: '"Inter", "Heebo", sans-serif',
+      fontFamily: '"Orbitron", "Poppins", sans-serif',
+      headingFont: '"Orbitron", "Poppins", sans-serif',
       
-      borderRadius: '2px',
-      spacing: '3rem',
+      borderRadius: '12px',
+      spacing: '2rem',
       
-      shadows: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
-      animations: 'subtle'
+      shadows: '0 0 20px rgba(300, 100%, 50%, 0.3), 0 0 40px rgba(180, 100%, 50%, 0.2)',
+      animations: 'glow'
     },
     components: {
-      hero: 'minimal',
-      buttons: 'minimal',
-      cards: 'minimal',
-      sections: 'minimal'
+      hero: 'gradient',
+      buttons: 'gradient',
+      cards: 'gradient',
+      sections: 'gradient'
     }
   },
 
