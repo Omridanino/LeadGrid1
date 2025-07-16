@@ -1658,7 +1658,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
                       <div class="relative group perspective-1000">
                         <div class="relative transform-gpu transition-all duration-300 preserve-3d group-hover:rotateY-5">
                           <!-- Floating background with glass effect -->
-                          <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20"></div>
+                          <div class="absolute inset-0 ${theme.id === 'luxury-premium' ? 'bg-gradient-to-br from-black/40 to-black/20 backdrop-blur-xl border border-yellow-500/30' : 'bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20'} rounded-2xl shadow-2xl"></div>
                           
                           <!-- Glow effect -->
                           <div class="absolute inset-0 bg-gradient-to-br ${theme.id === 'luxury-premium' ? 'from-yellow-500/20 to-yellow-600/20' : 'from-blue-500/20 to-purple-500/20'} rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"></div>
