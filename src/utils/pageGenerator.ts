@@ -1658,7 +1658,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
                       <div class="relative group perspective-1000">
                         <div class="relative transform-gpu transition-all duration-300 preserve-3d group-hover:rotateY-5">
                           <!-- Floating background with glass effect -->
-                          <div class="absolute inset-0 ${theme.id === 'luxury-premium' ? 'bg-gradient-to-br from-black/40 to-black/20 backdrop-blur-xl border border-yellow-500/30' : 'bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20'} rounded-2xl shadow-2xl"></div>
+                          <div class="absolute inset-0 ${theme.id === 'luxury-premium' ? 'bg-gradient-to-br from-black/60 to-black/30' : 'bg-gradient-to-br from-white/10 to-white/5'} backdrop-blur-xl rounded-2xl shadow-2xl ${theme.id === 'luxury-premium' ? 'border border-yellow-500/40' : 'border border-white/20'}"></div>
                           
                           <!-- Glow effect -->
                           <div class="absolute inset-0 bg-gradient-to-br ${theme.id === 'luxury-premium' ? 'from-yellow-500/20 to-yellow-600/20' : 'from-blue-500/20 to-purple-500/20'} rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"></div>
@@ -1671,12 +1671,12 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
                             </div>
                             
                             <!-- Title -->
-                            <h3 class="text-xl font-bold ${theme.id === 'luxury-premium' ? 'text-gray-100 bg-gradient-to-r from-yellow-200 to-yellow-300 bg-clip-text text-transparent' : 'text-white bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent'}">
+                            <h3 class="text-xl font-bold ${theme.id === 'luxury-premium' ? 'bg-gradient-to-r from-yellow-200 to-yellow-300 bg-clip-text text-transparent' : 'text-white bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent'}">
                               ${feature.title}
                             </h3>
                             
                             <!-- Description -->
-                            <p class="${theme.id === 'luxury-premium' ? 'text-gray-200/90' : 'text-blue-100/80'} leading-relaxed">
+                            <p class="${theme.id === 'luxury-premium' ? 'text-yellow-100/90' : 'text-blue-100/80'} leading-relaxed">
                               ${feature.description}
                             </p>
                             
