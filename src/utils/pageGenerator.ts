@@ -1242,8 +1242,147 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
 <body class="text-foreground">
 
     <!-- Hero Section -->
-    ${theme.id === 'luxury-premium' ? `
-    <!-- Luxury Premium Hero -->
+    ${theme.id === 'neon-cyber' ? `
+    <!-- Neon Cyber Hero -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden" style="background: linear-gradient(135deg, hsl(240, 20%, 8%) 0%, hsl(260, 30%, 12%) 30%, hsl(280, 25%, 10%) 70%, hsl(240, 20%, 8%) 100%);">
+      
+      <!-- Neon Grid Background -->
+      <div class="absolute inset-0 opacity-20">
+        <div class="absolute inset-0" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 98px, rgba(0, 255, 255, 0.2) 100px), repeating-linear-gradient(90deg, transparent, transparent 98px, rgba(255, 0, 255, 0.2) 100px);"></div>
+      </div>
+      
+      <!-- Floating Neon Particles -->
+      <div class="absolute inset-0">
+        ${Array.from({length: 20}, (_, i) => `
+          <div class="absolute rounded-full animate-pulse" style="
+            width: ${2 + Math.random() * 6}px;
+            height: ${2 + Math.random() * 6}px;
+            background: ${i % 3 === 0 ? 'hsl(300, 100%, 50%)' : i % 3 === 1 ? 'hsl(180, 100%, 50%)' : 'hsl(60, 100%, 50%)'};
+            box-shadow: 0 0 20px ${i % 3 === 0 ? 'hsl(300, 100%, 50%)' : i % 3 === 1 ? 'hsl(180, 100%, 50%)' : 'hsl(60, 100%, 50%)'};
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation: float${i % 3} ${3 + Math.random() * 4}s ease-in-out infinite;
+            z-index: 1;
+          ">
+            <div class="absolute inset-0 rounded-full" style="
+              background: radial-gradient(circle, ${i % 3 === 0 ? 'hsl(300, 100%, 50%)' : i % 3 === 1 ? 'hsl(180, 100%, 50%)' : 'hsl(60, 100%, 50%)'} 0%, transparent 70%);
+              transform: scale(3);
+              opacity: 0.3;
+            "></div>
+          </div>
+        `).join('')}
+      </div>
+      
+      <!-- Neon Scanning Lines -->
+      <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-60" style="
+          top: 20%;
+          animation: scan 3s ease-in-out infinite;
+        "></div>
+        <div class="absolute w-full h-0.5 bg-gradient-to-r from-transparent via-pink-400 to-transparent opacity-60" style="
+          top: 70%;
+          animation: scan 4s ease-in-out infinite reverse;
+        "></div>
+      </div>
+      
+      <!-- Content -->
+      <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
+        <div class="mb-6">
+          <h1 class="text-6xl md:text-8xl font-bold mb-6" style="
+            font-family: 'Orbitron', monospace;
+            background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%), hsl(60, 100%, 50%));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: neonGlow 2s ease-in-out infinite alternate;
+            text-shadow: 0 0 30px hsl(300, 100%, 50%), 0 0 60px hsl(180, 100%, 50%), 0 0 90px hsl(60, 100%, 50%);
+          ">
+            ${template.hero.title}
+          </h1>
+          <p class="text-xl md:text-2xl text-cyan-200 mb-8" style="
+            text-shadow: 0 0 20px hsl(180, 100%, 50%);
+            animation: flicker 3s ease-in-out infinite;
+          ">
+            ${template.hero.subtitle}
+          </p>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="#features" class="group relative overflow-hidden rounded-full px-8 py-4 text-lg font-bold transition-all duration-300 hover:scale-110" style="
+            background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%));
+            color: white;
+            box-shadow: 0 0 30px hsl(300, 100%, 50%), 0 0 60px hsl(180, 100%, 50%);
+            border: 2px solid hsl(300, 100%, 50%);
+            position: relative;
+          ">
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+            <span class="relative z-10">${template.hero.button1Text || 'התחל עכשיו'}</span>
+          </a>
+          
+          <a href="#about" class="group relative overflow-hidden rounded-full px-8 py-4 text-lg font-bold transition-all duration-300 hover:scale-110" style="
+            background: transparent;
+            color: hsl(180, 100%, 50%);
+            border: 2px solid hsl(180, 100%, 50%);
+            box-shadow: 0 0 20px hsl(180, 100%, 50%);
+          ">
+            <div class="absolute inset-0 bg-gradient-to-r from-hsl(180, 100%, 50%) to-hsl(300, 100%, 50%) opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+            <span class="relative z-10">${template.hero.button2Text || 'למד עוד'}</span>
+          </a>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Neon Cyber CSS Animations -->
+    <style>
+      @keyframes neonGlow {
+        0%, 100% {
+          text-shadow: 0 0 30px hsl(300, 100%, 50%), 0 0 60px hsl(180, 100%, 50%), 0 0 90px hsl(60, 100%, 50%);
+        }
+        50% {
+          text-shadow: 0 0 20px hsl(300, 100%, 50%), 0 0 40px hsl(180, 100%, 50%), 0 0 60px hsl(60, 100%, 50%);
+        }
+      }
+      
+      @keyframes flicker {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.8; }
+      }
+      
+      @keyframes scan {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+      }
+      
+      @keyframes float0 {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(180deg); }
+      }
+      
+      @keyframes float1 {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-30px) rotate(-180deg); }
+      }
+      
+      @keyframes float2 {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-25px) rotate(360deg); }
+      }
+    </style>
+    
+    <!-- Additional Neon Cyber Animations -->
+    <style>
+      @keyframes borderScan {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+      }
+      
+      @keyframes pulse {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+      }
+    </style>
+    
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden" style="background: linear-gradient(135deg, hsl(0, 0%, 3%) 0%, hsl(0, 0%, 8%) 30%, hsl(45, 15%, 6%) 70%, hsl(0, 0%, 5%) 100%);">
       
       <!-- Luxury Golden Particles -->
@@ -1653,7 +1792,56 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                 ${template.features.items.map((feature: any) => {
-                  if (isPremium) {
+                  if (theme.id === 'neon-cyber') {
+                    return `
+                      <div class="relative group">
+                        <!-- Neon Cyber Card -->
+                        <div class="relative overflow-hidden rounded-xl p-6 transition-all duration-300 hover:scale-105" style="
+                          background: linear-gradient(135deg, rgba(255, 0, 255, 0.1) 0%, rgba(0, 255, 255, 0.1) 100%);
+                          border: 1px solid rgba(255, 0, 255, 0.3);
+                          box-shadow: 0 0 20px rgba(255, 0, 255, 0.2), 0 0 40px rgba(0, 255, 255, 0.1);
+                        ">
+                          
+                          <!-- Neon Glow Effect -->
+                          <div class="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="
+                            background: radial-gradient(circle at 50% 50%, rgba(255, 0, 255, 0.2) 0%, transparent 70%);
+                            animation: pulse 2s ease-in-out infinite;
+                          "></div>
+                          
+                          <!-- Scanning Line Effect -->
+                          <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" style="
+                            animation: scan 2s ease-in-out infinite;
+                          "></div>
+                          
+                          <!-- Content -->
+                          <div class="relative z-10 space-y-4">
+                            <!-- Neon Icon -->
+                            <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="
+                              background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%));
+                              box-shadow: 0 0 20px hsl(300, 100%, 50%), 0 0 40px hsl(180, 100%, 50%);
+                            ">
+                              <i class="ri-${feature.icon} text-xl text-white"></i>
+                            </div>
+                            
+                            <!-- Neon Title -->
+                            <h3 class="text-xl font-bold" style="
+                              color: hsl(180, 100%, 50%);
+                              text-shadow: 0 0 10px hsl(180, 100%, 50%);
+                              font-family: 'Orbitron', monospace;
+                            ">
+                              ${feature.title}
+                            </h3>
+                            
+                            <!-- Neon Description -->
+                            <p class="text-gray-300 leading-relaxed" style="
+                              text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+                            ">
+                              ${feature.description}
+                            </p>
+                          </div>
+                        </div>
+                      </div>`;
+                  } else if (isPremium) {
                     return `
                       <div class="relative group perspective-1000">
                         <div class="relative transform-gpu transition-all duration-300 preserve-3d group-hover:rotateY-5">
@@ -1728,7 +1916,20 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
         ` : ''}
         
         <div class="max-w-6xl mx-auto px-6 relative z-10">
-            ${isPremium ? `
+            ${theme.id === 'neon-cyber' ? `
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16" style="
+              background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%), hsl(60, 100%, 50%));
+              background-size: 200% 200%;
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              animation: neonGlow 2s ease-in-out infinite alternate;
+              text-shadow: 0 0 30px hsl(300, 100%, 50%), 0 0 60px hsl(180, 100%, 50%);
+              font-family: 'Orbitron', monospace;
+            ">
+              ${template.testimonials.title}
+            </h2>
+            ` : isPremium ? `
             <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 ${theme.id === 'luxury-premium' ? 'bg-gradient-to-r from-yellow-200 to-yellow-300 bg-clip-text text-transparent' : 'bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent'}">
                 ${template.testimonials.title}
             </h2>
@@ -1741,8 +1942,68 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             
             <!-- Testimonials grid -->
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                ${template.testimonials.testimonials.map((testimonial: any) => `
-                    <div class="relative group">
+                ${template.testimonials.testimonials.map((testimonial: any) => {
+                  if (theme.id === 'neon-cyber') {
+                    return `
+                      <div class="relative group">
+                        <!-- Neon Cyber Testimonial Card -->
+                        <div class="relative overflow-hidden rounded-xl p-6 transition-all duration-300 hover:scale-105" style="
+                          background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(255, 0, 255, 0.1) 100%);
+                          border: 1px solid rgba(0, 255, 255, 0.3);
+                          box-shadow: 0 0 20px rgba(0, 255, 255, 0.2), 0 0 40px rgba(255, 0, 255, 0.1);
+                        ">
+                          
+                          <!-- Neon Border Animation -->
+                          <div class="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="
+                            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.5), transparent);
+                            animation: borderScan 3s ease-in-out infinite;
+                          "></div>
+                          
+                          <div class="relative z-10">
+                            <!-- Neon Quote Icon -->
+                            <div class="mb-4">
+                              <i class="ri-double-quotes-l text-3xl" style="
+                                color: hsl(60, 100%, 50%);
+                                text-shadow: 0 0 10px hsl(60, 100%, 50%);
+                              "></i>
+                            </div>
+                            
+                            <!-- Testimonial Text -->
+                            <p class="text-lg mb-6" style="
+                              color: hsl(0, 0%, 90%);
+                              text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+                            ">${testimonial.text}</p>
+                            
+                            <!-- Client Info -->
+                            <div class="flex items-center gap-3">
+                              <div class="w-12 h-12 rounded-full overflow-hidden" style="
+                                border: 2px solid hsl(300, 100%, 50%);
+                                box-shadow: 0 0 15px hsl(300, 100%, 50%);
+                              ">
+                                <img src="${testimonial.image}" alt="${testimonial.name}" class="w-full h-full object-cover">
+                              </div>
+                              <div>
+                                <h4 class="font-bold" style="
+                                  color: hsl(300, 100%, 50%);
+                                  text-shadow: 0 0 10px hsl(300, 100%, 50%);
+                                  font-family: 'Orbitron', monospace;
+                                ">
+                                  ${testimonial.name}
+                                </h4>
+                                <p class="text-sm" style="
+                                  color: hsl(180, 100%, 50%);
+                                  text-shadow: 0 0 5px hsl(180, 100%, 50%);
+                                ">
+                                  ${testimonial.role}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>`;
+                  } else {
+                    return `
+                      <div class="relative group">
                         <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20"></div>
                         <div class="relative z-10 p-6 space-y-4">
                             <!-- Quote icon -->
@@ -1768,12 +2029,36 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
                                     <p class="${theme.id === 'luxury-premium' ? 'text-yellow-200/70' : 'text-blue-200/70'} text-sm">${testimonial.role}</p>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                `).join('')}
+                         </div>
+                     </div>`;
+                   }
+                 }).join('')}
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                ${theme.id === 'neon-cyber' ? `
+                <a href="#contact" class="group relative overflow-hidden rounded-full px-8 py-4 text-lg font-bold transition-all duration-300 hover:scale-110" style="
+                  background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%));
+                  color: white;
+                  box-shadow: 0 0 30px hsl(300, 100%, 50%), 0 0 60px hsl(180, 100%, 50%);
+                  border: 2px solid hsl(300, 100%, 50%);
+                  font-family: 'Orbitron', monospace;
+                ">
+                  <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  <span class="relative z-10">${template.testimonials.button1Text || 'צור קשר'}</span>
+                </a>
+                
+                <a href="#about" class="group relative overflow-hidden rounded-full px-8 py-4 text-lg font-bold transition-all duration-300 hover:scale-110" style="
+                  background: transparent;
+                  color: hsl(180, 100%, 50%);
+                  border: 2px solid hsl(180, 100%, 50%);
+                  box-shadow: 0 0 20px hsl(180, 100%, 50%);
+                  font-family: 'Orbitron', monospace;
+                ">
+                  <div class="absolute inset-0 bg-gradient-to-r from-hsl(180, 100%, 50%) to-hsl(300, 100%, 50%) opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                  <span class="relative z-10">${template.testimonials.button2Text || 'אודותינו'}</span>
+                </a>
+                ` : `
                 <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform text-black font-bold' : 'text-white'}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, hsl(45, 100%, 70%), hsl(38, 100%, 55%), hsl(45, 95%, 65%)); box-shadow: 0 12px 40px rgba(255, 215, 0, 0.5), 0 4px 20px rgba(255, 193, 7, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); border: 2px solid rgba(255, 215, 0, 0.6); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);' : 'background-color: ' + template.styles.primaryColor + ';'}">
                     ${template.testimonials.button1Icon ? `<i class="ri-${template.testimonials.button1Icon}"></i>` : ''}
                     ${template.testimonials.button1Text || 'צור קשר'}
@@ -1781,8 +2066,9 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
                 <a href="#about" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform backdrop-blur-sm text-white font-bold' : 'text-white'}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 215, 0, 0.1)); border: 2px solid rgba(255, 215, 0, 0.5); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2); text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);' : 'background-color: ' + template.styles.secondaryColor + ';'}">
                     ${template.testimonials.button2Icon ? `<i class="ri-${template.testimonials.button2Icon}"></i>` : ''}
                     ${template.testimonials.button2Text || 'אודותינו'}
-                </a>
-            </div>
+                 </a>
+                 `}
+             </div>
         </div>
     </section>
 
