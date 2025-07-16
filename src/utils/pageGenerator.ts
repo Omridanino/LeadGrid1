@@ -1232,10 +1232,51 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
           }
         }
         
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
+         @keyframes spin {
+           from { transform: rotate(0deg); }
+           to { transform: rotate(360deg); }
+         }
+         
+         /* Neon Cyber Animations */
+         @keyframes hexGlow {
+           0%, 100% { 
+             opacity: 0.3; 
+             box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+           }
+           50% { 
+             opacity: 0.8; 
+             box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+           }
+         }
+         
+         @keyframes scanLine {
+           0% { transform: translateX(-100%); }
+           100% { transform: translateX(100%); }
+         }
+         
+         @keyframes dataFlow {
+           0% { transform: translateX(-100%); opacity: 0; }
+           50% { opacity: 1; }
+           100% { transform: translateX(100%); opacity: 0; }
+         }
+         
+         @keyframes matrixFloat {
+           0%, 100% { 
+             transform: translateY(0px) rotate(0deg); 
+             opacity: 0.4; 
+           }
+           50% { 
+             transform: translateY(-30px) rotate(180deg); 
+             opacity: 0.8; 
+           }
+         }
+         
+         @keyframes digitalRain {
+           0% { transform: translateY(-200px); opacity: 0; }
+           10% { opacity: 1; }
+           90% { opacity: 1; }
+           100% { transform: translateY(100vh); opacity: 0; }
+         }
         
         /* Premium Effects */
         ${getPremiumStyles()}
@@ -1744,79 +1785,161 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
      ` : ''}
 
     <!-- WhyUs Section -->
-    ${template.whyUs ? `
-     <section class="relative py-20 overflow-hidden" style="${isPremium ? (() => {
-       const bgData = getPremiumAnimatedBackground(template.id, 'whyUs');
-       return bgData.background + '; position: relative; overflow: hidden;';
-     })() : 'background-color: ' + template.styles.backgroundColor + ';'}">
-         ${isPremium ? (() => {
-           const bgData = getPremiumAnimatedBackground(template.id, 'whyUs');
-           return generatePremiumBackgroundHTML(bgData.animationType || 'dynamicGradients');
-         })() : ''}
-         <div class="relative z-10 max-w-7xl mx-auto px-6">
-           <div class="text-center mb-16">
-              ${template.whyUs.badge ? `<div class="inline-block px-3 py-1 text-xs font-medium rounded-full ${isPremium ? (theme.id === 'luxury-premium' ? 'bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 text-yellow-200 border border-yellow-500/30' : 'bg-white/10 border border-white/20 text-white backdrop-blur-sm') : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} mb-4">${template.whyUs.badge}</div>` : ''}
-              <h2 class="text-4xl md:text-6xl font-bold mb-6" style="color: ${getPremiumTextColor(template.id, 'whyUs')};">
-                ${template.whyUs.title}
-              </h2>
-              ${template.whyUs.subtitle ? `<p class="text-xl md:text-2xl" style="color: ${getPremiumTextColor(template.id, 'whyUs')}; opacity: 0.9;">${template.whyUs.subtitle}</p>` : ''}
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-              ${template.whyUs.items ? template.whyUs.items.map((item: any, index: number) => `
-                <div class="group ${isPremium ? (theme.id === 'luxury-premium' ? 'bg-black/20 backdrop-blur-sm border border-yellow-500/30 hover:bg-black/30' : 'bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10') : 'bg-white/10 border border-white/20'} rounded-2xl p-8 transition-all duration-300 hover:scale-105">
-                  <div class="w-16 h-16 mb-6 rounded-xl bg-gradient-to-br ${getPremiumIconColors(template.id)} flex items-center justify-center">
-                    <i class="ri-${item.icon || 'star-fill'} text-2xl text-white"></i>
-                  </div>
-                  <h3 class="text-2xl font-bold mb-4" style="color: ${getPremiumTextColor(template.id, 'whyUs')};">${item.title}</h3>
-                  <p class="text-lg leading-relaxed" style="color: ${getPremiumTextColor(template.id, 'whyUs')}; opacity: 0.8;">${item.description}</p>
-                </div>
-              `).join('') : ''}
-           </div>
-         </div>
-     </section>
-    ` : ''}
-
-    <!-- WhatWeGive Section -->
-    ${template.whatWeGive ? `
-     <section class="relative py-20 overflow-hidden" style="${isPremium ? (() => {
-       const bgData = getPremiumAnimatedBackground(template.id, 'whatWeGive');
-       return bgData.background + '; position: relative; overflow: hidden;';
-     })() : 'background-color: ' + template.styles.backgroundColor + ';'}">
-         ${isPremium ? (() => {
-           const bgData = getPremiumAnimatedBackground(template.id, 'whatWeGive');
-           return generatePremiumBackgroundHTML(bgData.animationType || 'dynamicGradients');
-         })() : ''}
-         <div class="relative z-10 max-w-7xl mx-auto px-6">
-           <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-             <div>
-               ${template.whatWeGive.badge ? `<div class="inline-block px-3 py-1 text-xs font-medium rounded-full ${isPremium ? 'bg-white/10 border border-white/20 text-white backdrop-blur-sm' : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} mb-4">${template.whatWeGive.badge}</div>` : ''}
-               <h2 class="text-4xl md:text-6xl font-bold mb-6" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')};">
-                 ${template.whatWeGive.title}
+     ${template.whyUs ? `
+      <section class="relative py-20 overflow-hidden" style="${isPremium ? (() => {
+        const bgData = getPremiumAnimatedBackground(template.id, 'whyUs');
+        return bgData.background + '; position: relative; overflow: hidden;';
+      })() : 'background-color: ' + template.styles.backgroundColor + ';'}">
+          ${isPremium ? (() => {
+            const bgData = getPremiumAnimatedBackground(template.id, 'whyUs');
+            return generatePremiumBackgroundHTML(bgData.animationType || 'dynamicGradients');
+          })() : ''}
+          
+          ${theme.id === 'neon-academy-pro' ? `
+          <!-- Neon Cyber Hexagonal Grid -->
+          <div class="absolute inset-0 opacity-20">
+              ${Array.from({length: 40}, (_, i) => `
+                  <div class="absolute" style="
+                      width: 60px;
+                      height: 60px;
+                      left: ${(i % 8) * 12.5}%;
+                      top: ${Math.floor(i / 8) * 20}%;
+                      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+                      border: 1px solid #00ffff;
+                      background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), transparent);
+                      animation: hexGlow ${3 + Math.random() * 2}s infinite ease-in-out alternate;
+                      animation-delay: ${i * 0.1}s;
+                  "></div>
+              `).join('')}
+          </div>
+          
+          <!-- Scanning Lines -->
+          <div class="absolute inset-0">
+              ${Array.from({length: 3}, (_, i) => `
+                  <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-50" style="
+                      top: ${25 + i * 25}%;
+                      animation: scanLine ${4 + i}s infinite linear;
+                      animation-delay: ${i * 1.5}s;
+                  "></div>
+              `).join('')}
+          </div>
+          ` : ''}
+          
+          <div class="relative z-10 max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+               ${template.whyUs.badge ? `<div class="inline-block px-3 py-1 text-xs font-medium rounded-full ${theme.id === 'neon-academy-pro' ? 'bg-black/50 border-2 border-cyan-400/50 text-cyan-300 shadow-lg shadow-cyan-400/20' : isPremium ? (theme.id === 'luxury-premium' ? 'bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 text-yellow-200 border border-yellow-500/30' : 'bg-white/10 border border-white/20 text-white backdrop-blur-sm') : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} mb-4">${template.whyUs.badge}</div>` : ''}
+               <h2 class="text-4xl md:text-6xl font-bold mb-6 ${theme.id === 'neon-academy-pro' ? 'text-cyan-300' : ''}" style="color: ${getPremiumTextColor(template.id, 'whyUs')}; ${theme.id === 'neon-academy-pro' ? 'text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;' : ''}">
+                 ${template.whyUs.title}
                </h2>
-               ${template.whatWeGive.subtitle ? `<p class="text-xl md:text-2xl mb-8" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')}; opacity: 0.9;">${template.whatWeGive.subtitle}</p>` : ''}
-               <div class="space-y-6">
-                 ${template.whatWeGive.services ? template.whatWeGive.services.map((service: any) => `
-                   <div class="flex items-start space-x-4 rtl:space-x-reverse">
-                     <div class="w-12 h-12 rounded-lg bg-gradient-to-br ${getPremiumIconColors(template.id)} flex items-center justify-center flex-shrink-0">
-                       <i class="ri-${service.icon || 'check-line'} text-xl text-white"></i>
-                     </div>
-                     <div>
-                       <h3 class="text-xl font-bold mb-2" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')};">${service.title}</h3>
-                       <p class="text-lg" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')}; opacity: 0.8;">${service.description}</p>
-                     </div>
+               ${template.whyUs.subtitle ? `<p class="text-xl md:text-2xl ${theme.id === 'neon-academy-pro' ? 'text-cyan-100' : ''}" style="color: ${getPremiumTextColor(template.id, 'whyUs')}; opacity: 0.9;">${template.whyUs.subtitle}</p>` : ''}
+             </div>
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+               ${template.whyUs.items ? template.whyUs.items.map((item: any, index: number) => `
+                 <div class="group transition-all duration-300 hover:scale-105" style="${theme.id === 'neon-academy-pro' ? 'background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 20, 40, 0.8)); border: 2px solid #00ffff; border-radius: 0; clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%); box-shadow: 0 0 30px rgba(0, 255, 255, 0.3), inset 0 0 20px rgba(0, 255, 255, 0.1); padding: 2rem; position: relative;' : isPremium ? (theme.id === 'luxury-premium' ? 'background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 1rem; padding: 2rem;' : 'background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1rem; padding: 2rem;') : 'background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 1rem; padding: 2rem;'}">
+                   
+                   ${theme.id === 'neon-academy-pro' ? `
+                   <!-- Cyber Corner Circuits -->
+                   <div class="absolute top-2 right-2 w-8 h-8" style="
+                       background: linear-gradient(45deg, transparent 30%, #00ffff 30%, #00ffff 70%, transparent 70%);
+                       opacity: 0.6;
+                   "></div>
+                   <div class="absolute bottom-2 left-2 w-8 h-8" style="
+                       background: linear-gradient(-45deg, transparent 30%, #00ffff 30%, #00ffff 70%, transparent 70%);
+                       opacity: 0.6;
+                   "></div>
+                   
+                   <!-- Data Stream Lines -->
+                   <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                       ${Array.from({length: 5}, (_, i) => `
+                           <div class="absolute w-full h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-30" style="
+                               top: ${20 + i * 15}%;
+                               animation: dataFlow ${2 + i * 0.5}s infinite linear;
+                               animation-delay: ${i * 0.3}s;
+                           "></div>
+                       `).join('')}
                    </div>
-                 `).join('') : ''}
-               </div>
-             </div>
-             <div class="relative">
-               ${template.whatWeGive.image ? `<div class="aspect-square bg-gradient-to-br ${getPremiumIconColors(template.id)} rounded-3xl flex items-center justify-center">
-                 <p class="text-white text-center p-8 text-lg">${template.whatWeGive.image}</p>
-               </div>` : ''}
-             </div>
-           </div>
-         </div>
-     </section>
-    ` : ''}
+                   ` : ''}
+                   
+                   <div class="w-16 h-16 mb-6 flex items-center justify-center ${theme.id === 'neon-academy-pro' ? '' : 'rounded-xl'}" style="${theme.id === 'neon-academy-pro' ? 'background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(0, 180, 255, 0.3)); border: 2px solid #00ffff; clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); color: #00ffff;' : 'background: linear-gradient(135deg, ' + getPremiumIconColors(template.id) + ');'}">
+                     <i class="ri-${item.icon || 'star-fill'} text-2xl ${theme.id === 'neon-academy-pro' ? 'text-cyan-300' : 'text-white'}"></i>
+                   </div>
+                   <h3 class="text-2xl font-bold mb-4 ${theme.id === 'neon-academy-pro' ? 'text-cyan-300' : ''}" style="color: ${getPremiumTextColor(template.id, 'whyUs')}; ${theme.id === 'neon-academy-pro' ? 'text-shadow: 0 0 5px #00ffff;' : ''}">${item.title}</h3>
+                   <p class="text-lg leading-relaxed ${theme.id === 'neon-academy-pro' ? 'text-cyan-100' : ''}" style="color: ${getPremiumTextColor(template.id, 'whyUs')}; opacity: 0.8;">${item.description}</p>
+                 </div>
+               `).join('') : ''}
+            </div>
+          </div>
+      </section>
+     ` : ''}
+
+     <!-- WhatWeGive Section -->
+     ${template.whatWeGive ? `
+      <section class="relative py-20 overflow-hidden" style="${isPremium ? (() => {
+        const bgData = getPremiumAnimatedBackground(template.id, 'whatWeGive');
+        return bgData.background + '; position: relative; overflow: hidden;';
+      })() : 'background-color: ' + template.styles.backgroundColor + ';'}">
+          ${isPremium ? (() => {
+            const bgData = getPremiumAnimatedBackground(template.id, 'whatWeGive');
+            return generatePremiumBackgroundHTML(bgData.animationType || 'dynamicGradients');
+          })() : ''}
+          
+          ${theme.id === 'neon-academy-pro' ? `
+          <!-- Cyber Matrix Background -->
+          <div class="absolute inset-0 opacity-10">
+              ${Array.from({length: 100}, (_, i) => `
+                  <div class="absolute w-2 h-2 bg-cyan-400 rounded-full" style="
+                      left: ${Math.random() * 100}%;
+                      top: ${Math.random() * 100}%;
+                      animation: matrixFloat ${4 + Math.random() * 3}s infinite ease-in-out;
+                      animation-delay: ${Math.random() * 2}s;
+                  "></div>
+              `).join('')}
+          </div>
+          
+          <!-- Digital Rain Effect -->
+          <div class="absolute inset-0 opacity-15">
+              ${Array.from({length: 20}, (_, i) => `
+                  <div class="absolute w-px bg-gradient-to-b from-cyan-400 via-cyan-500 to-transparent" style="
+                      left: ${i * 5}%;
+                      height: 200px;
+                      animation: digitalRain ${3 + Math.random() * 2}s infinite linear;
+                      animation-delay: ${i * 0.2}s;
+                  "></div>
+              `).join('')}
+          </div>
+          ` : ''}
+          
+          <div class="relative z-10 max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div>
+                ${template.whatWeGive.badge ? `<div class="inline-block px-3 py-1 text-xs font-medium rounded-full ${theme.id === 'neon-academy-pro' ? 'bg-black/60 border-2 border-cyan-400/60 text-cyan-300 shadow-lg shadow-cyan-400/20' : isPremium ? 'bg-white/10 border border-white/20 text-white backdrop-blur-sm' : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} mb-4">${template.whatWeGive.badge}</div>` : ''}
+                <h2 class="text-4xl md:text-6xl font-bold mb-6 ${theme.id === 'neon-academy-pro' ? 'text-cyan-300' : ''}" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')}; ${theme.id === 'neon-academy-pro' ? 'text-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff;' : ''}">
+                  ${template.whatWeGive.title}
+                </h2>
+                ${template.whatWeGive.subtitle ? `<p class="text-xl md:text-2xl mb-8 ${theme.id === 'neon-academy-pro' ? 'text-cyan-100' : ''}" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')}; opacity: 0.9;">${template.whatWeGive.subtitle}</p>` : ''}
+                <div class="space-y-6">
+                  ${template.whatWeGive.services ? template.whatWeGive.services.map((service: any) => `
+                    <div class="flex items-start space-x-4 rtl:space-x-reverse group">
+                      <div class="w-12 h-12 flex items-center justify-center flex-shrink-0 ${theme.id === 'neon-academy-pro' ? '' : 'rounded-lg'}" style="${theme.id === 'neon-academy-pro' ? 'background: linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(0, 180, 255, 0.4)); border: 2px solid #00ffff; clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%); box-shadow: 0 0 15px rgba(0, 255, 255, 0.4); color: #00ffff;' : 'background: linear-gradient(135deg, ' + getPremiumIconColors(template.id) + ');'}">
+                        <i class="ri-${service.icon || 'check-line'} text-xl ${theme.id === 'neon-academy-pro' ? 'text-cyan-300' : 'text-white'}"></i>
+                      </div>
+                      <div>
+                        <h3 class="text-xl font-bold mb-2 ${theme.id === 'neon-academy-pro' ? 'text-cyan-300' : ''}" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')}; ${theme.id === 'neon-academy-pro' ? 'text-shadow: 0 0 8px #00ffff;' : ''}">${service.title}</h3>
+                        <p class="text-lg ${theme.id === 'neon-academy-pro' ? 'text-cyan-100' : ''}" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')}; opacity: 0.8;">${service.description}</p>
+                      </div>
+                    </div>
+                  `).join('') : ''}
+                </div>
+              </div>
+              <div class="relative">
+                ${template.whatWeGive.image ? `<div class="aspect-square flex items-center justify-center ${theme.id === 'neon-academy-pro' ? '' : 'rounded-3xl'}" style="${theme.id === 'neon-academy-pro' ? 'background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 30, 60, 0.9)); border: 3px solid #00ffff; clip-path: polygon(10% 0%, 90% 0%, 100% 20%, 100% 80%, 90% 100%, 10% 100%, 0% 80%, 0% 20%); box-shadow: 0 0 50px rgba(0, 255, 255, 0.4), inset 0 0 30px rgba(0, 255, 255, 0.1);' : 'background: linear-gradient(135deg, ' + getPremiumIconColors(template.id) + ');'}">
+                  <p class="${theme.id === 'neon-academy-pro' ? 'text-cyan-300' : 'text-white'} text-center p-8 text-lg ${theme.id === 'neon-academy-pro' ? '' : ''}" style="${theme.id === 'neon-academy-pro' ? 'text-shadow: 0 0 10px #00ffff;' : ''}">${template.whatWeGive.image}</p>
+                </div>` : ''}
+              </div>
+            </div>
+          </div>
+      </section>
+     ` : ''}
 
     <!-- Gallery Section -->
     ${template.gallery ? `
