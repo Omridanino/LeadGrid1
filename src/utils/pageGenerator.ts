@@ -1756,16 +1756,16 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
                             </div>
                             
                             <!-- Content -->
-                            <p class="text-blue-100/90 italic leading-relaxed">"${testimonial.content}"</p>
+                            <p class="${theme.id === 'luxury-premium' ? 'text-gray-200/90' : 'text-blue-100/90'} italic leading-relaxed">"${testimonial.content}"</p>
                             
                             <!-- Author info -->
                             <div class="flex items-center gap-3 pt-4">
-                                <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
+                                <div class="w-12 h-12 bg-gradient-to-br ${theme.id === 'luxury-premium' ? 'from-yellow-400 to-yellow-600' : 'from-blue-400 to-purple-500'} rounded-full flex items-center justify-center text-white font-bold">
                                     ${testimonial.name?.charAt(0) || 'א'}
                                 </div>
                                 <div>
                                     <p class="text-white font-semibold">${testimonial.name}</p>
-                                    <p class="text-blue-200/70 text-sm">${testimonial.role}</p>
+                                    <p class="${theme.id === 'luxury-premium' ? 'text-yellow-200/70' : 'text-blue-200/70'} text-sm">${testimonial.role}</p>
                                 </div>
                             </div>
                         </div>
