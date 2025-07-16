@@ -1688,12 +1688,12 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
                       </div>`;
                   } else {
                     return `
-                      <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-                        <div class="text-4xl mb-4" style="color: ${template.styles.primaryColor};">
+                      <div class="rounded-lg border ${theme.id === 'luxury-premium' ? 'bg-gradient-to-br from-black/60 to-black/30 border-yellow-500/40' : 'bg-card'} text-card-foreground shadow-sm p-6">
+                        <div class="text-4xl mb-4" style="color: ${theme.id === 'luxury-premium' ? '#fbbf24' : template.styles.primaryColor};">
                           <i class="ri-${feature.icon}"></i>
                         </div>
-                        <h3 class="text-xl font-bold mb-2" style="color: ${template.styles.textColor};">${feature.title}</h3>
-                        <p style="color: ${template.styles.textColor}; opacity: 0.8;">${feature.description}</p>
+                        <h3 class="text-xl font-bold mb-2" style="color: ${theme.id === 'luxury-premium' ? '#fbbf24' : template.styles.textColor};">${feature.title}</h3>
+                        <p style="color: ${theme.id === 'luxury-premium' ? 'rgba(251, 191, 36, 0.9)' : template.styles.textColor}; opacity: 0.8;">${feature.description}</p>
                       </div>`;
                   }
                 }).join('')}
