@@ -44,17 +44,17 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
     if (!whyUs || !whyUs.items || whyUs.items.length === 0) return '';
     return `
     <!-- Why Us Section -->
-    <section class="why-us py-20" style="background: ${isPremium ? 'linear-gradient(135deg, rgba(55,65,81,0.9), rgba(30,64,175,0.9))' : styles.backgroundColor};">
+    <section class="why-us py-20" style="background: ${isPremium ? (theme.id === 'luxury-premium' ? 'linear-gradient(135deg, hsl(0, 0%, 3%) 0%, hsl(45, 20%, 6%) 30%, hsl(38, 25%, 5%) 70%, hsl(0, 0%, 4%) 100%)' : 'linear-gradient(135deg, rgba(55,65,81,0.9), rgba(30,64,175,0.9))') : styles.backgroundColor};">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
-                ${whyUs.badge ? `<div class="inline-block px-3 py-1 text-xs bg-blue-600/20 text-blue-300 rounded-full border border-blue-500/30 mb-4">${whyUs.badge}</div>` : ''}
+                ${whyUs.badge ? `<div class="inline-block px-3 py-1 text-xs ${isPremium ? (theme.id === 'luxury-premium' ? 'bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 text-yellow-200 border border-yellow-500/30' : 'bg-blue-600/20 text-blue-300 border border-blue-500/30') : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} rounded-full mb-4">${whyUs.badge}</div>` : ''}
                 <h2 class="text-4xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor};">${whyUs.title}</h2>
                 ${whyUs.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor}; opacity: 0.8;">${whyUs.subtitle}</p>` : ''}
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 ${whyUs.items.map((item: any) => `
-                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 ${isPremium ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}">
-                        <div class="text-4xl mb-4" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.primaryColor};">
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 ${isPremium ? (theme.id === 'luxury-premium' ? 'bg-black/20 backdrop-blur-sm border-yellow-500/30' : 'bg-white/10 backdrop-blur-sm border-white/20') : ''}">
+                        <div class="text-4xl mb-4" style="color: ${isPremium ? (theme.id === 'luxury-premium' ? '#fbbf24' : getPremiumTextColor(templateData.id)) : styles.primaryColor};">
                             <i class="ri-${item.icon}"></i>
                         </div>
                         <h3 class="text-xl font-bold mb-2" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor};">${item.title}</h3>
@@ -70,17 +70,17 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
     if (!whatWeGive || !whatWeGive.services || whatWeGive.services.length === 0) return '';
     return `
     <!-- What We Give Section -->
-    <section class="what-we-give py-20" style="background: ${isPremium ? 'linear-gradient(135deg, rgba(30,64,175,0.9), rgba(55,65,81,0.9))' : styles.backgroundColor};">
+    <section class="what-we-give py-20" style="background: ${isPremium ? (theme.id === 'luxury-premium' ? 'linear-gradient(135deg, hsl(0, 0%, 2%) 0%, hsl(45, 15%, 5%) 50%, hsl(0, 0%, 3%) 100%)' : 'linear-gradient(135deg, rgba(30,64,175,0.9), rgba(55,65,81,0.9))') : styles.backgroundColor};">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
-                ${whatWeGive.badge ? `<div class="inline-block px-3 py-1 text-xs bg-blue-600/20 text-blue-300 rounded-full border border-blue-500/30 mb-4">${whatWeGive.badge}</div>` : ''}
+                ${whatWeGive.badge ? `<div class="inline-block px-3 py-1 text-xs ${isPremium ? (theme.id === 'luxury-premium' ? 'bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 text-yellow-200 border border-yellow-500/30' : 'bg-blue-600/20 text-blue-300 border border-blue-500/30') : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} rounded-full mb-4">${whatWeGive.badge}</div>` : ''}
                 <h2 class="text-4xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor};">${whatWeGive.title}</h2>
                 ${whatWeGive.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor}; opacity: 0.8;">${whatWeGive.subtitle}</p>` : ''}
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 ${whatWeGive.services.map((service: any) => `
-                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 ${isPremium ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}">
-                        <div class="text-4xl mb-4" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.primaryColor};">
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 ${isPremium ? (theme.id === 'luxury-premium' ? 'bg-black/20 backdrop-blur-sm border-yellow-500/30' : 'bg-white/10 backdrop-blur-sm border-white/20') : ''}">
+                        <div class="text-4xl mb-4" style="color: ${isPremium ? (theme.id === 'luxury-premium' ? '#fbbf24' : getPremiumTextColor(templateData.id)) : styles.primaryColor};">
                             <i class="ri-${service.icon}"></i>
                         </div>
                         <h3 class="text-xl font-bold mb-2" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor};">${service.title}</h3>
@@ -195,6 +195,11 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
     // If custom color is provided, use it
     if (customColor) return customColor;
     
+    // Special handling for luxury-premium theme
+    if (theme.id === 'luxury-premium') {
+      return '#f1f5f9'; // Light gray-white for luxury premium
+    }
+    
     // Check for section-specific custom colors
     const sectionColors = {
       emotional: template.styles.emotionalTitleColor || template.styles.emotionalTextColor,
@@ -232,6 +237,11 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
 
   // Get premium icon colors based on template
   const getPremiumIconColors = (templateId: string) => {
+    // Special handling for luxury-premium theme
+    if (theme.id === 'luxury-premium') {
+      return 'from-yellow-400 via-yellow-500 to-yellow-600';
+    }
+    
     switch (templateId) {
       case 'tech-consultant-pro':
         return 'from-blue-400 to-slate-500';
@@ -1492,22 +1502,22 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
          })() : ''}
          <div class="relative z-10 max-w-7xl mx-auto px-6">
            <div class="text-center mb-16">
-             ${template.whyUs.badge ? `<div class="inline-block px-3 py-1 text-xs font-medium rounded-full ${isPremium ? 'bg-white/10 border border-white/20 text-white backdrop-blur-sm' : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} mb-4">${template.whyUs.badge}</div>` : ''}
-             <h2 class="text-4xl md:text-6xl font-bold mb-6" style="color: ${getPremiumTextColor(template.id, 'whyUs')};">
-               ${template.whyUs.title}
-             </h2>
-             ${template.whyUs.subtitle ? `<p class="text-xl md:text-2xl" style="color: ${getPremiumTextColor(template.id, 'whyUs')}; opacity: 0.9;">${template.whyUs.subtitle}</p>` : ''}
-           </div>
-           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-             ${template.whyUs.items ? template.whyUs.items.map((item: any, index: number) => `
-               <div class="group ${isPremium ? 'bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10' : 'bg-white/10 border border-white/20'} rounded-2xl p-8 transition-all duration-300 hover:scale-105">
-                 <div class="w-16 h-16 mb-6 rounded-xl bg-gradient-to-br ${getPremiumIconColors(template.id)} flex items-center justify-center">
-                   <i class="ri-${item.icon || 'star-fill'} text-2xl text-white"></i>
-                 </div>
-                 <h3 class="text-2xl font-bold mb-4" style="color: ${getPremiumTextColor(template.id, 'whyUs')};">${item.title}</h3>
-                 <p class="text-lg leading-relaxed" style="color: ${getPremiumTextColor(template.id, 'whyUs')}; opacity: 0.8;">${item.description}</p>
-               </div>
-             `).join('') : ''}
+              ${template.whyUs.badge ? `<div class="inline-block px-3 py-1 text-xs font-medium rounded-full ${isPremium ? (theme.id === 'luxury-premium' ? 'bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 text-yellow-200 border border-yellow-500/30' : 'bg-white/10 border border-white/20 text-white backdrop-blur-sm') : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} mb-4">${template.whyUs.badge}</div>` : ''}
+              <h2 class="text-4xl md:text-6xl font-bold mb-6" style="color: ${getPremiumTextColor(template.id, 'whyUs')};">
+                ${template.whyUs.title}
+              </h2>
+              ${template.whyUs.subtitle ? `<p class="text-xl md:text-2xl" style="color: ${getPremiumTextColor(template.id, 'whyUs')}; opacity: 0.9;">${template.whyUs.subtitle}</p>` : ''}
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              ${template.whyUs.items ? template.whyUs.items.map((item: any, index: number) => `
+                <div class="group ${isPremium ? (theme.id === 'luxury-premium' ? 'bg-black/20 backdrop-blur-sm border border-yellow-500/30 hover:bg-black/30' : 'bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10') : 'bg-white/10 border border-white/20'} rounded-2xl p-8 transition-all duration-300 hover:scale-105">
+                  <div class="w-16 h-16 mb-6 rounded-xl bg-gradient-to-br ${getPremiumIconColors(template.id)} flex items-center justify-center">
+                    <i class="ri-${item.icon || 'star-fill'} text-2xl text-white"></i>
+                  </div>
+                  <h3 class="text-2xl font-bold mb-4" style="color: ${getPremiumTextColor(template.id, 'whyUs')};">${item.title}</h3>
+                  <p class="text-lg leading-relaxed" style="color: ${getPremiumTextColor(template.id, 'whyUs')}; opacity: 0.8;">${item.description}</p>
+                </div>
+              `).join('') : ''}
            </div>
          </div>
      </section>
@@ -1636,7 +1646,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
         })() : ''}
         <div class="max-w-7xl mx-auto px-6 relative z-10">
             <div class="text-center mb-16">
-                ${template.features.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'features', template.styles.featuresBadgeColor) : template.styles.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.primaryColor};">${template.features.badge}</div>` : ''}
+                ${template.features.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'features', template.styles.featuresBadgeColor) : template.styles.primaryColor}; border-color: ${isPremium ? (theme.id === 'luxury-premium' ? 'rgba(255,215,0,0.5)' : 'rgba(255,255,255,0.3)') : template.styles.primaryColor};">${template.features.badge}</div>` : ''}
                 <h2 class="text-4xl md:text-5xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id, 'features', template.styles.featuresTitleColor) : template.styles.textColor};">${template.features.title}</h2>
                 ${template.features.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(template.id, 'features', template.styles.featuresTextColor) : template.styles.textColor}; opacity: 0.8;">${template.features.subtitle}</p>` : ''}
             </div>
@@ -1651,7 +1661,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
                           <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20"></div>
                           
                           <!-- Glow effect -->
-                          <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"></div>
+                          <div class="absolute inset-0 bg-gradient-to-br ${theme.id === 'luxury-premium' ? 'from-yellow-500/20 to-yellow-600/20' : 'from-blue-500/20 to-purple-500/20'} rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"></div>
                           
                           <!-- Content -->
                           <div class="relative z-10 p-8 space-y-4">
@@ -1661,18 +1671,18 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
                             </div>
                             
                             <!-- Title -->
-                            <h3 class="text-xl font-bold text-white bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">
+                            <h3 class="text-xl font-bold ${theme.id === 'luxury-premium' ? 'text-gray-100 bg-gradient-to-r from-yellow-200 to-yellow-300 bg-clip-text text-transparent' : 'text-white bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent'}">
                               ${feature.title}
                             </h3>
                             
                             <!-- Description -->
-                            <p class="text-blue-100/80 leading-relaxed">
+                            <p class="${theme.id === 'luxury-premium' ? 'text-gray-200/90' : 'text-blue-100/80'} leading-relaxed">
                               ${feature.description}
                             </p>
                             
                             <!-- Floating particles -->
-                            <div class="absolute top-4 right-4 w-2 h-2 bg-blue-400 rounded-full opacity-60 animate-pulse"></div>
-                            <div class="absolute bottom-6 left-6 w-1 h-1 bg-purple-400 rounded-full opacity-40 animate-pulse delay-500"></div>
+                            <div class="absolute top-4 right-4 w-2 h-2 ${theme.id === 'luxury-premium' ? 'bg-yellow-400' : 'bg-blue-400'} rounded-full opacity-60 animate-pulse"></div>
+                            <div class="absolute bottom-6 left-6 w-1 h-1 ${theme.id === 'luxury-premium' ? 'bg-yellow-500' : 'bg-purple-400'} rounded-full opacity-40 animate-pulse delay-500"></div>
                           </div>
                         </div>
                       </div>`;
