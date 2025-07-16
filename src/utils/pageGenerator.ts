@@ -1945,24 +1945,6 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
         </div>
     </section>
 
-    <!-- Final CTA Section -->
-    <section id="final-cta" class="final-cta">
-        <div class="max-w-4xl mx-auto text-center px-4 relative z-10">
-            ${template.finalCta?.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.accentColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.accentColor};">${template.finalCta.badge}</div>` : ''}
-            <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.finalCta?.title || 'צור קשר'}</h2>
-            <p class="text-lg mb-8 opacity-90" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.finalCta?.description || 'צור קשר איתנו עכשיו'}</p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}" style="background-color: ${template.styles.accentColor};">
-                    ${template.finalCta?.button1Icon ? `<i class="ri-${template.finalCta.button1Icon}"></i>` : ''}
-                    ${template.finalCta?.button1Text || 'צור קשר'}
-                </a>
-                <a href="#contact" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 text-white ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}" style="background-color: ${template.styles.secondaryColor};">
-                    ${template.finalCta?.button2Icon ? `<i class="ri-${template.finalCta.button2Icon}"></i>` : ''}
-                    ${template.finalCta?.button2Text || 'עוד מידע'}
-                </a>
-            </div>
-        </div>
-    </section>
 
     <!-- Contact Section -->
     <section id="contact" class="contact">
@@ -1997,6 +1979,29 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
     ${template.list ? generateListSection(template.list, template.styles, isPremium) : ''}
     ${template.embed ? generateEmbedSection(template.embed, template.styles, isPremium) : ''}
     ${template.socialBar ? generateSocialBarSection(template.socialBar, template.styles, isPremium) : ''}
+
+    <!-- Contact Section - Moved to be last -->
+    <section id="contact" class="contact">
+        ${isPremium ? (() => {
+          const bgData = getPremiumAnimatedBackground(template.id, 'contact');
+          return generatePremiumBackgroundHTML(bgData.animationType);
+        })() : ''}
+        <div class="max-w-4xl mx-auto text-center px-4 relative z-10">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.contact.title}</h2>
+            ${template.contact.subtitle ? `<p class="text-xl mb-8 opacity-80" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.contact.subtitle}</p>` : ''}
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-8 max-w-md mx-auto ${isPremium ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}">
+                <form class="space-y-4">
+                    <input type="text" placeholder="שם מלא" class="w-full px-3 py-2 border border-input rounded-md text-right ${isPremium ? 'bg-white/10 border-white/20 text-white placeholder:text-white/70' : ''}" />
+                    <input type="email" placeholder="אימייל" class="w-full px-3 py-2 border border-input rounded-md text-right ${isPremium ? 'bg-white/10 border-white/20 text-white placeholder:text-white/70' : ''}" />
+                    <input type="tel" placeholder="טלפון" class="w-full px-3 py-2 border border-input rounded-md text-right ${isPremium ? 'bg-white/10 border-white/20 text-white placeholder:text-white/70' : ''}" />
+                    <textarea placeholder="הודעה" rows="4" class="w-full px-3 py-2 border border-input rounded-md text-right ${isPremium ? 'bg-white/10 border-white/20 text-white placeholder:text-white/70' : ''}"></textarea>
+                    <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 w-full ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform text-black font-bold' : 'text-white'} ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, hsl(45, 100%, 70%), hsl(38, 100%, 55%), hsl(45, 95%, 65%)); box-shadow: 0 12px 40px rgba(255, 215, 0, 0.5), 0 4px 20px rgba(255, 193, 7, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); border: 2px solid rgba(255, 215, 0, 0.6); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);' : 'background-color: ' + template.styles.primaryColor + ';'}">
+                        ${template.contact.buttonText || 'שלח הודעה'}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer class="footer">
