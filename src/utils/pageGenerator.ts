@@ -1915,6 +1915,9 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
         </div>
     </section>
 
+    <!-- Gallery Section -->
+    ${template.gallery ? generateGallerySection(template.gallery, template.styles, isPremium) : ''}
+
     <!-- FAQ Section -->
     <section id="faq" class="faq">
         <div class="max-w-4xl mx-auto px-4 relative z-10">
@@ -1949,7 +1952,6 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
 
     
     <!-- New Content Sections -->
-    ${template.gallery ? generateGallerySection(template.gallery, template.styles, isPremium) : ''}
     ${template.heading ? generateHeadingSection(template.heading, template.styles, isPremium) : ''}
     ${template.text ? generateTextSection(template.text, template.styles, isPremium) : ''}
     ${template.video ? generateVideoSection(template.video, template.styles, isPremium) : ''}
