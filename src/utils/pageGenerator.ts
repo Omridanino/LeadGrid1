@@ -1417,8 +1417,8 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
 <body class="text-foreground">
 
     <!-- Hero Section -->
-    ${theme.id === 'neon-cyber' ? `
-    <!-- Neon Cyber Hero -->
+    ${theme.id === 'diamond-crystal' ? `
+    <!-- Diamond Crystal Hero -->
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden" style="background: linear-gradient(135deg, hsl(240, 20%, 8%) 0%, hsl(260, 30%, 12%) 30%, hsl(280, 25%, 10%) 70%, hsl(240, 20%, 8%) 100%);">
       
       <!-- Neon Grid Background -->
@@ -2049,7 +2049,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                 ${template.features.items.map((feature: any) => {
-                  if (theme.id === 'neon-cyber') {
+                  if (theme.id === 'diamond-crystal') {
                     return `
                       <div class="relative group">
                         <!-- Neon Cyber Card -->
@@ -2145,7 +2145,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                ${theme.id === 'neon-cyber' ? `
+                ${theme.id === 'diamond-crystal' ? `
                 <a href="#contact" class="group relative overflow-hidden rounded-full px-8 py-4 text-lg font-bold transition-all duration-300 hover:scale-110" style="
                     background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%));
                     color: white;
@@ -2202,7 +2202,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
         ` : ''}
         
         <div class="max-w-6xl mx-auto px-6 relative z-10">
-            ${theme.id === 'neon-cyber' ? `
+            ${theme.id === 'diamond-crystal' ? `
             <h2 class="text-4xl md:text-5xl font-bold text-center mb-16" style="
               background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%), hsl(60, 100%, 50%));
               background-size: 200% 200%;
@@ -2229,7 +2229,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             <!-- Testimonials grid -->
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                 ${template.testimonials.testimonials.map((testimonial: any) => {
-                  if (theme.id === 'neon-cyber') {
+                  if (theme.id === 'diamond-crystal') {
                     return `
                       <div class="relative group">
                         <!-- Neon Cyber Testimonial Card -->
@@ -2322,7 +2322,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                ${theme.id === 'neon-cyber' ? `
+                ${theme.id === 'diamond-crystal' ? `
                 <a href="#contact" class="group relative overflow-hidden rounded-full px-8 py-4 text-lg font-bold transition-all duration-300 hover:scale-110" style="
                   background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%));
                   color: white;
@@ -2361,7 +2361,7 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
 
     <!-- About Section -->
     <section id="about" class="about">
-        ${theme.id === 'neon-cyber' ? `
+        ${theme.id === 'diamond-crystal' ? `
         <!-- Neon Cyber About Section -->
         <div class="relative overflow-hidden py-20" style="background: linear-gradient(135deg, hsl(240, 20%, 8%) 0%, hsl(260, 30%, 12%) 30%, hsl(280, 25%, 10%) 70%, hsl(240, 20%, 8%) 100%);">
             <!-- Neon Grid Background -->
