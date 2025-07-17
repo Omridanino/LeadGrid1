@@ -1815,7 +1815,50 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             return generatePremiumBackgroundHTML(bgData.animationType || 'dynamicGradients');
           })() : ''}
           
-          ${theme.id === 'neon-academy-pro' ? `
+          ${theme.id === 'diamond-crystal' ? `
+          <!-- Diamond Crystal Background -->
+          <div class="absolute inset-0 opacity-30">
+              ${Array.from({length: 50}, (_, i) => `
+                  <div class="absolute transform rotate-45" style="
+                      width: ${20 + Math.random() * 40}px;
+                      height: ${20 + Math.random() * 40}px;
+                      left: ${Math.random() * 100}%;
+                      top: ${Math.random() * 100}%;
+                      background: linear-gradient(135deg, 
+                          hsl(300, 100%, 50%) 0%, 
+                          hsl(180, 100%, 50%) 50%, 
+                          hsl(60, 100%, 50%) 100%
+                      );
+                      border-radius: 15%;
+                      animation: diamondFloat ${4 + Math.random() * 3}s infinite ease-in-out;
+                      animation-delay: ${Math.random() * 2}s;
+                      box-shadow: 0 0 20px rgba(255, 105, 180, 0.4);
+                  "></div>
+              `).join('')}
+          </div>
+          
+          <!-- Prismatic Light Rays -->
+          <div class="absolute inset-0 overflow-hidden">
+              ${Array.from({length: 8}, (_, i) => `
+                  <div class="absolute origin-center" style="
+                      width: 2px;
+                      height: 300px;
+                      left: ${12.5 * (i + 1)}%;
+                      top: -150px;
+                      background: linear-gradient(to bottom, 
+                          transparent 0%, 
+                          hsl(${60 + i * 45}, 100%, 50%) 20%, 
+                          hsl(${120 + i * 45}, 100%, 50%) 60%, 
+                          transparent 100%
+                      );
+                      transform: rotate(${i * 45}deg);
+                      animation: prismRay ${6 + i}s infinite linear;
+                      animation-delay: ${i * 0.5}s;
+                      opacity: 0.4;
+                  "></div>
+              `).join('')}
+          </div>
+          ` : theme.id === 'neon-academy-pro' ? `
           <!-- Neon Cyber Hexagonal Grid -->
           <div class="absolute inset-0 opacity-20">
               ${Array.from({length: 40}, (_, i) => `
@@ -1847,11 +1890,11 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
           
           <div class="relative z-10 max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
-               ${template.whyUs.badge ? `<div class="inline-block px-3 py-1 text-xs font-medium rounded-full ${theme.id === 'neon-academy-pro' ? 'bg-black/50 border-2 border-cyan-400/50 text-cyan-300 shadow-lg shadow-cyan-400/20' : isPremium ? (theme.id === 'luxury-premium' ? 'bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 text-yellow-200 border border-yellow-500/30' : 'bg-white/10 border border-white/20 text-white backdrop-blur-sm') : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} mb-4">${template.whyUs.badge}</div>` : ''}
-               <h2 class="text-4xl md:text-6xl font-bold mb-6 ${theme.id === 'neon-academy-pro' ? 'text-cyan-300' : ''}" style="color: ${getPremiumTextColor(template.id, 'whyUs')}; ${theme.id === 'neon-academy-pro' ? 'text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;' : ''}">
-                 ${template.whyUs.title}
-               </h2>
-               ${template.whyUs.subtitle ? `<p class="text-xl md:text-2xl ${theme.id === 'neon-academy-pro' ? 'text-cyan-100' : ''}" style="color: ${getPremiumTextColor(template.id, 'whyUs')}; opacity: 0.9;">${template.whyUs.subtitle}</p>` : ''}
+               ${template.whyUs.badge ? `<div class="inline-block px-3 py-1 text-xs font-medium rounded-full ${theme.id === 'diamond-crystal' ? 'bg-black/40 border-2 border-purple-400/60 text-purple-300 shadow-lg shadow-purple-400/20' : theme.id === 'neon-academy-pro' ? 'bg-black/50 border-2 border-cyan-400/50 text-cyan-300 shadow-lg shadow-cyan-400/20' : isPremium ? (theme.id === 'luxury-premium' ? 'bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 text-yellow-200 border border-yellow-500/30' : 'bg-white/10 border border-white/20 text-white backdrop-blur-sm') : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} mb-4">${template.whyUs.badge}</div>` : ''}
+                <h2 class="text-4xl md:text-6xl font-bold mb-6 ${theme.id === 'diamond-crystal' ? 'text-purple-300' : theme.id === 'neon-academy-pro' ? 'text-cyan-300' : ''}" style="color: ${getPremiumTextColor(template.id, 'whyUs')}; ${theme.id === 'diamond-crystal' ? 'text-shadow: 0 0 15px hsl(300, 100%, 50%), 0 0 30px hsl(180, 100%, 50%);' : theme.id === 'neon-academy-pro' ? 'text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;' : ''}">
+                  ${template.whyUs.title}
+                </h2>
+               ${template.whyUs.subtitle ? `<p class="text-xl md:text-2xl ${theme.id === 'diamond-crystal' ? 'text-purple-100' : theme.id === 'neon-academy-pro' ? 'text-cyan-100' : ''}" style="color: ${getPremiumTextColor(template.id, 'whyUs')}; opacity: 0.9;">${template.whyUs.subtitle}</p>` : ''}
              </div>
              <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                ${template.whyUs.items ? template.whyUs.items.map((item: any, index: number) => `
@@ -1903,7 +1946,41 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             return generatePremiumBackgroundHTML(bgData.animationType || 'dynamicGradients');
           })() : ''}
           
-          ${theme.id === 'neon-academy-pro' ? `
+          ${theme.id === 'diamond-crystal' ? `
+          <!-- Crystal Particle Field -->
+          <div class="absolute inset-0 opacity-25">
+              ${Array.from({length: 80}, (_, i) => `
+                  <div class="absolute rounded-full" style="
+                      width: ${4 + Math.random() * 8}px;
+                      height: ${4 + Math.random() * 8}px;
+                      left: ${Math.random() * 100}%;
+                      top: ${Math.random() * 100}%;
+                      background: linear-gradient(135deg, 
+                          hsl(${180 + i * 3}, 100%, 50%) 0%, 
+                          hsl(${300 + i * 2}, 100%, 50%) 100%
+                      );
+                      animation: crystalFloat ${3 + Math.random() * 4}s infinite ease-in-out;
+                      animation-delay: ${Math.random() * 3}s;
+                      box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+                  "></div>
+              `).join('')}
+          </div>
+          
+          <!-- Refraction Lines -->
+          <div class="absolute inset-0 opacity-20">
+              ${Array.from({length: 15}, (_, i) => `
+                  <div class="absolute bg-gradient-to-r from-transparent via-current to-transparent" style="
+                      width: 100%;
+                      height: 1px;
+                      left: 0;
+                      top: ${(i * 7) % 100}%;
+                      color: hsl(${200 + i * 20}, 100%, 50%);
+                      animation: refractionFlow ${5 + Math.random() * 3}s infinite linear;
+                      animation-delay: ${i * 0.3}s;
+                  "></div>
+              `).join('')}
+          </div>
+          ` : theme.id === 'neon-academy-pro' ? `
           <!-- Cyber Matrix Background -->
           <div class="absolute inset-0 opacity-10">
               ${Array.from({length: 100}, (_, i) => `
@@ -1932,28 +2009,28 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
           <div class="relative z-10 max-w-7xl mx-auto px-6">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <div>
-                ${template.whatWeGive.badge ? `<div class="inline-block px-3 py-1 text-xs font-medium rounded-full ${theme.id === 'neon-academy-pro' ? 'bg-black/60 border-2 border-cyan-400/60 text-cyan-300 shadow-lg shadow-cyan-400/20' : isPremium ? 'bg-white/10 border border-white/20 text-white backdrop-blur-sm' : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} mb-4">${template.whatWeGive.badge}</div>` : ''}
-                <h2 class="text-4xl md:text-6xl font-bold mb-6 ${theme.id === 'neon-academy-pro' ? 'text-cyan-300' : ''}" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')}; ${theme.id === 'neon-academy-pro' ? 'text-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff;' : ''}">
+                ${template.whatWeGive.badge ? `<div class="inline-block px-3 py-1 text-xs font-medium rounded-full ${theme.id === 'diamond-crystal' ? 'bg-black/40 border-2 border-purple-400/60 text-purple-300 shadow-lg shadow-purple-400/20' : theme.id === 'neon-academy-pro' ? 'bg-black/60 border-2 border-cyan-400/60 text-cyan-300 shadow-lg shadow-cyan-400/20' : isPremium ? 'bg-white/10 border border-white/20 text-white backdrop-blur-sm' : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} mb-4">${template.whatWeGive.badge}</div>` : ''}
+                <h2 class="text-4xl md:text-6xl font-bold mb-6 ${theme.id === 'diamond-crystal' ? 'text-purple-300' : theme.id === 'neon-academy-pro' ? 'text-cyan-300' : ''}" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')}; ${theme.id === 'diamond-crystal' ? 'text-shadow: 0 0 15px hsl(300, 100%, 50%), 0 0 30px hsl(180, 100%, 50%);' : theme.id === 'neon-academy-pro' ? 'text-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff;' : ''}">
                   ${template.whatWeGive.title}
                 </h2>
-                ${template.whatWeGive.subtitle ? `<p class="text-xl md:text-2xl mb-8 ${theme.id === 'neon-academy-pro' ? 'text-cyan-100' : ''}" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')}; opacity: 0.9;">${template.whatWeGive.subtitle}</p>` : ''}
+                ${template.whatWeGive.subtitle ? `<p class="text-xl md:text-2xl mb-8 ${theme.id === 'diamond-crystal' ? 'text-purple-100' : theme.id === 'neon-academy-pro' ? 'text-cyan-100' : ''}" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')}; opacity: 0.9;">${template.whatWeGive.subtitle}</p>` : ''}
                 <div class="space-y-6">
                   ${template.whatWeGive.services ? template.whatWeGive.services.map((service: any) => `
                     <div class="flex items-start space-x-4 rtl:space-x-reverse group">
-                      <div class="w-12 h-12 flex items-center justify-center flex-shrink-0 ${theme.id === 'neon-academy-pro' ? '' : 'rounded-lg'}" style="${theme.id === 'neon-academy-pro' ? 'background: linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(0, 180, 255, 0.4)); border: 2px solid #00ffff; clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%); box-shadow: 0 0 15px rgba(0, 255, 255, 0.4); color: #00ffff;' : 'background: linear-gradient(135deg, ' + getPremiumIconColors(template.id) + ');'}">
-                        <i class="ri-${service.icon || 'check-line'} text-xl ${theme.id === 'neon-academy-pro' ? 'text-cyan-300' : 'text-white'}"></i>
+                      <div class="w-12 h-12 flex items-center justify-center flex-shrink-0 ${theme.id === 'diamond-crystal' ? '' : theme.id === 'neon-academy-pro' ? '' : 'rounded-lg'}" style="${theme.id === 'diamond-crystal' ? 'background: linear-gradient(135deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%)); border: 2px solid hsl(300, 100%, 50%); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); box-shadow: 0 0 20px rgba(255, 105, 180, 0.6); color: white;' : theme.id === 'neon-academy-pro' ? 'background: linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(0, 180, 255, 0.4)); border: 2px solid #00ffff; clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%); box-shadow: 0 0 15px rgba(0, 255, 255, 0.4); color: #00ffff;' : 'background: linear-gradient(135deg, ' + getPremiumIconColors(template.id) + ');'}">
+                        <i class="ri-${service.icon || 'check-line'} text-xl ${theme.id === 'diamond-crystal' ? 'text-white' : theme.id === 'neon-academy-pro' ? 'text-cyan-300' : 'text-white'}"></i>
                       </div>
                       <div>
-                        <h3 class="text-xl font-bold mb-2 ${theme.id === 'neon-academy-pro' ? 'text-cyan-300' : ''}" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')}; ${theme.id === 'neon-academy-pro' ? 'text-shadow: 0 0 8px #00ffff;' : ''}">${service.title}</h3>
-                        <p class="text-lg ${theme.id === 'neon-academy-pro' ? 'text-cyan-100' : ''}" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')}; opacity: 0.8;">${service.description}</p>
+                        <h3 class="text-xl font-bold mb-2 ${theme.id === 'diamond-crystal' ? 'text-purple-300' : theme.id === 'neon-academy-pro' ? 'text-cyan-300' : ''}" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')}; ${theme.id === 'diamond-crystal' ? 'text-shadow: 0 0 10px hsl(300, 100%, 50%);' : theme.id === 'neon-academy-pro' ? 'text-shadow: 0 0 8px #00ffff;' : ''}">${service.title}</h3>
+                        <p class="text-lg ${theme.id === 'diamond-crystal' ? 'text-purple-100' : theme.id === 'neon-academy-pro' ? 'text-cyan-100' : ''}" style="color: ${getPremiumTextColor(template.id, 'whatWeGive')}; opacity: 0.8;">${service.description}</p>
                       </div>
                     </div>
                   `).join('') : ''}
                 </div>
               </div>
               <div class="relative">
-                ${template.whatWeGive.image ? `<div class="aspect-square flex items-center justify-center ${theme.id === 'neon-academy-pro' ? '' : 'rounded-3xl'}" style="${theme.id === 'neon-academy-pro' ? 'background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 30, 60, 0.9)); border: 3px solid #00ffff; clip-path: polygon(10% 0%, 90% 0%, 100% 20%, 100% 80%, 90% 100%, 10% 100%, 0% 80%, 0% 20%); box-shadow: 0 0 50px rgba(0, 255, 255, 0.4), inset 0 0 30px rgba(0, 255, 255, 0.1);' : 'background: linear-gradient(135deg, ' + getPremiumIconColors(template.id) + ');'}">
-                  <p class="${theme.id === 'neon-academy-pro' ? 'text-cyan-300' : 'text-white'} text-center p-8 text-lg ${theme.id === 'neon-academy-pro' ? '' : ''}" style="${theme.id === 'neon-academy-pro' ? 'text-shadow: 0 0 10px #00ffff;' : ''}">${template.whatWeGive.image}</p>
+                ${template.whatWeGive.image ? `<div class="aspect-square flex items-center justify-center ${theme.id === 'diamond-crystal' ? '' : theme.id === 'neon-academy-pro' ? '' : 'rounded-3xl'}" style="${theme.id === 'diamond-crystal' ? 'background: linear-gradient(135deg, hsl(240, 20%, 8%), hsl(260, 30%, 12%)); border: 3px solid hsl(300, 100%, 50%); clip-path: polygon(15% 0%, 85% 0%, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0% 85%, 0% 15%); box-shadow: 0 0 60px rgba(255, 105, 180, 0.5), inset 0 0 40px rgba(0, 255, 255, 0.1);' : theme.id === 'neon-academy-pro' ? 'background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 30, 60, 0.9)); border: 3px solid #00ffff; clip-path: polygon(10% 0%, 90% 0%, 100% 20%, 100% 80%, 90% 100%, 10% 100%, 0% 80%, 0% 20%); box-shadow: 0 0 50px rgba(0, 255, 255, 0.4), inset 0 0 30px rgba(0, 255, 255, 0.1);' : 'background: linear-gradient(135deg, ' + getPremiumIconColors(template.id) + ');'}">
+                  <p class="${theme.id === 'diamond-crystal' ? 'text-purple-300' : theme.id === 'neon-academy-pro' ? 'text-cyan-300' : 'text-white'} text-center p-8 text-lg" style="${theme.id === 'diamond-crystal' ? 'text-shadow: 0 0 15px hsl(300, 100%, 50%);' : theme.id === 'neon-academy-pro' ? 'text-shadow: 0 0 10px #00ffff;' : ''}">${template.whatWeGive.image}</p>
                 </div>` : ''}
               </div>
             </div>
@@ -2511,21 +2588,107 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
     </section>
 
     <!-- Gallery Section -->
-    ${template.gallery ? generateGallerySection(template.gallery, template.styles, isPremium) : ''}
+    ${template.gallery ? `
+     <section class="relative py-20 overflow-hidden" style="${isPremium ? (() => {
+       const bgData = getPremiumAnimatedBackground(template.id, 'gallery');
+       return bgData.background + '; position: relative; overflow: hidden;';
+     })() : 'background-color: ' + template.styles.backgroundColor + ';'}">
+         ${isPremium ? (() => {
+           const bgData = getPremiumAnimatedBackground(template.id, 'gallery');
+           return generatePremiumBackgroundHTML(bgData.animationType || 'dynamicGradients');
+         })() : ''}
+         
+         ${theme.id === 'diamond-crystal' ? `
+         <!-- Diamond Crystal Gallery Background -->
+         <div class="absolute inset-0 opacity-20">
+             ${Array.from({length: 30}, (_, i) => `
+                 <div class="absolute" style="
+                     width: ${30 + Math.random() * 20}px;
+                     height: ${30 + Math.random() * 20}px;
+                     left: ${Math.random() * 100}%;
+                     top: ${Math.random() * 100}%;
+                     background: conic-gradient(
+                         hsl(300, 100%, 50%) 0deg,
+                         hsl(180, 100%, 50%) 120deg,
+                         hsl(60, 100%, 50%) 240deg,
+                         hsl(300, 100%, 50%) 360deg
+                     );
+                     border-radius: 50%;
+                     animation: diamondSpin ${5 + Math.random() * 5}s infinite linear;
+                     animation-delay: ${Math.random() * 3}s;
+                 "></div>
+             `).join('')}
+         </div>
+         ` : ''}
+         
+         <div class="relative z-10 max-w-7xl mx-auto px-6">
+           <div class="text-center mb-16">
+             ${template.gallery.badge ? `<div class="inline-block px-3 py-1 text-xs font-medium rounded-full ${theme.id === 'diamond-crystal' ? 'bg-black/40 border-2 border-purple-400/60 text-purple-300 shadow-lg shadow-purple-400/20' : isPremium ? 'bg-white/10 border border-white/20 text-white backdrop-blur-sm' : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} mb-4">${template.gallery.badge}</div>` : ''}
+             <h2 class="text-4xl md:text-6xl font-bold mb-6 ${theme.id === 'diamond-crystal' ? 'text-purple-300' : ''}" style="color: ${getPremiumTextColor(template.id, 'gallery')}; ${theme.id === 'diamond-crystal' ? 'text-shadow: 0 0 15px hsl(300, 100%, 50%), 0 0 30px hsl(180, 100%, 50%);' : ''}">
+               ${template.gallery.title}
+             </h2>
+             ${template.gallery.subtitle ? `<p class="text-xl md:text-2xl ${theme.id === 'diamond-crystal' ? 'text-purple-100' : ''}" style="color: ${getPremiumTextColor(template.id, 'gallery')}; opacity: 0.9;">${template.gallery.subtitle}</p>` : ''}
+           </div>
+           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+             ${template.gallery.images ? template.gallery.images.map((img: any) => `
+               <div class="group overflow-hidden rounded-2xl ${theme.id === 'diamond-crystal' ? 'bg-black/20 backdrop-blur-sm border border-purple-500/30' : isPremium ? 'bg-white/5 backdrop-blur-sm border border-white/10' : 'bg-white/10 border border-white/20'} hover:scale-105 transition-all duration-300">
+                 <div class="aspect-video ${theme.id === 'diamond-crystal' ? 'bg-gradient-to-br from-purple-500 to-pink-500' : 'bg-gradient-to-br ' + getPremiumIconColors(template.id)} flex items-center justify-center">
+                   <p class="text-white text-center p-4">${img.src || img.caption}</p>
+                 </div>
+                 ${img.caption ? `<div class="p-6">
+                   <p class="text-lg ${theme.id === 'diamond-crystal' ? 'text-purple-100' : ''}" style="color: ${getPremiumTextColor(template.id, 'gallery')};">${img.caption}</p>
+                 </div>` : ''}
+               </div>
+             `).join('') : ''}
+           </div>
+         </div>
+     </section>
+    ` : ''}
 
     <!-- FAQ Section -->
-    <section id="faq" class="faq">
-        <div class="max-w-4xl mx-auto px-4 relative z-10">
-            <div class="text-center mb-12">
-                ${template.faq.badge ? `<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground mb-4" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.primaryColor}; border-color: ${isPremium ? 'rgba(255,255,255,0.3)' : template.styles.primaryColor};">${template.faq.badge}</div>` : ''}
-                <h2 class="text-3xl md:text-4xl font-bold" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.faq.title}</h2>
+    <section id="faq" class="faq relative py-20 overflow-hidden" style="${isPremium ? (() => {
+       const bgData = getPremiumAnimatedBackground(template.id, 'faq');
+       return bgData.background + '; position: relative; overflow: hidden;';
+     })() : 'background-color: ' + template.styles.backgroundColor + ';'}">
+        ${isPremium ? (() => {
+           const bgData = getPremiumAnimatedBackground(template.id, 'faq');
+           return generatePremiumBackgroundHTML(bgData.animationType || 'dynamicGradients');
+         })() : ''}
+        
+        ${theme.id === 'diamond-crystal' ? `
+        <!-- Diamond Crystal FAQ Background -->
+        <div class="absolute inset-0 opacity-15">
+            ${Array.from({length: 25}, (_, i) => `
+                <div class="absolute" style="
+                    width: ${25 + Math.random() * 15}px;
+                    height: ${25 + Math.random() * 15}px;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    background: linear-gradient(45deg, 
+                        hsl(300, 100%, 50%) 0%, 
+                        hsl(180, 100%, 50%) 50%, 
+                        hsl(60, 100%, 50%) 100%
+                    );
+                    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+                    animation: diamondFloat ${6 + Math.random() * 4}s infinite ease-in-out;
+                    animation-delay: ${Math.random() * 3}s;
+                "></div>
+            `).join('')}
+        </div>
+        ` : ''}
+        
+        <div class="max-w-4xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                ${template.faq.badge ? `<div class="inline-block px-3 py-1 text-xs font-medium rounded-full ${theme.id === 'diamond-crystal' ? 'bg-black/40 border-2 border-purple-400/60 text-purple-300 shadow-lg shadow-purple-400/20' : isPremium ? 'bg-white/10 border border-white/20 text-white backdrop-blur-sm' : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} mb-4">${template.faq.badge}</div>` : ''}
+                <h2 class="text-4xl md:text-6xl font-bold mb-6 ${theme.id === 'diamond-crystal' ? 'text-purple-300' : ''}" style="color: ${getPremiumTextColor(template.id, 'faq')}; ${theme.id === 'diamond-crystal' ? 'text-shadow: 0 0 15px hsl(300, 100%, 50%), 0 0 30px hsl(180, 100%, 50%);' : ''}">${template.faq.title}</h2>
+                ${template.faq.subtitle ? `<p class="text-xl md:text-2xl ${theme.id === 'diamond-crystal' ? 'text-purple-100' : ''}" style="color: ${getPremiumTextColor(template.id, 'faq')}; opacity: 0.9;">${template.faq.subtitle}</p>` : ''}
             </div>
             
             <div class="space-y-4 mb-12">
                 ${template.faq.questions?.map((qa: any, index: number) => `
-                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 ${isPremium ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}">
-                        <h3 class="text-lg font-bold mb-2 text-right" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${qa.question}</h3>
-                        <p class="opacity-80 text-right" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${qa.answer}</p>
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 ${theme.id === 'diamond-crystal' ? 'bg-black/20 backdrop-blur-sm border-purple-500/30' : isPremium ? 'bg-white/10 backdrop-blur-sm border-white/20' : ''}">
+                        <h3 class="text-lg font-bold mb-2 text-right ${theme.id === 'diamond-crystal' ? 'text-purple-300' : ''}" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${qa.question}</h3>
+                        <p class="opacity-80 text-right ${theme.id === 'diamond-crystal' ? 'text-purple-100' : ''}" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${qa.answer}</p>
                     </div>
                 `).join('') || ''}
             </div>
@@ -2556,21 +2719,47 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
     ${template.socialBar ? generateSocialBarSection(template.socialBar, template.styles, isPremium) : ''}
 
     <!-- Contact Section - Moved to be last -->
-    <section id="contact" class="contact">
+    <section id="contact" class="contact relative py-20 overflow-hidden" style="${isPremium ? (() => {
+          const bgData = getPremiumAnimatedBackground(template.id, 'contact');
+          return bgData.background + '; position: relative; overflow: hidden;';
+        })() : 'background-color: ' + template.styles.backgroundColor + ';'}">
         ${isPremium ? (() => {
           const bgData = getPremiumAnimatedBackground(template.id, 'contact');
           return generatePremiumBackgroundHTML(bgData.animationType);
         })() : ''}
-        <div class="max-w-4xl mx-auto text-center px-4 relative z-10">
-            <h2 class="text-3xl md:text-4xl font-bold mb-6" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.contact.title}</h2>
-            ${template.contact.subtitle ? `<p class="text-xl mb-8 opacity-80" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.contact.subtitle}</p>` : ''}
-            <div class="rounded-lg border shadow-sm p-8 max-w-md mx-auto ${theme.id === 'luxury-premium' ? 'bg-gradient-to-br from-black/90 to-black/70 border-yellow-500/50 backdrop-blur-sm' : 'bg-card text-card-foreground'}">
+        
+        ${theme.id === 'diamond-crystal' ? `
+        <!-- Diamond Crystal Contact Background -->
+        <div class="absolute inset-0 opacity-10">
+            ${Array.from({length: 20}, (_, i) => `
+                <div class="absolute" style="
+                    width: ${40 + Math.random() * 30}px;
+                    height: ${40 + Math.random() * 30}px;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    background: radial-gradient(circle, 
+                        hsl(300, 100%, 50%) 0%, 
+                        hsl(180, 100%, 50%) 50%, 
+                        transparent 100%
+                    );
+                    border-radius: 50%;
+                    animation: crystalPulse ${4 + Math.random() * 3}s infinite ease-in-out;
+                    animation-delay: ${Math.random() * 2}s;
+                "></div>
+            `).join('')}
+        </div>
+        ` : ''}
+        
+        <div class="max-w-4xl mx-auto text-center px-6 relative z-10">
+            <h2 class="text-4xl md:text-6xl font-bold mb-6 ${theme.id === 'diamond-crystal' ? 'text-purple-300' : ''}" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor}; ${theme.id === 'diamond-crystal' ? 'text-shadow: 0 0 15px hsl(300, 100%, 50%), 0 0 30px hsl(180, 100%, 50%);' : ''}">${template.contact.title}</h2>
+            ${template.contact.subtitle ? `<p class="text-xl mb-8 opacity-80 ${theme.id === 'diamond-crystal' ? 'text-purple-100' : ''}" style="color: ${isPremium ? getPremiumTextColor(template.id) : template.styles.textColor};">${template.contact.subtitle}</p>` : ''}
+            <div class="rounded-lg border shadow-sm p-8 max-w-md mx-auto ${theme.id === 'diamond-crystal' ? 'bg-black/30 border-purple-500/40 backdrop-blur-sm' : theme.id === 'luxury-premium' ? 'bg-gradient-to-br from-black/90 to-black/70 border-yellow-500/50 backdrop-blur-sm' : 'bg-card text-card-foreground'}">
                 <form class="space-y-4">
-                    <input type="text" placeholder="שם מלא" class="w-full px-3 py-2 border rounded-md text-right ${theme.id === 'luxury-premium' ? 'bg-black/60 border-yellow-500/30 text-yellow-100 placeholder:text-yellow-200/70' : 'border-input'}" />
-                    <input type="email" placeholder="אימייל" class="w-full px-3 py-2 border rounded-md text-right ${theme.id === 'luxury-premium' ? 'bg-black/60 border-yellow-500/30 text-yellow-100 placeholder:text-yellow-200/70' : 'border-input'}" />
-                    <input type="tel" placeholder="טלפון" class="w-full px-3 py-2 border rounded-md text-right ${theme.id === 'luxury-premium' ? 'bg-black/60 border-yellow-500/30 text-yellow-100 placeholder:text-yellow-200/70' : 'border-input'}" />
-                    <textarea placeholder="הודעה" rows="4" class="w-full px-3 py-2 border rounded-md text-right ${theme.id === 'luxury-premium' ? 'bg-black/60 border-yellow-500/30 text-yellow-100 placeholder:text-yellow-200/70' : 'border-input'}"></textarea>
-                    <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 w-full ${theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform text-black font-bold' : 'text-white'} ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}" style="${theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, hsl(45, 100%, 70%), hsl(38, 100%, 55%), hsl(45, 95%, 65%)); box-shadow: 0 12px 40px rgba(255, 215, 0, 0.5), 0 4px 20px rgba(255, 193, 7, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); border: 2px solid rgba(255, 215, 0, 0.6); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);' : 'background-color: ' + template.styles.primaryColor + ';'}">
+                    <input type="text" placeholder="שם מלא" class="w-full px-3 py-2 border rounded-md text-right ${theme.id === 'diamond-crystal' ? 'bg-black/40 border-purple-500/30 text-purple-100 placeholder:text-purple-200/70' : theme.id === 'luxury-premium' ? 'bg-black/60 border-yellow-500/30 text-yellow-100 placeholder:text-yellow-200/70' : 'border-input'}" />
+                    <input type="email" placeholder="אימייל" class="w-full px-3 py-2 border rounded-md text-right ${theme.id === 'diamond-crystal' ? 'bg-black/40 border-purple-500/30 text-purple-100 placeholder:text-purple-200/70' : theme.id === 'luxury-premium' ? 'bg-black/60 border-yellow-500/30 text-yellow-100 placeholder:text-yellow-200/70' : 'border-input'}" />
+                    <input type="tel" placeholder="טלפון" class="w-full px-3 py-2 border rounded-md text-right ${theme.id === 'diamond-crystal' ? 'bg-black/40 border-purple-500/30 text-purple-100 placeholder:text-purple-200/70' : theme.id === 'luxury-premium' ? 'bg-black/60 border-yellow-500/30 text-yellow-100 placeholder:text-yellow-200/70' : 'border-input'}" />
+                    <textarea placeholder="הודעה" rows="4" class="w-full px-3 py-2 border rounded-md text-right ${theme.id === 'diamond-crystal' ? 'bg-black/40 border-purple-500/30 text-purple-100 placeholder:text-purple-200/70' : theme.id === 'luxury-premium' ? 'bg-black/60 border-yellow-500/30 text-yellow-100 placeholder:text-yellow-200/70' : 'border-input'}"></textarea>
+                    <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-11 px-8 w-full ${theme.id === 'diamond-crystal' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform text-white font-bold' : theme.id === 'luxury-premium' ? 'group relative rounded-2xl transition-all duration-500 hover:scale-110 transform text-black font-bold' : 'text-white'} ${isPremium ? 'backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);' : ''}" style="${theme.id === 'diamond-crystal' ? 'background: linear-gradient(135deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%)); box-shadow: 0 12px 40px rgba(255, 105, 180, 0.5), 0 4px 20px rgba(0, 255, 255, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); border: 2px solid rgba(255, 105, 180, 0.6); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);' : theme.id === 'luxury-premium' ? 'background: linear-gradient(135deg, hsl(45, 100%, 70%), hsl(38, 100%, 55%), hsl(45, 95%, 65%)); box-shadow: 0 12px 40px rgba(255, 215, 0, 0.5), 0 4px 20px rgba(255, 193, 7, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); border: 2px solid rgba(255, 215, 0, 0.6); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);' : 'background-color: ' + template.styles.primaryColor + ';'}">
                         ${template.contact.buttonText || 'שלח הודעה'}
                     </button>
                 </form>
@@ -2579,9 +2768,33 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="text-center">
-            <p style="color: ${isPremium ? getPremiumTextColor(template.id) : '#ffffff'};">&copy; 2024 ${template.footer?.companyName || template.hero?.title || 'החברה'}. כל הזכויות שמורות.</p>
+    <footer class="footer relative py-16 overflow-hidden" style="${isPremium ? (() => {
+          const bgData = getPremiumAnimatedBackground(template.id, 'footer');
+          return bgData.background + '; position: relative; overflow: hidden;';
+        })() : 'background-color: ' + template.styles.backgroundColor + ';'}">
+        ${theme.id === 'diamond-crystal' ? `
+        <!-- Diamond Crystal Footer Background -->
+        <div class="absolute inset-0 opacity-5">
+            ${Array.from({length: 15}, (_, i) => `
+                <div class="absolute" style="
+                    width: ${15 + Math.random() * 10}px;
+                    height: ${15 + Math.random() * 10}px;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    background: linear-gradient(135deg, 
+                        hsl(300, 100%, 50%) 0%, 
+                        hsl(180, 100%, 50%) 100%
+                    );
+                    border-radius: 50%;
+                    animation: footerFloat ${8 + Math.random() * 4}s infinite ease-in-out;
+                    animation-delay: ${Math.random() * 4}s;
+                "></div>
+            `).join('')}
+        </div>
+        ` : ''}
+        
+        <div class="text-center relative z-10">
+            <p class="${theme.id === 'diamond-crystal' ? 'text-purple-200' : ''}" style="color: ${isPremium ? getPremiumTextColor(template.id) : '#ffffff'};">&copy; 2024 ${template.footer?.companyName || template.hero?.title || 'החברה'}. כל הזכויות שמורות.</p>
         </div>
     </footer>
 
