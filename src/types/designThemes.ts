@@ -120,39 +120,40 @@ export const designThemes: DesignTheme[] = [
     }
   },
 
-  // 3. Neon Cyber
+  // 3. Diamond Crystal Luxury
   {
-    id: 'neon-cyber',
-    name: 'נאון סייבר',
-    description: 'עיצוב עתידני עם אפקטי נאון וגרדיאנטים סייבר',
-    thumbnail: '/design-previews/neon-cyber.png',
-    category: 'עתידני',
+    id: 'diamond-crystal',
+    name: 'יהלום קריסטל',
+    description: 'עיצוב יוקרתי מרהיב עם אפקטי יהלום וקריסטלים נוצצים',
+    thumbnail: '/design-previews/diamond-crystal.png',
+    category: 'יוקרה',
     styles: {
-      primary: 'hsl(300, 100%, 50%)', // ורוד נאון
-      secondary: 'hsl(180, 100%, 50%)', // ציאן נאון
-      accent: 'hsl(60, 100%, 50%)', // צהוב נאון
-      background: 'hsl(240, 20%, 8%)', // כחול כהה כמעט שחור
-      text: 'hsl(0, 0%, 95%)', // לבן כמעט
+      primary: 'linear-gradient(135deg, hsl(45, 100%, 80%) 0%, hsl(50, 100%, 70%) 25%, hsl(55, 100%, 85%) 50%, hsl(45, 100%, 75%) 75%, hsl(48, 100%, 90%) 100%)', // זהב יהלום נוצץ
+      secondary: 'linear-gradient(135deg, hsl(210, 100%, 85%) 0%, hsl(220, 90%, 80%) 50%, hsl(230, 95%, 88%) 100%)', // כחול קריסטל  
+      accent: 'linear-gradient(135deg, hsl(320, 80%, 75%) 0%, hsl(310, 85%, 80%) 50%, hsl(315, 90%, 85%) 100%)', // ורוד יהלום
+      background: 'linear-gradient(135deg, hsl(0, 0%, 8%) 0%, hsl(230, 15%, 12%) 25%, hsl(250, 20%, 15%) 50%, hsl(240, 25%, 18%) 75%, hsl(220, 20%, 10%) 100%)', // כחול כהה יוקרתי
+      text: 'hsl(0, 0%, 95%)',
       
-      heroBackground: 'linear-gradient(135deg, hsl(240, 20%, 8%), hsl(260, 30%, 12%))',
-      heroText: 'hsl(0, 0%, 95%)',
-      featuresBackground: 'hsl(240, 25%, 10%)',
-      featuresText: 'hsl(0, 0%, 90%)',
+      heroBackground: 'linear-gradient(135deg, hsl(0, 0%, 5%) 0%, hsl(240, 25%, 10%) 20%, hsl(250, 30%, 15%) 40%, hsl(260, 35%, 20%) 60%, hsl(270, 25%, 12%) 80%, hsl(0, 0%, 8%) 100%)',
+      heroText: 'hsl(0, 0%, 98%)',
+      featuresBackground: 'linear-gradient(135deg, hsl(240, 20%, 12%) 0%, hsl(250, 25%, 16%) 50%, hsl(260, 20%, 14%) 100%)',
+      featuresText: 'hsl(0, 0%, 92%)',
       
-      fontFamily: '"Orbitron", "Poppins", sans-serif',
-      headingFont: '"Orbitron", "Poppins", sans-serif',
+      fontFamily: '"Cinzel", "Frank Ruhl Libre", serif',
+      headingFont: '"Cinzel", "Frank Ruhl Libre", serif',
       
-      borderRadius: '12px',
-      spacing: '2rem',
+      borderRadius: '16px',
+      spacing: '2.5rem',
       
-      shadows: '0 0 20px rgba(300, 100%, 50%, 0.3), 0 0 40px rgba(180, 100%, 50%, 0.2)',
-      animations: 'glow'
+      gradient: 'linear-gradient(135deg, rgba(255,215,0,0.4) 0%, rgba(255,255,255,0.3) 25%, rgba(147,197,253,0.3) 50%, rgba(236,72,153,0.3) 75%, rgba(255,215,0,0.4) 100%)',
+      shadows: '0 0 30px rgba(255,215,0,0.6), 0 0 60px rgba(147,197,253,0.4), 0 0 90px rgba(236,72,153,0.3), inset 0 2px 4px rgba(255,255,255,0.2)',
+      animations: 'diamond-sparkle'
     },
     components: {
-      hero: 'gradient',
-      buttons: 'gradient',
-      cards: 'gradient',
-      sections: 'gradient'
+      hero: 'luxury-premium',
+      buttons: 'luxury-premium', 
+      cards: 'luxury-premium',
+      sections: 'luxury-premium'
     }
   },
 

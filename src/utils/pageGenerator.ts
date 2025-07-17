@@ -43,54 +43,54 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
   const generateWhyUsSection = (whyUs: any, styles: any, isPremium: boolean) => {
     if (!whyUs || !whyUs.items || whyUs.items.length === 0) return '';
     
-    const neonCyberSection = theme.id === 'neon-cyber' ? `
-    <section class="why-us py-20 relative overflow-hidden" style="background: linear-gradient(135deg, hsl(240, 20%, 8%) 0%, hsl(260, 30%, 12%) 30%, hsl(280, 25%, 10%) 70%, hsl(240, 20%, 8%) 100%);">
-        <!-- Neon Grid Background -->
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute inset-0" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 98px, rgba(0, 255, 255, 0.1) 100px), repeating-linear-gradient(90deg, transparent, transparent 98px, rgba(255, 0, 255, 0.1) 100px);"></div>
+    const diamondCrystalSection = theme.id === 'diamond-crystal' ? `
+    <section class="why-us py-20 relative overflow-hidden" style="background: linear-gradient(135deg, hsl(0, 0%, 5%) 0%, hsl(240, 25%, 10%) 20%, hsl(250, 30%, 15%) 40%, hsl(260, 35%, 20%) 60%, hsl(270, 25%, 12%) 80%, hsl(0, 0%, 8%) 100%);">
+        <!-- Diamond Crystal Background -->
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute inset-0" style="background-image: radial-gradient(circle at 25% 25%, rgba(255,215,0,0.2) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(147,197,253,0.2) 0%, transparent 50%), radial-gradient(circle at 50% 10%, rgba(236,72,153,0.15) 0%, transparent 50%);"></div>
         </div>
         
         <div class="max-w-7xl mx-auto px-6 relative z-10">
             <div class="text-center mb-16">
-                ${whyUs.badge ? `<div class="inline-block px-3 py-1 text-xs rounded-full mb-4" style="background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%)); color: white; border: 1px solid hsl(300, 100%, 50%); box-shadow: 0 0 15px hsl(300, 100%, 50%);">${whyUs.badge}</div>` : ''}
+                ${whyUs.badge ? `<div class="inline-block px-4 py-2 text-sm rounded-full mb-4" style="background: linear-gradient(135deg, rgba(255,215,0,0.4), rgba(255,255,255,0.3), rgba(147,197,253,0.3)); color: white; border: 2px solid rgba(255,215,0,0.5); box-shadow: 0 0 30px rgba(255,215,0,0.6), inset 0 2px 4px rgba(255,255,255,0.2);">${whyUs.badge}</div>` : ''}
                 <h2 class="text-4xl font-bold mb-4" style="
-                    background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%), hsl(60, 100%, 50%));
+                    background: linear-gradient(135deg, hsl(45, 100%, 80%), hsl(50, 100%, 70%), hsl(55, 100%, 85%), hsl(45, 100%, 75%));
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
                     background-clip: text;
-                    text-shadow: 0 0 10px hsl(300, 100%, 50%);
-                    font-family: 'Orbitron', monospace;
+                    text-shadow: 0 0 20px rgba(255,215,0,0.8);
+                    font-family: 'Cinzel', serif;
                 ">${whyUs.title}</h2>
-                ${whyUs.subtitle ? `<p class="text-xl text-gray-300 mb-8" style="text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);">${whyUs.subtitle}</p>` : ''}
+                ${whyUs.subtitle ? `<p class="text-xl text-gray-200 mb-8" style="text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);">${whyUs.subtitle}</p>` : ''}
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 ${whyUs.items.map((item: any) => `
                     <div class="relative group">
-                        <div class="relative overflow-hidden rounded-xl p-6 transition-all duration-300 hover:scale-105" style="
-                            background: linear-gradient(135deg, rgba(255, 0, 255, 0.1) 0%, rgba(0, 255, 255, 0.1) 100%);
-                            border: 1px solid rgba(255, 0, 255, 0.3);
-                            box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
+                        <div class="relative overflow-hidden rounded-2xl p-8 transition-all duration-500 hover:scale-105 hover:rotate-1" style="
+                            background: linear-gradient(135deg, rgba(255,215,0,0.15) 0%, rgba(255,255,255,0.1) 25%, rgba(147,197,253,0.15) 50%, rgba(236,72,153,0.1) 75%, rgba(255,215,0,0.15) 100%);
+                            border: 2px solid rgba(255,215,0,0.3);
+                            box-shadow: 0 0 30px rgba(255,215,0,0.3), 0 0 60px rgba(147,197,253,0.2), inset 0 2px 4px rgba(255,255,255,0.1);
                         ">
-                            <div class="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="
-                                background: radial-gradient(circle at 50% 50%, rgba(255, 0, 255, 0.1) 0%, transparent 70%);
+                            <div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="
+                                background: radial-gradient(circle at 50% 50%, rgba(255,215,0,0.2) 0%, transparent 70%);
                             "></div>
                             
-                            <div class="relative z-10 space-y-4">
-                                <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="
-                                    background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%));
-                                    box-shadow: 0 0 15px hsl(300, 100%, 50%);
+                            <div class="relative z-10 space-y-6">
+                                <div class="w-16 h-16 rounded-2xl flex items-center justify-center" style="
+                                    background: linear-gradient(135deg, rgba(255,215,0,0.8), rgba(255,255,255,0.6), rgba(147,197,253,0.6));
+                                    box-shadow: 0 0 30px rgba(255,215,0,0.8), inset 0 2px 4px rgba(255,255,255,0.3);
                                 ">
-                                    <i class="ri-${item.icon} text-xl text-white"></i>
+                                    <i class="ri-${item.icon} text-2xl" style="color: hsl(240, 25%, 15%);"></i>
                                 </div>
                                 
                                 <h3 class="text-xl font-bold" style="
-                                    color: hsl(180, 100%, 50%);
-                                    text-shadow: 0 0 8px hsl(180, 100%, 50%);
-                                    font-family: 'Orbitron', monospace;
+                                    color: hsl(45, 100%, 80%);
+                                    text-shadow: 0 0 15px rgba(255,215,0,0.8);
+                                    font-family: 'Cinzel', serif;
                                 ">${item.title}</h3>
                                 
-                                <p class="text-gray-300 leading-relaxed" style="
-                                    text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+                                <p class="text-gray-200 leading-relaxed" style="
+                                    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
                                 ">${item.description}</p>
                             </div>
                         </div>
@@ -120,13 +120,13 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
         </div>
     </section>`;
     
-    return neonCyberSection;
+    return diamondCrystalSection;
   };
 
   const generateWhatWeGiveSection = (whatWeGive: any, styles: any, isPremium: boolean) => {
     if (!whatWeGive || !whatWeGive.services || whatWeGive.services.length === 0) return '';
     
-    const neonCyberSection = theme.id === 'neon-cyber' ? `
+    const diamondCrystalSection = theme.id === 'diamond-crystal' ? `
     <section class="what-we-give py-20 relative overflow-hidden" style="background: linear-gradient(135deg, hsl(240, 20%, 8%) 0%, hsl(260, 30%, 12%) 30%, hsl(280, 25%, 10%) 70%, hsl(240, 20%, 8%) 100%);">
         <!-- Neon Grid Background -->
         <div class="absolute inset-0 opacity-10">
@@ -203,7 +203,27 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
         </div>
     </section>`;
     
-    return neonCyberSection;
+    return diamondCrystalSection || `
+    <section class="what-we-give py-20" style="background: ${isPremium ? (theme.id === 'luxury-premium' ? 'linear-gradient(135deg, hsl(0, 0%, 2%) 0%, hsl(45, 15%, 5%) 50%, hsl(0, 0%, 3%) 100%)' : 'linear-gradient(135deg, rgba(30,64,175,0.9), rgba(55,65,81,0.9))') : styles.backgroundColor};">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                ${whatWeGive.badge ? `<div class="inline-block px-3 py-1 text-xs ${isPremium ? (theme.id === 'luxury-premium' ? 'bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 text-yellow-200 border border-yellow-500/30' : 'bg-blue-600/20 text-blue-300 border border-blue-500/30') : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} rounded-full mb-4">${whatWeGive.badge}</div>` : ''}
+                <h2 class="text-4xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor};">${whatWeGive.title}</h2>
+                ${whatWeGive.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor}; opacity: 0.8;">${whatWeGive.subtitle}</p>` : ''}
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                ${whatWeGive.services.map((service: any) => `
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 ${isPremium ? (theme.id === 'luxury-premium' ? 'bg-black/20 backdrop-blur-sm border-yellow-500/30' : 'bg-white/10 backdrop-blur-sm border-white/20') : ''}">
+                        <div class="text-4xl mb-4" style="color: ${isPremium ? (theme.id === 'luxury-premium' ? '#fbbf24' : getPremiumTextColor(templateData.id)) : styles.primaryColor};">
+                            <i class="ri-${service.icon}"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor};">${service.title}</h3>
+                        <p style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor}; opacity: 0.8;">${service.description}</p>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    </section>`;
   };
 
   const generateProcessSection = (process: any, styles: any, isPremium: boolean) => {
