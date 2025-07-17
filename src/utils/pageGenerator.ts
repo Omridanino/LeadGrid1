@@ -43,167 +43,76 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
   const generateWhyUsSection = (whyUs: any, styles: any, isPremium: boolean) => {
     if (!whyUs || !whyUs.items || whyUs.items.length === 0) return '';
     
-    const diamondCrystalSection = theme.id === 'diamond-crystal' ? `
-    <section class="why-us py-20 relative overflow-hidden" style="background: linear-gradient(135deg, hsl(0, 0%, 5%) 0%, hsl(240, 25%, 10%) 20%, hsl(250, 30%, 15%) 40%, hsl(260, 35%, 20%) 60%, hsl(270, 25%, 12%) 80%, hsl(0, 0%, 8%) 100%);">
-        <!-- Diamond Crystal Background -->
-        <div class="absolute inset-0 opacity-20">
-            <div class="absolute inset-0" style="background-image: radial-gradient(circle at 25% 25%, rgba(255,215,0,0.2) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(147,197,253,0.2) 0%, transparent 50%), radial-gradient(circle at 50% 10%, rgba(236,72,153,0.15) 0%, transparent 50%);"></div>
-        </div>
-        
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
-            <div class="text-center mb-16">
-                ${whyUs.badge ? `<div class="inline-block px-4 py-2 text-sm rounded-full mb-4" style="background: linear-gradient(135deg, rgba(255,215,0,0.4), rgba(255,255,255,0.3), rgba(147,197,253,0.3)); color: white; border: 2px solid rgba(255,215,0,0.5); box-shadow: 0 0 30px rgba(255,215,0,0.6), inset 0 2px 4px rgba(255,255,255,0.2);">${whyUs.badge}</div>` : ''}
-                <h2 class="text-4xl font-bold mb-4" style="
-                    background: linear-gradient(135deg, hsl(45, 100%, 80%), hsl(50, 100%, 70%), hsl(55, 100%, 85%), hsl(45, 100%, 75%));
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    background-clip: text;
-                    text-shadow: 0 0 20px rgba(255,215,0,0.8);
-                    font-family: 'Cinzel', serif;
-                ">${whyUs.title}</h2>
-                ${whyUs.subtitle ? `<p class="text-xl text-gray-200 mb-8" style="text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);">${whyUs.subtitle}</p>` : ''}
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                ${whyUs.items.map((item: any) => `
-                    <div class="relative group">
-                        <div class="relative overflow-hidden rounded-2xl p-8 transition-all duration-500 hover:scale-105 hover:rotate-1" style="
-                            background: linear-gradient(135deg, rgba(255,215,0,0.15) 0%, rgba(255,255,255,0.1) 25%, rgba(147,197,253,0.15) 50%, rgba(236,72,153,0.1) 75%, rgba(255,215,0,0.15) 100%);
-                            border: 2px solid rgba(255,215,0,0.3);
-                            box-shadow: 0 0 30px rgba(255,215,0,0.3), 0 0 60px rgba(147,197,253,0.2), inset 0 2px 4px rgba(255,255,255,0.1);
-                        ">
-                            <div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="
-                                background: radial-gradient(circle at 50% 50%, rgba(255,215,0,0.2) 0%, transparent 70%);
-                            "></div>
-                            
-                            <div class="relative z-10 space-y-6">
-                                <div class="w-16 h-16 rounded-2xl flex items-center justify-center" style="
-                                    background: linear-gradient(135deg, rgba(255,215,0,0.8), rgba(255,255,255,0.6), rgba(147,197,253,0.6));
-                                    box-shadow: 0 0 30px rgba(255,215,0,0.8), inset 0 2px 4px rgba(255,255,255,0.3);
-                                ">
-                                    <i class="ri-${item.icon} text-2xl" style="color: hsl(240, 25%, 15%);"></i>
-                                </div>
-                                
-                                <h3 class="text-xl font-bold" style="
-                                    color: hsl(45, 100%, 80%);
-                                    text-shadow: 0 0 15px rgba(255,215,0,0.8);
-                                    font-family: 'Cinzel', serif;
-                                ">${item.title}</h3>
-                                
-                                <p class="text-gray-200 leading-relaxed" style="
-                                    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
-                                ">${item.description}</p>
-                            </div>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    </section>` : `
-    <section class="why-us py-20" style="background: ${isPremium ? (theme.id === 'luxury-premium' ? 'linear-gradient(135deg, hsl(0, 0%, 3%) 0%, hsl(45, 20%, 6%) 30%, hsl(38, 25%, 5%) 70%, hsl(0, 0%, 4%) 100%)' : 'linear-gradient(135deg, rgba(55,65,81,0.9), rgba(30,64,175,0.9))') : styles.backgroundColor};">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16">
-                ${whyUs.badge ? `<div class="inline-block px-3 py-1 text-xs ${isPremium ? (theme.id === 'luxury-premium' ? 'bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 text-yellow-200 border border-yellow-500/30' : 'bg-blue-600/20 text-blue-300 border border-blue-500/30') : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} rounded-full mb-4">${whyUs.badge}</div>` : ''}
-                <h2 class="text-4xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor};">${whyUs.title}</h2>
-                ${whyUs.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor}; opacity: 0.8;">${whyUs.subtitle}</p>` : ''}
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                ${whyUs.items.map((item: any) => `
-                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 ${isPremium ? (theme.id === 'luxury-premium' ? 'bg-black/20 backdrop-blur-sm border-yellow-500/30' : 'bg-white/10 backdrop-blur-sm border-white/20') : ''}">
-                        <div class="text-4xl mb-4" style="color: ${isPremium ? (theme.id === 'luxury-premium' ? '#fbbf24' : getPremiumTextColor(templateData.id)) : styles.primaryColor};">
-                            <i class="ri-${item.icon}"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor};">${item.title}</h3>
-                        <p style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor}; opacity: 0.8;">${item.description}</p>
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    </section>`;
-    
-    return diamondCrystalSection;
+    if (theme.id === 'diamond-crystal') {
+      return `
+      <section class="why-us py-20 relative overflow-hidden" style="background: linear-gradient(135deg, hsl(240, 20%, 8%) 0%, hsl(260, 30%, 12%) 30%, hsl(280, 25%, 10%) 70%, hsl(240, 20%, 8%) 100%);">
+          ${generatePremiumBackgroundHTML('diamondCrystal')}
+          
+          <div class="max-w-7xl mx-auto px-6 relative z-10">
+              <div class="text-center mb-16">
+                  ${whyUs.badge ? `<div class="inline-block px-3 py-1 text-xs font-medium rounded-full bg-black/40 border-2 border-purple-400/60 text-purple-300 shadow-lg shadow-purple-400/20 mb-4">${whyUs.badge}</div>` : ''}
+                  <h2 class="text-4xl md:text-6xl font-bold mb-6 text-purple-300" style="text-shadow: 0 0 15px hsl(300, 100%, 50%), 0 0 30px hsl(180, 100%, 50%);">${whyUs.title}</h2>
+                  ${whyUs.subtitle ? `<p class="text-xl md:text-2xl text-purple-100" style="opacity: 0.9;">${whyUs.subtitle}</p>` : ''}
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  ${whyUs.items.map((item: any) => `
+                      <div class="relative group">
+                          <div class="h-full p-8 rounded-3xl transition-all duration-300 transform hover:scale-105" style="background: linear-gradient(135deg, rgba(255, 105, 180, 0.1), rgba(0, 255, 255, 0.08)); border: 2px solid rgba(255, 105, 180, 0.3); box-shadow: 0 0 30px rgba(255, 105, 180, 0.2), inset 0 0 20px rgba(0, 255, 255, 0.1);">
+                              <div class="w-16 h-16 mb-6 flex items-center justify-center" style="background: linear-gradient(135deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%)); border: 2px solid hsl(300, 100%, 50%); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); box-shadow: 0 0 20px rgba(255, 105, 180, 0.6);">
+                                  <i class="ri-${item.icon || 'star-line'} text-2xl text-white"></i>
+                              </div>
+                              <h3 class="text-xl font-bold mb-3 text-purple-300" style="text-shadow: 0 0 10px hsl(300, 100%, 50%);">${item.title}</h3>
+                              <p class="text-purple-100" style="opacity: 0.9;">${item.description}</p>
+                          </div>
+                      </div>
+                  `).join('')}
+              </div>
+          </div>
+      </section>`;
+    }
   };
 
   const generateWhatWeGiveSection = (whatWeGive: any, styles: any, isPremium: boolean) => {
     if (!whatWeGive || !whatWeGive.services || whatWeGive.services.length === 0) return '';
     
-    const diamondCrystalSection = theme.id === 'diamond-crystal' ? `
-    <section class="what-we-give py-20 relative overflow-hidden" style="background: linear-gradient(135deg, hsl(240, 20%, 8%) 0%, hsl(260, 30%, 12%) 30%, hsl(280, 25%, 10%) 70%, hsl(240, 20%, 8%) 100%);">
-        <!-- Neon Grid Background -->
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute inset-0" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 98px, rgba(0, 255, 255, 0.1) 100px), repeating-linear-gradient(90deg, transparent, transparent 98px, rgba(255, 0, 255, 0.1) 100px);"></div>
-        </div>
-        
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
-            <div class="text-center mb-16">
-                ${whatWeGive.badge ? `<div class="inline-block px-3 py-1 text-xs rounded-full mb-4" style="background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%)); color: white; border: 1px solid hsl(300, 100%, 50%); box-shadow: 0 0 15px hsl(300, 100%, 50%);">${whatWeGive.badge}</div>` : ''}
-                <h2 class="text-4xl font-bold mb-4" style="
-                    background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%), hsl(60, 100%, 50%));
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    background-clip: text;
-                    text-shadow: 0 0 10px hsl(300, 100%, 50%);
-                    font-family: 'Orbitron', monospace;
-                ">${whatWeGive.title}</h2>
-                ${whatWeGive.subtitle ? `<p class="text-xl text-gray-300 mb-8" style="text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);">${whatWeGive.subtitle}</p>` : ''}
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                ${whatWeGive.services.map((service: any) => `
-                    <div class="relative group">
-                        <div class="relative overflow-hidden rounded-xl p-6 transition-all duration-300 hover:scale-105" style="
-                            background: linear-gradient(135deg, rgba(255, 0, 255, 0.1) 0%, rgba(0, 255, 255, 0.1) 100%);
-                            border: 1px solid rgba(255, 0, 255, 0.3);
-                            box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
-                        ">
-                            <div class="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="
-                                background: radial-gradient(circle at 50% 50%, rgba(255, 0, 255, 0.1) 0%, transparent 70%);
-                            "></div>
-                            
-                            <div class="relative z-10 space-y-4">
-                                <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="
-                                    background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%));
-                                    box-shadow: 0 0 15px hsl(300, 100%, 50%);
-                                ">
-                                    <i class="ri-${service.icon} text-xl text-white"></i>
-                                </div>
-                                
-                                <h3 class="text-xl font-bold" style="
-                                    color: hsl(180, 100%, 50%);
-                                    text-shadow: 0 0 8px hsl(180, 100%, 50%);
-                                    font-family: 'Orbitron', monospace;
-                                ">${service.title}</h3>
-                                
-                                <p class="text-gray-300 leading-relaxed" style="
-                                    text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
-                                ">${service.description}</p>
-                            </div>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    </section>` : `
-    <section class="what-we-give py-20" style="background: ${isPremium ? (theme.id === 'luxury-premium' ? 'linear-gradient(135deg, hsl(0, 0%, 2%) 0%, hsl(45, 15%, 5%) 50%, hsl(0, 0%, 3%) 100%)' : 'linear-gradient(135deg, rgba(30,64,175,0.9), rgba(55,65,81,0.9))') : styles.backgroundColor};">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16">
-                ${whatWeGive.badge ? `<div class="inline-block px-3 py-1 text-xs ${isPremium ? (theme.id === 'luxury-premium' ? 'bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 text-yellow-200 border border-yellow-500/30' : 'bg-blue-600/20 text-blue-300 border border-blue-500/30') : 'bg-blue-600/20 text-blue-300 border border-blue-500/30'} rounded-full mb-4">${whatWeGive.badge}</div>` : ''}
-                <h2 class="text-4xl font-bold mb-4" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor};">${whatWeGive.title}</h2>
-                ${whatWeGive.subtitle ? `<p class="text-xl" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor}; opacity: 0.8;">${whatWeGive.subtitle}</p>` : ''}
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                ${whatWeGive.services.map((service: any) => `
-                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 ${isPremium ? (theme.id === 'luxury-premium' ? 'bg-black/20 backdrop-blur-sm border-yellow-500/30' : 'bg-white/10 backdrop-blur-sm border-white/20') : ''}">
-                        <div class="text-4xl mb-4" style="color: ${isPremium ? (theme.id === 'luxury-premium' ? '#fbbf24' : getPremiumTextColor(templateData.id)) : styles.primaryColor};">
-                            <i class="ri-${service.icon}"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2" style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor};">${service.title}</h3>
-                        <p style="color: ${isPremium ? getPremiumTextColor(templateData.id) : styles.textColor}; opacity: 0.8;">${service.description}</p>
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-    </section>`;
+    if (theme.id === 'diamond-crystal') {
+      return `
+      <section class="what-we-give py-20 relative overflow-hidden" style="background: linear-gradient(135deg, hsl(240, 20%, 8%) 0%, hsl(260, 30%, 12%) 30%, hsl(280, 25%, 10%) 70%, hsl(240, 20%, 8%) 100%);">
+          ${generatePremiumBackgroundHTML('diamondCrystal')}
+          
+          <div class="max-w-7xl mx-auto px-6 relative z-10">
+              <div class="text-center mb-16">
+                  ${whatWeGive.badge ? `<div class="inline-block px-3 py-1 text-xs font-medium rounded-full bg-black/40 border-2 border-purple-400/60 text-purple-300 shadow-lg shadow-purple-400/20 mb-4">${whatWeGive.badge}</div>` : ''}
+                  <h2 class="text-4xl md:text-6xl font-bold mb-6 text-purple-300" style="text-shadow: 0 0 15px hsl(300, 100%, 50%), 0 0 30px hsl(180, 100%, 50%);">${whatWeGive.title}</h2>
+                  ${whatWeGive.subtitle ? `<p class="text-xl md:text-2xl mb-8 text-purple-100" style="opacity: 0.9;">${whatWeGive.subtitle}</p>` : ''}
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  ${whatWeGive.services.map((service: any) => `
+                      <div class="flex items-start space-x-4 rtl:space-x-reverse group">
+                          <div class="w-12 h-12 flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%)); border: 2px solid hsl(300, 100%, 50%); clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); box-shadow: 0 0 20px rgba(255, 105, 180, 0.6); color: white;">
+                              <i class="ri-${service.icon || 'check-line'} text-xl text-white"></i>
+                          </div>
+                          <div class="flex-1">
+                              <h3 class="text-xl font-bold mb-2 text-purple-300" style="text-shadow: 0 0 10px hsl(300, 100%, 50%);">${service.title}</h3>
+                              <p class="text-lg text-purple-100" style="opacity: 0.9;">${service.description}</p>
+                          </div>
+                      </div>
+                  `).join('')}
+              </div>
+              ${whatWeGive.image ? `
+              <div class="mt-16 flex justify-center">
+                  <div class="relative">
+                      <div class="aspect-square flex items-center justify-center" style="background: linear-gradient(135deg, hsl(240, 20%, 8%), hsl(260, 30%, 12%)); border: 3px solid hsl(300, 100%, 50%); clip-path: polygon(15% 0%, 85% 0%, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0% 85%, 0% 15%); box-shadow: 0 0 60px rgba(255, 105, 180, 0.5), inset 0 0 40px rgba(0, 255, 255, 0.1);">
+                          <p class="text-purple-300 text-center p-8 text-lg" style="text-shadow: 0 0 15px hsl(300, 100%, 50%);">${whatWeGive.image}</p>
+                      </div>
+                  </div>
+              </div>
+              ` : ''}
+          </div>
+      </section>`;
+    }
     
-    return diamondCrystalSection || `
+    return `
     <section class="what-we-give py-20" style="background: ${isPremium ? (theme.id === 'luxury-premium' ? 'linear-gradient(135deg, hsl(0, 0%, 2%) 0%, hsl(45, 15%, 5%) 50%, hsl(0, 0%, 3%) 100%)' : 'linear-gradient(135deg, rgba(30,64,175,0.9), rgba(55,65,81,0.9))') : styles.backgroundColor};">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
@@ -447,6 +356,22 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
     console.log('Getting background for template:', templateId, 'section:', sectionType);
 
     switch (templateId) {
+      case 'diamond-crystal':
+        return {
+          ...baseStyles,
+          background: sectionType === 'hero' ? 'linear-gradient(135deg, hsl(240, 20%, 8%) 0%, hsl(260, 30%, 12%) 30%, hsl(280, 40%, 10%) 70%, hsl(300, 35%, 8%) 100%)' :
+                     sectionType === 'features' ? 'linear-gradient(to bottom, hsl(240, 20%, 8%), hsl(260, 30%, 12%))' :
+                     sectionType === 'pricing' ? 'linear-gradient(to bottom, hsl(260, 30%, 12%), hsl(280, 40%, 10%))' :
+                     sectionType === 'testimonials' ? 'linear-gradient(to bottom, hsl(280, 40%, 10%), hsl(300, 35%, 8%))' :
+                     sectionType === 'emotional' ? 'linear-gradient(to bottom, hsl(240, 20%, 8%), hsl(280, 40%, 10%))' :
+                     sectionType === 'about' ? 'linear-gradient(to bottom, hsl(260, 30%, 12%), hsl(300, 35%, 8%))' :
+                     sectionType === 'contact' ? 'linear-gradient(to bottom, hsl(240, 20%, 8%), hsl(260, 30%, 12%))' :
+                     sectionType === 'faq' ? 'linear-gradient(to bottom, hsl(280, 40%, 10%), hsl(240, 20%, 8%))' :
+                     sectionType === 'final-cta' ? 'linear-gradient(135deg, hsl(260, 30%, 12%) 0%, hsl(280, 40%, 10%) 100%)' :
+                     'linear-gradient(135deg, hsl(240, 20%, 8%) 0%, hsl(260, 30%, 12%) 100%)',
+          animationType: 'diamondCrystal'
+        };
+      
       case 'tech-consultant-pro':
         return {
           ...baseStyles,
@@ -554,6 +479,74 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
 
   // Generate premium background HTML with animations - Enhanced for Luxury Premium
   const generatePremiumBackgroundHTML = (animationType: string) => {
+    // Special Diamond Crystal backgrounds
+    if (animationType === 'diamondCrystal') {
+      return `
+      <div style="position: absolute; inset: 0; overflow: hidden;">
+        <!-- Diamond Crystal Particles -->
+        <div style="position: absolute; inset: 0;">
+          ${[...Array(30)].map((_, i) => `
+            <div style="
+              position: absolute;
+              width: ${4 + Math.random() * 6}px;
+              height: ${4 + Math.random() * 6}px;
+              left: ${Math.random() * 100}%;
+              top: ${Math.random() * 100}%;
+              background: linear-gradient(135deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%));
+              clip-path: polygon(50% 0%, 80% 25%, 100% 50%, 80% 75%, 50% 100%, 20% 75%, 0% 50%, 20% 25%);
+              animation: diamondFloat ${8 + Math.random() * 12}s infinite ease-in-out ${Math.random() * 6}s;
+              box-shadow: 0 0 ${12 + Math.random() * 20}px rgba(255, 105, 180, 0.7), 0 0 ${6 + Math.random() * 12}px rgba(0, 255, 255, 0.5);
+              opacity: 0.9;
+            "></div>
+          `).join('')}
+        </div>
+        
+        <!-- Crystal Geometric Shapes -->
+        <div style="position: absolute; inset: 0;">
+          ${[...Array(6)].map((_, i) => `
+            <div style="
+              position: absolute;
+              width: ${120 + i * 25}px;
+              height: ${120 + i * 25}px;
+              left: ${10 + i * 13}%;
+              top: ${5 + (i % 3) * 25}%;
+              border: 3px solid rgba(255, 105, 180, 0.4);
+              clip-path: polygon(50% 0%, 80% 20%, 100% 50%, 80% 80%, 50% 100%, 20% 80%, 0% 50%, 20% 20%);
+              background: linear-gradient(135deg, rgba(255, 105, 180, 0.1), rgba(0, 255, 255, 0.08), transparent);
+              animation: crystalSpin ${25 + i * 8}s linear infinite;
+              box-shadow: 0 0 30px rgba(255, 105, 180, 0.3), inset 0 0 20px rgba(0, 255, 255, 0.15);
+              opacity: 0.5;
+            "></div>
+          `).join('')}
+        </div>
+        
+        <!-- Diamond Light Rays -->
+        <div style="position: absolute; inset: 0; background: 
+          radial-gradient(ellipse at 20% 30%, rgba(255, 105, 180, 0.15) 0%, transparent 60%),
+          radial-gradient(ellipse at 80% 70%, rgba(0, 255, 255, 0.12) 0%, transparent 60%),
+          radial-gradient(ellipse at 60% 20%, rgba(255, 20, 147, 0.1) 0%, transparent 50%);
+          animation: diamondPulse 10s infinite ease-in-out;
+        "></div>
+        
+        <!-- Sparkling Effects -->
+        <div style="position: absolute; inset: 0;">
+          ${[...Array(15)].map((_, i) => `
+            <div style="
+              position: absolute;
+              width: ${6 + i * 3}px;
+              height: ${6 + i * 3}px;
+              left: ${Math.random() * 100}%;
+              top: ${Math.random() * 100}%;
+              background: radial-gradient(circle, rgba(255, 105, 180, 0.8) 0%, rgba(0, 255, 255, 0.6) 50%, transparent 100%);
+              clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+              animation: sparkle ${4 + i * 1.5}s infinite ease-in-out ${i * 0.3}s;
+              filter: blur(0.5px);
+            "></div>
+          `).join('')}
+        </div>
+      </div>`;
+    }
+    
     // Special Luxury Premium backgrounds
     if (animationType === 'luxuryPremium') {
       return `
@@ -1150,6 +1143,67 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
           75% { 
             border-radius: 70% 30% 60% 40% / 40% 50% 60% 30%;
             transform: rotate(270deg) scale(1.05);
+          }
+        }
+        
+        /* Diamond Crystal Animations */
+        @keyframes diamondFloat {
+          0%, 100% { 
+            transform: translateY(0px) scale(1) rotate(0deg);
+            opacity: 0.9;
+            box-shadow: 0 0 12px rgba(255, 105, 180, 0.7), 0 0 6px rgba(0, 255, 255, 0.5);
+          }
+          25% { 
+            transform: translateY(-15px) scale(1.1) rotate(90deg);
+            opacity: 1;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.9), 0 0 12px rgba(0, 255, 255, 0.7);
+          }
+          50% { 
+            transform: translateY(-30px) scale(1.3) rotate(180deg);
+            opacity: 0.8;
+            box-shadow: 0 0 25px rgba(255, 105, 180, 1), 0 0 15px rgba(0, 255, 255, 0.8);
+          }
+          75% { 
+            transform: translateY(-15px) scale(1.1) rotate(270deg);
+            opacity: 1;
+            box-shadow: 0 0 18px rgba(255, 105, 180, 0.8), 0 0 10px rgba(0, 255, 255, 0.6);
+          }
+        }
+        
+        @keyframes crystalSpin {
+          0% { 
+            transform: rotate(0deg) scale(1);
+            opacity: 0.5;
+          }
+          50% { 
+            transform: rotate(180deg) scale(1.1);
+            opacity: 0.7;
+          }
+          100% { 
+            transform: rotate(360deg) scale(1);
+            opacity: 0.5;
+          }
+        }
+        
+        @keyframes diamondPulse {
+          0%, 100% { 
+            opacity: 0.3;
+            transform: scale(1);
+          }
+          50% { 
+            opacity: 0.6;
+            transform: scale(1.05);
+          }
+        }
+        
+        @keyframes sparkle {
+          0%, 100% { 
+            opacity: 0;
+            transform: scale(0) rotate(0deg);
+          }
+          50% { 
+            opacity: 1;
+            transform: scale(1) rotate(180deg);
           }
         }
         
