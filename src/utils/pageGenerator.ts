@@ -2049,55 +2049,56 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                 ${template.features.items.map((feature: any) => {
-                  if (theme.id === 'diamond-crystal') {
-                    return `
-                      <div class="relative group">
-                        <!-- Neon Cyber Card -->
-                        <div class="relative overflow-hidden rounded-xl p-6 transition-all duration-300 hover:scale-105" style="
-                          background: linear-gradient(135deg, rgba(255, 0, 255, 0.1) 0%, rgba(0, 255, 255, 0.1) 100%);
-                          border: 1px solid rgba(255, 0, 255, 0.3);
-                          box-shadow: 0 0 20px rgba(255, 0, 255, 0.2), 0 0 40px rgba(0, 255, 255, 0.1);
-                        ">
-                          
-                          <!-- Neon Glow Effect -->
-                          <div class="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="
-                            background: radial-gradient(circle at 50% 50%, rgba(255, 0, 255, 0.2) 0%, transparent 70%);
-                            animation: pulse 2s ease-in-out infinite;
-                          "></div>
-                          
-                          <!-- Scanning Line Effect -->
-                          <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" style="
-                            animation: scan 2s ease-in-out infinite;
-                          "></div>
-                          
-                          <!-- Content -->
-                          <div class="relative z-10 space-y-4">
-                            <!-- Neon Icon -->
-                            <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="
-                              background: linear-gradient(45deg, hsl(300, 100%, 50%), hsl(180, 100%, 50%));
-                              box-shadow: 0 0 20px hsl(300, 100%, 50%), 0 0 40px hsl(180, 100%, 50%);
-                            ">
-                              <i class="ri-${feature.icon} text-xl text-white"></i>
-                            </div>
-                            
-                            <!-- Neon Title -->
-                            <h3 class="text-xl font-bold" style="
-                              color: hsl(180, 100%, 50%);
-                              text-shadow: 0 0 10px hsl(180, 100%, 50%);
-                              font-family: 'Orbitron', monospace;
-                            ">
-                              ${feature.title}
-                            </h3>
-                            
-                            <!-- Neon Description -->
-                            <p class="text-gray-300 leading-relaxed" style="
-                              text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-                            ">
-                              ${feature.description}
-                            </p>
-                          </div>
-                        </div>
-                      </div>`;
+                   if (theme.id === 'diamond-crystal') {
+                     return `
+                       <div class="relative group">
+                         <!-- Diamond Crystal Card -->
+                         <div class="relative overflow-hidden rounded-xl p-6 transition-all duration-300 hover:scale-105 transform hover:rotate-1" style="
+                           background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(135, 206, 235, 0.15) 100%);
+                           border: 2px solid rgba(255, 215, 0, 0.3);
+                           box-shadow: 0 0 30px rgba(255, 215, 0, 0.2), 0 0 60px rgba(135, 206, 235, 0.1);
+                           backdrop-filter: blur(10px);
+                         ">
+                           
+                           <!-- Crystal Sparkle Effect -->
+                           <div class="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="
+                             background: radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+                             animation: sparkle 3s ease-in-out infinite;
+                           "></div>
+                           
+                           <!-- Prismatic Light Effect -->
+                           <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-yellow-400 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" style="
+                             animation: prism-light 2s ease-in-out infinite;
+                           "></div>
+                           
+                           <!-- Content -->
+                           <div class="relative z-10 space-y-4">
+                             <!-- Diamond Icon -->
+                             <div class="w-12 h-12 rounded-lg flex items-center justify-center transform rotate-45" style="
+                               background: linear-gradient(45deg, hsl(45, 100%, 50%), hsl(200, 100%, 50%));
+                               box-shadow: 0 0 20px rgba(255, 215, 0, 0.4), 0 0 40px rgba(135, 206, 235, 0.2);
+                             ">
+                               <i class="ri-${feature.icon} text-xl text-white transform -rotate-45"></i>
+                             </div>
+                             
+                             <!-- Crystal Title -->
+                             <h3 class="text-xl font-bold" style="
+                               color: hsl(45, 100%, 70%);
+                               text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+                               font-family: 'Cinzel', serif;
+                             ">
+                               ${feature.title}
+                             </h3>
+                             
+                             <!-- Crystal Description -->
+                             <p class="text-gray-200 leading-relaxed" style="
+                               text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+                             ">
+                               ${feature.description}
+                             </p>
+                           </div>
+                         </div>
+                       </div>`;
                   } else if (isPremium) {
                     return `
                       <div class="relative group perspective-1000">
@@ -2229,64 +2230,65 @@ export const generatePageHTML = (templateData: any, designTheme?: DesignTheme) =
             <!-- Testimonials grid -->
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                 ${template.testimonials.testimonials.map((testimonial: any) => {
-                  if (theme.id === 'diamond-crystal') {
-                    return `
-                      <div class="relative group">
-                        <!-- Neon Cyber Testimonial Card -->
-                        <div class="relative overflow-hidden rounded-xl p-6 transition-all duration-300 hover:scale-105" style="
-                          background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(255, 0, 255, 0.1) 100%);
-                          border: 1px solid rgba(0, 255, 255, 0.3);
-                          box-shadow: 0 0 20px rgba(0, 255, 255, 0.2), 0 0 40px rgba(255, 0, 255, 0.1);
-                        ">
-                          
-                          <!-- Neon Border Animation -->
-                          <div class="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="
-                            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.5), transparent);
-                            animation: borderScan 3s ease-in-out infinite;
-                          "></div>
-                          
-                          <div class="relative z-10">
-                            <!-- Neon Quote Icon -->
-                            <div class="mb-4">
-                              <i class="ri-double-quotes-l text-3xl" style="
-                                color: hsl(60, 100%, 50%);
-                                text-shadow: 0 0 10px hsl(60, 100%, 50%);
-                              "></i>
-                            </div>
-                            
-                            <!-- Testimonial Text -->
-                            <p class="text-lg mb-6" style="
-                              color: hsl(0, 0%, 90%);
-                              text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-                            ">${testimonial.text}</p>
-                            
-                            <!-- Client Info -->
-                            <div class="flex items-center gap-3">
-                              <div class="w-12 h-12 rounded-full overflow-hidden" style="
-                                border: 2px solid hsl(300, 100%, 50%);
-                                box-shadow: 0 0 15px hsl(300, 100%, 50%);
-                              ">
-                                <img src="${testimonial.image}" alt="${testimonial.name}" class="w-full h-full object-cover">
-                              </div>
-                              <div>
-                                <h4 class="font-bold" style="
-                                  color: hsl(300, 100%, 50%);
-                                  text-shadow: 0 0 10px hsl(300, 100%, 50%);
-                                  font-family: 'Orbitron', monospace;
-                                ">
-                                  ${testimonial.name}
-                                </h4>
-                                <p class="text-sm" style="
-                                  color: hsl(180, 100%, 50%);
-                                  text-shadow: 0 0 5px hsl(180, 100%, 50%);
-                                ">
-                                  ${testimonial.role}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>`;
+                   if (theme.id === 'diamond-crystal') {
+                     return `
+                       <div class="relative group">
+                         <!-- Diamond Crystal Testimonial Card -->
+                         <div class="relative overflow-hidden rounded-xl p-6 transition-all duration-300 hover:scale-105 transform hover:rotate-1" style="
+                           background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 20, 147, 0.1) 100%);
+                           border: 2px solid rgba(255, 215, 0, 0.3);
+                           box-shadow: 0 0 30px rgba(255, 215, 0, 0.2), 0 0 60px rgba(255, 20, 147, 0.1);
+                           backdrop-filter: blur(10px);
+                         ">
+                           
+                           <!-- Crystal Sparkle Animation -->
+                           <div class="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="
+                             background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.5), transparent);
+                             animation: sparkle 3s ease-in-out infinite;
+                           "></div>
+                           
+                           <div class="relative z-10">
+                             <!-- Crystal Quote Icon -->
+                             <div class="mb-4">
+                               <i class="ri-double-quotes-l text-3xl transform rotate-12" style="
+                                 color: hsl(45, 100%, 60%);
+                                 text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+                               "></i>
+                             </div>
+                             
+                             <!-- Testimonial Text -->
+                             <p class="text-lg mb-6" style="
+                               color: hsl(0, 0%, 90%);
+                               text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+                             ">${testimonial.text}</p>
+                             
+                             <!-- Client Info -->
+                             <div class="flex items-center gap-3">
+                               <div class="w-12 h-12 rounded-full overflow-hidden transform rotate-12" style="
+                                 border: 2px solid hsl(320, 100%, 60%);
+                                 box-shadow: 0 0 20px rgba(255, 20, 147, 0.4);
+                               ">
+                                 <img src="${testimonial.image}" alt="${testimonial.name}" class="w-full h-full object-cover">
+                               </div>
+                               <div>
+                                 <h4 class="font-bold" style="
+                                   color: hsl(320, 100%, 60%);
+                                   text-shadow: 0 0 15px rgba(255, 20, 147, 0.4);
+                                   font-family: 'Cinzel', serif;
+                                 ">
+                                   ${testimonial.name}
+                                 </h4>
+                                 <p class="text-sm" style="
+                                   color: hsl(45, 100%, 60%);
+                                   text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+                                 ">
+                                   ${testimonial.role}
+                                 </p>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                       </div>`;
                   } else {
                     return `
                       <div class="relative group">
